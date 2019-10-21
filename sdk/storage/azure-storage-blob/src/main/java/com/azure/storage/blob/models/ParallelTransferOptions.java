@@ -5,7 +5,7 @@ package com.azure.storage.blob.models;
 
 import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
 import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
@@ -60,7 +60,7 @@ public final class ParallelTransferOptions {
      */
     public ParallelTransferOptions setBlockSize(Integer blockSize) {
         if (blockSize != null) {
-            Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_UPLOAD_BLOCK_SIZE);
+            StorageImplUtils.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_BLOCK_SIZE);
         }
         this.blockSize = blockSize;
         return this;
@@ -78,7 +78,7 @@ public final class ParallelTransferOptions {
      */
     public ParallelTransferOptions setNumBuffers(Integer numBuffers) {
         if (numBuffers != null) {
-            Utility.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
+            StorageImplUtils.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
         }
         this.numBuffers = numBuffers;
         return this;

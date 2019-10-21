@@ -211,6 +211,7 @@ directive:
       delete $.Logging;
       $.QueueAnalyticsLogging.xml = {"name": "Logging"};
       $.QueueServiceProperties.properties.Logging["$ref"] = "#/definitions/QueueAnalyticsLogging";
+      $.QueueServiceProperties.properties.Logging["x-ms-client-name"] = "analyticsLogging";
     }
     if (!$.QueueMetrics) {
       $.QueueMetrics = $.Metrics;

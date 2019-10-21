@@ -11,8 +11,8 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.QueueCorsRule;
@@ -47,22 +47,25 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  *
  * @see QueueServiceClientBuilder
  * @see QueueServiceClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = QueueServiceClientBuilder.class, isAsync = true)
 public final class QueueServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(QueueServiceAsyncClient.class);
     private final AzureQueueStorageImpl client;
     private final String accountName;
+    private final QueueServiceVersion serviceVersion;
 
     /**
      * Creates a QueueServiceAsyncClient from the passed {@link AzureQueueStorageImpl implementation client}.
      *
      * @param azureQueueStorage Client that interacts with the service interfaces.
      */
-    QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage, String accountName) {
+    QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage, String accountName,
+        QueueServiceVersion serviceVersion) {
         this.client = azureQueueStorage;
         this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -77,8 +80,8 @@ public final class QueueServiceAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return client.getVersion();
+    public QueueServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
@@ -90,7 +93,7 @@ public final class QueueServiceAsyncClient {
      * @return QueueAsyncClient that interacts with the specified queue
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
-        return new QueueAsyncClient(client, queueName, accountName);
+        return new QueueAsyncClient(client, queueName, accountName, serviceVersion);
     }
 
     /**
@@ -141,7 +144,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Context context) {
-        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName, accountName);
+        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName, accountName, serviceVersion);
 
         return queueAsyncClient.createWithResponse(metadata, context)
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
@@ -190,7 +193,7 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
-        return new QueueAsyncClient(client, queueName, accountName).deleteWithResponse(context);
+        return new QueueAsyncClient(client, queueName, accountName, serviceVersion).deleteWithResponse(context);
     }
 
     /**
@@ -267,7 +270,7 @@ public final class QueueServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<QueueItem>>> retriever =
-            nextMarker -> Utility.applyOptionalTimeout(this.client.services()
+            nextMarker -> StorageImplUtils.applyOptionalTimeout(this.client.services()
                 .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),

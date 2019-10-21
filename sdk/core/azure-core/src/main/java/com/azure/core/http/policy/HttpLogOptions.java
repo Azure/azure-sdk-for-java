@@ -43,8 +43,8 @@ public class HttpLogOptions {
 
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.NONE;
-        allowedHeaderNames = new HashSet<>();
-        allowedQueryParamNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
+        allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
+        allowedQueryParamNames = new HashSet<>();
     }
 
     /**
@@ -91,7 +91,7 @@ public class HttpLogOptions {
      * @return The updated HttpLogOptions object.
      */
     public HttpLogOptions setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
-        this.allowedHeaderNames = allowedHeaderNames == null ?  new HashSet<>() : allowedHeaderNames;
+        this.allowedHeaderNames = allowedHeaderNames == null ? new HashSet<>() : allowedHeaderNames;
         return this;
     }
 
@@ -124,7 +124,7 @@ public class HttpLogOptions {
      * @return The updated HttpLogOptions object.
      */
     public HttpLogOptions setAllowedQueryParamNames(final Set<String> allowedQueryParamNames) {
-        this.allowedQueryParamNames = allowedQueryParamNames;
+        this.allowedQueryParamNames = allowedQueryParamNames == null ? new HashSet<>() : allowedQueryParamNames;
         return this;
     }
 

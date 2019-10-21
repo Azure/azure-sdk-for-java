@@ -3,7 +3,7 @@
 
 package com.azure.storage.file
 
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.models.FileCorsRule
 import com.azure.storage.file.models.FileErrorCode
 import com.azure.storage.file.models.FileMetrics
@@ -36,7 +36,7 @@ class FileServiceAPITests extends APISpec {
 
     def "Get file service URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def fileServiceURL = primaryFileServiceClient.getFileServiceUrl()

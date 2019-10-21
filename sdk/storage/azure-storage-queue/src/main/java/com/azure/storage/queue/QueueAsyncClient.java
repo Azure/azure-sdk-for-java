@@ -12,8 +12,8 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
@@ -34,7 +34,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Spliterators;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
@@ -53,7 +56,7 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  *
  * @see QueueClientBuilder
  * @see QueueClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueAsyncClient {
@@ -62,6 +65,7 @@ public final class QueueAsyncClient {
     private final AzureQueueStorageImpl client;
     private final String queueName;
     private final String accountName;
+    private final QueueServiceVersion serviceVersion;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -70,11 +74,13 @@ public final class QueueAsyncClient {
      * @param client Client that interacts with the service interfaces
      * @param queueName Name of the queue
      */
-    QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName) {
+    QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
+        QueueServiceVersion serviceVersion) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
         this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -89,8 +95,8 @@ public final class QueueAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return client.getVersion();
+    public QueueServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
@@ -356,7 +362,7 @@ public final class QueueAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#List}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#Iterable}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
@@ -366,7 +372,7 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the queue will have more than five policies.
      */
-    public Mono<Void> setAccessPolicy(List<QueueSignedIdentifier> permissions) {
+    public Mono<Void> setAccessPolicy(Iterable<QueueSignedIdentifier> permissions) {
         try {
             return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -381,7 +387,7 @@ public final class QueueAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#List}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#Iterable}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
@@ -391,7 +397,7 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the queue will have more than five policies.
      */
-    public Mono<Response<Void>> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions) {
+    public Mono<Response<Void>> setAccessPolicyWithResponse(Iterable<QueueSignedIdentifier> permissions) {
         try {
             return withContext(context -> setAccessPolicyWithResponse(permissions, context));
         } catch (RuntimeException ex) {
@@ -399,7 +405,7 @@ public final class QueueAsyncClient {
         }
     }
 
-    Mono<Response<Void>> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions, Context context) {
+    Mono<Response<Void>> setAccessPolicyWithResponse(Iterable<QueueSignedIdentifier> permissions, Context context) {
         /*
         We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
         OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
@@ -418,9 +424,12 @@ public final class QueueAsyncClient {
                 }
             }
         }
+        List<QueueSignedIdentifier> permissionsList = StreamSupport.stream(
+            permissions != null ? permissions.spliterator() : Spliterators.emptySpliterator(), false)
+            .collect(Collectors.toList());
 
         return client.queues()
-            .setAccessPolicyWithRestResponseAsync(queueName, permissions, null, null, context)
+            .setAccessPolicyWithRestResponseAsync(queueName, permissionsList, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -644,7 +653,7 @@ public final class QueueAsyncClient {
         Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.client.messages()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
                 .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -715,7 +724,7 @@ public final class QueueAsyncClient {
     PagedFlux<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.client.messages()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
                 .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
@@ -784,7 +793,7 @@ public final class QueueAsyncClient {
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
     public Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
-        String messageText, Duration visibilityTimeout) {
+            String messageText, Duration visibilityTimeout) {
         try {
             return withContext(context ->
                 updateMessageWithResponse(messageId, popReceipt, messageText, visibilityTimeout, context));

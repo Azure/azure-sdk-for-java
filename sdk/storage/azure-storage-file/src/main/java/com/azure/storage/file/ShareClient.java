@@ -8,15 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileSignedIdentifier;
+import com.azure.storage.file.models.FileStorageException;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
-import com.azure.storage.file.models.FileStorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -36,7 +36,7 @@ import java.util.Map;
  *
  * @see ShareClientBuilder
  * @see ShareAsyncClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = ShareClientBuilder.class)
 public class ShareClient {
@@ -60,7 +60,7 @@ public class ShareClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public FileServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
@@ -151,7 +151,7 @@ public class ShareClient {
     public Response<ShareInfo> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Duration timeout,
         Context context) {
         Mono<Response<ShareInfo>> response = client.createWithResponse(metadata, quotaInGB, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -200,7 +200,7 @@ public class ShareClient {
     public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
         Mono<Response<ShareSnapshotInfo>> response = client.createSnapshotWithResponse(metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -242,7 +242,7 @@ public class ShareClient {
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -287,7 +287,7 @@ public class ShareClient {
      */
     public Response<ShareProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<ShareProperties>> response = client.getPropertiesWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -332,7 +332,7 @@ public class ShareClient {
      */
     public Response<ShareInfo> setQuotaWithResponse(int quotaInGB, Duration timeout, Context context) {
         Mono<Response<ShareInfo>> response = client.setQuotaWithResponse(quotaInGB, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -386,7 +386,7 @@ public class ShareClient {
     public Response<ShareInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
         Mono<Response<ShareInfo>> response = client.setMetadataWithResponse(metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -454,7 +454,7 @@ public class ShareClient {
     public Response<ShareInfo> setAccessPolicyWithResponse(List<FileSignedIdentifier> permissions, Duration timeout,
         Context context) {
         Mono<Response<ShareInfo>> response = client.setAccessPolicyWithResponse(permissions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -495,7 +495,7 @@ public class ShareClient {
      */
     public Response<ShareStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Mono<Response<ShareStatistics>> response = client.getStatisticsWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -667,7 +667,7 @@ public class ShareClient {
      */
     public Response<Void> deleteDirectoryWithResponse(String directoryName, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteDirectoryWithResponse(directoryName, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -711,7 +711,7 @@ public class ShareClient {
      */
     public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteFileWithResponse(fileName, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

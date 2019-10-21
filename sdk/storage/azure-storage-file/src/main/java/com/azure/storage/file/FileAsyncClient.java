@@ -11,21 +11,25 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollResponse.OperationStatus;
+import com.azure.core.util.polling.Poller;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.FileGetPropertiesHeaders;
 import com.azure.storage.file.implementation.models.FileRangeWriteType;
+import com.azure.storage.file.implementation.models.FileStartCopyHeaders;
 import com.azure.storage.file.implementation.models.FileUploadRangeFromURLHeaders;
 import com.azure.storage.file.implementation.models.FileUploadRangeHeaders;
 import com.azure.storage.file.implementation.models.FilesCreateResponse;
 import com.azure.storage.file.implementation.models.FilesGetPropertiesResponse;
 import com.azure.storage.file.implementation.models.FilesSetHTTPHeadersResponse;
 import com.azure.storage.file.implementation.models.FilesSetMetadataResponse;
-import com.azure.storage.file.implementation.models.FilesStartCopyResponse;
 import com.azure.storage.file.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.CopyStatusType;
@@ -62,6 +66,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -83,7 +88,7 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  *
  * @see FileClientBuilder
  * @see FileClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = FileClientBuilder.class, isAsync = true)
 public class FileAsyncClient {
@@ -96,6 +101,7 @@ public class FileAsyncClient {
     private final String filePath;
     private final String snapshot;
     private final String accountName;
+    private final FileServiceVersion serviceVersion;
 
     /**
      * Creates a FileAsyncClient that sends requests to the storage file at {@link AzureFileStorageImpl#getUrl()
@@ -107,7 +113,7 @@ public class FileAsyncClient {
      * @param snapshot The snapshot of the share
      */
     FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
-                    String snapshot, String accountName) {
+                    String snapshot, String accountName, FileServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(filePath, "'filePath' cannot be null.");
         this.shareName = shareName;
@@ -115,6 +121,7 @@ public class FileAsyncClient {
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -136,8 +143,8 @@ public class FileAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return azureFileStorageClient.getVersion();
+    public FileServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
@@ -224,56 +231,106 @@ public class FileAsyncClient {
      *
      * <p>Copy file from source url to the {@code resourcePath} </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.startCopy#string-map}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.beginCopy#string-map-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
-     * @return The {@link FileCopyInfo file copy info}.
+     * @return A {@link Poller} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Mono<FileCopyInfo> startCopy(String sourceUrl, Map<String, String> metadata) {
-        try {
-            return startCopyWithResponse(sourceUrl, metadata).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, Duration pollInterval) {
+        final AtomicReference<String> copyId = new AtomicReference<>();
+        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
+
+        return new Poller<>(interval,
+            response -> {
+                try {
+                    return onPoll(response);
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            },
+            Mono::empty,
+            () -> {
+                try {
+                    return withContext(context -> azureFileStorageClient.files()
+                    .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null, metadata, context))
+                    .map(response -> {
+                        final FileStartCopyHeaders headers = response.getDeserializedHeaders();
+                        copyId.set(headers.getCopyId());
+
+                        return new FileCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
+                            headers.getETag(), headers.getLastModified(), headers.getErrorCode());
+                    });
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            },
+            poller -> {
+                final PollResponse<FileCopyInfo> response = poller.getLastPollResponse();
+
+                if (response == null || response.getValue() == null) {
+                    return Mono.error(logger.logExceptionAsError(
+                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                }
+
+                final String copyIdentifier = response.getValue().getCopyId();
+
+                if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
+                    logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
+
+                    return abortCopy(copyIdentifier).thenReturn(response.getValue());
+                }
+
+                return Mono.empty();
+            });
     }
 
-    /**
-     * Copies a blob or file to a destination file within the storage account.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Copy file from source url to the {@code resourcePath} </p>
-     *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.startCopyWithResponse#string-map}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
-     *
-     * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
-     * naming rules.
-     * @return A response containing the {@link FileCopyInfo file copy info} and the status of copying the file.
-     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
-     */
-    public Mono<Response<FileCopyInfo>> startCopyWithResponse(String sourceUrl, Map<String, String> metadata) {
-        try {
-            return withContext(context -> startCopyWithResponse(sourceUrl, metadata, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+    private Mono<PollResponse<FileCopyInfo>> onPoll(PollResponse<FileCopyInfo> pollResponse) {
+        if (pollResponse.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED
+            || pollResponse.getStatus() == OperationStatus.FAILED) {
+            return Mono.just(pollResponse);
         }
-    }
 
-    Mono<Response<FileCopyInfo>> startCopyWithResponse(String sourceUrl, Map<String, String> metadata,
-        Context context) {
-        return azureFileStorageClient.files()
-            .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null, metadata, context)
-            .map(this::startCopyResponse);
+        final FileCopyInfo lastInfo = pollResponse.getValue();
+        if (lastInfo == null) {
+            logger.warning("FileCopyInfo does not exist. Activation operation failed.");
+            return Mono.just(new PollResponse<>(OperationStatus.fromString("COPY_START_FAILED", true), null));
+        }
+
+        return getProperties()
+            .map(response -> {
+                final CopyStatusType status = response.getCopyStatus();
+                final FileCopyInfo result = new FileCopyInfo(response.getCopySource(), response.getCopyId(), status,
+                    response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
+
+                OperationStatus operationStatus;
+                switch (status) {
+                    case SUCCESS:
+                        operationStatus = OperationStatus.SUCCESSFULLY_COMPLETED;
+                        break;
+                    case FAILED:
+                        operationStatus = OperationStatus.FAILED;
+                        break;
+                    case ABORTED:
+                        operationStatus = OperationStatus.USER_CANCELLED;
+                        break;
+                    case PENDING:
+                        operationStatus = OperationStatus.IN_PROGRESS;
+                        break;
+                    default:
+                        throw logger.logExceptionAsError(new IllegalArgumentException(
+                            "CopyStatusType is not supported. Status: " + status));
+                }
+
+                return new PollResponse<>(operationStatus, result);
+            }).onErrorReturn(new PollResponse<>(OperationStatus.fromString("POLLING_FAILED", true), lastInfo));
     }
 
     /**
@@ -1044,7 +1101,7 @@ public class FileAsyncClient {
     PagedFlux<FileRange> listRangesWithOptionalTimeout(FileRange range, Duration timeout, Context context) {
         String rangeString = range == null ? null : range.toString();
         Function<String, Mono<PagedResponse<FileRange>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
@@ -1103,7 +1160,7 @@ public class FileAsyncClient {
 
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultsPerPage, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .listHandlesWithRestResponseAsync(shareName, filePath, marker, maxResultsPerPage, null, snapshot,
                     context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -1193,7 +1250,7 @@ public class FileAsyncClient {
 
     PagedFlux<Integer> forceCloseAllHandlesWithOptionalTimeout(Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<Integer>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .forceCloseHandlesWithRestResponseAsync(shareName, filePath, "*", null, marker,
                     snapshot, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -1265,15 +1322,6 @@ public class FileAsyncClient {
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
-    }
-
-    private Response<FileCopyInfo> startCopyResponse(final FilesStartCopyResponse response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        String copyId = response.getDeserializedHeaders().getCopyId();
-        CopyStatusType copyStatus = response.getDeserializedHeaders().getCopyStatus();
-        FileCopyInfo fileCopyInfo = new FileCopyInfo(eTag, lastModified, copyId, copyStatus);
-        return new SimpleResponse<>(response, fileCopyInfo);
     }
 
     private Response<FileInfo> setPropertiesResponse(final FilesSetHTTPHeadersResponse response) {
@@ -1363,7 +1411,7 @@ public class FileAsyncClient {
         }
 
         if (filePermission != null) {
-            Utility.assertInBounds("filePermission",
+            StorageImplUtils.assertInBounds("filePermission",
                 filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
         }
     }

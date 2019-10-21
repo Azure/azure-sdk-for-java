@@ -11,8 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.common.Utility;
 
+import com.azure.storage.common.implementation.StorageImplUtils;
 import java.net.URL;
 import java.time.Duration;
 
@@ -97,7 +97,7 @@ public final class LeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> acquireLeaseWithResponse(int duration, ModifiedAccessConditions modifiedAccessConditions,
         Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .acquireLeaseWithResponse(duration, modifiedAccessConditions, context), timeout);
     }
 
@@ -132,7 +132,7 @@ public final class LeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> renewLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Duration timeout,
         Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .renewLeaseWithResponse(modifiedAccessConditions, context), timeout);
     }
 
@@ -165,7 +165,7 @@ public final class LeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Duration timeout,
         Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .releaseLeaseWithResponse(modifiedAccessConditions, context), timeout);
     }
 
@@ -207,7 +207,7 @@ public final class LeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Integer> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context), timeout);
     }
 
@@ -244,7 +244,7 @@ public final class LeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> changeLeaseWithResponse(String proposedId,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .changeLeaseWithResponse(proposedId, modifiedAccessConditions, context), timeout);
     }
 
