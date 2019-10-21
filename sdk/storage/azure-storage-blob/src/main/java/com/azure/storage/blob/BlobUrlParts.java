@@ -146,7 +146,7 @@ public final class BlobUrlParts {
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setBlobName(String blobName) {
-        this.blobName = Utility.urlEncode(blobName);
+        this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         return this;
     }
 

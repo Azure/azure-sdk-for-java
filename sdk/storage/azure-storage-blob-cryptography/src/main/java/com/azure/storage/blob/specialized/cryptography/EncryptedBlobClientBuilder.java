@@ -379,7 +379,8 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public EncryptedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Utility.urlEncode(Objects.requireNonNull(blobName, "'blobName' cannot be null."));
+        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
+            "'blobName' cannot be null.")));
         return this;
     }
 

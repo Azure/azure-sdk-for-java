@@ -115,7 +115,7 @@ public class BlobAsyncClientBase {
 
         this.accountName = accountName;
         this.containerName = containerName;
-        this.blobName = Utility.urlEncode(blobName);
+        this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
     }

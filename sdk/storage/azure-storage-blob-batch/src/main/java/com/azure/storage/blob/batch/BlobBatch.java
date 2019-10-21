@@ -140,7 +140,8 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> deleteBlob(String containerName, String blobName) {
-        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName, Utility.urlEncode(blobName)), null, null);
+        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), null, null);
     }
 
     /**
@@ -162,8 +163,8 @@ public final class BlobBatch {
      */
     public Response<Void> deleteBlob(String containerName, String blobName,
         DeleteSnapshotsOptionType deleteOptions, BlobAccessConditions blobAccessConditions) {
-        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName, Utility.urlEncode(blobName)),
-            deleteOptions, blobAccessConditions);
+        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), deleteOptions, blobAccessConditions);
     }
 
     /**
@@ -225,8 +226,8 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
-        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, Utility.urlEncode(blobName)),
-            accessTier, null);
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), accessTier, null);
     }
 
     /**
@@ -248,8 +249,8 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
-        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, Utility.urlEncode(blobName)),
-            accessTier, leaseAccessConditions);
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), accessTier, leaseAccessConditions);
     }
 
     /**
