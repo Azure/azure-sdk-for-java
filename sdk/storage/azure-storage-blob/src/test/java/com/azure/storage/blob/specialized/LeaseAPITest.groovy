@@ -3,10 +3,11 @@
 
 package com.azure.storage.blob.specialized
 
+import com.azure.core.http.RequestConditions
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.LeaseDurationType
 import com.azure.storage.blob.models.LeaseStateType
-import com.azure.storage.blob.models.ModifiedAccessConditions
+
 import com.azure.storage.blob.models.BlobStorageException
 import spock.lang.Unroll
 
@@ -77,7 +78,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -102,7 +103,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -165,7 +166,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -191,7 +192,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -248,7 +249,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -272,7 +273,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -341,7 +342,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
         setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -365,7 +366,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -424,7 +425,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
         String leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -448,7 +449,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         String leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -527,7 +528,7 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Acquire container lease AC"() {
         setup:
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -548,7 +549,7 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Acquire container lease AC fail"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc).acquireLeaseWithResponse(-1, mac, null, null)
@@ -598,7 +599,7 @@ class LeaseAPITest extends APISpec {
     def "Renew container lease AC"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(cc, leaseID).renewLeaseWithResponse(mac, null, null).getStatusCode() == 200
@@ -614,7 +615,7 @@ class LeaseAPITest extends APISpec {
     def "Renew container lease AC fail"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc, leaseID).renewLeaseWithResponse(mac, null, null)
@@ -631,7 +632,7 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Renew container lease AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         createLeaseClient(cc, receivedEtag).renewLeaseWithResponse(mac, null, null)
@@ -679,7 +680,7 @@ class LeaseAPITest extends APISpec {
     def "Release container lease AC"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(cc, leaseID).releaseLeaseWithResponse(mac, null, null).getStatusCode() == 200
@@ -695,7 +696,7 @@ class LeaseAPITest extends APISpec {
     def "Release container lease AC fail"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc, leaseID).releaseLeaseWithResponse(mac, null, null)
@@ -712,7 +713,7 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Release container lease AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         createLeaseClient(cc, receivedLeaseID).releaseLeaseWithResponse(mac, null, null)
@@ -775,7 +776,7 @@ class LeaseAPITest extends APISpec {
     def "Break container lease AC"() {
         setup:
         setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(cc).breakLeaseWithResponse(null, mac, null, null).getStatusCode() == 202
@@ -791,7 +792,7 @@ class LeaseAPITest extends APISpec {
     def "Break container lease AC fail"() {
         setup:
         setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc).breakLeaseWithResponse(null, mac, null, null)
@@ -808,7 +809,7 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Break container lease AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         createLeaseClient(cc).breakLeaseWithResponse(null, mac, null, null)
@@ -857,7 +858,7 @@ class LeaseAPITest extends APISpec {
     def "Change container lease AC"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(cc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null).getStatusCode() == 200
@@ -873,7 +874,7 @@ class LeaseAPITest extends APISpec {
     def "Change container lease AC fail"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null)
@@ -890,7 +891,7 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Change container lease AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         createLeaseClient(cc, receivedLeaseID).changeLeaseWithResponse(garbageLeaseID, mac, null, null)

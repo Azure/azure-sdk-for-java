@@ -8,9 +8,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -226,18 +226,18 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
-        AccessTier tier, BlobAccessConditions accessConditions) {
+        AccessTier tier, BlobRequestConditions accessConditions) {
         try {
             // TODO: Parallelism parameter? Or let Reactor handle it?
             // TODO: Sample/api reference
             Objects.requireNonNull(data, "'data' must not be null");
-            BlobAccessConditions accessConditionsFinal = accessConditions == null
-                ? new BlobAccessConditions() : accessConditions;
+            BlobRequestConditions accessConditionsFinal = accessConditions == null
+                ? new BlobRequestConditions() : accessConditions;
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
                 ? new ParallelTransferOptions() : parallelTransferOptions;
             int blockSize = finalParallelTransferOptions.getBlockSize();
@@ -286,7 +286,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         UUID.randomUUID().toString().getBytes(UTF_8));
 
                     return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
-                        accessConditionsFinal.getLeaseAccessConditions())
+                        accessConditionsFinal.getLeaseId())
                         // We only care about the stageBlock insofar as it was successful,
                         // but we need to collect the ids.
                         .map(x -> blockId)
@@ -329,7 +329,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
@@ -337,14 +337,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return An empty response
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobRequestConditions accessConditions) {
         try {
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
                 ? new ParallelTransferOptions()

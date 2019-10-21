@@ -9,8 +9,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.models.RecordedData;
-import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -37,12 +35,10 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
      */
     public CryptographyAsyncClient createAsyncClientWithHttpClient() {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.withhttpclient.instantiation
-        RecordedData networkData = new RecordedData();
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier("<Your-Key-ID>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .addPolicy(new RecordNetworkCallPolicy(networkData))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.withhttpclient.instantiation
@@ -69,8 +65,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
      */
     public CryptographyAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.pipeline.instantiation
-        RecordedData networkData = new RecordedData();
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(networkData)).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().build();
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .keyIdentifier("<YOUR-KEY-ID")
