@@ -140,6 +140,7 @@ public class JacksonAdapter implements SerializerAdapter {
         try {
             return serialize(object, SerializerEncoding.JSON).replaceAll("^\"*", "").replaceAll("\"*$", "");
         } catch (IOException ex) {
+            logger.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
             return null;
         }
     }
