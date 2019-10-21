@@ -199,8 +199,8 @@ public class OpenCensusTracerTest {
     public void addLinkTest() {
         // Arrange
         // Create a child-parent link between multiple spans
-        RecordEventsSpanImpl existingSpan = (RecordEventsSpanImpl) tracer.spanBuilder("existing-span").startSpan();
-        Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, existingSpan.getContext());
+        RecordEventsSpanImpl testSpan = (RecordEventsSpanImpl) tracer.spanBuilder("new-test-span").startSpan();
+        Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getContext());
         RecordEventsSpanImpl parentSpanImpl = (RecordEventsSpanImpl) parentSpan;
 
         // Act
@@ -208,9 +208,9 @@ public class OpenCensusTracerTest {
 
         //Assert
         // TODO: existing -> parentSpanImpl comes after after add Link, confirm this behavior?
-        Assert.assertEquals(parentSpanImpl.getPrev(), existingSpan);
-        Assert.assertEquals(parentSpanImpl.toSpanData().getChildSpanCount().intValue(), 1);
-        Assert.assertEquals(parentSpanImpl.toSpanData().getLinks().getLinks().size(), 1);
+        Assert.assertEquals(parentSpanImpl.getPrev(), testSpan);
+        // verify both spans share the same link traceId
+        Assert.assertEquals(parentSpanImpl.toSpanData().getContext().getTraceId(), testSpan.toSpanData().getContext().getTraceId());
     }
 
     @Test
