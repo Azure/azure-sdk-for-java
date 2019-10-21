@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.implementation.util.ImplUtils
+import com.azure.core.util.polling.PollResponse
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobAccessConditions
@@ -31,6 +32,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.file.FileAlreadyExistsException
 import java.security.MessageDigest
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class BlobAPITest extends APISpec {
@@ -716,33 +718,48 @@ class BlobAPITest extends APISpec {
     def "Copy"() {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def headers =
-            copyDestBlob.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getHeaders()
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
 
         when:
-        while (copyDestBlob.getProperties().getCopyStatus() == CopyStatusType.PENDING) {
-            sleepIfRecord(1000)
-        }
+        poller.block()
         def properties = copyDestBlob.getProperties()
+        def response = poller.getLastPollResponse()
 
         then:
         properties.getCopyStatus() == CopyStatusType.SUCCESS
         properties.getCopyCompletionTime() != null
         properties.getCopyProgress() != null
         properties.getCopySource() != null
-        validateBasicHeaders(headers)
-        headers.getValue("x-ms-copy-id") != null
+
+        response != null
+        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+
+        def blobInfo = response.getValue()
+        blobInfo != null
+        blobInfo.getCopyId() == properties.getCopyId()
     }
 
     def "Copy min"() {
-        expect:
-        bc.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 202
+        setup:
+        def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
+        def verifier = StepVerifier.create(poller.getObserver().take(1))
+
+        then:
+        verifier.assertNext({
+            assert it.getValue() != null
+            assert it.getValue().getCopyId() != null
+            assert it.getValue().getCopySourceUrl() == bc.getBlobUrl()
+            assert it.getStatus() == PollResponse.OperationStatus.IN_PROGRESS || it.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+        }).verifyComplete()
     }
 
     def "Copy poller"() {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null);
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null)
 
         when:
         def verifier = StepVerifier.create(poller.getObserver())
