@@ -48,7 +48,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void upload() throws IOException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long
         System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-            Base64.getEncoder().encodeToString(client.upload(data, length).getContentMD5()));
+            Base64.getEncoder().encodeToString(client.upload(data, length).getContentMd5()));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long
     }
 
@@ -73,7 +73,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
             .encodeToString(client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT,
                 accessConditions, timeout, context)
                 .getValue()
-                .getContentMD5()));
+                .getContentMd5()));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
     }
 

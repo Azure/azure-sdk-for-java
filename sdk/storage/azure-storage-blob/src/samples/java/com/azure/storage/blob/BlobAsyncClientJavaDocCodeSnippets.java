@@ -407,7 +407,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setNumBuffers(numBuffers);
         client.upload(data, parallelTransferOptions).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
         // END: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions
     }
 
@@ -433,7 +433,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
         // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
     }
 
@@ -461,7 +461,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
         // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter
     }
 

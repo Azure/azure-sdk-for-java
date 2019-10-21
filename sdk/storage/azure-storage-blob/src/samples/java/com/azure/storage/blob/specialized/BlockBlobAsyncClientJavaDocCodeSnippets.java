@@ -43,7 +43,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long
         client.upload(data, length).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long
     }
 
@@ -65,7 +65,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
 
         client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
     }
 
