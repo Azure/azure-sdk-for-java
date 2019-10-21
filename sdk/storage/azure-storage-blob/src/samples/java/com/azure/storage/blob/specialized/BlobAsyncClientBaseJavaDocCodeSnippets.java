@@ -159,8 +159,8 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     public void setHTTPHeadersCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders
         client.setHttpHeaders(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"));
+            .setContentLanguage("en-US")
+            .setContentType("binary"));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders
     }
 
@@ -347,8 +347,8 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         client.setHttpHeadersWithResponse(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"), accessConditions).subscribe(
+            .setContentLanguage("en-US")
+            .setContentType("binary"), accessConditions).subscribe(
                 response ->
                     System.out.printf("Set HTTP headers completed with status %d%n",
                         response.getStatusCode()));

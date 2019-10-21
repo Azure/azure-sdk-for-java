@@ -648,9 +648,13 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-  <!-- Implementation name confusing with public API name -->
+  <!-- Implementation name confusing with public API name and non-public API -->
   <Match>
-    <Class name="com.azure.core.implementation.http.UrlBuilder"/>
+    <Or>
+      <Class name="com.azure.core.implementation.http.UrlBuilder"/>
+      <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
+      <Class name="com.azure.storage.file.implementation.models.FileDownloadHeaders"/>
+    </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 </FindBugsFilter>

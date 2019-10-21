@@ -287,11 +287,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedOid())
-        key.setSignedOid(keyOid)
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTid())
-        key.setSignedTid(keyTid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -437,11 +437,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedOid())
-        key.setSignedOid(keyOid)
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTid())
-        key.setSignedTid(keyTid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -503,11 +503,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedOid())
-        key.setSignedOid(keyOid)
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTid())
-        key.setSignedTid(keyTid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
         when:
         def sasWithPermissions = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -712,8 +712,8 @@ class SASTest extends APISpec {
             .setContentLanguage(language)
             .setContentType(type)
         def key = new UserDelegationKey()
-            .setSignedOid(keyOid)
-            .setSignedTid(keyTid)
+            .setSignedObjectId(keyOid)
+            .setSignedTenantId(keyTid)
             .setSignedStart(keyStart)
             .setSignedExpiry(keyExpiry)
             .setSignedService(keyService)

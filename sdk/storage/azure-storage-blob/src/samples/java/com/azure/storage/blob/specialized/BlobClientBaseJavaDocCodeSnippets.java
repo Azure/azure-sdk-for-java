@@ -7,7 +7,7 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.Poller;
-import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -141,8 +141,8 @@ public class BlobClientBaseJavaDocCodeSnippets {
     public void setHTTPHeaders() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeaders#BlobHttpHeaders
         client.setHttpHeaders(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"));
+            .setContentLanguage("en-US")
+            .setContentType("binary"));
         System.out.println("Set HTTP headers completed");
         // END: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeaders#BlobHttpHeaders
     }
@@ -310,8 +310,8 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
         System.out.printf("Set HTTP headers completed with status %d%n",
             client.setHttpHeadersWithResponse(new BlobHttpHeaders()
-                .setBlobContentLanguage("en-US")
-                .setBlobContentType("binary"), accessConditions, timeout, new Context(key1, value1))
+                .setContentLanguage("en-US")
+                .setContentType("binary"), accessConditions, timeout, new Context(key1, value1))
                 .getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobRequestConditions-Duration-Context
     }

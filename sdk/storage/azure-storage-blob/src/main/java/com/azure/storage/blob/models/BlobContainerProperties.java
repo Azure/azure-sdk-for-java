@@ -1,13 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
-
-import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
-import com.azure.storage.blob.models.LeaseDurationType;
-import com.azure.storage.blob.models.LeaseStateType;
-import com.azure.storage.blob.models.LeaseStatusType;
-import com.azure.storage.blob.models.PublicAccessType;
+package com.azure.storage.blob.models;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -24,16 +18,19 @@ public final class BlobContainerProperties {
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
 
-    BlobContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
-        this.metadata = generatedResponseHeaders.getMetadata();
-        this.eTag = generatedResponseHeaders.getETag();
-        this.lastModified = generatedResponseHeaders.getLastModified();
-        this.leaseDuration = generatedResponseHeaders.getLeaseDuration();
-        this.leaseState = generatedResponseHeaders.getLeaseState();
-        this.leaseStatus = generatedResponseHeaders.getLeaseStatus();
-        this.blobPublicAccess = generatedResponseHeaders.getBlobPublicAccess();
-        this.hasImmutabilityPolicy = generatedResponseHeaders.isHasImmutabilityPolicy();
-        this.hasLegalHold = generatedResponseHeaders.isHasLegalHold();
+    public BlobContainerProperties(final Map<String, String> metadata, final String eTag,
+        final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
+        final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
+        final boolean hasLegalHold) {
+        this.metadata = metadata;
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.leaseDuration = leaseDuration;
+        this.leaseState = leaseState;
+        this.leaseStatus = leaseStatus;
+        this.blobPublicAccess = blobPublicAccess;
+        this.hasImmutabilityPolicy = hasImmutabilityPolicy;
+        this.hasLegalHold = hasLegalHold;
     }
 
     /**
