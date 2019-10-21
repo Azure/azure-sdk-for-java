@@ -3,8 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,7 +41,7 @@ public class FileTransferExample {
         /*
          * Use your Storage account's name and key to create a credential object; this is used to access your account.
          */
-        SharedKeyCredential credential = new SharedKeyCredential(accountName, accountKey);
+        StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
 
         /*
          * From the Azure portal, get your Storage account blob service URL endpoint.
@@ -67,18 +66,18 @@ public class FileTransferExample {
          * ContainerClient uses the same endpoint, credential and pipeline from storageClient.
          * Note that container names require lowercase.
          */
-        ContainerClient containerClient = storageClient.getContainerClient("myjavacontainerparallelupload" + System.currentTimeMillis());
+        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerparallelupload" + System.currentTimeMillis());
 
         /*
          * Create a container in Storage blob account.
          */
-        containerClient.create();
+        blobContainerClient.create();
 
         /*
          * Create a BlockBlobClient object that wraps a blob's endpoint and a default pipeline, the blockBlobClient give us access to upload the file.
          */
         String filename = "BigFile.bin";
-        BlockBlobClient blobClient = containerClient.getBlobClient(filename).asBlockBlobClient();
+        BlobClient blobClient = blobContainerClient.getBlobClient(filename);
 
         /*
          * Create the empty uploadFile and downloadFile.
@@ -116,7 +115,7 @@ public class FileTransferExample {
         /*
          * Clean up the local files and storage container.
          */
-        containerClient.delete();
+        blobContainerClient.delete();
         Files.deleteIfExists(largeFile.toPath());
         Files.deleteIfExists(downloadFile.toPath());
     }

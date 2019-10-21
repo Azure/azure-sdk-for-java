@@ -11,10 +11,14 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -43,10 +47,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 
 /**
@@ -292,7 +292,11 @@ public class EventHubAsyncProducer implements Closeable {
             return Mono.empty();
         }
 
-        logger.info("Sending batch with partitionKey[{}], size[{}].", batch.getPartitionKey(), batch.getSize());
+        if (ImplUtils.isNullOrEmpty(batch.getPartitionKey())) {
+            logger.info("Sending batch with size[{}].", batch.getSize());
+        } else {
+            logger.info("Sending batch with size[{}], partitionKey[{}].", batch.getSize(), batch.getPartitionKey());
+        }
 
         final String partitionKey = batch.getPartitionKey();
         final List<Message> messages = batch.getEvents().stream().map(event -> {
@@ -350,11 +354,16 @@ public class EventHubAsyncProducer implements Closeable {
                         .setPartitionKey(partitionKey)
                         .setMaximumSizeInBytes(batchSize);
 
+                    final AtomicReference<Boolean> isFirst = new AtomicReference<>(true);
                     return events.map(eventData -> {
                         Context parentContext = eventData.getContext();
-                        Context entityContext = parentContext.addData(ENTITY_PATH, link.getEntityPath());
-                        sendSpanContext.set(tracerProvider
-                            .startSpan(entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
+                        if (isFirst.getAndSet(false)) {
+                            // update sendSpanContext only once
+                            Context entityContext = parentContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
+                            sendSpanContext.set(tracerProvider.startSpan(
+                                entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
+                        }
+
                         // add span context on event data
                         return setSpanContext(eventData, parentContext);
                     }).collect(new EventDataCollector(batchOptions, 1, link::getErrorContext));
@@ -367,7 +376,7 @@ public class EventHubAsyncProducer implements Closeable {
     }
 
     private EventData setSpanContext(EventData event, Context parentContext) {
-        Optional<Object> eventContextData = event.getContext().getData(SPAN_CONTEXT);
+        Optional<Object> eventContextData = event.getContext().getData(SPAN_CONTEXT_KEY);
         if (eventContextData.isPresent()) {
             // if message has context (in case of retries), link it to the span
             Object spanContextObject = eventContextData.get();
@@ -391,7 +400,7 @@ public class EventHubAsyncProducer implements Closeable {
                 if (eventDiagnosticIdOptional.isPresent()) {
                     event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
                     tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                    event.addContext(SPAN_CONTEXT, eventSpanContext);
+                    event.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
                 }
             }
         }

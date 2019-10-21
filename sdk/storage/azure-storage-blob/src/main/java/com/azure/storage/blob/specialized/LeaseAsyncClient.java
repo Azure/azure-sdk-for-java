@@ -13,22 +13,19 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.ContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.StorageErrorException;
-import com.azure.storage.blob.models.StorageException;
-import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
- * This class provides a client that contains all the leasing operations for {@link ContainerAsyncClient containers}
+ * This class provides a client that contains all the leasing operations for {@link BlobContainerAsyncClient containers}
  * and {@link BlobAsyncClient blobs}. This client acts as a supplement to those clients and only handles leasing
  * operations.
  *
@@ -53,14 +50,18 @@ public final class LeaseAsyncClient {
     private final boolean isBlob;
     private final String leaseId;
     private final AzureBlobStorageImpl client;
+    private final String accountName;
 
-    LeaseAsyncClient(HttpPipeline pipeline, URL url, String leaseId, boolean isBlob) {
+    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob, String accountName,
+        String serviceVersion) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
         this.client = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
-            .url(url.toString())
+            .url(url)
+            .version(serviceVersion)
             .build();
+        this.accountName = accountName;
     }
 
     /**
@@ -70,12 +71,8 @@ public final class LeaseAsyncClient {
      *
      * @return URL of the lease client.
      */
-    public URL getLeaseUrl() {
-        try {
-            return new URL(this.client.getUrl());
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new RuntimeException("Unable to parse URL"));
-        }
+    public String getResourceUrl() {
+        return this.client.getUrl();
     }
 
     /**
@@ -100,7 +97,11 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> acquireLease(int duration) {
-        return acquireLeaseWithResponse(duration, null).flatMap(FluxUtil::toMono);
+        try {
+            return acquireLeaseWithResponse(duration, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -120,18 +121,22 @@ public final class LeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse(int duration,
         ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> acquireLeaseWithResponse(duration, modifiedAccessConditions, context));
+        try {
+            return withContext(context -> acquireLeaseWithResponse(duration, modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<String>> acquireLeaseWithResponse(int duration, ModifiedAccessConditions modifiedAccessConditions,
         Context context) {
         if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().acquireLeaseWithRestResponseAsync(
-                null, null, null, duration, this.leaseId, null, modifiedAccessConditions, context))
+            return this.client.blobs().acquireLeaseWithRestResponseAsync(
+                null, null, null, duration, this.leaseId, null, modifiedAccessConditions, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return postProcessResponse(this.client.containers().acquireLeaseWithRestResponseAsync(
-                null, null, duration, this.leaseId, null, modifiedAccessConditions, context))
+            return this.client.containers().acquireLeaseWithRestResponseAsync(
+                null, null, duration, this.leaseId, null, modifiedAccessConditions, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }
@@ -147,7 +152,11 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> renewLease() {
-        return renewLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return renewLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -164,17 +173,21 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> renewLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> renewLeaseWithResponse(modifiedAccessConditions, context));
+        try {
+            return withContext(context -> renewLeaseWithResponse(modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<String>> renewLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().renewLeaseWithRestResponseAsync(
-                null, null, this.leaseId, null, null, modifiedAccessConditions, context))
+            return this.client.blobs().renewLeaseWithRestResponseAsync(
+                null, null, this.leaseId, null, null, modifiedAccessConditions, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return postProcessResponse(this.client.containers().renewLeaseWithRestResponseAsync(
-                null, this.leaseId, null, null, modifiedAccessConditions, context))
+            return this.client.containers().renewLeaseWithRestResponseAsync(
+                null, this.leaseId, null, null, modifiedAccessConditions, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }
@@ -190,7 +203,11 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> releaseLease() {
-        return releaseLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return releaseLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -207,17 +224,21 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> releaseLeaseWithResponse(modifiedAccessConditions, context));
+        try {
+            return withContext(context -> releaseLeaseWithResponse(modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().releaseLeaseWithRestResponseAsync(
-                null, null, this.leaseId, null, null, modifiedAccessConditions, context))
+            return this.client.blobs().releaseLeaseWithRestResponseAsync(
+                null, null, this.leaseId, null, null, modifiedAccessConditions, context)
                 .map(response -> new SimpleResponse<>(response, null));
         } else {
-            return postProcessResponse(this.client.containers().releaseLeaseWithRestResponseAsync(
-                null, this.leaseId, null, null, modifiedAccessConditions, context))
+            return this.client.containers().releaseLeaseWithRestResponseAsync(
+                null, this.leaseId, null, null, modifiedAccessConditions, context)
                 .map(response -> new SimpleResponse<>(response, null));
         }
     }
@@ -233,7 +254,11 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Integer> breakLease() {
-        return breakLeaseWithResponse(null, null).flatMap(FluxUtil::toMono);
+        try {
+            return breakLeaseWithResponse(null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -258,18 +283,23 @@ public final class LeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context));
+        try {
+            return withContext(
+                context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().breakLeaseWithRestResponseAsync(
-                null, null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context))
+            return this.client.blobs().breakLeaseWithRestResponseAsync(
+                null, null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         } else {
-            return postProcessResponse(this.client.containers().breakLeaseWithRestResponseAsync(
-                null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context))
+            return this.client.containers().breakLeaseWithRestResponseAsync(
+                null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         }
     }
@@ -286,7 +316,11 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> changeLease(String proposedId) {
-        return changeLeaseWithResponse(proposedId, null).flatMap(FluxUtil::toMono);
+        try {
+            return changeLeaseWithResponse(proposedId, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -305,29 +339,32 @@ public final class LeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
         ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> changeLeaseWithResponse(proposedId, modifiedAccessConditions, context));
+        try {
+            return withContext(context -> changeLeaseWithResponse(proposedId, modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<String>> changeLeaseWithResponse(String proposedId, ModifiedAccessConditions modifiedAccessConditions,
         Context context) {
         if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().changeLeaseWithRestResponseAsync(
-                null, null, this.leaseId, proposedId, null, null, modifiedAccessConditions, context))
+            return this.client.blobs().changeLeaseWithRestResponseAsync(
+                null, null, this.leaseId, proposedId, null, null, modifiedAccessConditions, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return postProcessResponse(this.client.containers().changeLeaseWithRestResponseAsync(
-                null, this.leaseId, proposedId, null, null, modifiedAccessConditions, context))
+            return this.client.containers().changeLeaseWithRestResponseAsync(
+                null, this.leaseId, proposedId, null, null, modifiedAccessConditions, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }
 
-    private static <T> Mono<T> postProcessResponse(Mono<T> response) {
-        return Utility.postProcessResponse(response, (errorResponse) ->
-            errorResponse.onErrorResume(StorageErrorException.class, resume ->
-                resume.getResponse()
-                    .getBodyAsString()
-                    .switchIfEmpty(Mono.just(""))
-                    .flatMap(body -> Mono.error(new StorageException(resume, body)))
-            ));
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 }

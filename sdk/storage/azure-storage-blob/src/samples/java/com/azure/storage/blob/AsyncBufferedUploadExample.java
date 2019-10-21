@@ -3,8 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
@@ -33,17 +34,17 @@ public class AsyncBufferedUploadExample {
          */
         String accountName = SampleHelper.getAccountName();
         String accountKey = SampleHelper.getAccountKey();
-        SharedKeyCredential credential = new SharedKeyCredential(accountName, accountKey);
+        StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
         String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
         String containerName = "myjavacontainerbufferedupload" + System.currentTimeMillis();
         BlobServiceAsyncClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
             .buildAsyncClient();
 
-        ContainerAsyncClient containerClient = storageClient.getContainerAsyncClient(containerName);
+        BlobContainerAsyncClient containerClient = storageClient.getBlobContainerAsyncClient(containerName);
         containerClient.create().block();
 
         uploadSourceBlob(endpoint, credential, containerName);
-        BlockBlobAsyncClient blobClient = containerClient.getBlobAsyncClient("HelloWorld.txt").asBlockBlobAsyncClient();
+        BlobAsyncClient blobClient = containerClient.getBlobAsyncClient("HelloWorld.txt");
 
 
         /*
@@ -55,7 +56,6 @@ public class AsyncBufferedUploadExample {
         argument list.
          */
         Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).download()
-            .flatMapMany(flux -> flux)
             // Perform some unpredicatable transformation.
             .map(AsyncBufferedUploadExample::randomTransformation);
 
@@ -67,7 +67,10 @@ public class AsyncBufferedUploadExample {
          */
         int blockSize = 10 * 1024;
         int numBuffers = 5;
-        blobClient.upload(sourceData, blockSize, numBuffers).block();
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setNumBuffers(numBuffers)
+            .setBlockSize(blockSize);
+        blobClient.upload(sourceData, parallelTransferOptions).block();
     }
 
     @SuppressWarnings("cast")
@@ -79,14 +82,14 @@ public class AsyncBufferedUploadExample {
         return (ByteBuffer) buffer.limit(new Random().nextInt(buffer.limit()));
     }
 
-    private static void uploadSourceBlob(String endpoint, SharedKeyCredential credential, String containerName) {
+    private static void uploadSourceBlob(String endpoint, StorageSharedKeyCredential credential, String containerName) {
         getSourceBlobClient(endpoint, credential, containerName)
             .upload(Flux.just(ByteBuffer.wrap("Hello world".getBytes(Charset.defaultCharset()))), "Hello world".length()).block();
     }
 
-    private static BlockBlobAsyncClient getSourceBlobClient(String endpoint, SharedKeyCredential credential,
+    private static BlockBlobAsyncClient getSourceBlobClient(String endpoint, StorageSharedKeyCredential credential,
         String containerName) {
         return new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildAsyncClient()
-            .getContainerAsyncClient(containerName).getBlobAsyncClient("sourceBlob").asBlockBlobAsyncClient();
+            .getBlobContainerAsyncClient(containerName).getBlobAsyncClient("sourceBlob").getBlockBlobAsyncClient();
     }
 }

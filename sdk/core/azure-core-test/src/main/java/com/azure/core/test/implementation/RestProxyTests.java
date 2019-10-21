@@ -28,10 +28,11 @@ import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.implementation.entities.HttpBinFormDataJSON;
-import com.azure.core.implementation.entities.HttpBinFormDataJSON.PizzaSize;
-import com.azure.core.implementation.entities.HttpBinHeaders;
-import com.azure.core.implementation.entities.HttpBinJSON;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
+import com.azure.core.test.implementation.entities.HttpBinHeaders;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -1639,7 +1640,7 @@ public abstract class RestProxyTests {
         //
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true))
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
         //
         Response<HttpBinJSON> response = RestProxy

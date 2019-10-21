@@ -3,7 +3,7 @@
 
 module com.azure.storage.queue {
     requires transitive com.azure.core;
-    requires com.azure.storage.common;
+    requires transitive com.azure.storage.common;
     requires com.fasterxml.jackson.dataformat.xml;
 
     exports com.azure.storage.queue;
@@ -15,6 +15,7 @@ module com.azure.storage.queue {
     opens com.azure.storage.queue.implementation to
         com.fasterxml.jackson.databind,
         com.azure.core;
-
-    uses com.azure.core.http.HttpClientProvider;
+    opens com.azure.storage.queue.implementation.models to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
 }

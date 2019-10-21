@@ -3,47 +3,47 @@
 
 package com.azure.storage.file
 
-import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.models.CorsRule
+import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.file.models.FileCorsRule
+import com.azure.storage.file.models.FileErrorCode
+import com.azure.storage.file.models.FileMetrics
+import com.azure.storage.file.models.FileRetentionPolicy
 import com.azure.storage.file.models.FileServiceProperties
 import com.azure.storage.file.models.ListSharesOptions
-import com.azure.storage.file.models.Metrics
-import com.azure.storage.file.models.RetentionPolicy
 import com.azure.storage.file.models.ShareItem
 import com.azure.storage.file.models.ShareProperties
-import com.azure.storage.file.models.StorageErrorCode
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
 class FileServiceAsyncAPITests extends APISpec {
-    def shareName
+    String shareName
 
     static def testMetadata = Collections.singletonMap("testmetadata", "value")
     static def reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties"
-    static def TOO_MANY_RULES = new ArrayList<>()
-    static def INVALID_ALLOWED_HEADER = Collections.singletonList(new CorsRule().setAllowedHeaders(reallyLongString))
-    static def INVALID_EXPOSED_HEADER = Collections.singletonList(new CorsRule().setExposedHeaders(reallyLongString))
-    static def INVALID_ALLOWED_ORIGIN = Collections.singletonList(new CorsRule().setAllowedOrigins(reallyLongString))
-    static def INVALID_ALLOWED_METHOD = Collections.singletonList(new CorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
+    static def TOO_MANY_RULES = new ArrayList<FileCorsRule>()
+    static def INVALID_ALLOWED_HEADER = Collections.singletonList(new FileCorsRule().setAllowedHeaders(reallyLongString))
+    static def INVALID_EXPOSED_HEADER = Collections.singletonList(new FileCorsRule().setExposedHeaders(reallyLongString))
+    static def INVALID_ALLOWED_ORIGIN = Collections.singletonList(new FileCorsRule().setAllowedOrigins(reallyLongString))
+    static def INVALID_ALLOWED_METHOD = Collections.singletonList(new FileCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
 
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
         primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
         for (int i = 0; i < 6; i++) {
-            TOO_MANY_RULES.add(new CorsRule())
+            TOO_MANY_RULES.add(new FileCorsRule())
         }
     }
 
     def "Get file service URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
 
         when:
-        def fileServiceURL = primaryFileServiceAsyncClient.getFileServiceUrl().toString()
+        def fileServiceURL = primaryFileServiceAsyncClient.getFileServiceUrl()
 
         then:
-        expectURL.equals(fileServiceURL)
+        expectURL == fileServiceURL
     }
 
     def "Get share does not create a share"() {
@@ -94,10 +94,10 @@ class FileServiceAsyncAPITests extends APISpec {
 
         where:
         metadata                                      | quota | statusCode | errMsg
-        Collections.singletonMap("invalid#", "value") | 1     | 400        | StorageErrorCode.INVALID_METADATA
-        testMetadata                                  | -1    | 400        | StorageErrorCode.INVALID_HEADER_VALUE
-        testMetadata                                  | 0     | 400        | StorageErrorCode.INVALID_HEADER_VALUE
-        testMetadata                                  | 5200  | 400        | StorageErrorCode.INVALID_HEADER_VALUE
+        Collections.singletonMap("invalid#", "value") | 1     | 400        | FileErrorCode.INVALID_METADATA
+        testMetadata                                  | -1    | 400        | FileErrorCode.INVALID_HEADER_VALUE
+        testMetadata                                  | 0     | 400        | FileErrorCode.INVALID_HEADER_VALUE
+        testMetadata                                  | 5200  | 400        | FileErrorCode.INVALID_HEADER_VALUE
     }
 
     def "Delete share"() {
@@ -119,7 +119,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
         then:
         deleteShareVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.SHARE_NOT_FOUND)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.SHARE_NOT_FOUND)
         }
     }
 
@@ -155,7 +155,7 @@ class FileServiceAsyncAPITests extends APISpec {
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter")                           | 3      | false           | true
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setMaxResults(2)          | 3      | false           | true
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setMaxResultsPerPage(2)   | 3      | false           | true
     }
 
     @Unroll
@@ -195,8 +195,8 @@ class FileServiceAsyncAPITests extends APISpec {
     def "Set and get properties"() {
         given:
         def originalProperties = primaryFileServiceAsyncClient.getProperties().block()
-        def retentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3)
-        def metrics = new Metrics().setEnabled(true).setIncludeAPIs(false)
+        def retentionPolicy = new FileRetentionPolicy().setEnabled(true).setDays(3)
+        def metrics = new FileMetrics().setEnabled(true).setIncludeAPIs(false)
             .setRetentionPolicy(retentionPolicy).setVersion("1.0")
         def updatedProperties = new FileServiceProperties().setHourMetrics(metrics)
             .setMinuteMetrics(metrics).setCors(new ArrayList<>())
@@ -224,8 +224,8 @@ class FileServiceAsyncAPITests extends APISpec {
     @Unroll
     def "Set and get properties with invalid args"() {
         given:
-        def retentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3)
-        def metrics = new Metrics().setEnabled(true).setIncludeAPIs(false)
+        def retentionPolicy = new FileRetentionPolicy().setEnabled(true).setDays(3)
+        def metrics = new FileMetrics().setEnabled(true).setIncludeAPIs(false)
             .setRetentionPolicy(retentionPolicy).setVersion("1.0")
 
         when:
@@ -240,11 +240,11 @@ class FileServiceAsyncAPITests extends APISpec {
 
         where:
         coreList               | statusCode | errMsg
-        TOO_MANY_RULES         | 400        | StorageErrorCode.INVALID_XML_DOCUMENT
-        INVALID_ALLOWED_HEADER | 400        | StorageErrorCode.INVALID_XML_DOCUMENT
-        INVALID_EXPOSED_HEADER | 400        | StorageErrorCode.INVALID_XML_DOCUMENT
-        INVALID_ALLOWED_ORIGIN | 400        | StorageErrorCode.INVALID_XML_DOCUMENT
-        INVALID_ALLOWED_METHOD | 400        | StorageErrorCode.INVALID_XML_NODE_VALUE
+        TOO_MANY_RULES         | 400        | FileErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_HEADER | 400        | FileErrorCode.INVALID_XML_DOCUMENT
+        INVALID_EXPOSED_HEADER | 400        | FileErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_ORIGIN | 400        | FileErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_METHOD | 400        | FileErrorCode.INVALID_XML_NODE_VALUE
 
     }
 }

@@ -6,7 +6,7 @@ module com.azure.core {
 
     requires transitive com.fasterxml.jackson.core;
     requires transitive com.fasterxml.jackson.annotation;
-    requires com.fasterxml.jackson.databind;
+    requires transitive com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.dataformat.xml;
     requires com.fasterxml.jackson.datatype.jsr310;
 
@@ -17,7 +17,7 @@ module com.azure.core {
 
     // public API surface area
     exports com.azure.core.annotation;
-    exports com.azure.core.credentials;
+    exports com.azure.core.credential;
     exports com.azure.core.exception;
     exports com.azure.core.http;
     exports com.azure.core.http.policy;
@@ -26,16 +26,17 @@ module com.azure.core {
     exports com.azure.core.util.logging;
     exports com.azure.core.util.polling;
     exports com.azure.core.util.tracing;
+    exports com.azure.core.cryptography;
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.azure.core.test, com.fasterxml.jackson.databind;
     opens com.azure.core.util to com.fasterxml.jackson.databind;
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
-    opens com.azure.core.implementation.entities to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer.jackson to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.util to com.fasterxml.jackson.databind;
+    opens com.azure.core.implementation.serializer.jsonwrapper to com.fasterxml.jackson.databind;
 
     // exporting some packages for internal use only
     exports com.azure.core.implementation to
@@ -46,24 +47,13 @@ module com.azure.core {
         com.azure.security.keyvault.keys,       // FIXME this should not be a long-term solution
         com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
+        com.azure.storage.blob.cryptography,                 // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;                // FIXME this should not be a long-term solution
-    exports com.azure.core.implementation.entities to
-        com.azure.core.management,              // FIXME this should not be a long-term solution
-        com.azure.core.test,                    // FIXME this should not be a long-term solution
-        com.azure.http.netty,                   // FIXME this should not be a long-term solution
-        com.azure.messaging.eventhubs.checkpointstore.blob,          // FIXME this should not be a long-term solution
-        com.azure.identity,                     // FIXME this should not be a long-term solution
-        com.azure.security.keyvault.keys,       // FIXME this should not be a long-term solution
-        com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
-        com.azure.storage.common,               // FIXME this should not be a long-term solution
-        com.azure.storage.blob,                 // FIXME this should not be a long-term solution
-        com.azure.storage.file,                 // FIXME this should not be a long-term solution
-        com.azure.storage.queue;                // FIXME this should not be a long-term solution
-
     exports com.azure.core.implementation.http to
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.core.test,                    // FIXME this should not be a long-term solution
+        com.azure.core.tracing.opencensus,      // FIXME this should not be a long-term solution
         com.azure.data.appconfiguration,        // FIXME this should not be a long-term solution
         com.azure.http.netty,                   // FIXME this should not be a long-term solution
         com.azure.messaging.eventhubs.checkpointstore.blob,          // FIXME this should not be a long-term solution
@@ -72,6 +62,8 @@ module com.azure.core {
         com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
         com.azure.storage.common,               // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
+        com.azure.storage.blob.cryptography,    // FIXME this should not be a long-term solution
+        com.azure.storage.blob.batch,           // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;                // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.serializer to
@@ -80,6 +72,7 @@ module com.azure.core {
         com.azure.http.netty,                   // FIXME this should not be a long-term solution
         com.azure.identity,                     // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
+        com.azure.storage.blob.cryptography,    // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;                // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.serializer.jackson to
@@ -88,12 +81,14 @@ module com.azure.core {
         com.azure.http.netty,                   // FIXME this should not be a long-term solution
         com.azure.identity,                     // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
+        com.azure.storage.blob.cryptography,    // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;                // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.util to
+        com.azure.core.amqp,                    // FIXME this should not be a long-term solution
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.core.test,                    // FIXME this should not be a long-term solution
-        com.azure.core.amqp,                    // FIXME this should not be a long-term solution
+        com.azure.core.tracing.opencensus,      // FIXME this should not be a long-term solution
         com.azure.data.appconfiguration,        // FIXME this should not be a long-term solution
         com.azure.http.netty,                   // FIXME this should not be a long-term solution
         com.azure.messaging.eventhubs,          // FIXME this should not be a long-term solution
@@ -103,23 +98,9 @@ module com.azure.core {
         com.azure.security.keyvault.keys,       // FIXME this should not be a long-term solution
         com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
         com.azure.storage.common,               // FIXME this should not be a long-term solution
-        com.azure.tracing.opentelemetry,        // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
-        com.azure.storage.file,                 // FIXME this should not be a long-term solution
-        com.azure.storage.queue;                // FIXME this should not be a long-term solution
-    exports com.azure.core.implementation.tracing to
-        com.azure.core.management,              // FIXME this should not be a long-term solution
-        com.azure.core.test,                    // FIXME this should not be a long-term solution
-        com.azure.core.amqp,                    // FIXME this should not be a long-term solution
-        com.azure.http.netty,                   // FIXME this should not be a long-term solution
-        com.azure.messaging.eventhubs,          // FIXME this should not be a long-term solution
-        com.azure.messaging.eventhubs.checkpointstore.blob,          // FIXME this should not be a long-term solution
-        com.azure.identity,                     // FIXME this should not be a long-term solution
-        com.azure.security.keyvault.keys,       // FIXME this should not be a long-term solution
-        com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
-        com.azure.storage.common,               // FIXME this should not be a long-term solution
-        com.azure.tracing.opentelemetry,        // FIXME this should not be a long-term solution
-        com.azure.storage.blob,                 // FIXME this should not be a long-term solution
+        com.azure.storage.blob.cryptography,    // FIXME this should not be a long-term solution
+        com.azure.storage.blob.batch,           // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;                // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.exception to
@@ -133,8 +114,9 @@ module com.azure.core {
         com.azure.security.keyvault.keys,       // FIXME this should not be a long-term solution
         com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
         com.azure.storage.common,               // FIXME this should not be a long-term solution
-        com.azure.tracing.opentelemetry,        // FIXME this should not be a long-term solution
+        com.azure.core.tracing.opencensus,        // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
+        com.azure.storage.blob.cryptography,    // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;
 
@@ -143,4 +125,10 @@ module com.azure.core {
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;
     uses com.azure.core.http.policy.AfterRetryPolicyProvider;
+    uses com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
+
+
+    // indicate JacksonPlugin provides a service implementation for JsonPlugin
+    provides com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin
+        with com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonPlugin;
 }

@@ -259,7 +259,7 @@ public class TopicDescription {
      */
     public void setUserMetadata(String userMetadata) {
         if (userMetadata == null) {
-            throw new IllegalArgumentException("Value cannot be null");
+            throw new IllegalArgumentException("Value cannot be null.");
         }
 
         if (userMetadata.length() > ManagementClientConstants.MAX_USERMETADATA_LENGTH) {

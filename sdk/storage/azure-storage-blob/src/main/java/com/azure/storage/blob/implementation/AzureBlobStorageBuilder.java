@@ -4,9 +4,9 @@
 
 package com.azure.storage.blob.implementation;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.storage.blob.models.PathRenameMode;
 
 /**
@@ -91,11 +91,7 @@ public final class AzureBlobStorageBuilder {
         if (this.url != null) {
             client.setUrl(this.url);
         }
-        if (this.version != null) {
-            client.setVersion(this.version);
-        } else {
-            client.setVersion("2019-02-02");
-        }
+        client.setVersion(this.version);
         if (this.pathRenameMode != null) {
             client.setPathRenameMode(this.pathRenameMode);
         }

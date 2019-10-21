@@ -8,12 +8,12 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmos-parent</artifactId>
-    <version>3.2.1</version>
+    <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-benchmark</artifactId>
-  <version>3.2.1</version>
+  <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-benchmark;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service - Benchmarking tool</name>
   <description>This package contains Benchmarking tool for Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -33,7 +33,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>3.2.1</version>
+      <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>

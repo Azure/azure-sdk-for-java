@@ -7,6 +7,9 @@ import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 
+/**
+ * This class contains the properties about a block blob.
+ */
 public class BlockBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
@@ -14,20 +17,22 @@ public class BlockBlobItem {
     private final Boolean isServerEncrypted;
     private final String encryptionKeySha256;
 
-    public BlockBlobItem(BlockBlobUploadHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-    }
-
-    public BlockBlobItem(BlockBlobCommitBlockListHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
+    /**
+     * Constructs a {@link BlockBlobItem}.
+     *
+     * @param eTag ETag of the block blob.
+     * @param lastModified Last modified time of the block blob.
+     * @param contentMD5 Content MD5 of the block blob.
+     * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
+     * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
+     */
+    public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
+        final boolean isServerEncrypted, final String encryptionKeySha256) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.isServerEncrypted = isServerEncrypted;
+        this.encryptionKeySha256 = encryptionKeySha256;
     }
 
     /**

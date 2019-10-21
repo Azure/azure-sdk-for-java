@@ -19,34 +19,27 @@ public class AppendBlobItem {
     private final String blobAppendOffset;
     private final Integer blobCommittedBlockCount;
 
-    public AppendBlobItem(AppendBlobCreateHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobAppendOffset = null;
-        this.blobCommittedBlockCount = null;
-    }
-
-    public AppendBlobItem(AppendBlobAppendBlockHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobAppendOffset = generatedHeaders.getBlobAppendOffset();
-        this.blobCommittedBlockCount = generatedHeaders.getBlobCommittedBlockCount();
-    }
-
-    public AppendBlobItem(AppendBlobAppendBlockFromUrlHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobAppendOffset = generatedHeaders.getBlobAppendOffset();
-        this.blobCommittedBlockCount = generatedHeaders.getBlobCommittedBlockCount();
+    /**
+     * Constructs a {@link AppendBlobItem}.
+     *
+     * @param eTag ETag of the append blob.
+     * @param lastModified Last modified time of the append blob.
+     * @param contentMD5 Content MD5 of the append blob.
+     * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
+     * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
+     * @param blobAppendOffset The offset at which the block was committed to the block blob.
+     * @param blobCommittedBlockCount The number of committed blocks in the block blob.
+     */
+    public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
+        final boolean isServerEncrypted, final String encryptionKeySha256, final String blobAppendOffset,
+        final Integer blobCommittedBlockCount) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.isServerEncrypted = isServerEncrypted;
+        this.encryptionKeySha256 = encryptionKeySha256;
+        this.blobAppendOffset = blobAppendOffset;
+        this.blobCommittedBlockCount = blobCommittedBlockCount;
     }
 
     /**

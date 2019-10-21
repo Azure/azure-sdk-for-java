@@ -32,7 +32,6 @@ public final class ExceptionUtil {
         }
 
         final ErrorCondition condition = ErrorCondition.fromString(errorCondition);
-
         if (condition == null) {
             throw new IllegalArgumentException(String.format(Locale.ROOT, "'%s' is not a known ErrorCondition.",
                 errorCondition));
@@ -45,6 +44,7 @@ public final class ExceptionUtil {
             case INTERNAL_ERROR:
             case LINK_DETACH_FORCED:
             case CONNECTION_FORCED:
+            case PROTON_IO:
                 isTransient = true;
                 break;
             case ENTITY_DISABLED_ERROR:

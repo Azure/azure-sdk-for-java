@@ -4,13 +4,10 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.blob.HTTPGetterInfo;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,8 +17,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
- * BlobAccessConditions, boolean)} to automatically retry failed reads from the body as appropriate. If the download is
+ * {@code DownloadAsyncResponse} automatically retries failed reads from the body as appropriate. If the download is
  * interrupted, the {@code DownloadAsyncResponse} will make a request to resume the download from where it left off,
  * allowing the user to consume the data as one continuous stream, for any interruptions are hidden. The retry behavior
  * is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The download will also lock on the
@@ -35,19 +31,19 @@ import java.util.function.Function;
  * retry mechanism.
  */
 public final class DownloadAsyncResponse {
-    private final HTTPGetterInfo info;
+    private final HttpGetterInfo info;
 
     private final ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse;
 
-    private final Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter;
+    private final Function<HttpGetterInfo, Mono<DownloadAsyncResponse>> getter;
 
 
     // The constructor is package-private because customers should not be creating their own responses.
     DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> response,
-        HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
-        Utility.assertNotNull("getter", getter);
-        Utility.assertNotNull("info", info);
-        Utility.assertNotNull("info.eTag", info.getETag());
+        HttpGetterInfo info, Function<HttpGetterInfo, Mono<DownloadAsyncResponse>> getter) {
+        StorageImplUtils.assertNotNull("getter", getter);
+        StorageImplUtils.assertNotNull("info", info);
+        StorageImplUtils.assertNotNull("info.eTag", info.getETag());
         this.rawResponse = response;
         this.info = info;
         this.getter = getter;

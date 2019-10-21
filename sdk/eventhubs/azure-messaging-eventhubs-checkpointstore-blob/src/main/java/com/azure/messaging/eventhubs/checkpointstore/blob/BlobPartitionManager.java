@@ -11,19 +11,19 @@ import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.ContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
-import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,18 +48,18 @@ public class BlobPartitionManager implements PartitionManager {
     private static final String BLOB_PATH_SEPARATOR = "/";
     private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("".getBytes(UTF_8));
 
-    private final ContainerAsyncClient containerAsyncClient;
+    private final BlobContainerAsyncClient blobContainerAsyncClient;
     private final ClientLogger logger = new ClientLogger(BlobPartitionManager.class);
     private final Map<String, BlobAsyncClient> blobClients = new ConcurrentHashMap<>();
 
     /**
      * Creates an instance of BlobPartitionManager.
      *
-     * @param containerAsyncClient The {@link ContainerAsyncClient} this instance will use to read and update blobs in
-     * the storage container.
+     * @param blobContainerAsyncClient The {@link BlobContainerAsyncClient} this instance will use to read and update
+     * blobs in the storage container.
      */
-    public BlobPartitionManager(ContainerAsyncClient containerAsyncClient) {
-        this.containerAsyncClient = containerAsyncClient;
+    public BlobPartitionManager(BlobContainerAsyncClient blobContainerAsyncClient) {
+        this.blobContainerAsyncClient = blobContainerAsyncClient;
     }
 
     /**
@@ -73,9 +73,9 @@ public class BlobPartitionManager implements PartitionManager {
     @Override
     public Flux<PartitionOwnership> listOwnership(String eventHubName, String consumerGroupName) {
         String prefix = getBlobPrefix(eventHubName, consumerGroupName);
-        BlobListDetails details = new BlobListDetails().setMetadata(true);
+        BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
-        return containerAsyncClient.listBlobsFlat(options)
+        return blobContainerAsyncClient.listBlobs(options)
             // Blob names should be of the pattern eventhub/consumergroup/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
             .filter(blobItem -> blobItem.getName().split(BLOB_PATH_SEPARATOR).length == 3)
@@ -98,12 +98,12 @@ public class BlobPartitionManager implements PartitionManager {
                 partitionOwnership.getConsumerGroupName(), partitionId);
 
             if (!blobClients.containsKey(blobName)) {
-                blobClients.put(blobName, containerAsyncClient.getBlobAsyncClient(blobName));
+                blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
             }
 
             BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
-            Metadata metadata = new Metadata();
+            Map<String, String> metadata = new HashMap<>();
             metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
             Long offset = partitionOwnership.getOffset();
             metadata.put(OFFSET, offset == null ? null : String.valueOf(offset));
@@ -113,7 +113,7 @@ public class BlobPartitionManager implements PartitionManager {
             if (ImplUtils.isNullOrEmpty(partitionOwnership.getETag())) {
                 // New blob should be created
                 blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions().setIfNoneMatch("*"));
-                return blobAsyncClient.asBlockBlobAsyncClient()
+                return blobAsyncClient.getBlockBlobAsyncClient()
                     .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, blobAccessConditions)
                     .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                         logger.info(CLAIM_ERROR, partitionId, error.getMessage());
@@ -153,10 +153,10 @@ public class BlobPartitionManager implements PartitionManager {
         String partitionId = checkpoint.getPartitionId();
         String blobName = getBlobName(checkpoint.getEventHubName(), checkpoint.getConsumerGroupName(), partitionId);
         if (!blobClients.containsKey(blobName)) {
-            blobClients.put(blobName, containerAsyncClient.getBlobAsyncClient(blobName));
+            blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
         }
 
-        Metadata metadata = new Metadata();
+        Map<String, String> metadata = new HashMap<>();
         String sequenceNumber = checkpoint.getSequenceNumber() == null ? null
             : String.valueOf(checkpoint.getSequenceNumber());
 
@@ -210,9 +210,9 @@ public class BlobPartitionManager implements PartitionManager {
                     break;
             }
         });
-        BlobProperties blobProperties = blobItem.getProperties();
+        BlobItemProperties blobProperties = blobItem.getProperties();
         partitionOwnership.setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli());
-        partitionOwnership.setETag(blobProperties.getEtag());
+        partitionOwnership.setETag(blobProperties.getETag());
         return partitionOwnership;
     }
 

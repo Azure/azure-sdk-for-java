@@ -1,21 +1,23 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 
 import java.time.OffsetDateTime
 
 class CPKTest extends APISpec {
 
     CustomerProvidedKey key
-    ContainerClient cpkContainer
+    BlobContainerClient cpkContainer
     BlockBlobClient cpkBlockBlob
     PageBlobClient cpkPageBlob
     AppendBlobClient cpkAppendBlob
@@ -23,21 +25,23 @@ class CPKTest extends APISpec {
 
     def setup() {
         key = new CustomerProvidedKey(getRandomKey())
-        def builder = new ContainerClientBuilder()
-            .endpoint(cc.getContainerUrl().toString())
+        def builder = new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
             .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(primaryCredential)
 
-        addOptionalRecording(builder)
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         cpkContainer = builder.buildClient()
-        cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).asBlockBlobClient()
-        cpkPageBlob = cpkContainer.getBlobClient(generateBlobName()).asPageBlobClient()
-        cpkAppendBlob = cpkContainer.getBlobClient(generateBlobName()).asAppendBlobClient()
+        cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
+        cpkPageBlob = cpkContainer.getBlobClient(generateBlobName()).getPageBlobClient()
+        cpkAppendBlob = cpkContainer.getBlobClient(generateBlobName()).getAppendBlobClient()
 
-        def existingBlobSetup = cpkContainer.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def existingBlobSetup = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
         existingBlobSetup.upload(defaultInputStream.get(), defaultDataSize)
         cpkExistingBlob = existingBlobSetup
     }
@@ -88,12 +92,20 @@ class CPKTest extends APISpec {
 
     def "Put block from URL with CPK"() {
         setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def blobName = generateBlobName()
+        def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
+        def sas = new BlobServiceSasSignatureValues()
+            .setExpiryTime(OffsetDateTime.now().plusHours(1))
+            .setPermissions(new BlobSasPermission().setReadPermission(true))
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+
+        def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(), sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)
 
         then:
@@ -133,7 +145,8 @@ class CPKTest extends APISpec {
 
     def "Put page from URL wih CPK"() {
         setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def blobName = generateBlobName()
+        def sourceBlob = cc.getBlobClient(blobName).getPageBlobClient()
         sourceBlob.create(PageBlobClient.PAGE_BYTES)
         sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
@@ -141,9 +154,16 @@ class CPKTest extends APISpec {
         cpkPageBlob.create(PageBlobClient.PAGE_BYTES)
 
         when:
+        def sas = new BlobServiceSasSignatureValues()
+            .setExpiryTime(OffsetDateTime.now().plusHours(1))
+            .setPermissions(new BlobSasPermission().setReadPermission(true))
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+
         def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
-            null, null, null, null, null, null)
+            sourceBlob.getBlobUrl().toString() + "?" + sas, null, null, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -182,12 +202,19 @@ class CPKTest extends APISpec {
     def "Append block from URL with CPK"() {
         setup:
         cpkAppendBlob.create()
-        def sourceBlob = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def blobName = generateBlobName()
+        def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def response = cpkAppendBlob.appendBlockFromUrlWithResponse(
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
+        def sas = new BlobServiceSasSignatureValues()
+            .setExpiryTime(OffsetDateTime.now().plusHours(1))
+            .setPermissions(new BlobSasPermission().setReadPermission(true))
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+        def response = cpkAppendBlob.appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)
 
         then:
@@ -199,7 +226,7 @@ class CPKTest extends APISpec {
 
     def "Set blob metadata with CPK"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:
@@ -234,7 +261,7 @@ class CPKTest extends APISpec {
 
     def "Snapshot blob with CPK"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:

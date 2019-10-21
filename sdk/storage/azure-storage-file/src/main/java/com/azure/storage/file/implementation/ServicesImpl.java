@@ -4,8 +4,6 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.core.implementation.CollectionFormat;
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -18,14 +16,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.CollectionFormat;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
+import com.azure.storage.file.implementation.models.ListSharesIncludeType;
+import com.azure.storage.file.implementation.models.ServicesGetPropertiesResponse;
+import com.azure.storage.file.implementation.models.ServicesListSharesSegmentResponse;
+import com.azure.storage.file.implementation.models.ServicesSetPropertiesResponse;
+import com.azure.storage.file.models.FileStorageException;
 import com.azure.storage.file.models.FileServiceProperties;
-import com.azure.storage.file.models.ListSharesIncludeType;
-import com.azure.storage.file.models.ServicesGetPropertiesResponse;
-import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
-import com.azure.storage.file.models.ServicesSetPropertiesResponse;
-import com.azure.storage.file.models.StorageErrorException;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -63,17 +63,17 @@ public final class ServicesImpl {
     private interface ServicesService {
         @Put("")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") FileServiceProperties fileServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<ServicesListSharesSegmentResponse> listSharesSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
     }
 

@@ -10,9 +10,12 @@ import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -36,9 +39,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -126,14 +126,14 @@ public class EventHubProducerTest {
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(OPENTELEMETRY_SPAN_KEY, "value");
+                return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );
 
         when(tracer1.start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.RECEIVE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(OPENTELEMETRY_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
             }
         );
         //Act
@@ -161,12 +161,12 @@ public class EventHubProducerTest {
             Mono.fromCallable(() -> sendLink),
             new EventHubProducerOptions().setRetry(retryOptions), tracerProvider, messageSerializer);
         final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
-        final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT, Context.NONE));
+        final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE));
 
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(OPENTELEMETRY_SPAN_KEY, "value");
+                return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );
 
