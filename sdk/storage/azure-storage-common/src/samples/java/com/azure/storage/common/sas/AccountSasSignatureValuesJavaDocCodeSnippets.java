@@ -20,7 +20,7 @@ public class AccountSasSignatureValuesJavaDocCodeSnippets {
             .setListPermission(true)
             .setReadPermission(true);
         String resourceTypes = new AccountSasResourceType().setContainer(true).toString();
-        String services = new AccountSasService().setBlob(true).setFile(true).toString();
+        String services = new AccountSasService().setBlobAccess(true).setFileAccess(true).toString();
 
         // Creates an account SAS that can read and list from blob containers and file shares.
         // The following are required: permissions, resourceTypes, services, and expiry date.
