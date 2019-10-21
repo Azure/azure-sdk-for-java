@@ -172,14 +172,14 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-InputStream-long}
      *
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
      * @param data The data to write to the block.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
-    public void stageBlock(String base64BlockID, InputStream data, long length) {
-        stageBlockWithResponse(base64BlockID, data, length, null, null, Context.NONE);
+    public void stageBlock(String base64BlockId, InputStream data, long length) {
+        stageBlockWithResponse(base64BlockId, data, length, null, null, Context.NONE);
     }
 
     /**
@@ -191,7 +191,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-LeaseAccessConditions-Duration-Context}
      *
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
      * @param data The data to write to the block.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
@@ -204,13 +204,13 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
-    public Response<Void> stageBlockWithResponse(String base64BlockID, InputStream data, long length,
+    public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
-        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
+        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockId,
             fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -224,7 +224,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrl#String-String-BlobRange}
      *
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -233,8 +233,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param sourceRange {@link BlobRange}
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public void stageBlockFromUrl(String base64BlockID, String sourceUrl, BlobRange sourceRange) {
-        stageBlockFromUrlWithResponse(base64BlockID, sourceUrl, sourceRange, null, null, null, null, Context.NONE);
+    public void stageBlockFromUrl(String base64BlockId, String sourceUrl, BlobRange sourceRange) {
+        stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange, null, null, null, null, Context.NONE);
     }
 
     /**
@@ -246,14 +246,14 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceRange {@link BlobRange}
-     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will
+     * @param sourceContentMd5 An MD5 hash of the block content from the source blob. If specified, the service will
      * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
@@ -263,11 +263,11 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return A response containing status code and HTTP headers
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public Response<Void> stageBlockFromUrlWithResponse(String base64BlockID, String sourceUrl, BlobRange sourceRange,
-            byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
+    public Response<Void> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
+            byte[] sourceContentMd5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceUrl,
-            sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
+        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockId, sourceUrl,
+            sourceRange, sourceContentMd5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -323,11 +323,11 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List}
      *
-     * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @return The information of the block blob.
      */
-    public BlockBlobItem commitBlockList(List<String> base64BlockIDs) {
-        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null, null, Context.NONE).getValue();
+    public BlockBlobItem commitBlockList(List<String> base64BlockIds) {
+        return commitBlockListWithResponse(base64BlockIds, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -342,7 +342,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
      *
-     * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
@@ -351,11 +351,11 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the block blob.
      */
-    public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIDs,
+    public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIds,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockListWithResponse(
-            base64BlockIDs, headers, metadata, tier, accessConditions, context);
+            base64BlockIds, headers, metadata, tier, accessConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
