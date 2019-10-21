@@ -117,7 +117,7 @@
     <reactor-netty.version>0.9.0.RELEASE</reactor-netty.version>
     <netty.version>4.1.42.Final</netty.version>
     <okhttp.version>4.2.2</okhttp.version>
-    <async-http-client.version>2.5.2</async-http-client.version>
+    <async-http-client.version>2.10.4</async-http-client.version>
     <opencensus.version>0.20.0</opencensus.version>
     <rxjava.version>1.2.4</rxjava.version>
     <guava.version>24.1.1-jre</guava.version>
