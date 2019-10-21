@@ -798,20 +798,11 @@ class BlobAPITest extends APISpec {
             metadata.put(key2, value2)
         }
 
-        def status = bu2.copyFromURLWithResponse(bc.getBlobUrl(), metadata, null, null, null, null, null)
-            .getHeaders().getValue("x-ms-copy-status")
+        when:
+        def poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, Duration.ofSeconds(1))
+        poller.block()
 
-        def start = OffsetDateTime.now()
-        while (status != CopyStatusType.SUCCESS.toString()) {
-            sleepIfRecord(1000)
-            status = bu2.getPropertiesWithResponse(null, null, null).getHeaders().getValue("x-ms-copy-status")
-            def currentTime = OffsetDateTime.now()
-            if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
-                throw new Exception("Copy failed or took too long")
-            }
-        }
-
-        expect:
+        then:
         bu2.getProperties().getMetadata() == metadata
 
         where:
@@ -831,8 +822,13 @@ class BlobAPITest extends APISpec {
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
 
-        expect:
-        copyDestBlob.copyFromURLWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null).getStatusCode() == 202
+        when:
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, mac, null, null)
+        poller.block()
+
+        then:
+        def response = poller.getLastPollResponse()
+        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
         modified | unmodified | match        | noneMatch
@@ -883,9 +879,13 @@ class BlobAPITest extends APISpec {
                 .setIfMatch(match)
                 .setIfNoneMatch(noneMatch))
 
+        when:
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, Duration.ofSeconds(1))
+        poller.block()
 
-        expect:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null).getStatusCode() == 202
+        then:
+        def response = poller.getLastPollResponse()
+        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
