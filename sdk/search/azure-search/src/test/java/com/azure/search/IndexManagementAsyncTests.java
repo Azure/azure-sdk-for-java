@@ -12,11 +12,14 @@ import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.CorsOptions;
+import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class IndexManagementAsyncTests extends IndexManagementTestBase {
     private SearchServiceAsyncClient client;
@@ -187,5 +190,37 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Override
     public void canCreateAndDeleteIndex() {
 
+    }
+
+    @Override
+    public void canAddSynonymFieldProperty() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
+
+        String synonymMapName = "names";
+        SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
+        client.createSynonymMap(synonymMap).block();
+
+        Index index = new Index()
+            .setName("hotels")
+            .setFields(Arrays.asList(
+                new Field()
+                    .setName("HotelId")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true),
+                new Field()
+                    .setName("HotelName")
+                    .setType(DataType.EDM_STRING)
+                    .setSynonymMaps(Arrays.asList(synonymMapName))
+
+            ));
+
+        StepVerifier
+            .create(client.createIndex(index))
+            .assertNext(createdIndex -> {
+                List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
+                List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
+                Assert.assertEquals(actualSynonym, expectedSynonym);
+            })
+            .verifyComplete();
     }
 }

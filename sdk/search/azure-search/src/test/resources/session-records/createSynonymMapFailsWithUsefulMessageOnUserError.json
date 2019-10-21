@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdkcdf17558a607.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "3fc63973-c9ff-44dd-899e-9e74ace3273c",
+      "StatusCode" : "400",
+      "Date" : "Fri, 18 Oct 2019 23:49:36 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "25",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "139",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Syntax error in line 1: 'a => b => c'. Only one explicit mapping (=>) can be specified in a synonym rule.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

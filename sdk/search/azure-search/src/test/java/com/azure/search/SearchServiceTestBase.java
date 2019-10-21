@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.search.test.environment.setup.AzureSearchResources;
@@ -65,6 +70,25 @@ public abstract class SearchServiceTestBase extends TestBase {
     protected void afterTest() {
         super.afterTest();
         azureSearchResources.deleteService();
+    }
+
+    protected SearchServiceClientBuilder getSearchServiceClientBuilder() {
+        if (!interceptorManager.isPlaybackMode()) {
+            return new SearchServiceClientBuilder()
+                .serviceName(searchServiceName)
+                .searchDnsSuffix(searchDnsSuffix)
+                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .credential(apiKeyCredentials)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy())
+                .addPolicy(new HttpLoggingPolicy(
+                    new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+        } else {
+            return new SearchServiceClientBuilder()
+                .serviceName("searchServiceName")
+                .searchDnsSuffix(searchDnsSuffix)
+                .httpClient(interceptorManager.getPlaybackClient());
+        }
     }
 
     private static void initializeAzureResources() {

@@ -655,19 +655,49 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return the created SynonymMap.
+     * Creates a new Azure Cognitive Search synonym map.
+     *
+     * @param synonymMap the definition of the synonym map to create
+     * @return the created {@link SynonymMap}.
      */
-    public Mono<SynonymMap> createSynonymMap() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
+        return this.createSynonymMapWithResponse(synonymMap, null).map(Response::getValue);
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search synonym map.
+     *
+     * @param synonymMap the definition of the synonym map to create
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the created {@link SynonymMap}.
+     */
+    public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap, RequestOptions requestOptions) {
+        return this.createSynonymMapWithResponse(synonymMap, requestOptions).map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search synonym map.
+     *
+     * @param synonymMap the definition of the synonym map to create
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created SynonymMap.
      */
-    public Mono<Response<SynonymMap>> createSynonymMapWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
+                                                                   RequestOptions requestOptions) {
+        return withContext(context -> createSynonymMapWithResponse(synonymMap,
+                requestOptions,
+                context));
+    }
+
+    Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
+                                                            RequestOptions requestOptions,
+                                                            Context context) {
+        return restClient
+                .synonymMaps()
+                .createWithRestResponseAsync(synonymMap, requestOptions, context)
+                .map(Function.identity());
     }
 
     /**

@@ -2,11 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
@@ -44,25 +39,6 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
         super.beforeTest();
     }
 
-    protected SearchServiceClientBuilder getSearchServiceClientBuilder() {
-        if (!interceptorManager.isPlaybackMode()) {
-            return new SearchServiceClientBuilder()
-                .serviceName(searchServiceName)
-                .searchDnsSuffix(searchDnsSuffix)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .credential(apiKeyCredentials)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .addPolicy(new HttpLoggingPolicy(
-                    new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-        } else {
-            return new SearchServiceClientBuilder()
-                .serviceName("searchServiceName")
-                .searchDnsSuffix(searchDnsSuffix)
-                .httpClient(interceptorManager.getPlaybackClient());
-        }
-    }
-
     public abstract void createIndexReturnsCorrectDefinition();
 
     @Test
@@ -91,6 +67,9 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void deleteIndexIsIdempotent();
 
     public abstract void canCreateAndDeleteIndex();
+
+    @Test
+    public abstract void canAddSynonymFieldProperty();
 
     protected void assertFieldsEquals(Field expected, Field actual) {
         Assert.assertEquals(expected.getName(), actual.getName());
