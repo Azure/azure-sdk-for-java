@@ -168,7 +168,7 @@ As mentioned above, in the service pipeline changes, the plan after we GA is to 
   - [ ] Merge the PR
   - [ ] Publish the new version
 
-- **Scenario 2: Making changes to a library that also requires dependency changes:** Right now things are in a state where dependency changes can be made along with libraries that depend on them because of the project dependencies in the service pom files. Local development isn't going to change that much except when changing the version of a library and its dependency or dependencies means that the service poms are going to have to be built, and installed, in the appropriate order. This is because these new versions of the library dependencies won't yet be released and Maven will need to find these in the local cache. The biggest change to the process is going to be around PRs and publishing. Separate PRs going going to have to be submitted in order, with dependencies being submitted first. This is necessary because the dependencies need to be published in order to allow things that depend on them to continue using the published version. Trying to submit everyting in one PR would cause build breaks since the dependency being referenced is a version not yet published. An example of this would be making changes to `com.azure:azure-storage-common` that also required dependency changes to `com.azure:azure-identity`.
+- **Scenario 2: Making changes to a library that also requires dependency changes:** Right now things are in a state where dependency changes can be made along with libraries that depend on them because of the project dependencies in the service pom files. Local development isn't going to change that much except when changing the version of a library and its dependency or dependencies means that the service poms are going to have to be built, and installed, in the appropriate order. This is because these new versions of the library dependencies won't yet be released and Maven will need to find these in the local cache. The biggest change to the process is going to be around PRs and publishing. Separate PRs are going to have to be submitted in order, with dependencies being submitted first. This is necessary because the dependencies need to be published in order to allow things that depend on them to continue using the published version. Trying to submit everything in one PR would cause build breaks since the dependency being referenced is a version not yet published. An example of this would be making changes to `com.azure:azure-storage-common` that also required dependency changes to `com.azure:azure-identity`.
   Changes are going to have to be made to `com.azure:azure-identity` first.
   - [ ] Appropriately increase the version of `com.azure:azure-identity`
   - [ ] Make the code changes
@@ -178,7 +178,7 @@ As mentioned above, in the service pipeline changes, the plan after we GA is to 
   - [ ] Merge the PR for the `com.azure:azure-identity`
   - [ ] Publish the `com.azure:azure-identity` with the updated version.
   
-  Only after the dependency `com.azure:azure-identity` has been published can the PR for `com.azure:azure-storage-common`
+  Only after the dependency `com.azure:azure-identity` has been published can the PR for `com.azure:azure-storage-common` be created.
   - [ ] Appropriately increase the version of `com.azure:azure-storage-common` and the dependency version of `com.azure:azure-identity` in its pom file.
   - [ ] Make the code changes, if any
   - [ ] Build/Test or whatever
