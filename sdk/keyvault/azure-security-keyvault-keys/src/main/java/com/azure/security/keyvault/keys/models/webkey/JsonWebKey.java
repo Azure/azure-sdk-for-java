@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -200,7 +201,7 @@ public class JsonWebKey {
      */
     @JsonProperty("key_ops")
     public List<KeyOperation> getKeyOps() {
-        return this.keyOps;
+        return Collections.unmodifiableList(this.keyOps);
     }
 
     /**

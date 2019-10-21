@@ -10,7 +10,7 @@ import com.azure.core.implementation.util.ImplUtils;
  */
 public final class EncryptResult {
     /**
-     * THe encrypted content.
+     * The encrypted content.
      */
     private final byte[] cipherText;
 

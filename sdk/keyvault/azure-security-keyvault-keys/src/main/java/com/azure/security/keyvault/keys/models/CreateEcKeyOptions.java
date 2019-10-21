@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
@@ -11,6 +12,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Map;
 
+@Fluent
 public class CreateEcKeyOptions extends CreateKeyOptions {
 
     /**
@@ -106,7 +108,8 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
      * @param enabled The enabled value to set
      * @return the EcKeyCreateOptions object itself.
      */
-    public CreateKeyOptions setEnabled(Boolean enabled) {
+    @Override
+    public CreateEcKeyOptions setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
         return this;
     }

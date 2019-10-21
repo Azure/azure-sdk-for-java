@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
@@ -23,6 +24,7 @@ import java.util.Objects;
  *  @see SecretClient
  *  @see SecretAsyncClient
  */
+@Fluent
 public class SecretProperties {
     private final ClientLogger logger = new ClientLogger(SecretProperties.class);
 

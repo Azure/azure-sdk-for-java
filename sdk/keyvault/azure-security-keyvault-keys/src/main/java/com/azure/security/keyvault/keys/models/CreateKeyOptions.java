@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@Fluent
 public class CreateKeyOptions {
 
     /**

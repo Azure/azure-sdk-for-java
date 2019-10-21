@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Fluent
 public class KeyProperties {
 
     /**

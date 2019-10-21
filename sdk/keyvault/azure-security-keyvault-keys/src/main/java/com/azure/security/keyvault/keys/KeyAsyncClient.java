@@ -86,7 +86,7 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Get the vault endpoint
+     * Get the vault endpoint to which service requests are sent to.
      * @return the vault endpoint
      */
     public String getVaultEndpoint() {
@@ -743,16 +743,12 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Poller<DeletedKey, Void> beginDeleteKey(String name) {
-        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), fetchResultOperation(), activationOperation(name), null);
+        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), () -> Mono.empty(), activationOperation(name), null);
     }
 
     private Supplier<Mono<DeletedKey>> activationOperation(String name) {
         return () -> withContext(context -> deleteKeyWithResponse(name, context)
             .flatMap(deletedKeyResponse -> Mono.just(deletedKeyResponse.getValue())));
-    }
-
-    private Supplier<Mono<Void>> fetchResultOperation() {
-        return () -> Mono.empty();
     }
 
     /*
@@ -912,7 +908,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return new Poller<>(Duration.ofSeconds(1), createRecoverPollOperation(name), fetchResultOperation(), recoverActivationOperation(name), null);
+        return new Poller<>(Duration.ofSeconds(1), createRecoverPollOperation(name), () -> Mono.empty(), recoverActivationOperation(name), null);
     }
 
     private Supplier<Mono<KeyVaultKey>> recoverActivationOperation(String name) {

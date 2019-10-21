@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +18,7 @@ import java.util.Objects;
  *  @see SecretClient
  *  @see SecretAsyncClient
  */
+@Fluent
 public class KeyVaultSecret {
 
     /**
