@@ -157,8 +157,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
 
-        return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null, null, data, length, null, metadata,
-            accessConditions.getLeaseId(), tier, accessConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null, null, data, length, null, null,
+            metadata, accessConditions.getLeaseId(), tier, accessConditions.getIfModifiedSince(),
             accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
             null, headers, getCustomerProvidedKey(), context)
             .map(rb -> {

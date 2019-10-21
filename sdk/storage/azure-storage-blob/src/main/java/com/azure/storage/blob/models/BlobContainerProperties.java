@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
-import com.azure.storage.blob.models.LeaseDurationType;
-import com.azure.storage.blob.models.LeaseStateType;
-import com.azure.storage.blob.models.LeaseStatusType;
-import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 
+/**
+ * This class contains the response information returned from the service when getting container properties.
+ */
+@Immutable
 public final class BlobContainerProperties {
 
     private final Map<String, String> metadata;
@@ -24,16 +24,32 @@ public final class BlobContainerProperties {
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
 
-    BlobContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
-        this.metadata = generatedResponseHeaders.getMetadata();
-        this.eTag = generatedResponseHeaders.getETag();
-        this.lastModified = generatedResponseHeaders.getLastModified();
-        this.leaseDuration = generatedResponseHeaders.getLeaseDuration();
-        this.leaseState = generatedResponseHeaders.getLeaseState();
-        this.leaseStatus = generatedResponseHeaders.getLeaseStatus();
-        this.blobPublicAccess = generatedResponseHeaders.getBlobPublicAccess();
-        this.hasImmutabilityPolicy = generatedResponseHeaders.isHasImmutabilityPolicy();
-        this.hasLegalHold = generatedResponseHeaders.isHasLegalHold();
+    /**
+     * Constructs a {@link BlobContainerProperties}.
+     *
+     * @param metadata Metadata associated with the container.
+     * @param eTag ETag of the container.
+     * @param lastModified Datetime when the container was last modified.
+     * @param leaseDuration Type of the lease on the container.
+     * @param leaseState State of the lease on the container.
+     * @param leaseStatus Status of the lease on the container.
+     * @param blobPublicAccess Public access status for the container.
+     * @param hasImmutabilityPolicy Flag indicating if the container has an immutability policy set on it.
+     * @param hasLegalHold Flag indicating if the container has a legal hold.
+     */
+    public BlobContainerProperties(final Map<String, String> metadata, final String eTag,
+        final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
+        final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
+        final boolean hasLegalHold) {
+        this.metadata = metadata;
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.leaseDuration = leaseDuration;
+        this.leaseState = leaseState;
+        this.leaseStatus = leaseStatus;
+        this.blobPublicAccess = blobPublicAccess;
+        this.hasImmutabilityPolicy = hasImmutabilityPolicy;
+        this.hasLegalHold = hasLegalHold;
     }
 
     /**
@@ -98,8 +114,4 @@ public final class BlobContainerProperties {
     public boolean hasLegalHold() {
         return hasLegalHold;
     }
-
-
-
-
 }

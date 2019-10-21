@@ -45,8 +45,8 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     public void create2() {
         // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentType("binary")
-            .setBlobContentLanguage("en-US");
+            .setContentType("binary")
+            .setContentLanguage("en-US");
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
