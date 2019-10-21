@@ -215,8 +215,6 @@ public class OpenCensusTracerTest {
         openCensusTracer.addLink(traceContext);
 
         //Assert
-        // TODO: existing -> parentSpanImpl comes after after add Link, confirm this behavior?
-        Assert.assertEquals(parentSpanImpl.getPrev(), testSpan);
         // verify both spans share the same link traceId
         Assert.assertEquals(parentSpanImpl.toSpanData().getContext().getTraceId(),
             testSpan.toSpanData().getContext().getTraceId());
