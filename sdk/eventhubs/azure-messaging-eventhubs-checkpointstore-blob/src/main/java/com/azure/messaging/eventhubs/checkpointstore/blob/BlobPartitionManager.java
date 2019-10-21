@@ -15,7 +15,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
-import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import reactor.core.Exceptions;
@@ -75,7 +75,7 @@ public class BlobPartitionManager implements PartitionManager {
         String prefix = getBlobPrefix(eventHubName, consumerGroupName);
         BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
-        return blobContainerAsyncClient.listBlobsFlat(options)
+        return blobContainerAsyncClient.listBlobs(options)
             // Blob names should be of the pattern eventhub/consumergroup/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
             .filter(blobItem -> blobItem.getName().split(BLOB_PATH_SEPARATOR).length == 3)
@@ -210,9 +210,9 @@ public class BlobPartitionManager implements PartitionManager {
                     break;
             }
         });
-        BlobProperties blobProperties = blobItem.getProperties();
+        BlobItemProperties blobProperties = blobItem.getProperties();
         partitionOwnership.setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli());
-        partitionOwnership.setETag(blobProperties.getEtag());
+        partitionOwnership.setETag(blobProperties.getETag());
         return partitionOwnership;
     }
 

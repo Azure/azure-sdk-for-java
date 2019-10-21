@@ -19,6 +19,7 @@ import java.time.temporal.ChronoUnit;
 public class RetryPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_MAX_RETRIES = 3;
     private static final int DEFAULT_DELAY = 0;
+    private static final int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
     private static final ChronoUnit DEFAULT_TIME_UNIT = ChronoUnit.MILLIS;
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
     private final int maxRetries;
@@ -76,6 +77,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         int code = response.getStatusCode();
         return tryCount < maxRetries
             && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
+            || code == HTTP_STATUS_TOO_MANY_REQUESTS // HttpUrlConnection does not define HTTP status 429
             || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
             && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
             && code != HttpURLConnection.HTTP_VERSION));

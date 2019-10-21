@@ -28,7 +28,7 @@ public class TestResourceNamer extends ResourceNamer {
      */
     public TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
         super(name);
-        Objects.requireNonNull(recordedData);
+        Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
         this.recordedData = recordedData;
         this.testMode = testMode;
     }
@@ -79,6 +79,21 @@ public class TestResourceNamer extends ResourceNamer {
             OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
             recordedData.addVariable(now.toString());
             return now;
+        }
+    }
+
+    /**
+     * Record the value into recordedData, and pop it up when playback.
+     *
+     * @param value the value needs to record.
+     * @return the recorded value.
+     */
+    public String recordValueFromConfig(String value) {
+        if (testMode == TestMode.PLAYBACK) {
+            return recordedData.removeVariable();
+        } else {
+            recordedData.addVariable(value);
+            return value;
         }
     }
 }

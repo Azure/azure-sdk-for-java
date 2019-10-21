@@ -7,9 +7,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import reactor.util.context.Context;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
@@ -40,7 +37,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * Code snippets for {@link ConfigurationAsyncClient#addSetting(ConfigurationSetting)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.addSetting#ConfigurationSetting
-        client.addSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"))
+        client.addSetting("prodDBConnection", "westUS", "db_connection")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
@@ -247,13 +244,6 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
      * @return {@code null}
      */
     private ConfigurationAsyncClient getAsyncClient() {
-        try {
-            return new ConfigurationClientBuilder().credential(new ConfigurationClientCredentials("connectionString")).buildAsyncClient();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new ConfigurationClientBuilder().connectionString("connectionString").buildAsyncClient();
     }
 }

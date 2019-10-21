@@ -31,26 +31,29 @@ public class IterableStream<T> implements Iterable<T> {
     private final Flux<T> flux;
 
     /**
-     * Creates instance given {@link Flux}.
-     * @param flux to iterate over
+     * Creates instance with the given {@link Flux}.
+     *
+     * @param flux Flux of items to iterate over.
      */
     public IterableStream(Flux<T> flux) {
         this.flux = flux;
     }
 
     /**
-     * Utility function to provide {@link Stream} of value T.
-     * It will provide same stream of T values if called multiple times.
-     * @return {@link Stream} of value T.
+     * Utility function to provide {@link Stream} of value {@code T}.
+     * It will provide the same stream of {@code T} values if called multiple times.
+     *
+     * @return {@link Stream} of value {@code T}.
      */
     public Stream<T> stream() {
         return flux.toStream();
     }
 
     /**
-     * Utility function to provide {@link Iterator} of value T.
-     * It will provide same collection of T values if called multiple times.
-     * @return {@link Iterator} of value T.
+     * Utility function to provide {@link Iterator} of value {@code T}.
+     * It will provide same collection of {@code T} values if called multiple times.
+     *
+     * @return {@link Iterator} of value {@code T}.
      */
     @Override
     public Iterator<T> iterator() {

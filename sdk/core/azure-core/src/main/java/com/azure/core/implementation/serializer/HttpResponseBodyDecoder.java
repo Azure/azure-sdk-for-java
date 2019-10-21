@@ -11,7 +11,7 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Base64Url;
+import com.azure.core.implementation.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.PagedResponseBase;
@@ -314,7 +314,7 @@ final class HttpResponseBodyDecoder {
                     PagedResponseBase<?, ?> restResponse = (PagedResponseBase<?, ?>) wireResponse;
                     result =
                         new PagedResponseBase<>(restResponse.getRequest(), restResponse.getStatusCode(),
-                            restResponse.getHeaders(), restResponse.getItems(), restResponse.getNextLink(),
+                            restResponse.getHeaders(), restResponse.getItems(), restResponse.getContinuationToken(),
                             restResponse.getDeserializedHeaders());
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, ResponseBase.class)) {
                     ResponseBase<?, ?> restResponseBase = (ResponseBase<?, ?>) wireResponse;

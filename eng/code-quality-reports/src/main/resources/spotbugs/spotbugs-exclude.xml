@@ -60,7 +60,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.core.util.Base64Url"/>
+    <Class name="com.azure.core.implementation.Base64Url"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -480,6 +480,7 @@
   <Match>
     <Or>
       <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
+      <Class name="com.azure.security.keyvault.secrets.models.Secret"/>
       <Class name="com.azure.security.keyvault.secrets.models.SecretBase"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
       <Class name="com.azure.security.keyvault.keys.models.Key"/>
@@ -542,7 +543,10 @@
   </Match>
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
-    <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+    <Or>
+      <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+      <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
+    </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,
                   URF_UNREAD_FIELD,
                   SIC_INNER_SHOULD_BE_STATIC_ANON,
@@ -626,9 +630,27 @@
   </Match>
 
 
-  <!-- The field is read by parent class StorageOutputStrem methods. -->
+  <!-- The field is read by parent class StorageOutputStream methods. -->
   <Match>
     <Class name="com.azure.storage.file.StorageFileOutputStream"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Initial implementation of Storage Blob Batch is using an inline class -->
+  <Match>
+    <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Initial implementation of JacksonDeserializer is using an inline class in registerCustomDeserializer-->
+  <Match>
+    <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Implementation name confusing with public API name -->
+  <Match>
+    <Class name="com.azure.core.implementation.http.UrlBuilder"/>
+    <Bug pattern="NM_CONFUSING"/>
   </Match>
 </FindBugsFilter>

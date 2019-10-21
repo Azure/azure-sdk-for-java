@@ -3,8 +3,9 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.Utility;
+import com.azure.storage.blob.ProgressReceiver;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 public class ParallelTransferOptions {
 
@@ -15,6 +16,7 @@ public class ParallelTransferOptions {
 
     private int blockSize;
     private int numBuffers;
+    private ProgressReceiver progressReceiver;
 
     /**
      * Creates a new {@link ParallelTransferOptions} with default parameters applied.
@@ -24,6 +26,7 @@ public class ParallelTransferOptions {
     public ParallelTransferOptions() {
         this.blockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         this.numBuffers = BLOB_DEFAULT_NUMBER_OF_PARALLEL_TRANSFERS;
+        this.progressReceiver = null;
     }
 
     /**
@@ -43,6 +46,14 @@ public class ParallelTransferOptions {
     }
 
     /**
+     * Gets the Progress receiver for parallel reporting
+     * @return the progress reporter
+     */
+    public ProgressReceiver getProgressReceiver() {
+        return this.progressReceiver;
+    }
+
+    /**
      * Sets the block size or the size of a chunk to transfer at a time.
      * @param blockSize The block size.
      * For upload, The block size is the size of each block that will be staged. This value also determines the size
@@ -53,7 +64,7 @@ public class ParallelTransferOptions {
      * @throws IllegalArgumentException when block size is less than 0 or greater than max blob block size (10MB).
      */
     public ParallelTransferOptions setBlockSize(int blockSize) {
-        Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_BLOCK_SIZE);
+        StorageImplUtils.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_BLOCK_SIZE);
         this.blockSize = blockSize;
         return this;
     }
@@ -69,8 +80,13 @@ public class ParallelTransferOptions {
      * @throws IllegalArgumentException when numBuffers is less than 2.
      */
     public ParallelTransferOptions setNumBuffers(int numBuffers) {
-        Utility.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
+        StorageImplUtils.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
         this.numBuffers = numBuffers;
+        return this;
+    }
+
+    public ParallelTransferOptions setProgressReceiver(ProgressReceiver progressReceiver) {
+        this.progressReceiver = progressReceiver;
         return this;
     }
 }

@@ -3,14 +3,13 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
@@ -21,7 +20,7 @@ import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -41,8 +40,12 @@ import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -73,10 +76,19 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      *
-     * @param azureBlobStorage the API client for blob storage
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
-        super(azureBlobStorage, snapshot, cpk, accountName);
+    protected BlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+        String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
     /**
@@ -87,10 +99,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @Override
     public BlobAsyncClient getSnapshotClient(String snapshot) {
-        return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(getBlobUrl())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), getSnapshotId(), getCustomerProvidedKey(), accountName);
+        return new BlobAsyncClient(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey());
     }
 
     /**
@@ -124,7 +134,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .endpoint(getBlobUrl())
-            .snapshot(getSnapshotId());
+            .snapshot(getSnapshotId())
+            .serviceVersion(getServiceVersion());
 
         CpkInfo cpk = getCustomerProvidedKey();
         if (cpk != null) {
@@ -167,7 +178,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
-        return this.uploadWithResponse(data, parallelTransferOptions, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return uploadWithResponse(data, parallelTransferOptions, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -194,84 +209,94 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     *
+     * <p><strong>Using Progress Reporting</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
-        ParallelTransferOptions parallelTransferOptions, BlobHTTPHeaders headers, Map<String, String> metadata,
+        ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobAccessConditions accessConditions) {
-        // TODO: Parallelism parameter? Or let Reactor handle it?
-        // TODO: Sample/api reference
-        Objects.requireNonNull(data, "data must not be null");
-        BlobAccessConditions accessConditionsFinal = accessConditions == null
-            ? new BlobAccessConditions() : accessConditions;
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions() : parallelTransferOptions;
-        int blockSize = finalParallelTransferOptions.getBlockSize();
-        int numBuffers = finalParallelTransferOptions.getNumBuffers();
+        try {
+            // TODO: Parallelism parameter? Or let Reactor handle it?
+            // TODO: Sample/api reference
+            Objects.requireNonNull(data, "'data' must not be null");
+            BlobAccessConditions accessConditionsFinal = accessConditions == null
+                ? new BlobAccessConditions() : accessConditions;
+            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+                ? new ParallelTransferOptions() : parallelTransferOptions;
+            int blockSize = finalParallelTransferOptions.getBlockSize();
+            int numBuffers = finalParallelTransferOptions.getNumBuffers();
+            ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
-        // TODO: Progress reporting.
-        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        /*AtomicLong totalProgress = new AtomicLong(0);
-        Lock progressLock = new ReentrantLock();*/
+            // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+            AtomicLong totalProgress = new AtomicLong(0);
+            Lock progressLock = new ReentrantLock();
 
-        // Validation done in the constructor.
-        UploadBufferPool pool = new UploadBufferPool(numBuffers, blockSize);
+            // Validation done in the constructor.
+            UploadBufferPool pool = new UploadBufferPool(numBuffers, blockSize);
 
-        /*
-        Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
-        as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool buffer
-        filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
-        ordering of the buffers, but we don't really care if one is split before another.
-         */
-        Flux<ByteBuffer> chunkedSource = data.flatMapSequential(buffer -> {
-            if (buffer.remaining() <= blockSize) {
-                return Flux.just(buffer);
-            }
-            int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
-            return Flux.range(0, numSplits)
-                .map(i -> {
-                    ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                    duplicate.position(i * blockSize);
-                    duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
-                    return duplicate;
-                });
-        });
+            /*
+            Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
+            as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool
+            buffer filling up with more data to write). We use flatMapSequential because we need to guarantee we
+            preserve the ordering of the buffers, but we don't really care if one is split before another.
+             */
+            Flux<ByteBuffer> chunkedSource = data.flatMapSequential(buffer -> {
+                if (buffer.remaining() <= blockSize) {
+                    return Flux.just(buffer);
+                }
+                int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
+                return Flux.range(0, numSplits)
+                    .map(i -> {
+                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                        duplicate.position(i * blockSize);
+                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
+                        return duplicate;
+                    });
+            });
 
-        /*
-         Write to the pool and upload the output.
-         */
-        return chunkedSource.concatMap(pool::write)
-            .concatWith(Flux.defer(pool::flush))
-            .flatMapSequential(buffer -> {
-                // Report progress as necessary.
-                /*Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(Flux.just(buffer),
-                    optionsReal.progressReceiver(), progressLock, totalProgress);*/
+            /*
+             Write to the pool and upload the output.
+             */
+            return chunkedSource.concatMap(pool::write)
+                .concatWith(Flux.defer(pool::flush))
+                .flatMapSequential(buffer -> {
+                    // Report progress as necessary.
+                    Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(Flux.just(buffer),
+                        progressReceiver, progressLock, totalProgress);
 
-                final String blockId = Base64.getEncoder().encodeToString(
-                    UUID.randomUUID().toString().getBytes(UTF_8));
 
-                return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, Flux.just(buffer), buffer.remaining(),
-                    accessConditionsFinal.getLeaseAccessConditions())
-                    // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
-                    .map(x -> {
-                        pool.returnBuffer(buffer);
-                        return blockId;
-                    }).flux();
+                    final String blockId = Base64.getEncoder().encodeToString(
+                        UUID.randomUUID().toString().getBytes(UTF_8));
 
-            }) // TODO: parallelism?
-            .collect(Collectors.toList())
-            .flatMap(ids ->
-                getBlockBlobAsyncClient().commitBlockListWithResponse(ids, headers, metadata, tier, accessConditions));
+                    return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
+                        accessConditionsFinal.getLeaseAccessConditions())
+                        // We only care about the stageBlock insofar as it was successful,
+                        // but we need to collect the ids.
+                        .map(x -> blockId)
+                        .doFinally(x -> pool.returnBuffer(buffer))
+                        .flux();
+
+                }) // TODO: parallelism?
+                .collect(Collectors.toList())
+                .flatMap(ids ->
+                    getBlockBlobAsyncClient()
+                        .commitBlockListWithResponse(ids, headers, metadata, tier, accessConditions));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
 
     }
 
@@ -287,7 +312,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      */
     public Mono<Void> uploadFromFile(String filePath) {
-        return uploadFromFile(filePath, null, null, null, null, null);
+        try {
+            return uploadFromFile(filePath, null, null, null, null, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -296,12 +325,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
@@ -311,37 +340,55 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions()
-            : parallelTransferOptions;
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        try {
+            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+                ? new ParallelTransferOptions()
+                : parallelTransferOptions;
+            ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
-        return Mono.using(() -> uploadFileResourceSupplier(filePath),
-            channel -> {
-                final SortedMap<Long, String> blockIds = new TreeMap<>();
-                return Flux.fromIterable(sliceFile(filePath, finalParallelTransferOptions.getBlockSize()))
-                    .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
-                    .flatMap(chunk -> {
-                        String blockId = blockIds.get(chunk.getOffset());
-                        return getBlockBlobAsyncClient()
-                            .stageBlockWithResponse(blockId, FluxUtil.readFile(channel, chunk.getOffset(),
-                                chunk.getCount()), chunk.getCount(), null);
-                    })
-                    .then(Mono.defer(() -> getBlockBlobAsyncClient().commitBlockListWithResponse(
-                        new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
-                    .then()
-                    .doOnTerminate(() -> {
-                        try {
-                            channel.close();
-                        } catch (IOException e) {
-                            throw logger.logExceptionAsError(new UncheckedIOException(e));
-                        }
-                    });
-            }, this::uploadFileCleanup);
+            // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+            AtomicLong totalProgress = new AtomicLong(0);
+            Lock progressLock = new ReentrantLock();
+
+            return Mono.using(() -> uploadFileResourceSupplier(filePath),
+                channel -> {
+                    final SortedMap<Long, String> blockIds = new TreeMap<>();
+                    return Flux.fromIterable(sliceFile(filePath, finalParallelTransferOptions.getBlockSize()))
+                        .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
+                        .flatMap(chunk -> {
+                            String blockId = blockIds.get(chunk.getOffset());
+
+                            Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
+                                FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
+                                progressReceiver, progressLock, totalProgress);
+
+                            return getBlockBlobAsyncClient()
+                                .stageBlockWithResponse(blockId, progressData, chunk.getCount(), null);
+                        })
+                        .then(Mono.defer(() -> getBlockBlobAsyncClient().commitBlockListWithResponse(
+                            new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
+                        .then()
+                        .doOnTerminate(() -> {
+                            try {
+                                channel.close();
+                            } catch (IOException e) {
+                                throw logger.logExceptionAsError(new UncheckedIOException(e));
+                            }
+                        });
+                }, this::uploadFileCleanup);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-
-    private AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
+    /**
+     * Resource Supplier for UploadFile
+     * @param filePath The path for the file
+     * @return {@code AsynchronousFileChannel}
+     * @throws UncheckedIOException an input output exception.
+     */
+    protected AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
         } catch (IOException e) {

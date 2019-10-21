@@ -16,7 +16,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +68,7 @@ public class BlobPartitionManagerTest {
             BlobItem>(null, 200, null,
             Arrays.asList(blobItem), null,
             null)));
-        when(blobContainerAsyncClient.listBlobsFlat(any(ListBlobsOptions.class))).thenReturn(response);
+        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
 
         StepVerifier.create(blobPartitionManager.listOwnership("eh", "cg"))
             .assertNext(partitionOwnership -> {
@@ -137,7 +137,7 @@ public class BlobPartitionManagerTest {
     public void testListOwnershipError() {
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
         PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.error(new SocketTimeoutException()));
-        when(blobContainerAsyncClient.listBlobsFlat(any(ListBlobsOptions.class))).thenReturn(response);
+        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
 
         StepVerifier.create(blobPartitionManager.listOwnership("eh", "cg"))
             .expectError(SocketTimeoutException.class).verify();
@@ -192,9 +192,9 @@ public class BlobPartitionManagerTest {
     private BlobItem getBlobItem(String owner, String sequenceNumber, String offset, String etag, String blobName) {
         Map<String, String> metadata = getMetadata(owner, sequenceNumber, offset);
 
-        BlobProperties properties = new BlobProperties()
+        BlobItemProperties properties = new BlobItemProperties()
             .setLastModified(OffsetDateTime.now())
-            .setEtag(etag);
+            .setETag(etag);
 
         return new BlobItem()
             .setName(blobName)

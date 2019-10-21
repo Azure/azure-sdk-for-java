@@ -21,7 +21,6 @@ import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;

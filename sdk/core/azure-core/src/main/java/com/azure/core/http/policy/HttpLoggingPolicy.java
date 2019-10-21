@@ -17,10 +17,12 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * The Pipeline policy that handles logging of HTTP requests and responses.
@@ -122,30 +124,34 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void formatAllowableHeaders(Set<String> allowedHeaderNames, HttpHeaders requestResponseHeaders,
                                         ClientLogger logger) {
-        if (allowedHeaderNames != null && !allowedHeaderNames.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (HttpHeader header : requestResponseHeaders) {
-                sb.append(header.getName()).append(":");
-                if (allowedHeaderNames.contains(header.getName())) {
-                    sb.append(header.getValue());
-                } else {
-                    sb.append(REDACTED_PLACEHOLDER);
-                }
-                sb.append(System.getProperty("line.separator"));
+        Set<String> lowerCasedAllowedHeaderNames = allowedHeaderNames.stream().map(String::toLowerCase)
+            .collect(Collectors.toSet());
+        StringBuilder sb = new StringBuilder();
+        for (HttpHeader header : requestResponseHeaders) {
+            String headerName = header.getName();
+            sb.append(headerName).append(":");
+            if (lowerCasedAllowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))) {
+                sb.append(header.getValue());
+            } else {
+                sb.append(REDACTED_PLACEHOLDER);
             }
-            logger.info(sb.toString());
+            sb.append(System.getProperty("line.separator"));
         }
+        logger.info(sb.toString());
     }
 
     private void formatAllowableQueryParams(Set<String> allowedQueryParamNames, String queryString,
                                             ClientLogger logger) {
-        if (allowedQueryParamNames != null && !allowedQueryParamNames.isEmpty() && queryString != null) {
+        Set<String> lowerCasedAllowedQueryParams = allowedQueryParamNames.stream().map(String::toLowerCase)
+            .collect(Collectors.toSet());
+        if (queryString != null) {
             StringBuilder sb = new StringBuilder();
             String[] queryParams = queryString.split("&");
             for (String queryParam : queryParams) {
                 String[] queryPair = queryParam.split("=", 2);
                 if (queryPair.length == 2) {
-                    if (allowedQueryParamNames.contains(queryPair[0])) {
+                    String queryName = queryPair[0];
+                    if (lowerCasedAllowedQueryParams.contains(queryName.toLowerCase(Locale.ROOT))) {
                         sb.append(queryParam);
                     } else {
                         sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
