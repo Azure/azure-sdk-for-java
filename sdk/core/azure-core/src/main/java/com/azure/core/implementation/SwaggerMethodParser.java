@@ -33,7 +33,6 @@ import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
