@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -26,7 +27,8 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -63,18 +65,32 @@ public final class BlobServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
 
     private final AzureBlobStorageImpl azureBlobStorage;
-    private final CpkInfo customerProvidedKey;
+
     private final String accountName;
+    private final BlobServiceVersion serviceVersion;
+    private final CpkInfo customerProvidedKey;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
-     * @param azureBlobStorage the API client for blob storage
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
-    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo customerProvidedKey, String accountName) {
-        this.azureBlobStorage = azureBlobStorage;
-        this.customerProvidedKey = customerProvidedKey;
+    BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+        CpkInfo customerProvidedKey) {
+        this.azureBlobStorage = new AzureBlobStorageBuilder()
+            .pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion.getVersion())
+            .build();
+        this.serviceVersion = serviceVersion;
+
         this.accountName = accountName;
+        this.customerProvidedKey = customerProvidedKey;
     }
 
     /**
@@ -91,15 +107,13 @@ public final class BlobServiceAsyncClient {
      * @return A {@link BlobContainerAsyncClient} object pointing to the specified container
      */
     public BlobContainerAsyncClient getBlobContainerAsyncClient(String containerName) {
-        if (containerName == null || containerName.isEmpty()) {
+        if (ImplUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToUrlPath(getAccountUrl(), containerName).toString())
-            .pipeline(getHttpPipeline())
-            .version(getServiceVersion())
-            .build(), customerProvidedKey, accountName);
+        return new BlobContainerAsyncClient(getHttpPipeline(),
+            StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString(), getServiceVersion(), 
+            getAccountName(), containerName, customerProvidedKey);
     }
 
     /**
@@ -116,8 +130,8 @@ public final class BlobServiceAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return this.azureBlobStorage.getVersion();
+    public BlobServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
@@ -282,7 +296,7 @@ public final class BlobServiceAsyncClient {
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
-        return Utility.applyOptionalTimeout(
+        return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toIncludeType(), null,
                 null, Context.NONE), timeout);
@@ -425,7 +439,7 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Context context) {
-        Utility.assertNotNull("expiry", expiry);
+        StorageImplUtils.assertNotNull("expiry", expiry);
         if (start != null && !start.isBefore(expiry)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
@@ -433,8 +447,8 @@ public final class BlobServiceAsyncClient {
 
         return this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
-                    .setStart(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                    .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
                 null, null, context).map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 

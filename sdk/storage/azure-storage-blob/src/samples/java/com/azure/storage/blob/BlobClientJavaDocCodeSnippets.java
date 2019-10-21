@@ -55,15 +55,6 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#startCopyFromURL(String)}
-     */
-    public void startCopyFromURL() {
-        // BEGIN: com.azure.storage.blob.BlobClient.startCopyFromURL#String
-        System.out.printf("Copy identifier: %s%n", client.startCopyFromURL(url));
-        // END: com.azure.storage.blob.BlobClient.startCopyFromURL#String
-    }
-
-    /**
      * Code snippets for {@link BlobClient#abortCopyFromURL(String)}
      */
     public void abortCopyFromURL() {
@@ -133,11 +124,11 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#setHTTPHeaders(BlobHttpHeaders)}
+     * Code snippets for {@link BlobClient#setHttpHeaders(BlobHttpHeaders)}
      */
     public void setHTTPHeaders() {
         // BEGIN: com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHttpHeaders
-        client.setHTTPHeaders(new BlobHttpHeaders()
+        client.setHttpHeaders(new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"));
         System.out.println("Set HTTP headers completed");
@@ -203,26 +194,6 @@ public class BlobClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobClient.existsWithResponse#Duration-Context
         System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, new Context(key2, value2)).getValue());
         // END: com.azure.storage.blob.BlobClient.existsWithResponse#Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#startCopyFromURLWithResponse(String, Map, AccessTier, RehydratePriority,
-     * ModifiedAccessConditions, BlobAccessConditions, Duration, Context)}
-     */
-    public void startCopyFromURLWithResponseCodeSnippets() {
-
-        // BEGIN: com.azure.storage.blob.BlobClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
-        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
-            new LeaseAccessConditions().setLeaseId(leaseId));
-
-        System.out.printf("Copy identifier: %s%n",
-            client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
-                modifiedAccessConditions, blobAccessConditions, timeout,
-                new Context(key2, value2)));
-        // END: com.azure.storage.blob.BlobClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
 
     /**
@@ -304,7 +275,7 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#setHTTPHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions, Duration,
+     * Code snippets for {@link BlobClient#setHttpHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions, Duration,
      * Context)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
@@ -313,7 +284,7 @@ public class BlobClientJavaDocCodeSnippets {
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
         System.out.printf("Set HTTP headers completed with status %d%n",
-            client.setHTTPHeadersWithResponse(new BlobHttpHeaders()
+            client.setHttpHeadersWithResponse(new BlobHttpHeaders()
                 .setBlobContentLanguage("en-US")
                 .setBlobContentType("binary"), accessConditions, timeout, new Context(key1, value1))
                 .getStatusCode());

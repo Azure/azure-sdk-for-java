@@ -52,16 +52,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURL(String)}
-     */
-    public void startCopyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#String
-        client.startCopyFromURL(url)
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#String
-    }
-
-    /**
      * Code snippets for {@link BlobAsyncClient#abortCopyFromURL(String)}
      */
     public void abortCopyFromURLCodeSnippet() {
@@ -159,11 +149,11 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHTTPHeaders(BlobHttpHeaders)}
+     * Code snippets for {@link BlobAsyncClient#setHttpHeaders(BlobHttpHeaders)}
      */
     public void setHTTPHeadersCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHttpHeaders
-        client.setHTTPHeaders(new BlobHttpHeaders()
+        client.setHttpHeaders(new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"));
         // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHttpHeaders
@@ -218,31 +208,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#existsWithResponse()}
+     * Code snippet for {@link BlobAsyncClient#existsWithResponse()}abortCopyFromURL
      */
     public void existsWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.existsWithResponse
         client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
         // END: com.azure.storage.blob.BlobAsyncClient.existsWithResponse
-    }
-
-    /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(String, Map, AccessTier,
-     * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
-     */
-    public void startCopyFromURLWithResponseCodeSnippets() {
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
-        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
-
-        client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
-            modifiedAccessConditions, blobAccessConditions)
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
-        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
@@ -327,21 +298,21 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHTTPHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#setHttpHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.setHTTPHeadersWithResponse(new BlobHttpHeaders()
+        client.setHttpHeadersWithResponse(new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"), accessConditions).subscribe(
                 response ->
                     System.out.printf("Set HTTP headers completed with status %d%n",
                         response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions
     }
 
     /**

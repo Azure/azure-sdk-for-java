@@ -4,7 +4,8 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.core.util.polling.Poller;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileInfo;
@@ -67,7 +68,6 @@ public class FileJavaDocCodeSamples {
         return fileClient;
     }
 
-
     /**
      * Generates code sample for creating a {@link FileClient} with SAS token.
      *
@@ -88,7 +88,7 @@ public class FileJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link FileClient} with {@code connectionString} which turns into {@link
-     * SharedKeyCredential}
+     * StorageSharedKeyCredential}
      *
      * @return An instance of {@link FileClient}
      */
@@ -122,11 +122,11 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-filesmbproperties-string-map-duration-context
         FileHttpHeaders httpHeaders = new FileHttpHeaders()
-            .setFileContentType("text/html")
-            .setFileContentEncoding("gzip")
-            .setFileContentLanguage("en")
-            .setFileCacheControl("no-transform")
-            .setFileContentDisposition("attachment");
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
@@ -141,29 +141,20 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#startCopy(String, Map)}
+     * Generates a code sample for using {@link FileClient#beginCopy(String, Map, Duration)}
      */
-    public void startCopy() {
+    public void beginCopy() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.startCopy#string-map
-        FileCopyInfo response = fileClient.startCopy(
+        // BEGIN: com.azure.storage.file.fileClient.beginCopy#string-map-duration
+        Poller<FileCopyInfo, Void> poller = fileClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
-            Collections.singletonMap("file", "metadata"));
-        System.out.println("Complete copying the file with copy Id: " + response.getCopyId());
-        // END: com.azure.storage.file.fileClient.startCopy#string-map
-    }
+            Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
 
-    /**
-     * Generates a code sample for using {@link FileClient#startCopyWithResponse(String, Map, Duration, Context)}
-     */
-    public void startCopyWithResponse() {
-        FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context
-        Response<FileCopyInfo> response = fileClient.startCopyWithResponse(
-            "https://{accountName}.file.core.windows.net?{SASToken}",
-            Collections.singletonMap("file", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete copying the file with copy Id: " + response.getValue().getCopyId());
-        // END: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context
+        poller.getObserver().subscribe(response -> {
+            final FileCopyInfo value = response.getValue();
+            System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+        });
+        // END: com.azure.storage.file.fileClient.beginCopy#string-map-duration
     }
 
     /**
@@ -457,11 +448,11 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string
         FileHttpHeaders httpHeaders = new FileHttpHeaders()
-            .setFileContentType("text/html")
-            .setFileContentEncoding("gzip")
-            .setFileContentLanguage("en")
-            .setFileCacheControl("no-transform")
-            .setFileContentDisposition("attachment");
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
@@ -494,11 +485,11 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string-duration-Context
         FileHttpHeaders httpHeaders = new FileHttpHeaders()
-            .setFileContentType("text/html")
-            .setFileContentEncoding("gzip")
-            .setFileContentLanguage("en")
-            .setFileCacheControl("no-transform")
-            .setFileContentDisposition("attachment");
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())

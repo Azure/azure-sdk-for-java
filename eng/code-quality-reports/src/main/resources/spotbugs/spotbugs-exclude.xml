@@ -648,4 +648,9 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
+  <!-- Implementation name confusing with public API name -->
+  <Match>
+    <Class name="com.azure.core.implementation.http.UrlBuilder"/>
+    <Bug pattern="NM_CONFUSING"/>
+  </Match>
 </FindBugsFilter>

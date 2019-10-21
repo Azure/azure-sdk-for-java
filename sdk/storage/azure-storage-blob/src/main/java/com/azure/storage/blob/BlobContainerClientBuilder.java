@@ -13,15 +13,17 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
+import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
+import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -54,7 +56,7 @@ public final class BlobContainerClientBuilder {
     private String containerName;
 
     private CpkInfo customerProvidedKey;
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
 
@@ -97,14 +99,15 @@ public final class BlobContainerClientBuilder {
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (Objects.isNull(containerName) || containerName.isEmpty()) {
-            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
-        }
+        String blobContainerName = ImplUtils.isNullOrEmpty(containerName)
+            ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+            : containerName;
+
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (tokenCredential != null) {
                 return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
             } else if (sasTokenCredential != null) {
@@ -114,11 +117,8 @@ public final class BlobContainerClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s", endpoint, containerName))
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build(), customerProvidedKey, accountName);
+        return new BlobContainerAsyncClient(pipeline, String.format("%s/%s", endpoint, blobContainerName),
+            serviceVersion, accountName, blobContainerName, customerProvidedKey);
     }
 
     /**
@@ -134,6 +134,7 @@ public final class BlobContainerClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.accountName = parts.getAccountName();
             this.containerName = parts.getBlobContainerName();
 
             String sasToken = parts.getSasQueryParameters().encode();
@@ -168,14 +169,14 @@ public final class BlobContainerClientBuilder {
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated BlobContainerClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public BlobContainerClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public BlobContainerClientBuilder credential(StorageSharedKeyCredential credential) {
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -190,7 +191,7 @@ public final class BlobContainerClientBuilder {
      */
     public BlobContainerClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
@@ -205,7 +206,7 @@ public final class BlobContainerClientBuilder {
     public BlobContainerClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
     }
@@ -218,34 +219,47 @@ public final class BlobContainerClientBuilder {
      * @return the updated BlobContainerClientBuilder
      */
     public BlobContainerClientBuilder setAnonymousAccess() {
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
 
     /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
+     * Sets the connection string to connect to the service.
      *
      * @param connectionString Connection string of the storage account.
      * @return the updated BlobContainerClientBuilder
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain `AccountName` or `AccountKey`.
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException If {@code connectionString} in invalid.
      */
     public BlobContainerClientBuilder connectionString(String connectionString) {
-        BuilderHelper.configureConnectionString(connectionString, (accountName) -> this.accountName = accountName,
-            this::credential, this::endpoint, logger);
-
+        StorageConnectionString storageConnectionString
+                = StorageConnectionString.create(connectionString, logger);
+        StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
+        if (endpoint == null || endpoint.getPrimaryUri() == null) {
+            throw logger
+                    .logExceptionAsError(new IllegalArgumentException(
+                            "connectionString missing required settings to derive blob service endpoint."));
+        }
+        this.endpoint(endpoint.getPrimaryUri());
+        if (storageConnectionString.getAccountName() != null) {
+            this.accountName = storageConnectionString.getAccountName();
+        }
+        StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+        if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+            this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
+                    authSettings.getAccount().getAccessKey()));
+        } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+            this.sasToken(authSettings.getSasToken());
+        }
         return this;
     }
 
     /**
      * Sets the name of the container.
      *
-     * @param containerName Name of the container. If the value {@code null} or empty the root container, {@code $root},
-     * will be used.
+     * @param containerName Name of the container. If the value {@code null} or empty the root container, {@code $root}
+     * , will be used.
      * @return the updated BlobContainerClientBuilder object
      */
     public BlobContainerClientBuilder containerName(String containerName) {

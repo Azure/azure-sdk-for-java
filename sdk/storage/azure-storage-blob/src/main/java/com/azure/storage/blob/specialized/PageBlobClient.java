@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -137,7 +138,7 @@ public final class PageBlobClient extends BlobClientBase {
         Map<String, String> metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers,
             metadata, accessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -194,7 +195,7 @@ public final class PageBlobClient extends BlobClientBase {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
             fbb.subscribeOn(Schedulers.elastic()),
             pageBlobAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -255,7 +256,7 @@ public final class PageBlobClient extends BlobClientBase {
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceUrl,
             sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -296,7 +297,7 @@ public final class PageBlobClient extends BlobClientBase {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.clearPagesWithResponse(pageRange,
             pageBlobAccessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -330,7 +331,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient
+        return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
             .getPageRangesWithResponse(blobRange, accessConditions, context), timeout);
     }
 
@@ -373,7 +374,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient
+        return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
             .getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context), timeout);
     }
 
@@ -411,7 +412,7 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageBlobItem> resizeWithResponse(long size, BlobAccessConditions accessConditions, Duration timeout,
         Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resizeWithResponse(size, accessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -452,7 +453,7 @@ public final class PageBlobClient extends BlobClientBase {
         Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient
             .updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -502,6 +503,6 @@ public final class PageBlobClient extends BlobClientBase {
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<CopyStatusType>> response = pageBlobAsyncClient
             .copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

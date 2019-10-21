@@ -5,7 +5,7 @@ package com.azure.storage.queue
 
 
 import com.azure.core.util.Context
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueMessageItem
@@ -33,7 +33,7 @@ class QueueAPITests extends APISpec {
 
     def "Get queue URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName)
 
         when:
@@ -41,6 +41,18 @@ class QueueAPITests extends APISpec {
 
         then:
         expectURL == queueURL
+    }
+
+    def "IP based endpoint"() {
+        when:
+        def queueClient = new QueueClientBuilder()
+            .connectionString(connectionString)
+            .endpoint("http://127.0.0.1:10001/devstoreaccount1/myqueue")
+            .buildClient()
+
+        then:
+        queueClient.getAccountName() == "devstoreaccount1"
+        queueClient.getQueueName() == "myqueue"
     }
 
     def "Create queue with shared key"() {

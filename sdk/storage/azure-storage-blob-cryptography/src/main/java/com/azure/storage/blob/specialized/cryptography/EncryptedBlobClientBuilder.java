@@ -24,24 +24,23 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
+import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
+import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -55,7 +54,7 @@ import java.util.Objects;
  * {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
  * <li>Container and blob name if not specified in the {@link #endpoint(String)}, set through
  * {@link #containerName(String)} and {@link #blobName(String)} respectively.
- * <li>Credential set through {@link #credential(SharedKeyCredential)} , {@link #sasToken(String)}, or
+ * <li>Credential set through {@link #credential(StorageSharedKeyCredential)} , {@link #sasToken(String)}, or
  * {@link #connectionString(String)} if the container is not publicly accessible.
  * <li>Key and key wrapping algorithm (for encryption) and/or key resolver (for decryption) must be specified
  * through {@link #key(AsyncKeyEncryptionKey, String)} and {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}
@@ -79,7 +78,7 @@ public final class EncryptedBlobClientBuilder {
     private String blobName;
     private String snapshot;
 
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
 
@@ -100,75 +99,6 @@ public final class EncryptedBlobClientBuilder {
      * Creates a new instance of the EncryptedBlobClientBuilder
      */
     public EncryptedBlobClientBuilder() {
-    }
-
-    private AzureBlobStorageImpl constructImpl() {
-        Objects.requireNonNull(blobName, "'blobName' cannot be null.");
-        checkValidEncryptionParameters();
-
-        /*
-        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
-        to read and debug.
-         */
-        if (ImplUtils.isNullOrEmpty(containerName)) {
-            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
-        }
-        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-
-        if (httpPipeline != null) {
-            return new AzureBlobStorageBuilder()
-                .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-                .pipeline(httpPipeline)
-                .version(serviceVersion.getVersion())
-                .build();
-        }
-
-        String userAgentName = BlobCryptographyConfiguration.NAME;
-        String userAgentVersion = BlobCryptographyConfiguration.VERSION;
-        Configuration userAgentConfiguration = (configuration == null) ? Configuration.NONE : configuration;
-
-        // Closest to API goes first, closest to wire goes last.
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
-        policies.add(new UserAgentPolicy(userAgentName, userAgentVersion, userAgentConfiguration, serviceVersion));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
-        }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
-
-        policies.addAll(additionalPolicies);
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        policies.add(new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
-            .build());
-
-        policies.add(new HttpLoggingPolicy(logOptions));
-
-        policies.add(new ScrubEtagPolicy());
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        return new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
     }
 
     /**
@@ -196,12 +126,68 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient() {
-        return new EncryptedBlobAsyncClient(constructImpl(), snapshot, accountName, keyWrapper, keyWrapAlgorithm);
+        Objects.requireNonNull(blobName, "'blobName' cannot be null.");
+        checkValidEncryptionParameters();
+
+        /*
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
+        to read and debug.
+         */
+        if (ImplUtils.isNullOrEmpty(containerName)) {
+            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+        }
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
+
+        return new EncryptedBlobAsyncClient(getHttpPipeline(serviceVersion),
+            String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
+            blobName, snapshot, keyWrapper, keyWrapAlgorithm);
     }
 
-    protected void addOptionalEncryptionPolicy(List<HttpPipelinePolicy> policies) {
-        BlobDecryptionPolicy decryptionPolicy = new BlobDecryptionPolicy(keyWrapper, keyResolver);
-        policies.add(decryptionPolicy);
+    private HttpPipeline getHttpPipeline(BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return  httpPipeline;
+        }
+
+        String userAgentName = BlobCryptographyConfiguration.NAME;
+        String userAgentVersion = BlobCryptographyConfiguration.VERSION;
+        Configuration userAgentConfiguration = (configuration == null) ? Configuration.NONE : configuration;
+
+        // Closest to API goes first, closest to wire goes last.
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
+        policies.add(new UserAgentPolicy(userAgentName, userAgentVersion, userAgentConfiguration, serviceVersion));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddDatePolicy());
+
+        if (storageSharedKeyCredential != null) {
+            policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
+        }
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RequestRetryPolicy(retryOptions));
+
+        policies.addAll(additionalPolicies);
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        policies.add(new ResponseValidationPolicyBuilder()
+            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
+            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
+            .build());
+
+        policies.add(new HttpLoggingPolicy(logOptions));
+
+        policies.add(new ScrubEtagPolicy());
+
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     /**
@@ -243,14 +229,14 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public EncryptedBlobClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public EncryptedBlobClientBuilder credential(StorageSharedKeyCredential credential) {
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -265,7 +251,7 @@ public final class EncryptedBlobClientBuilder {
      */
     public EncryptedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
@@ -280,7 +266,7 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
     }
@@ -293,45 +279,40 @@ public final class EncryptedBlobClientBuilder {
      * @return the updated EncryptedBlobClientBuilder
      */
     public EncryptedBlobClientBuilder setAnonymousAccess() {
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
 
     /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
+     * Sets the connection string to connect to the service.
      *
      * @param connectionString Connection string of the storage account.
      * @return the updated EncryptedBlobClientBuilder
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain `AccountName` or `AccountKey`.
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException If {@code connectionString} is invalid.
      */
     public EncryptedBlobClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-
-        Map<String, String> connectionStringPieces = Utility.parseConnectionString(connectionString);
-
-        String accountName = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_NAME);
-        String accountKey = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_KEY);
-
-        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'connectionString' must contain 'AccountName' and 'AccountKey'."));
+        StorageConnectionString storageConnectionString
+                = StorageConnectionString.create(connectionString, logger);
+        StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
+        if (endpoint == null || endpoint.getPrimaryUri() == null) {
+            throw logger
+                    .logExceptionAsError(new IllegalArgumentException(
+                            "connectionString missing required settings to derive blob service endpoint."));
         }
-
-        String endpointProtocol = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_PROTOCOL);
-        String endpointSuffix = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX);
-
-        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            endpoint(String.format("%s://%s.blob.%s", endpointProtocol, accountName,
-                endpointSuffix.replaceFirst("^\\.", "")));
+        this.endpoint(endpoint.getPrimaryUri());
+        if (storageConnectionString.getAccountName() != null) {
+            this.accountName = storageConnectionString.getAccountName();
         }
-
-        this.accountName = accountName;
-        return credential(new SharedKeyCredential(accountName, accountKey));
+        StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+        if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+            this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
+                    authSettings.getAccount().getAccessKey()));
+        } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+            this.sasToken(authSettings.getSasToken());
+        }
+        return this;
     }
 
     /**

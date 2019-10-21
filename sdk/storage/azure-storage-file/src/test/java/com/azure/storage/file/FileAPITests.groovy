@@ -5,17 +5,19 @@ package com.azure.storage.file
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.core.util.polling.Poller
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileErrorCode
 import com.azure.storage.file.models.FileHttpHeaders
 import com.azure.storage.file.models.FileRange
+import com.azure.storage.file.models.FileStorageException
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.ShareSnapshotInfo
-import com.azure.storage.file.models.FileStorageException
+import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
@@ -46,14 +48,14 @@ class FileAPITests extends APISpec {
         shareClient.create()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHttpHeaders().setFileContentLanguage("en")
-            .setFileContentType("application/octet-stream")
+        httpHeaders = new FileHttpHeaders().setContentLanguage("en")
+            .setContentType("application/octet-stream")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get file URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -65,7 +67,7 @@ class FileAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -377,13 +379,13 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(getInputStream(data.getBytes()), data.length())
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasToken = new FileServiceSasSignatureValues()
             .setExpiryTime(getUTCNow().plusDays(1))
-            .setPermissions(new FileSasPermission().setReadPermission(true).toString())
-            .setCanonicalName(primaryFileClient.getShareName(), primaryFileClient.getFilePath(), credential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
-            .generateSASQueryParameters(credential)
+            .setPermissions(new FileSasPermission().setReadPermission(true))
+            .setShareName(primaryFileClient.getShareName())
+            .setFilePath(primaryFileClient.getFilePath())
+            .generateSasQueryParameters(credential)
             .encode()
 
         when:
@@ -412,11 +414,13 @@ class FileAPITests extends APISpec {
         def sourceURL = primaryFileClient.getFileUrl()
 
         when:
-        Response<FileCopyInfo> copyInfoResponse = primaryFileClient.startCopyWithResponse(sourceURL, null, null, null)
+        Poller<FileCopyInfo, Void> copyInfoResponse = primaryFileClient.beginCopy(sourceURL, null, null)
+        def verifier = StepVerifier.create(copyInfoResponse.getObserver())
 
         then:
-        FileTestHelper.assertResponseStatusCode(copyInfoResponse, 202)
-        copyInfoResponse.getValue().getCopyId() != null
+        verifier.assertNext({
+                assert it.getValue().getCopyId() != null
+            }).thenCancel().verify()
     }
 
     def "Start copy error"() {
@@ -424,11 +428,14 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        primaryFileClient.startCopyWithResponse("some url", testMetadata, null, null)
+        Poller<FileCopyInfo, Void> copyInfoPoller = primaryFileClient.beginCopy("some url", testMetadata, null)
+        def verifier = StepVerifier.create(copyInfoPoller.getObserver())
 
         then:
-        def e = thrown(FileStorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, FileErrorCode.INVALID_HEADER_VALUE)
+        verifier.verifyErrorSatisfies{
+            assert it instanceof FileStorageException
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
+        }
     }
 
     @Ignore

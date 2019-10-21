@@ -4,7 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
@@ -76,7 +76,7 @@ public class DirectoryJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link DirectoryClient} with {@code connectionString} which turns into
-     * {@link SharedKeyCredential}
+     * {@link StorageSharedKeyCredential}
      *
      * @return An instance of {@link DirectoryClient}
      */
@@ -165,11 +165,11 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
         FileHttpHeaders httpHeaders = new FileHttpHeaders()
-            .setFileContentType("text/html")
-            .setFileContentEncoding("gzip")
-            .setFileContentLanguage("en")
-            .setFileCacheControl("no-transform")
-            .setFileContentDisposition("attachment");
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())

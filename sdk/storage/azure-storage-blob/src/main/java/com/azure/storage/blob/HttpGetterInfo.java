@@ -5,8 +5,8 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.common.Utility;
 
+import com.azure.storage.common.implementation.StorageImplUtils;
 import java.time.Duration;
 
 /**
@@ -55,7 +55,7 @@ public final class HttpGetterInfo {
      */
     public HttpGetterInfo setCount(Long count) {
         if (count != null) {
-            Utility.assertInBounds("count", count, 0, Long.MAX_VALUE);
+            StorageImplUtils.assertInBounds("count", count, 0, Long.MAX_VALUE);
         }
         this.count = count;
         return this;

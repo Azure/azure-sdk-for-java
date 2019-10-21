@@ -50,10 +50,11 @@ class PipelineSample {
                 .buildAsyncClient();
 
         // Adding a couple of settings and then fetching all the settings in our repository.
-        final List<ConfigurationSetting> settings = Flux.concat(client.addSetting(new ConfigurationSetting().setKey("hello").setValue("world")),
-                client.setSetting("newSetting", null, "newValue"))
-                .then(client.listSettings(new SettingSelector().setKeys("*")).collectList())
-                .block();
+        final List<ConfigurationSetting> settings = Flux.concat(
+            client.addSetting("hello", null, "world"),
+            client.setSetting("newSetting", null, "newValue"))
+            .then(client.listSettings(new SettingSelector().setKeys("*")).collectList())
+            .block();
 
         // Cleaning up after ourselves by deleting the values.
         final Stream<ConfigurationSetting> stream = settings == null

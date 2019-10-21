@@ -13,8 +13,8 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.implementation.models.ListSharesIncludeType;
@@ -48,22 +48,25 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  *
  * @see FileServiceClientBuilder
  * @see FileServiceClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = FileServiceClientBuilder.class, isAsync = true)
 public final class FileServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(FileServiceAsyncClient.class);
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String accountName;
+    private final FileServiceVersion serviceVersion;
 
     /**
      * Creates a FileServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
      *
      * @param azureFileStorage Client that interacts with the service interfaces.
      */
-    FileServiceAsyncClient(AzureFileStorageImpl azureFileStorage, String accountName) {
+    FileServiceAsyncClient(AzureFileStorageImpl azureFileStorage, String accountName,
+        FileServiceVersion serviceVersion) {
         this.azureFileStorageClient = azureFileStorage;
         this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -80,8 +83,8 @@ public final class FileServiceAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return azureFileStorageClient.getVersion();
+    public FileServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
@@ -110,7 +113,7 @@ public final class FileServiceAsyncClient {
      * @return a ShareAsyncClient that interacts with the specified share
      */
     public ShareAsyncClient getShareAsyncClient(String shareName, String snapshot) {
-        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot, accountName);
+        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot, accountName, serviceVersion);
     }
 
     /**
@@ -199,7 +202,7 @@ public final class FileServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-            nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+            nextMarker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.services()
                     .listSharesSegmentWithRestResponseAsync(
                         prefix, nextMarker, maxResultsPerPage, include, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -416,7 +419,8 @@ public final class FileServiceAsyncClient {
 
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB, Context context) {
-        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null, accountName);
+        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null,
+            accountName, serviceVersion);
 
         return shareAsyncClient.createWithResponse(metadata, quotaInGB, context).map(response ->
             new SimpleResponse<>(response, shareAsyncClient));

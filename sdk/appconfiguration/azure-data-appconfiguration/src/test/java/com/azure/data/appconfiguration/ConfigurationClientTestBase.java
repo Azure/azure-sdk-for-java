@@ -390,7 +390,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listRevisionsWithPaginationAndRepeatIterator();
 
-    @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
     @Test
     public abstract void getSettingWhenValueNotUpdated();
 
@@ -530,7 +529,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             || !Objects.equals(o1.getValue(), o2.getValue())
             || !Objects.equals(o1.getETag(), o2.getETag())
             || !Objects.equals(o1.getLastModified(), o2.getLastModified())
-            || !Objects.equals(o1.isLocked(), o2.isLocked())
+            || !Objects.equals(o1.isReadOnly(), o2.isReadOnly())
             || !Objects.equals(o1.getContentType(), o2.getContentType())
             || ImplUtils.isNullOrEmpty(o1.getTags()) != ImplUtils.isNullOrEmpty(o2.getTags())) {
             return false;

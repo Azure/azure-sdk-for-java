@@ -260,63 +260,63 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#listBlobsFlat()}
+     * Code snippet for {@link BlobContainerAsyncClient#listBlobs()}
      */
     public void listBlobsFlat() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat
-        client.listBlobsFlat().subscribe(blob ->
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs
+        client.listBlobs().subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#listBlobsFlat(ListBlobsOptions)}
+     * Code snippet for {@link BlobContainerAsyncClient#listBlobs(ListBlobsOptions)}
      */
     public void listBlobsFlat2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat#ListBlobsOptions
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("prefixToMatch")
             .setDetails(new BlobListDetails()
                 .setRetrieveDeletedBlobs(true)
                 .setRetrieveSnapshots(true));
 
-        client.listBlobsFlat(options).subscribe(blob ->
+        client.listBlobs(options).subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat#ListBlobsOptions
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#listBlobsHierarchy(String)}
+     * Code snippet for {@link BlobContainerAsyncClient#listBlobsByHierarchy(String)}
      */
     public void listBlobsHierarchy() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String
-        client.listBlobsHierarchy("directoryName").subscribe(blob ->
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String
+        client.listBlobsByHierarchy("directoryName").subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isDeleted()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#listBlobsHierarchy(String, ListBlobsOptions)}
+     * Code snippet for {@link BlobContainerAsyncClient#listBlobsByHierarchy(String, ListBlobsOptions)}
      */
     public void listBlobsHierarchy2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String-ListBlobsOptions
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String-ListBlobsOptions
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("directoryName")
             .setDetails(new BlobListDetails()
                 .setRetrieveDeletedBlobs(true)
                 .setRetrieveSnapshots(true));
 
-        client.listBlobsHierarchy("/", options).subscribe(blob ->
+        client.listBlobsByHierarchy("/", options).subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String-ListBlobsOptions
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String-ListBlobsOptions
     }
 
     /**

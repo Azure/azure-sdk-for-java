@@ -4,13 +4,16 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.BlockBlobCommitBlockListHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobUploadHeaders;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -32,6 +35,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -71,10 +75,19 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
-     * @param azureBlobStorage the API client for blob storage
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
-    BlockBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
-        super(azureBlobStorage, snapshot, cpk, accountName);
+    BlockBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
     /**
@@ -99,7 +112,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
-        return uploadWithResponse(data, length, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return uploadWithResponse(data, length, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -130,8 +147,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
-        return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, accessConditions,
-            context));
+        try {
+            return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, accessConditions,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
@@ -141,7 +162,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
             null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(),
             getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -165,7 +191,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long}
      */
     public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuffer> data, long length) {
-        return stageBlockWithResponse(base64BlockID, data, length, null).flatMap(FluxUtil::toMono);
+        try {
+            return stageBlockWithResponse(base64BlockID, data, length, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -192,8 +222,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
         LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> stageBlockWithResponse(base64BlockID, data, length, leaseAccessConditions,
-            context));
+        try {
+            return withContext(context -> stageBlockWithResponse(base64BlockID, data, length, leaseAccessConditions,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
@@ -222,8 +256,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> stageBlockFromURL(String base64BlockID, String sourceUrl, BlobRange sourceRange) {
-        return this.stageBlockFromURLWithResponse(base64BlockID, sourceUrl, sourceRange, null, null, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return this.stageBlockFromURLWithResponse(base64BlockID, sourceUrl, sourceRange, null, null, null)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -252,8 +290,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockFromURLWithResponse(String base64BlockID, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions) {
-        return withContext(context -> stageBlockFromURLWithResponse(base64BlockID, sourceUrl, sourceRange,
-            sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions));
+        try {
+            return withContext(context -> stageBlockFromURLWithResponse(base64BlockID, sourceUrl, sourceRange,
+                sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> stageBlockFromURLWithResponse(String base64BlockID, String sourceUrl,
@@ -287,7 +329,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the list of blocks.
      */
     public Mono<BlockList> listBlocks(BlockListType listType) {
-        return this.listBlocksWithResponse(listType, null).map(Response::getValue);
+        try {
+            return this.listBlocksWithResponse(listType, null).map(Response::getValue);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -306,8 +352,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType,
         LeaseAccessConditions leaseAccessConditions) {
-
-        return withContext(context -> listBlocksWithResponse(listType, leaseAccessConditions, context));
+        try {
+            return withContext(context -> listBlocksWithResponse(listType, leaseAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType,
@@ -334,7 +383,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the block blob.
      */
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIDs) {
-        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return commitBlockListWithResponse(base64BlockIDs, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -358,8 +411,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
-        return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, tier,
-            accessConditions, context));
+        try {
+            return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, tier,
+                accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
@@ -371,6 +428,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tier, null,
             headers, accessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
             accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 }

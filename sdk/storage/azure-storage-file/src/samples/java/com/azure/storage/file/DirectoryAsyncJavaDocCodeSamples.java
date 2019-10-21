@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.NtfsFileAttributes;
 
@@ -62,7 +62,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryAsyncClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link DirectoryAsyncClient} with {@code connectionString} which turns into {@link StorageSharedKeyCredential}
      * @return An instance of {@link DirectoryAsyncClient}
      */
     public DirectoryAsyncClient createAsyncClientWithConnectionString() {
@@ -158,11 +158,11 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
         FileHttpHeaders httpHeaders = new FileHttpHeaders()
-            .setFileContentType("text/html")
-            .setFileContentEncoding("gzip")
-            .setFileContentLanguage("en")
-            .setFileCacheControl("no-transform")
-            .setFileContentDisposition("attachment");
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
