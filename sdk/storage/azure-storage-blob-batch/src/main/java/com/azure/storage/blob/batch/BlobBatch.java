@@ -225,7 +225,8 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
-        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, Utility.urlEncode(blobName)), accessTier, null);
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, Utility.urlEncode(blobName)),
+            accessTier,null);
     }
 
     /**
@@ -247,8 +248,8 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
-        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, Utility.urlEncode(blobName)), accessTier,
-            leaseAccessConditions);
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, Utility.urlEncode(blobName)),
+            accessTier, leaseAccessConditions);
     }
 
     /**
