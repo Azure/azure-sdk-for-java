@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.file.FileSmbProperties;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 /**
  * Contains property information about a File in the storage File service.
  */
+@Immutable
 public final class FileProperties {
     private final String eTag;
     private final OffsetDateTime lastModified;

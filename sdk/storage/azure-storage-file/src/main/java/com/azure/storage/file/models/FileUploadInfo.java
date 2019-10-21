@@ -3,16 +3,29 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 
+/**
+ * This class contains the response information returned from the service when the file is uploaded.
+ */
+@Immutable
 public final class FileUploadInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final byte[] contentMD5;
     private final Boolean isServerEncrypted;
 
+    /**
+     * Constructs a {@link FileUploadInfo}.
+     *
+     * @param eTag ETag of the file.
+     * @param lastModified Datetime when the file was last modified.
+     * @param contentMD5 MD5 of the file's content.
+     * @param isServerEncrypted Flag indicating the encryption status of the file's content on the server.
+     */
     public FileUploadInfo(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
         final Boolean isServerEncrypted) {
         this.eTag = eTag;

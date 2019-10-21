@@ -16,6 +16,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -883,7 +884,10 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null, context)
-            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                ContainerGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
+            });
     }
 
 
