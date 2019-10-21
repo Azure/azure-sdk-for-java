@@ -210,11 +210,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-Boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * <p><strong>Using Progress Reporting</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-Boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
