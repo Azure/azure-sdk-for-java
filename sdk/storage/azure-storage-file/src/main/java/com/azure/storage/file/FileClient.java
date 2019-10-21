@@ -10,8 +10,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileInfo;
@@ -77,7 +79,7 @@ public class FileClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public FileServiceVersion getServiceVersion() {
         return fileAsyncClient.getServiceVersion();
     }
 
@@ -179,7 +181,7 @@ public class FileClient {
         Context context) {
         Mono<Response<FileInfo>> response = fileAsyncClient
             .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -189,7 +191,7 @@ public class FileClient {
      *
      * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.startCopy#string-map}
+     * {@codesnippet com.azure.storage.file.fileClient.beginCopy#string-map-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
@@ -197,39 +199,13 @@ public class FileClient {
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
-     * @return The {@link FileCopyInfo file copy info}
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
+     * @return A {@link Poller} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public FileCopyInfo startCopy(String sourceUrl, Map<String, String> metadata) {
-        return startCopyWithResponse(sourceUrl, metadata, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Copies a blob or file to a destination file within the storage account.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
-     *
-     * {@codesnippet com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
-     *
-     * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
-     * naming rules.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link FileCopyInfo file copy info} and the status of copying the file.
-     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
-     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
-     */
-    public Response<FileCopyInfo> startCopyWithResponse(String sourceUrl, Map<String, String> metadata,
-        Duration timeout, Context context) {
-        Mono<Response<FileCopyInfo>> response = fileAsyncClient.startCopyWithResponse(sourceUrl, metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, Duration pollInterval) {
+        return fileAsyncClient.beginCopy(sourceUrl, metadata, pollInterval);
     }
 
     /**
@@ -271,7 +247,7 @@ public class FileClient {
      */
     public Response<Void> abortCopyWithResponse(String copyId, Duration timeout, Context context) {
         Mono<Response<Void>> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -322,7 +298,7 @@ public class FileClient {
         Duration timeout, Context context) {
         Mono<Response<FileProperties>> response = fileAsyncClient.downloadToFileWithResponse(downloadFilePath, range,
             context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -381,7 +357,7 @@ public class FileClient {
                 }
             }).thenReturn(new SimpleResponse<>(response, null)));
 
-        return Utility.blockWithOptionalTimeout(download, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -424,7 +400,7 @@ public class FileClient {
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = fileAsyncClient.deleteWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -467,7 +443,7 @@ public class FileClient {
      */
     public Response<FileProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<FileProperties>> response = fileAsyncClient.getPropertiesWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -534,7 +510,7 @@ public class FileClient {
         FileSmbProperties smbProperties, String filePermission, Duration timeout, Context context) {
         Mono<Response<FileInfo>> response = fileAsyncClient
             .setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -592,7 +568,7 @@ public class FileClient {
     public Response<FileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
         Mono<Response<FileMetadataInfo>> response = fileAsyncClient.setMetadataWithResponse(metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -645,7 +621,7 @@ public class FileClient {
      */
     public Response<FileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset, Duration timeout,
         Context context) {
-        return Utility.blockWithOptionalTimeout(fileAsyncClient.uploadWithResponse(Utility
+        return StorageImplUtils.blockWithOptionalTimeout(fileAsyncClient.uploadWithResponse(Utility
                 .convertStreamToByteBuffer(data, length, (int) FileAsyncClient.FILE_DEFAULT_BLOCK_SIZE),
             length, offset, context), timeout);
     }
@@ -703,7 +679,7 @@ public class FileClient {
         long sourceOffset, String sourceUrl, Duration timeout, Context context) {
         Mono<Response<FileUploadRangeFromUrlInfo>> response = fileAsyncClient.uploadRangeFromUrlWithResponse(length,
             destinationOffset, sourceOffset, sourceUrl, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -750,7 +726,7 @@ public class FileClient {
     public Response<FileUploadInfo> clearRangeWithResponse(long length, long offset, Duration timeout,
         Context context) {
         Mono<Response<FileUploadInfo>> response = fileAsyncClient.clearRangeWithResponse(length, offset, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -892,7 +868,7 @@ public class FileClient {
      * @return A response that only contains headers and response status code.
      */
     public Response<Void> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(fileAsyncClient
+        return StorageImplUtils.blockWithOptionalTimeout(fileAsyncClient
             .forceCloseHandleWithResponse(handleId, context), timeout);
     }
 

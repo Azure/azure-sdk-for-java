@@ -11,8 +11,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
+import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
+import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -103,10 +106,13 @@ public class FileClientBuilder {
     public FileClientBuilder() {
     }
 
-    private AzureFileStorageImpl constructImpl() {
+    private FileServiceVersion getServiceVersion() {
+        return version != null ? version : FileServiceVersion.getLatest();
+    }
+
+    private AzureFileStorageImpl constructImpl(FileServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
-        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
@@ -142,7 +148,9 @@ public class FileClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public DirectoryAsyncClient buildDirectoryAsyncClient() {
-        return new DirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
+        FileServiceVersion serviceVersion = getServiceVersion();
+        return new DirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
+            accountName, serviceVersion);
     }
 
     /**
@@ -180,8 +188,9 @@ public class FileClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public FileAsyncClient buildFileAsyncClient() {
-
-        return new FileAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
+        FileServiceVersion serviceVersion = getServiceVersion();
+        return new FileAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
+            accountName, serviceVersion);
     }
 
     /**
@@ -222,8 +231,7 @@ public class FileClientBuilder {
         try {
             URL fullUrl = new URL(endpoint);
             this.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
-
-            this.accountName = Utility.getAccountName(fullUrl);
+            this.accountName = BuilderHelper.getAccountName(fullUrl);
 
             // Attempt to get the share name and file path from the URL passed
             String[] pathSegments = fullUrl.getPath().split("/");
@@ -234,7 +242,7 @@ public class FileClientBuilder {
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new FileServiceSasQueryParameters(
-                Utility.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
+                StorageImplUtils.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 sasToken(sasToken);
             }
@@ -311,19 +319,32 @@ public class FileClientBuilder {
     }
 
     /**
-     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally,
-     * if the connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
+     * Sets the connection string to connect to the service.
      *
      * @param connectionString Connection string of the storage account.
      * @return the updated FileClientBuilder
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain `AccountName` or `AccountKey`.
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException If {@code connectionString} in invalid.
      */
     public FileClientBuilder connectionString(String connectionString) {
-        BuilderHelper.configureConnectionString(connectionString, (accountName) -> this.accountName = accountName,
-            this::credential, this::endpoint, logger);
-
+        StorageConnectionString storageConnectionString
+                = StorageConnectionString.create(connectionString, logger);
+        StorageEndpoint endpoint = storageConnectionString.getFileEndpoint();
+        if (endpoint == null || endpoint.getPrimaryUri() == null) {
+            throw logger
+                    .logExceptionAsError(new IllegalArgumentException(
+                            "connectionString missing required settings to derive file service endpoint."));
+        }
+        this.endpoint(endpoint.getPrimaryUri());
+        if (storageConnectionString.getAccountName() != null) {
+            this.accountName = storageConnectionString.getAccountName();
+        }
+        StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+        if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+            this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
+                    authSettings.getAccount().getAccessKey()));
+        } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+            this.sasToken(authSettings.getSasToken());
+        }
         return this;
     }
 

@@ -192,7 +192,7 @@ public abstract class BaseSasQueryParameters {
         if (dateTime == null) {
             return null;
         } else {
-            return Utility.ISO_8601_UTC_DATE_FORMATTER.format(dateTime);
+            return Constants.ISO_8601_UTC_DATE_FORMATTER.format(dateTime);
         }
     }
 

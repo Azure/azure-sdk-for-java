@@ -3,8 +3,12 @@
 
 package com.azure.storage.common;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,7 +92,8 @@ public final class StorageSharedKeyCredential {
      * @return the SharedKey authorization value
      */
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, Map<String, String> headers) {
-        String signature = Utility.computeHMac256(accountKey, buildStringToSign(requestURL, httpMethod, headers));
+        String signature = StorageImplUtils.computeHMac256(accountKey,
+            buildStringToSign(requestURL, httpMethod, headers));
         return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
     }
 
@@ -102,7 +107,7 @@ public final class StorageSharedKeyCredential {
      * string, or the UTF-8 charset isn't supported.
      */
     public String computeHmac256(final String stringToSign) {
-        return Utility.computeHMac256(accountKey, stringToSign);
+        return StorageImplUtils.computeHMac256(accountKey, stringToSign);
     }
 
     private String buildStringToSign(URL requestURL, String httpMethod, Map<String, String> headers) {
@@ -110,7 +115,8 @@ public final class StorageSharedKeyCredential {
         contentLength = contentLength.equals("0") ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
-        String dateHeader = (headers.containsKey("x-ms-date")) ? "" : getStandardHeaderValue(headers, "Date");
+        String dateHeader = (headers.containsKey("x-ms-date")) ? ""
+            : getStandardHeaderValue(headers, "Date");
 
         return String.join("\n",
             httpMethod,
@@ -185,7 +191,7 @@ public final class StorageSharedKeyCredential {
         }
 
         // The URL object's query field doesn't include the '?'. The QueryStringDecoder expects it.
-        Map<String, String[]> queryParams = Utility.parseQueryStringSplitValues(requestURL.getQuery());
+        Map<String, String[]> queryParams = StorageImplUtils.parseQueryStringSplitValues(requestURL.getQuery());
 
         ArrayList<String> queryParamNames = new ArrayList<>(queryParams.keySet());
         Collections.sort(queryParamNames);
@@ -203,4 +209,23 @@ public final class StorageSharedKeyCredential {
         // append to main string builder the join of completed params with new line
         return canonicalizedResource.toString();
     }
+
+    /**
+     * Searches for a {@link StorageSharedKeyCredential} in the passed {@link HttpPipeline}.
+     *
+     * @param httpPipeline Pipeline being searched
+     * @return a StorageSharedKeyCredential if the pipeline contains one, otherwise null.
+     */
+    public static StorageSharedKeyCredential getSharedKeyCredentialFromPipeline(HttpPipeline httpPipeline) {
+        for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy httpPipelinePolicy = httpPipeline.getPolicy(i);
+            if (httpPipelinePolicy instanceof StorageSharedKeyCredentialPolicy) {
+                StorageSharedKeyCredentialPolicy storageSharedKeyCredentialPolicy =
+                    (StorageSharedKeyCredentialPolicy) httpPipelinePolicy;
+                return storageSharedKeyCredentialPolicy.sharedKeyCredential();
+            }
+        }
+        return null;
+    }
+    
 }

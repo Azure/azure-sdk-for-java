@@ -36,10 +36,10 @@ class QueueSASTests extends APISpec {
         def perms = QueueSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getAddPermission() == add
-        perms.getUpdatePermission() == update
-        perms.getProcessPermission() == process
+        perms.hasReadPermission() == read
+        perms.hasAddPermission() == add
+        perms.hasUpdatePermission() == update
+        perms.hasProcessPermission() == process
 
         where:
         permString || read  | add   | update | process
@@ -86,13 +86,12 @@ class QueueSASTests extends APISpec {
     def "queueServiceSASSignatureValues canonicalizedResource"() {
         setup:
         def queueName = queueClient.getQueueName()
-        def accountName = "account"
 
         when:
-        def serviceSASSignatureValues = new QueueServiceSasSignatureValues().setCanonicalName(queueName, accountName)
+        def serviceSASSignatureValues = new QueueServiceSasSignatureValues().setQueueName(queueName)
 
         then:
-        serviceSASSignatureValues.getCanonicalName() == "/queue/" + accountName + "/" + queueName
+        serviceSASSignatureValues.getQueueName() == queueName
     }
 
     @Test
@@ -115,13 +114,13 @@ class QueueSASTests extends APISpec {
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
-            .setPermissions(permissions.toString())
+            .setPermissions(permissions)
             .setExpiryTime(expiryTime)
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
             .setSasIpRange(ipRange)
-            .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
-            .generateSASQueryParameters(credential)
+            .setQueueName(queueClient.getQueueName())
+            .generateSasQueryParameters(credential)
             .encode()
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
@@ -165,13 +164,13 @@ class QueueSASTests extends APISpec {
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
-            .setPermissions(permissions.toString())
+            .setPermissions(permissions)
             .setExpiryTime(expiryTime)
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
             .setSasIpRange(ipRange)
-            .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
-            .generateSASQueryParameters(credential)
+            .setQueueName(queueClient.getQueueName())
+            .generateSasQueryParameters(credential)
             .encode()
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
@@ -218,8 +217,8 @@ class QueueSASTests extends APISpec {
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasIdentifier = new QueueServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
-            .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
-            .generateSASQueryParameters(credential)
+            .setQueueName(queueClient.getQueueName())
+            .generateSasQueryParameters(credential)
             .encode()
 
         def clientBuilder = queueBuilderHelper(interceptorManager)
@@ -240,7 +239,7 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS create queue delete queue"() {
         def service = new AccountSasService()
-            .setQueue(true)
+            .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -274,7 +273,7 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS list queues"() {
         def service = new AccountSasService()
-            .setQueue(true)
+            .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)

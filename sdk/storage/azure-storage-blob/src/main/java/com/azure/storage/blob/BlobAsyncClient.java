@@ -3,11 +3,10 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -34,12 +33,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -77,15 +74,21 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
 
     /**
-     * Constructor for use by {@link BlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      *
-     * @param azureBlobStorage the API client for blob storage
-     * @param snapshot The optional snapshot id of the snapshot blob
-     * @param cpk The optional client provided key
-     * @param accountName The account name
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
-    protected BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
-        super(azureBlobStorage, snapshot, cpk, accountName);
+    protected BlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+        String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
     /**
@@ -96,11 +99,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @Override
     public BlobAsyncClient getSnapshotClient(String snapshot) {
-        return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(getBlobUrl())
-            .pipeline(getHttpPipeline())
-            .version(getServiceVersion())
-            .build(), getSnapshotId(), getCustomerProvidedKey(), accountName);
+        return new BlobAsyncClient(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey());
     }
 
     /**
@@ -134,12 +134,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .endpoint(getBlobUrl())
-            .snapshot(getSnapshotId());
-
-        Optional<BlobServiceVersion> version = Arrays.stream(BlobServiceVersion.values())
-            .filter(en -> Objects.equals(en.getVersion(), azureBlobStorage.getVersion()))
-            .findFirst();
-        builder.serviceVersion(version.orElseGet(BlobServiceVersion::getLatest));
+            .snapshot(getSnapshotId())
+            .serviceVersion(getServiceVersion());
 
         CpkInfo cpk = getCustomerProvidedKey();
         if (cpk != null) {

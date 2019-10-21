@@ -12,8 +12,8 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
@@ -65,6 +65,7 @@ public final class QueueAsyncClient {
     private final AzureQueueStorageImpl client;
     private final String queueName;
     private final String accountName;
+    private final QueueServiceVersion serviceVersion;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -73,11 +74,13 @@ public final class QueueAsyncClient {
      * @param client Client that interacts with the service interfaces
      * @param queueName Name of the queue
      */
-    QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName) {
+    QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
+        QueueServiceVersion serviceVersion) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
         this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -92,8 +95,8 @@ public final class QueueAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return client.getVersion();
+    public QueueServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
@@ -650,7 +653,7 @@ public final class QueueAsyncClient {
         Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.client.messages()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
                 .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -721,7 +724,7 @@ public final class QueueAsyncClient {
     PagedFlux<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.client.messages()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
                 .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),

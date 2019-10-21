@@ -81,7 +81,7 @@ public final class ConfigurationClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline pipeline;
-    private RetryPolicy retryPolicy;
+    private HttpPipelinePolicy retryPolicy;
     private Configuration configuration;
     private ConfigurationServiceVersion version;
 
@@ -297,14 +297,14 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link HttpPipelinePolicy} that is used when each request is sent.
      *
      * The default retry policy will be used if not provided {@link ConfigurationClientBuilder#buildAsyncClient()}
      * to build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
-     * @param retryPolicy RetryPolicy applied to each request.
+     * @param retryPolicy user's retry policy applied to each request.
      * @return The updated ConfigurationClientBuilder object.
      */
-    public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public ConfigurationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }

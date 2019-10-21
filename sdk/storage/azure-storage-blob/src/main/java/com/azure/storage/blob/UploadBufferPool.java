@@ -5,7 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -59,13 +59,13 @@ final class UploadBufferPool {
         We only need one overflow buffer because the max size of a ByteBuffer is assumed to be the size as a buffer in
         the pool.
          */
-        Utility.assertInBounds("numBuffs", numBuffs, 2, Integer.MAX_VALUE);
+        StorageImplUtils.assertInBounds("numBuffs", numBuffs, 2, Integer.MAX_VALUE);
         this.maxBuffs = numBuffs;
         buffers = new LinkedBlockingQueue<>(numBuffs);
 
 
         // These buffers will be used in calls to stageBlock, so they must be no greater than block size.
-        Utility.assertInBounds("buffSize", buffSize, 1, BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
+        StorageImplUtils.assertInBounds("buffSize", buffSize, 1, BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
         this.buffSize = buffSize;
 
         // We prep the queue with two buffers in case there is overflow.

@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
@@ -66,7 +66,7 @@ public class DirectoryClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public FileServiceVersion getServiceVersion() {
         return directoryAsyncClient.getServiceVersion();
     }
 
@@ -143,7 +143,7 @@ public class DirectoryClient {
         Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<DirectoryInfo>> response = directoryAsyncClient
             .createWithResponse(smbProperties, filePermission, metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -185,7 +185,7 @@ public class DirectoryClient {
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = directoryAsyncClient.deleteWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -228,7 +228,7 @@ public class DirectoryClient {
      */
     public Response<DirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<DirectoryProperties>> response = directoryAsyncClient.getPropertiesWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -274,7 +274,7 @@ public class DirectoryClient {
         Duration timeout, Context context) {
         Mono<Response<DirectoryInfo>> response = directoryAsyncClient
             .setPropertiesWithResponse(smbProperties, filePermission, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -334,7 +334,7 @@ public class DirectoryClient {
         Context context) {
         Mono<Response<DirectorySetMetadataInfo>> response = directoryAsyncClient
             .setMetadataWithResponse(metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -453,7 +453,7 @@ public class DirectoryClient {
      * @return A response that only contains headers and response status code.
      */
     public Response<Void> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(directoryAsyncClient
+        return StorageImplUtils.blockWithOptionalTimeout(directoryAsyncClient
             .forceCloseHandleWithResponse(handleId, context), timeout);
     }
 
@@ -581,7 +581,7 @@ public class DirectoryClient {
      */
     public Response<Void> deleteSubDirectoryWithResponse(String subDirectoryName, Duration timeout, Context context) {
         Mono<Response<Void>> response = directoryAsyncClient.deleteSubDirectoryWithResponse(subDirectoryName, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -685,7 +685,7 @@ public class DirectoryClient {
      */
     public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {
         Mono<Response<Void>> response = directoryAsyncClient.deleteFileWithResponse(fileName, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

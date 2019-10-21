@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.UrlBuilder;
@@ -11,7 +12,13 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.PageBlobClearPagesHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobCreateHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobResizeHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobUpdateSequenceNumberHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobUploadPagesFromURLHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobUploadPagesHeaders;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -67,10 +74,19 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
-     * @param azureBlobStorage the API client for blob storage
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
-    PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
-        super(azureBlobStorage, snapshot, cpk, accountName);
+    PageBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
     private static String pageRangeToString(PageRange pageRange) {
@@ -164,7 +180,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, size,
             null, null, metadata, sequenceNumber, null, headers, accessConditions.getLeaseAccessConditions(),
             getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                PageBlobCreateHeaders hd = rb.getDeserializedHeaders();
+                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), null);
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -251,7 +272,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobAccessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
             pageBlobAccessConditions.getSequenceNumberAccessConditions(),
             pageBlobAccessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                PageBlobUploadPagesHeaders hd = rb.getDeserializedHeaders();
+                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobSequenceNumber());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -356,7 +382,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             url, sourceRangeString, 0, rangeString, sourceContentMD5, null, null, null, getCustomerProvidedKey(),
             destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getSequenceNumberAccessConditions(),
             destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context)
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                PageBlobUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
+                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), null);
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -424,7 +455,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobAccessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
             pageBlobAccessConditions.getSequenceNumberAccessConditions(),
             pageBlobAccessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                PageBlobClearPagesHeaders hd = rb.getDeserializedHeaders();
+                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobSequenceNumber());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -606,7 +642,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().resizeWithRestResponseAsync(null,
             null, size, null, null, accessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
             accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                PageBlobResizeHeaders hd = rb.getDeserializedHeaders();
+                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null,
+                    hd.getBlobSequenceNumber());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -671,9 +712,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
 
         return this.azureBlobStorage.pageBlobs().updateSequenceNumberWithRestResponseAsync(null,
-            null, action, null, sequenceNumber, null,
-            accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
+                null, action, null, sequenceNumber, null,
+                accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context)
+            .map(rb -> {
+                PageBlobUpdateSequenceNumberHeaders hd = rb.getDeserializedHeaders();
+                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null,
+                    hd.getBlobSequenceNumber());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**

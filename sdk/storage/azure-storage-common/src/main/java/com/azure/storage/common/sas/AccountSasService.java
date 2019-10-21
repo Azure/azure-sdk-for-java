@@ -69,7 +69,7 @@ public final class AccountSasService {
     /**
      * @return the access status for blob resources.
      */
-    public boolean isBlob() {
+    public boolean hasBlobAccess() {
         return blob;
     }
 
@@ -79,7 +79,7 @@ public final class AccountSasService {
      * @param blob Access status to set
      * @return the updated AccountSasService object.
      */
-    public AccountSasService setBlob(boolean blob) {
+    public AccountSasService setBlobAccess(boolean blob) {
         this.blob = blob;
         return this;
     }
@@ -87,7 +87,7 @@ public final class AccountSasService {
     /**
      * @return the access status for file resources.
      */
-    public boolean isFile() {
+    public boolean hasFileAccess() {
         return file;
     }
 
@@ -97,7 +97,7 @@ public final class AccountSasService {
      * @param file Access status to set
      * @return the updated AccountSasService object.
      */
-    public AccountSasService setFile(boolean file) {
+    public AccountSasService setFileAccess(boolean file) {
         this.file = file;
         return this;
     }
@@ -105,7 +105,7 @@ public final class AccountSasService {
     /**
      * @return the access status for queue resources.
      */
-    public boolean isQueue() {
+    public boolean hasQueueAccess() {
         return queue;
     }
 
@@ -115,7 +115,7 @@ public final class AccountSasService {
      * @param queue Access status to set
      * @return the updated AccountSasService object.
      */
-    public AccountSasService setQueue(boolean queue) {
+    public AccountSasService setQueueAccess(boolean queue) {
         this.queue = queue;
         return this;
     }
@@ -123,7 +123,7 @@ public final class AccountSasService {
     /**
      * @return the access status for table resources.
      */
-    public boolean isTable() {
+    public boolean hasTableAccess() {
         return table;
     }
 
@@ -133,7 +133,7 @@ public final class AccountSasService {
      * @param table Access status to set
      * @return the updated AccountSasService object.
      */
-    public AccountSasService setTable(boolean table) {
+    public AccountSasService setTableAccess(boolean table) {
         this.table = table;
         return this;
     }
