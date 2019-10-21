@@ -30,7 +30,6 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -144,7 +143,7 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), Utility.urlEncode(blobName)).toString(), getServiceVersion(),
+            StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), blobName).toString(), getServiceVersion(),
             getAccountName(), getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
     }
 
