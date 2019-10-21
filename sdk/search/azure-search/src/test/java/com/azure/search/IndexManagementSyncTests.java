@@ -88,7 +88,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createIndex(index);
         Index createdIndex = client.getIndex(index.getName());
 
-        assertIndexesEqual(createdIndex, index);
+        assertIndexesEqual(index, createdIndex);
     }
 
     @Override

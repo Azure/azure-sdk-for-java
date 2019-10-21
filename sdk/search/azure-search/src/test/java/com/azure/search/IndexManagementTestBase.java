@@ -71,13 +71,30 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void canAddSynonymFieldProperty();
 
-    protected void assertFieldsEquals(Field expected, Field actual) {
+    protected void assertFieldsEqual(Field expected, Field actual) {
         Assert.assertEquals(expected.getName(), actual.getName());
-        Assert.assertEquals(expected.isKey(), actual.isKey());
-        Assert.assertEquals(expected.isSearchable(), actual.isSearchable());
-        Assert.assertEquals(expected.isFilterable(), actual.isFilterable());
-        Assert.assertEquals(expected.isSortable(), actual.isSortable());
-        Assert.assertEquals(expected.isFacetable(), actual.isFacetable());
+
+        // ONLY erify the properties we set explicitly, as I observed some inconsistent logic of defaulting undefined
+        // Boolean properties of simple Field (eg: String field) to false, but not for complex/nested field (fields
+        // containing a list of fields).
+        if (expected.isKey() != null) {
+            Assert.assertEquals(expected.isKey(), actual.isKey());
+        }
+        if (expected.isSearchable() != null) {
+            Assert.assertEquals(expected.isSearchable(), actual.isSearchable());
+        }
+        if (expected.isFilterable() != null) {
+            Assert.assertEquals(expected.isFilterable(), actual.isFilterable());
+        }
+        if (expected.isSortable() != null) {
+            Assert.assertEquals(expected.isSortable(), actual.isSortable());
+        }
+        if (expected.isFacetable() != null) {
+            Assert.assertEquals(expected.isFacetable(), actual.isFacetable());
+        }
+        if (expected.isRetrievable() != null) {
+            Assert.assertEquals(expected.isRetrievable(), actual.isRetrievable());
+        }
     }
 
     protected void assertIndexesEqual(Index expected, Index actual) {
@@ -88,18 +105,26 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
 
         // Fields
         List<Field> expectedFields = expected.getFields();
-        List<Field> actualFields = expected.getFields();
-        Assert.assertEquals(expectedFields.size(), actualFields.size());
-        for (int i = 0; i < expectedFields.size(); i++) {
-            Field expectedField = expectedFields.get(i);
-            Field actualField = actualFields.get(i);
+        List<Field> actualFields = actual.getFields();
+        if (expectedFields != null && actualFields != null) {
+            Assert.assertEquals(expectedFields.size(), actualFields.size());
+            for (int i = 0; i < expectedFields.size(); i++) {
+                Field expectedField = expectedFields.get(i);
+                Field actualField = actualFields.get(i);
 
-            assertFieldsEquals(expectedField, actualField);
+                assertFieldsEqual(expectedField, actualField);
 
-            // (Secondary) fields
-            if (expectedField.getFields() != null && actualField.getFields() != null) {
-                for (int j = 0; j < expectedField.getFields().size(); j++) {
-                    assertFieldsEquals(expectedField.getFields().get(j), actualField.getFields().get(j));
+                // (Secondary) fields
+                List<Field> expectedSecondaryFields = expectedField.getFields();
+                List<Field> actualSecondaryFields = actualField.getFields();
+                if (expectedSecondaryFields != null && actualSecondaryFields != null) {
+                    Assert.assertEquals(expectedSecondaryFields.size(), actualSecondaryFields.size());
+                    for (int j = 0; j < expectedSecondaryFields.size(); j++) {
+                        // Per setup in createTestIndex(), Field property has depth up to 2.
+                        // Assert that 3rd level Field property doesn't exist to guard against future improper usage.
+                        Assert.assertNull(expectedSecondaryFields.get(j).getFields());
+                        assertFieldsEqual(expectedSecondaryFields.get(j), actualSecondaryFields.get(j));
+                    }
                 }
             }
         }
