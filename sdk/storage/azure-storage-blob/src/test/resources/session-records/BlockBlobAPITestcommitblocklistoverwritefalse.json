@@ -1,0 +1,135 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.blob.core.windows.net/jtccommitblocklistoverwritefalse073452660bbbeb2321?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "54d40450-90fc-4252-9138-f28aca9e63c9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7564716E0D108",
+      "Last-Modified" : "Mon, 21 Oct 2019 16:52:42 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7036de9a-f01e-0012-132f-88e9eb000000",
+      "Date" : "Mon, 21 Oct 2019 16:52:41 GMT",
+      "x-ms-client-request-id" : "54d40450-90fc-4252-9138-f28aca9e63c9"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.blob.core.windows.net/jtccommitblocklistoverwritefalse073452660bbbeb2321/javablobcommitblocklistoverwritefalse165805933f250d50",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "c0234fef-9455-485d-b729-ab27ed227c36",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Mon, 21 Oct 2019 16:52:42 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Mon, 21 Oct 2019 16:52:42 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8D7564716EFFB9C",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "7036de9c-f01e-0012-142f-88e9eb000000",
+      "x-ms-client-request-id" : "c0234fef-9455-485d-b729-ab27ed227c36"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.blob.core.windows.net/jtccommitblocklistoverwritefalse073452660bbbeb2321/javablobcommitblocklistoverwritefalse165805933f250d50?blockid=YjQzZmUwNTEtNmQxNC00N2Q5LTljYzQtMTNiYzE1NzczMmU5&comp=block",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "4ef3b631-754b-4289-add9-889d3f5e216c",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7036de9d-f01e-0012-152f-88e9eb000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Mon, 21 Oct 2019 16:52:42 GMT",
+      "x-ms-client-request-id" : "4ef3b631-754b-4289-add9-889d3f5e216c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.blob.core.windows.net/jtccommitblocklistoverwritefalse073452660bbbeb2321/javablobcommitblocklistoverwritefalse165805933f250d50?comp=blocklist",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "f25a098b-4853-46e6-9542-52208ba0677e",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "BlobAlreadyExists",
+      "retry-after" : "0",
+      "Content-Length" : "220",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "7036de9e-f01e-0012-162f-88e9eb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobAlreadyExists</Code><Message>The specified blob already exists.\nRequestId:7036de9e-f01e-0012-162f-88e9eb000000\nTime:2019-10-21T16:52:42.5593687Z</Message></Error>",
+      "Date" : "Mon, 21 Oct 2019 16:52:42 GMT",
+      "x-ms-client-request-id" : "f25a098b-4853-46e6-9542-52208ba0677e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://gapradev.blob.core.windows.net?prefix=jtccommitblocklistoverwritefalse&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "ee77f1e6-faf3-48e6-b835-e6c5b825fd83"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "7036dea0-f01e-0012-182f-88e9eb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://gapradev.blob.core.windows.net/\"><Prefix>jtccommitblocklistoverwritefalse</Prefix><Containers><Container><Name>jtccommitblocklistoverwritefalse073452660bbbeb2321</Name><Properties><Last-Modified>Mon, 21 Oct 2019 16:52:42 GMT</Last-Modified><Etag>\"0x8D7564716E0D108\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 21 Oct 2019 16:52:42 GMT",
+      "x-ms-client-request-id" : "ee77f1e6-faf3-48e6-b835-e6c5b825fd83",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://gapradev.blob.core.windows.net/jtccommitblocklistoverwritefalse073452660bbbeb2321?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "efaecee6-1820-4203-b2a8-e3b79bb13276"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "7036dea1-f01e-0012-192f-88e9eb000000",
+      "Date" : "Mon, 21 Oct 2019 16:52:42 GMT",
+      "x-ms-client-request-id" : "efaecee6-1820-4203-b2a8-e3b79bb13276"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtccommitblocklistoverwritefalse073452660bbbeb2321", "javablobcommitblocklistoverwritefalse165805933f250d50", "javablobcommitblocklistoverwritefalse25239164aaa5d06a", "javablobcommitblocklistoverwritefalse33360719cc937e1f", "b43fe051-6d14-47d9-9cc4-13bc157732e9" ]
+}
