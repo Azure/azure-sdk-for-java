@@ -1011,15 +1011,22 @@ class BlobAPITest extends APISpec {
         cu2.create()
         def bu2 = cu2.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu2.upload(defaultInputStream.get(), defaultDataSize)
-        def leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        def blobAccess = new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+        def leaseAccess = new LeaseAccessConditions().setLeaseId(leaseId)
 
         when:
-        def copyID =
-            bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null,
-                new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID)), null, null).getValue()
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, Duration.ofSeconds(1))
+        def lastResponse = poller.getObserver().blockFirst()
 
         then:
-        bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().setLeaseId(leaseID), null, null).getStatusCode() == 204
+        lastResponse != null
+        lastResponse.getValue() != null
+
+        def copyId = lastResponse.getValue().getCopyId()
+        bu2.abortCopyFromURLWithResponse(copyId, leaseAccess, null, null).getStatusCode() == 204
+
+        cleanup:
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.delete()
     }
