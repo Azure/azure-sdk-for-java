@@ -226,7 +226,7 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
         return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, Utility.urlEncode(blobName)),
-            accessTier,null);
+            accessTier, null);
     }
 
     /**
