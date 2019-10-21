@@ -125,8 +125,8 @@ public final class SpecializedBlobClientBuilder {
      * Creates a {@link BlockBlobAsyncClient} based on options set in the Builder. BlockBlobAsyncClients are used to
      * perform generic upload operations such as {@link BlockBlobAsyncClient#upload(Flux, long) upload from file}
      * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long,
-     * LeaseAccessConditions) stage block} and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list},
-     * only use this when the blob is known to be a block blob.
+     * String) stage block} and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list}, only use this
+     * when the blob is known to be a block blob.
      *
      * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
