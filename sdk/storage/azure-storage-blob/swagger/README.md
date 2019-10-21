@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,BlobSignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -1229,4 +1229,38 @@ directive:
   transform: >
     $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
     $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
+```
+
+### Remove AccessConditions parameter groupings
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.SourceIfMatch["x-ms-parameter-grouping"];
+    delete $.SourceIfModifiedSince["x-ms-parameter-grouping"];
+    delete $.SourceIfNoneMatch["x-ms-parameter-grouping"];
+    delete $.SourceIfUnmodifiedSince["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.IfMatch["x-ms-parameter-grouping"];
+    delete $.IfModifiedSince["x-ms-parameter-grouping"];
+    delete $.IfNoneMatch["x-ms-parameter-grouping"];
+    delete $.IfUnmodifiedSince["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.BlobConditionAppendPos["x-ms-parameter-grouping"];
+    delete $.BlobConditionMaxSize["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.IfSequenceNumberEqualTo["x-ms-parameter-grouping"];
+    delete $.IfSequenceNumberLessThan["x-ms-parameter-grouping"];
+    delete $.IfSequenceNumberLessThanOrEqualTo["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.LeaseIdOptional["x-ms-parameter-grouping"];
 ```

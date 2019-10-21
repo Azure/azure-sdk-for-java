@@ -4,14 +4,11 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -48,7 +45,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void upload2() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
@@ -58,10 +55,9 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        BlobRequestConditions accessConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
@@ -82,14 +78,13 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, LeaseAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, String)}
      */
     public void stageBlock2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
-        client.stageBlockWithResponse(base64BlockID, data, length, accessConditions).subscribe(response ->
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-String
+        client.stageBlockWithResponse(base64BlockID, data, length, leaseId).subscribe(response ->
             System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-String
     }
 
     /**
@@ -105,18 +100,17 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURLWithResponse(String, String, BlobRange, byte[], LeaseAccessConditions, SourceModifiedAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURLWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions)}
      */
     public void stageBlockFromURL2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions
-        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
-        SourceModifiedAccessConditions sourceModifiedAccessConditions = new SourceModifiedAccessConditions()
-            .setSourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions
+        BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.stageBlockFromURLWithResponse(base64BlockID, sourceUrl, new BlobRange(offset, count), null,
-            leaseAccessConditions, sourceModifiedAccessConditions).subscribe(response ->
+            leaseId, sourceRequestConditions).subscribe(response ->
             System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions
     }
 
     /**
@@ -135,13 +129,11 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#listBlocksWithResponse(BlockListType, LeaseAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#listBlocksWithResponse(BlockListType, String)}
      */
     public void listBlocks2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
-
-        client.listBlocksWithResponse(BlockListType.ALL, accessConditions).subscribe(response -> {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-String
+        client.listBlocksWithResponse(BlockListType.ALL, leaseId).subscribe(response -> {
             BlockList block = response.getValue();
             System.out.println("Committed Blocks:");
             block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
@@ -149,7 +141,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             System.out.println("Uncommitted Blocks:");
             block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
         });
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-String
     }
 
     /**
@@ -163,23 +155,22 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void commitBlockList2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
             .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        BlobRequestConditions accessConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
             AccessTier.HOT, accessConditions).subscribe(response ->
                 System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
     }
 }

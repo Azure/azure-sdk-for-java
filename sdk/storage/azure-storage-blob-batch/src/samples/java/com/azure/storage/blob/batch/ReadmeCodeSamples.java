@@ -7,9 +7,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,8 +53,8 @@ public class ReadmeCodeSamples {
 
         // Delete a blob that has a lease.
         Response<Void> deleteWithLeaseResponse =
-            blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobAccessConditions()
-                .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+            blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobRequestConditions()
+                .setLeaseId("leaseId"));
 
         blobBatchClient.submitBatch(blobBatch);
         System.out.printf("Deleting blob completed with status code %d%n", deleteResponse.getStatusCode());
@@ -76,7 +75,7 @@ public class ReadmeCodeSamples {
 
         // Set AccessTier on a blob that has a lease.
         Response<Void> setTierWithLeaseResponse = blobBatch.setBlobAccessTier(blobUrlWithLease, AccessTier.HOT,
-            new LeaseAccessConditions().setLeaseId("leaseId"));
+            "leaseId");
 
         blobBatchClient.submitBatch(blobBatch);
         System.out.printf("Set AccessTier on blob completed with status code %d%n", setTierResponse.getStatusCode());
