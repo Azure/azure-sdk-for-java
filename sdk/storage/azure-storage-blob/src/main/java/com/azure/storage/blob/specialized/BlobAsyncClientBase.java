@@ -482,7 +482,7 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, String leaseId) {
         try {
-            return withContext(context -> abortCopyFromUrlWithResponse(copyId, leaseAccessConditions, context));
+            return withContext(context -> abortCopyFromUrlWithResponse(copyId, leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

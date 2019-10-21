@@ -112,7 +112,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("Staging block from URL completed with status %d%n",
-            client.stageBlockFromUrlWithResponse(base64BlockID, sourceUrl, new BlobRange(offset, count), null,
+            client.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, new BlobRange(offset, count), null,
                 leaseId, sourceRequestConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions-Duration-Context
     }

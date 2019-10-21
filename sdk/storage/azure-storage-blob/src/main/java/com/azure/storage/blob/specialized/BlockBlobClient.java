@@ -347,7 +347,7 @@ public final class BlockBlobClient extends BlobClientBase {
             Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions, Duration timeout,
             Context context) {
         Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
-            base64BlockIDs, headers, metadata, tier, accessConditions, context);
+            base64BlockIds, headers, metadata, tier, accessConditions, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }

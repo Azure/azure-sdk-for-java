@@ -88,11 +88,11 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURL(String, String, BlobRange)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrl(String, String, BlobRange)}
      */
     public void stageBlockFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURL#String-String-BlobRange
-        client.stageBlockFromURL(base64BlockID, sourceUrl, new BlobRange(offset, count))
+        client.stageBlockFromUrl(base64BlockID, sourceUrl, new BlobRange(offset, count))
             .subscribe(
                 response -> System.out.println("Staging block completed"),
                 error -> System.out.printf("Error when calling stage Block: %s", error));
@@ -100,7 +100,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURLWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions)}
      */
     public void stageBlockFromURL2() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions
