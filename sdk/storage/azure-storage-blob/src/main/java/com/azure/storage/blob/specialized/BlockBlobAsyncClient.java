@@ -160,7 +160,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(),
+            null, data, length, null, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(),
             getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context)
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();

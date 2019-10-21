@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -129,8 +130,8 @@ public class BlobClientJavaDocCodeSnippets {
     public void setHTTPHeaders() {
         // BEGIN: com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHttpHeaders
         client.setHttpHeaders(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"));
+            .setContentLanguage("en-US")
+            .setContentType("binary"));
         System.out.println("Set HTTP headers completed");
         // END: com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHttpHeaders
     }
@@ -285,8 +286,8 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("Set HTTP headers completed with status %d%n",
             client.setHttpHeadersWithResponse(new BlobHttpHeaders()
-                .setBlobContentLanguage("en-US")
-                .setBlobContentType("binary"), accessConditions, timeout, new Context(key1, value1))
+                .setContentLanguage("en-US")
+                .setContentType("binary"), accessConditions, timeout, new Context(key1, value1))
                 .getStatusCode());
         // END: com.azure.storage.blob.BlobClient.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context
     }
@@ -399,9 +400,9 @@ public class BlobClientJavaDocCodeSnippets {
     public void uploadFromFile2() throws IOException {
         // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()

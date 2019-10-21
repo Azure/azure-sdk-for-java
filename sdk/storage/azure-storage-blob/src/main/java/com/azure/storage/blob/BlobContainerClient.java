@@ -10,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
+import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.CpkInfo;

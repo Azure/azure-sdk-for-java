@@ -1,17 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.ArchiveStatus;
-import com.azure.storage.blob.models.BlobType;
-import com.azure.storage.blob.models.CopyStatusType;
-import com.azure.storage.blob.models.LeaseDurationType;
-import com.azure.storage.blob.models.LeaseStateType;
-import com.azure.storage.blob.models.LeaseStatusType;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -49,38 +41,48 @@ public final class BlobProperties {
     private final Map<String, String> metadata;
     private final Integer committedBlockCount;
 
-    public BlobProperties(BlobGetPropertiesHeaders generatedHeaders) {
-        this.creationTime = generatedHeaders.getCreationTime();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.eTag = generatedHeaders.getETag();
-        this.blobSize = generatedHeaders.getContentLength() == null ? 0 : generatedHeaders.getContentLength();
-        this.contentType = generatedHeaders.getContentType();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.contentEncoding = generatedHeaders.getContentEncoding();
-        this.contentDisposition = generatedHeaders.getContentDisposition();
-        this.contentLanguage = generatedHeaders.getContentLanguage();
-        this.cacheControl = generatedHeaders.getCacheControl();
-        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
-        this.blobType = generatedHeaders.getBlobType();
-        this.leaseStatus = generatedHeaders.getLeaseStatus();
-        this.leaseState = generatedHeaders.getLeaseState();
-        this.leaseDuration = generatedHeaders.getLeaseDuration();
-        this.copyId = generatedHeaders.getCopyId();
-        this.copyStatus = generatedHeaders.getCopyStatus();
-        this.copySource = generatedHeaders.getCopySource();
-        this.copyProgress = generatedHeaders.getCopyProgress();
-        this.copyCompletionTime = generatedHeaders.getCopyCompletionTime();
-        this.copyStatusDescription = generatedHeaders.getCopyStatusDescription();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.isIncrementalCopy = generatedHeaders.isIncrementalCopy();
-        this.copyDestinationSnapshot = generatedHeaders.getDestinationSnapshot();
-        this.accessTier = AccessTier.fromString(generatedHeaders.getAccessTier());
-        this.isAccessTierInferred = generatedHeaders.isAccessTierInferred();
-        this.archiveStatus = ArchiveStatus.fromString(generatedHeaders.getArchiveStatus());
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.accessTierChangeTime = generatedHeaders.getAccessTierChangeTime();
-        this.metadata = generatedHeaders.getMetadata();
-        this.committedBlockCount = generatedHeaders.getBlobCommittedBlockCount();
+    public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
+        final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
+        final String contentDisposition, final String contentLanguage, final String cacheControl,
+        final Long blobSequenceNumber, final BlobType blobType, final LeaseStatusType leaseStatus,
+        final LeaseStateType leaseState, final LeaseDurationType leaseDuration, final String copyId,
+        final CopyStatusType copyStatus, final String copySource, final String copyProgress,
+        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
+        final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
+        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
+        final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
+        final Integer committedBlockCount) {
+        this.creationTime = creationTime;
+        this.lastModified = lastModified;
+        this.eTag = eTag;
+        this.blobSize = blobSize;
+        this.contentType = contentType;
+        this.contentMD5 = ImplUtils.clone(contentMd5);
+        this.contentEncoding = contentEncoding;
+        this.contentDisposition = contentDisposition;
+        this.contentLanguage = contentLanguage;
+        this.cacheControl = cacheControl;
+        this.blobSequenceNumber = blobSequenceNumber;
+        this.blobType = blobType;
+        this.leaseStatus = leaseStatus;
+        this.leaseState = leaseState;
+        this.leaseDuration = leaseDuration;
+        this.copyId = copyId;
+        this.copyStatus = copyStatus;
+        this.copySource = copySource;
+        this.copyProgress = copyProgress;
+        this.copyCompletionTime = copyCompletionTime;
+        this.copyStatusDescription = copyStatusDescription;
+        this.isServerEncrypted = isServerEncrypted;
+        this.isIncrementalCopy = isIncrementalCopy;
+        this.copyDestinationSnapshot = copyDestinationSnapshot;
+        this.accessTier = accessTier;
+        this.isAccessTierInferred = isAccessTierInferred;
+        this.archiveStatus = archiveStatus;
+        this.encryptionKeySha256 = encryptionKeySha256;
+        this.accessTierChangeTime = accessTierChangeTime;
+        this.metadata = metadata;
+        this.committedBlockCount = committedBlockCount;
     }
 
     /**

@@ -59,8 +59,8 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     public void createWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentLanguage("en-US")
+            .setContentType("binary");
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 

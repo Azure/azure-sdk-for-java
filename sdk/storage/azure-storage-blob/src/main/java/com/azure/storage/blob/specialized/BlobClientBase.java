@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;

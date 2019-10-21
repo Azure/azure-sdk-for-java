@@ -202,6 +202,8 @@ directive:
         $.delete.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
         $.delete.parameters.splice(1, 0, { "$ref": path + "Blob" });
     }
+    $.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
 ```
 
 ### /{containerName}/{blob}?PageBlob
@@ -703,6 +705,7 @@ directive:
         $.BlobItemProperties = $.BlobProperties;
         delete $.BlobProperties;
         $.BlobItemProperties.properties.CustomerProvidedKeySha256 = { "type": "string" }
+        $.BlobItemProperties.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         //
         const etag = $.BlobItemProperties.properties.Etag;
         if (etag && !etag["x-ms-client-name"]) {
@@ -1090,6 +1093,9 @@ directive:
       $.BlobMetrics = $.Metrics;
       delete $.Metrics;
       $.BlobMetrics.xml = {"name": "Metrics"};
+      $.BlobMetrics.properties.IncludeApis = $.BlobMetrics.properties.IncludeAPIs;
+      delete $.BlobMetrics.properties.IncludeAPIs;
+      $.BlobMetrics.properties.IncludeApis.xml = {"name": "IncludeAPIs"};
       $.BlobServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/BlobMetrics";
       $.BlobServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/BlobMetrics";
     }
@@ -1202,9 +1208,25 @@ directive:
   where: $.parameters
   transform: >
     $.BlobCacheControl["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobCacheControl["x-ms-client-name"] = "cacheControl";
     $.BlobContentDisposition["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentDisposition["x-ms-client-name"] = "contentDisposition";
     $.BlobContentEncoding["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentEncoding["x-ms-client-name"] = "contentEncoding";
     $.BlobContentLanguage["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentLanguage["x-ms-client-name"] = "contentLanguage";
     $.BlobContentMD5["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentMD5["x-ms-client-name"] = "contentMd5";
     $.BlobContentType["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentType["x-ms-client-name"] = "contentType";
+```
+
+### Rename UserDelegationKey SignedOid and SignedTid
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.UserDelegationKey
+  transform: >
+    $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
+    $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
 ```

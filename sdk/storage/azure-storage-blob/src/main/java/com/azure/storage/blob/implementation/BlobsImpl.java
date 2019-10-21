@@ -131,7 +131,7 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<BlobsSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String cacheControl, @HeaderParam("x-ms-blob-content-type") String contentType, @HeaderParam("x-ms-blob-content-md5") String contentMd5, @HeaderParam("x-ms-blob-content-encoding") String contentEncoding, @HeaderParam("x-ms-blob-content-language") String contentLanguage, @HeaderParam("x-ms-blob-content-disposition") String contentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
@@ -719,18 +719,18 @@ public final class BlobsImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "properties";
-        final String blobCacheControl = null;
-        final String blobContentType = null;
-        final String blobContentEncoding = null;
-        final String blobContentLanguage = null;
-        final String blobContentDisposition = null;
+        final String cacheControl = null;
+        final String contentType = null;
+        final String contentEncoding = null;
+        final String contentLanguage = null;
+        final String contentDisposition = null;
         final String leaseId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        String blobContentMD5Converted = null;
+        String contentMd5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setHTTPHeaders(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentMD5Converted, blobContentEncoding, blobContentLanguage, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.setHTTPHeaders(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, cacheControl, contentType, contentMd5Converted, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -750,29 +750,29 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String containerName, String blob, Integer timeout, String requestId, BlobHttpHeaders blobHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "properties";
-        String blobCacheControl = null;
+        String cacheControl = null;
         if (blobHttpHeaders != null) {
-            blobCacheControl = blobHttpHeaders.getBlobCacheControl();
+            cacheControl = blobHttpHeaders.getCacheControl();
         }
-        String blobContentType = null;
+        String contentType = null;
         if (blobHttpHeaders != null) {
-            blobContentType = blobHttpHeaders.getBlobContentType();
+            contentType = blobHttpHeaders.getContentType();
         }
-        byte[] blobContentMD5 = null;
+        byte[] contentMd5 = null;
         if (blobHttpHeaders != null) {
-            blobContentMD5 = blobHttpHeaders.getBlobContentMD5();
+            contentMd5 = blobHttpHeaders.getContentMd5();
         }
-        String blobContentEncoding = null;
+        String contentEncoding = null;
         if (blobHttpHeaders != null) {
-            blobContentEncoding = blobHttpHeaders.getBlobContentEncoding();
+            contentEncoding = blobHttpHeaders.getContentEncoding();
         }
-        String blobContentLanguage = null;
+        String contentLanguage = null;
         if (blobHttpHeaders != null) {
-            blobContentLanguage = blobHttpHeaders.getBlobContentLanguage();
+            contentLanguage = blobHttpHeaders.getContentLanguage();
         }
-        String blobContentDisposition = null;
+        String contentDisposition = null;
         if (blobHttpHeaders != null) {
-            blobContentDisposition = blobHttpHeaders.getBlobContentDisposition();
+            contentDisposition = blobHttpHeaders.getContentDisposition();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -794,10 +794,10 @@ public final class BlobsImpl {
         if (modifiedAccessConditions != null) {
             ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
-        String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setHTTPHeaders(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentMD5Converted, blobContentEncoding, blobContentLanguage, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.setHTTPHeaders(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, cacheControl, contentType, contentMd5Converted, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**

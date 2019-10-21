@@ -578,7 +578,7 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
         blob.getProperties().getContentLength() != null
         blob.getProperties().getContentType() != null
-        blob.getProperties().getContentMD5() != null
+        blob.getProperties().getContentMd5() != null
         blob.getProperties().getContentEncoding() == null
         blob.getProperties().getContentDisposition() == null
         blob.getProperties().getContentLanguage() == null
@@ -628,7 +628,7 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
         blob.getProperties().getContentLength() != null
         blob.getProperties().getContentType() != null
-        blob.getProperties().getContentMD5() == null
+        blob.getProperties().getContentMd5() == null
         blob.getProperties().getContentEncoding() == null
         blob.getProperties().getContentDisposition() == null
         blob.getProperties().getContentLanguage() == null

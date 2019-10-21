@@ -398,12 +398,12 @@ class BlobAPITest extends APISpec {
         setup:
         def properties = bc.getProperties()
         def headers = new BlobHttpHeaders()
-            .setBlobContentEncoding(properties.getContentEncoding())
-            .setBlobContentDisposition(properties.getContentDisposition())
-            .setBlobContentType("type")
-            .setBlobCacheControl(properties.getCacheControl())
-            .setBlobContentLanguage(properties.getContentLanguage())
-            .setBlobContentMD5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
+            .setContentEncoding(properties.getContentEncoding())
+            .setContentDisposition(properties.getContentDisposition())
+            .setContentType("type")
+            .setCacheControl(properties.getCacheControl())
+            .setContentLanguage(properties.getContentLanguage())
+            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
 
         bc.setHttpHeaders(headers)
 
@@ -414,12 +414,12 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set HTTP headers headers"() {
         setup:
-        def putHeaders = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType)
+        def putHeaders = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
 
         bc.setHttpHeaders(putHeaders)
 

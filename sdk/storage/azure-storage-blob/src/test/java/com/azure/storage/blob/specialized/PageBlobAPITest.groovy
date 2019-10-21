@@ -65,12 +65,12 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create headers"() {
         setup:
-        def headers = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType)
+        def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
 
         when:
         bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, headers, null, null, null, null)

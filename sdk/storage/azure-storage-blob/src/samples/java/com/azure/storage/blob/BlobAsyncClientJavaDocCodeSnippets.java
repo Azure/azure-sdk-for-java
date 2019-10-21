@@ -154,8 +154,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void setHTTPHeadersCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHttpHeaders
         client.setHttpHeaders(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"));
+            .setContentLanguage("en-US")
+            .setContentType("binary"));
         // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHttpHeaders
     }
 
@@ -307,8 +307,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
         client.setHttpHeadersWithResponse(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"), accessConditions).subscribe(
+            .setContentLanguage("en-US")
+            .setContentType("binary"), accessConditions).subscribe(
                 response ->
                     System.out.printf("Set HTTP headers completed with status %d%n",
                         response.getStatusCode()));
@@ -417,9 +417,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void upload4() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
@@ -443,9 +443,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void upload5() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
@@ -482,9 +482,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void uploadFromFile2() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()

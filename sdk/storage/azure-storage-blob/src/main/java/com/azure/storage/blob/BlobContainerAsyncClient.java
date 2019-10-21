@@ -16,10 +16,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
+import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -139,7 +141,7 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), blobName).toString(), getServiceVersion(), 
+            StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), blobName).toString(), getServiceVersion(),
             getAccountName(), getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
     }
 
@@ -400,7 +402,13 @@ public final class BlobContainerAsyncClient {
         Context context) {
         return this.azureBlobStorage.containers()
             .getPropertiesWithRestResponseAsync(null, null, null, leaseAccessConditions, context)
-            .map(rb -> new SimpleResponse<>(rb, new BlobContainerProperties(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                ContainerGetPropertiesHeaders hd = rb.getDeserializedHeaders();
+                BlobContainerProperties properties = new BlobContainerProperties(hd.getMetadata(), hd.getETag(),
+                    hd.getLastModified(), hd.getLeaseDuration(), hd.getLeaseState(), hd.getLeaseStatus(),
+                    hd.getBlobPublicAccess(), hd.isHasImmutabilityPolicy(), hd.isHasLegalHold());
+                return new SimpleResponse<>(rb, properties);
+            });
     }
 
     /**

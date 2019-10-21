@@ -53,8 +53,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
     public void createWithResponse() {
         // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentType("binary")
-            .setBlobContentLanguage("en-US");
+            .setContentType("binary")
+            .setContentLanguage("en-US");
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))

@@ -53,9 +53,9 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     public void upload2() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
@@ -168,9 +168,9 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     public void commitBlockList2() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
