@@ -83,9 +83,7 @@ Tooling has been introduced to centralize versioning and help ease the pain of u
 
 `groupId:artifactId;dependency-version;current-version`
 
-The dependency-version should be set to the most recent released version and the current-version is set to the next version to be released.
-
-For example:
+The dependency-version should be set to the most recent released version and the current-version is set to the next version to be released. For example:
 
 `com.azure:azure-identity;1.0.0-preview.4;1.0.0-preview.5`
 
