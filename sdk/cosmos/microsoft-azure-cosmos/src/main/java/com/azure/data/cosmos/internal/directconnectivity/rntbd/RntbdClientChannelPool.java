@@ -157,8 +157,8 @@ public final class RntbdClientChannelPool extends SimpleChannelPool {
 
                 if (elapsedTime > idleEndpointTimeout) {
 
-                    if (logger.isWarnEnabled()) {
-                        logger.warn(
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(
                             "{} closing due to inactivity (time elapsed since last request: {} > idleEndpointTimeout: {})",
                             endpoint, Duration.ofNanos(elapsedTime), Duration.ofNanos(idleEndpointTimeout));
                     }

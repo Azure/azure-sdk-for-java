@@ -4,7 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -12,12 +12,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -72,6 +72,15 @@ public final class BlobServiceClient {
      */
     public HttpPipeline getHttpPipeline() {
         return blobServiceAsyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public BlobServiceVersion getServiceVersion() {
+        return this.blobServiceAsyncClient.getServiceVersion();
     }
 
     /**
@@ -212,7 +221,7 @@ public final class BlobServiceClient {
 
         Mono<Response<BlobServiceProperties>> response = blobServiceAsyncClient.getPropertiesWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -250,7 +259,7 @@ public final class BlobServiceClient {
         Context context) {
         Mono<Response<Void>> response = blobServiceAsyncClient.setPropertiesWithResponse(properties, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -288,7 +297,7 @@ public final class BlobServiceClient {
         Mono<Response<UserDelegationKey>> response = blobServiceAsyncClient.getUserDelegationKeyWithResponse(start,
             expiry, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -303,7 +312,7 @@ public final class BlobServiceClient {
      *
      * @return The storage account statistics.
      */
-    public StorageServiceStats getStatistics() {
+    public BlobServiceStatistics getStatistics() {
         return getStatisticsWithResponse(null, Context.NONE).getValue();
     }
 
@@ -321,10 +330,10 @@ public final class BlobServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} the storage account statistics.
      */
-    public Response<StorageServiceStats> getStatisticsWithResponse(Duration timeout, Context context) {
-        Mono<Response<StorageServiceStats>> response = blobServiceAsyncClient.getStatisticsWithResponse(context);
+    public Response<BlobServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
+        Mono<Response<BlobServiceStatistics>> response = blobServiceAsyncClient.getStatisticsWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -352,7 +361,7 @@ public final class BlobServiceClient {
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageAccountInfo>> response = blobServiceAsyncClient.getAccountInfoWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

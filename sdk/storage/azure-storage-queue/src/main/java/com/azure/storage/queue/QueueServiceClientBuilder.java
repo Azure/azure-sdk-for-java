@@ -3,7 +3,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -12,17 +12,17 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
+import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
+import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,10 +52,11 @@ import java.util.Objects;
  * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
  *
- * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
- * a connection string from the Storage Queue service must be used. Set the SharedKeyCredential with {@link
- * QueueServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SAS token and
- * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
+ * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
+ * StorageSharedKeyCredential a connection string from the Storage Queue service must be used.
+ * Set the StorageSharedKeyCredential with {@link QueueServiceClientBuilder#connectionString(String) connectionString}.
+ * If the builder has both a SAS token and StorageSharedKeyCredential the StorageSharedKeyCredential will be preferred
+ * when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with connection string.</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceClient.instantiation.connectionstring}
@@ -65,7 +66,7 @@ import java.util.Objects;
  *
  * @see QueueServiceClient
  * @see QueueServiceAsyncClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {QueueServiceClient.class, QueueServiceAsyncClient.class})
 public final class QueueServiceClientBuilder {
@@ -74,7 +75,7 @@ public final class QueueServiceClientBuilder {
     private String endpoint;
     private String accountName;
 
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
 
@@ -85,31 +86,13 @@ public final class QueueServiceClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private QueueServiceVersion version;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
      * and {@link QueueServiceAsyncClient QueueServiceAsyncClients}.
      */
     public QueueServiceClientBuilder() {
-    }
-
-    private AzureQueueStorageImpl constructImpl() {
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
-
-        return new AzureQueueStorageBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .build();
     }
 
     /**
@@ -124,11 +107,30 @@ public final class QueueServiceClientBuilder {
      *
      * @return A QueueServiceAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or
+     * {@link #sasToken(String) SAS token} has been set.
      */
     public QueueServiceAsyncClient buildAsyncClient() {
-        return new QueueServiceAsyncClient(constructImpl(), accountName);
+        QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+            } else if (tokenCredential != null) {
+                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
+            } else if (sasTokenCredential != null) {
+                return new SasTokenCredentialPolicy(sasTokenCredential);
+            } else {
+                return null;
+            }
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+
+        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
+            .url(endpoint)
+            .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
+            .build();
+
+        return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion);
     }
 
     /**
@@ -143,8 +145,8 @@ public final class QueueServiceClientBuilder {
      *
      * @return A QueueServiceClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public QueueServiceClient buildClient() {
         return new QueueServiceClient(buildAsyncClient());
@@ -164,36 +166,25 @@ public final class QueueServiceClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public QueueServiceClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
-        try {
-            URL fullURL = new URL(endpoint);
-            this.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
-
-            this.accountName = Utility.getAccountName(fullURL);
-
-            // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(
-                Utility.parseQueryStringSplitValues(fullURL.getQuery()), false).encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
-                this.sasToken(sasToken);
-            }
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
+        BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
+        this.endpoint = parts.getEndpoint();
+        this.accountName = parts.getAccountName();
+        if (!ImplUtils.isNullOrEmpty(parts.getSasToken())) {
+            sasToken(parts.getSasToken());
         }
 
         return this;
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated QueueServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public QueueServiceClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public QueueServiceClientBuilder credential(StorageSharedKeyCredential credential) {
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -208,7 +199,7 @@ public final class QueueServiceClientBuilder {
      */
     public QueueServiceClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
@@ -223,25 +214,38 @@ public final class QueueServiceClientBuilder {
     public QueueServiceClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
     }
 
     /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
+     * Sets the connection string to connect to the service.
      *
      * @param connectionString Connection string of the storage account.
      * @return the updated QueueServiceClientBuilder
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain `AccountName` or `AccountKey`.
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException If {@code connectionString} is invalid.
      */
     public QueueServiceClientBuilder connectionString(String connectionString) {
-        BuilderHelper.configureConnectionString(connectionString, (accountName) -> this.accountName = accountName,
-            this::credential, this::endpoint, logger);
-
+        StorageConnectionString storageConnectionString
+                = StorageConnectionString.create(connectionString, logger);
+        StorageEndpoint endpoint = storageConnectionString.getQueueEndpoint();
+        if (endpoint == null || endpoint.getPrimaryUri() == null) {
+            throw logger
+                    .logExceptionAsError(new IllegalArgumentException(
+                            "connectionString missing required settings to derive queue service endpoint."));
+        }
+        this.endpoint(endpoint.getPrimaryUri());
+        if (storageConnectionString.getAccountName() != null) {
+            this.accountName = storageConnectionString.getAccountName();
+        }
+        StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+        if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+            this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
+                    authSettings.getAccount().getAccessKey()));
+        } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+            this.sasToken(authSettings.getSasToken());
+        }
         return this;
     }
 
@@ -321,6 +325,21 @@ public final class QueueServiceClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link QueueServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link QueueServiceVersion} of the service to be used when making requests.
+     * @return the updated QueueServiceClientBuilder object
+     */
+    public QueueServiceClientBuilder serviceVersion(QueueServiceVersion version) {
+        this.version = version;
         return this;
     }
 }

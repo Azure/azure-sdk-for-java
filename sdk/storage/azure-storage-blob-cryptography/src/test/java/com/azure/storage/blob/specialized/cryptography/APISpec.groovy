@@ -21,7 +21,7 @@ import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -66,10 +66,10 @@ class APISpec extends Specification {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
 
-    static SharedKeyCredential primaryCredential
-    static SharedKeyCredential alternateCredential
-    static SharedKeyCredential blobCredential
-    static SharedKeyCredential premiumCredential
+    static StorageSharedKeyCredential primaryCredential
+    static StorageSharedKeyCredential alternateCredential
+    static StorageSharedKeyCredential blobCredential
+    static StorageSharedKeyCredential premiumCredential
     static String connectionString
     static TestMode testMode
     private boolean recordLiveMode
@@ -116,7 +116,7 @@ class APISpec extends Specification {
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
-        connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_CONNECTION_STRING")
+        connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
     }
 
     static TestMode setupTestMode() {
@@ -141,7 +141,7 @@ class APISpec extends Specification {
         return setupTestMode() == TestMode.RECORD
     }
 
-    private SharedKeyCredential getCredential(String accountType) {
+    private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
@@ -158,7 +158,7 @@ class APISpec extends Specification {
             return null
         }
 
-        return new SharedKeyCredential(accountName, accountKey)
+        return new StorageSharedKeyCredential(accountName, accountKey)
     }
 
     /*
@@ -209,7 +209,7 @@ class APISpec extends Specification {
 
     EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,
                                                          AsyncKeyEncryptionKeyResolver keyResolver,
-                                                         SharedKeyCredential credential, String endpoint,
+                                                         StorageSharedKeyCredential credential, String endpoint,
                                                          HttpPipelinePolicy... policies) {
         EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder()
             .key(key, "keyWrapAlgorithm")
@@ -233,7 +233,7 @@ class APISpec extends Specification {
         return builder
     }
 
-    BlobServiceClientBuilder getServiceClientBuilder(SharedKeyCredential credential, String endpoint,
+    BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
                                                      HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)

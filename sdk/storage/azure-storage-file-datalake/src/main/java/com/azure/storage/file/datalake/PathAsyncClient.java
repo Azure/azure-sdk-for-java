@@ -10,7 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.SR;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
@@ -70,9 +69,11 @@ public class PathAsyncClient {
         if (!ImplUtils.isNullOrEmpty(metadata)) {
             for (final Map.Entry<String, String> entry : metadata.entrySet()) {
                 if (Objects.isNull(entry.getKey()) || entry.getKey().isEmpty()) {
-                    throw new IllegalArgumentException(SR.METADATA_KEY_INVALID);
+                    throw new IllegalArgumentException("The key for one of the metadata key-value pairs is null, "
+                        + "empty, or whitespace.");
                 } else if (Objects.isNull(entry.getValue()) || entry.getValue().isEmpty()) {
-                    throw new IllegalArgumentException(SR.METADATA_VALUE_INVALID);
+                    throw new IllegalArgumentException("The value for one of the metadata key-value pairs is null, "
+                        + "empty, or whitespace.");
                 }
 
                 /*

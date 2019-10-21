@@ -9,6 +9,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceVersion;
 
 import java.net.URL;
 import java.util.Objects;
@@ -46,6 +47,7 @@ public final class LeaseClientBuilder {
     private String leaseId;
     private boolean isBlob;
     private String accountName;
+    private BlobServiceVersion serviceVersion;
 
     /**
      * Creates a {@link LeaseClient} based on the configurations set in the builder.
@@ -62,7 +64,8 @@ public final class LeaseClientBuilder {
      * @return a {@link LeaseAsyncClient} based on the configurations in this builder.
      */
     public LeaseAsyncClient buildAsyncClient() {
-        return new LeaseAsyncClient(pipeline, url, getLeaseId(), isBlob, accountName);
+        BlobServiceVersion version = (serviceVersion == null) ? BlobServiceVersion.getLatest() : serviceVersion;
+        return new LeaseAsyncClient(pipeline, url, getLeaseId(), isBlob, accountName, version.getVersion());
     }
 
     /**
@@ -79,6 +82,7 @@ public final class LeaseClientBuilder {
         this.url = blobClient.getBlobUrl();
         this.isBlob = true;
         this.accountName = blobClient.getAccountName();
+        this.serviceVersion = blobClient.getServiceVersion();
         return this;
     }
 
@@ -96,6 +100,7 @@ public final class LeaseClientBuilder {
         this.url = blobAsyncClient.getBlobUrl();
         this.isBlob = true;
         this.accountName = blobAsyncClient.getAccountName();
+        this.serviceVersion = blobAsyncClient.getServiceVersion();
         return this;
     }
 
@@ -113,6 +118,7 @@ public final class LeaseClientBuilder {
         this.url = blobContainerClient.getBlobContainerUrl();
         this.isBlob = false;
         this.accountName = blobContainerClient.getAccountName();
+        this.serviceVersion = blobContainerClient.getServiceVersion();
         return this;
     }
 
@@ -130,6 +136,7 @@ public final class LeaseClientBuilder {
         this.url = blobContainerAsyncClient.getBlobContainerUrl();
         this.isBlob = false;
         this.accountName = blobContainerAsyncClient.getAccountName();
+        this.serviceVersion = blobContainerAsyncClient.getServiceVersion();
         return this;
     }
 

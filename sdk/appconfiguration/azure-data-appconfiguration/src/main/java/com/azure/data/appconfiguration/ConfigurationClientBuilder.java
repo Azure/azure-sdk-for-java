@@ -81,8 +81,9 @@ public final class ConfigurationClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline pipeline;
-    private RetryPolicy retryPolicy;
+    private HttpPipelinePolicy retryPolicy;
     private Configuration configuration;
+    private ConfigurationServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -139,9 +140,11 @@ public final class ConfigurationClientBuilder {
         String buildEndpoint = getBuildEndpoint(configurationCredentials);
 
         Objects.requireNonNull(buildEndpoint);
+        ConfigurationServiceVersion serviceVersion = version != null
+            ? version : ConfigurationServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new ConfigurationAsyncClient(buildEndpoint, pipeline);
+            return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
         }
 
         ConfigurationClientCredentials buildCredential = (credential == null) ? configurationCredentials : credential;
@@ -152,7 +155,8 @@ public final class ConfigurationClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration));
+        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration,
+            serviceVersion));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
@@ -170,7 +174,7 @@ public final class ConfigurationClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new ConfigurationAsyncClient(buildEndpoint, pipeline);
+        return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
     }
 
     /**
@@ -293,15 +297,30 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link HttpPipelinePolicy} that is used when each request is sent.
      *
      * The default retry policy will be used if not provided {@link ConfigurationClientBuilder#buildAsyncClient()}
      * to build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
-     * @param retryPolicy RetryPolicy applied to each request.
+     * @param retryPolicy user's retry policy applied to each request.
      * @return The updated ConfigurationClientBuilder object.
      */
-    public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public ConfigurationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ConfigurationServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder serviceVersion(ConfigurationServiceVersion version) {
+        this.version = version;
         return this;
     }
 

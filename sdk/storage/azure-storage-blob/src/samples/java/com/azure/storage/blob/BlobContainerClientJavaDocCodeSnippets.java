@@ -4,18 +4,19 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.AccessPolicy;
+import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobListDetails;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.StorageErrorCode;
-import com.azure.storage.blob.models.StorageException;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -74,8 +75,8 @@ public class BlobContainerClientJavaDocCodeSnippets {
         try {
             client.create();
             System.out.printf("Create completed%n");
-        } catch (StorageException error) {
-            if (error.getErrorCode().equals(StorageErrorCode.CONTAINER_ALREADY_EXISTS)) {
+        } catch (BlobStorageException error) {
+            if (error.getErrorCode().equals(BlobErrorCode.CONTAINER_ALREADY_EXISTS)) {
                 System.out.printf("Can't create container. It already exists %n");
             }
         }
@@ -103,8 +104,8 @@ public class BlobContainerClientJavaDocCodeSnippets {
         try {
             client.delete();
             System.out.printf("Delete completed%n");
-        } catch (StorageException error) {
-            if (error.getErrorCode().equals(StorageErrorCode.CONTAINER_NOT_FOUND)) {
+        } catch (BlobStorageException error) {
+            if (error.getErrorCode().equals(BlobErrorCode.CONTAINER_NOT_FOUND)) {
                 System.out.printf("Delete failed. Container was not found %n");
             }
         }
@@ -198,10 +199,10 @@ public class BlobContainerClientJavaDocCodeSnippets {
         BlobContainerAccessPolicies accessPolicies = client.getAccessPolicy();
         System.out.printf("Blob Access Type: %s%n", accessPolicies.getBlobAccessType());
 
-        for (SignedIdentifier identifier : accessPolicies.getIdentifiers()) {
+        for (BlobSignedIdentifier identifier : accessPolicies.getIdentifiers()) {
             System.out.printf("Identifier Name: %s, Permissions %s%n",
                 identifier.getId(),
-                identifier.getAccessPolicy().getPermission());
+                identifier.getAccessPolicy().getPermissions());
         }
         // END: com.azure.storage.blob.BlobContainerClient.getAccessPolicy
     }
@@ -217,10 +218,10 @@ public class BlobContainerClientJavaDocCodeSnippets {
             .getValue();
         System.out.printf("Blob Access Type: %s%n", accessPolicies.getBlobAccessType());
 
-        for (SignedIdentifier identifier : accessPolicies.getIdentifiers()) {
+        for (BlobSignedIdentifier identifier : accessPolicies.getIdentifiers()) {
             System.out.printf("Identifier Name: %s, Permissions %s%n",
                 identifier.getId(),
-                identifier.getAccessPolicy().getPermission());
+                identifier.getAccessPolicy().getPermissions());
         }
         // END: com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
     }
@@ -230,12 +231,12 @@ public class BlobContainerClientJavaDocCodeSnippets {
      */
     public void setAccessPolicy() {
         // BEGIN: com.azure.storage.blob.BlobContainerClient.setAccessPolicy#PublicAccessType-List
-        SignedIdentifier identifier = new SignedIdentifier()
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("name")
-            .setAccessPolicy(new AccessPolicy()
-                .setStart(OffsetDateTime.now())
-                .setExpiry(OffsetDateTime.now().plusDays(7))
-                .setPermission("permissionString"));
+            .setAccessPolicy(new BlobAccessPolicy()
+                .setStartsOn(OffsetDateTime.now())
+                .setExpiresOn(OffsetDateTime.now().plusDays(7))
+                .setPermissions("permissionString"));
 
         try {
             client.setAccessPolicy(PublicAccessType.CONTAINER, Collections.singletonList(identifier));
@@ -252,12 +253,12 @@ public class BlobContainerClientJavaDocCodeSnippets {
      */
     public void setAccessPolicy2() {
         // BEGIN: com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobContainerAccessConditions-Duration-Context
-        SignedIdentifier identifier = new SignedIdentifier()
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("name")
-            .setAccessPolicy(new AccessPolicy()
-                .setStart(OffsetDateTime.now())
-                .setExpiry(OffsetDateTime.now().plusDays(7))
-                .setPermission("permissionString"));
+            .setAccessPolicy(new BlobAccessPolicy()
+                .setStartsOn(OffsetDateTime.now())
+                .setExpiresOn(OffsetDateTime.now().plusDays(7))
+                .setPermissions("permissionString"));
 
         BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
@@ -276,63 +277,63 @@ public class BlobContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#listBlobsFlat()}
+     * Code snippet for {@link BlobContainerClient#listBlobs()}
      */
     public void listBlobsFlat() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsFlat
-        client.listBlobsFlat().forEach(blob ->
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobs
+        client.listBlobs().forEach(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.BlobContainerClient.listBlobsFlat
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobs
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#listBlobsFlat(ListBlobsOptions, Duration)}
+     * Code snippet for {@link BlobContainerClient#listBlobs(ListBlobsOptions, Duration)}
      */
     public void listBlobsFlat2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsFlat#ListBlobsOptions-Duration
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("prefixToMatch")
             .setDetails(new BlobListDetails()
                 .setRetrieveDeletedBlobs(true)
                 .setRetrieveSnapshots(true));
 
-        client.listBlobsFlat(options, timeout).forEach(blob ->
+        client.listBlobs(options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.BlobContainerClient.listBlobsFlat#ListBlobsOptions-Duration
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#listBlobsHierarchy(String)}
+     * Code snippet for {@link BlobContainerClient#listBlobsByHierarchy(String)}
      */
     public void listBlobsHierarchy() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String
-        client.listBlobsHierarchy("directoryName").forEach(blob ->
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String
+        client.listBlobsByHierarchy("directoryName").forEach(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#listBlobsHierarchy(String, ListBlobsOptions, Duration)}
+     * Code snippet for {@link BlobContainerClient#listBlobsByHierarchy(String, ListBlobsOptions, Duration)}
      */
     public void listBlobsHierarchy2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("directoryName")
             .setDetails(new BlobListDetails()
                 .setRetrieveDeletedBlobs(true)
                 .setRetrieveSnapshots(true));
 
-        client.listBlobsHierarchy("/", options, timeout).forEach(blob ->
+        client.listBlobsByHierarchy("/", options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration
     }
 
     /**

@@ -11,17 +11,18 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -123,6 +124,14 @@ public final class BlobContainerClient {
         return this.blobContainerAsyncClient.getAccountName();
     }
 
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public BlobServiceVersion getServiceVersion() {
+        return this.blobContainerAsyncClient.getServiceVersion();
+    }
 
     /**
      * Gets the {@link HttpPipeline} powering this client.
@@ -169,7 +178,7 @@ public final class BlobContainerClient {
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         Mono<Response<Boolean>> response = blobContainerAsyncClient.existsWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -204,7 +213,7 @@ public final class BlobContainerClient {
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient.createWithResponse(metadata, accessType, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -238,7 +247,7 @@ public final class BlobContainerClient {
         Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient.deleteWithResponse(accessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -274,7 +283,7 @@ public final class BlobContainerClient {
         Mono<Response<BlobContainerProperties>> response = blobContainerAsyncClient
             .getPropertiesWithResponse(leaseAccessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -308,7 +317,7 @@ public final class BlobContainerClient {
         BlobContainerAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient.setMetadataWithResponse(metadata, accessConditions,
             context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -347,7 +356,7 @@ public final class BlobContainerClient {
         Mono<Response<BlobContainerAccessPolicies>> response = blobContainerAsyncClient
             .getAccessPolicyWithResponse(leaseAccessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -362,13 +371,13 @@ public final class BlobContainerClient {
      *
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
+     * @param identifiers A list of {@link BlobSignedIdentifier} objects that specify the permissions for the container.
      * Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
      */
     public void setAccessPolicy(PublicAccessType accessType,
-        List<SignedIdentifier> identifiers) {
+        List<BlobSignedIdentifier> identifiers) {
         setAccessPolicyWithResponse(accessType, identifiers, null, null, Context.NONE);
     }
 
@@ -384,7 +393,7 @@ public final class BlobContainerClient {
      *
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
+     * @param identifiers A list of {@link BlobSignedIdentifier} objects that specify the permissions for the container.
      * Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
@@ -394,12 +403,12 @@ public final class BlobContainerClient {
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> setAccessPolicyWithResponse(PublicAccessType accessType,
-        List<SignedIdentifier> identifiers, BlobContainerAccessConditions accessConditions,
+        List<BlobSignedIdentifier> identifiers, BlobContainerAccessConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient
             .setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -415,12 +424,12 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsFlat}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs}
      *
      * @return The listed blobs, flattened.
      */
-    public PagedIterable<BlobItem> listBlobsFlat() {
-        return this.listBlobsFlat(new ListBlobsOptions(), null);
+    public PagedIterable<BlobItem> listBlobs() {
+        return this.listBlobs(new ListBlobsOptions(), null);
     }
 
     /**
@@ -436,13 +445,13 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsFlat#ListBlobsOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration}
      *
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The listed blobs, flattened.
      */
-    public PagedIterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
+    public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, Duration timeout) {
         return new PagedIterable<>(blobContainerAsyncClient.listBlobsFlatWithOptionalTimeout(options, timeout));
     }
 
@@ -472,13 +481,13 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String}
      *
      * @param directory The directory to list blobs underneath
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public PagedIterable<BlobItem> listBlobsHierarchy(String directory) {
-        return this.listBlobsHierarchy("/", new ListBlobsOptions().setPrefix(directory), null);
+    public PagedIterable<BlobItem> listBlobsByHierarchy(String directory) {
+        return this.listBlobsByHierarchy("/", new ListBlobsOptions().setPrefix(directory), null);
     }
 
     /**
@@ -507,14 +516,14 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration}
      *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public PagedIterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
+    public PagedIterable<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         return new PagedIterable<>(blobContainerAsyncClient
             .listBlobsHierarchyWithOptionalTimeout(delimiter, options, timeout));
     }
@@ -549,6 +558,6 @@ public final class BlobContainerClient {
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageAccountInfo>> response = blobContainerAsyncClient.getAccountInfoWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }
