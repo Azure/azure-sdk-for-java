@@ -46,6 +46,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {DataLakeServiceClient.class, DataLakeServiceAsyncClient.class})
 public class DataLakeServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(DataLakeServiceClientBuilder.class);
+
     private BlobServiceClientBuilder blobServiceClientBuilder;
 
     private String endpoint;
@@ -95,11 +96,10 @@ public class DataLakeServiceClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
-        return new DataLakeServiceAsyncClient(accountName, new DataLakeStorageClientBuilder()
-        .url(endpoint)
-        .pipeline(pipeline)
-        .build(), blobServiceClientBuilder.buildAsyncClient()
-        );
+        return new DataLakeServiceAsyncClient(new DataLakeStorageClientBuilder()
+            .url(endpoint)
+            .pipeline(pipeline)
+            .build(), accountName, blobServiceClientBuilder.buildAsyncClient());
     }
 
     /**

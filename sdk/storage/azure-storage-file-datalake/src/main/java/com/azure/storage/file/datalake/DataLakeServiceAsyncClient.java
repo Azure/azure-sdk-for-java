@@ -52,7 +52,7 @@ public class DataLakeServiceAsyncClient {
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
      */
-    DataLakeServiceAsyncClient(String accountName, DataLakeStorageClientImpl dataLakeImpl,
+    DataLakeServiceAsyncClient(DataLakeStorageClientImpl dataLakeImpl, String accountName,
         BlobServiceAsyncClient blobServiceAsyncClient) {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
         this.dataLakeImpl = dataLakeImpl;
