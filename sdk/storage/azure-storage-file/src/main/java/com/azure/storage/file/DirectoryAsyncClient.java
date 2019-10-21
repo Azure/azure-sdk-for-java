@@ -14,8 +14,8 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.DirectorysCreateResponse;
 import com.azure.storage.file.implementation.models.DirectorysGetPropertiesResponse;
@@ -72,6 +72,7 @@ public class DirectoryAsyncClient {
     private final String directoryPath;
     private final String snapshot;
     private final String accountName;
+    private final FileServiceVersion serviceVersion;
 
     /**
      * Creates a DirectoryAsyncClient that sends requests to the storage directory at {@link
@@ -84,7 +85,7 @@ public class DirectoryAsyncClient {
      * @param snapshot The snapshot of the share
      */
     DirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
-        String snapshot, String accountName) {
+        String snapshot, String accountName, FileServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
@@ -92,6 +93,7 @@ public class DirectoryAsyncClient {
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -113,8 +115,8 @@ public class DirectoryAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return azureFileStorageClient.getVersion();
+    public FileServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
@@ -128,7 +130,7 @@ public class DirectoryAsyncClient {
      */
     public FileAsyncClient getFileClient(String fileName) {
         String filePath = directoryPath + "/" + fileName;
-        return new FileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName);
+        return new FileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName, serviceVersion);
     }
 
     /**
@@ -142,7 +144,8 @@ public class DirectoryAsyncClient {
      */
     public DirectoryAsyncClient getSubDirectoryClient(String subDirectoryName) {
         String directoryPath = this.directoryPath + "/" + subDirectoryName;
-        return new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot, accountName);
+        return new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot, accountName,
+            serviceVersion);
     }
 
     /**
@@ -514,7 +517,7 @@ public class DirectoryAsyncClient {
     PagedFlux<StorageFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResultsPerPage,
                                                                           Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<StorageFileItem>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
                     marker, maxResultsPerPage, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -555,7 +558,7 @@ public class DirectoryAsyncClient {
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultPerPage, boolean recursive, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResultPerPage, null, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -647,7 +650,7 @@ public class DirectoryAsyncClient {
 
     PagedFlux<Integer> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<Integer>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -1021,7 +1024,7 @@ public class DirectoryAsyncClient {
         }
 
         if (filePermission != null) {
-            Utility.assertInBounds("filePermission",
+            StorageImplUtils.assertInBounds("filePermission",
                 filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
         }
     }

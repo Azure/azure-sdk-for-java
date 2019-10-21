@@ -6,8 +6,10 @@ package com.azure.storage.file
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
-import com.azure.storage.common.implementation.Constants
+import com.azure.core.util.polling.Poller
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
+import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileErrorCode
 import com.azure.storage.file.models.FileHttpHeaders
 import com.azure.storage.file.models.FileRange
@@ -22,6 +24,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -45,8 +48,8 @@ class FileAsyncAPITests extends APISpec {
         shareClient.create()
         primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHttpHeaders().setFileContentLanguage("en")
-            .setFileContentType("application/octet-stream")
+        httpHeaders = new FileHttpHeaders().setContentLanguage("en")
+            .setContentType("application/octet-stream")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
@@ -408,10 +411,10 @@ class FileAsyncAPITests extends APISpec {
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasToken = new FileServiceSasSignatureValues()
             .setExpiryTime(getUTCNow().plusDays(1))
-            .setPermissions(new FileSasPermission().setReadPermission(true).toString())
-            .setCanonicalName(primaryFileAsyncClient.getShareName(), primaryFileAsyncClient.getFilePath(), credential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
-            .generateSASQueryParameters(credential)
+            .setPermissions(new FileSasPermission().setReadPermission(true))
+            .setShareName(primaryFileAsyncClient.getShareName())
+            .setFilePath(primaryFileAsyncClient.getFilePath())
+            .generateSasQueryParameters(credential)
             .encode()
 
         when:
@@ -440,11 +443,11 @@ class FileAsyncAPITests extends APISpec {
         def sourceURL = primaryFileAsyncClient.getFileUrl()
 
         when:
-        def copyInfoVerifier = StepVerifier.create(primaryFileAsyncClient.startCopyWithResponse(sourceURL, null))
+        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, Duration.ofSeconds(2))
+        def copyInfoVerifier = StepVerifier.create(poller.getObserver())
 
         then:
         copyInfoVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 202)
             assert it.getValue().getCopyId() != null
         }.verifyComplete()
     }
@@ -454,7 +457,8 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        def startCopyErrorVerifier = StepVerifier.create(primaryFileAsyncClient.startCopyWithResponse("some url", testMetadata))
+        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata, Duration.ofSeconds(2))
+        def startCopyErrorVerifier = StepVerifier.create(poller.getObserver())
 
         then:
         startCopyErrorVerifier.verifyErrorSatisfies {

@@ -277,63 +277,63 @@ public class BlobContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#listBlobsFlat()}
+     * Code snippet for {@link BlobContainerClient#listBlobs()}
      */
     public void listBlobsFlat() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsFlat
-        client.listBlobsFlat().forEach(blob ->
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobs
+        client.listBlobs().forEach(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.BlobContainerClient.listBlobsFlat
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobs
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#listBlobsFlat(ListBlobsOptions, Duration)}
+     * Code snippet for {@link BlobContainerClient#listBlobs(ListBlobsOptions, Duration)}
      */
     public void listBlobsFlat2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsFlat#ListBlobsOptions-Duration
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("prefixToMatch")
             .setDetails(new BlobListDetails()
                 .setRetrieveDeletedBlobs(true)
                 .setRetrieveSnapshots(true));
 
-        client.listBlobsFlat(options, timeout).forEach(blob ->
+        client.listBlobs(options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.BlobContainerClient.listBlobsFlat#ListBlobsOptions-Duration
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#listBlobsHierarchy(String)}
+     * Code snippet for {@link BlobContainerClient#listBlobsByHierarchy(String)}
      */
     public void listBlobsHierarchy() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String
-        client.listBlobsHierarchy("directoryName").forEach(blob ->
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String
+        client.listBlobsByHierarchy("directoryName").forEach(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#listBlobsHierarchy(String, ListBlobsOptions, Duration)}
+     * Code snippet for {@link BlobContainerClient#listBlobsByHierarchy(String, ListBlobsOptions, Duration)}
      */
     public void listBlobsHierarchy2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("directoryName")
             .setDetails(new BlobListDetails()
                 .setRetrieveDeletedBlobs(true)
                 .setRetrieveSnapshots(true));
 
-        client.listBlobsHierarchy("/", options, timeout).forEach(blob ->
+        client.listBlobsByHierarchy("/", options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration
     }
 
     /**

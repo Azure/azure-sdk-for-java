@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -158,7 +159,7 @@ public final class BlockBlobClient extends BlobClientBase {
                 accessConditions, context);
 
         try {
-            return Utility.blockWithOptionalTimeout(upload, timeout);
+            return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
@@ -213,7 +214,7 @@ public final class BlockBlobClient extends BlobClientBase {
 
         Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
             fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -269,7 +270,7 @@ public final class BlockBlobClient extends BlobClientBase {
         SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceUrl,
             sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -309,7 +310,7 @@ public final class BlockBlobClient extends BlobClientBase {
         Mono<Response<BlockList>> response = blockBlobAsyncClient.listBlocksWithResponse(listType,
             leaseAccessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -360,6 +361,6 @@ public final class BlockBlobClient extends BlobClientBase {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockListWithResponse(
             base64BlockIDs, overwrite, headers, metadata, tier, accessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

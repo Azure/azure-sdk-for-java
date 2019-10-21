@@ -19,6 +19,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -118,9 +119,9 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
-    public Response<AppendBlobItem> createWithResponse(boolean overwrite, BlobHttpHeaders headers,
-        Map<String, String> metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(appendBlobAsyncClient.
+    public Response<AppendBlobItem> createWithResponse(boolean overwrite, BlobHttpHeaders headers, Map<String, String> metadata,
+        BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
             createWithResponse(overwrite, headers, metadata, accessConditions, context), timeout);
     }
 
@@ -170,7 +171,7 @@ public final class AppendBlobClient extends BlobClientBase {
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES);
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
             fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -216,6 +217,6 @@ public final class AppendBlobClient extends BlobClientBase {
         SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(sourceUrl,
             sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

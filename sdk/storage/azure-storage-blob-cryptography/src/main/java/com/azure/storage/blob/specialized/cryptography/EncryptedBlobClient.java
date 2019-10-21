@@ -11,7 +11,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.io.UncheckedIOException;
@@ -93,7 +93,7 @@ public class EncryptedBlobClient extends BlobClient {
             headers, metadata, tier, accessConditions);
 
         try {
-            Utility.blockWithOptionalTimeout(upload, timeout);
+            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }

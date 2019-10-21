@@ -167,7 +167,7 @@ class QueueServiceAPITests extends APISpec {
             .setIncludeAPIs(false)
             .setRetentionPolicy(retentionPolicy)
             .setVersion("1.0")
-        def updatedProperties = new QueueServiceProperties().setLogging(logging)
+        def updatedProperties = new QueueServiceProperties().setAnalyticsLogging(logging)
             .setHourMetrics(metrics)
             .setMinuteMetrics(metrics)
             .setCors(new ArrayList<>())

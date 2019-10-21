@@ -15,12 +15,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -47,11 +48,11 @@ public final class BlobBatchAsyncClient {
 
     private final AzureBlobStorageImpl client;
 
-    BlobBatchAsyncClient(String accountUrl, HttpPipeline pipeline, String version) {
+    BlobBatchAsyncClient(String accountUrl, HttpPipeline pipeline, BlobServiceVersion version) {
         this.client = new AzureBlobStorageBuilder()
             .url(accountUrl)
             .pipeline(pipeline)
-            .version(version)
+            .version(version.getVersion())
             .build();
     }
 
@@ -75,7 +76,8 @@ public final class BlobBatchAsyncClient {
      *
      * @param batch Batch to submit.
      * @return An empty response indicating that the batch operation has completed.
-     * @throws BlobStorageException If any request in the {@link BlobBatch} failed or the batch request is malformed.
+     * @throws BlobStorageException If the batch request is malformed.
+     * @throws BlobBatchStorageException If any request in the {@link BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> submitBatch(BlobBatch batch) {
@@ -100,8 +102,9 @@ public final class BlobBatchAsyncClient {
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
      * @return A response only containing header and status code information, used to indicate that the batch operation
      * has completed.
-     * @throws BlobStorageException If {@code throwOnAnyFailure} is {@code true} and any request in the
-     * {@link BlobBatch} failed or the batch request is malformed.
+     * @throws BlobStorageException If the batch request is malformed.
+     * @throws BlobBatchStorageException If {@code throwOnAnyFailure} is {@code true} and any request in the
+     * {@link BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
@@ -128,7 +131,8 @@ public final class BlobBatchAsyncClient {
      * @param blobUrls Urls of the blobs to delete.
      * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
-     * @throws BlobStorageException If any of the delete operations fail or the request is malformed.
+     * @throws BlobStorageException If the batch request is malformed.
+     * @throws BlobBatchStorageException If any of the delete operations fail.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions) {
@@ -143,10 +147,10 @@ public final class BlobBatchAsyncClient {
     PagedFlux<Response<Void>> deleteBlobsWithTimeout(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions,
         Duration timeout, Context context) {
         return new PagedFlux<>(() ->
-            Utility.applyOptionalTimeout(submitDeleteBlobsBatch(blobUrls, deleteOptions, context), timeout));
+            StorageImplUtils.applyOptionalTimeout(submitDeleteBlobsBatch(blobUrls, deleteOptions, context), timeout));
     }
 
-    Mono<PagedResponse<Response<Void>>> submitDeleteBlobsBatch(List<String> blobUrls,
+    private Mono<PagedResponse<Response<Void>>> submitDeleteBlobsBatch(List<String> blobUrls,
         DeleteSnapshotsOptionType deleteOptions, Context context) {
         return submitBatchHelper(blobUrls, (batch, blobUrl) -> batch.deleteBlob(blobUrl, deleteOptions, null), context);
     }
@@ -161,7 +165,8 @@ public final class BlobBatchAsyncClient {
      * @param blobUrls Urls of the blobs to set their access tier.
      * @param accessTier {@link AccessTier} to set on each blob.
      * @return The status of each set tier operation.
-     * @throws BlobStorageException If any of the set tier operations fail or the request is malformed.
+     * @throws BlobStorageException If the batch request is malformed.
+     * @throws BlobBatchStorageException If any of the set tier operations fail.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier) {
@@ -176,10 +181,10 @@ public final class BlobBatchAsyncClient {
     PagedFlux<Response<Void>> setBlobsAccessTierWithTimeout(List<String> blobUrls, AccessTier accessTier,
         Duration timeout, Context context) {
         return new PagedFlux<>(() ->
-            Utility.applyOptionalTimeout(submitSetTierBatch(blobUrls, accessTier, context), timeout));
+            StorageImplUtils.applyOptionalTimeout(submitSetTierBatch(blobUrls, accessTier, context), timeout));
     }
 
-    Mono<PagedResponse<Response<Void>>> submitSetTierBatch(List<String> blobUrls, AccessTier accessTier,
+    private Mono<PagedResponse<Response<Void>>> submitSetTierBatch(List<String> blobUrls, AccessTier accessTier,
         Context context) {
         return submitBatchHelper(blobUrls, (batch, blobUrl) -> batch.setBlobAccessTier(blobUrl, accessTier), context);
     }
@@ -233,53 +238,4 @@ public final class BlobBatchAsyncClient {
             }
         };
     }
-
-
-//    private <T> PagedFlux<Response<T>> batchingHelper(List<String> blobUrls,
-//        BiFunction<BlobBatch, String, Response<T>> generator) {
-//        BlobBatch batch = new BlobBatch(client.getUrl(), client.getHttpPipeline());
-//
-//        List<Response<T>> responses = new ArrayList<>();
-//        for (String blobUrl : blobUrls) {
-//            responses.add(generator.apply(batch, blobUrl));
-//        }
-//
-//        return new PagedFlux<Response<T>>(() -> withContext(context -> submitBatchWithResponse(batch, true, context)
-//            .map(response -> new PagedResponse<Response<T>>() {
-//
-//                @Override
-//                public void close() {
-//                }
-//
-//                @Override
-//                public List<Response<T>> getItems() {
-//                    return responses;
-//                }
-//
-//                @Override
-//                public String getNextLink() {
-//                    return null;
-//                }
-//
-//                @Override
-//                public int getStatusCode() {
-//                    return response.getStatusCode();
-//                }
-//
-//                @Override
-//                public HttpHeaders getHeaders() {
-//                    return response.getHeaders();
-//                }
-//
-//                @Override
-//                public HttpRequest getRequest() {
-//                    return response.getRequest();
-//                }
-//
-//                @Override
-//                public List<Response<T>> getValue() {
-//                    return responses;
-//                }
-//            })));
-//    }
 }

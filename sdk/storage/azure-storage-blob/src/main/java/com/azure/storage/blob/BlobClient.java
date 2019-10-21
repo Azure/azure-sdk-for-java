@@ -14,7 +14,7 @@ import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.io.UncheckedIOException;
@@ -136,7 +136,7 @@ public class BlobClient extends BlobClientBase {
             filePath, parallelTransferOptions, overwrite, headers, metadata, tier, accessConditions);
 
         try {
-            Utility.blockWithOptionalTimeout(upload, timeout);
+            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }

@@ -73,7 +73,7 @@ public final class ShareSasPermission {
     /**
      * @return the read permission status
      */
-    public boolean getReadPermission() {
+    public boolean hasReadPermission() {
         return readPermission;
     }
 
@@ -91,7 +91,7 @@ public final class ShareSasPermission {
     /**
      * @return the create permission status
      */
-    public boolean getCreatePermission() {
+    public boolean hasCreatePermission() {
         return createPermission;
     }
 
@@ -109,7 +109,7 @@ public final class ShareSasPermission {
     /**
      * @return the write permission status
      */
-    public boolean getWritePermission() {
+    public boolean hasWritePermission() {
         return writePermission;
     }
 
@@ -127,7 +127,7 @@ public final class ShareSasPermission {
     /**
      * @return the delete permission status
      */
-    public boolean getDeletePermission() {
+    public boolean hasDeletePermission() {
         return deletePermission;
     }
 
@@ -145,7 +145,7 @@ public final class ShareSasPermission {
     /**
      * @return the list permission status
      */
-    public boolean getListPermission() {
+    public boolean hasListPermission() {
         return listPermission;
     }
 

@@ -77,7 +77,7 @@ public final class BlobContainerSasPermission {
     /**
      * @return the read permission status
      */
-    public boolean getReadPermission() {
+    public boolean hasReadPermission() {
         return readPermission;
     }
 
@@ -95,7 +95,7 @@ public final class BlobContainerSasPermission {
     /**
      * @return the add permission status
      */
-    public boolean getAddPermission() {
+    public boolean hasAddPermission() {
         return addPermission;
     }
 
@@ -113,7 +113,7 @@ public final class BlobContainerSasPermission {
     /**
      * @return the create permission status
      */
-    public boolean getCreatePermission() {
+    public boolean hasCreatePermission() {
         return createPermission;
     }
 
@@ -131,7 +131,7 @@ public final class BlobContainerSasPermission {
     /**
      * @return the write permission status
      */
-    public boolean getWritePermission() {
+    public boolean hasWritePermission() {
         return writePermission;
     }
 
@@ -149,7 +149,7 @@ public final class BlobContainerSasPermission {
     /**
      * @return the delete permission status
      */
-    public boolean getDeletePermission() {
+    public boolean hasDeletePermission() {
         return deletePermission;
     }
 
@@ -167,7 +167,7 @@ public final class BlobContainerSasPermission {
     /**
      * @return the list permission status
      */
-    public boolean getListPermission() {
+    public boolean hasListPermission() {
         return listPermission;
     }
 

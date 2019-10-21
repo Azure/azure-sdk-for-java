@@ -5,11 +5,12 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -84,10 +85,21 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
+     *
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param key The key used to encrypt and decrypt data.
+     * @param keyWrapAlgorithm The algorithm used to wrap/unwrap the key during encryption.
      */
-    EncryptedBlobAsyncClient(AzureBlobStorageImpl constructImpl, String snapshot, String accountName,
-        AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
-        super(constructImpl, snapshot, null, accountName);
+    EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+        String containerName, String blobName, String snapshot, AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, null);
+
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
     }

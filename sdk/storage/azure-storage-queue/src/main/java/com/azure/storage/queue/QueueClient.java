@@ -6,8 +6,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
@@ -61,7 +61,7 @@ public final class QueueClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public QueueServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
@@ -106,7 +106,7 @@ public final class QueueClient {
      */
     public Response<Void> createWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.createWithResponse(metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -148,7 +148,7 @@ public final class QueueClient {
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -193,7 +193,7 @@ public final class QueueClient {
      */
     public Response<QueueProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<QueueProperties>> response = client.getPropertiesWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -249,7 +249,7 @@ public final class QueueClient {
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -315,7 +315,7 @@ public final class QueueClient {
     public Response<Void> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.setAccessPolicyWithResponse(permissions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -357,7 +357,7 @@ public final class QueueClient {
      */
     public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = client.clearMessagesWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -419,7 +419,7 @@ public final class QueueClient {
         Duration timeToLive, Duration timeout, Context context) {
         Mono<Response<SendMessageResult>> response = client.sendMessageWithResponse(messageText,
             visibilityTimeout, timeToLive, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -616,7 +616,7 @@ public final class QueueClient {
         String messageText, Duration visibilityTimeout, Duration timeout, Context context) {
         Mono<Response<UpdateMessageResult>> response = client.updateMessageWithResponse(messageId,
             popReceipt, messageText, visibilityTimeout, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -665,7 +665,7 @@ public final class QueueClient {
     public Response<Void> deleteMessageWithResponse(String messageId, String popReceipt, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.deleteMessageWithResponse(messageId, popReceipt, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

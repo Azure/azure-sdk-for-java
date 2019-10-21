@@ -5,8 +5,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 
 class BatchAPITest extends APISpec {
     static def setupCustomPolicyBatch(BlobServiceAsyncClient blobServiceAsyncClient, HttpPipelinePolicy customPolicy) {
@@ -96,7 +96,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(BlobStorageException)
+        thrown(BlobBatchStorageException)
         response1.getStatusCode() == 200
 
         when:
@@ -147,7 +147,8 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(BlobStorageException)
+        def ex = thrown(BlobBatchStorageException)
+        ex.getBatchExceptions().size() == 2
 
         when:
         response1.getStatusCode()
@@ -159,7 +160,7 @@ class BatchAPITest extends APISpec {
         response2.getStatusCode()
 
         then:
-        thrown(UnsupportedOperationException)
+        thrown(BlobStorageException)
     }
 
     def "Set tier none succeed do not throw on any error"() {
@@ -230,7 +231,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(BlobStorageException)
+        thrown(BlobBatchStorageException)
         response1.getStatusCode() == 202
 
         when:
@@ -281,7 +282,8 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(BlobStorageException)
+        def ex = thrown(BlobBatchStorageException)
+        ex.getBatchExceptions().size() == 2
 
         when:
         response1.getStatusCode()
@@ -293,7 +295,7 @@ class BatchAPITest extends APISpec {
         response2.getStatusCode()
 
         then:
-        thrown(UnsupportedOperationException)
+        thrown(BlobStorageException)
     }
 
     def "Delete blob none succeed do not throw on any error"() {
@@ -372,5 +374,21 @@ class BatchAPITest extends APISpec {
         for (def response : responses) {
             assert response.getStatusCode() == 200
         }
+    }
+
+    def "Too many operations fails"() {
+        setup:
+        def blobUrls = new ArrayList<String>()
+        for (def i = 0; i < 257; i++) {
+            def pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+            pageBlobClient.create(512)
+            blobUrls.add(pageBlobClient.getBlobUrl())
+        }
+
+        when:
+        batchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).iterator().next()
+
+        then:
+        thrown(BlobStorageException)
     }
 }

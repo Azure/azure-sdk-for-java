@@ -108,6 +108,7 @@ public class ConfigurationSets {
             .setValue(MAPPER.writeValueAsString(complexConfiguration))
             .setContentType("application/json");
 
-        return Flux.merge(client.addSetting(keyVaultSetting), client.addSetting(endpointSetting)).then();
+        return Flux.merge(client.addSetting(keyVaultSetting.getKey(), keyVaultSetting.getLabel(), keyVaultSetting.getValue()),
+            client.addSetting(endpointSetting.getKey(), endpointSetting.getLabel(), endpointSetting.getValue())).then();
     }
 }

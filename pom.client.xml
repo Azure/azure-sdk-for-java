@@ -348,13 +348,14 @@
               *.impl*:
               *.implementation*:
               com.azure.tools.checkstyle*:
-              com.azure.core.test
+              com.azure.core.test:
+              com.azure.core.test.*
             </excludePackageNames>
             <groups>
               <group>
                 <title>Azure Core</title>
                 <packages>
-                  com.azure.core:com.azure.core.annotation:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*
+                  com.azure.core:com.azure.core.annotation:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*:com.azure.core.credential:com.azure.core.cryptography
                 </packages>
               </group>
               <group>

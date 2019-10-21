@@ -4,15 +4,12 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.blob.implementation.models.PageBlobClearPagesHeaders;
-import com.azure.storage.blob.implementation.models.PageBlobCreateHeaders;
-import com.azure.storage.blob.implementation.models.PageBlobResizeHeaders;
-import com.azure.storage.blob.implementation.models.PageBlobUpdateSequenceNumberHeaders;
-import com.azure.storage.blob.implementation.models.PageBlobUploadPagesFromURLHeaders;
-import com.azure.storage.blob.implementation.models.PageBlobUploadPagesHeaders;
 
 import java.time.OffsetDateTime;
 
+/**
+ * This class contains the properties about a page blob.
+ */
 public class PageBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
@@ -21,58 +18,24 @@ public class PageBlobItem {
     private final String encryptionKeySha256;
     private final Long blobSequenceNumber;
 
-    public PageBlobItem(PageBlobCreateHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobSequenceNumber = null;
-    }
-
-    public PageBlobItem(PageBlobUploadPagesHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
-    }
-
-    public PageBlobItem(PageBlobUploadPagesFromURLHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
-    }
-
-    public PageBlobItem(PageBlobClearPagesHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
-    }
-
-    public PageBlobItem(PageBlobResizeHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
-        this.isServerEncrypted = null;
-        this.encryptionKeySha256 = null;
-        this.contentMD5 = null;
-    }
-
-    public PageBlobItem(PageBlobUpdateSequenceNumberHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
-        this.isServerEncrypted = null;
-        this.encryptionKeySha256 = null;
-        this.contentMD5 = null;
+    /**
+     * Constructs a {@link PageBlobItem}.
+     *
+     * @param eTag ETag of the page blob.
+     * @param lastModified Last modified time of the page blob.
+     * @param contentMD5 Content MD5 of the page blob.
+     * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
+     * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
+     * @param blobSequenceNumber The current sequence number for the page blob.
+     */
+    public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final Long blobSequenceNumber) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.isServerEncrypted = isServerEncrypted;
+        this.encryptionKeySha256 = encryptionKeySha256;
+        this.blobSequenceNumber = blobSequenceNumber;
     }
 
     /**
