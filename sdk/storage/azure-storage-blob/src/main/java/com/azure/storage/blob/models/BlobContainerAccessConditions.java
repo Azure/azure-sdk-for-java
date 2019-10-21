@@ -61,11 +61,11 @@ public final class BlobContainerAccessConditions {
      * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
      * the blob.
      *
-     * @param leaseID the lease access conditions to set
+     * @param leaseId the lease access conditions to set
      * @return the updated ContainerAccessConditions object
      */
-    public BlobContainerAccessConditions setLeaseAccessConditions(LeaseAccessConditions leaseID) {
-        this.leaseAccessConditions = leaseID;
+    public BlobContainerAccessConditions setLeaseAccessConditions(LeaseAccessConditions leaseId) {
+        this.leaseAccessConditions = leaseId;
         return this;
     }
 }

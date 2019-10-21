@@ -45,7 +45,7 @@ class PageBlobAPITest extends APISpec {
         then:
         response.getStatusCode() == 201
         validateBasicHeaders(response.getHeaders())
-        response.getValue().getContentMD5() == null
+        response.getValue().getContentMd5() == null
         response.getValue().isServerEncrypted()
     }
 
@@ -519,7 +519,7 @@ class PageBlobAPITest extends APISpec {
         then:
         bc.getPageRanges(new BlobRange(0)).getPageRange().size() == 0
         validateBasicHeaders(response.getHeaders())
-        response.getValue().getContentMD5() == null
+        response.getValue().getContentMd5() == null
         response.getValue().getBlobSequenceNumber() == 0
     }
 
