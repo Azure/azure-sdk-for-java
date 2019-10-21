@@ -201,7 +201,7 @@ public class JsonWebKey {
      */
     @JsonProperty("key_ops")
     public List<KeyOperation> getKeyOps() {
-        return Collections.unmodifiableList(this.keyOps);
+        return this.keyOps == null ? this.keyOps : Collections.unmodifiableList(this.keyOps);
     }
 
     /**
