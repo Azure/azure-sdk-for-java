@@ -10,8 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.models.RecordedData;
-import com.azure.core.test.policy.RecordNetworkCallPolicy;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -44,14 +43,13 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public CertificateAsyncClient createAsyncClientWithHttpclient() {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation
-        RecordedData networkData = new RecordedData();
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
+            .build();
         CertificateAsyncClient keyClient = new CertificateClientBuilder()
             .pipeline(pipeline)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .addPolicy(new RecordNetworkCallPolicy(networkData))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation
@@ -79,12 +77,12 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public CertificateAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation
-        RecordedData networkData = new RecordedData();
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(networkData)).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
+            .build();
         CertificateAsyncClient secretAsyncClient = new CertificateClientBuilder()
             .pipeline(pipeline)
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation
         return secretAsyncClient;
