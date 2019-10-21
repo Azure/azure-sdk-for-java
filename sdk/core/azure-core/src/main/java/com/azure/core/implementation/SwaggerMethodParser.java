@@ -53,7 +53,6 @@ import java.util.stream.Collectors;
  * method.
  */
 public class SwaggerMethodParser implements HttpResponseDecodeData {
-    private final ClientLogger logger = new ClientLogger(SwaggerMethodParser.class);
     private final SerializerAdapter serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
