@@ -170,7 +170,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
+     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
@@ -197,7 +197,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
+     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
@@ -253,8 +253,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
-     * of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
+     * multiple of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -282,8 +282,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
-     * of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
+     * multiple of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -298,7 +298,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceOffset The source offset to copy from.  Pass null or 0 to copy from the beginning of source blob.
-     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will
+     * @param sourceContentMd5 An MD5 hash of the block content from the source blob. If specified, the service will
      * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
      * @param destAccessConditions {@link PageBlobAccessConditions}
      * @param sourceAccessConditions {@link SourceModifiedAccessConditions}
@@ -306,11 +306,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
     public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl,
-            Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
+            Long sourceOffset, byte[] sourceContentMd5, PageBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions) {
         try {
             return withContext(
-                context -> uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
+                context -> uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, sourceContentMd5,
                     destAccessConditions, sourceAccessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -318,7 +318,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
-            byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
+            byte[] sourceContentMd5, PageBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Context context) {
         if (range == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -346,7 +346,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
 
         return this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(null, null,
-            url, sourceRangeString, 0, rangeString, sourceContentMD5, null, null, null, getCustomerProvidedKey(),
+            url, sourceRangeString, 0, rangeString, sourceContentMd5, null, null, null, getCustomerProvidedKey(),
             destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getSequenceNumberAccessConditions(),
             destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context)
             .map(rb -> {
