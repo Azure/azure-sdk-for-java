@@ -658,17 +658,8 @@ class ContainerAPITest extends APISpec {
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
 
-        def poller = copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(2))
-        def start = OffsetDateTime.now()
-        def status = CopyStatusType.PENDING
-        while (status != CopyStatusType.SUCCESS) {
-            status = copyBlob.getProperties().getCopyStatus()
-            OffsetDateTime currentTime = OffsetDateTime.now()
-            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
-                throw new Exception("Copy failed or took too long")
-            }
-            sleepIfRecord(1000)
-        }
+        def poller = copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(1))
+        poller.block()
 
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()
