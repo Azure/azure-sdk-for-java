@@ -60,7 +60,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             .flatMap(httpResponse -> {
                 if (shouldRetry(httpResponse, tryCount)) {
                     final Duration delayDuration = determineDelayDuration(httpResponse);
-                    logger.info("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
+                    logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
                         delayDuration.getSeconds());
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(delayDuration);
@@ -70,7 +70,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             })
             .onErrorResume(err -> {
                 if (tryCount < maxRetries) {
-                    logger.info("[Error Resume] Try count: {}, Error: {}", tryCount, err);
+                    logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(this.delayDuration);
                 } else {
