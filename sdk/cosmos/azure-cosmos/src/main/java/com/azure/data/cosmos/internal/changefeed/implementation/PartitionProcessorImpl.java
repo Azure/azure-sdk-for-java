@@ -25,6 +25,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 
 import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
+import static java.time.temporal.ChronoUnit.MILLIS;
 
 /**
  * Implementation for {@link PartitionProcessor}.
@@ -142,6 +143,19 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             this.options.setMaxItemCount(this.options.getMaxItemCount() / 2);
                             this.logger.warn("Reducing getMaxItemCount, new getValue: {}", this.options.getMaxItemCount());
                             return Flux.empty();
+                        }
+                        case TRANSIENT_ERROR: {
+                            // Retry on transient (429) errors
+                            if (clientException.getRetryAfterInMilliseconds() > 0) {
+                                ZonedDateTime stopTimer = ZonedDateTime.now().plus(clientException.getRetryAfterInMilliseconds(), MILLIS);
+                                return Mono.just(clientException.getRetryAfterInMilliseconds()) // set some seed value to be able to run
+                                    // the repeat loop
+                                    .delayElement(Duration.ofMillis(100))
+                                    .repeat( () -> {
+                                        ZonedDateTime currentTime = ZonedDateTime.now();
+                                        return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
+                                    }).flatMap( values -> Flux.empty());
+                            }
                         }
                         default: {
                             this.logger.error("Unrecognized DocDbError enum getValue {}", docDbError, clientException);
