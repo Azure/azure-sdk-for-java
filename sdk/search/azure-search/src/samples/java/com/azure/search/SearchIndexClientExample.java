@@ -12,7 +12,6 @@ import com.azure.search.models.SearchResult;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -60,7 +59,7 @@ public class SearchIndexClientExample {
             new SearchRequestOptions())
             .byPage()
             .map( page -> ((SearchPagedResponse) page).count())
-            .toStream();;
+            .toStream();
 
         //Getting just the count property
         Flux<Long> count = searchClient.search("search text",
@@ -77,7 +76,7 @@ public class SearchIndexClientExample {
             new SearchRequestOptions())
             .byPage()
             .map( page -> ((SearchPagedResponse) page).coverage())
-            .toStream();;
+            .toStream();
 
         //Getting just the Coverage property
         Flux<Double> coverage = searchClient.search("search text",
@@ -95,7 +94,7 @@ public class SearchIndexClientExample {
             new SearchRequestOptions())
             .byPage()
             .map( page -> ((SearchPagedResponse) page).facets())
-            .toStream();;
+            .toStream();
 
         //Getting just the Facets property
         Flux<Map<String, List<FacetResult>>>  facets = searchClient.search("search text",
