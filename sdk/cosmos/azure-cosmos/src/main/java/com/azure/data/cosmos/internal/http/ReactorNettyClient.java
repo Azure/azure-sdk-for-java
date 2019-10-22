@@ -19,7 +19,6 @@ import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
-import reactor.netty.tcp.TcpResources;
 
 import java.nio.charset.Charset;
 import java.util.Objects;
