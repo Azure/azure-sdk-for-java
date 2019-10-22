@@ -17,7 +17,7 @@ public final class BlobContainerListDetails {
     private boolean retrieveMetadata;
 
     /**
-     * Constructs a unpopulated {@link BlobContainerListDetails}.
+     * Constructs an unpopulated {@link BlobContainerListDetails}.
      */
     public BlobContainerListDetails() {
     }
