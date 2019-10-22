@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Task level output for the task that validates connection to SQL Server and
  * also validates source server requirements.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = ConnectToSourceSqlServerTaskOutputTaskLevel.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("TaskLevelOutput")
 public class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectToSourceSqlServerTaskOutput {
     /**
