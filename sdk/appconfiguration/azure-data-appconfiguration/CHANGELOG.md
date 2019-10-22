@@ -1,5 +1,8 @@
 # Change Log azure-data-appconfiguration
 
+## Version 1.0.0 (2019-10-31)
+- This release consists of API improvements, performance enhancements, samples and updated documentation.
+
 ## Version 1.0.0-preview.5 (2019-10-11)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 

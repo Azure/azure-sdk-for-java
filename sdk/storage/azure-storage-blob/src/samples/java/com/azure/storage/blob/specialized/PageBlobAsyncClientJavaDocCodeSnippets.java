@@ -114,7 +114,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromURLWithResponse(PageRange, String, Long, byte[],
+     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromUrlWithResponse(PageRange, String, Long, byte[],
      * PageBlobRequestConditions, BlobRequestConditions)}
      */
     public void uploadPagesFromUrlWithResponseCodeSnippet() {
