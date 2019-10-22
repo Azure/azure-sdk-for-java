@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.core.util.polling.Poller
-import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.models.FileCopyInfo
@@ -24,6 +23,7 @@ import spock.lang.Unroll
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -420,9 +420,10 @@ class FileAPITests extends APISpec {
         then:
         verifier.assertNext({
                 assert it.getValue().getCopyId() != null
-            }).thenCancel().verify()
+            }).thenCancel().verify(Duration.ofMinutes(1))
     }
 
+    @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")
     def "Start copy error"() {
         given:
         primaryFileClient.create(1024)
@@ -432,10 +433,10 @@ class FileAPITests extends APISpec {
         def verifier = StepVerifier.create(copyInfoPoller.getObserver())
 
         then:
-        verifier.verifyErrorSatisfies{
-            assert it instanceof FileStorageException
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
-        }
+        verifier.expectErrorSatisfies({
+                assert it instanceof FileStorageException
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
+            }).verify(Duration.ofSeconds(30))
     }
 
     @Ignore

@@ -40,7 +40,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long
         client.upload(data, length).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long
     }
 
@@ -61,7 +61,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
 
         client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
     }
 
@@ -88,29 +88,29 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURL(String, String, BlobRange)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrl(String, String, BlobRange)}
      */
-    public void stageBlockFromURL() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURL#String-String-BlobRange
-        client.stageBlockFromURL(base64BlockID, sourceUrl, new BlobRange(offset, count))
+    public void stageBlockFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrl#String-String-BlobRange
+        client.stageBlockFromUrl(base64BlockID, sourceUrl, new BlobRange(offset, count))
             .subscribe(
                 response -> System.out.println("Staging block completed"),
                 error -> System.out.printf("Error when calling stage Block: %s", error));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURL#String-String-BlobRange
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrl#String-String-BlobRange
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURLWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions)}
      */
-    public void stageBlockFromURL2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions
+    public void stageBlockFromUrl2() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions
         BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.stageBlockFromURLWithResponse(base64BlockID, sourceUrl, new BlobRange(offset, count), null,
+        client.stageBlockFromUrlWithResponse(base64BlockID, sourceUrl, new BlobRange(offset, count), null,
             leaseId, sourceRequestConditions).subscribe(response ->
             System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions
     }
 
     /**
