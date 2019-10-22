@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -62,11 +62,11 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#createWithResponse(long, Long, BlobHTTPHeaders, Map, BlobAccessConditions)}
+     * Code snippets for {@link PageBlobAsyncClient#createWithResponse(long, Long, BlobHttpHeaders, Map, BlobAccessConditions)}
      */
     public void createWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHTTPHeaders-Map-BlobAccessConditions
-        BlobHTTPHeaders headers = new BlobHTTPHeaders()
+        BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
@@ -112,26 +112,26 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromURL(PageRange, URL, Long)}
+     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromUrl(PageRange, URL, Long)}
      */
-    public void uploadPagesFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURL#PageRange-URL-Long
+    public void uploadPagesFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrl#PageRange-URL-Long
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
 
-        client.uploadPagesFromURL(pageRange, url, sourceOffset)
+        client.uploadPagesFromUrl(pageRange, url, sourceOffset)
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob from URL with sequence number %s%n", response.getBlobSequenceNumber()));
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURL#PageRange-URL-Long
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrl#PageRange-URL-Long
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromURLWithResponse(PageRange, URL, Long, byte[],
+     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromUrlWithResponse(PageRange, URL, Long, byte[],
      * PageBlobAccessConditions, SourceModifiedAccessConditions)}
      */
-    public void uploadPagesFromURLWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions
+    public void uploadPagesFromUrlWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
@@ -142,11 +142,11 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         SourceModifiedAccessConditions sourceAccessConditions = new SourceModifiedAccessConditions()
             .setSourceIfModifiedSince(OffsetDateTime.now());
 
-        client.uploadPagesFromURLWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobAccessConditions,
+        client.uploadPagesFromUrlWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobAccessConditions,
                 sourceAccessConditions)
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob from URL with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions
     }
 
     /**

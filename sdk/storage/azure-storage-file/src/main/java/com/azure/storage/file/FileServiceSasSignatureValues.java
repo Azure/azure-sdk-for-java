@@ -403,7 +403,7 @@ public final class FileServiceSasSignatureValues {
      * {@code expiryTime} or {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} are not set
      * and {@code identifier} is null
      */
-    public FileServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public FileServiceSasQueryParameters generateSasQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK();
 

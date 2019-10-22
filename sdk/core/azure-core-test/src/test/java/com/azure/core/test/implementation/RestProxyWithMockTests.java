@@ -17,7 +17,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.implementation.entities.HttpBinJSON;
+import com.azure.core.implementation.entities.HttpBinJson;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -174,7 +174,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     interface ServiceErrorWithCharsetService {
         @Get("/get")
         @ExpectedResponses({400})
-        HttpBinJSON get();
+        HttpBinJson get();
     }
 
     @Test
@@ -201,7 +201,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void serviceErrorWithResponseContentTypeBadJSON() {
+    public void serviceErrorWithResponseContentTypeBadJson() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
@@ -247,7 +247,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void serviceErrorWithResponseContentTypeCharsetBadJSON() {
+    public void serviceErrorWithResponseContentTypeCharsetBadJson() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {

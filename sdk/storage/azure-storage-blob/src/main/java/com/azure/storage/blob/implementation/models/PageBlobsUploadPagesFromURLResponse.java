@@ -11,7 +11,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * Contains all response data for the uploadPagesFromURL operation.
  */
-public final class PageBlobsUploadPagesFromURLResponse extends ResponseBase<PageBlobUploadPagesFromURLHeaders, Void> {
+public final class PageBlobsUploadPagesFromUrlResponse extends ResponseBase<PageBlobUploadPagesFromUrlHeaders, Void> {
     /**
      * Creates an instance of PageBlobsUploadPagesFromURLResponse.
      *
@@ -21,7 +21,7 @@ public final class PageBlobsUploadPagesFromURLResponse extends ResponseBase<Page
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PageBlobsUploadPagesFromURLResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PageBlobUploadPagesFromURLHeaders headers) {
+    public PageBlobsUploadPagesFromUrlResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PageBlobUploadPagesFromUrlHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

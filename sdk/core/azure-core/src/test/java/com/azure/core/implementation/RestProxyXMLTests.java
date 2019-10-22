@@ -40,7 +40,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class RestProxyXMLTests {
+public class RestProxyXmlTests {
     static class MockXMLHTTPClient implements HttpClient {
         private HttpResponse response(HttpRequest request, String resource) throws IOException, URISyntaxException {
             URL url = getClass().getClassLoader().getResource(resource);
@@ -76,7 +76,7 @@ public class RestProxyXMLTests {
     }
 
     @Test
-    public void canReadXMLResponse() throws Exception {
+    public void canReadXmlResponse() throws Exception {
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockXMLHTTPClient())
@@ -109,7 +109,7 @@ public class RestProxyXMLTests {
     }
 
     @Test
-    public void canWriteXMLRequest() throws Exception {
+    public void canWriteXmlRequest() throws Exception {
         URL url = getClass().getClassLoader().getResource("GetContainerACLs.xml");
         byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
         HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL("http://unused/SetContainerACLs"));
@@ -163,7 +163,7 @@ public class RestProxyXMLTests {
     }
 
     @Test
-    public void canDeserializeXMLWithAttributes() throws Exception {
+    public void canDeserializeXmlWithAttributes() throws Exception {
         JacksonAdapter serializer = new JacksonAdapter();
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()

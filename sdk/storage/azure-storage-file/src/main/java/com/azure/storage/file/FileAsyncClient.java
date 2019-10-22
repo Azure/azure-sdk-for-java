@@ -22,20 +22,20 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.FileGetPropertiesHeaders;
 import com.azure.storage.file.implementation.models.FileRangeWriteType;
-import com.azure.storage.file.implementation.models.FileUploadRangeFromURLHeaders;
+import com.azure.storage.file.implementation.models.FileUploadRangeFromUrlHeaders;
 import com.azure.storage.file.implementation.models.FileUploadRangeHeaders;
 import com.azure.storage.file.implementation.models.FilesCreateResponse;
 import com.azure.storage.file.implementation.models.FilesDownloadResponse;
 import com.azure.storage.file.implementation.models.FilesGetPropertiesResponse;
-import com.azure.storage.file.implementation.models.FilesSetHTTPHeadersResponse;
+import com.azure.storage.file.implementation.models.FilesSetHttpHeadersResponse;
 import com.azure.storage.file.implementation.models.FilesSetMetadataResponse;
 import com.azure.storage.file.implementation.models.FilesStartCopyResponse;
-import com.azure.storage.file.implementation.models.FilesUploadRangeFromURLResponse;
+import com.azure.storage.file.implementation.models.FilesUploadRangeFromUrlResponse;
 import com.azure.storage.file.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -169,13 +169,13 @@ public class FileAsyncClient {
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory
      * is an invalid resource name.
      */
-    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders,
+    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         return withContext(context ->
             createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders,
+    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
@@ -552,8 +552,8 @@ public class FileAsyncClient {
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<FileInfo> setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
-        String filePermission) {
+    public Mono<FileInfo> setProperties(long newFileSize, FileHttpHeaders httpHeaders, FileSmbProperties smbProperties,
+                                        String filePermission) {
         return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission)
             .flatMap(FluxUtil::toMono);
     }
@@ -585,13 +585,13 @@ public class FileAsyncClient {
      * @return Response containing the {@link FileInfo file info} and response status code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission) {
         return withContext(context ->
             setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context));
     }
 
-    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Context context) {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
@@ -607,7 +607,7 @@ public class FileAsyncClient {
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
 
         return postProcessResponse(azureFileStorageClient.files()
-            .setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime,
+            .setHttpHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime,
                 fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, httpHeaders, context))
             .map(this::setPropertiesResponse);
     }
@@ -840,7 +840,7 @@ public class FileAsyncClient {
         FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
 
         return postProcessResponse(azureFileStorageClient.files()
-            .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(),
+            .uploadRangeFromUrlWithRestResponseAsync(shareName, filePath, destinationRange.toString(),
                 sourceURI.toString(), 0, null, sourceRange.toString(), null, null, context))
             .map(this::uploadRangeFromUrlResponse);
     }
@@ -1137,7 +1137,7 @@ public class FileAsyncClient {
         return new SimpleResponse<>(response, fileCopyInfo);
     }
 
-    private Response<FileInfo> setPropertiesResponse(final FilesSetHTTPHeadersResponse response) {
+    private Response<FileInfo> setPropertiesResponse(final FilesSetHttpHeadersResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
@@ -1207,8 +1207,8 @@ public class FileAsyncClient {
     }
 
     private Response<FileUploadRangeFromUrlInfo> uploadRangeFromUrlResponse(
-        final FilesUploadRangeFromURLResponse response) {
-        FileUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
+        final FilesUploadRangeFromUrlResponse response) {
+        FileUploadRangeFromUrlHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
         Boolean isServerEncrypted = headers.isServerEncrypted();

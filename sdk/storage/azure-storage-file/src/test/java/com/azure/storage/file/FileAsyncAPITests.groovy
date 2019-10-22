@@ -7,7 +7,7 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.models.FileHTTPHeaders
+import com.azure.storage.file.models.FileHttpHeaders
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
@@ -43,7 +43,7 @@ class FileAsyncAPITests extends APISpec {
         shareClient.create()
         primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHTTPHeaders().setFileContentLanguage("en")
+        httpHeaders = new FileHttpHeaders().setFileContentLanguage("en")
             .setFileContentType("application/octet-stream")
         smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
@@ -392,7 +392,7 @@ class FileAsyncAPITests extends APISpec {
             .setPermissions(new FileSasPermission().setReadPermission(true).toString())
             .setCanonicalName(primaryFileAsyncClient.getShareName(), primaryFileAsyncClient.getFilePath(), credential.getAccountName())
             .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         when:

@@ -14,12 +14,12 @@ public class MyRestException extends HttpResponseException {
      * @param response HttpResponse associated with the exception.
      * @param body Deserialized body of {@code response}.
      */
-    public MyRestException(String message, HttpResponse response, HttpBinJSON body) {
+    public MyRestException(String message, HttpResponse response, HttpBinJson body) {
         super(message, response, body);
     }
 
     @Override
-    public HttpBinJSON getValue() {
-        return (HttpBinJSON) super.getValue();
+    public HttpBinJson getValue() {
+        return (HttpBinJson) super.getValue();
     }
 }

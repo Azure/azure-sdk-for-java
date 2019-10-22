@@ -12,14 +12,14 @@ public class MyAzureException extends HttpResponseException {
      *
      * @param message Message for the exception.
      * @param response HttpResponse associated with the service request exception.
-     * @param body HttpResponse deserialized into a {@link HttpBinJSON}.
+     * @param body HttpResponse deserialized into a {@link HttpBinJson}.
      */
-    public MyAzureException(String message, HttpResponse response, HttpBinJSON body) {
+    public MyAzureException(String message, HttpResponse response, HttpBinJson body) {
         super(message, response, body);
     }
 
     @Override
-    public HttpBinJSON getValue() {
-        return (HttpBinJSON) super.getValue();
+    public HttpBinJson getValue() {
+        return (HttpBinJson) super.getValue();
     }
 }

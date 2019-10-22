@@ -13,7 +13,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -196,7 +196,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromUrl#URL}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -204,8 +204,8 @@ public class BlobClientBase {
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @return The copy ID for the long running operation.
      */
-    public String startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).getValue();
+    public String startCopyFromUrl(URL sourceURL) {
+        return startCopyFromUrlWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -213,12 +213,12 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromUrlWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
-     * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
@@ -231,11 +231,11 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> startCopyFromURLWithResponse(URL sourceURL, Map<String, String> metadata, AccessTier tier,
+    public Response<String> startCopyFromUrlWithResponse(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
         RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = client
-            .startCopyFromURLWithResponse(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions,
+            .startCopyFromUrlWithResponse(sourceUrl, metadata, tier, priority, sourceModifiedAccessConditions,
                 destAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -246,15 +246,15 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromUrl#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @param copyId The id of the copy operation to abort.
      */
-    public void abortCopyFromURL(String copyId) {
-        abortCopyFromURLWithResponse(copyId, null, null, Context.NONE);
+    public void abortCopyFromUrl(String copyId) {
+        abortCopyFromUrlWithResponse(copyId, null, null, Context.NONE);
     }
 
     /**
@@ -262,7 +262,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURLWithResponse#String-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromUrlWithResponse#String-LeaseAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -274,9 +274,9 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
-        Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
+    public Response<Void> abortCopyFromUrlWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
+                                                       Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.abortCopyFromUrlWithResponse(copyId, leaseAccessConditions,
             context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -287,7 +287,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrl#URL}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -295,8 +295,8 @@ public class BlobClientBase {
      * @param copySource The source URL to copy from.
      * @return The copy ID for the long running operation.
      */
-    public String copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).getValue();
+    public String copyFromUrl(URL copySource) {
+        return copyFromUrlWithResponse(copySource, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -304,7 +304,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -321,11 +321,11 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> copyFromURLWithResponse(URL copySource, Map<String, String> metadata, AccessTier tier,
+    public Response<String> copyFromUrlWithResponse(URL copySource, Map<String, String> metadata, AccessTier tier,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
         Duration timeout, Context context) {
         Mono<Response<String>> response = client
-            .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
+            .copyFromUrlWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
                 context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -539,15 +539,15 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeaders#BlobHTTPHeaders}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHttpHeaders#BlobHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      */
-    public void setHTTPHeaders(BlobHTTPHeaders headers) {
-        setHTTPHeadersWithResponse(headers, null, null, Context.NONE);
+    public void setHttpHeaders(BlobHttpHeaders headers) {
+        setHttpHeadersWithResponse(headers, null, null, Context.NONE);
     }
 
     /**
@@ -556,21 +556,21 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
-        Duration timeout, Context context) {
+    public Response<Void> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobAccessConditions accessConditions,
+                                                     Duration timeout, Context context) {
         Mono<Response<Void>> response = client
-            .setHTTPHeadersWithResponse(headers, accessConditions, context);
+            .setHttpHeadersWithResponse(headers, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

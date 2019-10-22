@@ -243,7 +243,7 @@ public final class UrlBuilder {
      * @return The URL that is being built.
      * @throws MalformedURLException if the URL is not fully formed.
      */
-    public URL toURL() throws MalformedURLException {
+    public URL toUrl() throws MalformedURLException {
         return new URL(toString());
     }
 

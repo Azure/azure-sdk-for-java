@@ -4,7 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
@@ -20,7 +20,7 @@ import java.util.Map;
  * This example shows how to set metadata for containers and blobs and how to set HTTPHeaders for blobs using the Azure
  * Storage Blob SDK for Java.
  */
-public class SetMetadataAndHTTPHeadersExample {
+public class SetMetadataAndHttpHeadersExample {
 
     /**
      * Entry point into the setting metadata examples for Storage blobs.
@@ -72,7 +72,7 @@ public class SetMetadataAndHTTPHeadersExample {
          * Create a blob with blob's blobMetadata and BlobHttpHeaders.
          */
         Map<String, String> blobMetadata = Collections.singletonMap("myblobmetadata", "sample");
-        BlobHTTPHeaders blobHTTPHeaders = new BlobHTTPHeaders().setBlobContentDisposition("attachment")
+        BlobHttpHeaders blobHTTPHeaders = new BlobHttpHeaders().setBlobContentDisposition("attachment")
             .setBlobContentType("text/html; charset=utf-8");
 
         /*

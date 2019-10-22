@@ -4,7 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.NtfsFileAttributes;
 import com.azure.storage.file.models.SignedIdentifier;
 import java.time.LocalDateTime;
@@ -38,7 +38,7 @@ public class ShareAsyncJavaDocCodeSamples {
      *
      * @return An instance of {@link ShareAsyncClient}
      */
-    public ShareAsyncClient createAsyncClientWithSASToken() {
+    public ShareAsyncClient createAsyncClientWithSasToken() {
         // BEGIN: com.azure.storage.file.shareAsyncClient.instantiation.sastoken
         ShareAsyncClient shareAsyncClient = new ShareClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
@@ -85,7 +85,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#create}
      */
     public void createShareAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.create
         shareAsyncClient.create().subscribe(
             response -> {
@@ -100,7 +100,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#createWithResponse(Map, Integer)} with Metadata.
      */
     public void createWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createWithResponse#map-integer.metadata
         shareAsyncClient.createWithResponse(Collections.singletonMap("share", "metadata"), null).subscribe(
             response -> System.out.printf("Creating the share completed with status code %d", response.getStatusCode()),
@@ -114,7 +114,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#createWithResponse(Map, Integer)} with Quota.
      */
     public void createShareAsyncMaxOverloadQuota() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createWithResponse#map-integer.quota
         shareAsyncClient.createWithResponse(null, 10).subscribe(
             response -> System.out.printf("Creating the share completed with status code %d", response.getStatusCode()),
@@ -128,7 +128,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#createDirectory(String)}
      */
     public void createDirectoryAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createDirectory#string
         shareAsyncClient.createDirectory("mydirectory").subscribe(
             response -> {
@@ -143,7 +143,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#createFile(String, long)}
      */
     public void createFileAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createFile#string-long
         shareAsyncClient.createFile("myfile", 1024).subscribe(
             response -> {
@@ -158,7 +158,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#createSnapshot()}
      */
     public void createSnapshotAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createSnapshot
         shareAsyncClient.createSnapshot().subscribe(
             response -> System.out.println("Successfully creating the share snapshot with snapshot id: "
@@ -173,7 +173,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#createSnapshotWithResponse(Map)}
      */
     public void createSnapshotAsyncWithMetadata() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createSnapshotWithResponse#map
         shareAsyncClient.createSnapshotWithResponse(Collections.singletonMap("snapshot", "metadata")).subscribe(
             response -> System.out.println("Successfully creating the share snapshot with snapshot id: "
@@ -189,7 +189,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * String, Map)}
      */
     public void createDirectoryWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-filesmbproperties-string-map
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
@@ -204,7 +204,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#createFile(String, long)}
      */
     public void createFileAsyncMaxOverload() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createFile#string-long-filehttpheaders-map
         shareAsyncClient.createFile("myfile", 1024)
             .doOnSuccess(response -> System.out.println("Creating the file completed."));
@@ -212,13 +212,13 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders,
+     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileHttpHeaders,
      * FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+        FileHttpHeaders httpHeaders = new FileHttpHeaders()
             .setFileContentType("text/html")
             .setFileContentEncoding("gzip")
             .setFileContentLanguage("en")
@@ -242,7 +242,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#deleteDirectory(String)}
      */
     public void deleteDirectoryAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.deleteDirectory#string
         shareAsyncClient.deleteDirectory("mydirectory").subscribe(
             response -> {
@@ -257,7 +257,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#deleteFile(String)}
      */
     public void deleteFileAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.deleteFile#string
         shareAsyncClient.deleteFile("myfile").subscribe(
             response -> {
@@ -272,7 +272,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#delete}
      */
     public void deleteShareAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.delete
         shareAsyncClient.delete().subscribe(
             response -> System.out.println("Deleting the shareAsyncClient completed."),
@@ -286,7 +286,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#deleteWithResponse()}
      */
     public void deleteWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.deleteWithResponse
         shareAsyncClient.deleteWithResponse().subscribe(
             response -> System.out.println("Deleting the shareAsyncClient completed with status code: "
@@ -301,7 +301,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#getProperties()}
      */
     public void getPropertiesAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getProperties
         shareAsyncClient.getProperties()
             .subscribe(properties -> {
@@ -314,7 +314,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#getPropertiesWithResponse()}
      */
     public void getPropertiesWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getPropertiesWithResponse
         shareAsyncClient.getPropertiesWithResponse()
             .subscribe(properties -> {
@@ -328,7 +328,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#setQuota(int)}
      */
     public void setQuotaAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.ShareAsyncClient.setQuota#int
         shareAsyncClient.setQuota(1024).doOnSuccess(response ->
             System.out.println("Setting the share quota completed.")
@@ -340,7 +340,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#setQuotaWithResponse(int)}
      */
     public void setQuotaWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.ShareAsyncClient.setQuotaWithResponse#int
         shareAsyncClient.setQuotaWithResponse(1024)
             .subscribe(response ->
@@ -354,7 +354,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#setMetadata(Map)}
      */
     public void setMetadataAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.setMetadata#map
         shareAsyncClient.setMetadata(Collections.singletonMap("share", "updatedMetadata")).doOnSuccess(response ->
             System.out.println("Setting the share metadata completed.")
@@ -366,7 +366,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#setMetadataWithResponse(Map)}
      */
     public void setMetadataWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.setMetadataWithResponse#map
         shareAsyncClient.setMetadataWithResponse(Collections.singletonMap("share", "updatedMetadata"))
             .subscribe(response ->
@@ -379,7 +379,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#setMetadata(Map)} to clear the metadata.
      */
     public void clearMetadataAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.clearMetadata#map
         shareAsyncClient.setMetadata(null).doOnSuccess(response ->
             System.out.println("Setting the share metadata completed.")
@@ -391,7 +391,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#getAccessPolicy()}
      */
     public void getAccessPolicyAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getAccessPolicy
         shareAsyncClient.getAccessPolicy()
             .subscribe(result -> System.out.printf("Access policy %s allows these permissions: %s", result.getId(),
@@ -404,7 +404,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#setAccessPolicy(List)}
      */
     public void setAccessPolicyAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.ShareAsyncClient.setAccessPolicy#List
         AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
             .setStart(OffsetDateTime.now(ZoneOffset.UTC))
@@ -420,7 +420,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#setAccessPolicyWithResponse(List)}
      */
     public void setAccessPolicyWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.ShareAsyncClient.setAccessPolicyWithResponse#List
         AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
             .setStart(OffsetDateTime.now(ZoneOffset.UTC))
@@ -437,7 +437,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#getStatistics()}
      */
     public void getStatisticsAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getStatistics
         shareAsyncClient.getStatistics().doOnSuccess(response -> System.out.printf("The share is using %d GB",
             response.getShareUsageInGB()));
@@ -448,7 +448,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#createPermission(String)}
      */
     public void createPermissionAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createPermission#string
         shareAsyncClient.createPermission("filePermission").subscribe(
             response -> System.out.printf("The file permission key is %s", response));
@@ -459,7 +459,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#createPermissionWithResponse(String)}
      */
     public void createPermissionWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createPermissionWithResponse#string
         shareAsyncClient.createPermissionWithResponse("filePermission").subscribe(
             response -> System.out.printf("The file permission key is %s", response.getValue()));
@@ -470,7 +470,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#getPermission(String)}
      */
     public void getPermissionAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getPermission#string
         shareAsyncClient.getPermission("filePermissionKey").subscribe(
             response -> System.out.printf("The file permission is %s", response));
@@ -481,7 +481,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#getPermissionWithResponse(String)}
      */
     public void getPermissionWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getPermissionWithResponse#string
         shareAsyncClient.getPermissionWithResponse("filePermissionKey").subscribe(
             response -> System.out.printf("The file permission is %s", response.getValue()));
@@ -492,7 +492,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#getStatisticsWithResponse()}
      */
     public void getStatisticsWithResponse() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getStatisticsWithResponse
         shareAsyncClient.getStatisticsWithResponse().subscribe(response -> System.out.printf("The share is using %d GB",
             response.getValue().getShareUsageInGB()));
@@ -520,7 +520,7 @@ public class ShareAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#getShareName()}
      */
     public void getShareNameAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getShareName
         String shareName = shareAsyncClient.getShareName();
         System.out.println("The name of the share is " + shareName);

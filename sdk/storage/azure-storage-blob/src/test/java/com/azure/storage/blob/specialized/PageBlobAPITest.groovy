@@ -6,7 +6,7 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.BlobAccessConditions
-import com.azure.storage.blob.models.BlobHTTPHeaders
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseAccessConditions
@@ -66,7 +66,7 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create headers"() {
         setup:
-        def headers = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
+        def headers = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
             .setBlobContentLanguage(contentLanguage)
@@ -303,7 +303,7 @@ class PageBlobAPITest extends APISpec {
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
 
         when:
-        def response = bc.uploadPagesFromURLWithResponse(pageRange, new URL(destURL.getBlobUrl()), null, null, null, null, null, null)
+        def response = bc.uploadPagesFromUrlWithResponse(pageRange, new URL(destURL.getBlobUrl()), null, null, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -325,7 +325,7 @@ class PageBlobAPITest extends APISpec {
         destURL.create(PageBlobClient.PAGE_BYTES * 2)
 
         when:
-        destURL.uploadPagesFromURL(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+        destURL.uploadPagesFromUrl(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
             new URL(sourceURL.getBlobUrl()), PageBlobClient.PAGE_BYTES * 2)
 
         then:
@@ -336,7 +336,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page from URL IA"() {
         when:
-        bc.uploadPagesFromURL(null, new URL(bc.getBlobUrl()), (Long) PageBlobClient.PAGE_BYTES)
+        bc.uploadPagesFromUrl(null, new URL(bc.getBlobUrl()), (Long) PageBlobClient.PAGE_BYTES)
 
         then:
         thrown(IllegalArgumentException)
@@ -352,7 +352,7 @@ class PageBlobAPITest extends APISpec {
         bc.uploadPages(pageRange, new ByteArrayInputStream(data))
 
         when:
-        destURL.uploadPagesFromURLWithResponse(pageRange, new URL(bc.getBlobUrl()), null, MessageDigest.getInstance("MD5").digest(data),
+        destURL.uploadPagesFromUrlWithResponse(pageRange, new URL(bc.getBlobUrl()), null, MessageDigest.getInstance("MD5").digest(data),
             null, null, null, null)
 
         then:
@@ -368,7 +368,7 @@ class PageBlobAPITest extends APISpec {
         bc.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
         when:
-        destURL.uploadPagesFromURLWithResponse(pageRange, new URL(bc.getBlobUrl()), null,
+        destURL.uploadPagesFromUrlWithResponse(pageRange, new URL(bc.getBlobUrl()), null,
             MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null, null)
 
         then:
@@ -397,7 +397,7 @@ class PageBlobAPITest extends APISpec {
                 .setIfSequenceNumberEqualTo(sequenceNumberEqual))
 
         expect:
-        bc.uploadPagesFromURLWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, pac, null, null, null).getStatusCode() == 201
+        bc.uploadPagesFromUrlWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, pac, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -436,7 +436,7 @@ class PageBlobAPITest extends APISpec {
                 .setIfSequenceNumberEqualTo(sequenceNumberEqual))
 
         when:
-        bc.uploadPagesFromURLWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, pac, null, null, null)
+        bc.uploadPagesFromUrlWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, pac, null, null, null)
 
         then:
         thrown(StorageException)
@@ -470,7 +470,7 @@ class PageBlobAPITest extends APISpec {
             .setSourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bc.uploadPagesFromURLWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null).getStatusCode() == 201
+        bc.uploadPagesFromUrlWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null).getStatusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -497,7 +497,7 @@ class PageBlobAPITest extends APISpec {
             .setSourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bc.uploadPagesFromURLWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null)
+        bc.uploadPagesFromUrlWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null)
         then:
         thrown(StorageException)
 

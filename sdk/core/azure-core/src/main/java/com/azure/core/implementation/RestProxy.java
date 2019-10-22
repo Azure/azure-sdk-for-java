@@ -260,7 +260,7 @@ public class RestProxy implements InvocationHandler {
             urlBuilder.setQueryParameter(queryParameter.getName(), queryParameter.getEncodedValue());
         }
 
-        final URL url = urlBuilder.toURL();
+        final URL url = urlBuilder.toUrl();
         final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
             methodParser, args);
 

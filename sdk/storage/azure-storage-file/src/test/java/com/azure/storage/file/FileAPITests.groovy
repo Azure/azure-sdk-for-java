@@ -11,7 +11,7 @@ import com.azure.core.util.Context
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileCopyInfo
-import com.azure.storage.file.models.FileHTTPHeaders
+import com.azure.storage.file.models.FileHttpHeaders
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.ShareSnapshotInfo
@@ -47,7 +47,7 @@ class FileAPITests extends APISpec {
         shareClient.create()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHTTPHeaders().setFileContentLanguage("en")
+        httpHeaders = new FileHttpHeaders().setFileContentLanguage("en")
             .setFileContentType("application/octet-stream")
         smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL) as EnumSet<NtfsFileAttributes>)
@@ -399,7 +399,7 @@ class FileAPITests extends APISpec {
             .setPermissions(new FileSasPermission().setReadPermission(true).toString())
             .setCanonicalName(primaryFileClient.getShareName(), primaryFileClient.getFilePath(), credential.getAccountName())
             .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         when:

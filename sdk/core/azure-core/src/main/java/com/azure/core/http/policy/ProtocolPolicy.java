@@ -38,7 +38,7 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
             logger.info("Setting protocol to {}", protocol);
 
             try {
-                context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toURL());
+                context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }

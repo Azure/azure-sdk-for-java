@@ -641,7 +641,7 @@ class HelperTest extends APISpec {
         parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
 
         when:
-        String[] splitParts = parts.toURL().toString().split("\\?")
+        String[] splitParts = parts.toUrl().toString().split("\\?")
 
         then:
         splitParts.size() == 2 // Ensure that there is only one question mark even when sas and snapshot are present

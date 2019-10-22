@@ -3,10 +3,10 @@
 
 package com.azure.core.http.clients;
 
-import com.azure.core.implementation.entities.HttpBinFormDataJSON;
-import com.azure.core.implementation.entities.HttpBinFormDataJSON.Form;
-import com.azure.core.implementation.entities.HttpBinFormDataJSON.PizzaSize;
-import com.azure.core.implementation.entities.HttpBinJSON;
+import com.azure.core.implementation.entities.HttpBinFormDataJson;
+import com.azure.core.implementation.entities.HttpBinFormDataJson.Form;
+import com.azure.core.implementation.entities.HttpBinFormDataJson.PizzaSize;
+import com.azure.core.implementation.entities.HttpBinJson;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -55,7 +55,7 @@ public class MockHttpClient extends NoOpHttpClient {
                     if ("HEAD".equals(request.getHttpMethod())) {
                         response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
-                        final HttpBinJSON json = new HttpBinJSON();
+                        final HttpBinJson json = new HttpBinJson();
                         json.url(request.getUrl().toString()
                                 // This is just to mimic the behavior we've seen with httpbin.org.
                                 .replace("%20", " "));
@@ -129,24 +129,24 @@ public class MockHttpClient extends NoOpHttpClient {
                 } else if (requestPathLower.equals("/unixtime")) {
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, 0);
                 } else if (requestPathLower.equals("/delete")) {
-                    final HttpBinJSON json = new HttpBinJSON();
+                    final HttpBinJson json = new HttpBinJson();
                     json.url(request.getUrl().toString());
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/get")) {
-                    final HttpBinJSON json = new HttpBinJSON();
+                    final HttpBinJson json = new HttpBinJson();
                     json.url(request.getUrl().toString());
                     json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/patch")) {
-                    final HttpBinJSON json = new HttpBinJSON();
+                    final HttpBinJson json = new HttpBinJson();
                     json.url(request.getUrl().toString());
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/post")) {
                     if (contentType != null && contentType.contains("x-www-form-urlencoded")) {
                         Map<String, String> parsed = bodyToMap(request);
-                        final HttpBinFormDataJSON json = new HttpBinFormDataJSON();
+                        final HttpBinFormDataJson json = new HttpBinFormDataJson();
                         Form form = new Form();
                         form.customerName(parsed.get("custname"));
                         form.customerEmail(parsed.get("custemail"));
@@ -156,14 +156,14 @@ public class MockHttpClient extends NoOpHttpClient {
                         json.form(form);
                         response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                     } else {
-                        final HttpBinJSON json = new HttpBinJSON();
+                        final HttpBinJson json = new HttpBinJson();
                         json.url(request.getUrl().toString());
                         json.data(createHttpBinResponseDataForRequest(request));
                         json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
                     }
                 } else if (requestPathLower.equals("/put")) {
-                    final HttpBinJSON json = new HttpBinJSON();
+                    final HttpBinJson json = new HttpBinJson();
                     json.url(request.getUrl().toString());
                     json.data(createHttpBinResponseDataForRequest(request));
                     json.headers(toMap(request.getHeaders()));

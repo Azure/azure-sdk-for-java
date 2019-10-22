@@ -99,7 +99,7 @@ class CPKTest extends APISpec {
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
-        def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(), new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
+        def response = cpkBlockBlob.stageBlockFromUrlWithResponse(getBlockID(), new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
             null, null, null, null, null, null)
 
         then:
@@ -154,7 +154,7 @@ class CPKTest extends APISpec {
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
-        def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+        def response = cpkPageBlob.uploadPagesFromUrlWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new URL(sourceBlob.getBlobUrl().toString() + "?" + sas), null, null, null, null, null, null)
 
         then:

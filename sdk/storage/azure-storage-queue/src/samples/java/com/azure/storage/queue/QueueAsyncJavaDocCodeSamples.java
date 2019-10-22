@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class QueueAsyncJavaDocCodeSamples {
 
-    private QueueAsyncClient client = createAsyncClientWithSASToken();
+    private QueueAsyncClient client = createAsyncClientWithSasToken();
 
     /**
      * Generates code sample for creating a {@link QueueAsyncClient}.
@@ -38,7 +38,7 @@ public class QueueAsyncJavaDocCodeSamples {
      *
      * @return An instance of {@link QueueAsyncClient}
      */
-    public QueueAsyncClient createAsyncClientWithSASToken() {
+    public QueueAsyncClient createAsyncClientWithSasToken() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.instantiation.sastoken
         QueueAsyncClient queueAsyncClient = new QueueClientBuilder()
             .endpoint("https://{accountName}.queue.core.windows.net?{SASToken}")
@@ -429,7 +429,7 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicyWithResponse(List)}
      */
     public void setAccessPolicyWithResponse() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
+        QueueAsyncClient queueAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#List
         AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
             .setStart(OffsetDateTime.now(ZoneOffset.UTC))
@@ -446,7 +446,7 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicy(List)}
      */
     public void setAccessPolicyAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
+        QueueAsyncClient queueAsyncClient = createAsyncClientWithSasToken();
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#List
         AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
             .setStart(OffsetDateTime.now(ZoneOffset.UTC))

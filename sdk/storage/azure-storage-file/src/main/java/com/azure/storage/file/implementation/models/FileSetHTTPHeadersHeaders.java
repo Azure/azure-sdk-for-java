@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "File-SetHTTPHeaders-Headers")
 @Fluent
-public final class FileSetHTTPHeadersHeaders {
+public final class FileSetHttpHeadersHeaders {
     /*
      * The ETag contains a value which represents the version of the file, in
      * quotes.
@@ -125,7 +125,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param eTag the eTag value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setETag(String eTag) {
+    public FileSetHttpHeadersHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -154,7 +154,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setLastModified(OffsetDateTime lastModified) {
+    public FileSetHttpHeadersHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -180,7 +180,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param requestId the requestId value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setRequestId(String requestId) {
+    public FileSetHttpHeadersHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -202,7 +202,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param version the version value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setVersion(String version) {
+    public FileSetHttpHeadersHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -227,7 +227,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public FileSetHttpHeadersHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -255,7 +255,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
+    public FileSetHttpHeadersHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -277,7 +277,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param filePermissionKey the filePermissionKey value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setFilePermissionKey(String filePermissionKey) {
+    public FileSetHttpHeadersHeaders setFilePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
         return this;
     }
@@ -297,7 +297,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param fileAttributes the fileAttributes value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setFileAttributes(String fileAttributes) {
+    public FileSetHttpHeadersHeaders setFileAttributes(String fileAttributes) {
         this.fileAttributes = fileAttributes;
         return this;
     }
@@ -317,7 +317,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param fileCreationTime the fileCreationTime value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setFileCreationTime(OffsetDateTime fileCreationTime) {
+    public FileSetHttpHeadersHeaders setFileCreationTime(OffsetDateTime fileCreationTime) {
         this.fileCreationTime = fileCreationTime;
         return this;
     }
@@ -337,7 +337,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param fileLastWriteTime the fileLastWriteTime value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+    public FileSetHttpHeadersHeaders setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
         return this;
     }
@@ -357,7 +357,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param fileChangeTime the fileChangeTime value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setFileChangeTime(OffsetDateTime fileChangeTime) {
+    public FileSetHttpHeadersHeaders setFileChangeTime(OffsetDateTime fileChangeTime) {
         this.fileChangeTime = fileChangeTime;
         return this;
     }
@@ -377,7 +377,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param fileId the fileId value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setFileId(String fileId) {
+    public FileSetHttpHeadersHeaders setFileId(String fileId) {
         this.fileId = fileId;
         return this;
     }
@@ -397,7 +397,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param fileParentId the fileParentId value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setFileParentId(String fileParentId) {
+    public FileSetHttpHeadersHeaders setFileParentId(String fileParentId) {
         this.fileParentId = fileParentId;
         return this;
     }
@@ -417,7 +417,7 @@ public final class FileSetHTTPHeadersHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileSetHTTPHeadersHeaders object itself.
      */
-    public FileSetHTTPHeadersHeaders setErrorCode(String errorCode) {
+    public FileSetHttpHeadersHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

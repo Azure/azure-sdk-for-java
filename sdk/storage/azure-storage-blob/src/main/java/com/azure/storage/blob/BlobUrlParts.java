@@ -21,7 +21,7 @@ import java.util.TreeMap;
 /**
  * This class represents the components that make up an Azure Storage Container/Blob URL. You may parse an
  * existing URL into its parts with the {@link #parse(URL)} class. You may construct a URL from parts by calling {@link
- * #toURL()}.
+ * #toUrl()}.
  */
 public final class BlobUrlParts {
     private String scheme;
@@ -188,7 +188,7 @@ public final class BlobUrlParts {
      * @throws MalformedURLException The fields present on the BlobUrlParts object were insufficient to construct a
      * valid URL or were ill-formatted.
      */
-    public URL toURL() throws MalformedURLException {
+    public URL toUrl() throws MalformedURLException {
         UrlBuilder url = new UrlBuilder().setScheme(this.scheme).setHost(this.host);
 
         StringBuilder path = new StringBuilder();
@@ -217,7 +217,7 @@ public final class BlobUrlParts {
                 Utility.urlEncode(String.join(",", entry.getValue())));
         }
 
-        return url.toURL();
+        return url.toUrl();
     }
 
     /**

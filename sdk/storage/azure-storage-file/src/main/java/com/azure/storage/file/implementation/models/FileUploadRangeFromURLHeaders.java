@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "File-UploadRangeFromURL-Headers")
 @Fluent
-public final class FileUploadRangeFromURLHeaders {
+public final class FileUploadRangeFromUrlHeaders {
     /*
      * The ETag contains a value which represents the version of the file, in
      * quotes.
@@ -93,7 +93,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param eTag the eTag value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders setETag(String eTag) {
+    public FileUploadRangeFromUrlHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -122,7 +122,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders setLastModified(OffsetDateTime lastModified) {
+    public FileUploadRangeFromUrlHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -152,7 +152,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
+    public FileUploadRangeFromUrlHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
         return this;
     }
@@ -174,7 +174,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders setRequestId(String requestId) {
+    public FileUploadRangeFromUrlHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -196,7 +196,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param version the version value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders setVersion(String version) {
+    public FileUploadRangeFromUrlHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -221,7 +221,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public FileUploadRangeFromUrlHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -249,7 +249,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
+    public FileUploadRangeFromUrlHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -269,7 +269,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders setErrorCode(String errorCode) {
+    public FileUploadRangeFromUrlHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

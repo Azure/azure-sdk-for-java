@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "Blob-CopyFromURL-Headers")
 @Fluent
-public final class BlobCopyFromURLHeaders {
+public final class BlobCopyFromUrlHeaders {
     /*
      * The ETag contains a value that you can use to perform operations
      * conditionally. If the request version is 2011-08-18 or newer, the ETag
@@ -108,7 +108,7 @@ public final class BlobCopyFromURLHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setETag(String eTag) {
+    public BlobCopyFromUrlHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -137,7 +137,7 @@ public final class BlobCopyFromURLHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setLastModified(OffsetDateTime lastModified) {
+    public BlobCopyFromUrlHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -165,7 +165,7 @@ public final class BlobCopyFromURLHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setClientRequestId(String clientRequestId) {
+    public BlobCopyFromUrlHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -187,7 +187,7 @@ public final class BlobCopyFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setRequestId(String requestId) {
+    public BlobCopyFromUrlHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -211,7 +211,7 @@ public final class BlobCopyFromURLHeaders {
      * @param version the version value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setVersion(String version) {
+    public BlobCopyFromUrlHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -236,7 +236,7 @@ public final class BlobCopyFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public BlobCopyFromUrlHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -260,7 +260,7 @@ public final class BlobCopyFromURLHeaders {
      * @param copyId the copyId value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setCopyId(String copyId) {
+    public BlobCopyFromUrlHeaders setCopyId(String copyId) {
         this.copyId = copyId;
         return this;
     }
@@ -282,7 +282,7 @@ public final class BlobCopyFromURLHeaders {
      * @param copyStatus the copyStatus value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setCopyStatus(SyncCopyStatusType copyStatus) {
+    public BlobCopyFromUrlHeaders setCopyStatus(SyncCopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
     }
@@ -306,7 +306,7 @@ public final class BlobCopyFromURLHeaders {
      * @param versionId the versionId value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setVersionId(String versionId) {
+    public BlobCopyFromUrlHeaders setVersionId(String versionId) {
         this.versionId = versionId;
         return this;
     }
@@ -326,7 +326,7 @@ public final class BlobCopyFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobCopyFromURLHeaders object itself.
      */
-    public BlobCopyFromURLHeaders setErrorCode(String errorCode) {
+    public BlobCopyFromUrlHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

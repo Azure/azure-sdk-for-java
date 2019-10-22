@@ -101,7 +101,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             builder.setHost(this.requestRetryOptions.secondaryHost());
             try {
-                context.getHttpRequest().setUrl(builder.toURL());
+                context.getHttpRequest().setUrl(builder.toUrl());
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }

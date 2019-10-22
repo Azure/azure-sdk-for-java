@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class QueueServiceJavaDocCodeSamples {
 
-    private QueueServiceClient client = createClientWithSASToken();
+    private QueueServiceClient client = createClientWithSasToken();
     private String key1 = "key1";
     private String value1 = "val1";
 
@@ -39,7 +39,7 @@ public class QueueServiceJavaDocCodeSamples {
      *
      * @return An instance of {@link QueueServiceClient}
      */
-    public QueueServiceClient createClientWithSASToken() {
+    public QueueServiceClient createClientWithSasToken() {
         // BEGIN: com.azure.storage.queue.queueServiceClient.instantiation.sastoken
         QueueServiceClient client = new QueueServiceClientBuilder()
             .endpoint("https://${accountName}.queue.core.windows.net?${SASToken}")

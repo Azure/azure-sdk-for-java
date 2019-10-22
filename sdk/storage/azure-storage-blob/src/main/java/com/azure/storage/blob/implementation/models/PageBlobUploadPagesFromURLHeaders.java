@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "PageBlob-UploadPagesFromURL-Headers")
 @Fluent
-public final class PageBlobUploadPagesFromURLHeaders {
+public final class PageBlobUploadPagesFromUrlHeaders {
     /*
      * The ETag contains a value that you can use to perform operations
      * conditionally. If the request version is 2011-08-18 or newer, the ETag
@@ -118,7 +118,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setETag(String eTag) {
+    public PageBlobUploadPagesFromUrlHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -147,7 +147,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setLastModified(OffsetDateTime lastModified) {
+    public PageBlobUploadPagesFromUrlHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -175,7 +175,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setContentMD5(byte[] contentMD5) {
+    public PageBlobUploadPagesFromUrlHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -201,7 +201,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
+    public PageBlobUploadPagesFromUrlHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
         return this;
     }
@@ -223,7 +223,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setBlobSequenceNumber(Long blobSequenceNumber) {
+    public PageBlobUploadPagesFromUrlHeaders setBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -245,7 +245,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setRequestId(String requestId) {
+    public PageBlobUploadPagesFromUrlHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -269,7 +269,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param version the version value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setVersion(String version) {
+    public PageBlobUploadPagesFromUrlHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -294,7 +294,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobUploadPagesFromUrlHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -322,7 +322,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
+    public PageBlobUploadPagesFromUrlHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -346,7 +346,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setEncryptionKeySha256(String encryptionKeySha256) {
+    public PageBlobUploadPagesFromUrlHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -366,7 +366,7 @@ public final class PageBlobUploadPagesFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobUploadPagesFromURLHeaders object itself.
      */
-    public PageBlobUploadPagesFromURLHeaders setErrorCode(String errorCode) {
+    public PageBlobUploadPagesFromUrlHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

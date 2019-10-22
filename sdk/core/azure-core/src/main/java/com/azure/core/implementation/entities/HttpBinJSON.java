@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Maps to the JSON return values from http://httpbin.org.
  */
-public class HttpBinJSON {
+public class HttpBinJson {
     @JsonProperty()
     private String url;
 

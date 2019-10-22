@@ -9,7 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -126,14 +126,14 @@ public final class PageBlobClient extends BlobClientBase {
      * 512-byte boundary.
      * @param sequenceNumber A user-controlled value that you can use to track requests. The value of the sequence
      * number must be between 0 and 2^63 - 1.The default value is 0.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the created page blob.
      */
-    public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+    public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers,
             metadata, accessConditions, context);
@@ -204,7 +204,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURL#PageRange-URL-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrl#PageRange-URL-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -217,8 +217,8 @@ public final class PageBlobClient extends BlobClientBase {
      * blob.
      * @return The information of the uploaded pages.
      */
-    public PageBlobItem uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE)
+    public PageBlobItem uploadPagesFromUrl(PageRange range, URL sourceURL, Long sourceOffset) {
+        return uploadPagesFromUrlWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE)
             .getValue();
     }
 
@@ -229,7 +229,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -247,11 +247,11 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the uploaded pages.
      */
-    public Response<PageBlobItem> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
+    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
         byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceURL,
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(range, sourceURL,
             sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

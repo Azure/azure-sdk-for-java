@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Maps to the JSON return values from http://httpbin.org.
  */
-public class HttpBinFormDataJSON {
+public class HttpBinFormDataJson {
     @JsonProperty
     private String url;
     @JsonProperty

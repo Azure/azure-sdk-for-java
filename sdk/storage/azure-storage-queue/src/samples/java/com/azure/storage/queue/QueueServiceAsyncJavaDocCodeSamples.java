@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class QueueServiceAsyncJavaDocCodeSamples {
 
-    private QueueServiceAsyncClient client = createAsyncClientWithSASToken();
+    private QueueServiceAsyncClient client = createAsyncClientWithSasToken();
 
     /**
      * Generates code sample for creating a {@link QueueServiceAsyncClient}.
@@ -34,7 +34,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
      *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
-    public QueueServiceAsyncClient createAsyncClientWithSASToken() {
+    public QueueServiceAsyncClient createAsyncClientWithSasToken() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.instantiation.sastoken
         QueueServiceAsyncClient client = new QueueServiceClientBuilder()
             .endpoint("https://{accountName}.queue.core.windows.net?{SASToken}")

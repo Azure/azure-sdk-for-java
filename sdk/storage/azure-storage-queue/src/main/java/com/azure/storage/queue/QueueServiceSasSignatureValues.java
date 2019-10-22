@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 
 /**
  * QueueServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
+ * all the values here are set appropriately, call generateSasQueryParameters to obtain a representation of the SAS
  * which can actually be applied to queue urls. Note: that both this class and {@link QueueServiceSasQueryParameters}
  * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
  * actual REST requests.
@@ -262,7 +262,7 @@ public final class QueueServiceSasSignatureValues {
      * {@code canonicalName} is null. Or if {@code identifier} is null and any or {@code expiryTime} or
      * {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} and {@code identifier} is null
      */
-    public QueueServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public QueueServiceSasQueryParameters generateSasQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK();
 
@@ -275,7 +275,7 @@ public final class QueueServiceSasSignatureValues {
     }
 
     /**
-     * Common assertions for generateSASQueryParameters overloads.
+     * Common assertions for generateSasQueryParameters overloads.
      */
     private void assertGenerateOK() {
         Utility.assertNotNull("version", this.version);

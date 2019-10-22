@@ -11,7 +11,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * Contains all response data for the stageBlockFromURL operation.
  */
-public final class BlockBlobsStageBlockFromURLResponse extends ResponseBase<BlockBlobStageBlockFromURLHeaders, Void> {
+public final class BlockBlobsStageBlockFromUrlResponse extends ResponseBase<BlockBlobStageBlockFromUrlHeaders, Void> {
     /**
      * Creates an instance of BlockBlobsStageBlockFromURLResponse.
      *
@@ -21,7 +21,7 @@ public final class BlockBlobsStageBlockFromURLResponse extends ResponseBase<Bloc
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlockBlobsStageBlockFromURLResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlockBlobStageBlockFromURLHeaders headers) {
+    public BlockBlobsStageBlockFromUrlResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlockBlobStageBlockFromUrlHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "BlockBlob-StageBlockFromURL-Headers")
 @Fluent
-public final class BlockBlobStageBlockFromURLHeaders {
+public final class BlockBlobStageBlockFromUrlHeaders {
     /*
      * This header is returned so that the client can check for message content
      * integrity. The value of this header is computed by the Blob service; it
@@ -105,7 +105,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders setContentMD5(byte[] contentMD5) {
+    public BlockBlobStageBlockFromUrlHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -131,7 +131,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
+    public BlockBlobStageBlockFromUrlHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
         return this;
     }
@@ -155,7 +155,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders setClientRequestId(String clientRequestId) {
+    public BlockBlobStageBlockFromUrlHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -177,7 +177,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders setRequestId(String requestId) {
+    public BlockBlobStageBlockFromUrlHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -201,7 +201,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param version the version value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders setVersion(String version) {
+    public BlockBlobStageBlockFromUrlHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -226,7 +226,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobStageBlockFromUrlHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -254,7 +254,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
+    public BlockBlobStageBlockFromUrlHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -278,7 +278,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders setEncryptionKeySha256(String encryptionKeySha256) {
+    public BlockBlobStageBlockFromUrlHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -298,7 +298,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
-    public BlockBlobStageBlockFromURLHeaders setErrorCode(String errorCode) {
+    public BlockBlobStageBlockFromUrlHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

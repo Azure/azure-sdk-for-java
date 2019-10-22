@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "Blob-AbortCopyFromURL-Headers")
 @Fluent
-public final class BlobAbortCopyFromURLHeaders {
+public final class BlobAbortCopyFromUrlHeaders {
     /*
      * If a client request id header is sent in the request, this header will
      * be present in the response with the same value.
@@ -70,7 +70,7 @@ public final class BlobAbortCopyFromURLHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobAbortCopyFromURLHeaders object itself.
      */
-    public BlobAbortCopyFromURLHeaders setClientRequestId(String clientRequestId) {
+    public BlobAbortCopyFromUrlHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -92,7 +92,7 @@ public final class BlobAbortCopyFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobAbortCopyFromURLHeaders object itself.
      */
-    public BlobAbortCopyFromURLHeaders setRequestId(String requestId) {
+    public BlobAbortCopyFromUrlHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -116,7 +116,7 @@ public final class BlobAbortCopyFromURLHeaders {
      * @param version the version value to set.
      * @return the BlobAbortCopyFromURLHeaders object itself.
      */
-    public BlobAbortCopyFromURLHeaders setVersion(String version) {
+    public BlobAbortCopyFromUrlHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -141,7 +141,7 @@ public final class BlobAbortCopyFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobAbortCopyFromURLHeaders object itself.
      */
-    public BlobAbortCopyFromURLHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public BlobAbortCopyFromUrlHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -165,7 +165,7 @@ public final class BlobAbortCopyFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobAbortCopyFromURLHeaders object itself.
      */
-    public BlobAbortCopyFromURLHeaders setErrorCode(String errorCode) {
+    public BlobAbortCopyFromUrlHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

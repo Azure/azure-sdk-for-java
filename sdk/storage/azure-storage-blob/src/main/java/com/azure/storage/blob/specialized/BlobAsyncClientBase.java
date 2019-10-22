@@ -20,7 +20,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -215,16 +215,16 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromUrl#URL}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
-     * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null).flatMap(FluxUtil::toMono);
+    public Mono<String> startCopyFromUrl(URL sourceUrl) {
+        return startCopyFromUrlWithResponse(sourceUrl, null, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -232,7 +232,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromUrlWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -248,14 +248,14 @@ public class BlobAsyncClientBase {
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Map<String, String> metadata,
+    public Mono<Response<String>> startCopyFromUrlWithResponse(URL sourceURL, Map<String, String> metadata,
         AccessTier tier, RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions) {
-        return withContext(context -> startCopyFromURLWithResponse(sourceURL, metadata, tier, priority,
+        return withContext(context -> startCopyFromUrlWithResponse(sourceURL, metadata, tier, priority,
             sourceModifiedAccessConditions, destAccessConditions, context));
     }
 
-    Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Map<String, String> metadata, AccessTier tier,
+    Mono<Response<String>> startCopyFromUrlWithResponse(URL sourceURL, Map<String, String> metadata, AccessTier tier,
         RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions, Context context) {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
@@ -269,7 +269,7 @@ public class BlobAsyncClientBase {
             .setSourceIfMatch(sourceModifiedAccessConditions.getIfMatch())
             .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
-        return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
+        return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromUrlWithRestResponseAsync(
             null, null, sourceURL, null, metadata, tier, priority, null, sourceConditions,
             destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
             context))
@@ -281,7 +281,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrl#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -289,8 +289,8 @@ public class BlobAsyncClientBase {
      * @param copyId The id of the copy operation to abort.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> abortCopyFromURL(String copyId) {
-        return abortCopyFromURLWithResponse(copyId, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> abortCopyFromUrl(String copyId) {
+        return abortCopyFromUrlWithResponse(copyId, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -298,7 +298,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURLWithResponse#String-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrlWithResponse#String-LeaseAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -308,14 +308,14 @@ public class BlobAsyncClientBase {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId,
-        LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context));
+    public Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId,
+                                                             LeaseAccessConditions leaseAccessConditions) {
+        return withContext(context -> abortCopyFromUrlWithResponse(copyId, leaseAccessConditions, context));
     }
 
-    Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
-        Context context) {
-        return postProcessResponse(this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
+    Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
+                                                      Context context) {
+        return postProcessResponse(this.azureBlobStorage.blobs().abortCopyFromUrlWithRestResponseAsync(
             null, null, copyId, null, null, leaseAccessConditions, context))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -325,7 +325,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrl#URL}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -333,8 +333,8 @@ public class BlobAsyncClientBase {
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
+    public Mono<String> copyFromUrl(URL copySource) {
+        return copyFromUrlWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -342,7 +342,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -357,13 +357,13 @@ public class BlobAsyncClientBase {
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> copyFromURLWithResponse(URL copySource, Map<String, String> metadata, AccessTier tier,
+    public Mono<Response<String>> copyFromUrlWithResponse(URL copySource, Map<String, String> metadata, AccessTier tier,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
-        return withContext(context -> copyFromURLWithResponse(copySource, metadata, tier,
+        return withContext(context -> copyFromUrlWithResponse(copySource, metadata, tier,
             sourceModifiedAccessConditions, destAccessConditions, context));
     }
 
-    Mono<Response<String>> copyFromURLWithResponse(URL copySource, Map<String, String> metadata, AccessTier tier,
+    Mono<Response<String>> copyFromUrlWithResponse(URL copySource, Map<String, String> metadata, AccessTier tier,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
         Context context) {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
@@ -377,7 +377,7 @@ public class BlobAsyncClientBase {
             .setSourceIfMatch(sourceModifiedAccessConditions.getIfMatch())
             .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
-        return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
+        return postProcessResponse(this.azureBlobStorage.blobs().copyFromUrlWithRestResponseAsync(
             null, null, copySource, null, metadata, tier, null, sourceConditions,
             destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
             context))
@@ -700,16 +700,16 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeaders#BlobHTTPHeaders}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers) {
-        return setHTTPHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> setHttpHeaders(BlobHttpHeaders headers) {
+        return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -718,25 +718,25 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setHTTPHeadersWithResponse(BlobHTTPHeaders headers,
-        BlobAccessConditions accessConditions) {
-        return withContext(context -> setHTTPHeadersWithResponse(headers, accessConditions, context));
+    public Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers,
+                                                           BlobAccessConditions accessConditions) {
+        return withContext(context -> setHttpHeadersWithResponse(headers, accessConditions, context));
     }
 
-    Mono<Response<Void>> setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
-        Context context) {
+    Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobAccessConditions accessConditions,
+                                                    Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
-        return postProcessResponse(this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
+        return postProcessResponse(this.azureBlobStorage.blobs().setHttpHeadersWithRestResponseAsync(
             null, null, null, null, headers,
             accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context))
             .map(response -> new SimpleResponse<>(response, null));

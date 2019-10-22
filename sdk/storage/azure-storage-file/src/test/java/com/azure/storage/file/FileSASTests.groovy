@@ -189,7 +189,7 @@ class FileSASTests extends APISpec {
             .setContentType(contentType)
             .setCanonicalName(primaryFileClient.getShareName(), primaryFileClient.getFilePath(), credential.getAccountName())
             .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         then:
@@ -251,7 +251,7 @@ class FileSASTests extends APISpec {
             .setContentType(contentType)
             .setCanonicalName(primaryFileClient.getShareName(), primaryFileClient.getFilePath(), credential.getAccountName())
             .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
@@ -296,7 +296,7 @@ class FileSASTests extends APISpec {
             .setIdentifier(identifier.getId())
             .setCanonicalName(primaryShareClient.getShareName(), credential.getAccountName())
             .setResource(Constants.UrlConstants.SAS_SHARE_CONSTANT)
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
@@ -312,7 +312,7 @@ class FileSASTests extends APISpec {
             .setExpiryTime(expiryTime)
             .setCanonicalName(primaryShareClient.getShareName(), credential.getAccountName())
             .setResource(Constants.UrlConstants.SAS_SHARE_CONSTANT)
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())

@@ -17,7 +17,7 @@ import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
-import com.azure.storage.blob.models.BlobHTTPHeaders
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.LeaseAccessConditions
@@ -151,7 +151,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         when:
-        def headers = bu2.stageBlockFromURLWithResponse(blockID, new URL(bc.getBlobUrl()), null, null, null, null, null, null).getHeaders()
+        def headers = bu2.stageBlockFromUrlWithResponse(blockID, new URL(bc.getBlobUrl()), null, null, null, null, null, null).getHeaders()
 
         then:
         headers.getValue("x-ms-request-id") != null
@@ -180,14 +180,14 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         expect:
-        bu2.stageBlockFromURLWithResponse(blockID, new URL(bc.getBlobUrl()), null, null, null, null, null, null).getStatusCode() == 201
+        bu2.stageBlockFromUrlWithResponse(blockID, new URL(bc.getBlobUrl()), null, null, null, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
     def "Stage block from URL IA"() {
         when:
         def blockID = (getBlockId) ? getBlockID() : null
-        bc.stageBlockFromURL(blockID, sourceURL, null)
+        bc.stageBlockFromUrl(blockID, sourceURL, null)
 
         then:
         thrown(StorageException)
@@ -204,7 +204,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        destURL.stageBlockFromURL(getBlockID(), new URL(bc.getBlobUrl()), new BlobRange(2, 3))
+        destURL.stageBlockFromUrl(getBlockID(), new URL(bc.getBlobUrl()), new BlobRange(2, 3))
         def blockList = destURL.listBlocks(BlockListType.UNCOMMITTED)
 
         then:
@@ -218,7 +218,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        destURL.stageBlockFromURLWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null,
+        destURL.stageBlockFromUrlWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null,
             MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null, null)
 
         then:
@@ -231,7 +231,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        destURL.stageBlockFromURLWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null, "garbage".getBytes(),
+        destURL.stageBlockFromUrlWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null, "garbage".getBytes(),
             null, null, null, null)
 
         then:
@@ -244,7 +244,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().setLeaseId(setupBlobLeaseCondition(bc, receivedLeaseID))
 
         when:
-        bc.stageBlockFromURLWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null, null, lease, null, null, null)
+        bc.stageBlockFromUrlWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null, null, lease, null, null, null)
 
         then:
         notThrown(StorageException)
@@ -256,7 +256,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().setLeaseId("garbage")
 
         when:
-        bc.stageBlockFromURLWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null, null, lease, null, null, null)
+        bc.stageBlockFromUrlWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null, null, lease, null, null, null)
 
         then:
         thrown(StorageException)
@@ -269,7 +269,7 @@ class BlockBlobAPITest extends APISpec {
             .getBlockBlobClient()
 
         when:
-        bc.stageBlockFromURL(getBlockID(), new URL(bc.getBlobUrl()), null)
+        bc.stageBlockFromUrl(getBlockID(), new URL(bc.getBlobUrl()), null)
 
         then:
         thrown(StorageException)
@@ -292,7 +292,7 @@ class BlockBlobAPITest extends APISpec {
             .setSourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bc.stageBlockFromURLWithResponse(blockID, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null).getStatusCode() == 201
+        bc.stageBlockFromUrlWithResponse(blockID, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null).getStatusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -319,7 +319,7 @@ class BlockBlobAPITest extends APISpec {
             .setSourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bc.stageBlockFromURLWithResponse(blockID, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null).getStatusCode() == 201
+        bc.stageBlockFromUrlWithResponse(blockID, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null).getStatusCode() == 201
 
         then:
         thrown(StorageException)
@@ -370,7 +370,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
         bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
         def ids = [ blockID ] as List
-        def headers = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
+        def headers = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
             .setBlobContentLanguage(contentLanguage)
@@ -669,7 +669,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Upload headers"() {
         setup:
-        def headers = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
+        def headers = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
             .setBlobContentLanguage(contentLanguage)
@@ -904,7 +904,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(10)
-        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
+        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
             .setBlobContentLanguage(contentLanguage)

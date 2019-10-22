@@ -26,7 +26,7 @@ public class QueueJavaDocCodeSamples {
 
     private String key1 = "key1";
     private String value1 = "val1";
-    private QueueClient client = createClientWithSASToken();
+    private QueueClient client = createClientWithSasToken();
 
     /**
      * Generates code sample for creating a {@link QueueClient}.
@@ -45,7 +45,7 @@ public class QueueJavaDocCodeSamples {
      *
      * @return An instance of {@link QueueClient}
      */
-    public QueueClient createClientWithSASToken() {
+    public QueueClient createClientWithSasToken() {
         // BEGIN: com.azure.storage.queue.queueClient.instantiation.sastoken
         QueueClient client = new QueueClientBuilder()
             .endpoint("https://${accountName}.queue.core.windows.net?${SASToken}")

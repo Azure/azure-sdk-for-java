@@ -24,7 +24,7 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockResponse;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateResponse;
 import com.azure.storage.blob.models.AppendPositionAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -137,7 +137,7 @@ public final class AppendBlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppendBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, Integer timeout, Map<String, String> metadata, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<AppendBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, Integer timeout, Map<String, String> metadata, String requestId, BlobHttpHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String blobType = "AppendBlob";
         String blobContentType = null;
         if (blobHTTPHeaders != null) {

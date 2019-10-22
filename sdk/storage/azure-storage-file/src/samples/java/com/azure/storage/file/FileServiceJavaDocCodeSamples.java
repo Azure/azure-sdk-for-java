@@ -49,7 +49,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates code sample for creating a {@link FileServiceClient} with SAS token.
      * @return An instance of {@link FileServiceClient}
      */
-    public FileServiceClient createClientWithSASToken() {
+    public FileServiceClient createClientWithSasToken() {
         // BEGIN: com.azure.storage.file.fileServiceClient.instantiation.sastoken
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net?${SASToken}")
@@ -93,7 +93,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates a code sample for using {@link FileServiceClient#createShare(String)}
      */
     public void createShare() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.createShare#string
         fileServiceClient.createShare("myshare");
         System.out.println("Creating the share completed.");
@@ -105,7 +105,7 @@ public class FileServiceJavaDocCodeSamples {
      * Duration, Context)} with metadata
      */
     public void createShareWithMetadata() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.FileServiceClient.createShareWithResponse#string-map-integer-duration-context
         Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
             Collections.singletonMap("share", "metadata"), null, Duration.ofSeconds(1),
@@ -118,7 +118,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates a code sample for using {@link FileServiceClient#listShares()}
      */
     public void listShares() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.listShares
         fileServiceClient.listShares().forEach(
             shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName())
@@ -130,7 +130,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates a code sample for using {@link FileServiceClient#listShares(ListSharesOptions, Duration, Context)} of prefix.
      */
     public void listSharesWithPrefix() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context1
         fileServiceClient.listShares(new ListSharesOptions().setPrefix("azure"), Duration.ofSeconds(1),
             new Context(key1, value1)).forEach(
@@ -144,7 +144,7 @@ public class FileServiceJavaDocCodeSamples {
      * of metadata and snapshot.
      */
     public void listSharesWithMetadataAndSnapshot() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context2
         fileServiceClient.listShares(new ListSharesOptions().setIncludeMetadata(true)
             .setIncludeSnapshots(true), Duration.ofSeconds(1), new Context(key1, value1)).forEach(
@@ -157,7 +157,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates a code sample for using {@link FileServiceClient#deleteShare(String)}
      */
     public void deleteShare() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.deleteShare#string
         fileServiceClient.deleteShare("myshare");
         // END: com.azure.storage.file.fileServiceClient.deleteShare#string
@@ -168,7 +168,7 @@ public class FileServiceJavaDocCodeSamples {
      * Duration, Context)}
      */
     public void deleteShareMaxOverload() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context
         OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         Response<Void> response = fileServiceClient.deleteShareWithResponse("test", midnight.toString(),
@@ -181,7 +181,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates a code sample for using {@link FileServiceClient#getProperties()}
      */
     public void getProperties() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.getProperties
         FileServiceProperties properties = fileServiceClient.getProperties();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.getHourMetrics().isEnabled(),
@@ -193,7 +193,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates a code sample for using {@link FileServiceClient#getPropertiesWithResponse(Duration, Context)}
      */
     public void getPropertiesWithResponse() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#duration-context
         FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1)).getValue();
@@ -206,7 +206,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates a code sample for using {@link FileServiceClient#setProperties(FileServiceProperties)}
      */
     public void setProperties() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties
         FileServiceProperties properties = fileServiceClient.getProperties();
 
@@ -222,7 +222,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates a code sample for using {@link FileServiceClient#setProperties(FileServiceProperties)}
      */
     public void setPropertiesWithResponse() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context
         FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1)).getValue();
@@ -240,7 +240,7 @@ public class FileServiceJavaDocCodeSamples {
      * Generates a code sample for using {@link FileServiceClient#setProperties(FileServiceProperties)} to clear CORS in file service.
      */
     public void clearProperties() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
+        FileServiceClient fileServiceClient = createClientWithSasToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
         FileServiceProperties properties = fileServiceClient.getProperties();
         properties.setCors(Collections.emptyList());

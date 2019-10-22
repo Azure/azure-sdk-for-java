@@ -3,7 +3,7 @@
 
 package com.azure.core;
 
-import com.azure.core.implementation.entities.HttpBinJSON;
+import com.azure.core.implementation.entities.HttpBinJson;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
@@ -15,12 +15,12 @@ public class MyOtherRestException extends HttpResponseException {
      * @param response HttpResponse associated with the exception.
      * @param body Deserialized body of {@code response}.
      */
-    public MyOtherRestException(String message, HttpResponse response, HttpBinJSON body) {
+    public MyOtherRestException(String message, HttpResponse response, HttpBinJson body) {
         super(message, response, body);
     }
 
     @Override
-    public HttpBinJSON getValue() {
-        return (HttpBinJSON) super.getValue();
+    public HttpBinJson getValue() {
+        return (HttpBinJson) super.getValue();
     }
 }

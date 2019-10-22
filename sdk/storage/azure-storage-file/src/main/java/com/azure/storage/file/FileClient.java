@@ -11,7 +11,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -158,7 +158,7 @@ public class FileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders,
+    public Response<FileInfo> createWithResponse(long maxSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
         Context context) {
         Mono<Response<FileInfo>> response = fileAsyncClient
@@ -466,8 +466,8 @@ public class FileClient {
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public FileInfo setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
-        String filePermission) {
+    public FileInfo setProperties(long newFileSize, FileHttpHeaders httpHeaders, FileSmbProperties smbProperties,
+                                  String filePermission) {
         return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null, Context.NONE)
             .getValue();
     }
@@ -501,7 +501,7 @@ public class FileClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Duration timeout, Context context) {
         Mono<Response<FileInfo>> response = fileAsyncClient
             .setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context);

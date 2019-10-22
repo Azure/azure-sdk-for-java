@@ -11,7 +11,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * Contains all response data for the abortCopyFromURL operation.
  */
-public final class BlobsAbortCopyFromURLResponse extends ResponseBase<BlobAbortCopyFromURLHeaders, Void> {
+public final class BlobsAbortCopyFromUrlResponse extends ResponseBase<BlobAbortCopyFromUrlHeaders, Void> {
     /**
      * Creates an instance of BlobsAbortCopyFromURLResponse.
      *
@@ -21,7 +21,7 @@ public final class BlobsAbortCopyFromURLResponse extends ResponseBase<BlobAbortC
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlobsAbortCopyFromURLResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobAbortCopyFromURLHeaders headers) {
+    public BlobsAbortCopyFromUrlResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobAbortCopyFromUrlHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

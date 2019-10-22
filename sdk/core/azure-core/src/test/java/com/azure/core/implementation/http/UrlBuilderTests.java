@@ -719,13 +719,13 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parseURLWithNull() {
+    public void parseUrlWithNull() {
         final UrlBuilder builder = UrlBuilder.parse((URL) null);
         assertEquals("", builder.toString());
     }
 
     @Test
-    public void parseURLschemeAndHost() throws MalformedURLException {
+    public void parseUrlschemeAndHost() throws MalformedURLException {
         final UrlBuilder builder = UrlBuilder.parse(new URL("http://www.bing.com"));
         assertEquals("http://www.bing.com", builder.toString());
     }

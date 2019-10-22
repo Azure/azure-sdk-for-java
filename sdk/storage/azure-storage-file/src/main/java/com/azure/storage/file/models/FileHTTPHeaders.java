@@ -15,7 +15,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "file-HTTP-headers")
 @Fluent
-public final class FileHTTPHeaders {
+public final class FileHttpHeaders {
     /*
      * Sets the MIME content type of the file. The default type is
      * 'application/octet-stream'.
@@ -71,7 +71,7 @@ public final class FileHTTPHeaders {
      * @param fileContentType the fileContentType value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentType(String fileContentType) {
+    public FileHttpHeaders setFileContentType(String fileContentType) {
         this.fileContentType = fileContentType;
         return this;
     }
@@ -93,7 +93,7 @@ public final class FileHTTPHeaders {
      * @param fileContentEncoding the fileContentEncoding value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentEncoding(String fileContentEncoding) {
+    public FileHttpHeaders setFileContentEncoding(String fileContentEncoding) {
         this.fileContentEncoding = fileContentEncoding;
         return this;
     }
@@ -115,7 +115,7 @@ public final class FileHTTPHeaders {
      * @param fileContentLanguage the fileContentLanguage value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentLanguage(String fileContentLanguage) {
+    public FileHttpHeaders setFileContentLanguage(String fileContentLanguage) {
         this.fileContentLanguage = fileContentLanguage;
         return this;
     }
@@ -137,7 +137,7 @@ public final class FileHTTPHeaders {
      * @param fileCacheControl the fileCacheControl value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders setFileCacheControl(String fileCacheControl) {
+    public FileHttpHeaders setFileCacheControl(String fileCacheControl) {
         this.fileCacheControl = fileCacheControl;
         return this;
     }
@@ -157,7 +157,7 @@ public final class FileHTTPHeaders {
      * @param fileContentMD5 the fileContentMD5 value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentMD5(byte[] fileContentMD5) {
+    public FileHttpHeaders setFileContentMD5(byte[] fileContentMD5) {
         this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
         return this;
     }
@@ -179,7 +179,7 @@ public final class FileHTTPHeaders {
      * @param fileContentDisposition the fileContentDisposition value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentDisposition(String fileContentDisposition) {
+    public FileHttpHeaders setFileContentDisposition(String fileContentDisposition) {
         this.fileContentDisposition = fileContentDisposition;
         return this;
     }

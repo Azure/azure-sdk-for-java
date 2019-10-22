@@ -11,7 +11,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * Contains all response data for the setHTTPHeaders operation.
  */
-public final class FilesSetHTTPHeadersResponse extends ResponseBase<FileSetHTTPHeadersHeaders, Void> {
+public final class FilesSetHttpHeadersResponse extends ResponseBase<FileSetHttpHeadersHeaders, Void> {
     /**
      * Creates an instance of FilesSetHTTPHeadersResponse.
      *
@@ -21,7 +21,7 @@ public final class FilesSetHTTPHeadersResponse extends ResponseBase<FileSetHTTPH
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public FilesSetHTTPHeadersResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FileSetHTTPHeadersHeaders headers) {
+    public FilesSetHttpHeadersResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FileSetHttpHeadersHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

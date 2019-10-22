@@ -119,7 +119,7 @@ class QueueSASTests extends APISpec {
             .setProtocol(sasProtocol)
             .setIpRange(ipRange)
             .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
@@ -169,7 +169,7 @@ class QueueSASTests extends APISpec {
             .setProtocol(sasProtocol)
             .setIpRange(ipRange)
             .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
@@ -217,7 +217,7 @@ class QueueSASTests extends APISpec {
         def sasIdentifier = new QueueServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         def clientBuilder = queueBuilderHelper(interceptorManager)

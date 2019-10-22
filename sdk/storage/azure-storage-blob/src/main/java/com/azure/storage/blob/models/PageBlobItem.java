@@ -8,7 +8,7 @@ import com.azure.storage.blob.implementation.models.PageBlobClearPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobCreateHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobResizeHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobUpdateSequenceNumberHeaders;
-import com.azure.storage.blob.implementation.models.PageBlobUploadPagesFromURLHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobUploadPagesFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobUploadPagesHeaders;
 
 import java.time.OffsetDateTime;
@@ -39,7 +39,7 @@ public class PageBlobItem {
         this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
     }
 
-    public PageBlobItem(PageBlobUploadPagesFromURLHeaders generatedHeaders) {
+    public PageBlobItem(PageBlobUploadPagesFromUrlHeaders generatedHeaders) {
         this.eTag = generatedHeaders.getETag();
         this.lastModified = generatedHeaders.getLastModified();
         this.contentMD5 = generatedHeaders.getContentMD5();

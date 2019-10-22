@@ -11,7 +11,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * Contains all response data for the setHTTPHeaders operation.
  */
-public final class BlobsSetHTTPHeadersResponse extends ResponseBase<BlobSetHTTPHeadersHeaders, Void> {
+public final class BlobsSetHttpHeadersResponse extends ResponseBase<BlobSetHttpHeadersHeaders, Void> {
     /**
      * Creates an instance of BlobsSetHTTPHeadersResponse.
      *
@@ -21,7 +21,7 @@ public final class BlobsSetHTTPHeadersResponse extends ResponseBase<BlobSetHTTPH
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlobsSetHTTPHeadersResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobSetHTTPHeadersHeaders headers) {
+    public BlobsSetHttpHeadersResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobSetHttpHeadersHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

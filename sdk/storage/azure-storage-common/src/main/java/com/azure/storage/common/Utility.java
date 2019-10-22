@@ -447,7 +447,7 @@ public final class Utility {
         builder.setPath(builder.getPath() + name);
 
         try {
-            return builder.toURL();
+            return builder.toUrl();
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex);
         }
@@ -471,7 +471,7 @@ public final class Utility {
 
         builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));
         try {
-            return builder.toURL();
+            return builder.toUrl();
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex);
         }
