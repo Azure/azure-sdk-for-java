@@ -7,7 +7,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opencensus.implcore.trace.RecordEventsSpanImpl;
 import io.opencensus.trace.AttributeValue;
+import io.opencensus.trace.Link;
 import io.opencensus.trace.Span;
+import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.SpanId;
 import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
@@ -210,14 +212,15 @@ public class OpenCensusTracerTest {
             (RecordEventsSpanImpl) tracer.spanBuilder("new-test-span").startSpan();
         final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getContext());
         final RecordEventsSpanImpl parentSpanImpl = (RecordEventsSpanImpl) parentSpan;
-
+        final Link expectedLink = Link.fromSpanContext(testSpan.getContext(), Link.Type.PARENT_LINKED_SPAN);
         // Act
         openCensusTracer.addLink(traceContext);
 
         //Assert
-        // verify both spans share the same link traceId
-        Assert.assertEquals(parentSpanImpl.toSpanData().getContext().getTraceId(),
-            testSpan.toSpanData().getContext().getTraceId());
+        // verify parent span has the expected Link
+        Link createdLink = parentSpanImpl.toSpanData().getLinks().getLinks().get(0);
+        Assert.assertEquals(expectedLink.getTraceId(), createdLink.getTraceId());
+        Assert.assertEquals(expectedLink.getSpanId(), createdLink.getSpanId());
     }
 
     @Test
