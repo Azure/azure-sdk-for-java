@@ -16,11 +16,22 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ExponentialBackoff implements RetryStrategy {
 
     private static final double JITTER_FACTOR = 0.05;
+    private static final int DEFAULT_MAX_RETRIES = 3;
+    private static final Duration DEFAULT_BASE_DELAY = Duration.ofMillis(800);
+    private static final Duration DEFAULT_MAX_DELAY = Duration.ofSeconds(8);
     private final ClientLogger logger = new ClientLogger(ExponentialBackoff.class);
 
     private final int maxRetries;
     private final Duration baseDelay;
     private final Duration maxDelay;
+
+    /**
+     * Creates an instance of {@link ExponentialBackoff} with a maximum of three retry attempts. This strategy starts
+     * with a delay of 800 milliseconds and exponentially increases with each additional retry attempt.
+     */
+    public ExponentialBackoff() {
+        this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
+    }
 
     /**
      * Creates an instance of {@link ExponentialBackoff}.

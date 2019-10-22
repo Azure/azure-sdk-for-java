@@ -3,6 +3,8 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpResponse;
+import java.net.HttpURLConnection;
 import java.time.Duration;
 
 /**
@@ -10,8 +12,11 @@ import java.time.Duration;
  */
 public interface RetryStrategy {
 
+    int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
+
     /**
      * Max number of retry attempts to be make.
+     *
      * @return The max number of retry attempts.
      */
     int getMaxRetries();
@@ -23,4 +28,20 @@ public interface RetryStrategy {
      * @return The delay duration before the next retry.
      */
     Duration calculateRetryDelay(int retryAttempts);
+
+    /**
+     * This method is consulted to determine if a retry attempt should be made for the given {@link HttpResponse} if the
+     * retry attempts are less than {@link #getMaxRetries()}.
+     *
+     * @param httpResponse The response from the previous attempt.
+     * @return {@code true} if another retry attempt should be made.
+     */
+    default boolean shouldRetry(HttpResponse httpResponse) {
+        int code = httpResponse.getStatusCode();
+        return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
+            || code == HTTP_STATUS_TOO_MANY_REQUESTS // HttpUrlConnection does not define HTTP status 429
+            || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
+            && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
+            && code != HttpURLConnection.HTTP_VERSION));
+    }
 }

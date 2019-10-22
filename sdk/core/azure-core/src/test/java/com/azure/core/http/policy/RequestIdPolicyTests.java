@@ -108,7 +108,7 @@ public class RequestIdPolicyTests {
                     return Mono.just(mockResponse);
                 }
             })
-            .policies(new RequestIdPolicy(), new RetryPolicy(1, Duration.of(0, ChronoUnit.SECONDS)))
+            .policies(new RequestIdPolicy(), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
             .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();

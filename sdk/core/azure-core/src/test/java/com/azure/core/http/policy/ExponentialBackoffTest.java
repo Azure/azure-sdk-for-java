@@ -53,6 +53,18 @@ public class ExponentialBackoffTest {
     }
 
     @Test
+    public void testDefaultExponentialBackoff() {
+        ExponentialBackoff expBackoff = new ExponentialBackoff();
+        assertEquals(3, expBackoff.getMaxRetries());
+
+        // exponential backoff
+        for (int i = 0; i < 3; i++) {
+            long delayMillis = expBackoff.calculateRetryDelay(i).toMillis();
+            assertTrue(delayMillis >= ((1 << i) * (800 * 0.95)) && delayMillis <= ((1 << i) * (800 * 1.05)));
+        }
+    }
+
+    @Test
     public void testExponentialBackoff() {
         ExponentialBackoff expBackoff = new ExponentialBackoff(10, Duration.ofSeconds(1),
             Duration.ofSeconds(10));
