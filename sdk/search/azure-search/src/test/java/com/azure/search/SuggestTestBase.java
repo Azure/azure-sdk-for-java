@@ -3,7 +3,6 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.common.jsonwrapper.JsonWrapper;
 import com.azure.search.common.jsonwrapper.api.JsonApi;
@@ -33,12 +32,12 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         super.beforeTest();
     }
 
-    protected void verifyFuzzySuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+    protected void verifyFuzzySuggest(SuggestPagedResponse suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
         Assert.assertEquals(5, suggestResultPagedResponse.getValue().size());
     }
 
-    protected void verifyHitHighlightingSuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+    protected void verifyHitHighlightingSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
         Assert.assertEquals(1, suggestResultPagedResponse.getValue().size());
         Assert.assertTrue(
@@ -48,19 +47,19 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
                 .startsWith("Best <b>hotel</b> in town"));
     }
 
-    protected void verifyFieldsExcludesFieldsSuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+    protected void verifyFieldsExcludesFieldsSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
         Assert.assertEquals(0, suggestResultPagedResponse.getValue().size());
     }
 
-    protected void verifyDynamicDocumentSuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+    protected void verifyDynamicDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
         Assert.assertEquals(2, suggestResultPagedResponse.getValue().size());
         Hotel hotel = suggestResultPagedResponse.getValue().get(0).getAdditionalProperties().as(Hotel.class);
         Assert.assertEquals("10", hotel.hotelId());
     }
 
-    protected void verifyCanSuggestStaticallyTypedDocuments(PagedResponse<SuggestResult> suggestResultPagedResponse, List<Map<String, Object>> expectedHotels) {
+    protected void verifyCanSuggestStaticallyTypedDocuments(SuggestPagedResponse suggestResultPagedResponse, List<Map<String, Object>> expectedHotels) {
         //sanity
         Assert.assertNotNull(suggestResultPagedResponse);
         List<Document> docs = suggestResultPagedResponse.getValue()
@@ -80,7 +79,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
             expectedHotelsList.stream().map(Hotel::description).collect(Collectors.toList()));
     }
 
-    protected void verifyFuzzyIsOffByDefault(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+    protected void verifyFuzzyIsOffByDefault(SuggestPagedResponse suggestResultPagedResponse) {
 
         Assert.assertNotNull(suggestResultPagedResponse);
         Assert.assertEquals(0, suggestResultPagedResponse.getValue().size());
@@ -100,13 +99,13 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         assertTrue(error.getMessage().contains("Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'"));
     }
 
-    protected void verifyMinimumCoverage(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+    protected void verifyMinimumCoverage(SuggestPagedResponse suggestResultPagedResponse) {
 
         Assert.assertNotNull(suggestResultPagedResponse);
-        Assert.assertEquals(new Double(100), ((SuggestPagedResponse) suggestResultPagedResponse).coverage());
+        Assert.assertEquals(new Double(100), suggestResultPagedResponse.coverage());
     }
 
-    protected void verifyTopDocumentSuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+    protected void verifyTopDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
         Assert.assertEquals(3, suggestResultPagedResponse.getValue().size());
         List<String> resultIds = suggestResultPagedResponse
@@ -118,7 +117,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(Arrays.asList("1", "10", "2"), resultIds);
     }
 
-    protected void verifyCanSuggestWithDateTimeInStaticModel(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+    protected void verifyCanSuggestWithDateTimeInStaticModel(SuggestPagedResponse suggestResultPagedResponse) {
         List<SuggestResult> books = suggestResultPagedResponse.getValue();
         List<Document> docs = suggestResultPagedResponse.getValue()
             .stream()
