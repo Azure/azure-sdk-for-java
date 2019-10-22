@@ -102,7 +102,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions)}
      */
-    public void stageBlockFromURL2() {
+    public void stageBlockFromUrl2() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions
         BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
