@@ -6,12 +6,12 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.net.URL;
 import java.time.Duration;
@@ -84,7 +84,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.acquireLeaseWithResponse#int-ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -95,9 +95,9 @@ public final class LeaseClient {
      * @return The lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> acquireLeaseWithResponse(int duration, ModifiedAccessConditions modifiedAccessConditions,
+    public Response<String> acquireLeaseWithResponse(int duration, RequestConditions modifiedAccessConditions,
         Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .acquireLeaseWithResponse(duration, modifiedAccessConditions, context), timeout);
     }
 
@@ -120,7 +120,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.renewLeaseWithResponse#ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -130,9 +130,9 @@ public final class LeaseClient {
      * @return The renewed lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> renewLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Duration timeout,
+    public Response<String> renewLeaseWithResponse(RequestConditions modifiedAccessConditions, Duration timeout,
         Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .renewLeaseWithResponse(modifiedAccessConditions, context), timeout);
     }
 
@@ -153,7 +153,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.releaseLeaseWithResponse#ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -163,9 +163,9 @@ public final class LeaseClient {
      * @return A response containing status code and HTTP headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Duration timeout,
+    public Response<Void> releaseLeaseWithResponse(RequestConditions modifiedAccessConditions, Duration timeout,
         Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .releaseLeaseWithResponse(modifiedAccessConditions, context), timeout);
     }
 
@@ -191,7 +191,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context}
      *
      * @param breakPeriodInSeconds An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
@@ -206,8 +206,8 @@ public final class LeaseClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Integer> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        RequestConditions modifiedAccessConditions, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context), timeout);
     }
 
@@ -231,7 +231,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.changeLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -243,8 +243,8 @@ public final class LeaseClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> changeLeaseWithResponse(String proposedId,
-        ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(this.client
+        RequestConditions modifiedAccessConditions, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(this.client
             .changeLeaseWithResponse(proposedId, modifiedAccessConditions, context), timeout);
     }
 

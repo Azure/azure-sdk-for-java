@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
@@ -16,14 +17,11 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.StorageErrorException;
-import com.azure.storage.blob.models.StorageException;
-import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -54,12 +52,14 @@ public final class LeaseAsyncClient {
     private final AzureBlobStorageImpl client;
     private final String accountName;
 
-    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob, String accountName) {
+    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob, String accountName,
+        String serviceVersion) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
         this.client = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
+            .version(serviceVersion)
             .build();
         this.accountName = accountName;
     }
@@ -85,8 +85,8 @@ public final class LeaseAsyncClient {
     }
 
     /**
-     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds or
-     * -1 for an infinite duration.
+     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds or -1 for
+     * an infinite duration.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -97,16 +97,20 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> acquireLease(int duration) {
-        return acquireLeaseWithResponse(duration, null).flatMap(FluxUtil::toMono);
+        try {
+            return acquireLeaseWithResponse(duration, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
-     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds, or
-     * -1 for an infinite duration.
+     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds, or -1 for
+     * an infinite duration.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.acquireLeaseWithResponse#int-ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -115,20 +119,27 @@ public final class LeaseAsyncClient {
      * @return A reactive response containing the lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> acquireLeaseWithResponse(int duration,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> acquireLeaseWithResponse(duration, modifiedAccessConditions, context));
+    public Mono<Response<String>> acquireLeaseWithResponse(int duration, RequestConditions modifiedAccessConditions) {
+        try {
+            return withContext(context -> acquireLeaseWithResponse(duration, modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<String>> acquireLeaseWithResponse(int duration, ModifiedAccessConditions modifiedAccessConditions,
+    Mono<Response<String>> acquireLeaseWithResponse(int duration, RequestConditions modifiedAccessConditions,
         Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
         if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().acquireLeaseWithRestResponseAsync(
-                null, null, null, duration, this.leaseId, null, modifiedAccessConditions, context))
+            return this.client.blobs().acquireLeaseWithRestResponseAsync(null, null, null, duration, this.leaseId,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                modifiedAccessConditions.getIfMatch(), modifiedAccessConditions.getIfNoneMatch(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return postProcessResponse(this.client.containers().acquireLeaseWithRestResponseAsync(
-                null, null, duration, this.leaseId, null, modifiedAccessConditions, context))
+            return this.client.containers().acquireLeaseWithRestResponseAsync(null, null, duration, this.leaseId,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }
@@ -144,7 +155,11 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> renewLease() {
-        return renewLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return renewLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -152,7 +167,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.renewLeaseWithResponse#ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.renewLeaseWithResponse#RequestConditions}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -160,18 +175,26 @@ public final class LeaseAsyncClient {
      * @return A reactive response containing the renewed lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> renewLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> renewLeaseWithResponse(modifiedAccessConditions, context));
+    public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedAccessConditions) {
+        try {
+            return withContext(context -> renewLeaseWithResponse(modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<String>> renewLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedAccessConditions, Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
         if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().renewLeaseWithRestResponseAsync(
-                null, null, this.leaseId, null, null, modifiedAccessConditions, context))
+            return this.client.blobs().renewLeaseWithRestResponseAsync(null, null, this.leaseId, null,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                modifiedAccessConditions.getIfMatch(), modifiedAccessConditions.getIfNoneMatch(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return postProcessResponse(this.client.containers().renewLeaseWithRestResponseAsync(
-                null, this.leaseId, null, null, modifiedAccessConditions, context))
+            return this.client.containers().renewLeaseWithRestResponseAsync(null, this.leaseId, null,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }
@@ -187,7 +210,11 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> releaseLease() {
-        return releaseLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return releaseLeaseWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -195,7 +222,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.releaseLeaseWithResponse#ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.releaseLeaseWithResponse#RequestConditions}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -203,18 +230,26 @@ public final class LeaseAsyncClient {
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> releaseLeaseWithResponse(modifiedAccessConditions, context));
+    public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedAccessConditions) {
+        try {
+            return withContext(context -> releaseLeaseWithResponse(modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<Void>> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedAccessConditions, Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
         if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().releaseLeaseWithRestResponseAsync(
-                null, null, this.leaseId, null, null, modifiedAccessConditions, context))
+            return this.client.blobs().releaseLeaseWithRestResponseAsync(null, null, this.leaseId, null,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                modifiedAccessConditions.getIfMatch(), modifiedAccessConditions.getIfNoneMatch(), null, context)
                 .map(response -> new SimpleResponse<>(response, null));
         } else {
-            return postProcessResponse(this.client.containers().releaseLeaseWithRestResponseAsync(
-                null, this.leaseId, null, null, modifiedAccessConditions, context))
+            return this.client.containers().releaseLeaseWithRestResponseAsync(null, this.leaseId, null,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                null, context)
                 .map(response -> new SimpleResponse<>(response, null));
         }
     }
@@ -230,7 +265,11 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Integer> breakLease() {
-        return breakLeaseWithResponse(null, null).flatMap(FluxUtil::toMono);
+        try {
+            return breakLeaseWithResponse(null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -241,7 +280,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.breakLeaseWithResponse#Integer-RequestConditions}
      *
      * @param breakPeriodInSeconds An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
@@ -254,19 +293,28 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context));
+        RequestConditions modifiedAccessConditions) {
+        try {
+            return withContext(
+                context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        RequestConditions modifiedAccessConditions, Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
         if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().breakLeaseWithRestResponseAsync(
-                null, null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context))
+            return this.client.blobs().breakLeaseWithRestResponseAsync(null, null, null, breakPeriodInSeconds,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                modifiedAccessConditions.getIfMatch(), modifiedAccessConditions.getIfNoneMatch(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         } else {
-            return postProcessResponse(this.client.containers().breakLeaseWithRestResponseAsync(
-                null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context))
+            return this.client.containers().breakLeaseWithRestResponseAsync(null, null, breakPeriodInSeconds,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         }
     }
@@ -283,7 +331,11 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> changeLease(String proposedId) {
-        return changeLeaseWithResponse(proposedId, null).flatMap(FluxUtil::toMono);
+        try {
+            return changeLeaseWithResponse(proposedId, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -291,7 +343,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.changeLeaseWithResponse#String-ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.changeLeaseWithResponse#String-RequestConditions}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -301,31 +353,29 @@ public final class LeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> changeLeaseWithResponse(proposedId, modifiedAccessConditions, context));
-    }
-
-    Mono<Response<String>> changeLeaseWithResponse(String proposedId, ModifiedAccessConditions modifiedAccessConditions,
-        Context context) {
-        if (this.isBlob) {
-            return postProcessResponse(this.client.blobs().changeLeaseWithRestResponseAsync(
-                null, null, this.leaseId, proposedId, null, null, modifiedAccessConditions, context))
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
-        } else {
-            return postProcessResponse(this.client.containers().changeLeaseWithRestResponseAsync(
-                null, this.leaseId, proposedId, null, null, modifiedAccessConditions, context))
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        RequestConditions modifiedAccessConditions) {
+        try {
+            return withContext(context -> changeLeaseWithResponse(proposedId, modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
         }
     }
 
-    private static <T> Mono<T> postProcessResponse(Mono<T> response) {
-        return Utility.postProcessResponse(response, (errorResponse) ->
-            errorResponse.onErrorResume(StorageErrorException.class, resume ->
-                resume.getResponse()
-                    .getBodyAsString()
-                    .switchIfEmpty(Mono.just(""))
-                    .flatMap(body -> Mono.error(new StorageException(resume, body)))
-            ));
+    Mono<Response<String>> changeLeaseWithResponse(String proposedId, RequestConditions modifiedAccessConditions,
+        Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
+        if (this.isBlob) {
+            return this.client.blobs().changeLeaseWithRestResponseAsync(null, null, this.leaseId, proposedId, null,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                modifiedAccessConditions.getIfMatch(), modifiedAccessConditions.getIfNoneMatch(), null, context)
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        } else {
+            return this.client.containers().changeLeaseWithRestResponseAsync(null, this.leaseId, proposedId, null,
+                modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
+                null, context)
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        }
     }
 
     /**

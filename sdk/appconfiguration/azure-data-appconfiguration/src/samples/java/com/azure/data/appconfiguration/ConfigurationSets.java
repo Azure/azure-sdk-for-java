@@ -51,7 +51,7 @@ public class ConfigurationSets {
 
         // Instantiate a configuration client that will be used to call the configuration service.
         ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-            .credential(new ConfigurationClientCredentials(connectionString))
+            .connectionString(connectionString)
             .buildAsyncClient();
 
         // Demonstrates two different complex objects being stored in Azure App Configuration; one used for beta and the
@@ -108,6 +108,7 @@ public class ConfigurationSets {
             .setValue(MAPPER.writeValueAsString(complexConfiguration))
             .setContentType("application/json");
 
-        return Flux.merge(client.addSetting(keyVaultSetting), client.addSetting(endpointSetting)).then();
+        return Flux.merge(client.addSetting(keyVaultSetting.getKey(), keyVaultSetting.getLabel(), keyVaultSetting.getValue()),
+            client.addSetting(endpointSetting.getKey(), endpointSetting.getLabel(), endpointSetting.getValue())).then();
     }
 }

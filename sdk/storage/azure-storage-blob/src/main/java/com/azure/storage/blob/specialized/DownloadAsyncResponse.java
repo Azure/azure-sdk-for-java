@@ -7,7 +7,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -41,9 +41,9 @@ public final class DownloadAsyncResponse {
     // The constructor is package-private because customers should not be creating their own responses.
     DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> response,
         HttpGetterInfo info, Function<HttpGetterInfo, Mono<DownloadAsyncResponse>> getter) {
-        Utility.assertNotNull("getter", getter);
-        Utility.assertNotNull("info", info);
-        Utility.assertNotNull("info.eTag", info.getETag());
+        StorageImplUtils.assertNotNull("getter", getter);
+        StorageImplUtils.assertNotNull("info", info);
+        StorageImplUtils.assertNotNull("info.eTag", info.getETag());
         this.rawResponse = response;
         this.info = info;
         this.getter = getter;

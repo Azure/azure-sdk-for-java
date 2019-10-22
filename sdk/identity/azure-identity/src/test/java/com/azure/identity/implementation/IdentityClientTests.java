@@ -3,8 +3,8 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
@@ -47,7 +47,7 @@ public class IdentityClientTests {
         // setup
         String secret = "secret";
         String accessToken = "token";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -57,7 +57,7 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
         AccessToken token = client.authenticateWithClientSecret(secret, request).block();
         Assert.assertEquals(accessToken, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class IdentityClientTests {
         // setup
         String secret = "secret";
         String accessToken = "token";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -86,7 +86,7 @@ public class IdentityClientTests {
         // setup
         String pfxPath = getClass().getResource("/keyStore.pfx").getPath();
         String accessToken = "token";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -96,7 +96,7 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
         AccessToken token = client.authenticateWithPfxCertificate(pfxPath, "StrongPass!123", request).block();
         Assert.assertEquals(accessToken, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class IdentityClientTests {
         // setup
         String pfxPath = getClass().getResource("/keyStore.pfx").getPath();
         String accessToken = "token";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -124,7 +124,7 @@ public class IdentityClientTests {
     public void testValidDeviceCodeFlow() throws Exception {
         // setup
         String accessToken = "token";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -134,12 +134,12 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
         AccessToken token = client.authenticateWithDeviceCode(request, deviceCodeChallenge -> { /* do nothing */ }).block();
         Assert.assertEquals(accessToken, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
 
     /****** mocks ******/
 
-    private void mockForClientSecret(String secret, TokenRequest request, String accessToken, OffsetDateTime expiresOn) throws Exception {
+    private void mockForClientSecret(String secret, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn) throws Exception {
         ConfidentialClientApplication application = PowerMockito.mock(ConfidentialClientApplication.class);
         when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
             ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
@@ -167,7 +167,7 @@ public class IdentityClientTests {
         });
     }
 
-    private void mockForClientCertificate(TokenRequest request, String accessToken, OffsetDateTime expiresOn) throws Exception {
+    private void mockForClientCertificate(TokenRequestContext request, String accessToken, OffsetDateTime expiresOn) throws Exception {
         ConfidentialClientApplication application = PowerMockito.mock(ConfidentialClientApplication.class);
         when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
             ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
@@ -195,7 +195,7 @@ public class IdentityClientTests {
         });
     }
 
-    private void mockForDeviceCodeFlow(TokenRequest request, String accessToken, OffsetDateTime expiresOn) throws Exception {
+    private void mockForDeviceCodeFlow(TokenRequestContext request, String accessToken, OffsetDateTime expiresOn) throws Exception {
         PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
         AtomicBoolean cached = new AtomicBoolean(false);
         when(application.acquireToken(any(DeviceCodeFlowParameters.class))).thenAnswer(invocation -> {

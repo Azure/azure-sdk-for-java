@@ -28,8 +28,8 @@ public final class HttpPipeline {
      *     will not  mutate the pipeline
      */
     HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
-        Objects.requireNonNull(httpClient);
-        Objects.requireNonNull(pipelinePolicies);
+        Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
+        Objects.requireNonNull(pipelinePolicies, "'pipelinePolicies' cannot be null.");
         this.httpClient = httpClient;
         this.pipelinePolicies = pipelinePolicies.toArray(new HttpPipelinePolicy[0]);
     }

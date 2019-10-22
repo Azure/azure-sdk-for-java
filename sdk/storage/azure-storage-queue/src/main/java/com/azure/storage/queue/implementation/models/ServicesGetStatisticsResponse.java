@@ -7,12 +7,12 @@ package com.azure.storage.queue.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.queue.models.StorageServiceStats;
+import com.azure.storage.queue.models.QueueServiceStatistics;
 
 /**
  * Contains all response data for the getStatistics operation.
  */
-public final class ServicesGetStatisticsResponse extends ResponseBase<ServiceGetStatisticsHeaders, StorageServiceStats> {
+public final class ServicesGetStatisticsResponse extends ResponseBase<ServiceGetStatisticsHeaders, QueueServiceStatistics> {
     /**
      * Creates an instance of ServicesGetStatisticsResponse.
      *
@@ -22,7 +22,7 @@ public final class ServicesGetStatisticsResponse extends ResponseBase<ServiceGet
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ServicesGetStatisticsResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, StorageServiceStats value, ServiceGetStatisticsHeaders headers) {
+    public ServicesGetStatisticsResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, QueueServiceStatistics value, ServiceGetStatisticsHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
@@ -30,7 +30,7 @@ public final class ServicesGetStatisticsResponse extends ResponseBase<ServiceGet
      * @return the deserialized response body.
      */
     @Override
-    public StorageServiceStats getValue() {
+    public QueueServiceStatistics getValue() {
         return super.getValue();
     }
 }

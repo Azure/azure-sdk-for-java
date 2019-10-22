@@ -1,0 +1,8 @@
+# This is necessary because there are java files with a hard coded version in them that need to
+# get updated when versions get updated. Once https://github.com/Azure/azure-sdk-for-java/issues/3141
+# has been fixed this file and the update logic in update_versions.py should no longer be necessary.
+
+# The file format here should be the relative path from the root of the azure-sdk-for-java
+sdk/cosmos/microsoft-azure-cosmos/src/main/java/com/azure/data/cosmos/internal/HttpConstants.java
+sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ClientConstants.java
+sdk/storage/microsoft-azure-storage-blob/src/main/java/com/microsoft/azure/storage/blob/Constants.java

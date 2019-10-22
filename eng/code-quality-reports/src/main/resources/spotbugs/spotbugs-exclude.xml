@@ -60,7 +60,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.core.util.Base64Url"/>
+    <Class name="com.azure.core.implementation.Base64Url"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -640,5 +640,21 @@
   <Match>
     <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Initial implementation of JacksonDeserializer is using an inline class in registerCustomDeserializer-->
+  <Match>
+    <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Implementation name confusing with public API name and non-public API -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.implementation.http.UrlBuilder"/>
+      <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
+      <Class name="com.azure.storage.file.implementation.models.FileDownloadHeaders"/>
+    </Or>
+    <Bug pattern="NM_CONFUSING"/>
   </Match>
 </FindBugsFilter>

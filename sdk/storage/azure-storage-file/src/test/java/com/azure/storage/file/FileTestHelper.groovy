@@ -4,14 +4,17 @@
 package com.azure.storage.file
 
 import com.azure.core.http.rest.Response
-import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.file.models.*
+import com.azure.storage.file.models.FileCorsRule
+import com.azure.storage.file.models.FileErrorCode
+import com.azure.storage.file.models.FileMetrics
+import com.azure.storage.file.models.FileRetentionPolicy
+import com.azure.storage.file.models.FileServiceProperties
+import com.azure.storage.file.models.ShareItem
+import com.azure.storage.file.models.FileStorageException
 
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.security.NoSuchAlgorithmException
-import java.time.Duration
 
 class FileTestHelper {
     private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
@@ -20,32 +23,32 @@ class FileTestHelper {
         return expectedStatusCode == response.getStatusCode()
     }
 
-    static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, StorageErrorCode errMessage) {
+    static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, FileErrorCode errMessage) {
         return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
     }
 
     static boolean assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
-        return throwable instanceof StorageException &&
-            ((StorageException) throwable).getStatusCode() == expectedStatusCode
+        return throwable instanceof FileStorageException &&
+            ((FileStorageException) throwable).getStatusCode() == expectedStatusCode
     }
 
-    static boolean assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
-        return throwable instanceof StorageException &&
-            ((StorageException) throwable).getErrorCode() == errMessage
+    static boolean assertExceptionErrorMessage(Throwable throwable, FileErrorCode errMessage) {
+        return throwable instanceof FileStorageException &&
+            ((FileStorageException) throwable).getErrorCode() == errMessage
     }
 
-    static boolean assertMetricsAreEqual(Metrics expected, Metrics actual) {
+    static boolean assertMetricsAreEqual(FileMetrics expected, FileMetrics actual) {
         if (expected == null) {
             return actual == null
         } else {
             return Objects.equals(expected.isEnabled(), actual.isEnabled()) &&
-                Objects.equals(expected.isIncludeAPIs(), actual.isIncludeAPIs()) &&
+                Objects.equals(expected.isIncludeApis(), actual.isIncludeApis()) &&
                 Objects.equals(expected.getVersion(), actual.getVersion()) &&
                 assertRetentionPoliciesAreEqual(expected.getRetentionPolicy(), actual.getRetentionPolicy())
         }
     }
 
-    static boolean assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
+    static boolean assertRetentionPoliciesAreEqual(FileRetentionPolicy expected, FileRetentionPolicy actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -54,7 +57,7 @@ class FileTestHelper {
         }
     }
 
-    static boolean assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
+    static boolean assertCorsAreEqual(List<FileCorsRule> expected, List<FileCorsRule> actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -70,7 +73,7 @@ class FileTestHelper {
         }
     }
 
-    static boolean assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
+    static boolean assertCorRulesAreEqual(FileCorsRule expected, FileCorsRule actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -78,34 +81,6 @@ class FileTestHelper {
                 Objects.equals(expected.getAllowedMethods(), actual.getAllowedMethods()) &&
                 Objects.equals(expected.getAllowedOrigins(), actual.getAllowedOrigins()) &&
                 Objects.equals(expected.getMaxAgeInSeconds(), actual.getMaxAgeInSeconds())
-        }
-    }
-
-    static boolean assertPermissionsAreEqual(SignedIdentifier expected, SignedIdentifier actual) {
-        if (expected == null) {
-            return actual == null
-        }
-        if (expected.getAccessPolicy() == null) {
-            return actual.getAccessPolicy() == null
-        }
-        return Objects.equals(expected.getId(), actual.getId()) &&
-            Objects.equals(expected.getAccessPolicy().getPermission(), actual.getAccessPolicy().getPermission()) &&
-            Objects.equals(expected.getAccessPolicy().getStart(), actual.getAccessPolicy().getStart()) &&
-            Objects.equals(expected.getAccessPolicy().getExpiry(), actual.getAccessPolicy().getExpiry())
-    }
-
-    static void sleepInRecord(Duration time) {
-        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE")
-        if ("RECORD".equalsIgnoreCase(azureTestMode)) {
-            sleep(time)
-        }
-    }
-
-    private static void sleep(Duration time) {
-        try {
-            Thread.sleep(time.toMillis())
-        } catch (InterruptedException ex) {
-            // Ignore the error
         }
     }
 
@@ -140,21 +115,6 @@ class FileTestHelper {
                 assertMetricsAreEqual(expected.getMinuteMetrics(), actual.getMinuteMetrics()) &&
                 assertCorsAreEqual(expected.getCors(), actual.getCors())
         }
-    }
-
-    static boolean assertTwoFilesAreSame(File f1, File f2) throws IOException, NoSuchAlgorithmException {
-        List<String> uploadFileString = Files.readAllLines(f1.toPath())
-        List<String> downloadFileString = Files.readAllLines(f2.toPath())
-        if (uploadFileString != null && downloadFileString != null) {
-            downloadFileString.removeAll(uploadFileString)
-        }
-        while (!downloadFileString.isEmpty()) {
-            if (!downloadFileString.get(0).trim().isEmpty()) {
-                return false
-            }
-            downloadFileString.remove(0)
-        }
-        return true
     }
 
     static String createRandomFileWithLength(int size, String folder, String fileName) {
