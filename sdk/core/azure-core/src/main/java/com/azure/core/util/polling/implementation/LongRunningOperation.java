@@ -95,13 +95,13 @@ public class LongRunningOperation<PollResultT, FinalResultT> {
      * and forward it to any future subscriptions. If there is an error from lroStartMonoWithResponseCache
      * then we don't want to cache it but just forward it to subscription that initiated the failed LRO.
      * For any future subscriptions we don't want to forward the past error instead lroStartMonoWithResponseCache
-     * should again invoked. Once a subscription succeeded with lroStartMonoWithResponseCache call then we want
+     * should again invoked. Once a subscription succeeded with lroStartMono call then we want
      * to cache it and replay it to any future subscriptions.
      *
      * The decorated Mono also handles concurrent call attempts to lroStartMonoWithResponseCache. Only one of them
      * will be able to call lroStartMonoWithResponseCache and other subscriptions will keep resubscribing until
-     * it sees a cached response or get a chance to call lroStartMonoWithResponseCache because the one originally
-     * entered the critical section got an error from lroStartMonoWithResponseCache.
+     * it sees a cached response or get a chance to call lroStartMono as the one previously
+     * entered the critical section got an error from lroStartMono.
      *
      * @param lroStartMono the Mono upon subscription initiate/start the long running operation.
      * @return
@@ -116,7 +116,7 @@ public class LongRunningOperation<PollResultT, FinalResultT> {
                     this.lroStartResponse = new PollResponse<>(PollResponse.OperationStatus.NOT_STARTED, response);
                     return this.lroStartResponse;
                 })
-                .switchIfEmpty(Mono.error(new RuntimeException("lroStartMonoWithResponseCache should produce a lastResponse.")))
+                .switchIfEmpty(Mono.error(new RuntimeException("lroStartMono should produce a Response.")))
                 .doOnError(throwable -> guardLroStartCall.compareAndSet(this, 1, 0));
             } else {
                 return Mono.empty();
