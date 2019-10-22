@@ -77,7 +77,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
                     addSpanRequestAttributes(span, context, spanName);
                 }
                 return context.addData(PARENT_SPAN_KEY, span);
-            case RECEIVE:
+            case MESSAGE:
                 spanBuilder = getSpanBuilder(spanName, context);
                 span = spanBuilder.startSpan();
                 // Add diagnostic Id and trace-headers to Context

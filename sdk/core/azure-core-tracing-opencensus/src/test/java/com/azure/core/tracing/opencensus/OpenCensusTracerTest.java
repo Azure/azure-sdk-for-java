@@ -9,7 +9,6 @@ import io.opencensus.implcore.trace.RecordEventsSpanImpl;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Link;
 import io.opencensus.trace.Span;
-import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.SpanId;
 import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
@@ -146,7 +145,7 @@ public class OpenCensusTracerTest {
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
 
         // Act
-        final Context updatedContext = openCensusTracer.start(METHOD_NAME, tracingContext, ProcessKind.RECEIVE);
+        final Context updatedContext = openCensusTracer.start(METHOD_NAME, tracingContext, ProcessKind.MESSAGE);
 
         // Assert
         // verify span created with explicit parent when no span context in the sending Context object
