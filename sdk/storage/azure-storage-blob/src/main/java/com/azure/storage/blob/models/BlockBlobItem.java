@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
@@ -10,6 +11,7 @@ import java.time.OffsetDateTime;
 /**
  * This class contains the properties about a block blob.
  */
+@Immutable
 public class BlockBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
