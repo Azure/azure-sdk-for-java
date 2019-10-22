@@ -140,7 +140,7 @@ public class OpenCensusTracerTest {
     }
 
     @Test
-    public void startSpanProcessKindReceive() {
+    public void startSpanProcessKindMessage() {
         // Arrange
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
 
@@ -150,7 +150,7 @@ public class OpenCensusTracerTest {
         // Assert
         // verify span created with explicit parent when no span context in the sending Context object
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
-        // verify no kind set on Span for receive
+        // verify no kind set on Span for message
         final RecordEventsSpanImpl recordEventsSpan =
             (RecordEventsSpanImpl) updatedContext.getData(PARENT_SPAN_KEY).get();
         Assert.assertNull(recordEventsSpan.getKind());
