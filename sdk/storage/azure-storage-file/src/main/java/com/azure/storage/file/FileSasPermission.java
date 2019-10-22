@@ -8,11 +8,15 @@ import com.azure.storage.common.implementation.Constants;
 import java.util.Locale;
 
 /**
- * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a file. Setting
- * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
- * the values are set, this should be serialized with toString and set as the permissions field on a {@link
- * FileServiceSasSignatureValues} object. It is possible to construct the permissions string without this class, but the
- * order of the permissions is particular and this class guarantees correctness.
+ * Constructs a string representing the permissions granted by a Service SAS to a file. Setting a value to true means
+ * that any SAS which uses these permissions will grant permissions for that operation. Once all the values are set,
+ * this should be serialized with {@link #toString() toString()} and set as the permissions field on
+ * {@link FileServiceSasSignatureValues#setPermissions(FileSasPermission) FileServiceSasSignatureValues}.
+ *
+ * <p>
+ * It is possible to construct the permissions string without this class, but the order of the permissions is particular
+ * and this class guarantees correctness.
+ * </p>
  */
 public final class FileSasPermission {
     private boolean readPermission;
