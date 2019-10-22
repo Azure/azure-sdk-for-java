@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 /**
  * Sample demonstrates how to create a SearchIndexClient and issue search API
  */
-public class SearchIndexClientExample {
+public class SearchOptionsExample {
 
     /**
      * sample
@@ -49,7 +49,7 @@ public class SearchIndexClientExample {
             .doOnComplete(() -> System.out.println("Completed processing"))
             .collectList().block();
 
-        Stream<PagedResponse<SearchResult>> pagedResults = searchClient.search()
+        Stream<SearchPagedResponse> pagedResults = searchClient.search()
             .byPage().toStream();
 
 
