@@ -18,7 +18,6 @@ import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.ProgressReceiver
-
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
@@ -31,6 +30,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
@@ -368,8 +368,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def blockID = getBlockID()
         bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
-
-        def ids = [ blockID ] as List
+        def ids = [blockID] as List
         def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -595,6 +594,7 @@ class BlockBlobAPITest extends APISpec {
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
        for getBlockID that will change every time test is run
      */
+
     @Requires({ liveMode() })
     @Unroll
     def "Upload from file"() {
@@ -829,6 +829,44 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         bc.getProperties().getAccessTier() == AccessTier.COOL
+    }
+
+    @Requires({ liveMode() })
+    def "Async buffered upload empty"() {
+        when:
+        def emptyUploadVerifier = StepVerifier.create(blobac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), new ParallelTransferOptions()))
+
+        then:
+        emptyUploadVerifier.assertNext({
+            assert it.getETag() != null
+        }).verifyComplete()
+
+        StepVerifier.create(blobac.download()).assertNext({
+            assert it.remaining() == 0
+        }).verifyComplete()
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Async buffered upload empty buffers"() {
+        when:
+        def uploadVerifier = StepVerifier.create(blobac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), new ParallelTransferOptions()))
+
+        then:
+        uploadVerifier.assertNext({
+            assert it.getETag() != null
+        }).verifyComplete()
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobac.download())).assertNext({
+            assert it == expectedDownload
+        }).verifyComplete()
+
+        where:
+        buffer1                                                   | buffer2                                               | buffer3                                                    || expectedDownload
+        ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap(" ".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap("world!".getBytes(StandardCharsets.UTF_8)) || "Hello world!".getBytes(StandardCharsets.UTF_8)
+        ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap(" ".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap(new byte[0])                               || "Hello ".getBytes(StandardCharsets.UTF_8)
+        ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap(new byte[0])                          | ByteBuffer.wrap("world!".getBytes(StandardCharsets.UTF_8)) || "Helloworld!".getBytes(StandardCharsets.UTF_8)
+        ByteBuffer.wrap(new byte[0])                              | ByteBuffer.wrap(" ".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap("world!".getBytes(StandardCharsets.UTF_8)) || " world!".getBytes(StandardCharsets.UTF_8)
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -1174,14 +1212,14 @@ class BlockBlobAPITest extends APISpec {
             process(*_) >> { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
                 return collectBytesInBuffer(context.getHttpRequest().getBody())
                     .map { b ->
-                    return b == defaultData
-                }
-                .flatMap { b ->
-                    if (b) {
-                        return Mono.just(mockHttpResponse)
+                        return b == defaultData
                     }
-                    return Mono.error(new IllegalArgumentException())
-                }
+                    .flatMap { b ->
+                        if (b) {
+                            return Mono.just(mockHttpResponse)
+                        }
+                        return Mono.error(new IllegalArgumentException())
+                    }
             }
         }
 
