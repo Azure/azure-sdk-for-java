@@ -81,6 +81,9 @@ public class LongRunningOperation<PollResultT, FinalResultT> {
      * @return a Flux, upon subscription starts the long running operation followed by polling.
      */
     public Flux<AsyncPollResponse<PollResultT, FinalResultT>> begin() {
+        // Get a Flux on which ONLY ONE subscription can start LRO successfully and ALL subscriptions
+        // can poll. Polling is not shared, each subscription starts it's own polling, if user need
+        // multi-casting for any reason then they should call share() on returned Flux.
         return
         this.lroStartMonoWithResponseCache
             .flatMapMany(lroStartResponse -> pollingLoop(lroStartResponse));
@@ -92,14 +95,14 @@ public class LongRunningOperation<PollResultT, FinalResultT> {
      * for any future subsequent subscriptions.
      *
      * Note: we can't use the reactor standard cache() operator, because it caches error terminal signal
-     * and forward it to any future subscriptions. If there is an error from lroStartMonoWithResponseCache
+     * and forward it to any future subscriptions. If there is an error from lroStartMono
      * then we don't want to cache it but just forward it to subscription that initiated the failed LRO.
-     * For any future subscriptions we don't want to forward the past error instead lroStartMonoWithResponseCache
-     * should again invoked. Once a subscription succeeded with lroStartMono call then we want
-     * to cache it and replay it to any future subscriptions.
+     * For any future subscriptions we don't want to forward the past error instead lroStartMono
+     * should again invoked. Once a subscription manage to get a successful event from lroStartMono call 
+     * then we want to cache it and replay it to any future subscriptions.
      *
-     * The decorated Mono also handles concurrent call attempts to lroStartMonoWithResponseCache. Only one of them
-     * will be able to call lroStartMonoWithResponseCache and other subscriptions will keep resubscribing until
+     * The decorated Mono also handles concurrent subscription to it, on such event only one of them
+     * will be able to call lroStartMono and other subscriptions will keep resubscribing until
      * it sees a cached response or get a chance to call lroStartMono as the one previously
      * entered the critical section got an error from lroStartMono.
      *
