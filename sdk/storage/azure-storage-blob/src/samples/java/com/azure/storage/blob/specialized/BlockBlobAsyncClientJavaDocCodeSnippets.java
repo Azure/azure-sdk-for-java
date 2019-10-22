@@ -90,13 +90,13 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrl(String, String, BlobRange)}
      */
-    public void stageBlockFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURL#String-String-BlobRange
+    public void stageBlockFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrl#String-String-BlobRange
         client.stageBlockFromUrl(base64BlockID, sourceUrl, new BlobRange(offset, count))
             .subscribe(
                 response -> System.out.println("Staging block completed"),
                 error -> System.out.printf("Error when calling stage Block: %s", error));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURL#String-String-BlobRange
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrl#String-String-BlobRange
     }
 
     /**
