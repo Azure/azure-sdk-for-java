@@ -22,6 +22,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
@@ -396,10 +397,10 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
      */
-    public Response<Void> downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
+    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
-        Mono<Response<Void>> download = client
+        Mono<BlobDownloadResponse> download = client
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
@@ -408,7 +409,7 @@ public class BlobClientBase {
                 } catch (IOException ex) {
                     throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
                 }
-            }).thenReturn(new SimpleResponse<>(response, null)));
+            }).thenReturn(new BlobDownloadResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }

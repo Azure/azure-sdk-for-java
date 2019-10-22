@@ -6,11 +6,12 @@ package com.azure.storage.blob.specialized
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.HttpGetterInfo
-import com.azure.storage.blob.models.ReliableDownloadOptions
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.ReliableDownloadOptions
 import spock.lang.Unroll
 
-class DownloadResponseTest extends APISpec {
+class BlobDownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
     def setup() {
@@ -43,10 +44,10 @@ class DownloadResponseTest extends APISpec {
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
 
         when:
-        DownloadAsyncResponse response = flux.getter(info).block()
+        BlobDownloadAsyncResponse response = flux.setOptions(options).getter(info).block()
 
         then:
-        FluxUtil.collectBytesInByteBufferStream(response.body(options)).block() == flux.getScenarioData().array()
+        FluxUtil.collectBytesInByteBufferStream(response.getValue()).block() == flux.getScenarioData().array()
         flux.getTryNumber() == tryNumber
 
 
@@ -65,8 +66,8 @@ class DownloadResponseTest extends APISpec {
         HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
 
         when:
-        DownloadAsyncResponse response = flux.getter(info).block()
-        response.body(options).blockFirst()
+        BlobDownloadAsyncResponse response = flux.setOptions(options).getter(info).block()
+        response.getValue().blockFirst()
 
         then:
         def e = thrown(Throwable) // Blocking subscribe will sometimes wrap the IOException in a RuntimeException.
@@ -89,11 +90,8 @@ class DownloadResponseTest extends APISpec {
 
     @Unroll
     def "Info null IA"() {
-        setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK, this)
-
         when:
-        new DownloadAsyncResponse(flux.getter(info).block().getRawResponse(), info, { HttpGetterInfo newInfo -> flux.getter(newInfo) })
+        new BlobDownloadAsyncResponse(null, null, info, null)
 
         then:
         thrown(NullPointerException)
@@ -113,13 +111,8 @@ class DownloadResponseTest extends APISpec {
     }
 
     def "Getter IA"() {
-        setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK, this)
-
         when:
-        DownloadAsyncResponse response = new DownloadAsyncResponse(flux.getter(new HttpGetterInfo()).block()
-            .getRawResponse(), new HttpGetterInfo().setETag("etag"), null)
-        response.body(null).blockFirst()
+        new BlobDownloadAsyncResponse(null, null, new HttpGetterInfo().setETag("etag"), null)
 
         then:
         thrown(NullPointerException)
@@ -136,8 +129,8 @@ class DownloadResponseTest extends APISpec {
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
 
         when:
-        DownloadAsyncResponse response = flux.getter(info).block()
-        response.body(options).blockFirst()
+        BlobDownloadAsyncResponse response = flux.setOptions(options).getter(info).block()
+        response.getValue().blockFirst()
 
         then:
         flux.getTryNumber() == 3

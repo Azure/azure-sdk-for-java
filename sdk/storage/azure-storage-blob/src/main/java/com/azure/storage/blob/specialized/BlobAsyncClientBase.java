@@ -34,6 +34,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
@@ -608,43 +609,18 @@ public class BlobAsyncClientBase {
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
      */
-    public Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(BlobRange range, ReliableDownloadOptions options,
+    public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, ReliableDownloadOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5) {
         try {
-            return withContext(context -> downloadWithResponse(range, options, accessConditions, rangeGetContentMD5,
-                context));
+            return withContext(context ->
+                downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(BlobRange range, ReliableDownloadOptions options,
+    Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, ReliableDownloadOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Context context) {
-        return download(range, accessConditions, rangeGetContentMD5, context)
-            .map(response -> new SimpleResponse<>(
-                response.getRawResponse(),
-                response.body(options).switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])))));
-    }
-
-    /**
-     * Reads a range of bytes from a blob. The response also includes the blob's properties and metadata. For more
-     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
-     * <p>
-     * Note that the response body has reliable download functionality built in, meaning that a failed download stream
-     * will be automatically retried. This behavior may be configured with {@link ReliableDownloadOptions}.
-     *
-     * @param range {@link BlobRange}
-     * @param accessConditions {@link BlobRequestConditions}
-     * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
-     * @return Emits the successful response.
-     */
-    Mono<DownloadAsyncResponse> download(BlobRange range, BlobRequestConditions accessConditions,
-        boolean rangeGetContentMD5) {
-        return withContext(context -> download(range, accessConditions, rangeGetContentMD5, context));
-    }
-
-    Mono<DownloadAsyncResponse> download(BlobRange range, BlobRequestConditions accessConditions,
-        boolean rangeGetContentMD5, Context context) {
         range = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
@@ -663,10 +639,10 @@ public class BlobAsyncClientBase {
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
                 info.setETag(response.getDeserializedHeaders().getETag());
-                return new DownloadAsyncResponse(response, info,
+                return new BlobDownloadAsyncResponse(response, options, info,
                     // In the event of a stream failure, make a new request to pick up where we left off.
                     newInfo ->
-                        this.download(new BlobRange(newInfo.getOffset(), newInfo.getCount()),
+                        this.downloadWithResponse(new BlobRange(newInfo.getOffset(), newInfo.getCount()), options,
                             new BlobRequestConditions().setIfMatch(info.getETag()), false, context));
             });
     }
@@ -769,11 +745,11 @@ public class BlobAsyncClientBase {
         return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new BlobRange(0,
             blobPropertiesResponse.getValue().getBlobSize()))).flatMapMany(rg ->
             Flux.fromIterable(sliceBlobRange(rg, blockSize)))
-            .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
+            .flatMap(chunk -> this.downloadWithResponse(chunk, options, accessConditions, rangeGetContentMD5, context)
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(dar -> {
                     Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                        dar.body(options), progressReceiver, progressLock, totalProgress);
+                        dar.getValue(), progressReceiver, progressLock, totalProgress);
 
                     return FluxUtil.writeFile(progressData, channel,
                         chunk.getOffset() - ((range == null) ? 0 : range.getOffset()));
