@@ -3,12 +3,17 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+/**
+ * Contains the customer provided key information used to encrypt a blob's content on the server.
+ */
+@Immutable
 public class CustomerProvidedKey {
     private final ClientLogger logger = new ClientLogger(CustomerProvidedKey.class);
 

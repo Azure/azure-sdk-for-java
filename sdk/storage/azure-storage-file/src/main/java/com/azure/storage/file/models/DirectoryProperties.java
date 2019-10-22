@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.FileSmbProperties;
 
 import java.time.OffsetDateTime;
@@ -11,6 +12,7 @@ import java.util.Map;
 /**
  * Contains properties information about a Directory in the storage File service.
  */
+@Immutable
 public final class DirectoryProperties {
     private final Map<String, String> metadata;
     private final String eTag;

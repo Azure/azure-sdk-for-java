@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
@@ -10,6 +11,12 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 
 import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
 import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+
+/**
+ * This class contains configuration used to parallelize data transfer operations.
+ */
+@Fluent
+public class ParallelTransferOptions {
 
 public final class ParallelTransferOptions {
 

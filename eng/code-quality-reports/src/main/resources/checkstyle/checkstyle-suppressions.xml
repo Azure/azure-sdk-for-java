@@ -156,12 +156,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.specialized.BlobInputStream.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.specialized.BlobOutputStream.java"/>
 
-  <!-- Suppress requirement that abstract builder classes require the ServiceClientBuilder annotation -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.common.BaseClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.blob.BaseBlobClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.file.BaseFileClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.queue.BaseQueueClientBuilder.java"/>
-
   <!-- Suppress external dependency Checkstyle on Netty and OkHttp HttpClient packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
@@ -202,8 +196,14 @@
   <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.identity.implementation.msalextensions.CacheLock"/>
 
-  <!--  -->
-  <suppress checks="LineLength" files=".*[/\\]storage[/\\].*(implementation|models)[/\\].*"/>
+  <!-- Suppress the check on any implementation code and codegen classes -->
+  <suppress checks="LineLength" files=".*[/\\]storage[/\\].*implementation[/\\].*"/>
+  <suppress checks="LineLength" files="com.azure.storage.blob.models.BlobErrorCode.java"/>
+  <suppress checks="LineLength" files="com.azure.storage.file.models.FileErrorCode.java"/>
+  <suppress checks="LineLength" files="com.azure.storage.queue.models.QueueErrorCode.java"/>
+
+  <!-- Suppress datalake for now as it is new development -->
+  <suppress checks="LineLength" files=".*[/\\]storage[/\\]file[/\\]datalake[/\\]models[/\\].*"/>
 
   <!-- Suppress CRUD operation names as they won't feel fluent -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseClient.java"/>

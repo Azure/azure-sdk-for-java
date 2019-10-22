@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
@@ -10,6 +11,7 @@ import java.time.OffsetDateTime;
 /**
  * This class contains the properties about an append blob.
  */
+@Immutable
 public class AppendBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
@@ -20,7 +22,7 @@ public class AppendBlobItem {
     private final Integer blobCommittedBlockCount;
 
     /**
-     * Constructs a {@link AppendBlobItem}.
+     * Constructs an {@link AppendBlobItem}.
      *
      * @param eTag ETag of the append blob.
      * @param lastModified Last modified time of the append blob.
