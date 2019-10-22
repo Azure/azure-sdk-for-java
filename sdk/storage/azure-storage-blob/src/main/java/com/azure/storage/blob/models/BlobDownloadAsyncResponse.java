@@ -3,9 +3,10 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.HttpGetterInfo;
-import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,28 +25,30 @@ import java.util.function.Function;
  * </p>
  */
 public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> {
-    private final HttpGetterInfo info;
-    private final BlobsDownloadResponse rawResponse;
-    private final Function<HttpGetterInfo, Mono<BlobDownloadAsyncResponse>> getter;
     private final ReliableDownloadOptions options;
+    private final HttpGetterInfo info;
+    private final Function<HttpGetterInfo, Mono<BlobDownloadAsyncResponse>> getter;
 
     /**
      * Constructs a {@link BlobDownloadAsyncResponse}.
      *
-     * @param response Response returned from the service.
+     * @param request Request sent to the service.
+     * @param statusCode Response status code returned by the service.
+     * @param headers Raw headers returned in the response.
+     * @param value Stream of download data being returned by the service.
+     * @param deserializedHeaders Headers deserialized into an object.
      * @param options {@link ReliableDownloadOptions} used to retry downloads is errors occur.
      * @param info {@link HttpGetterInfo} used to retry a partially failed download from a specific offset.
      * @param getter Function used to attempt to retry a partially failed download.
      */
-    public BlobDownloadAsyncResponse(BlobsDownloadResponse response, ReliableDownloadOptions options,
-        HttpGetterInfo info, Function<HttpGetterInfo, Mono<BlobDownloadAsyncResponse>> getter) {
-        super(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(),
-            response.getDeserializedHeaders());
+    public BlobDownloadAsyncResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value,
+        BlobDownloadHeaders deserializedHeaders, ReliableDownloadOptions options, HttpGetterInfo info,
+        Function<HttpGetterInfo, Mono<BlobDownloadAsyncResponse>> getter) {
+        super(request, statusCode, headers, value, deserializedHeaders);
 
         StorageImplUtils.assertNotNull("getter", getter);
         StorageImplUtils.assertNotNull("info", info);
         StorageImplUtils.assertNotNull("info.eTag", info.getETag());
-        this.rawResponse = response;
         this.info = info;
         this.getter = getter;
         this.options = (options == null) ? new ReliableDownloadOptions() : options;
@@ -59,8 +62,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         add 1 before calling into tryContinueFlux, we set the initial value to -1.
          */
         Flux<ByteBuffer> value = (options.maxRetryRequests() == 0)
-            ? rawResponse.getValue()
-            : applyReliableDownload(rawResponse.getValue(), -1, options);
+            ? super.getValue()
+            : applyReliableDownload(super.getValue(), -1, options);
 
         return value.switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
     }
@@ -82,7 +85,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
                 the raw body.
                 */
                 return getter.apply(info)
-                    .flatMapMany(response -> applyReliableDownload(rawResponse.getValue(), retryCount, options));
+                    .flatMapMany(response -> applyReliableDownload(super.getValue(), retryCount, options));
             } catch (Exception e) {
                 // If the getter fails, return the getter failure to the user.
                 return Flux.error(e);

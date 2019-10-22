@@ -639,7 +639,8 @@ public class BlobAsyncClientBase {
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
                 info.setETag(response.getDeserializedHeaders().getETag());
-                return new BlobDownloadAsyncResponse(response, options, info,
+                return new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), response.getValue(), response.getDeserializedHeaders(), options, info,
                     // In the event of a stream failure, make a new request to pick up where we left off.
                     newInfo ->
                         this.downloadWithResponse(new BlobRange(newInfo.getOffset(), newInfo.getCount()), options,

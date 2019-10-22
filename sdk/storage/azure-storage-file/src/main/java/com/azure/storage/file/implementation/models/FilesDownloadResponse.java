@@ -9,6 +9,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import java.io.Closeable;
 import java.nio.ByteBuffer;
+
+import com.azure.storage.file.models.FileDownloadHeaders;
 import reactor.core.publisher.Flux;
 
 /**

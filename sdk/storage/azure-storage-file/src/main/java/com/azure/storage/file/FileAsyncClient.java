@@ -34,6 +34,7 @@ import com.azure.storage.file.implementation.models.FilesUploadRangeFromURLRespo
 import com.azure.storage.file.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
+import com.azure.storage.file.models.FileDownloadAsyncResponse;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
@@ -527,7 +528,7 @@ public class FileAsyncClient {
      * true, as long as the range is less than or equal to 4 MB in size.
      * @return A reactive response containing response data and the file data.
      */
-    public Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5) {
+    public Mono<FileDownloadAsyncResponse> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5) {
         try {
             return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, context));
         } catch (RuntimeException ex) {
@@ -535,13 +536,14 @@ public class FileAsyncClient {
         }
     }
 
-    Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5,
+    Mono<FileDownloadAsyncResponse> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5,
         Context context) {
         String rangeString = range == null ? null : range.toString();
 
         return azureFileStorageClient.files()
             .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+            .map(response -> new FileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
 
     /**
