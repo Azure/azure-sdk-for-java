@@ -57,7 +57,8 @@ public class ConfigurationClientCredentials {
      * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the
      *     HMAC-SHA256 algorithm.
      */
-    public ConfigurationClientCredentials(String connectionString) throws InvalidKeyException, NoSuchAlgorithmException {
+    public ConfigurationClientCredentials(String connectionString)
+        throws InvalidKeyException, NoSuchAlgorithmException {
         credentials = new CredentialInformation(connectionString);
         headerProvider = new AuthorizationHeaderProvider(credentials);
     }
