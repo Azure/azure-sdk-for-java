@@ -3,9 +3,10 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.search.models.Index;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
+import com.azure.search.models.Index;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -28,7 +29,15 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createIndexReturnsCorrectDefinition() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        Index index = createTestIndex();
+        StepVerifier
+            .create(client.createIndex(index))
+            .assertNext(createdIndex -> {
+                assertIndexesEqual(index, createdIndex);
+            })
+            .verifyComplete();
     }
 
     @Override
@@ -146,12 +155,12 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index currentResource = client.upsertIndex(mutateCorsOptionsInIndex(staleResource)).block();
 
         StepVerifier
-            .create(client.deleteIndex(index.getName(), null, generateIfMatchAccessCondition(staleResource.getETag())))
+            .create(client.deleteIndex(index.getName(), generateIfMatchAccessCondition(staleResource.getETag()), null))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
             });
-        client.deleteIndex(index.getName(), null, generateIfMatchAccessCondition(currentResource.getETag())).block();
+        client.deleteIndex(index.getName(), generateIfMatchAccessCondition(currentResource.getETag()), null).block();
     }
 
     @Override
@@ -162,11 +171,11 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         client.createIndex(index).block();
 
         StepVerifier
-            .create(client.deleteIndexWithResponse(index.getName(), null, generateIfExistsAccessCondition()))
+            .create(client.deleteIndexWithResponse(index.getName(), generateIfExistsAccessCondition(), null))
             .assertNext(res -> Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), res.getStatusCode()))
             .verifyComplete();
         StepVerifier
-            .create(client.deleteIndex(index.getName(), null, generateIfExistsAccessCondition()))
+            .create(client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), null))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
@@ -188,14 +197,14 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         StepVerifier
             .create(client.deleteIndexWithResponse(index.getName(), null, null, null))
             .assertNext(indexResponse -> {
-                Assert.assertEquals(404, indexResponse.getStatusCode());
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), indexResponse.getStatusCode());
             })
             .verifyComplete();
 
         StepVerifier
             .create(client.createIndexWithResponse(index, null, null))
             .assertNext(indexResponse -> {
-                Assert.assertEquals(201, indexResponse.getStatusCode());
+                Assert.assertEquals(HttpResponseStatus.CREATED.code(), indexResponse.getStatusCode());
             })
             .verifyComplete();
 
@@ -203,21 +212,94 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         StepVerifier
             .create(client.deleteIndexWithResponse(index.getName(), null, null, null))
             .assertNext(indexResponse -> {
-                Assert.assertEquals(204, indexResponse.getStatusCode());
+                Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), indexResponse.getStatusCode());
             })
             .verifyComplete();
 
         StepVerifier
             .create(client.deleteIndexWithResponse(index.getName(), null, null, null))
             .assertNext(indexResponse -> {
-                Assert.assertEquals(404, indexResponse.getStatusCode());
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), indexResponse.getStatusCode());
             })
             .verifyComplete();
     }
 
     @Override
     public void canCreateAndDeleteIndex() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        Index index = createTestIndex();
+        client.createIndex(index).block();
+        client.deleteIndex(index.getName()).block();
+
+        StepVerifier
+            .create(client.indexExists(index.getName()))
+            .assertNext(response -> {
+                Assert.assertFalse(response);
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canCreateAndListIndexes() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
+
+        Index index1 = createTestIndex();
+        Index index2 = createTestIndex().setName("hotels2");
+
+        client.createIndex(index1).block();
+        client.createIndex(index2).block();
+
+        PagedFlux<Index> listResponse = client.listIndexes();
+
+        StepVerifier
+            .create(listResponse.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(result.get(0).getName(), index1.getName());
+                Assert.assertEquals(result.get(1).getName(), index2.getName());
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canListIndexesWithSelectedField() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
+
+        Index index1 = createTestIndex();
+        Index index2 = createTestIndex().setName("hotels2");
+
+        client.createIndex(index1).block();
+        client.createIndex(index2).block();
+
+        PagedFlux<Index> selectedFieldListResponse = client.listIndexes("name");
+
+        StepVerifier
+            .create(selectedFieldListResponse.collectList())
+            .assertNext(result -> {
+                result.forEach(res -> {
+                    Assert.assertNotNull(res.getName());
+                    Assert.assertNull(res.getFields());
+                    Assert.assertNull(res.getDefaultScoringProfile());
+                    Assert.assertNull(res.getCorsOptions());
+                    Assert.assertNull(res.getScoringProfiles());
+                    Assert.assertNull(res.getSuggesters());
+                    Assert.assertNull(res.getAnalyzers());
+                    Assert.assertNull(res.getTokenizers());
+                    Assert.assertNull(res.getTokenFilters());
+                    Assert.assertNull(res.getCharFilters());
+                });
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(selectedFieldListResponse.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(result.get(0).getName(), index1.getName());
+                Assert.assertEquals(result.get(1).getName(), index2.getName());
+            })
+            .verifyComplete();
     }
 
     @Override

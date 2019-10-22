@@ -3,6 +3,7 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.DataType;
@@ -22,13 +23,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class IndexManagementSyncTests extends IndexManagementTestBase {
     private SearchServiceClient client;
 
     @Override
     public void createIndexReturnsCorrectDefinition() {
+        client = getSearchServiceClientBuilder().buildClient();
 
+        Index index = createTestIndex();
+        Index createdIndex = client.createIndex(index);
+
+        assertIndexesEqual(index, createdIndex);
     }
 
     @Override
@@ -133,13 +140,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index currentResource = client.upsertIndex(mutateCorsOptionsInIndex(staleResource));
 
         try {
-            client.deleteIndex(index.getName(), null, generateIfMatchAccessCondition(staleResource.getETag()));
+            client.deleteIndex(index.getName(), generateIfMatchAccessCondition(staleResource.getETag()), null);
             Assert.fail("deleteIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
         }
-        client.deleteIndex(index.getName(), null, generateIfMatchAccessCondition(currentResource.getETag()));
+        client.deleteIndex(index.getName(), generateIfMatchAccessCondition(currentResource.getETag()), null);
     }
 
     @Override
@@ -149,9 +156,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index);
 
-        client.deleteIndex(index.getName(), null, generateIfExistsAccessCondition());
+        client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), null);
         try {
-            client.deleteIndex(index.getName(), null, generateIfExistsAccessCondition());
+            client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), null);
             Assert.fail("deleteIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -172,23 +179,78 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
                     .setKey(true)
             ));
         Response deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
-        Assert.assertEquals(404, deleteResponse.getStatusCode());
+        Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         Response createResponse = client.createIndexWithResponse(index, null, null);
-        Assert.assertEquals(201, createResponse.getStatusCode());
+        Assert.assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         // Delete the same index twice
         deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
-        Assert.assertEquals(204, deleteResponse.getStatusCode());
+        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
         deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
-        Assert.assertEquals(404, deleteResponse.getStatusCode());
+        Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
     @Override
     public void canCreateAndDeleteIndex() {
+        client = getSearchServiceClientBuilder().buildClient();
 
+        Index index = createTestIndex();
+        client.createIndex(index);
+        client.deleteIndex(index.getName());
+        Assert.assertFalse(client.indexExists(index.getName()));
     }
+
+    @Override
+    public void canCreateAndListIndexes() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        Index index1 = createTestIndex();
+        Index index2 = createTestIndex().setName("hotels2");
+
+        client.createIndex(index1);
+        client.createIndex(index2);
+
+        PagedIterable<Index> listResponse = client.listIndexes();
+        List<Index> result = listResponse.stream().collect(Collectors.toList());
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(result.get(0).getName(), index1.getName());
+        Assert.assertEquals(result.get(1).getName(), index2.getName());
+    }
+
+    @Override
+    public void canListIndexesWithSelectedField() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        Index index1 = createTestIndex();
+        Index index2 = createTestIndex().setName("hotels2");
+
+        client.createIndex(index1);
+        client.createIndex(index2);
+
+        PagedIterable<Index> selectedFieldListResponse = client.listIndexes("name");
+        List<Index> result = selectedFieldListResponse.stream().collect(Collectors.toList());
+
+        result.forEach(res -> {
+            Assert.assertNotNull(res.getName());
+            Assert.assertNull(res.getFields());
+            Assert.assertNull(res.getDefaultScoringProfile());
+            Assert.assertNull(res.getCorsOptions());
+            Assert.assertNull(res.getScoringProfiles());
+            Assert.assertNull(res.getSuggesters());
+            Assert.assertNull(res.getAnalyzers());
+            Assert.assertNull(res.getTokenizers());
+            Assert.assertNull(res.getTokenFilters());
+            Assert.assertNull(res.getCharFilters());
+        });
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(result.get(0).getName(), index1.getName());
+        Assert.assertEquals(result.get(1).getName(), index2.getName());
+    }
+
 
     @Override
     public void canAddSynonymFieldProperty() {

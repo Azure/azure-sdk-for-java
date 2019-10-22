@@ -40,6 +40,7 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
         super.beforeTest();
     }
 
+    @Test
     public abstract void createIndexReturnsCorrectDefinition();
 
     @Test
@@ -69,7 +70,14 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void deleteIndexIsIdempotent();
 
+    @Test
     public abstract void canCreateAndDeleteIndex();
+
+    @Test
+    public abstract void canCreateAndListIndexes();
+
+    @Test
+    public abstract void canListIndexesWithSelectedField();
 
     @Test
     public abstract void canAddSynonymFieldProperty();

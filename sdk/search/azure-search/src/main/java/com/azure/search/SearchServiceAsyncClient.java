@@ -5,11 +5,15 @@ package com.azure.search;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -20,7 +24,6 @@ import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceListResult;
 import com.azure.search.models.Index;
 import com.azure.search.models.IndexGetStatisticsResult;
-import com.azure.search.models.IndexListResult;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.IndexerListResult;
@@ -36,6 +39,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
@@ -346,7 +350,19 @@ public class SearchServiceAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search index.
-     * @param index definition of the index to create.
+     * @param index definition of the index to create
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the created Index.
+     */
+    public Mono<Index> createIndex(Index index, RequestOptions requestOptions) {
+        return this.createIndexWithResponse(index, requestOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search index.
+     * @param index definition of the index to create
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Index.
@@ -468,19 +484,61 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return all the Indexes in the Search service.
+     * Lists all indexes available for an Azure Cognitive Search service.
+     *
+     * @return a reactive response emitting the list of indexes.
      */
-    public Mono<IndexListResult> listIndexes() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<Index> listIndexes() {
+        return this.listIndexes(null, null);
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return a response containing all Indexes in the Search service.
+     * Lists all indexes available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the index definitions to retrieve.
+                     Specified as a comma-separated list of JSON property names, or '*' for all properties.
+                     The default is all properties
+     * @return a reactive response emitting the list of indexes.
      */
-    public Mono<Response<IndexListResult>> listIndexesWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<Index> listIndexes(String select) {
+        return this.listIndexes(select, null);
+    }
+
+    /**
+     * Lists all indexes available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the index definitions to retrieve.
+                     Specified as a comma-separated list of JSON property names, or '*' for all properties.
+                     The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return a reactive response emitting the list of indexes.
+     */
+    public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
+        return new PagedFlux<>(
+            () -> withContext(context -> this.listIndexesResponse(select, requestOptions, context)),
+            nextLink -> Mono.empty());
+    }
+
+    PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> this.listIndexesResponse(select, requestOptions, context),
+            nextLink -> Mono.empty());
+    }
+
+    private Mono<PagedResponse<Index>> listIndexesResponse(String select,
+                                                           RequestOptions requestOptions,
+                                                           Context context) {
+        return restClient.indexes()
+            .listWithRestResponseAsync(select, requestOptions, context)
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getIndexes(),
+                null,
+                deserializeHeaders(response.getHeaders()))
+            );
     }
 
     /**
@@ -629,11 +687,11 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndex(String indexName,
-                                  RequestOptions requestOptions,
-                                  AccessCondition accessCondition) {
+                                  AccessCondition accessCondition,
+                                  RequestOptions requestOptions) {
         return this.deleteIndexWithResponse(indexName,
-            requestOptions,
-            accessCondition)
+            accessCondition,
+            requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -647,17 +705,17 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
-                                                        RequestOptions requestOptions,
-                                                        AccessCondition accessCondition) {
+                                                        AccessCondition accessCondition,
+                                                        RequestOptions requestOptions) {
         return withContext(context -> deleteIndexWithResponse(indexName,
-            requestOptions,
             accessCondition,
+            requestOptions,
             context));
     }
 
     Mono<Response<Void>> deleteIndexWithResponse(String indexName,
-                                                 RequestOptions requestOptions,
                                                  AccessCondition accessCondition,
+                                                 RequestOptions requestOptions,
                                                  Context context) {
         return restClient
             .indexes()
@@ -872,5 +930,11 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<Response<Void>>> deleteSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    private static String deserializeHeaders(HttpHeaders headers) {
+        return headers.toMap().entrySet().stream().map((entry) ->
+                entry.getKey() + "," + entry.getValue()
+        ).collect(Collectors.joining(","));
     }
 }
