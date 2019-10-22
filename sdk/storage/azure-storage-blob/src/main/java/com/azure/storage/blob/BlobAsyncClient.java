@@ -252,7 +252,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             preserve the ordering of the buffers, but we don't really care if one is split before another.
              */
             Flux<ByteBuffer> chunkedSource = data
-                .filter(buffer -> buffer.remaining() > 0)
+                .filter(ByteBuffer::hasRemaining)
                 .flatMapSequential(buffer -> {
                     if (buffer.remaining() <= blockSize) {
                         return Flux.just(buffer);
