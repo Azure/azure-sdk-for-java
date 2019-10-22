@@ -27,7 +27,7 @@ import com.azure.search.models.AccessCondition;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.IndexerListResult;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -115,16 +115,16 @@ public final class IndexersImpl {
      * Resets the change tracking state associated with an Azure Search indexer.
      *
      * @param indexerName The name of the indexer to reset.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Void>> resetWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Void>> resetWithRestResponseAsync(String indexerName, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.reset(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -147,16 +147,16 @@ public final class IndexersImpl {
      * Runs an Azure Search indexer on-demand.
      *
      * @param indexerName The name of the indexer to run.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Void>> runWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Void>> runWithRestResponseAsync(String indexerName, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.run(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -184,18 +184,18 @@ public final class IndexersImpl {
      *
      * @param indexerName The name of the indexer to create or update.
      * @param indexer The definition of the indexer to create or update.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Indexer>> createOrUpdateWithRestResponseAsync(String indexerName, Indexer indexer, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<Indexer>> createOrUpdateWithRestResponseAsync(String indexerName, Indexer indexer, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
         final String prefer = "return=representation";
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
@@ -228,17 +228,17 @@ public final class IndexersImpl {
      * Deletes an Azure Search indexer.
      *
      * @param indexerName The name of the indexer to delete.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String indexerName, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
@@ -269,16 +269,16 @@ public final class IndexersImpl {
      * Retrieves an indexer definition from Azure Search.
      *
      * @param indexerName The name of the indexer to retrieve.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Indexer>> getWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Indexer>> getWithRestResponseAsync(String indexerName, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.get(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -301,16 +301,16 @@ public final class IndexersImpl {
      * Lists all indexers available for an Azure Search service.
      *
      * @param select Selects which top-level properties of the indexers to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexerListResult>> listWithRestResponseAsync(String select, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<IndexerListResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -333,16 +333,16 @@ public final class IndexersImpl {
      * Creates a new Azure Search indexer.
      *
      * @param indexer The definition of the indexer to create.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Indexer>> createWithRestResponseAsync(Indexer indexer, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Indexer>> createWithRestResponseAsync(Indexer indexer, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.create(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), indexer, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -365,16 +365,16 @@ public final class IndexersImpl {
      * Returns the current status and execution history of an indexer.
      *
      * @param indexerName The name of the indexer for which to retrieve status.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexerExecutionInfo>> getStatusWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<IndexerExecutionInfo>> getStatusWithRestResponseAsync(String indexerName, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.getStatus(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }

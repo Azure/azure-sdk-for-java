@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk11a785644be0.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "b4a0fe0c-2192-458f-8689-51398d636bd1",
+      "StatusCode" : "201",
+      "Date" : "Fri, 18 Oct 2019 23:22:47 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D754221649AF5E\"",
+      "elapsed-time" : "53",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "191",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk11a785644be0.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D754221649AF5E\\\"\",\"name\":\"names\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\"}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk11a785644be0.search.windows.net/synonymmaps('names')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk11a785644be0.search.windows.net/indexes?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "ea828d4a-2649-4e53-8f4b-f024e9224a95",
+      "StatusCode" : "201",
+      "Date" : "Fri, 18 Oct 2019 23:23:20 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D754222A03E8FE\"",
+      "elapsed-time" : "1519",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "747",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk11a785644be0.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D754222A03E8FE\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[\"names\"]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk11a785644be0.search.windows.net/indexes('hotels')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

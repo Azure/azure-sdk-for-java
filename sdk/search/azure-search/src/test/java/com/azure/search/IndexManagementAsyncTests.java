@@ -3,19 +3,23 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.search.models.Index;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
-import com.azure.search.models.Index;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.CorsOptions;
+import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
+
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class IndexManagementAsyncTests extends IndexManagementTestBase {
     private SearchServiceAsyncClient client;
@@ -82,22 +86,53 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void getIndexReturnsCorrectDefinition() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        Index index = createTestIndex();
+        client.createIndex(index).block();
+
+        StepVerifier
+            .create(client.getIndex(index.getName()))
+            .assertNext(res -> {
+                assertIndexesEqual(index, res);
+            })
+            .verifyComplete();
     }
 
     @Override
     public void getIndexThrowsOnNotFound() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        StepVerifier
+            .create(client.getIndex("thisindexdoesnotexist"))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage().contains("No index with the name 'thisindexdoesnotexist' was found in the service"));
+            });
     }
 
     @Override
     public void existsReturnsTrueForExistingIndex() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        Index index = createTestIndex();
+        client.createIndex(index).block();
+
+        StepVerifier
+            .create(client.indexExists(index.getName()))
+            .assertNext(res -> Assert.assertTrue(res))
+            .verifyComplete();
     }
 
     @Override
     public void existsReturnsFalseForNonExistingIndex() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        StepVerifier
+            .create(client.indexExists("invalidindex"))
+            .assertNext(res -> Assert.assertFalse(res))
+            .verifyComplete();
     }
 
     @Override
@@ -112,11 +147,80 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void deleteIndexIsIdempotent() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        Index index = new Index()
+            .setName("hotels")
+            .setFields(Collections.singletonList(
+                new Field()
+                    .setName("HotelId")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true)
+            ));
+        StepVerifier
+            .create(client.deleteIndexWithResponse(index.getName(), null, null, null))
+            .assertNext(indexResponse -> {
+                Assert.assertEquals(404, indexResponse.getStatusCode());
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createIndexWithResponse(index, null, null))
+            .assertNext(indexResponse -> {
+                Assert.assertEquals(201, indexResponse.getStatusCode());
+            })
+            .verifyComplete();
+
+        // Delete the same index twice
+        StepVerifier
+            .create(client.deleteIndexWithResponse(index.getName(), null, null, null))
+            .assertNext(indexResponse -> {
+                Assert.assertEquals(204, indexResponse.getStatusCode());
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.deleteIndexWithResponse(index.getName(), null, null, null))
+            .assertNext(indexResponse -> {
+                Assert.assertEquals(404, indexResponse.getStatusCode());
+            })
+            .verifyComplete();
     }
 
     @Override
     public void canCreateAndDeleteIndex() {
 
+    }
+
+    @Override
+    public void canAddSynonymFieldProperty() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
+
+        String synonymMapName = "names";
+        SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
+        client.createSynonymMap(synonymMap).block();
+
+        Index index = new Index()
+            .setName("hotels")
+            .setFields(Arrays.asList(
+                new Field()
+                    .setName("HotelId")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true),
+                new Field()
+                    .setName("HotelName")
+                    .setType(DataType.EDM_STRING)
+                    .setSynonymMaps(Arrays.asList(synonymMapName))
+
+            ));
+
+        StepVerifier
+            .create(client.createIndex(index))
+            .assertNext(createdIndex -> {
+                List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
+                List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
+                Assert.assertEquals(actualSynonym, expectedSynonym);
+            })
+            .verifyComplete();
     }
 }

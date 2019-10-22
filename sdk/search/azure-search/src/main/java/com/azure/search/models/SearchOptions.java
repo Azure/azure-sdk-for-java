@@ -14,7 +14,7 @@ import java.util.List;
  * Additional parameters for searchGet operation.
  */
 @Fluent
-public final class SearchParameters {
+public final class SearchOptions {
     /*
      * A value that specifies whether to fetch the total count of results.
      * Default is false. Setting this value to true may have a performance
@@ -168,9 +168,9 @@ public final class SearchParameters {
      * returned is an approximation.
      *
      * @param includeTotalResultCount the includeTotalResultCount value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setIncludeTotalResultCount(Boolean includeTotalResultCount) {
+    public SearchOptions setIncludeTotalResultCount(Boolean includeTotalResultCount) {
         this.includeTotalResultCount = includeTotalResultCount;
         return this;
     }
@@ -192,9 +192,9 @@ public final class SearchParameters {
      * followed by a comma-separated list of name:value pairs.
      *
      * @param facets the facets value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setFacets(List<String> facets) {
+    public SearchOptions setFacets(List<String> facets) {
         this.facets = facets;
         return this;
     }
@@ -214,9 +214,9 @@ public final class SearchParameters {
      * search query.
      *
      * @param filter the filter value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setFilter(String filter) {
+    public SearchOptions setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -236,9 +236,9 @@ public final class SearchParameters {
      * highlights. Only searchable fields can be used for hit highlighting.
      *
      * @param highlightFields the highlightFields value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setHighlightFields(List<String> highlightFields) {
+    public SearchOptions setHighlightFields(List<String> highlightFields) {
         this.highlightFields = highlightFields;
         return this;
     }
@@ -260,9 +260,9 @@ public final class SearchParameters {
      * &amp;lt;/em&amp;gt;.
      *
      * @param highlightPostTag the highlightPostTag value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setHighlightPostTag(String highlightPostTag) {
+    public SearchOptions setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
     }
@@ -284,9 +284,9 @@ public final class SearchParameters {
      * &amp;lt;em&amp;gt;.
      *
      * @param highlightPreTag the highlightPreTag value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setHighlightPreTag(String highlightPreTag) {
+    public SearchOptions setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
     }
@@ -312,9 +312,9 @@ public final class SearchParameters {
      * replica. The default is 100.
      *
      * @param minimumCoverage the minimumCoverage value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setMinimumCoverage(Double minimumCoverage) {
+    public SearchOptions setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
     }
@@ -346,9 +346,9 @@ public final class SearchParameters {
      * at most 32 $orderby clauses.
      *
      * @param orderBy the orderBy value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setOrderBy(List<String> orderBy) {
+    public SearchOptions setOrderBy(List<String> orderBy) {
         this.orderBy = orderBy;
         return this;
     }
@@ -370,9 +370,9 @@ public final class SearchParameters {
      * Lucene query syntax. Possible values include: 'simple', 'full'.
      *
      * @param queryType the queryType value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setQueryType(QueryType queryType) {
+    public SearchOptions setQueryType(QueryType queryType) {
         this.queryType = queryType;
         return this;
     }
@@ -398,9 +398,9 @@ public final class SearchParameters {
      * be "mylocation--122.2,44.8" (without the quotes).
      *
      * @param scoringParameters the scoringParameters value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setScoringParameters(List<String> scoringParameters) {
+    public SearchOptions setScoringParameters(List<String> scoringParameters) {
         this.scoringParameters = scoringParameters;
         return this;
     }
@@ -422,9 +422,9 @@ public final class SearchParameters {
      * results.
      *
      * @param scoringProfile the scoringProfile value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setScoringProfile(String scoringProfile) {
+    public SearchOptions setScoringProfile(String scoringProfile) {
         this.scoringProfile = scoringProfile;
         return this;
     }
@@ -450,9 +450,9 @@ public final class SearchParameters {
      * listed in this parameter.
      *
      * @param searchFields the searchFields value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setSearchFields(List<String> searchFields) {
+    public SearchOptions setSearchFields(List<String> searchFields) {
         this.searchFields = searchFields;
         return this;
     }
@@ -474,9 +474,9 @@ public final class SearchParameters {
      * match. Possible values include: 'any', 'all'.
      *
      * @param searchMode the searchMode value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setSearchMode(SearchMode searchMode) {
+    public SearchOptions setSearchMode(SearchMode searchMode) {
         this.searchMode = searchMode;
         return this;
     }
@@ -496,9 +496,9 @@ public final class SearchParameters {
      * all fields marked as retrievable in the schema are included.
      *
      * @param select the select value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setSelect(List<String> select) {
+    public SearchOptions setSelect(List<String> select) {
         this.select = select;
         return this;
     }
@@ -524,9 +524,9 @@ public final class SearchParameters {
      * instead.
      *
      * @param skip the skip value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setSkip(Integer skip) {
+    public SearchOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }
@@ -552,9 +552,9 @@ public final class SearchParameters {
      * another Search request for the next page of results.
      *
      * @param top the top value to set.
-     * @return the SearchParameters object itself.
+     * @return the SearchOptions object itself.
      */
-    public SearchParameters setTop(Integer top) {
+    public SearchOptions setTop(Integer top) {
         this.top = top;
         return this;
     }

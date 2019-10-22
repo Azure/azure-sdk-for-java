@@ -3,7 +3,7 @@
 package com.azure.search;
 
 import com.azure.search.models.GeoPoint;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
@@ -90,7 +90,7 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, indexedDoc);
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
-        Document result = client.getDocument(indexedDoc.hotelId(), selectedFields, new SearchRequestOptions());
+        Document result = client.getDocument(indexedDoc.hotelId(), selectedFields, new RequestOptions());
         Hotel actual = result.as(Hotel.class);
         Assert.assertEquals(expected, actual);
     }
@@ -128,7 +128,7 @@ public class LookupSyncTests extends LookupTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        Document actualDoc = client.getDocument("1", selectedFields, new SearchRequestOptions());
+        Document actualDoc = client.getDocument("1", selectedFields, new RequestOptions());
         Assert.assertEquals(expectedDoc, actualDoc);
     }
 
@@ -163,7 +163,7 @@ public class LookupSyncTests extends LookupTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
-        Document actualDoc = client.getDocument("1", selectedFields, new SearchRequestOptions());
+        Document actualDoc = client.getDocument("1", selectedFields, new RequestOptions());
         Assert.assertEquals(expectedDoc, actualDoc);
     }
 
@@ -264,7 +264,7 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
 
-        Document actualDoc = client.getDocument("1", selectedFields, new SearchRequestOptions());
+        Document actualDoc = client.getDocument("1", selectedFields, new RequestOptions());
         Assert.assertEquals(expectedDoc, actualDoc);
     }
 
@@ -311,7 +311,7 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        Document actualDoc = client.getDocument("1", selectedFields, new SearchRequestOptions());
+        Document actualDoc = client.getDocument("1", selectedFields, new RequestOptions());
         Assert.assertEquals(expectedDoc, actualDoc);
     }
 

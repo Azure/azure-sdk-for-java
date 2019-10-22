@@ -4,7 +4,7 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.search.common.SuggestPagedResponse;
-import com.azure.search.models.SuggestParameters;
+import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
@@ -28,9 +28,9 @@ public class SuggestAsyncTests extends SuggestTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(Collections.singletonList("HotelId"));
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -44,10 +44,10 @@ public class SuggestAsyncTests extends SuggestTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setSearchFields(new LinkedList<>(Collections.singletonList("HotelName")));
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -61,13 +61,13 @@ public class SuggestAsyncTests extends SuggestTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>")
             .setFilter("Category eq 'Luxury'")
             .setTop(1);
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -81,10 +81,10 @@ public class SuggestAsyncTests extends SuggestTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hitel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hitel", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -99,11 +99,11 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(new LinkedList<>(Collections.singletonList("HotelId")));
 
         //act
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -112,7 +112,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canSuggestWithDateTimeInStaticModel() {
+    public void canSuggestWithDateTimeInStaticModel() throws Exception {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
         Author tolkien = new Author();
@@ -129,9 +129,9 @@ public class SuggestAsyncTests extends SuggestTestBase {
         doc2.publishDate(OffsetDateTime.parse("2015-08-18T00:00:00Z"));
         uploadDocuments(client, Arrays.asList(doc1, doc2));
 
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.setSelect(Arrays.asList("ISBN", "Title", "PublishDate"));
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("War", "sg", suggestParams, null);
+        SuggestOptions suggestOptions = new SuggestOptions();
+        suggestOptions.setSelect(Arrays.asList("ISBN", "Title", "PublishDate"));
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("War", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -172,10 +172,10 @@ public class SuggestAsyncTests extends SuggestTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(Collections.singletonList("This is not a valid orderby."));
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -190,12 +190,12 @@ public class SuggestAsyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         //arrange
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(new LinkedList<>(Collections.singletonList("HotelId")))
             .setMinimumCoverage(50.0);
 
         //act
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -211,12 +211,12 @@ public class SuggestAsyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         //arrange
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.setOrderBy(Collections.singletonList("HotelId"));
-        suggestParams.setTop(3);
+        SuggestOptions suggestOptions = new SuggestOptions();
+        suggestOptions.setOrderBy(Collections.singletonList("HotelId"));
+        suggestOptions.setTop(3);
 
         //act
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -231,11 +231,11 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
             .setOrderBy(Collections.singletonList("HotelId"));
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
 
         StepVerifier.create(suggestResult.byPage())
             .assertNext(nextPage -> {
@@ -253,12 +253,12 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(Arrays.asList("Rating desc",
                 "LastRenovationDate asc",
                 "geo.distance(Location, geography'POINT(-122.0 49.0)')"));
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse>suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
 
         StepVerifier
             .create(suggestResult.byPage())

@@ -1,0 +1,89 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk283939973b01.search.windows.net/indexes('hotels')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "d491966c-ca6c-44de-bc72-83057ec54595",
+      "StatusCode" : "404",
+      "Date" : "Fri, 18 Oct 2019 16:21:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "68",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "117",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdk283939973b01'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk283939973b01.search.windows.net/indexes?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "cfb153d2-2891-4672-bd24-c9d72d11b6f9",
+      "StatusCode" : "201",
+      "Date" : "Fri, 18 Oct 2019 16:21:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D753E72F5D0BE3\"",
+      "elapsed-time" : "477",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "523",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk283939973b01.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D753E72F5D0BE3\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk283939973b01.search.windows.net/indexes('hotels')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk283939973b01.search.windows.net/indexes('hotels')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "234",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "45a1de53-352c-476a-80f1-3296c14f391e",
+      "StatusCode" : "204",
+      "Date" : "Fri, 18 Oct 2019 16:21:08 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk283939973b01.search.windows.net/indexes('hotels')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "1cbb4301-30cf-43c4-9d40-243b2be12ebb",
+      "StatusCode" : "404",
+      "Date" : "Fri, 18 Oct 2019 16:21:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "34",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "117",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdk283939973b01'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

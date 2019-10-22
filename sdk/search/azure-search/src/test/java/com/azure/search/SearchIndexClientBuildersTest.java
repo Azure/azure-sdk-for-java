@@ -23,11 +23,10 @@ public class SearchIndexClientBuildersTest {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexClient client = clientBuilder
-            .serviceName(searchServiceName)
+            .serviceEndpoint("https://" + searchServiceName + "." + dnsSuffix)
             .indexName(indexName)
             .credential(apiKeyCredentials)
             .apiVersion(apiVersion)
-            .searchDnsSuffix(dnsSuffix)
             .buildClient();
 
 
@@ -45,10 +44,9 @@ public class SearchIndexClientBuildersTest {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexClient client = clientBuilder
-            .serviceName(searchServiceName)
+            .serviceEndpoint("https://" + searchServiceName + "." + dnsSuffix)
             .indexName(indexName)
             .credential(apiKeyCredentials)
-            .searchDnsSuffix(dnsSuffix)
             .buildClient();
 
         Assert.assertNotNull(client);
@@ -64,11 +62,10 @@ public class SearchIndexClientBuildersTest {
     private SearchIndexAsyncClient buildAsyncClient(String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String apiVersion, String dnsSuffix) {
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexAsyncClient client = clientBuilder
-            .serviceName(searchServiceName)
+            .serviceEndpoint("https://" + searchServiceName + "." + dnsSuffix)
             .indexName(indexName)
             .credential(apiKeyCredentials)
             .apiVersion(apiVersion)
-            .searchDnsSuffix(dnsSuffix)
             .buildAsyncClient();
 
         Assert.assertNotNull(client);
@@ -85,10 +82,9 @@ public class SearchIndexClientBuildersTest {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexAsyncClient client = clientBuilder
-            .serviceName(searchServiceName)
+            .serviceEndpoint("https://" + searchServiceName + "." + dnsSuffix)
             .indexName(indexName)
             .credential(apiKeyCredentials)
-            .searchDnsSuffix(dnsSuffix)
             .buildAsyncClient();
 
         Assert.assertNotNull(client);
@@ -194,28 +190,15 @@ public class SearchIndexClientBuildersTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-
-    @Test
-    public void verifyNullSearchServiceNameIsInvalidAsyncTest() {
-        buildClientAndExpectException(true, "Invalid searchServiceName", null,
-                indexName, apiKeyCredentials, apiVersion, dnsSuffix);
-    }
-
-    @Test
-    public void verifyNullSearchServiceNameIsInvalidTest() {
-        buildClientAndExpectException(false, "Invalid searchServiceName", null,
-                indexName, apiKeyCredentials, apiVersion, dnsSuffix);
-    }
-
     @Test
     public void verifyEmptySearchServiceNameIsInvalidAsyncTest() {
-        buildClientAndExpectException(false, "Invalid searchServiceName", "",
+        buildClientAndExpectException(false, "Illegal endpoint URL", "",
                 indexName, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyEmptySearchServiceNameIsInvalidTest() {
-        buildClientAndExpectException(false, "Invalid searchServiceName", "",
+        buildClientAndExpectException(false, "Illegal endpoint URL", "",
             indexName, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
@@ -270,49 +253,49 @@ public class SearchIndexClientBuildersTest {
     @Test
     public void verifyNullApiVersionIsInvalidAsyncTest() {
         buildClientAndExpectException(true, "Invalid apiVersion", searchServiceName,
-                indexName, apiKeyCredentials, null, dnsSuffix);
+            indexName, apiKeyCredentials, null, dnsSuffix);
     }
 
     @Test
     public void verifyNullApiVersionIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid apiVersion", searchServiceName,
-                indexName, apiKeyCredentials, null, dnsSuffix);
+            indexName, apiKeyCredentials, null, dnsSuffix);
     }
 
     @Test
     public void verifyEmptyApiVersionIsInvalidAsyncTest() {
         buildClientAndExpectException(true, "Invalid apiVersion", searchServiceName,
-                indexName, apiKeyCredentials, "", dnsSuffix);
+            indexName, apiKeyCredentials, "", dnsSuffix);
     }
 
     @Test
     public void verifyEmptyApiVersionIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid apiVersion", searchServiceName,
-                indexName, apiKeyCredentials, "", dnsSuffix);
+            indexName, apiKeyCredentials, "", dnsSuffix);
     }
 
     @Test
     public void verifyNullDnsSuffixIsInvalidAsyncTest() {
-        buildClientAndExpectException(true, "Invalid searchDnsSuffix", searchServiceName,
-                indexName, apiKeyCredentials, apiVersion, null);
+        buildClientAndExpectException(true, "Illegal endpoint URL", searchServiceName,
+            indexName, apiKeyCredentials, apiVersion, null);
     }
 
     @Test
     public void verifyNullDnsSuffixIsInvalidTest() {
-        buildClientAndExpectException(false, "Invalid searchDnsSuffix", searchServiceName,
-                indexName, apiKeyCredentials, apiVersion, null);
+        buildClientAndExpectException(false, "Illegal endpoint URL", searchServiceName,
+            indexName, apiKeyCredentials, apiVersion, null);
     }
 
     @Test
     public void verifyEmptyDnsSuffixIsInvalidAsyncTest() {
-        buildClientAndExpectException(true, "Invalid searchDnsSuffix", searchServiceName,
-                indexName, apiKeyCredentials, apiVersion, "");
+        buildClientAndExpectException(true, "Illegal endpoint URL", searchServiceName,
+            indexName, apiKeyCredentials, apiVersion, "");
     }
 
     @Test
     public void verifyEmptyDnsSuffixIsInvalidTest() {
-        buildClientAndExpectException(false, "Invalid searchDnsSuffix", searchServiceName,
-                indexName, apiKeyCredentials, apiVersion, "");
+        buildClientAndExpectException(false, "Illegal endpoint URL", searchServiceName,
+            indexName, apiKeyCredentials, apiVersion, "");
     }
 
     /**
@@ -322,7 +305,7 @@ public class SearchIndexClientBuildersTest {
     public void verifyDefaultDnsSuffixIsCorrectTest() {
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexAsyncClient client = clientBuilder
-            .serviceName(searchServiceName)
+            .serviceEndpoint("https://" + searchServiceName + "." + dnsSuffix)
             .indexName(indexName)
             .credential(apiKeyCredentials)
             .apiVersion(apiVersion)

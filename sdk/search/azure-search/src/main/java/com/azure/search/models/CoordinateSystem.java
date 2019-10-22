@@ -19,24 +19,6 @@ public class CoordinateSystem {
     @JsonProperty
     private Map<String, String> properties;
 
-    public String type() {
-        return this.type;
-    }
-
-    public CoordinateSystem type(String type) {
-        this.type = type;
-        return this;
-    }
-
-    public Map<String, String> properties() {
-        return this.properties;
-    }
-
-    public CoordinateSystem properties(Map<String, String> properties) {
-        this.properties = properties;
-        return this;
-    }
-
     /**
      * Creates a new instance for CoordinateSystem, with default values.
      * The EPSG:4326 is the coordination system used for GeographyPoints in Azure Search.
@@ -46,7 +28,9 @@ public class CoordinateSystem {
     public static CoordinateSystem create() {
         Map<String, String> props = new HashMap<>();
         props.put("name", "EPSG:4326");
-        return new CoordinateSystem().type("name").properties(props);
+        return new CoordinateSystem()
+            .setType("name")
+            .setProperties(props);
     }
 
     /**
@@ -55,7 +39,7 @@ public class CoordinateSystem {
      *
      * @return true if valid, false if invalid
      */
-    public boolean validate() {
+    public boolean isValid() {
         return StringUtils.equals("name", type)
             && properties != null
             && properties.keySet().size() == 1
@@ -72,7 +56,7 @@ public class CoordinateSystem {
             return false;
         }
         CoordinateSystem other = (CoordinateSystem) o;
-        if (!this.validate() || !other.validate()) {
+        if (!this.isValid() || !other.isValid()) {
             return false;
         }
         return Objects.equals(type, other.type)
@@ -84,4 +68,21 @@ public class CoordinateSystem {
         return Objects.hash(type, properties);
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public CoordinateSystem setType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public CoordinateSystem setProperties(Map<String, String> properties) {
+        this.properties = properties;
+        return this;
+    }
 }

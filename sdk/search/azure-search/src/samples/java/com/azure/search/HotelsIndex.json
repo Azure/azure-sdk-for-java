@@ -10,11 +10,211 @@
             "facetable": true
         },
         {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "Description",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": false,
+            "sortable": false,
+            "facetable": false,
+            "analyzer": "en.lucene"
+        },
+        {
+            "name": "Description_fr",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": false,
+            "sortable": false,
+            "facetable": false,
+            "analyzer": "fr.lucene"
+        },
+        {
+            "name": "Category",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+        },
+        {
             "name": "Tags",
             "type": "Collection(Edm.String)",
             "searchable": true,
             "filterable": true,
             "facetable": true
+        },
+        {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+        },
+        {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+        },
+        {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+        },
+        {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+        },
+        {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+                {
+                    "name": "StreetAddress",
+                    "type": "Edm.String",
+                    "searchable": true
+                },
+                {
+                    "name": "City",
+                    "type": "Edm.String",
+                    "searchable": true,
+                    "filterable": true,
+                    "sortable": true,
+                    "facetable": true
+                },
+                {
+                    "name": "StateProvince",
+                    "type": "Edm.String",
+                    "searchable": true,
+                    "filterable": true,
+                    "sortable": true,
+                    "facetable": true
+                },
+                {
+                    "name": "PostalCode",
+                    "type": "Edm.String",
+                    "searchable": true,
+                    "filterable": true,
+                    "sortable": true,
+                    "facetable": true
+                },
+                {
+                    "name": "Country",
+                    "type": "Edm.String",
+                    "searchable": true,
+                    "filterable": true,
+                    "sortable": true,
+                    "facetable": true
+                }
+            ]
+        },
+        {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "filterable": true,
+            "sortable": true
+        },
+        {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+                {
+                    "name": "Description",
+                    "type": "Edm.String",
+                    "searchable": true,
+                    "filterable": false,
+                    "sortable": false,
+                    "facetable": false,
+                    "analyzer": "en.lucene"
+                },
+                {
+                    "name": "Description_fr",
+                    "type": "Edm.String",
+                    "searchable": true,
+                    "filterable": false,
+                    "sortable": false,
+                    "facetable": false,
+                    "analyzer": "fr.lucene"
+                },
+                {
+                    "name": "Type",
+                    "type": "Edm.String",
+                    "searchable": true,
+                    "filterable": false,
+                    "facetable": false
+                },
+                {
+                    "name": "BaseRate",
+                    "type": "Edm.Double",
+                    "filterable": true,
+                    "facetable": true
+                },
+                {
+                    "name": "BedOptions",
+                    "type": "Edm.String",
+                    "searchable": true,
+                    "filterable": true,
+                    "facetable": true
+                },
+                {
+                    "name": "SleepsCount",
+                    "type": "Edm.Int32",
+                    "filterable": true,
+                    "facetable": true
+                },
+                {
+                    "name": "SmokingAllowed",
+                    "type": "Edm.Boolean",
+                    "filterable": true,
+                    "facetable": true
+                },
+                {
+                    "name": "Tags",
+                    "type": "Collection(Edm.String)",
+                    "searchable": true,
+                    "filterable": true,
+                    "facetable": true
+                }
+            ]
+        }
+    ],
+    "suggesters": [
+        {
+            "name": "sg",
+            "sourceFields": [
+                "Description", "HotelName"
+            ]
+        }
+    ],
+    "scoringProfiles":
+    [
+        {
+            "name": "nearest",
+            "functions": [
+                {
+                    "type": "distance",
+                    "fieldName": "Location",
+                    "boost": 2.0,
+                    "distance": {
+                        "referencePointParameter": "myloc",
+                        "boostingDistance": 100.0
+                    }
+                }
+            ],
+            "functionAggregation": "sum"
         }
     ]
 }

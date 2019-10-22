@@ -54,8 +54,7 @@ public class SearchIndexDocs {
     public void initialize() throws IOException {
         if (searchIndexAsyncClient == null) {
             searchIndexAsyncClient = new SearchIndexClientBuilder()
-                .serviceName(searchServiceName)
-                .searchDnsSuffix(dnsSuffix)
+                .serviceEndpoint(searchServiceName + "." + dnsSuffix)
                 .indexName(indexName)
                 .apiVersion(apiVersion)
                 .credential(apiAdminKey)

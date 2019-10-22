@@ -24,7 +24,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
 import java.util.UUID;
@@ -107,18 +107,18 @@ public final class SynonymMapsImpl {
      *
      * @param synonymMapName The name of the synonym map to create or update.
      * @param synonymMap The definition of the synonym map to create or update.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SynonymMap>> createOrUpdateWithRestResponseAsync(String synonymMapName, SynonymMap synonymMap, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<SynonymMap>> createOrUpdateWithRestResponseAsync(String synonymMapName, SynonymMap synonymMap, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
         final String prefer = "return=representation";
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
@@ -151,17 +151,17 @@ public final class SynonymMapsImpl {
      * Deletes an Azure Search synonym map.
      *
      * @param synonymMapName The name of the synonym map to delete.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String synonymMapName, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String synonymMapName, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
@@ -192,16 +192,16 @@ public final class SynonymMapsImpl {
      * Retrieves a synonym map definition from Azure Search.
      *
      * @param synonymMapName The name of the synonym map to retrieve.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SynonymMap>> getWithRestResponseAsync(String synonymMapName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<SynonymMap>> getWithRestResponseAsync(String synonymMapName, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.get(synonymMapName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -224,16 +224,16 @@ public final class SynonymMapsImpl {
      * Lists all synonym maps available for an Azure Search service.
      *
      * @param select Selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SynonymMapListResult>> listWithRestResponseAsync(String select, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<SynonymMapListResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -256,16 +256,16 @@ public final class SynonymMapsImpl {
      * Creates a new Azure Search synonym map.
      *
      * @param synonymMap The definition of the synonym map to create.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SynonymMap>> createWithRestResponseAsync(SynonymMap synonymMap, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<SynonymMap>> createWithRestResponseAsync(SynonymMap synonymMap, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.create(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), synonymMap, this.client.getApiVersion(), clientRequestId, context);
     }

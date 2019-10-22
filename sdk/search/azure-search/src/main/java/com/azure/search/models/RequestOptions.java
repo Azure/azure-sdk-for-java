@@ -14,7 +14,7 @@ import java.util.UUID;
  * Additional parameters for a set of operations.
  */
 @Fluent
-public final class SearchRequestOptions {
+public final class RequestOptions {
     /*
      * The tracking ID sent with the request to help with debugging.
      */
@@ -36,9 +36,9 @@ public final class SearchRequestOptions {
      * to help with debugging.
      *
      * @param clientRequestId the clientRequestId value to set.
-     * @return the SearchRequestOptions object itself.
+     * @return the RequestOptions object itself.
      */
-    public SearchRequestOptions setClientRequestId(UUID clientRequestId) {
+    public RequestOptions setClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }

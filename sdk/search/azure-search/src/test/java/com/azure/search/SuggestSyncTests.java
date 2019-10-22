@@ -6,7 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
-import com.azure.search.models.SuggestParameters;
+import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
@@ -35,10 +35,10 @@ public class SuggestSyncTests extends SuggestTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(Collections.singletonList("HotelId"));
 
-        PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
+        PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestOptions, null);
 
         Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
         Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
@@ -53,13 +53,14 @@ public class SuggestSyncTests extends SuggestTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setSearchFields(Collections.singletonList("HotelName"));
 
-        PagedIterable<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
+        PagedIterable<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestOptions, null);
 
         Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
         Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
+
 
         verifyFieldsExcludesFieldsSuggest(iterator.next());
         Assert.assertFalse(iterator.hasNext());
@@ -71,16 +72,17 @@ public class SuggestSyncTests extends SuggestTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>")
             .setFilter("Category eq 'Luxury'")
             .setTop(1);
 
-        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
 
         Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
         Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
+
 
         verifyHitHighlightingSuggest(iterator.next());
         Assert.assertFalse(iterator.hasNext());
@@ -92,10 +94,10 @@ public class SuggestSyncTests extends SuggestTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
 
-        PagedIterable<SuggestResult> suggestResult = client.suggest("hitel", "sg", suggestParams, null);
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hitel", "sg", suggestOptions, null);
 
         Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
         Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
@@ -111,11 +113,11 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(Collections.singletonList("HotelId"));
 
         //act
-        PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
+        PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestOptions, null);
 
         Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
         Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
@@ -125,7 +127,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canSuggestWithDateTimeInStaticModel() {
+    public void canSuggestWithDateTimeInStaticModel() throws Exception {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getClientBuilder(BOOKS_INDEX_NAME).buildClient();
 
@@ -143,9 +145,9 @@ public class SuggestSyncTests extends SuggestTestBase {
         doc2.publishDate(OffsetDateTime.parse("2015-08-18T00:00:00Z"));
         uploadDocuments(client, Arrays.asList(doc1, doc2));
 
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.setSelect(Arrays.asList("ISBN", "Title", "PublishDate"));
-        PagedIterable<SuggestResult> suggestResult = client.suggest("War", "sg", suggestParams, null);
+        SuggestOptions suggestOptions = new SuggestOptions();
+        suggestOptions.setSelect(Arrays.asList("ISBN", "Title", "PublishDate"));
+        PagedIterable<SuggestResult> suggestResult = client.suggest("War", "sg", suggestOptions, null);
 
         Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
         Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
@@ -191,10 +193,10 @@ public class SuggestSyncTests extends SuggestTestBase {
         thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(new LinkedList<>(Collections.singletonList("This is not a valid orderby.")));
 
-        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
         suggestResult.iterableByPage().iterator().next();
     }
 
@@ -206,13 +208,13 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         //arrange
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(new LinkedList<>(Collections.singletonList("HotelId")))
             .setMinimumCoverage(50.0);
 
         //act
         PagedIterable<SuggestResult> suggestResult = client
-            .suggest("luxury", "sg", suggestParams, null);
+            .suggest("luxury", "sg", suggestOptions, null);
 
         Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
         SuggestPagedResponse suggestPagedResponse = pagesIterable.iterator().next();
@@ -228,14 +230,14 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(Collections.singletonList("HotelId"))
             .setTop(3);
 
         //act
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel",
             "sg",
-            suggestParams,
+            suggestOptions,
             null);
 
         Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
@@ -252,11 +254,11 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
             .setOrderBy(Collections.singletonList("HotelId"));
 
-        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
         PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
 
         Assert.assertNotNull(result);
@@ -272,12 +274,12 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(Arrays.asList("Rating desc",
                 "LastRenovationDate asc",
                 "geo.distance(Location, geography'POINT(-122.0 49.0)')"));
 
-        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
         PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
 
         Assert.assertNotNull(result);

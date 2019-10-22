@@ -14,7 +14,7 @@ import java.util.List;
  * Additional parameters for autocompleteGet operation.
  */
 @Fluent
-public final class AutocompleteParameters {
+public final class AutocompleteOptions {
     /*
      * Specifies the mode for Autocomplete. The default is 'oneTerm'. Use
      * 'twoTerms' to get shingles and 'oneTermWithContext' to use the current
@@ -100,9 +100,9 @@ public final class AutocompleteParameters {
      * 'oneTermWithContext'.
      *
      * @param autocompleteMode the autocompleteMode value to set.
-     * @return the AutocompleteParameters object itself.
+     * @return the AutocompleteOptions object itself.
      */
-    public AutocompleteParameters setAutocompleteMode(AutocompleteMode autocompleteMode) {
+    public AutocompleteOptions setAutocompleteMode(AutocompleteMode autocompleteMode) {
         this.autocompleteMode = autocompleteMode;
         return this;
     }
@@ -122,9 +122,9 @@ public final class AutocompleteParameters {
      * used to produce completed terms for the Autocomplete result.
      *
      * @param filter the filter value to set.
-     * @return the AutocompleteParameters object itself.
+     * @return the AutocompleteOptions object itself.
      */
-    public AutocompleteParameters setFilter(String filter) {
+    public AutocompleteOptions setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -152,9 +152,9 @@ public final class AutocompleteParameters {
      * queries are slower and consume more resources.
      *
      * @param useFuzzyMatching the useFuzzyMatching value to set.
-     * @return the AutocompleteParameters object itself.
+     * @return the AutocompleteOptions object itself.
      */
-    public AutocompleteParameters setUseFuzzyMatching(Boolean useFuzzyMatching) {
+    public AutocompleteOptions setUseFuzzyMatching(Boolean useFuzzyMatching) {
         this.useFuzzyMatching = useFuzzyMatching;
         return this;
     }
@@ -176,9 +176,9 @@ public final class AutocompleteParameters {
      * highlighting is disabled.
      *
      * @param highlightPostTag the highlightPostTag value to set.
-     * @return the AutocompleteParameters object itself.
+     * @return the AutocompleteOptions object itself.
      */
-    public AutocompleteParameters setHighlightPostTag(String highlightPostTag) {
+    public AutocompleteOptions setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
     }
@@ -200,9 +200,9 @@ public final class AutocompleteParameters {
      * highlighting is disabled.
      *
      * @param highlightPreTag the highlightPreTag value to set.
-     * @return the AutocompleteParameters object itself.
+     * @return the AutocompleteOptions object itself.
      */
-    public AutocompleteParameters setHighlightPreTag(String highlightPreTag) {
+    public AutocompleteOptions setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
     }
@@ -228,9 +228,9 @@ public final class AutocompleteParameters {
      * only one replica. The default is 80.
      *
      * @param minimumCoverage the minimumCoverage value to set.
-     * @return the AutocompleteParameters object itself.
+     * @return the AutocompleteOptions object itself.
      */
-    public AutocompleteParameters setMinimumCoverage(Double minimumCoverage) {
+    public AutocompleteOptions setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
     }
@@ -252,9 +252,9 @@ public final class AutocompleteParameters {
      * specified suggester.
      *
      * @param searchFields the searchFields value to set.
-     * @return the AutocompleteParameters object itself.
+     * @return the AutocompleteOptions object itself.
      */
-    public AutocompleteParameters setSearchFields(List<String> searchFields) {
+    public AutocompleteOptions setSearchFields(List<String> searchFields) {
         this.searchFields = searchFields;
         return this;
     }
@@ -274,9 +274,9 @@ public final class AutocompleteParameters {
      * This must be a value between 1 and 100. The default is 5.
      *
      * @param top the top value to set.
-     * @return the AutocompleteParameters object itself.
+     * @return the AutocompleteOptions object itself.
      */
-    public AutocompleteParameters setTop(Integer top) {
+    public AutocompleteOptions setTop(Integer top) {
         this.top = top;
         return this;
     }

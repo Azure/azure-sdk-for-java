@@ -1,46 +1,46 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk6376384808aa.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk1db38937e4f0.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "7f33283d-7e24-42fa-8de2-b7fee70c7a72",
+      "request-id" : "5357c638-7418-40b0-bd18-5474f58949e2",
       "StatusCode" : "200",
-      "Date" : "Mon, 07 Oct 2019 20:32:28 GMT",
+      "Date" : "Fri, 18 Oct 2019 22:15:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "350",
+      "elapsed-time" : "351",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "795",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk6376384808aa.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"4\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"5\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"6\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"7\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"8\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"9\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"10\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk1db38937e4f0.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"4\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"5\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"6\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"7\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"8\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"9\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"10\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk6376384808aa.search.windows.net/indexes('hotels')/docs/search.post.suggest?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk1db38937e4f0.search.windows.net/indexes('hotels')/docs/search.post.suggest?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6eaaf79b-933a-4f60-8c70-5e247813e261",
+      "request-id" : "a6ab0e7f-0b09-401c-87b1-cdee06ff4db7",
       "StatusCode" : "200",
-      "Date" : "Mon, 07 Oct 2019 20:32:30 GMT",
+      "Date" : "Fri, 18 Oct 2019 22:15:08 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "47",
+      "elapsed-time" : "23",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "114",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk6376384808aa.search.windows.net/indexes('hotels')/$metadata#docs(*)\",\"value\":[]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk1db38937e4f0.search.windows.net/indexes('hotels')/$metadata#docs(*)\",\"value\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

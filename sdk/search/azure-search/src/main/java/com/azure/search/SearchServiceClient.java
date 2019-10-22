@@ -6,6 +6,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeResult;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceListResult;
@@ -19,7 +20,8 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
+
 import org.apache.commons.lang3.NotImplementedException;
 
 @ServiceClient(builder = SearchServiceClientBuilder.class)
@@ -250,29 +252,86 @@ public class SearchServiceClient {
     /**
      * Creates a new Azure Cognitive Search index
      * @param index definition of the index to create
-     * @param searchRequestOptions Search Request Options
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the created Index.
      */
     public Response<Index> createIndexWithResponse(Index index,
-                                                   SearchRequestOptions searchRequestOptions,
+                                                   RequestOptions requestOptions,
                                                    Context context) {
-        return asyncClient.createIndexWithResponse(index, searchRequestOptions, context).block();
+        return asyncClient.createIndexWithResponse(index, requestOptions, context).block();
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName the name of the index to retrieve
      * @return the Index.
      */
-    public Index getIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Index getIndex(String indexName) {
+        return this.getIndexWithResponse(indexName, null, Context.NONE).getValue();
     }
+
+
     /**
-     * @throws NotImplementedException not implemented
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName the name of the index to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the Index.
+     */
+    public Index getIndex(String indexName,
+                          RequestOptions requestOptions) {
+        return this.getIndexWithResponse(indexName, requestOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName the name of the index to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the Index.
      */
-    public Response<Index> getIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Response<Index> getIndexWithResponse(String indexName,
+                                                RequestOptions requestOptions,
+                                                Context context) {
+        return asyncClient.getIndexWithResponse(indexName, requestOptions, context).block();
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName the name of the index
+     * @return true if the index exists; false otherwise.
+     */
+    public Boolean indexExists(String indexName) {
+        return indexExistsWithResponse(indexName, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName the name of the index
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return true if the index exists; false otherwise.
+     */
+    public Boolean indexExists(String indexName,
+                               RequestOptions requestOptions) {
+        return indexExistsWithResponse(indexName, requestOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName the name of the index
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the Http pipeline during the service call
+     * @return true if the index exists; false otherwise.
+     */
+    public Response<Boolean> indexExistsWithResponse(String indexName,
+                                                     RequestOptions requestOptions,
+                                                     Context context) {
+        return asyncClient.indexExistsWithResponse(indexName, requestOptions, context).block();
     }
 
     /**
@@ -324,17 +383,46 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName the name of the index to delete.
      */
-    public void deleteIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteIndex(String indexName) {
+        this.deleteIndexWithResponse(indexName, null, null, Context.NONE);
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName the name of the index to delete.
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the access condition
      */
-    public void deleteIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteIndex(String indexName,
+                            RequestOptions requestOptions,
+                            AccessCondition accessCondition) {
+        this.deleteIndexWithResponse(indexName, requestOptions, accessCondition, Context.NONE);
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName the name of the index to delete.
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the access condition
+     * @param context additional context that is passed through the Http pipeline during the service call
+     * @return a response signalling completion.
+     */
+    public Response<Void> deleteIndexWithResponse(String indexName,
+                                                  RequestOptions requestOptions,
+                                                  AccessCondition accessCondition,
+                                                  Context context) {
+        return asyncClient.deleteIndexWithResponse(indexName,
+            requestOptions,
+            accessCondition,
+            context).block();
     }
 
     /**
@@ -433,19 +521,43 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return the created SynonymMap.
+     * Creates a new Azure Cognitive Search synonym map.
+     *
+     * @param synonymMap the definition of the synonym map to create
+     * @return the created {@link SynonymMap}.
      */
-    public SynonymMap createSynonymMap() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public SynonymMap createSynonymMap(SynonymMap synonymMap) {
+        return this.createSynonymMapWithResponse(synonymMap, null, Context.NONE).getValue();
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search synonym map.
+     *
+     * @param synonymMap the definition of the synonym map to create
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the created {@link SynonymMap}.
+     */
+    public SynonymMap createSynonymMap(SynonymMap synonymMap,
+                                       RequestOptions requestOptions) {
+        return this.createSynonymMapWithResponse(synonymMap, requestOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search synonym map.
+     *
+     * @param synonymMap the definition of the synonym map to create
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created SynonymMap.
      */
-    public Response<SynonymMap> createSynonymMapWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap,
+                                                             RequestOptions requestOptions,
+                                                             Context context) {
+        return asyncClient.createSynonymMapWithResponse(synonymMap,
+                requestOptions,
+                context).block();
     }
 
     /**

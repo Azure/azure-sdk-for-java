@@ -23,7 +23,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import java.util.UUID;
@@ -104,17 +104,17 @@ public final class SkillsetsImpl {
      *
      * @param skillsetName The name of the skillset to create or update.
      * @param skillset The skillset containing one or more cognitive skills to create or update in an Azure Search service.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.createOrUpdate(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, prefer, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -137,16 +137,16 @@ public final class SkillsetsImpl {
      * Deletes a cognitive skillset in an Azure Search service.
      *
      * @param skillsetName The name of the skillset to delete.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String skillsetName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.delete(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -169,16 +169,16 @@ public final class SkillsetsImpl {
      * Retrieves a cognitive skillset in an Azure Search service.
      *
      * @param skillsetName The name of the skillset to retrieve.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> getWithRestResponseAsync(String skillsetName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Skillset>> getWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.get(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -201,16 +201,16 @@ public final class SkillsetsImpl {
      * List all cognitive skillsets in an Azure Search service.
      *
      * @param select Selects which top-level properties of the skillsets to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SkillsetListResult>> listWithRestResponseAsync(String select, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<SkillsetListResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -233,16 +233,16 @@ public final class SkillsetsImpl {
      * Creates a new cognitive skillset in an Azure Search service.
      *
      * @param skillset The skillset containing one or more cognitive skills to create in an Azure Search service.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> createWithRestResponseAsync(Skillset skillset, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Skillset>> createWithRestResponseAsync(Skillset skillset, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.create(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, this.client.getApiVersion(), clientRequestId, context);
     }
