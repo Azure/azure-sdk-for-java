@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.appconfiguration;
+package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
  * @see ConfigurationCredentialsPolicy
  * @see ConfigurationClientBuilder
  */
-class ConfigurationClientCredentials {
+public class ConfigurationClientCredentials {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientCredentials.class);
 
     private static final String HOST_HEADER = "Host";
@@ -56,7 +57,7 @@ class ConfigurationClientCredentials {
      * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the
      *     HMAC-SHA256 algorithm.
      */
-    ConfigurationClientCredentials(String connectionString) throws InvalidKeyException, NoSuchAlgorithmException {
+    public ConfigurationClientCredentials(String connectionString) throws InvalidKeyException, NoSuchAlgorithmException {
         credentials = new CredentialInformation(connectionString);
         headerProvider = new AuthorizationHeaderProvider(credentials);
     }
@@ -66,7 +67,7 @@ class ConfigurationClientCredentials {
      *
      * @return The base url of the configuration service extracted from connection string provided.
      */
-    String getBaseUri() {
+    public String getBaseUri() {
         return this.credentials.baseUri().toString();
     }
 

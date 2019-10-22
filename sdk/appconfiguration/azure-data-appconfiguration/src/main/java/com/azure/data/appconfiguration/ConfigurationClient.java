@@ -31,7 +31,6 @@ import java.time.OffsetDateTime;
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
  * @see ConfigurationClientBuilder
- * @see ConfigurationClientCredentials
  */
 @ServiceClient(builder = ConfigurationClientBuilder.class, serviceInterfaces = ConfigurationService.class)
 public final class ConfigurationClient {

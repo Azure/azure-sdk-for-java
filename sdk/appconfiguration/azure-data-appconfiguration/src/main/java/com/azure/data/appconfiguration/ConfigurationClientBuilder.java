@@ -7,6 +7,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpClient;

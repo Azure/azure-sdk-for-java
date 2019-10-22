@@ -47,7 +47,6 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
  * @see ConfigurationClientBuilder
- * @see ConfigurationClientCredentials
  */
 @ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true,
     serviceInterfaces = ConfigurationService.class)
