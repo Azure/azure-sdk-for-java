@@ -203,12 +203,13 @@ public class GatewayAddressCache implements IAddressCache {
 
                     return addresses;
                 }).onErrorResume(ex -> {
-            CosmosClientException dce = com.azure.data.cosmos.internal.Utils.as(ex, CosmosClientException.class);
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
+            CosmosClientException dce = com.azure.data.cosmos.internal.Utils.as(unwrappedException, CosmosClientException.class);
             if (dce == null) {
                 if (forceRefreshPartitionAddressesModified) {
                     this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
                 }
-                return Mono.error(ex);
+                return Mono.error(unwrappedException);
             } else {
                 if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
                         Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
@@ -217,7 +218,7 @@ public class GatewayAddressCache implements IAddressCache {
                     this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
                     return null;
                 }
-                return Mono.error(ex);
+                return Mono.error(unwrappedException);
             }
 
         });

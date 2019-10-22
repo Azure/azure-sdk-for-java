@@ -13,6 +13,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -100,7 +101,8 @@ public class RetryUtilsTest {
         testSubscriber.assertNotComplete();
         testSubscriber.assertTerminated();
         assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        if (!(testSubscriber.getEvents().get(1).get(0).getClass().equals(class1))) {
+        Throwable throwable = Exceptions.unwrap(testSubscriber.errors().get(0));
+        if (!(throwable.getClass().equals(class1))) {
             fail("Not expecting " + testSubscriber.getEvents().get(1).get(0));
         }
     }
