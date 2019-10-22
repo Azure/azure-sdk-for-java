@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
@@ -86,11 +87,11 @@ class BlockBlobAPITest extends APISpec {
         thrown(exceptionType)
 
         where:
-        getBlockId   | data                       | dataSize                    | exceptionType
-        false        | defaultInputStream | defaultDataSize     | BlobStorageException
-        true         | null                       | defaultDataSize     | NullPointerException
-        true         | defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
-        true         | defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
+        getBlockId | data               | dataSize            | exceptionType
+        false      | defaultInputStream | defaultDataSize     | BlobStorageException
+        true       | null               | defaultDataSize     | NullPointerException
+        true       | defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
+        true       | defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Stage block empty body"() {
@@ -331,7 +332,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def blockID = getBlockID()
         bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
-        def ids = [ blockID ] as List
+        def ids = [blockID] as List
 
         when:
         def response = bc.commitBlockListWithResponse(ids, null, null, null, null, null, null)
@@ -348,7 +349,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def blockID = getBlockID()
         bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
-        def ids = [ blockID ] as List
+        def ids = [blockID] as List
 
         expect:
         bc.commitBlockList(ids) != null
@@ -364,7 +365,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def blockID = getBlockID()
         bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
-        def ids = [ blockID ] as List
+        def ids = [blockID] as List
         def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -590,6 +591,7 @@ class BlockBlobAPITest extends APISpec {
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
        for getBlockID that will change every time test is run
      */
+
     @Requires({ liveMode() })
     def "Upload from file"() {
         given:
@@ -803,6 +805,29 @@ class BlockBlobAPITest extends APISpec {
         }).verifyComplete()
     }
 
+    @Unroll
+    @Requires({ liveMode() })
+    def "Async buffered upload empty buffers"() {
+        when:
+        def uploadVerifier = StepVerifier.create(blobac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), new ParallelTransferOptions()))
+
+        then:
+        uploadVerifier.assertNext({
+            assert it.getETag() != null
+        }).verifyComplete()
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobac.download())).assertNext({
+            assert it == expectedDownload
+        }).verifyComplete()
+
+        where:
+        buffer1                                                   | buffer2                                               | buffer3                                                    || expectedDownload
+        ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap(" ".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap("world!".getBytes(StandardCharsets.UTF_8)) || "Hello world!".getBytes(StandardCharsets.UTF_8)
+        ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap(" ".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap(new byte[0])                               || "Hello ".getBytes(StandardCharsets.UTF_8)
+        ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap(new byte[0])                          | ByteBuffer.wrap("world!".getBytes(StandardCharsets.UTF_8)) || "Helloworld!".getBytes(StandardCharsets.UTF_8)
+        ByteBuffer.wrap(new byte[0])                              | ByteBuffer.wrap(" ".getBytes(StandardCharsets.UTF_8)) | ByteBuffer.wrap("world!".getBytes(StandardCharsets.UTF_8)) || " world!".getBytes(StandardCharsets.UTF_8)
+    }
+
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
@@ -848,6 +873,7 @@ class BlockBlobAPITest extends APISpec {
 
     /*      Reporter for testing Progress Receiver
     *        Will count the number of reports that are triggered         */
+
     class Reporter implements ProgressReceiver {
         private final long blockSize
         private long reportingCount
@@ -886,10 +912,10 @@ class BlockBlobAPITest extends APISpec {
 
         where:
         size        | blockSize | bufferCount
-        10          | 10        |           8
-        20          | 1         |           5
-        100         | 50        |           2
-        1024 * 1024 | 1024      |         100
+        10          | 10        | 8
+        20          | 1         | 5
+        100         | 50        | 2
+        1024 * 1024 | 1024      | 100
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -1070,7 +1096,7 @@ class BlockBlobAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "UploadBufferPool lock three or more buffers"() {
         setup:
         bac.upload(defaultFlux, defaultDataSize).block()
@@ -1145,14 +1171,14 @@ class BlockBlobAPITest extends APISpec {
             process(*_) >> { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
                 return collectBytesInBuffer(context.getHttpRequest().getBody())
                     .map { b ->
-                    return b == defaultData
-                }
-                .flatMap { b ->
-                    if (b) {
-                        return Mono.just(mockHttpResponse)
+                        return b == defaultData
                     }
-                    return Mono.error(new IllegalArgumentException())
-                }
+                    .flatMap { b ->
+                        if (b) {
+                            return Mono.just(mockHttpResponse)
+                        }
+                        return Mono.error(new IllegalArgumentException())
+                    }
             }
         }
 
