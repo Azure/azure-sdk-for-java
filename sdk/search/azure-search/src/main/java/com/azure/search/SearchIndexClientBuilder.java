@@ -10,6 +10,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.common.SearchApiKeyPipelinePolicy;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +51,6 @@ public class SearchIndexClientBuilder {
      * Default Constructor
      */
     public SearchIndexClientBuilder() {
-        searchDnsSuffix = "search.windows.net";
         apiVersion = "2019-05-06";
         policies = new ArrayList<>();
         httpClient = HttpClient.createDefault();
@@ -69,11 +70,41 @@ public class SearchIndexClientBuilder {
     /**
      * Sets search service name
      *
-     * @param serviceName name of the service
+     * @param endpoint the endpoint URL to the search service
      * @return the updated SearchIndexClientBuilder object
+     * @throws IllegalArgumentException on invalid service endpoint
      */
-    public SearchIndexClientBuilder serviceName(String serviceName) {
-        this.serviceName = serviceName;
+    public SearchIndexClientBuilder serviceEndpoint(String endpoint) throws IllegalArgumentException {
+        if (StringUtils.isBlank(endpoint)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Illegal endpoint URL: endpoint cannot be blank"));
+        }
+
+        URL url;
+        try {
+            // Using the URL class to validate the given endpoint structure
+            url = new URL(endpoint);
+        } catch (MalformedURLException exc) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Illegal endpoint URL: " + exc.getMessage()));
+        }
+
+        // Now that we know that the endpoint is in a valid form, extract the host part
+        // (e.g. http://myservice.search.windows.net ==> myservice.search.windows.net) and verify its structure,
+        // we expect the service name and domain to be present.
+        String extractedHost = url.getHost();
+        if (StringUtils.isBlank(extractedHost) || extractedHost.startsWith(".") || extractedHost.endsWith(".")) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Illegal endpoint URL: invalid host"));
+        }
+
+        String[] tokens = StringUtils.split(extractedHost, ".");
+        if ((tokens.length < 3) || (StringUtils.isBlank(tokens[0]))) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Illegal endpoint URL: invalid host"));
+        }
+
+        // split the service name and dns suffix
+        this.serviceName = tokens[0];
+        int index = StringUtils.indexOf(extractedHost, ".");
+        this.searchDnsSuffix = extractedHost.substring(index + 1);
         return this;
     }
 
@@ -104,6 +135,7 @@ public class SearchIndexClientBuilder {
      * @param apiKeyCredentials api key for requests authentication
      * @throws IllegalArgumentException when the api key is empty
      * @return the updated SearchIndexClientBuilder object
+     * @throws IllegalArgumentException when the api key is empty
      */
     public SearchIndexClientBuilder credential(ApiKeyCredentials apiKeyCredentials) {
         if (apiKeyCredentials == null || StringUtils.isBlank(apiKeyCredentials.getApiKey())) {
@@ -121,17 +153,6 @@ public class SearchIndexClientBuilder {
      */
     public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
         this.policies.add(policy);
-        return this;
-    }
-
-    /**
-     * Set search service dns suffix
-     *
-     * @param searchDnsSuffix search service dns suffix
-     * @return the updated SearchIndexClientBuilder object
-     */
-    public SearchIndexClientBuilder searchDnsSuffix(String searchDnsSuffix) {
-        this.searchDnsSuffix = searchDnsSuffix;
         return this;
     }
 

@@ -6,8 +6,8 @@ package com.azure.search;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.FacetResult;
-import com.azure.search.models.SearchParameters;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.SearchOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchResult;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,11 +35,11 @@ public class SearchIndexClientExample {
         String indexName = "<indexName>";
 
         SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
-            .serviceName(searchServiceName)
-            .searchDnsSuffix(dnsSuffix)
+            .serviceEndpoint("https://" + searchServiceName + "." + dnsSuffix)
             .indexName(indexName)
             .credential(apiKeyCredentials)
             .buildAsyncClient();
+
 
         List<SearchResult> results = searchClient
             .search()
@@ -55,16 +55,16 @@ public class SearchIndexClientExample {
 
         //Accessing Count property when iterating by page
         searchClient.search("search text",
-            new SearchParameters().setIncludeTotalResultCount(true),
-            new SearchRequestOptions())
+            new SearchOptions().setIncludeTotalResultCount(true),
+            new RequestOptions())
             .byPage()
             .map( page -> ((SearchPagedResponse) page).count())
             .toStream();
 
         //Getting just the count property
         Flux<Long> count = searchClient.search("search text",
-            new SearchParameters().setIncludeTotalResultCount(true),
-            new SearchRequestOptions())
+            new SearchOptions().setIncludeTotalResultCount(true),
+            new RequestOptions())
             .byPage()
             .take(1)
             .map(page -> ((SearchPagedResponse) page).count());
@@ -72,36 +72,36 @@ public class SearchIndexClientExample {
 
         //Accessing Coverage property when iterating by page
         searchClient.search("search text",
-            new SearchParameters().setMinimumCoverage(73.5),
-            new SearchRequestOptions())
+            new SearchOptions().setMinimumCoverage(73.5),
+            new RequestOptions())
             .byPage()
             .map( page -> ((SearchPagedResponse) page).coverage())
             .toStream();
 
         //Getting just the Coverage property
         Flux<Double> coverage = searchClient.search("search text",
-            new SearchParameters().setMinimumCoverage(73.5),
-            new SearchRequestOptions())
+            new SearchOptions().setMinimumCoverage(73.5),
+            new RequestOptions())
             .byPage()
             .take(1)
             .map(page -> ((SearchPagedResponse) page).coverage());
 
         //Accessing Facets property when iterating by page
         searchClient.search("search text",
-            new SearchParameters().setFacets(Arrays.asList(
+            new SearchOptions().setFacets(Arrays.asList(
                 "Rooms/BaseRate,values:5|8|10",
                 "LastRenovationDate,values:2000-01-01T00:00:00Z")),
-            new SearchRequestOptions())
+            new RequestOptions())
             .byPage()
             .map( page -> ((SearchPagedResponse) page).facets())
             .toStream();
 
         //Getting just the Facets property
         Flux<Map<String, List<FacetResult>>>  facets = searchClient.search("search text",
-            new SearchParameters().setFacets(Arrays.asList(
+            new SearchOptions().setFacets(Arrays.asList(
                 "Rooms/BaseRate,values:5|8|10",
                 "LastRenovationDate,values:2000-01-01T00:00:00Z")),
-            new SearchRequestOptions())
+            new RequestOptions())
             .byPage()
             .take(1)
             .map(page -> ((SearchPagedResponse) page).facets());

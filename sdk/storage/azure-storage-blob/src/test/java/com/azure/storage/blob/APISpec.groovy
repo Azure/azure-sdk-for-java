@@ -25,16 +25,15 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.credential.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobContainerItem
+import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.RetentionPolicy
-import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
-import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
@@ -130,8 +129,8 @@ class APISpec extends Specification {
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
 
-    private InterceptorManager interceptorManager
-    private boolean recordLiveMode
+    InterceptorManager interceptorManager
+    boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
     def containerName
@@ -244,7 +243,6 @@ class APISpec extends Specification {
             if (recordLiveMode) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
-
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         } else {
@@ -290,19 +288,14 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        addOptionalRecording(builder)
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         if (credential != null) {
             builder.credential(credential)
         }
 
-        return builder
-    }
-
-    def addOptionalRecording(BaseClientBuilder<? extends BaseClientBuilder> builder) {
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
         return builder
     }
 
@@ -658,14 +651,14 @@ class APISpec extends Specification {
     }
 
     def enableSoftDelete() {
-        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
             .setDeleteRetentionPolicy(new RetentionPolicy().setEnabled(true).setDays(2)))
 
         sleepIfRecord(30000)
     }
 
     def disableSoftDelete() {
-        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
             .setDeleteRetentionPolicy(new RetentionPolicy().setEnabled(false)))
 
         sleepIfRecord(30000)

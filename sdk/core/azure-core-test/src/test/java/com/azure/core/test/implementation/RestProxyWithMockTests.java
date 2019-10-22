@@ -17,7 +17,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.implementation.entities.HttpBinJSON;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -35,7 +35,7 @@ import com.azure.core.implementation.http.ContentType;
 import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
-import com.azure.core.util.Base64Url;
+import com.azure.core.implementation.Base64Url;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.nio.charset.StandardCharsets;
@@ -457,14 +457,14 @@ public class RestProxyWithMockTests extends RestProxyTests {
         private List<KeyValue> items;
 
         @JsonProperty("nextLink")
-        private String nextLink;
+        private String continuationToken;
 
         KeyValuePage() {
         }
 
-        KeyValuePage(List<KeyValue> items, String nextLink) {
+        KeyValuePage(List<KeyValue> items, String continuationToken) {
             this.items = items;
-            this.nextLink = nextLink;
+            this.continuationToken = continuationToken;
         }
 
         @Override
@@ -473,18 +473,18 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public String getNextLink() {
-            return nextLink;
+        public String getContinuationToken() {
+            return continuationToken;
         }
     }
 
     static class ConformingPage<T> implements Page<T> {
         private List<T> items;
-        private String nextLink;
+        private String continuationToken;
 
-        ConformingPage(List<T> items, String nextLink) {
+        ConformingPage(List<T> items, String continuationToken) {
             this.items = items;
-            this.nextLink = nextLink;
+            this.continuationToken = continuationToken;
         }
 
         @Override
@@ -493,8 +493,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public String getNextLink() {
-            return nextLink;
+        public String getContinuationToken() {
+            return continuationToken;
         }
     }
 
@@ -504,11 +504,11 @@ public class RestProxyWithMockTests extends RestProxyTests {
      */
     static class NonComformingPage<T> {
         private List<T> badItems;
-        private String nextLink;
+        private String continuationToken;
 
-        NonComformingPage(List<T> items, String nextLink) {
+        NonComformingPage(List<T> items, String continuationToken) {
             this.badItems = items;
-            this.nextLink = nextLink;
+            this.continuationToken = continuationToken;
         }
 
         @JsonGetter()
@@ -516,8 +516,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
             return badItems;
         }
 
-        public String nextLink() {
-            return nextLink;
+        public String getContinuationToken() {
+            return continuationToken;
         }
     }
 
@@ -579,7 +579,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         StepVerifier.create(createService(Service2.class).getPageAsync(page))
             .assertNext(r -> {
-                assertEquals(page.nextLink, r.getNextLink());
+                assertEquals(page.continuationToken, r.getContinuationToken());
 
                 assertEquals(r.getItems().size(), 3);
                 for (KeyValue keyValue : r.getValue()) {
@@ -610,7 +610,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         StepVerifier.create(createService(Service2.class).getPageAsyncSerializes(page))
             .assertNext(response -> {
-                assertEquals(page.nextLink(), response.getNextLink());
+                assertEquals(page.getContinuationToken(), response.getContinuationToken());
                 assertNull(response.getItems());
             })
             .verifyComplete();

@@ -9,7 +9,7 @@ import com.azure.search.models.GeoPoint;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexingResult;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
 import com.azure.search.test.environment.models.Hotel;
@@ -286,7 +286,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             ));
 
         if (!interceptorManager.isPlaybackMode()) {
-            getSearchServiceClient().indexes().createWithRestResponseAsync(indexWithReservedName, Context.NONE);
+            getSearchServiceClient().indexes().createWithRestResponseAsync(indexWithReservedName, Context.NONE).block();
         }
 
         client = getClientBuilder(indexName).buildClient();
@@ -840,7 +840,7 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         Response<Document> documentResponse = client.getDocumentWithResponse("3",
             null,
-            new SearchRequestOptions(),
+            new RequestOptions(),
             context);
         Assert.assertEquals(200, documentResponse.getStatusCode());
         Document doc = documentResponse.getValue();

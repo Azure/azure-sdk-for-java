@@ -56,8 +56,8 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         client = getClientBuilder(INDEX_NAME_HOTELS).buildClient();
 
         uploadDocuments();
-        SearchParameters searchParameters = new SearchParameters().setFilter("HotelId eq '1'");
-        PagedIterable<SearchResult> results = client.search("Location", searchParameters, new SearchRequestOptions());
+        SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
+        PagedIterable<SearchResult> results = client.search("Location", searchOptions, new RequestOptions());
         Assert.assertNotNull(results);
 
         GeoPoint geoPointObj = (GeoPoint) getSearchResults(results).get(0).get("Location");

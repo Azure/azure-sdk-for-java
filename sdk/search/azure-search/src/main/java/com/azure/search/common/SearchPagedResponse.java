@@ -30,7 +30,11 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),
             documentSearchResponse.getValue().getResults(),
-            documentSearchResponse.getValue().getNextLink(),
+            documentSearchResponse.getValue().getNextLink() == null
+                || documentSearchResponse.getValue().getNextLink().isEmpty()
+                || documentSearchResponse.getValue().getNextPageParameters() == null
+                || documentSearchResponse.getValue().getNextPageParameters().getSkip() == null
+                ? null : String.valueOf(documentSearchResponse.getValue().getNextPageParameters().getSkip()),
             deserializeHeaders(documentSearchResponse.getHeaders()));
 
         this.facets = documentSearchResponse.getValue().getFacets();

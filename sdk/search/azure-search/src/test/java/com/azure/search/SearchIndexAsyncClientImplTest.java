@@ -4,10 +4,14 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.common.jsonwrapper.JsonWrapper;
 import com.azure.search.common.jsonwrapper.api.JsonApi;
 import com.azure.search.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.models.GeoPoint;
+import com.azure.search.models.SearchOptions;
+import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SearchResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,7 +21,11 @@ import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -147,5 +155,143 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
                     ((HttpResponseException) error).getResponse().getStatusCode());
                 assertTrue(error.getMessage().contains(ERROR_MESSAGE_INVALID_FIELDS_REQUEST));
             });
+    }
+
+    @Test
+    public void canGetPaginatedDocuments() throws Exception {
+        List<Document> docs = new LinkedList<>();
+
+        for (int i = 1; i <= 200; i++) {
+            Document doc = new Document();
+            doc.put("HotelId", String.valueOf(i));
+            doc.put("HotelName", "Hotel " + i);
+            docs.add(doc);
+        }
+
+        asyncClient.uploadDocuments(docs).block();
+        waitForIndexing();
+
+        AtomicBoolean failed = new AtomicBoolean(false);
+
+        Runnable runnable1 = () -> {
+            try {
+                processResult(asyncClient.search(), 200);
+            } catch (Exception ex) {
+                System.out.println("An exception occurred: " + ex.getMessage());
+                failed.set(true);
+            }
+        };
+
+        Runnable runnable2 = () -> {
+            try {
+                processResult(asyncClient.search(), 200);
+            } catch (Exception ex) {
+                System.out.println("An exception occurred: " + ex.getMessage());
+                failed.set(true);
+            }
+        };
+
+
+        Runnable runnable3 = () -> {
+            try {
+                processResult(asyncClient.search(), 200);
+            } catch (Exception ex) {
+                System.out.println("An exception occurred: " + ex.getMessage());
+                failed.set(true);
+            }
+        };
+
+        Thread thread1 = new Thread(runnable1);
+        thread1.start();
+        thread1.join();
+
+        Thread thread2 = new Thread(runnable2);
+        thread2.start();
+        thread2.join();
+
+        Thread thread3 = new Thread(runnable3);
+        thread3.start();
+        thread3.join();
+
+        if (failed.get()) {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void canGetPaginatedDocumentsWithSearchOptions() throws Exception {
+        List<Document> docs = new LinkedList<>();
+
+        for (int i = 1; i <= 200; i++) {
+            Document doc = new Document();
+            doc.put("HotelId", String.valueOf(i));
+            doc.put("HotelName", "Hotel " + i);
+            docs.add(doc);
+        }
+
+        asyncClient.uploadDocuments(docs).block();
+        waitForIndexing();
+
+        AtomicBoolean failed = new AtomicBoolean(false);
+
+        Runnable searchWithNoSkip = () -> {
+            try {
+                SearchOptions sp = new SearchOptions();
+                processResult(asyncClient.search("*", sp, new RequestOptions()), 200);
+            } catch (Exception ex) {
+                System.out.println("An exception occurred in searchWithNoSkip: " + ex.getMessage());
+                failed.set(true);
+            }
+        };
+
+        Runnable searchWithSkip10 = () -> {
+            try {
+                SearchOptions sp = new SearchOptions().setSkip(10);
+                processResult(asyncClient.search("*", sp, new RequestOptions()), 190);
+            } catch (Exception ex) {
+                System.out.println("An exception occurred in searchWithSkip10: " + ex.getMessage());
+                failed.set(true);
+            }
+        };
+
+
+        Runnable searchWithSkip30 = () -> {
+            try {
+                SearchOptions sp = new SearchOptions().setSkip(30);
+                processResult(asyncClient.search("*", sp, new RequestOptions()), 170);
+            } catch (Exception ex) {
+                System.out.println("An exception occurred in searchWithSkip30: " + ex.getMessage());
+                failed.set(true);
+            }
+        };
+
+        Thread noSkipThread = new Thread(searchWithNoSkip);
+        noSkipThread.start();
+        noSkipThread.join();
+
+        Thread threadWithSkip10 = new Thread(searchWithSkip10);
+        threadWithSkip10.start();
+        threadWithSkip10.join();
+
+        Thread threadWithSkip30 = new Thread(searchWithSkip30);
+        threadWithSkip30.start();
+        threadWithSkip30.join();
+
+        if (failed.get()) {
+            Assert.fail();
+        }
+    }
+
+    private void processResult(PagedFlux<SearchResult> result, Integer expectedCount) throws Exception {
+        if (result == null) {
+            throw new Exception("Result is null");
+        }
+
+        AtomicInteger actualCount = new AtomicInteger(0);
+        result.toIterable().forEach(e -> actualCount.getAndIncrement());
+
+        if (expectedCount != actualCount.get()) {
+            throw new Exception(String.format("Expected %d documents, got %d documents", expectedCount, actualCount.get()));
+        }
     }
 }

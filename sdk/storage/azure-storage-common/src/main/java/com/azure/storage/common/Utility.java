@@ -299,8 +299,8 @@ public final class Utility {
      */
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT,
-                Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max)));
         }
     }
 

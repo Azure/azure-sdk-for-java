@@ -5,7 +5,7 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.search.models.SuggestParameters;
+import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 
 import java.util.Iterator;
@@ -21,14 +21,14 @@ public class SearchSuggestionExample {
     }
 
     private static void SearchSuggestionHighlight(SearchIndexClient searchClient) {
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>")
             .setFilter("Category eq 'Luxury'")
             .setTop(1);
 
         PagedIterable<SuggestResult> suggestResult =
-            searchClient.suggest("hotel", "sg", suggestParams, null);
+            searchClient.suggest("hotel", "sg", suggestOptions, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
 
         List<SuggestResult> response = iterator.next().getValue();
@@ -44,11 +44,11 @@ public class SearchSuggestionExample {
     }
 
     private static void SearchSuggestionFuzzy(SearchIndexClient searchClient) {
-        SuggestParameters suggestParams = new SuggestParameters()
+        SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
 
         PagedIterable<SuggestResult> suggestResult =
-            searchClient.suggest("hitel", "sg", suggestParams, null);
+            searchClient.suggest("hitel", "sg", suggestOptions, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
 
         List<SuggestResult> response = iterator.next().getValue();
@@ -72,8 +72,7 @@ public class SearchSuggestionExample {
         String indexName = "hotels";
 
         return new SearchIndexClientBuilder()
-            .serviceName(searchServiceName)
-            .searchDnsSuffix(dnsSuffix)
+            .serviceEndpoint(searchServiceName + "." + dnsSuffix)
             .indexName(indexName)
             .credential(apiKeyCredentials)
             .buildClient();

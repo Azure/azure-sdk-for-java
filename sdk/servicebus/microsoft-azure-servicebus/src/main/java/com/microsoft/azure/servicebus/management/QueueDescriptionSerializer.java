@@ -35,9 +35,9 @@ import java.util.List;
 class QueueDescriptionSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(QueueDescriptionSerializer.class);
     static String serialize(QueueDescription queueDescription) throws ServiceBusException {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = null;
         try {
+            DocumentBuilderFactory dbFactory = SerializerUtil.getDocumentBuilderFactory();
             dBuilder = dbFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             throw new ServiceBusException(false, e);
@@ -146,8 +146,8 @@ class QueueDescriptionSerializer {
 
     static List<QueueDescription> parseCollectionFromContent(String xml) {
         ArrayList<QueueDescription> queueList = new ArrayList<>();
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
@@ -173,8 +173,8 @@ class QueueDescriptionSerializer {
     }
 
     static QueueDescription parseFromContent(String xml) throws MessagingEntityNotFoundException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();

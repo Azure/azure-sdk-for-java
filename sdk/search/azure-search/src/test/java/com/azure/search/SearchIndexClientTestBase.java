@@ -81,8 +81,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
     protected SearchIndexClientBuilder getClientBuilder(String indexName) {
         if (!interceptorManager.isPlaybackMode()) {
             return new SearchIndexClientBuilder()
-                .serviceName(searchServiceName)
-                .searchDnsSuffix("search.windows.net")
+                .serviceEndpoint("https://" + searchServiceName + ".search.windows.net")
                 .indexName(indexName)
                 .apiVersion("2019-05-06")
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
@@ -93,8 +92,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
                     new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
         } else {
             return new SearchIndexClientBuilder()
-                .serviceName("searchServiceName")
-                .searchDnsSuffix("search.windows.net")
+                .serviceEndpoint("https://" + searchServiceName + ".search.windows.net")
                 .indexName(indexName)
                 .apiVersion("2019-05-06")
                 .httpClient(interceptorManager.getPlaybackClient());
@@ -105,7 +103,11 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         if (!interceptorManager.isPlaybackMode()) {
             try {
                 //Creating Index:
-                searchServiceHotelsIndex = new SearchIndexService(HOTELS_TESTS_INDEX_DATA_JSON, searchServiceName, apiKeyCredentials.getApiKey());
+                searchServiceHotelsIndex = new SearchIndexService(
+                    HOTELS_TESTS_INDEX_DATA_JSON,
+                    searchServiceName,
+                    searchDnsSuffix,
+                    apiKeyCredentials.getApiKey());
                 searchServiceHotelsIndex.initialize();
 
             } catch (Exception e) {
@@ -118,7 +120,10 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
-                jsonFile, searchServiceName, apiKeyCredentials.getApiKey());
+                jsonFile,
+                searchServiceName,
+                searchDnsSuffix,
+                apiKeyCredentials.getApiKey());
             try {
                 searchIndexService.initialize();
             } catch (IOException e) {

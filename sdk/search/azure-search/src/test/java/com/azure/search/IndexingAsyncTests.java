@@ -9,7 +9,7 @@ import com.azure.search.models.GeoPoint;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.IndexingResult;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelRoom;
@@ -952,7 +952,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         waitForIndexing();
 
         Mono<Response<Document>> documentResponse = client.getDocumentWithResponse("3", null,
-            new SearchRequestOptions());
+            new RequestOptions());
         StepVerifier.create(documentResponse)
             .assertNext(res -> {
                 Assert.assertEquals(200, res.getStatusCode());

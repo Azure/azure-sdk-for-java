@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceListResult;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -107,18 +107,18 @@ public final class DataSourcesImpl {
      *
      * @param dataSourceName The name of the datasource to create or update.
      * @param dataSource The definition of the datasource to create or update.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DataSource>> createOrUpdateWithRestResponseAsync(String dataSourceName, DataSource dataSource, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<DataSource>> createOrUpdateWithRestResponseAsync(String dataSourceName, DataSource dataSource, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
         final String prefer = "return=representation";
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
@@ -151,17 +151,17 @@ public final class DataSourcesImpl {
      * Deletes an Azure Search datasource.
      *
      * @param dataSourceName The name of the datasource to delete.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String dataSourceName, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String dataSourceName, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
@@ -192,16 +192,16 @@ public final class DataSourcesImpl {
      * Retrieves a datasource definition from Azure Search.
      *
      * @param dataSourceName The name of the datasource to retrieve.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DataSource>> getWithRestResponseAsync(String dataSourceName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<DataSource>> getWithRestResponseAsync(String dataSourceName, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.get(dataSourceName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -224,16 +224,16 @@ public final class DataSourcesImpl {
      * Lists all datasources available for an Azure Search service.
      *
      * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DataSourceListResult>> listWithRestResponseAsync(String select, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<DataSourceListResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -256,16 +256,16 @@ public final class DataSourcesImpl {
      * Creates a new Azure Search datasource.
      *
      * @param dataSource The definition of the datasource to create.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DataSource>> createWithRestResponseAsync(DataSource dataSource, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<DataSource>> createWithRestResponseAsync(DataSource dataSource, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.create(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), dataSource, this.client.getApiVersion(), clientRequestId, context);
     }

@@ -23,29 +23,33 @@ import java.util.stream.Stream;
  *
  * {@codesnippet com.azure.core.http.rest.pagedIterable.iterableByPage.while}
  *
- * @param  <T> The type of value contained in this {@link IterableStream}.
+ * @param <T> The type of value contained in this {@link IterableStream}.
  * @see PagedResponse
  * @see IterableStream
  */
 public class PagedIterable<T> extends IterableStream<T> {
-    private final PagedFlux<T> pagedFlux;
+    private final PagedFluxBase<T, ? extends PagedResponse<T>> pagedFluxBase;
 
     /**
-     * Creates instance given {@link PagedFlux}.
-     * @param pagedFlux to use as iterable
+     * Creates instance given {@link PagedFluxBase}.
+     * @param pagedFluxBase to use as iterable
+     * @param <P> The response extending from {@link PagedResponse}
      */
-    public PagedIterable(PagedFlux<T> pagedFlux) {
-        super(pagedFlux);
-        this.pagedFlux = pagedFlux;
+    public <P extends PagedResponse<T>> PagedIterable(PagedFluxBase<T, P> pagedFluxBase) {
+        super(pagedFluxBase);
+        this.pagedFluxBase = pagedFluxBase;
     }
 
     /**
      * Retrieve the {@link Stream}, one page at a time.
      * It will provide same {@link Stream} of T values from starting if called multiple times.
-     * @return {@link Stream} of {@link PagedResponse}
+     *
+     * @param <P> The response extending from {@link PagedResponse}
+     * @return {@link Stream} of a Response that extends {@link PagedResponse}
      */
-    public Stream<PagedResponse<T>> streamByPage() {
-        return pagedFlux.byPage().toStream();
+    @SuppressWarnings("unchecked")
+    public <P extends PagedResponse<T>> Stream<P> streamByPage() {
+        return (Stream<P>) pagedFluxBase.byPage().toStream();
     }
 
     /**
@@ -53,20 +57,25 @@ public class PagedIterable<T> extends IterableStream<T> {
      * continuation token. To start from first page, use {@link #streamByPage()} instead.
      *
      * @param continuationToken The continuation token used to fetch the next page
-     *
-     * @return {@link Stream} of {@link PagedResponse}, starting from the page associated with the continuation token
+     * @param <P> The response extending from {@link PagedResponse}
+     * @return {@link Stream} of a Response that extends {@link PagedResponse}, starting from the page associated
+     * with the continuation token
      */
-    public Stream<PagedResponse<T>> streamByPage(String continuationToken) {
-        return pagedFlux.byPage(continuationToken).toStream();
+    @SuppressWarnings("unchecked")
+    public <P extends PagedResponse<T>> Stream<P> streamByPage(String continuationToken) {
+        return (Stream<P>) pagedFluxBase.byPage(continuationToken).toStream();
     }
 
     /**
-     * Provides {@link Iterable} API for {@link PagedResponse}
+     * Provides {@link Iterable} API for{ @link PagedResponse}
      * It will provide same collection of {@code T} values from starting if called multiple times.
+     *
+     * @param <P> The response extending from {@link PagedResponse}
      * @return {@link Iterable} interface
      */
-    public Iterable<PagedResponse<T>> iterableByPage() {
-        return pagedFlux.byPage().toIterable();
+    @SuppressWarnings("unchecked")
+    public <P extends  PagedResponse<T>> Iterable<P> iterableByPage() {
+        return (Iterable<P>) pagedFluxBase.byPage().toIterable();
     }
 
     /**
@@ -75,10 +84,11 @@ public class PagedIterable<T> extends IterableStream<T> {
      * It will provide same collection of T values from starting if called multiple times.
      *
      * @param continuationToken The continuation token used to fetch the next page
-     *
+     * @param <P> The response extending from {@link PagedResponse}
      * @return {@link Iterable} interface
      */
-    public Iterable<PagedResponse<T>> iterableByPage(String continuationToken) {
-        return pagedFlux.byPage(continuationToken).toIterable();
+    @SuppressWarnings("unchecked")
+    public <P extends  PagedResponse<T>> Iterable<P> iterableByPage(String continuationToken) {
+        return (Iterable<P>) pagedFluxBase.byPage(continuationToken).toIterable();
     }
 }

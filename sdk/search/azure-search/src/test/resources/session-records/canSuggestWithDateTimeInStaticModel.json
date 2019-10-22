@@ -1,46 +1,46 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk29e62556dc26.search.windows.net/indexes('books')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkab7818783a5f.search.windows.net/indexes('books')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "4d57f4a7-e933-4fb2-8551-414417c0cd82",
+      "request-id" : "4db63c32-8b5b-44e6-a8ad-bbe97c0186c2",
       "StatusCode" : "200",
-      "Date" : "Mon, 07 Oct 2019 20:32:38 GMT",
+      "Date" : "Fri, 18 Oct 2019 22:15:15 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "328",
+      "elapsed-time" : "187",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "293",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk29e62556dc26.search.windows.net/indexes('books')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkab7818783a5f.search.windows.net/indexes('books')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk29e62556dc26.search.windows.net/indexes('books')/docs/search.post.suggest?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkab7818783a5f.search.windows.net/indexes('books')/docs/search.post.suggest?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0aa67fb3-5584-4eb3-9fc3-79d27f056fba",
+      "request-id" : "8e138b6a-33ac-446d-bee3-77bfc0d5ec3a",
       "StatusCode" : "200",
-      "Date" : "Mon, 07 Oct 2019 20:32:39 GMT",
+      "Date" : "Fri, 18 Oct 2019 22:15:17 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "51",
+      "elapsed-time" : "42",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "219",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk29e62556dc26.search.windows.net/indexes('books')/$metadata#docs(*)\",\"value\":[{\"@search.text\":\"War and Peace\",\"ISBN\":\"456\",\"Title\":\"War and Peace\",\"PublishDate\":\"2015-08-18T00:00:00Z\"}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkab7818783a5f.search.windows.net/indexes('books')/$metadata#docs(*)\",\"value\":[{\"@search.text\":\"War and Peace\",\"ISBN\":\"456\",\"Title\":\"War and Peace\",\"PublishDate\":\"2015-08-18T00:00:00Z\"}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

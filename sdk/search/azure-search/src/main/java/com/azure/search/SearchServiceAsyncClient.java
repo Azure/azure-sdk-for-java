@@ -3,10 +3,14 @@
 package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
@@ -23,11 +27,16 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
+import com.azure.search.models.AccessCondition;
+import com.azure.search.models.RequestOptions;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.Function;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 @ServiceClient(builder = SearchServiceClientBuilder.class, isAsync = true)
 public class SearchServiceAsyncClient {
@@ -325,35 +334,120 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search index.
+     * @param index definition of the index to create.
      * @return the created Index.
      */
-    public Mono<Index> createIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Index> createIndex(Index index) {
+        return this.createIndexWithResponse(index, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search index.
+     * @param index definition of the index to create.
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Index.
      */
-    public Mono<Response<Index>> createIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
+        return withContext(context -> createIndexWithResponse(index, requestOptions, context));
+    }
+
+    Mono<Response<Index>> createIndexWithResponse(Index index,
+                                                  RequestOptions requestOptions,
+                                                  Context context) {
+        return restClient
+            .indexes()
+            .createWithRestResponseAsync(index, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName The name of the index to retrieve
      * @return the Index.
      */
-    public Mono<Index> getIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Index> getIndex(String indexName) {
+        return this.getIndexWithResponse(indexName, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName The name of the index to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the Index.
+     */
+    public Mono<Index> getIndex(String indexName, RequestOptions requestOptions) {
+        return this.getIndexWithResponse(indexName, requestOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName The name of the index to retrieve
+     * @param requestOptions Additional parameters for the operation
      * @return a response containing the Index.
      */
-    public Mono<Response<Index>> getIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
+        return withContext(context -> getIndexWithResponse(indexName, requestOptions, context));
+    }
+
+    Mono<Response<Index>> getIndexWithResponse(String indexName,
+                                               RequestOptions requestOptions,
+                                               Context context) {
+        return restClient
+            .indexes()
+            .getWithRestResponseAsync(indexName, requestOptions, context)
+            .map(Function.identity());
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName The name of the index
+     * @return true if the index exists; false otherwise.
+     */
+    public Mono<Boolean> indexExists(String indexName) {
+        return indexExistsWithResponse(indexName, null).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName The name of the index
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return true if the index exists; false otherwise.
+     */
+    public Mono<Boolean> indexExists(String indexName, RequestOptions requestOptions) {
+        return indexExistsWithResponse(indexName, requestOptions).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName The name of the index
+     * @param requestOptions Additional parameters for the operation
+     * @return true if the index exists; false otherwise.
+     */
+    public Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
+                                                           RequestOptions requestOptions) {
+        return withContext(context -> indexExistsWithResponse(indexName, requestOptions, context));
+    }
+
+    Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
+                                                    RequestOptions requestOptions,
+                                                    Context context) {
+        return this.getIndexWithResponse(indexName, requestOptions, context)
+            .map(i -> (Response<Boolean>) new SimpleResponse<>(i, true))
+            .onErrorResume(
+                t -> t instanceof HttpResponseException
+                    && ((HttpResponseException) t).getResponse().getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((HttpResponseException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**
@@ -405,19 +499,63 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return a reactive response signalling completion.
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName the name of the index to delete
+     * @return a response signalling completion.
      */
-    public Mono<Void> deleteIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteIndex(String indexName) {
+        return this.deleteIndexWithResponse(indexName, null, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return a reactive response signalling completion.
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName the name of the index to delete
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the access condition
+     * @return a response signalling completion.
      */
-    public Mono<Void> deleteIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteIndex(String indexName,
+                                  RequestOptions requestOptions,
+                                  AccessCondition accessCondition) {
+        return this.deleteIndexWithResponse(indexName,
+            requestOptions,
+            accessCondition)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName the name of the index to delete
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the access condition
+     * @return a response signalling completion.
+     */
+    public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
+                                                        RequestOptions requestOptions,
+                                                        AccessCondition accessCondition) {
+        return withContext(context -> deleteIndexWithResponse(indexName,
+            requestOptions,
+            accessCondition,
+            context));
+    }
+
+    Mono<Response<Void>> deleteIndexWithResponse(String indexName,
+                                                 RequestOptions requestOptions,
+                                                 AccessCondition accessCondition,
+                                                 Context context) {
+        return restClient
+            .indexes()
+            .deleteWithRestResponseAsync(indexName,
+                requestOptions,
+                accessCondition,
+                context)
+            .map(Function.identity());
     }
 
     /**
@@ -517,19 +655,49 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return the created SynonymMap.
+     * Creates a new Azure Cognitive Search synonym map.
+     *
+     * @param synonymMap the definition of the synonym map to create
+     * @return the created {@link SynonymMap}.
      */
-    public Mono<SynonymMap> createSynonymMap() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
+        return this.createSynonymMapWithResponse(synonymMap, null).map(Response::getValue);
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search synonym map.
+     *
+     * @param synonymMap the definition of the synonym map to create
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the created {@link SynonymMap}.
+     */
+    public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap, RequestOptions requestOptions) {
+        return this.createSynonymMapWithResponse(synonymMap, requestOptions).map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search synonym map.
+     *
+     * @param synonymMap the definition of the synonym map to create
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created SynonymMap.
      */
-    public Mono<Response<SynonymMap>> createSynonymMapWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
+                                                                   RequestOptions requestOptions) {
+        return withContext(context -> createSynonymMapWithResponse(synonymMap,
+                requestOptions,
+                context));
+    }
+
+    Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
+                                                            RequestOptions requestOptions,
+                                                            Context context) {
+        return restClient
+                .synonymMaps()
+                .createWithRestResponseAsync(synonymMap, requestOptions, context)
+                .map(Function.identity());
     }
 
     /**
