@@ -747,11 +747,6 @@ public class BlobAsyncClientBase {
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Context context) {
         ParallelTransferOptions finalParallelTransferOptions = new ParallelTransferOptions();
         finalParallelTransferOptions.populateAndApplyDefaults(parallelTransferOptions);
-        
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions()
-            : parallelTransferOptions;
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
