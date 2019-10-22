@@ -16,7 +16,10 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.search.SearchTestBase.HOTELS_DATA_JSON;
@@ -36,7 +39,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy(Collections.singletonList("HotelId"));
+            .setOrderBy("HotelId");
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestOptions, null);
 
@@ -54,7 +57,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
-            .setSearchFields(Collections.singletonList("HotelName"));
+            .setSearchFields("HotelName");
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestOptions, null);
 
@@ -114,7 +117,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
         SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy(Collections.singletonList("HotelId"));
+            .setOrderBy("HotelId");
 
         //act
         PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestOptions, null);
@@ -146,7 +149,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocuments(client, Arrays.asList(doc1, doc2));
 
         SuggestOptions suggestOptions = new SuggestOptions();
-        suggestOptions.setSelect(Arrays.asList("ISBN", "Title", "PublishDate"));
+        suggestOptions.setSelect("ISBN", "Title", "PublishDate");
         PagedIterable<SuggestResult> suggestResult = client.suggest("War", "sg", suggestOptions, null);
 
         Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
@@ -194,7 +197,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy(new LinkedList<>(Collections.singletonList("This is not a valid orderby.")));
+            .setOrderBy("This is not a valid orderby.");
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
         suggestResult.iterableByPage().iterator().next();
@@ -209,7 +212,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         //arrange
         SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy(new LinkedList<>(Collections.singletonList("HotelId")))
+            .setOrderBy("HotelId")
             .setMinimumCoverage(50.0);
 
         //act
@@ -231,7 +234,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
         SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy(Collections.singletonList("HotelId"))
+            .setOrderBy("HotelId")
             .setTop(3);
 
         //act
@@ -256,7 +259,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
-            .setOrderBy(Collections.singletonList("HotelId"));
+            .setOrderBy("HotelId");
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
         PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
@@ -275,9 +278,9 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy(Arrays.asList("Rating desc",
+            .setOrderBy("Rating desc",
                 "LastRenovationDate asc",
-                "geo.distance(Location, geography'POINT(-122.0 49.0)')"));
+                "geo.distance(Location, geography'POINT(-122.0 49.0)')");
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
         PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();

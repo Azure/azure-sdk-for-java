@@ -88,9 +88,8 @@ public class SearchOptionsExample {
 
         //Accessing Facets property when iterating by page
         searchClient.search("search text",
-            new SearchOptions().setFacets(Arrays.asList(
-                "Rooms/BaseRate,values:5|8|10",
-                "LastRenovationDate,values:2000-01-01T00:00:00Z")),
+            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10",
+                "LastRenovationDate,values:2000-01-01T00:00:00Z"),
             new RequestOptions())
             .byPage()
             .map( page -> ((SearchPagedResponse) page).facets())
@@ -98,9 +97,8 @@ public class SearchOptionsExample {
 
         //Getting just the Facets property
         Flux<Map<String, List<FacetResult>>>  facets = searchClient.search("search text",
-            new SearchOptions().setFacets(Arrays.asList(
-                "Rooms/BaseRate,values:5|8|10",
-                "LastRenovationDate,values:2000-01-01T00:00:00Z")),
+            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10",
+                "LastRenovationDate,values:2000-01-01T00:00:00Z"),
             new RequestOptions())
             .byPage()
             .take(1)

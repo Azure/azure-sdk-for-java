@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -94,8 +93,8 @@ public class SearchSyncTests extends SearchTestBase {
         hotels = createHotelsList(100);
         uploadDocuments(client, hotels);
 
-        SearchOptions searchOptions = new SearchOptions().setSelect(Collections.singletonList("HotelId"))
-            .setOrderBy(Collections.singletonList("HotelId asc"));
+        SearchOptions searchOptions = new SearchOptions().setSelect("HotelId")
+            .setOrderBy("HotelId asc");
 
         List<String> expectedHotelIds = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
             .collect(Collectors.toList());
@@ -129,8 +128,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setTop(2000)
-            .setSelect(Collections.singletonList("HotelId"))
-            .setOrderBy(Collections.singletonList("HotelId asc"));
+            .setSelect("HotelId")
+            .setOrderBy("HotelId asc");
 
         List<String> expectedHotelIds = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
             .collect(Collectors.toList());
@@ -257,8 +256,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         // Ask JUST for the following two fields
         SearchOptions sp = new SearchOptions();
-        sp.setSearchFields(new LinkedList<>(Arrays.asList("HotelName", "Category")));
-        sp.setSelect(new LinkedList<>(Arrays.asList("HotelName", "Rating", "Address/City", "Rooms/Type")));
+        sp.setSearchFields("HotelName", "Category");
+        sp.setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
 
         PagedIterable<SearchResult> results = client.search("fancy luxury secret", sp, new RequestOptions());
 
@@ -301,8 +300,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        List<String> orderBy = Stream.of("HotelId").collect(Collectors.toList());
-        SearchOptions parameters = new SearchOptions().setTop(3).setSkip(0).setOrderBy(orderBy);
+        SearchOptions parameters = new SearchOptions().setTop(3).setSkip(0).setOrderBy("HotelId");
 
         PagedIterable<SearchResult> results = client.search("*", parameters, new RequestOptions());
         assertKeySequenceEqual(results, Arrays.asList("1", "10", "2"));
@@ -333,14 +331,10 @@ public class SearchSyncTests extends SearchTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        List<String> orderByValues = new ArrayList<>();
-        orderByValues.add("Rating desc");
-        orderByValues.add("LastRenovationDate asc");
-
         String[] expectedResults = new String[]{"1", "9", "3", "4", "5", "10", "2", "6", "7", "8"};
 
         Stream<String> results = client
-            .search("*", new SearchOptions().setOrderBy(orderByValues), new RequestOptions()).stream()
+            .search("*", new SearchOptions().setOrderBy("Rating desc", "LastRenovationDate asc"), new RequestOptions()).stream()
             .map(res -> getSearchResultId(res, "HotelId"));
         Assert.assertArrayEquals(results.toArray(), expectedResults);
     }
@@ -465,7 +459,7 @@ public class SearchSyncTests extends SearchTestBase {
         expectedResult.put("HotelName", "Roach Motel");
         expectedResult.put("Rating", 1);
 
-        SearchOptions searchOptions = new SearchOptions().setQueryType(QueryType.FULL).setSelect(Arrays.asList("HotelName", "Rating"));
+        SearchOptions searchOptions = new SearchOptions().setQueryType(QueryType.FULL).setSelect("HotelName", "Rating");
         PagedIterable<SearchResult> results = client.search("HotelName:roch~", searchOptions, new RequestOptions());
 
         Assert.assertNotNull(results);
@@ -550,7 +544,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setQueryType(QueryType.FULL)
-            .setSelect(Arrays.asList("HotelName", "Rating"));
+            .setSelect("HotelName", "Rating");
 
         PagedIterable<SearchResult> results = client
             .search("HotelName:/.*oach.*\\/?/", searchOptions, new RequestOptions());
@@ -592,7 +586,7 @@ public class SearchSyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("nearest")
-            .setScoringParameters(Collections.singletonList("myloc-'-122','49'"))
+            .setScoringParameters("myloc-'-122','49'")
             .setFilter("Rating eq 5 or Rating eq 1");
 
         List<Map<String, Object>> response = getSearchResults(
@@ -634,7 +628,7 @@ public class SearchSyncTests extends SearchTestBase {
         sp.setFilter("Rating eq 5");
         sp.setHighlightPreTag("<b>");
         sp.setHighlightPostTag("</b>");
-        sp.setHighlightFields(Arrays.asList(category, description));
+        sp.setHighlightFields(category, description);
 
         //act
         PagedIterable<SearchResult> results = client.search("luxury hotel", sp, new RequestOptions());
@@ -680,8 +674,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setQueryType(QueryType.FULL)
-            .setSearchFields(Collections.singletonList(fieldName))
-            .setSelect(Arrays.asList("HotelName", "Rating"));
+            .setSearchFields(fieldName)
+            .setSelect("HotelName", "Rating");
 
         PagedIterable<SearchResult> results =
             client.search("luxury", searchOptions, new RequestOptions());

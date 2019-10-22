@@ -22,7 +22,6 @@ import org.junit.rules.ExpectedException;
 import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -176,19 +175,17 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     SearchOptions getSearchOptionsForRangeFacets() {
-        return new SearchOptions().setFacets(Arrays.asList(
-            "Rooms/BaseRate,values:5|8|10",
-            "LastRenovationDate,values:2000-01-01T00:00:00Z"));
+        return new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10",
+            "LastRenovationDate,values:2000-01-01T00:00:00Z");
     }
 
     SearchOptions getSearchOptionsForValueFacets() {
-        return new SearchOptions().setFacets(Arrays.asList(
-            "Rating,count:2,sort:-value",
+        return new SearchOptions().setFacets("Rating,count:2,sort:-value",
             "SmokingAllowed,sort:count",
             "Category",
             "LastRenovationDate,interval:year",
             "Rooms/BaseRate,sort:value",
-            "Tags,sort:value"));
+            "Tags,sort:value");
     }
 
     void prepareHotelsSynonymMap(String name, String synonyms, String fieldName) {

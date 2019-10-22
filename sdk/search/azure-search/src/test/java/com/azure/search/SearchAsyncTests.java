@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,8 +49,8 @@ public class SearchAsyncTests extends SearchTestBase {
         hotels = createHotelsList(100);
         uploadDocuments(client, hotels);
 
-        SearchOptions searchOptions = new SearchOptions().setSelect(Collections.singletonList("HotelId"))
-            .setOrderBy(Collections.singletonList("HotelId asc"));
+        SearchOptions searchOptions = new SearchOptions().setSelect("HotelId")
+            .setOrderBy("HotelId asc");
         PagedFluxBase<SearchResult, SearchPagedResponse> results = client.search("*", searchOptions, new RequestOptions());
 
         List<String> expectedId = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
@@ -81,10 +80,10 @@ public class SearchAsyncTests extends SearchTestBase {
         hotels = createHotelsList(2000);
         uploadDocuments(client, hotels);
 
-        SearchOptions searchOptions = new SearchOptions().setTop(2000).setSelect(
-            Collections.singletonList("HotelId"))
-            .setOrderBy(Collections.singletonList("HotelId asc"));
+        SearchOptions searchOptions = new SearchOptions().setTop(2000).setSelect("HotelId")
+            .setOrderBy("HotelId asc");
         PagedFluxBase<SearchResult, SearchPagedResponse> results = client.search("*", searchOptions, new RequestOptions());
+
 
         List<String> expectedId = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
             .collect(Collectors.toList());
@@ -132,8 +131,8 @@ public class SearchAsyncTests extends SearchTestBase {
 
         // Ask JUST for the following two fields
         SearchOptions sp = new SearchOptions();
-        sp.setSearchFields(new LinkedList<>(Arrays.asList("HotelName", "Category")));
-        sp.setSelect(new LinkedList<>(Arrays.asList("HotelName", "Rating", "Address/City", "Rooms/Type")));
+        sp.setSearchFields("HotelName", "Category");
+        sp.setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
 
         PagedFluxBase<SearchResult, SearchPagedResponse> results = client.search("fancy luxury secret", sp, new RequestOptions());
         Assert.assertNotNull(results);
@@ -153,8 +152,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SearchOptions parameters = new SearchOptions().setTop(3).setSkip(0).setOrderBy(
-            Collections.singletonList("HotelId"));
+        SearchOptions parameters = new SearchOptions().setTop(3).setSkip(0).setOrderBy("HotelId");
 
         Flux<SearchResult> results = client.search("*", parameters, new RequestOptions()).log();
         assertHotelIdSequenceEqual(Arrays.asList("1", "10", "2"), results);
@@ -212,11 +210,9 @@ public class SearchAsyncTests extends SearchTestBase {
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-
-        List<String> orderByValues = Arrays.asList("Rating desc", "LastRenovationDate asc");
         List<String> expected = Arrays.asList("1", "9", "3", "4", "5", "10", "2", "6", "7", "8");
 
-        Flux<SearchResult> results = client.search("*", new SearchOptions().setOrderBy(orderByValues),
+        Flux<SearchResult> results = client.search("*", new SearchOptions().setOrderBy("Rating desc", "LastRenovationDate asc"),
             new RequestOptions()).log();
         assertHotelIdSequenceEqual(expected, results);
     }
@@ -350,7 +346,7 @@ public class SearchAsyncTests extends SearchTestBase {
         expectedResult.put("Rating", 1);
 
         SearchOptions searchOptions = new SearchOptions().setQueryType(QueryType.FULL)
-            .setSelect(Arrays.asList("HotelName", "Rating"));
+            .setSelect("HotelName", "Rating");
         PagedFluxBase<SearchResult, SearchPagedResponse> results = client
             .search("HotelName:roch~", searchOptions, new RequestOptions());
 
@@ -490,8 +486,8 @@ public class SearchAsyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setQueryType(QueryType.FULL)
-            .setSearchFields(Collections.singletonList(fieldName))
-            .setSelect(Arrays.asList("HotelName", "Rating"));
+            .setSearchFields(fieldName)
+            .setSelect("HotelName", "Rating");
 
         Flux<SearchResult> results = client.search("luxury", searchOptions, new RequestOptions()).log();
         Assert.assertNotNull(results);
@@ -556,7 +552,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setQueryType(QueryType.FULL)
-            .setSelect(Arrays.asList("HotelName", "Rating"));
+            .setSelect("HotelName", "Rating");
 
         Flux<SearchResult> results = client
             .search("HotelName:/.*oach.*\\/?/", searchOptions, new RequestOptions()).log();
@@ -595,7 +591,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("nearest")
-            .setScoringParameters(Collections.singletonList("myloc-'-122','49'"))
+            .setScoringParameters("myloc-'-122','49'")
             .setFilter("Rating eq 5 or Rating eq 1");
 
         Flux<SearchResult> response = client.search("hotel", searchOptions, new RequestOptions()).log();
@@ -633,7 +629,7 @@ public class SearchAsyncTests extends SearchTestBase {
         sp.setFilter("Rating eq 5");
         sp.setHighlightPreTag("<b>");
         sp.setHighlightPostTag("</b>");
-        sp.setHighlightFields(Arrays.asList(category, description));
+        sp.setHighlightFields(category, description);
 
         //act
         PagedFluxBase<SearchResult, SearchPagedResponse> results = client.search("luxury hotel", sp, new RequestOptions());

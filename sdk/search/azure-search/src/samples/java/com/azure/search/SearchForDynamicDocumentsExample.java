@@ -8,8 +8,6 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchResult;
 import reactor.core.publisher.Flux;
 
-import java.util.Collections;
-
 /**
  * This example shows how to perform basic searches using the Azure Cognitive Search SDK for Java
  */
@@ -62,8 +60,8 @@ public class SearchForDynamicDocumentsExample {
         // Add additional options for the search
         SearchOptions parameters = new SearchOptions()
             .setFilter("geo.distance(Location,geography'POINT(-122.121513 47.673988)') le 5")  // items having a geo-location distance which is less than 5 km from Redmond
-            .setFacets(Collections.singletonList("Tags,sort:value"))
-            .setOrderBy(Collections.singletonList("Rating"))
+            .setFacets("Tags,sort:value")
+            .setOrderBy("Rating")
             .setTop(5)
             .setIncludeTotalResultCount(true);
 

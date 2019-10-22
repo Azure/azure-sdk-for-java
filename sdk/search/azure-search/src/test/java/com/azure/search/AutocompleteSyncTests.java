@@ -75,7 +75,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     public void canAutocompleteExcludesFieldsNotInSuggester() {
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
-        params.setSearchFields(Arrays.asList("HotelName"));
+        params.setSearchFields("HotelName");
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("luxu", "sg", params, null);
         Assert.assertNotNull(results);
@@ -174,7 +174,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setSearchFields(Arrays.asList("HotelName", "Description"));
+            .setSearchFields("HotelName", "Description");
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", params, null);
 
@@ -189,7 +189,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setSearchFields(Arrays.asList("HotelName"))
+            .setSearchFields("HotelName")
             .setFilter("HotelId eq '7'");
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", params, null);

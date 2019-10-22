@@ -30,6 +30,11 @@ license-header: |-
 
 require: ./autorest-custom-directives.md
 
+vararg-properties: >-
+  AutocompleteOptions.searchFields,
+  SearchOptions.facets, SearchOptions.highlightFields, SearchOptions.orderBy, SearchOptions.scoringParameters, SearchOptions.searchFields, SearchOptions.select,
+  SuggestOptions.orderBy, SuggestOptions.searchFields, SuggestOptions.select
+
 directive:
 # Rename custom properties
 - rename-custom-property:

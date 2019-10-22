@@ -58,7 +58,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     public void canAutocompleteExcludesFieldsNotInSuggester() {
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
-        params.setSearchFields(Arrays.asList("HotelName"));
+        params.setSearchFields("HotelName");
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("luxu", "sg", params, null);
         Assert.assertNotNull(results);
@@ -164,7 +164,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern");
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setSearchFields(Arrays.asList("HotelName", "Description"));
+            .setSearchFields("HotelName", "Description");
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", params, null);
 
@@ -179,7 +179,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setSearchFields(Arrays.asList("HotelName"))
+            .setSearchFields("HotelName")
             .setFilter("HotelId eq '7'");
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", params, null);

@@ -8,6 +8,7 @@ package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -194,8 +195,8 @@ public final class SearchOptions {
      * @param facets the facets value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setFacets(List<String> facets) {
-        this.facets = facets;
+    public SearchOptions setFacets(String... facets) {
+        this.facets = Arrays.asList(facets);
         return this;
     }
 
@@ -238,8 +239,8 @@ public final class SearchOptions {
      * @param highlightFields the highlightFields value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setHighlightFields(List<String> highlightFields) {
-        this.highlightFields = highlightFields;
+    public SearchOptions setHighlightFields(String... highlightFields) {
+        this.highlightFields = Arrays.asList(highlightFields);
         return this;
     }
 
@@ -348,8 +349,8 @@ public final class SearchOptions {
      * @param orderBy the orderBy value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setOrderBy(List<String> orderBy) {
-        this.orderBy = orderBy;
+    public SearchOptions setOrderBy(String... orderBy) {
+        this.orderBy = Arrays.asList(orderBy);
         return this;
     }
 
@@ -400,8 +401,8 @@ public final class SearchOptions {
      * @param scoringParameters the scoringParameters value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setScoringParameters(List<String> scoringParameters) {
-        this.scoringParameters = scoringParameters;
+    public SearchOptions setScoringParameters(String... scoringParameters) {
+        this.scoringParameters = Arrays.asList(scoringParameters);
         return this;
     }
 
@@ -452,8 +453,8 @@ public final class SearchOptions {
      * @param searchFields the searchFields value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setSearchFields(List<String> searchFields) {
-        this.searchFields = searchFields;
+    public SearchOptions setSearchFields(String... searchFields) {
+        this.searchFields = Arrays.asList(searchFields);
         return this;
     }
 
@@ -498,8 +499,8 @@ public final class SearchOptions {
      * @param select the select value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setSelect(List<String> select) {
-        this.select = select;
+    public SearchOptions setSelect(String... select) {
+        this.select = Arrays.asList(select);
         return this;
     }
 

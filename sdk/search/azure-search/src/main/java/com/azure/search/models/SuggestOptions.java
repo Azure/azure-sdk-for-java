@@ -8,6 +8,7 @@ package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -249,8 +250,8 @@ public final class SuggestOptions {
      * @param orderBy the orderBy value to set.
      * @return the SuggestOptions object itself.
      */
-    public SuggestOptions setOrderBy(List<String> orderBy) {
-        this.orderBy = orderBy;
+    public SuggestOptions setOrderBy(String... orderBy) {
+        this.orderBy = Arrays.asList(orderBy);
         return this;
     }
 
@@ -273,8 +274,8 @@ public final class SuggestOptions {
      * @param searchFields the searchFields value to set.
      * @return the SuggestOptions object itself.
      */
-    public SuggestOptions setSearchFields(List<String> searchFields) {
-        this.searchFields = searchFields;
+    public SuggestOptions setSearchFields(String... searchFields) {
+        this.searchFields = Arrays.asList(searchFields);
         return this;
     }
 
@@ -295,8 +296,8 @@ public final class SuggestOptions {
      * @param select the select value to set.
      * @return the SuggestOptions object itself.
      */
-    public SuggestOptions setSelect(List<String> select) {
-        this.select = select;
+    public SuggestOptions setSelect(String... select) {
+        this.select = Arrays.asList(select);
         return this;
     }
 
