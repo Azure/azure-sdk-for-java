@@ -272,7 +272,6 @@ public class SearchServiceClient {
         return this.getIndexWithResponse(indexName, null, Context.NONE).getValue();
     }
 
-
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      * @param indexName the name of the index to retrieve
@@ -367,19 +366,114 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return the updated Index.
+     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * @param index the definition of the index to create or update
+     * @return the index that was created or updated
      */
-    public Index replaceIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Index upsertIndex(Index index) {
+        return this.upsertIndexWithResponse(index, null, null, null, Context.NONE).getValue();
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return a response containing the updated Index.
+     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * @param index the definition of the index to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values.
+     * @param requestOptions additional parameters for the operation
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the index that was created or updated
      */
-    public Response<Index> replaceIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Index upsertIndex(Index index,
+                             AccessCondition accessCondition,
+                             RequestOptions requestOptions) {
+        return this.upsertIndexWithResponse(index,
+            null,
+            accessCondition,
+            requestOptions,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * @param index the definition of the index to create or update
+     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
+     *                           index by taking the index offline for at least a few seconds. This temporarily causes
+     *                           indexing and query requests to fail. Performance and write availability of the index
+     *                           can be impaired for several minutes after the index is updated, or longer for very
+     *                           large indexes.
+     * @return the index that was created or updated
+     */
+    public Index upsertIndex(Index index, Boolean allowIndexDowntime) {
+        return this.upsertIndexWithResponse(index,
+            allowIndexDowntime,
+            null,
+            null,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * @param index the definition of the index to create or update
+     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
+     *                           index by taking the index offline for at least a few seconds. This temporarily causes
+     *                           indexing and query requests to fail. Performance and write availability of the index
+     *                           can be impaired for several minutes after the index is updated, or longer for very
+     *                           large indexes.
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values.
+     * @param requestOptions additional parameters for the operation
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the index that was created or updated
+     */
+    public Index upsertIndex(Index index,
+                             Boolean allowIndexDowntime,
+                             AccessCondition accessCondition,
+                             RequestOptions requestOptions) {
+        return this.upsertIndexWithResponse(index,
+            allowIndexDowntime,
+            accessCondition,
+            requestOptions,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * @param index the definition of the index to create or update
+     * @return a response containing the Index that was created or updated.
+     */
+    public Response<Index> upsertIndexWithResponse(Index index) {
+        return asyncClient.upsertIndexWithResponse(index,
+            null,
+            null,
+            null,
+            Context.NONE).block();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * @param index the definition of the index to create or update
+     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
+     *                           index by taking the index offline for at least a few seconds. This temporarily causes
+     *                           indexing and query requests to fail. Performance and write availability of the index
+     *                           can be impaired for several minutes after the index is updated, or longer for very
+     *                           large indexes.
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values.
+     * @param requestOptions additional parameters for the operation
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the Http pipeline during the service call
+     * @return a response containing the Index that was created or updated.
+     */
+    public Response<Index> upsertIndexWithResponse(Index index,
+                                                   Boolean allowIndexDowntime,
+                                                   AccessCondition accessCondition,
+                                                   RequestOptions requestOptions,
+                                                   Context context) {
+        return asyncClient.upsertIndexWithResponse(index,
+            allowIndexDowntime,
+            accessCondition,
+            requestOptions,
+            context).block();
     }
 
     /**
@@ -397,7 +491,8 @@ public class SearchServiceClient {
      * @param indexName the name of the index to delete.
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
-     * @param accessCondition the access condition
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values.
      */
     public void deleteIndex(String indexName,
                             RequestOptions requestOptions,
@@ -411,7 +506,8 @@ public class SearchServiceClient {
      * @param indexName the name of the index to delete.
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
-     * @param accessCondition the access condition
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values.
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */

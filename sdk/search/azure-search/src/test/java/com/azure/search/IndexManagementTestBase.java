@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
@@ -59,8 +60,10 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void existsReturnsFalseForNonExistingIndex();
 
+    @Test
     public abstract void deleteIndexIfNotChangedWorksOnlyOnCurrentResource();
 
+    @Test
     public abstract void deleteIndexIfExistsWorksOnlyWhenResourceExists();
 
     @Test
@@ -71,12 +74,34 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void canAddSynonymFieldProperty();
 
+    @Test
+    public abstract void canUpdateIndexDefinition();
+
+    @Test
+    public abstract void upsertIndexCreatesWhenIndexDoesNotExist();
+
+    @Test
+    public abstract void upsertIndexIfNotExistsFailsOnExistingResource();
+
+    @Test
+    public abstract void upsertIndexIfNotExistsSucceedsOnNoResource();
+
+    @Test
+    public abstract void upsertIndexIfExistsSucceedsOnExistingResource();
+
+    @Test
+    public abstract void upsertIndexIfExistsFailsOnNoResource();
+
+    @Test
+    public abstract void upsertIndexIfNotChangedSucceedsWhenResourceUnchanged();
+
+    @Test
+    public abstract void upsertIndexIfNotChangedFailsWhenResourceChanged();
+
     protected void assertFieldsEqual(Field expected, Field actual) {
         Assert.assertEquals(expected.getName(), actual.getName());
 
-        // ONLY erify the properties we set explicitly, as I observed some inconsistent logic of defaulting undefined
-        // Boolean properties of simple Field (eg: String field) to false, but not for complex/nested field (fields
-        // containing a list of fields).
+        // ONLY verify the properties we set explicitly.
         if (expected.isKey() != null) {
             Assert.assertEquals(expected.isKey(), actual.isKey());
         }
@@ -494,5 +519,46 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
             .setSuggesters(Arrays.asList(new Suggester()
                 .setName("FancySuggester")
                 .setSourceFields(Arrays.asList("HotelName"))));
+    }
+
+    protected Index mutateCorsOptionsInIndex(Index index) {
+        index.setCorsOptions(index.getCorsOptions().setAllowedOrigins(Arrays.asList("*")));
+        return index;
+    }
+
+    /**
+     * Constructs an access condition such that an operation will be performed only if the resource's current ETag
+     * value matches the specified ETag value.
+     * @param eTag ehe ETag value to check against the resource's ETag
+     * @return An AccessCondition object that represents the If-Match condition
+     */
+    protected AccessCondition generateIfMatchAccessCondition(String eTag) {
+        return new AccessCondition().setIfMatch(eTag);
+    }
+
+    /**
+     * Constructs an access condition such that an operation will be performed only if the resource does not exist.
+     * @return an AccessCondition object that represents a condition where a resource does not exist
+     */
+    protected AccessCondition generateIfNotExistsAccessCondition() {
+        // Setting this access condition modifies the request to include the HTTP If-None-Match conditional header set to "*"
+        return new AccessCondition().setIfNoneMatch("*");
+    }
+
+    /**
+     * Constructs an access condition such that an operation will be performed only if the resource exists.
+     * @return an AccessCondition object that represents a condition where a resource exists
+     */
+    protected AccessCondition generateIfExistsAccessCondition() {
+        // Setting this access condition modifies the request to include the HTTP If-Match conditional header set to "*"
+        return new AccessCondition().setIfMatch("*");
+    }
+
+    /**
+     * Constructs an empty access condition.
+     * @return an empty AccessCondition object
+     */
+    protected AccessCondition generateEmptyAccessCondition() {
+        return new AccessCondition();
     }
 }
