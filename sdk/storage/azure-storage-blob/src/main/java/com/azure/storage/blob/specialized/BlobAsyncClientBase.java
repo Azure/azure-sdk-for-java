@@ -35,7 +35,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.BlobParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -717,15 +717,15 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-BlobParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
-     * transfers parameter is ignored.
+     * @param blobParallelTransferOptions {@link BlobParallelTransferOptions} to use to download to file. Number of
+     * parallel transfers parameter is ignored.
      * @param options {@link ReliableDownloadOptions}
      * @param accessConditions {@link BlobRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
@@ -734,11 +734,11 @@ public class BlobAsyncClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
+        BlobParallelTransferOptions blobParallelTransferOptions, ReliableDownloadOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5) {
         try {
-            return withContext(context -> downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
-                accessConditions, rangeGetContentMD5, context));
+            return withContext(context -> downloadToFileWithResponse(filePath, range, blobParallelTransferOptions,
+                options, accessConditions, rangeGetContentMD5, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -746,12 +746,12 @@ public class BlobAsyncClientBase {
 
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
+        BlobParallelTransferOptions blobParallelTransferOptions, ReliableDownloadOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMd5, Context context) {
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions()
-            : parallelTransferOptions;
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        final BlobParallelTransferOptions finalBlobParallelTransferOptions = blobParallelTransferOptions == null
+            ? new BlobParallelTransferOptions()
+            : blobParallelTransferOptions;
+        ProgressReceiver progressReceiver = finalBlobParallelTransferOptions.getProgressReceiver();
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -760,8 +760,9 @@ public class BlobAsyncClientBase {
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
             channel -> getPropertiesWithResponse(accessConditions)
                 .flatMap(response -> processInRange(channel, response,
-                    range, finalParallelTransferOptions.getBlockSize(), options, accessConditions, rangeGetContentMd5,
-                    context, totalProgress, progressLock, progressReceiver)), this::downloadToFileCleanup);
+                    range, finalBlobParallelTransferOptions.getBufferSize(), options, accessConditions,
+                    rangeGetContentMd5, context, totalProgress, progressLock, progressReceiver)),
+            this::downloadToFileCleanup);
 
     }
 

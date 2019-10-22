@@ -22,7 +22,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.BlobParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -452,15 +452,15 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-BlobParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
-     *        transfers parameter is ignored.
+     * @param blobParallelTransferOptions {@link BlobParallelTransferOptions} to use to download to file. Number of
+     * parallel transfers parameter is ignored.
      * @param options {@link ReliableDownloadOptions}
      * @param accessConditions {@link BlobRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
@@ -470,10 +470,10 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
+        BlobParallelTransferOptions blobParallelTransferOptions, ReliableDownloadOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, options, accessConditions, rangeGetContentMD5, context);
+            blobParallelTransferOptions, options, accessConditions, rangeGetContentMD5, context);
         return blockWithOptionalTimeout(download, timeout);
     }
 

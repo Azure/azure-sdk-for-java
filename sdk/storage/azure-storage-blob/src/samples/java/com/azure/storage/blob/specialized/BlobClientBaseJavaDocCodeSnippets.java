@@ -7,18 +7,17 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.Poller;
-import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobParallelTransferOptions;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.common.implementation.Constants;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -96,7 +95,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClientBase#downloadToFile(String)} and
-     * {@link BlobClientBase#downloadToFileWithResponse(String, BlobRange, ParallelTransferOptions, ReliableDownloadOptions, BlobRequestConditions,
+     * {@link BlobClientBase#downloadToFileWithResponse(String, BlobRange, BlobParallelTransferOptions, ReliableDownloadOptions, BlobRequestConditions,
      * boolean, Duration, Context)}
      */
     public void downloadToFile() {
@@ -105,14 +104,14 @@ public class BlobClientBaseJavaDocCodeSnippets {
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-BlobParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.downloadToFileWithResponse(file, range, new ParallelTransferOptions().setBlockSize(4 * Constants.MB),
+        client.downloadToFileWithResponse(file, range, new BlobParallelTransferOptions(),
             options, null, false, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
-        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-BlobParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean-Duration-Context
     }
 
     /**
@@ -174,8 +173,6 @@ public class BlobClientBaseJavaDocCodeSnippets {
         client.setAccessTier(AccessTier.HOT);
         System.out.println("Set tier completed.");
         // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTier#AccessTier
-
-
     }
 
     /**
@@ -238,7 +235,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#copyFromURLWithResponse(String, Map, AccessTier, RequestConditions,
+     * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(String, Map, AccessTier, RequestConditions,
      * BlobRequestConditions, Duration, Context)}
      */
     public void copyFromUrlWithResponseCodeSnippets() {

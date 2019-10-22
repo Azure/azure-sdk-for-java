@@ -21,11 +21,11 @@ import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobParallelTransferOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
-import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
@@ -793,7 +793,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Async buffered upload empty"() {
         when:
-        def emptyUploadVerifier = StepVerifier.create(blobac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), new ParallelTransferOptions()))
+        def emptyUploadVerifier = StepVerifier.create(blobac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), new BlobParallelTransferOptions()))
 
         then:
         emptyUploadVerifier.assertNext({
@@ -809,7 +809,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Async buffered upload empty buffers"() {
         when:
-        def uploadVerifier = StepVerifier.create(blobac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), new ParallelTransferOptions()))
+        def uploadVerifier = StepVerifier.create(blobac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), new BlobParallelTransferOptions()))
 
         then:
         uploadVerifier.assertNext({
@@ -834,8 +834,7 @@ class BlockBlobAPITest extends APISpec {
     def "Async buffered upload"() {
         when:
         def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(bufferSize).setNumBuffers(numBuffs)
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(numberOfBuffers, bufferSize)
         blobac.upload(Flux.just(data), parallelTransferOptions).block()
         data.position(0)
 
@@ -847,15 +846,15 @@ class BlockBlobAPITest extends APISpec {
         bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
 
         where:
-        dataSize          | bufferSize        | numBuffs || blockCount
-        350               | 50                | 2        || 7 // Requires cycling through the same buffers multiple times.
-        350               | 50                | 5        || 7 // Most buffers may only be used once.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 2        || 10 // Larger data set.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10 // Larger number of Buffs.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10 // Exactly enough buffer space to hold all the data.
-        500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5 // Larger data.
-        100 * 1024 * 1024 | 20 * 1024 * 1024  | 4        || 5
-        10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7 // Data does not squarely fit in buffers.
+        dataSize          | bufferSize        | numberOfBuffers || blockCount
+        350               | 50                | 2               || 7 // Requires cycling through the same buffers multiple times.
+        350               | 50                | 5               || 7 // Most buffers may only be used once.
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 2               || 10 // Larger data set.
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 5               || 10 // Larger number of Buffs.
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 10              || 10 // Exactly enough buffer space to hold all the data.
+        500 * 1024 * 1024 | 100 * 1024 * 1024 | 2               || 5 // Larger data.
+        100 * 1024 * 1024 | 20 * 1024 * 1024  | 4               || 5
+        10 * 1024 * 1024  | 3 * 512 * 1024    | 3               || 7 // Data does not squarely fit in buffers.
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -897,10 +896,9 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload with reporter"() {
         when:
-        def uploadReporter = new Reporter(blockSize)
+        def uploadReporter = new Reporter(bufferSize)
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize).setNumBuffers(bufferCount).setProgressReceiver(uploadReporter)
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(numberOfBuffers, bufferSize, uploadReporter)
 
         def response = blobac
             .uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions, null, null, null, null)
@@ -908,14 +906,14 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        uploadReporter.getReportingCount() == (long) (size / blockSize)
+        uploadReporter.getReportingCount() == (long) (size / bufferSize)
 
         where:
-        size        | blockSize | bufferCount
-        10          | 10        | 8
-        20          | 1         | 5
-        100         | 50        | 2
-        1024 * 1024 | 1024      | 100
+        size        | bufferSize | numberOfBuffers
+        10          | 10         | 8
+        20          | 1          | 5
+        100         | 50         | 2
+        1024 * 1024 | 1024       | 100
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -927,8 +925,7 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(bufferSize).setNumBuffers(numBuffers)
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(numberOfBuffers, bufferSize)
         def dataList = [] as List
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
         blobac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
@@ -938,18 +935,17 @@ class BlockBlobAPITest extends APISpec {
         bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
 
         where:
-        dataSizeList          | bufferSize | numBuffers || blockCount
-        [7, 7]                | 10         | 2          || 2 // First item fits entirely in the buffer, next item spans two buffers
-        [3, 3, 3, 3, 3, 3, 3] | 10         | 2          || 3 // Multiple items fit non-exactly in one buffer.
-        [10, 10]              | 10         | 2          || 2 // Data fits exactly and does not need chunking.
-        [50, 51, 49]          | 10         | 2          || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
+        dataSizeList          | bufferSize | numberOfBuffers || blockCount
+        [7, 7]                | 10         | 2               || 2 // First item fits entirely in the buffer, next item spans two buffers
+        [3, 3, 3, 3, 3, 3, 3] | 10         | 2               || 3 // Multiple items fit non-exactly in one buffer.
+        [10, 10]              | 10         | 2               || 2 // Data fits exactly and does not need chunking.
+        [50, 51, 49]          | 10         | 2               || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
         // The case of one large buffer needing to be broken up is tested in the previous test.
     }
 
     def "Buffered upload illegal arguments null"() {
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(4).setNumBuffers(4)
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(4, 4)
         blobac.upload(null, parallelTransferOptions).block()
 
         then:
@@ -959,15 +955,14 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Buffered upload illegal args out of bounds"() {
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(bufferSize).setNumBuffers(numBuffs)
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(numberOfBuffers, bufferSize)
         blobac.upload(Flux.just(defaultData), parallelTransferOptions).block()
 
         then:
         thrown(IllegalArgumentException)
 
         where:
-        bufferSize                                     | numBuffs
+        bufferSize                                     | numberOfBuffers
         0                                              | 5
         BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES + 1 | 5
         5                                              | 1
@@ -978,14 +973,14 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload headers"() {
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(10)
-        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType),
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(null, 10)
+        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType),
             null, null, null).block()
 
         then:
@@ -1014,8 +1009,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(10).setNumBuffers(10)
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(10, 10)
         blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, metadata, null, null).block()
         def response = bac.getPropertiesWithResponse(null).block()
 
@@ -1045,8 +1039,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(10)
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(null, 10)
         blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block().getStatusCode() == 201
 
         where:
@@ -1075,8 +1068,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(10)
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(null, 10)
         blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block()
 
         then:
@@ -1104,9 +1096,7 @@ class BlockBlobAPITest extends APISpec {
         def accessConditions = new BlobRequestConditions().setLeaseId(leaseID)
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize as int)
-            .setNumBuffers(numBuffers as int)
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(numberOfBuffers, bufferSize)
         blobac.uploadWithResponse(Flux.just(getRandomData(dataLength as int)), parallelTransferOptions, null, null,
             null, accessConditions).block()
 
@@ -1114,9 +1104,9 @@ class BlockBlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        dataLength | blockSize | numBuffers
-        16         | 7         | 2
-        16         | 5         | 2
+        dataLength | bufferSize | numberOfBuffers
+        16         | 7          | 2
+        16         | 5          | 2
     }
 
     /*def "Upload NRF progress"() {
@@ -1193,9 +1183,8 @@ class BlockBlobAPITest extends APISpec {
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
 
         when:
-        // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(1024).setNumBuffers(4)
+        // Try to upload the flux, which will hit a retry. A normal upload would throw, but buffering prevents that.
+        BlobParallelTransferOptions parallelTransferOptions = new BlobParallelTransferOptions(4, 1024)
         blobac.upload(nonReplayableFlux, parallelTransferOptions).block()
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
