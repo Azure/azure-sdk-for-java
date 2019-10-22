@@ -29,30 +29,30 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * and {@link BlobAsyncClient blobs}. This client acts as a supplement to those clients and only handles leasing
  * operations.
  *
- * <p><strong>Instantiating a LeaseAsyncClient</strong></p>
+ * <p><strong>Instantiating a BlobLeaseAsyncClient</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithBlob}
+ * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithBlob}
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithContainer}
+ * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithContainer}
  *
- * <p>View {@link LeaseClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link BlobLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
  * <p>For more information about leasing see the
  * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-container">container leasing</a> or
  * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">blob leasing</a> documentation.</p>
  *
- * @see LeaseClientBuilder
+ * @see BlobLeaseClientBuilder
  */
-@ServiceClient(builder = LeaseClientBuilder.class, isAsync = true)
-public final class LeaseAsyncClient {
-    private final ClientLogger logger = new ClientLogger(LeaseAsyncClient.class);
+@ServiceClient(builder = BlobLeaseClientBuilder.class, isAsync = true)
+public final class BlobLeaseAsyncClient {
+    private final ClientLogger logger = new ClientLogger(BlobLeaseAsyncClient.class);
 
     private final boolean isBlob;
     private final String leaseId;
     private final AzureBlobStorageImpl client;
     private final String accountName;
 
-    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob, String accountName,
+    BlobLeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob, String accountName,
         String serviceVersion) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
@@ -90,7 +90,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.acquireLease#int}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.acquireLease#int}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @return A reactive response containing the lease ID.
@@ -110,7 +110,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -149,7 +149,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.renewLease}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.renewLease}
      *
      * @return A reactive response containing the renewed lease ID.
      */
@@ -167,7 +167,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.renewLeaseWithResponse#RequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.renewLeaseWithResponse#RequestConditions}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -204,7 +204,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.releaseLease}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.releaseLease}
      *
      * @return A reactive response signalling completion.
      */
@@ -222,7 +222,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.releaseLeaseWithResponse#RequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.releaseLeaseWithResponse#RequestConditions}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -259,7 +259,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.breakLease}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.breakLease}
      *
      * @return A reactive response containing the remaining time in the broken lease in seconds.
      */
@@ -280,7 +280,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.breakLeaseWithResponse#Integer-RequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.breakLeaseWithResponse#Integer-RequestConditions}
      *
      * @param breakPeriodInSeconds An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
@@ -324,7 +324,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.changeLease#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.changeLease#String}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @return A reactive response containing the new lease ID.
@@ -343,7 +343,7 @@ public final class LeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseAsyncClient.changeLeaseWithResponse#String-RequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseAsyncClient.changeLeaseWithResponse#String-RequestConditions}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and

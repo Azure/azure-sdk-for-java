@@ -443,27 +443,28 @@ class FileAsyncAPITests extends APISpec {
         def sourceURL = primaryFileAsyncClient.getFileUrl()
 
         when:
-        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, Duration.ofSeconds(2))
+        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, Duration.ofSeconds(1))
         def copyInfoVerifier = StepVerifier.create(poller.getObserver())
 
         then:
         copyInfoVerifier.assertNext {
             assert it.getValue().getCopyId() != null
-        }.verifyComplete()
+        }.expectComplete().verify(Duration.ofMinutes(1))
     }
 
+    @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")
     def "Start copy error"() {
         given:
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata, Duration.ofSeconds(2))
+        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata, Duration.ofSeconds(1))
         def startCopyErrorVerifier = StepVerifier.create(poller.getObserver())
 
         then:
-        startCopyErrorVerifier.verifyErrorSatisfies {
+        startCopyErrorVerifier.expectErrorSatisfies({
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
-        }
+        }).verify(Duration.ofSeconds(30))
     }
 
     @Ignore

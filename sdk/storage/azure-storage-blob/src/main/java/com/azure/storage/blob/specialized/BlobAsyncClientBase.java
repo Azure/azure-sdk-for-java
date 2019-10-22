@@ -368,7 +368,7 @@ public class BlobAsyncClientBase {
                 if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
                     logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
 
-                    return abortCopyFromURL(copyIdentifier).thenReturn(response.getValue());
+                    return abortCopyFromUrl(copyIdentifier).thenReturn(response.getValue());
                 }
 
                 return Mono.empty();
@@ -447,20 +447,20 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrl#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @see #copyFromURL(String)
+     * @see #copyFromUrl(String)
      * @see #beginCopy(String, Duration)
      * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
      * @param copyId The id of the copy operation to abort.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> abortCopyFromURL(String copyId) {
+    public Mono<Void> abortCopyFromUrl(String copyId) {
         try {
-            return abortCopyFromURLWithResponse(copyId, null).flatMap(FluxUtil::toMono);
+            return abortCopyFromUrlWithResponse(copyId, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -471,27 +471,27 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURLWithResponse#String-String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrlWithResponse#String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @see #copyFromURL(String)
+     * @see #copyFromUrl(String)
      * @see #beginCopy(String, Duration)
      * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
      * @param copyId The id of the copy operation to abort.
      * @param leaseId The lease ID the active lease on the blob must match.
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId, String leaseId) {
+    public Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, String leaseId) {
         try {
-            return withContext(context -> abortCopyFromURLWithResponse(copyId, leaseId, context));
+            return withContext(context -> abortCopyFromUrlWithResponse(copyId, leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId, String leaseId, Context context) {
+    Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, String leaseId, Context context) {
         return this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
             null, null, copyId, null, leaseId, null, context)
             .map(response -> new SimpleResponse<>(response, null));
@@ -502,7 +502,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrl#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -510,9 +510,9 @@ public class BlobAsyncClientBase {
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> copyFromURL(String copySource) {
+    public Mono<String> copyFromUrl(String copySource) {
         try {
-            return copyFromURLWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
+            return copyFromUrlWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -523,7 +523,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -538,18 +538,20 @@ public class BlobAsyncClientBase {
      * @param destAccessConditions {@link BlobRequestConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> copyFromURLWithResponse(String copySource, Map<String, String> metadata,
-        AccessTier tier, RequestConditions sourceModifiedAccessConditions, BlobRequestConditions destAccessConditions) {
+    public Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata,
+            AccessTier tier, RequestConditions sourceModifiedAccessConditions,
+            BlobRequestConditions destAccessConditions) {
         try {
-            return withContext(context -> copyFromURLWithResponse(copySource, metadata, tier,
+            return withContext(context -> copyFromUrlWithResponse(copySource, metadata, tier,
                 sourceModifiedAccessConditions, destAccessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<String>> copyFromURLWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
-        RequestConditions sourceModifiedAccessConditions, BlobRequestConditions destAccessConditions, Context context) {
+    Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
+            RequestConditions sourceModifiedAccessConditions, BlobRequestConditions destAccessConditions,
+            Context context) {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new RequestConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobRequestConditions() : destAccessConditions;
@@ -636,18 +638,18 @@ public class BlobAsyncClientBase {
      *
      * @param range {@link BlobRange}
      * @param accessConditions {@link BlobRequestConditions}
-     * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param rangeGetContentMd5 Whether the content MD5 for the specified blob range should be returned.
      * @return Emits the successful response.
      */
     Mono<DownloadAsyncResponse> download(BlobRange range, BlobRequestConditions accessConditions,
-        boolean rangeGetContentMD5) {
-        return withContext(context -> download(range, accessConditions, rangeGetContentMD5, context));
+        boolean rangeGetContentMd5) {
+        return withContext(context -> download(range, accessConditions, rangeGetContentMd5, context));
     }
 
     Mono<DownloadAsyncResponse> download(BlobRange range, BlobRequestConditions accessConditions,
-        boolean rangeGetContentMD5, Context context) {
+        boolean rangeGetContentMd5, Context context) {
         range = range == null ? new BlobRange(0) : range;
-        Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
+        Boolean getMD5 = rangeGetContentMd5 ? rangeGetContentMd5 : null;
         accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
         HttpGetterInfo info = new HttpGetterInfo()
             .setOffset(range.getOffset())
@@ -763,12 +765,12 @@ public class BlobAsyncClientBase {
 
     private Mono<Response<BlobProperties>> processInRange(AsynchronousFileChannel channel,
         Response<BlobProperties> blobPropertiesResponse, BlobRange range, Integer blockSize,
-        ReliableDownloadOptions options, BlobRequestConditions accessConditions, boolean rangeGetContentMD5,
+        ReliableDownloadOptions options, BlobRequestConditions accessConditions, boolean rangeGetContentMd5,
         Context context, AtomicLong totalProgress, Lock progressLock, ProgressReceiver progressReceiver) {
         return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new BlobRange(0,
             blobPropertiesResponse.getValue().getBlobSize()))).flatMapMany(rg ->
             Flux.fromIterable(sliceBlobRange(rg, blockSize)))
-            .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
+            .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMd5, context)
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(dar -> {
                     Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
