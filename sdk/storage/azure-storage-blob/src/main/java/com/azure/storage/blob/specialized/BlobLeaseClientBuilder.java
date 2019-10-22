@@ -18,7 +18,7 @@ import java.util.UUID;
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Lease
  * clients. Lease clients are able to interact with both container and blob clients and act as a supplement client. A
- * new instance of {@link LeaseClient} and {@link LeaseAsyncClient} are constructed every time
+ * new instance of {@link BlobLeaseClient} and {@link BlobLeaseAsyncClient} are constructed every time
  * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} are called
  * respectively.
  *
@@ -27,21 +27,21 @@ import java.util.UUID;
  *
  * <p><strong>Instantiating LeaseClients</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlobAndLeaseId}
+ * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithBlobAndLeaseId}
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainerAndLeaseId}
+ * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithContainerAndLeaseId}
  *
  * <p><strong>Instantiating LeaseAsyncClients</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId}
+ * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId}
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId}
+ * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId}
  *
- * @see LeaseClient
- * @see LeaseAsyncClient
+ * @see BlobLeaseClient
+ * @see BlobLeaseAsyncClient
  */
-@ServiceClientBuilder(serviceClients = { LeaseClient.class, LeaseAsyncClient.class })
-public final class LeaseClientBuilder {
+@ServiceClientBuilder(serviceClients = { BlobLeaseClient.class, BlobLeaseAsyncClient.class })
+public final class BlobLeaseClientBuilder {
     private HttpPipeline pipeline;
     private String url;
     private String leaseId;
@@ -50,22 +50,22 @@ public final class LeaseClientBuilder {
     private BlobServiceVersion serviceVersion;
 
     /**
-     * Creates a {@link LeaseClient} based on the configurations set in the builder.
+     * Creates a {@link BlobLeaseClient} based on the configurations set in the builder.
      *
-     * @return a {@link LeaseClient} based on the configurations in this builder.
+     * @return a {@link BlobLeaseClient} based on the configurations in this builder.
      */
-    public LeaseClient buildClient() {
-        return new LeaseClient(buildAsyncClient());
+    public BlobLeaseClient buildClient() {
+        return new BlobLeaseClient(buildAsyncClient());
     }
 
     /**
-     * Creates a {@link LeaseAsyncClient} based on the configurations set in the builder.
+     * Creates a {@link BlobLeaseAsyncClient} based on the configurations set in the builder.
      *
-     * @return a {@link LeaseAsyncClient} based on the configurations in this builder.
+     * @return a {@link BlobLeaseAsyncClient} based on the configurations in this builder.
      */
-    public LeaseAsyncClient buildAsyncClient() {
+    public BlobLeaseAsyncClient buildAsyncClient() {
         BlobServiceVersion version = (serviceVersion == null) ? BlobServiceVersion.getLatest() : serviceVersion;
-        return new LeaseAsyncClient(pipeline, url, getLeaseId(), isBlob, accountName, version.getVersion());
+        return new BlobLeaseAsyncClient(pipeline, url, getLeaseId(), isBlob, accountName, version.getVersion());
     }
 
     /**
@@ -73,10 +73,10 @@ public final class LeaseClientBuilder {
      * {@link URL} that are used to interact with the service.
      *
      * @param blobClient BlobClient used to configure the builder.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated BlobLeaseClientBuilder object
      * @throws NullPointerException If {@code blobClient} is {@code null}.
      */
-    public LeaseClientBuilder blobClient(BlobClientBase blobClient) {
+    public BlobLeaseClientBuilder blobClient(BlobClientBase blobClient) {
         Objects.requireNonNull(blobClient);
         this.pipeline = blobClient.getHttpPipeline();
         this.url = blobClient.getBlobUrl();
@@ -91,10 +91,10 @@ public final class LeaseClientBuilder {
      * {@link URL} that are used to interact with the service.
      *
      * @param blobAsyncClient BlobAsyncClient used to configure the builder.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated BlobLeaseClientBuilder object
      * @throws NullPointerException If {@code blobAsyncClient} is {@code null}.
      */
-    public LeaseClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
+    public BlobLeaseClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         Objects.requireNonNull(blobAsyncClient);
         this.pipeline = blobAsyncClient.getHttpPipeline();
         this.url = blobAsyncClient.getBlobUrl();
@@ -109,10 +109,10 @@ public final class LeaseClientBuilder {
      * and {@link URL} that are used to interact with the service.
      *
      * @param blobContainerClient ContainerClient used to configure the builder.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated BlobLeaseClientBuilder object
      * @throws NullPointerException If {@code containerClient} is {@code null}.
      */
-    public LeaseClientBuilder containerClient(BlobContainerClient blobContainerClient) {
+    public BlobLeaseClientBuilder containerClient(BlobContainerClient blobContainerClient) {
         Objects.requireNonNull(blobContainerClient);
         this.pipeline = blobContainerClient.getHttpPipeline();
         this.url = blobContainerClient.getBlobContainerUrl();
@@ -127,10 +127,10 @@ public final class LeaseClientBuilder {
      * HttpPipeline} and {@link URL} that are used to interact with the service.
      *
      * @param blobContainerAsyncClient ContainerAsyncClient used to configure the builder.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated BlobLeaseClientBuilder object
      * @throws NullPointerException If {@code containerAsyncClient} is {@code null}.
      */
-    public LeaseClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient) {
+    public BlobLeaseClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient) {
         Objects.requireNonNull(blobContainerAsyncClient);
         this.pipeline = blobContainerAsyncClient.getHttpPipeline();
         this.url = blobContainerAsyncClient.getBlobContainerUrl();
@@ -146,9 +146,9 @@ public final class LeaseClientBuilder {
      * <p>If a lease ID isn't set then a {@link UUID} will be used.</p>
      *
      * @param leaseId Identifier for the lease.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated BlobLeaseClientBuilder object
      */
-    public LeaseClientBuilder leaseId(String leaseId) {
+    public BlobLeaseClientBuilder leaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }

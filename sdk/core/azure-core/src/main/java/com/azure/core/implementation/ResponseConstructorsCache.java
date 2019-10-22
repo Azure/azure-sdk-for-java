@@ -9,7 +9,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Constructor;
@@ -96,7 +95,8 @@ final class ResponseConstructorsCache {
                         responseStatusCode,
                         responseHeaders));
                 } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                    throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 3-parameter"
+                        + " response. ", e));
                 }
             case 4:
                 try {
@@ -105,7 +105,8 @@ final class ResponseConstructorsCache {
                         responseHeaders,
                         bodyAsObject));
                 } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                    throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 4-parameter"
+                        + " response. ", e));
                 }
             case 5:
                 return decodedResponse.getDecodedHeaders()
@@ -117,7 +118,8 @@ final class ResponseConstructorsCache {
                                 bodyAsObject,
                                 decodedHeaders);
                         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 5-parameter"
+                                + " response with decoded headers. ", e));
                         }
                     })
                     .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
@@ -128,7 +130,8 @@ final class ResponseConstructorsCache {
                                 bodyAsObject,
                                 null));
                         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            throw logger.logExceptionAsError(new RuntimeException(
+                                "Failed to deserialize 5-parameter response without decoded headers.", e));
                         }
                     }));
             default:

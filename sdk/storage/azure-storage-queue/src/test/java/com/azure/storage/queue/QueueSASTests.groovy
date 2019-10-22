@@ -36,10 +36,10 @@ class QueueSASTests extends APISpec {
         def perms = QueueSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getAddPermission() == add
-        perms.getUpdatePermission() == update
-        perms.getProcessPermission() == process
+        perms.hasReadPermission() == read
+        perms.hasAddPermission() == add
+        perms.hasUpdatePermission() == update
+        perms.hasProcessPermission() == process
 
         where:
         permString || read  | add   | update | process
@@ -239,7 +239,7 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS create queue delete queue"() {
         def service = new AccountSasService()
-            .setQueue(true)
+            .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -252,7 +252,13 @@ class QueueSASTests extends APISpec {
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
-        def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(credential)
+            .encode()
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
@@ -273,7 +279,7 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS list queues"() {
         def service = new AccountSasService()
-            .setQueue(true)
+            .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -284,7 +290,13 @@ class QueueSASTests extends APISpec {
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
-        def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(credential)
+            .encode()
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())

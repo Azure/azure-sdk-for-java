@@ -12,9 +12,9 @@ import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.StorageImplUtils
+import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
-import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.StorageSharedKeyCredential
@@ -287,11 +287,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedOid())
-        key.setSignedOid(keyOid)
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTid())
-        key.setSignedTid(keyTid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -437,11 +437,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedOid())
-        key.setSignedOid(keyOid)
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTid())
-        key.setSignedTid(keyTid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -503,11 +503,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedOid())
-        key.setSignedOid(keyOid)
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTid())
-        key.setSignedTid(keyTid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
         when:
         def sasWithPermissions = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -531,7 +531,7 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSasService()
-            .setBlob(true)
+            .setBlobAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -541,8 +541,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
-
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -559,7 +564,7 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSasService()
-            .setBlob(true)
+            .setBlobAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -569,8 +574,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
-
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         client.delete()
 
@@ -581,7 +591,7 @@ class SASTest extends APISpec {
     def "accountSAS network create container fails"() {
         setup:
         def service = new AccountSasService()
-            .setBlob(true)
+            .setBlobAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -592,8 +602,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
-
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
 
@@ -604,7 +619,7 @@ class SASTest extends APISpec {
     def "accountSAS network create container succeeds"() {
         setup:
         def service = new AccountSasService()
-            .setBlob(true)
+            .setBlobAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -615,7 +630,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
 
@@ -712,8 +733,8 @@ class SASTest extends APISpec {
             .setContentLanguage(language)
             .setContentType(type)
         def key = new UserDelegationKey()
-            .setSignedOid(keyOid)
-            .setSignedTid(keyTid)
+            .setSignedObjectId(keyOid)
+            .setSignedTenantId(keyTid)
             .setSignedStart(keyStart)
             .setSignedExpiry(keyExpiry)
             .setSignedService(keyService)
@@ -788,11 +809,11 @@ class SASTest extends APISpec {
         def perms = BlobSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getWritePermission() == write
-        perms.getDeletePermission() == delete
-        perms.getCreatePermission() == create
-        perms.getAddPermission() == add
+        perms.hasReadPermission() == read
+        perms.hasWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasCreatePermission() == create
+        perms.hasAddPermission() == add
 
         where:
         permString || read  | write | delete | create | add
@@ -844,12 +865,12 @@ class SASTest extends APISpec {
         def perms = BlobContainerSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getWritePermission() == write
-        perms.getDeletePermission() == delete
-        perms.getCreatePermission() == create
-        perms.getAddPermission() == add
-        perms.getListPermission() == list
+        perms.hasReadPermission() == read
+        perms.hasWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasCreatePermission() == create
+        perms.hasAddPermission() == add
+        perms.hasListPermission() == list
 
         where:
         permString || read  | write | delete | create | add   | list
@@ -949,7 +970,7 @@ class SASTest extends APISpec {
         def v = new AccountSasSignatureValues()
         def p = new AccountSasPermission()
             .setReadPermission(true)
-        v.setPermissions(p.toString())
+        v.setPermissions(p)
             .setServices("b")
             .setResourceTypes("o")
             .setStartTime(startTime)
@@ -977,7 +998,7 @@ class SASTest extends APISpec {
     def "accountSasSignatureValues IA"() {
         setup:
         def v = new AccountSasSignatureValues()
-            .setPermissions(permissions)
+            .setPermissions(AccountSasPermission.parse(permissions))
             .setServices(service)
             .setResourceTypes(resourceType)
             .setExpiryTime(expiryTime)
@@ -992,12 +1013,32 @@ class SASTest extends APISpec {
 
         where:
         permissions | service | resourceType | expiryTime                                                | version | creds             || parameter
-        null        | "b"     | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | primaryCredential || "permissions"
         "c"         | null    | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | primaryCredential || "services"
         "c"         | "b"     | null         | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | primaryCredential || "resourceTypes"
         "c"         | "b"     | "c"          | null                                                      | "v"     | primaryCredential || "expiryTime"
-        "c"         | "b"     | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null    | primaryCredential || "version"
         "c"         | "b"     | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | null              || "storageSharedKeyCredentials"
+    }
+
+    def "accountSasSignatureValues null"() {
+        when:
+        setup:
+        def v = new AccountSasSignatureValues()
+
+        when:
+        v.setPermissions(null)
+
+
+        then:
+        def e = thrown(NullPointerException)
+        e.getMessage().contains("permissions")
+    }
+
+    def "accountSasSignatureValues null permission"() {
+        when:
+        AccountSasPermission.parse(null)
+
+        then:
+        thrown(NullPointerException)
     }
 
     @Unroll
@@ -1035,14 +1076,14 @@ class SASTest extends APISpec {
         def perms = AccountSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getWritePermission() == write
-        perms.getDeletePermission() == delete
-        perms.getListPermission() == list
-        perms.getAddPermission() == add
-        perms.getCreatePermission() == create
-        perms.getUpdatePermission() == update
-        perms.getProcessMessages() == process
+        perms.hasReadPermission() == read
+        perms.hasWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasListPermission() == list
+        perms.hasAddPermission() == add
+        perms.hasCreatePermission() == create
+        perms.hasUpdatePermission() == update
+        perms.hasProcessMessages() == process
 
         where:
         permString || read  | write | delete | list  | add   | create | update | process

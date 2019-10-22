@@ -193,8 +193,8 @@ public class Poller<T, R> {
             .flux()
             .repeat()
             .takeUntil(pollResponse -> isComplete())
-            .share()
-            .delaySubscription(onActivation);
+            .delaySubscription(onActivation)
+            .share();
 
         // auto polling start here
         this.fluxDisposable = fluxHandle.subscribe();
@@ -399,8 +399,8 @@ public class Poller<T, R> {
         return Mono.defer(() -> this.pollOperation.apply(this.pollResponse)
             .delaySubscription(getCurrentDelay())
             .onErrorResume(throwable -> {
-                // We should never get here and since we want to continue polling
-                //Log the error
+                // We should never get here and since we want to continue polling.
+                logger.warning("Failed to apply delay and call poll operation.", throwable); 
                 return Mono.empty();
             })
             .doOnEach(pollResponseSignal -> {

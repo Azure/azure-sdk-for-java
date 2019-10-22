@@ -1,5 +1,8 @@
 ## Changelog
 
+### 3.3.1
+- Added @JsonIgnore on getLogger in JsonSerializable
+
 ### 3.3.0
 - **Version Upgrades**
     - Project Reactor version upgrade to 3.3.0.RELEASE

@@ -10,17 +10,19 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import java.util.Objects;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 
 /**
  * A pipeline policy that retries when a recoverable HTTP error occurs.
  */
 public class RetryPolicy implements HttpPipelinePolicy {
+
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
+
+    private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
     private final RetryStrategy retryStrategy;
 
     /**
@@ -50,18 +52,25 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return next.clone().process()
             .flatMap(httpResponse -> {
                 if (shouldRetry(httpResponse, tryCount)) {
+                    final Duration delayDuration = determineDelayDuration(httpResponse, tryCount);
+                    logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
+                        delayDuration.getSeconds());
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                        .delaySubscription(determineDelayDuration(httpResponse, tryCount));
+                        .delaySubscription(delayDuration);
                 } else {
                     return Mono.just(httpResponse);
                 }
             })
             .onErrorResume(err -> {
-                if (tryCount < retryStrategy.getMaxRetries()) {
+                int maxRetries = retryStrategy.getMaxRetries();
+                if (tryCount < maxRetries) {
+                    logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
-                    return Mono.error(err);
+                    return Mono.error(new RuntimeException(
+                        String.format("Max retries %d times exceeded. Error Details: %s", maxRetries, err.getMessage()),
+                        err));
                 }
             });
     }
