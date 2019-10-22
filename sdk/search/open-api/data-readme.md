@@ -158,4 +158,12 @@ directive:
   transform: >-
     return $
     .replace(/(get(IncludeTotalResultCount|UseFuzzyMatching))/g, "is$2")
+
+# Mark IndexingResult as Serializable, for use in IndexBatchException
+- from: IndexingResult.java
+  where: $
+  transform: >-
+    return $
+    .replace(/(import com.fasterxml.jackson.annotation.JsonProperty;)/g, "$1\n\nimport java.io.Serializable;")
+    .replace(/(class IndexingResult {)/g, "class IndexingResult implements Serializable {\n    private static final long serialVersionUID = -8604424005271188140L;")
 ```

@@ -661,12 +661,6 @@
     </And>
   </Match>
 
-  <!-- TODO: https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1325/ -->
-  <Match>
-    <Class name="com.azure.search.IndexBatchException"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
   <!-- TODO: https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1324/ -->
   <Match>
     <Class name="com.azure.search.implementation.GeoPointDeserializer"/>
