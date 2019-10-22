@@ -8,9 +8,8 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class BlobBatchAsyncClientJavaDocCodeSnippets {
 
         Response<Void> deleteResponse1 = batch.deleteBlob("container", "blob1");
         Response<Void> deleteResponse2 = batch.deleteBlob("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
-            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+            new BlobRequestConditions().setLeaseId("leaseId"));
 
         batchAsyncClient.submitBatch(batch).subscribe(response -> {
             System.out.println("Batch submission completed successfully.");
@@ -50,7 +49,7 @@ public class BlobBatchAsyncClientJavaDocCodeSnippets {
 
         Response<Void> deleteResponse1 = batch.deleteBlob("container", "blob1");
         Response<Void> deleteResponse2 = batch.deleteBlob("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
-            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+            new BlobRequestConditions().setLeaseId("leaseId"));
 
         batchAsyncClient.submitBatchWithResponse(batch, true).subscribe(response -> {
             System.out.printf("Batch submission completed with status code: %d%n", response.getStatusCode());

@@ -79,7 +79,7 @@ public final class FilesImpl {
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(FileStorageException.class)
-        Mono<FilesCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5, @HeaderParam("x-ms-content-disposition") String contentDisposition, Context context);
 
         @Get("{shareName}/{filePath}")
         @ExpectedResponses({200, 206})
@@ -98,7 +98,7 @@ public final class FilesImpl {
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(FileStorageException.class)
-        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
+        Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5, @HeaderParam("x-ms-content-disposition") String contentDisposition, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({200})
@@ -161,13 +161,13 @@ public final class FilesImpl {
         final Map<String, String> metadata = null;
         final String filePermission = null;
         final String filePermissionKey = null;
-        final String fileContentType = null;
-        final String fileContentEncoding = null;
-        final String fileContentLanguage = null;
-        final String fileCacheControl = null;
-        final String fileContentDisposition = null;
-        String fileContentMD5Converted = null;
-        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        final String contentType = null;
+        final String contentEncoding = null;
+        final String contentLanguage = null;
+        final String cacheControl = null;
+        final String contentDisposition = null;
+        String contentMd5Converted = null;
+        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition, context);
     }
 
     /**
@@ -191,32 +191,32 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, FileHttpHeaders fileHttpHeaders, Context context) {
         final String fileTypeConstant = "file";
-        String fileContentType = null;
+        String contentType = null;
         if (fileHttpHeaders != null) {
-            fileContentType = fileHttpHeaders.getContentType();
+            contentType = fileHttpHeaders.getContentType();
         }
-        String fileContentEncoding = null;
+        String contentEncoding = null;
         if (fileHttpHeaders != null) {
-            fileContentEncoding = fileHttpHeaders.getContentEncoding();
+            contentEncoding = fileHttpHeaders.getContentEncoding();
         }
-        String fileContentLanguage = null;
+        String contentLanguage = null;
         if (fileHttpHeaders != null) {
-            fileContentLanguage = fileHttpHeaders.getContentLanguage();
+            contentLanguage = fileHttpHeaders.getContentLanguage();
         }
-        String fileCacheControl = null;
+        String cacheControl = null;
         if (fileHttpHeaders != null) {
-            fileCacheControl = fileHttpHeaders.getCacheControl();
+            cacheControl = fileHttpHeaders.getCacheControl();
         }
-        byte[] fileContentMD5 = null;
+        byte[] contentMd5 = null;
         if (fileHttpHeaders != null) {
-            fileContentMD5 = fileHttpHeaders.getContentMD5();
+            contentMd5 = fileHttpHeaders.getContentMd5();
         }
-        String fileContentDisposition = null;
+        String contentDisposition = null;
         if (fileHttpHeaders != null) {
-            fileContentDisposition = fileHttpHeaders.getContentDisposition();
+            contentDisposition = fileHttpHeaders.getContentDisposition();
         }
-        String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition, context);
     }
 
     /**
@@ -334,13 +334,13 @@ public final class FilesImpl {
         final String filePermission = null;
         final String filePermissionKey = null;
         final String comp = "properties";
-        final String fileContentType = null;
-        final String fileContentEncoding = null;
-        final String fileContentLanguage = null;
-        final String fileCacheControl = null;
-        final String fileContentDisposition = null;
-        String fileContentMD5Converted = null;
-        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        final String contentType = null;
+        final String contentEncoding = null;
+        final String contentLanguage = null;
+        final String cacheControl = null;
+        final String contentDisposition = null;
+        String contentMd5Converted = null;
+        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition, context);
     }
 
     /**
@@ -363,32 +363,32 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey, FileHttpHeaders fileHttpHeaders, Context context) {
         final String comp = "properties";
-        String fileContentType = null;
+        String contentType = null;
         if (fileHttpHeaders != null) {
-            fileContentType = fileHttpHeaders.getContentType();
+            contentType = fileHttpHeaders.getContentType();
         }
-        String fileContentEncoding = null;
+        String contentEncoding = null;
         if (fileHttpHeaders != null) {
-            fileContentEncoding = fileHttpHeaders.getContentEncoding();
+            contentEncoding = fileHttpHeaders.getContentEncoding();
         }
-        String fileContentLanguage = null;
+        String contentLanguage = null;
         if (fileHttpHeaders != null) {
-            fileContentLanguage = fileHttpHeaders.getContentLanguage();
+            contentLanguage = fileHttpHeaders.getContentLanguage();
         }
-        String fileCacheControl = null;
+        String cacheControl = null;
         if (fileHttpHeaders != null) {
-            fileCacheControl = fileHttpHeaders.getCacheControl();
+            cacheControl = fileHttpHeaders.getCacheControl();
         }
-        byte[] fileContentMD5 = null;
+        byte[] contentMd5 = null;
         if (fileHttpHeaders != null) {
-            fileContentMD5 = fileHttpHeaders.getContentMD5();
+            contentMd5 = fileHttpHeaders.getContentMd5();
         }
-        String fileContentDisposition = null;
+        String contentDisposition = null;
         if (fileHttpHeaders != null) {
-            fileContentDisposition = fileHttpHeaders.getContentDisposition();
+            contentDisposition = fileHttpHeaders.getContentDisposition();
         }
-        String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition, context);
     }
 
     /**

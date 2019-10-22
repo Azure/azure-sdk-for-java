@@ -8,8 +8,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.models.RecordedData;
-import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -33,14 +31,12 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
      */
     public SecretAsyncClient createAsyncClientWithHttpclient() {
         // BEGIN: com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation
-        RecordedData networkData = new RecordedData();
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(networkData)).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().build();
         SecretAsyncClient keyClient = new SecretClientBuilder()
             .pipeline(pipeline)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .endpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
-            .addPolicy(new RecordNetworkCallPolicy(networkData))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation
@@ -69,8 +65,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
      */
     public SecretAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation
-        RecordedData networkData = new RecordedData();
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(networkData)).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().build();
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .pipeline(pipeline)
             .endpoint("https://myvault.azure.net/")

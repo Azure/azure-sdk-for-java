@@ -4,7 +4,21 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.AppendBlobItem
+import com.azure.storage.blob.models.BlobAccessPolicy
+import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobListDetails
+import com.azure.storage.blob.models.BlobProperties
+import com.azure.storage.blob.models.BlobRequestConditions
+import com.azure.storage.blob.models.BlobSignedIdentifier
+import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.LeaseStateType
+import com.azure.storage.blob.models.LeaseStatusType
+import com.azure.storage.blob.models.ListBlobsOptions
+import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import spock.lang.Unroll
@@ -118,12 +132,12 @@ class ContainerAPITest extends APISpec {
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.getPropertiesWithResponse(new LeaseAccessConditions().setLeaseId(leaseID), null, null).getStatusCode() == 200
+        cc.getPropertiesWithResponse(leaseID, null, null).getStatusCode() == 200
     }
 
     def "Get properties lease fail"() {
         when:
-        cc.getPropertiesWithResponse(new LeaseAccessConditions().setLeaseId("garbage"), null, null)
+        cc.getPropertiesWithResponse("garbage", null, null)
 
         then:
         thrown(BlobStorageException)
@@ -193,10 +207,9 @@ class ContainerAPITest extends APISpec {
     def "Set metadata AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cc, leaseID)
-        def cac = new BlobContainerAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified))
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
 
         expect:
         cc.setMetadataWithResponse(null, cac, null, null).getStatusCode() == 200
@@ -211,10 +224,9 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set metadata AC fail"() {
         setup:
-        def cac = new BlobContainerAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified))
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
 
         when:
         cc.setMetadataWithResponse(null, cac, null, null)
@@ -231,13 +243,13 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set metadata AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions()
+        def mac = new BlobRequestConditions()
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
 
         when:
-        cc.setMetadataWithResponse(null, new BlobContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
+        cc.setMetadataWithResponse(null, mac, null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -338,11 +350,10 @@ class ContainerAPITest extends APISpec {
     def "Set access policy AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cc, leaseID)
-        def cac = new BlobContainerAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified))
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
         cc.setAccessPolicyWithResponse(null, null, cac, null, null).getStatusCode() == 200
@@ -358,11 +369,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set access policy AC fail"() {
         setup:
-        def cac = new BlobContainerAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified))
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
         cc.setAccessPolicyWithResponse(null, null, cac, null, null)
@@ -380,10 +390,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set access policy AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
-        cc.setAccessPolicyWithResponse(null, null, new BlobContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
+        cc.setAccessPolicyWithResponse(null, null, mac, null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -431,12 +441,12 @@ class ContainerAPITest extends APISpec {
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.getAccessPolicyWithResponse(new LeaseAccessConditions().setLeaseId(leaseID), null, null).getStatusCode() == 200
+        cc.getAccessPolicyWithResponse(leaseID, null, null).getStatusCode() == 200
     }
 
     def "Get access policy lease fail"() {
         when:
-        cc.getAccessPolicyWithResponse(new LeaseAccessConditions().setLeaseId(garbageLeaseID), null, null)
+        cc.getAccessPolicyWithResponse(garbageLeaseID, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -476,11 +486,10 @@ class ContainerAPITest extends APISpec {
     def "Delete AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cc, leaseID)
-        def cac = new BlobContainerAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified))
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
         cc.deleteWithResponse(cac, null, null).getStatusCode() == 202
@@ -496,11 +505,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Delete AC fail"() {
         setup:
-        def cac = new BlobContainerAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified))
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
         cc.deleteWithResponse(cac, null, null)
@@ -518,10 +526,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Delete AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
-        cc.deleteWithResponse(new BlobContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
+        cc.deleteWithResponse(mac, null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -578,7 +586,7 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
         blob.getProperties().getContentLength() != null
         blob.getProperties().getContentType() != null
-        blob.getProperties().getContentMD5() != null
+        blob.getProperties().getContentMd5() != null
         blob.getProperties().getContentEncoding() == null
         blob.getProperties().getContentDisposition() == null
         blob.getProperties().getContentLanguage() == null
@@ -628,7 +636,7 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
         blob.getProperties().getContentLength() != null
         blob.getProperties().getContentType() != null
-        blob.getProperties().getContentMD5() == null
+        blob.getProperties().getContentMd5() == null
         blob.getProperties().getContentEncoding() == null
         blob.getProperties().getContentDisposition() == null
         blob.getProperties().getContentLanguage() == null
