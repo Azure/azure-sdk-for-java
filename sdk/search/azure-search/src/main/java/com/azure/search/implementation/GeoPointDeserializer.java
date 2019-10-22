@@ -17,11 +17,12 @@ import java.util.stream.Collectors;
  * Custom deserializer to detect GeoJSON structures in dynamic results and deserialize as instances of {@link GeoPoint}
  */
 final class GeoPointDeserializer extends UntypedObjectDeserializer {
-
+    private static final long serialVersionUID = 1L;
     private final UntypedObjectDeserializer defaultDeserializer;
 
     /**
      * Constructor
+     *
      * @param defaultDeserializer the deserializer to use when a GeoJSON match is not found
      */
     GeoPointDeserializer(UntypedObjectDeserializer defaultDeserializer) {
@@ -30,7 +31,6 @@ final class GeoPointDeserializer extends UntypedObjectDeserializer {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         if (jp.currentTokenId() == JsonTokenId.ID_START_OBJECT) {
             Object obj = defaultDeserializer.deserialize(jp, ctxt);
@@ -47,6 +47,7 @@ final class GeoPointDeserializer extends UntypedObjectDeserializer {
 
     /**
      * Converts an object to a GeoPoint if it is valid GeoJSON, otherwise returns the original object.
+     *
      * @param obj the object to parse
      * @return an instance of {@link GeoPoint} if valid GeoJSON, otherwise obj.
      */
@@ -71,30 +72,41 @@ final class GeoPointDeserializer extends UntypedObjectDeserializer {
 
     /**
      * Determines whether an object is valid GeoJSON object.
+     *
      * @param obj the object to test
      * @return true if the object is valid GeoJSON, false otherwise.
      */
     @SuppressWarnings("unchecked")
     private boolean isGeoJsonPoint(Object obj) {
         try {
-            Map<String, Object> map = (Map<String, Object>) obj;
+            if (obj instanceof Map) {
+                Map<String, Object> map = (Map<String, Object>) obj;
 
-            return isValidPoint(map)
-                && isValidCoordinates(map)
-                && isValidCrs(map);
-        } catch (Exception ex) {
+                return isValidPoint(map)
+                    && isValidCoordinates(map)
+                    && isValidCrs(map);
+            }
+
+            return false;
+        } catch (RuntimeException ex) {
+            // somehow we got an object which isn't a Map<String, Object>
             return false;
         }
     }
 
     private boolean isValidPoint(Map<String, Object> map) {
-        return map.get("type").equals("Point");
+        if (map != null && map.containsKey("type")) {
+            return map.get("type").equals("Point");
+        }
+
+        return false;
     }
 
+    @SuppressWarnings("unchecked")
     private boolean isValidCrs(Map<String, Object> map) {
         // crs is not required to deserialize, but must be valid if present
         boolean isValidCrs;
-        if (map.containsKey("crs")) {
+        if (map != null && map.containsKey("crs")) {
             Map<String, Object> crs = (Map<String, Object>) map.get("crs");
             boolean isValidType = crs.get("type").equals("name");
 

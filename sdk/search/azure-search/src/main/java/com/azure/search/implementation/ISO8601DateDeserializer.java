@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Custom deserializer to deserialize strings as instances of {@link OffsetDateTime}
  */
 final class ISO8601DateDeserializer extends UntypedObjectDeserializer {
-
+    private static final long serialVersionUID = 1L;
     private final UntypedObjectDeserializer defaultDeserializer;
 
     /**
@@ -30,7 +30,6 @@ final class ISO8601DateDeserializer extends UntypedObjectDeserializer {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         if (jp.getCurrentTokenId() == JsonTokenId.ID_STRING) {
             String value = jp.getText();

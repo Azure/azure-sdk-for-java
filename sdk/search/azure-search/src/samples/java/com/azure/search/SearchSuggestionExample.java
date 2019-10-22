@@ -35,12 +35,12 @@ public class SearchSuggestionExample {
         System.out.println("Received results with highlight:");
         response.forEach(r -> System.out.println(r.getText()));
 
-        /** Output:
-         * Received results with highlight:
-         * Best <b>hotel</b> in town if you like luxury <b>hotels</b>. They have an amazing infinity pool, a spa, and
-         * a really helpful concierge. The location is perfect -- right downtown, close to all the tourist
-         * attractions. We highly recommend this <b>hotel</b>.
-         **/
+        /* Output:
+          Received results with highlight:
+          Best <b>hotel</b> in town if you like luxury <b>hotels</b>. They have an amazing infinity pool, a spa, and
+          a really helpful concierge. The location is perfect -- right downtown, close to all the tourist
+          attractions. We highly recommend this <b>hotel</b>.
+         */
     }
 
     private static void SearchSuggestionFuzzy(SearchIndexClient searchClient) {
@@ -55,14 +55,14 @@ public class SearchSuggestionExample {
         System.out.println("Received results with fuzzy option:");
         response.forEach(r -> System.out.println(r.getText()));
 
-        /** Output:
-         * Received results with fuzzy option:
-         * Countryside Hotel
-         * Pretty good hotel
-         * Another good hotel
-         * Very popular hotel in town
-         * Cheapest hotel in town. Infact, a motel.
-         **/
+        /* Output:
+          Received results with fuzzy option:
+          Countryside Hotel
+          Pretty good hotel
+          Another good hotel
+          Very popular hotel in town
+          Cheapest hotel in town. Infact, a motel.
+         */
     }
 
     private static SearchIndexClient getSearchClient() {

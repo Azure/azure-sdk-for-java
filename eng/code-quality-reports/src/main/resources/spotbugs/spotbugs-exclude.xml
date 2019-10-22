@@ -641,4 +641,44 @@
     <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
+
+
+  <!-- Azure search has generated code mixed with hand-written in these packages -->
+  <Match>
+    <And>
+      <Package name="~com\.azure\.search\.(implementation|models)(.*)"/>
+      <Not>        
+        <Or>
+          <!-- Hand-written classes should be specified here to be checked -->
+          <Class name="com.azure.search.implementation.GeoPointDeserializer"/>
+          <Class name="com.azure.search.implementation.ISO8601DateDeserializer"/>
+          <Class name="com.azure.search.implementation.SerializationUtil"/>
+          <Class name="com.azure.search.models.CoordinateSystem"/>
+          <Class name="com.azure.search.models.GeoPoint"/>
+          <Class name="com.azure.search.models.IndexBatch"/>
+        </Or>
+      </Not>
+    </And>
+  </Match>
+
+  <!-- TODO: https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1325/ -->
+  <Match>
+    <Class name="com.azure.search.IndexBatchException"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- TODO: https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1324/ -->
+  <Match>
+    <Class name="com.azure.search.implementation.GeoPointDeserializer"/>
+    <Or>
+      <Bug pattern="DM_FP_NUMBER_CTOR"/>
+      <Bug pattern="SE_BAD_FIELD"/>
+    </Or>
+  </Match>
+
+  <!-- TODO: Package is moving to azure-core -->
+  <Match>
+    <Package name="~com\.azure\.search\.common\.jsonwrapper(.*)"/>
+  </Match>
+
 </FindBugsFilter>

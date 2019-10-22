@@ -13,7 +13,9 @@ import java.util.List;
  * An {@code IndexBatchException} is thrown whenever Azure Search index call was only partially successful.
  * Users can inspect the indexingResults to determine the operation(s) that have failed.
  */
+@SuppressWarnings("WeakerAccess")
 public class IndexBatchException extends AzureException {
+    private static final long serialVersionUID = 1L;
     private static final String MESSAGE_FORMAT = "%s of %s indexing actions in the batch failed. The remaining"
         + " actions succeeded and modified the index. Check indexingResults for the status of each index action.";
 

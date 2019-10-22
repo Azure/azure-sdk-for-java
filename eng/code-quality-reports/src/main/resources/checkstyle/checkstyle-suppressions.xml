@@ -230,9 +230,9 @@
   <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.search.test.environment.models.*.java"/>
 
   <!-- Suppress checks for AutoRest generated Search code -->
-  <suppress checks="LineLength" files="com.azure.search.implementation.*.java"/>
-  <suppress checks="LineLength" files="com.azure.search.models.(Analyzer|CharFilter|CognitiveServices|DataChangeDetectionPolicy|DataDeletionDetectionPolicy|ServiceLimits|ScoringFunction|Skill|TokenFilter|Tokenizer).java"/>
-  <suppress checks="UnusedImports" files="com.azure.search.implementation.SearchServiceRestClientBuilder.java"/>
+  <!-- Hand-written classes should be specified here to be checked -->
+    <suppress checks="." files=".*[/\\]search[/\\]implementation[/\\]((?!(GeoPointDeserializer|ISO8601DateDeserializer|SerializationUtil)).*)"/>  
+  <suppress checks="." files=".*[/\\]search[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch)).*)"/>  
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.search.common.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>

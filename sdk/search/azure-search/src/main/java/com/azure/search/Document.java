@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
  * If the schema is known, user can convert the properties to a specific object type using the as method
  */
 public class Document extends LinkedHashMap<String, Object> {
+    private static final long serialVersionUID = 1L;
 
     /**
      * If the document schema is known, user can convert the properties to a specific object type

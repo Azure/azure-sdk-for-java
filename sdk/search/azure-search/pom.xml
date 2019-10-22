@@ -26,20 +26,16 @@
 
   <build>
     <plugins>
-      <!-- temporarily disable warnings as build failures until the reference to com.microsoft.azure is removed -->
+      <!-- TODO items to remove the following exemption:
+      https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1323/
+      https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1324/
+      https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1327
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <failOnWarning>false</failOnWarning>
-        </configuration>
-      </plugin>
-      <!-- temporarily disable spotbugs errors -->
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <configuration>
-          <failOnError>false</failOnError>
         </configuration>
       </plugin>
     </plugins>
@@ -55,7 +51,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.0.0-preview.6</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -64,10 +59,6 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-runtime</artifactId>
     </dependency>
 
     <!-- Test dependencies -->
@@ -87,6 +78,11 @@
       <artifactId>reactor-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-runtime</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <!-- Test dependencies for creating search resources -->
     <dependency>
@@ -104,10 +100,12 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-search</artifactId>
       <version>1.24.1</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>

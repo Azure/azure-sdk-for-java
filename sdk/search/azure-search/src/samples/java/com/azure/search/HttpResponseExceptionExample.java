@@ -94,7 +94,7 @@ public class HttpResponseExceptionExample {
                     throw new RuntimeException(err);
                 }
             },
-            () -> { System.out.println("completed"); });
+            () -> System.out.println("completed"));
 
         /*
         This will block until the above query has completed. This is strongly discouraged for use in production as
