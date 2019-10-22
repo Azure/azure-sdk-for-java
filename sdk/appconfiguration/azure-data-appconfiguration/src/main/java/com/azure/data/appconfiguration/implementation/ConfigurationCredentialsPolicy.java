@@ -8,7 +8,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
