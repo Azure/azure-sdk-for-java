@@ -44,16 +44,17 @@ class PipelineSample {
         // We add in a policy to track the type of HTTP method calls we make.
         // We also want to see the Header information of our HTTP requests, so we specify the detail level.
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-                .credential(new ConfigurationClientCredentials(connectionString))
+                .connectionString(connectionString)
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
                 .buildAsyncClient();
 
         // Adding a couple of settings and then fetching all the settings in our repository.
-        final List<ConfigurationSetting> settings = Flux.concat(client.addSetting(new ConfigurationSetting().setKey("hello").setValue("world")),
-                client.setSetting("newSetting", null, "newValue"))
-                .then(client.listSettings(new SettingSelector().setKeys("*")).collectList())
-                .block();
+        final List<ConfigurationSetting> settings = Flux.concat(
+            client.addSetting("hello", null, "world"),
+            client.setSetting("newSetting", null, "newValue"))
+            .then(client.listSettings(new SettingSelector().setKeys("*")).collectList())
+            .block();
 
         // Cleaning up after ourselves by deleting the values.
         final Stream<ConfigurationSetting> stream = settings == null

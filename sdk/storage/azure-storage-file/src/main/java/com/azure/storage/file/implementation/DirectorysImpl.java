@@ -27,7 +27,7 @@ import com.azure.storage.file.implementation.models.DirectorysListFilesAndDirect
 import com.azure.storage.file.implementation.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.implementation.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.implementation.models.DirectorysSetPropertiesResponse;
-import com.azure.storage.file.models.StorageErrorException;
+import com.azure.storage.file.models.FileStorageException;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
@@ -65,42 +65,42 @@ public final class DirectorysImpl {
     private interface DirectorysService {
         @Put("{shareName}/{directoryPath}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<DirectorysCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("restype") String restype, Context context);
 
         @Get("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<DirectorysGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
 
         @Delete("{shareName}/{directoryPath}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<DirectorysDeleteResponse> delete(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
 
         @Put("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<DirectorysSetPropertiesResponse> setProperties(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<DirectorysSetMetadataResponse> setMetadata(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegment(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<DirectorysListHandlesResponse> listHandles(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-recursive") Boolean recursive, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<DirectorysForceCloseHandlesResponse> forceCloseHandles(@PathParam("shareName") String shareName, @PathParam("directoryPath") String directoryPath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("marker") String marker, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-handle-id") String handleId, @HeaderParam("x-ms-recursive") Boolean recursive, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
     }
 

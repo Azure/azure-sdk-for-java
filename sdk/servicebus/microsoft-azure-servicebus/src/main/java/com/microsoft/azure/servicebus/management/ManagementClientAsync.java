@@ -1134,8 +1134,8 @@ public class ManagementClientAsync {
             return null;
         }
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(content.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
@@ -1164,7 +1164,7 @@ public class ManagementClientAsync {
         SecurityToken token = tokenProvider.getSecurityTokenAsync(url).get();
         return token.getTokenValue();
     }
-    
+
     private static int getPortNumberFromHost(String host) {
         if (host.endsWith("onebox.windows-int.net")) {
             return ONE_BOX_HTTPS_PORT;

@@ -20,7 +20,7 @@ public final class SasTokenCredential {
      *
      * @param sasToken SAS token used to authenticate requests with the service.
      */
-    private SasTokenCredential(String sasToken) {
+    public SasTokenCredential(String sasToken) {
         this.sasToken = sasToken;
     }
 

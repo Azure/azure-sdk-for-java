@@ -59,9 +59,9 @@ class NettyAsyncHttpClient implements HttpClient {
     /** {@inheritDoc} */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
-        Objects.requireNonNull(request.getHttpMethod());
-        Objects.requireNonNull(request.getUrl());
-        Objects.requireNonNull(request.getUrl().getProtocol());
+        Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");
+        Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
+        Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
 
         return nettyClient
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))

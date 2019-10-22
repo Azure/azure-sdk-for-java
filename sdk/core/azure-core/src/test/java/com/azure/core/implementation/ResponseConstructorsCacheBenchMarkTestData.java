@@ -186,7 +186,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         @Override
-        public String getNextLink() {
+        public String getContinuationToken() {
             return null;
         }
     };

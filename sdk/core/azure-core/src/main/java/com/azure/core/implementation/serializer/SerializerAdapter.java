@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.serializer;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.CollectionFormat;
 
 import java.io.IOException;
@@ -53,4 +54,36 @@ public interface SerializerAdapter {
      * @throws IOException exception from deserialization
      */
     <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
+
+    /**
+     * Deserialize the provided headers returned from a REST API to an entity instance declared as
+     * the model to hold 'Matching' headers.
+     *
+     * 'Matching' headers are the REST API returned headers those with:
+     * 1. header names same as name of a properties in the entity.
+     * 2. header names start with value of {@link com.azure.core.annotation.HeaderCollection} annotation applied to the
+     * properties in the entity.
+     *
+     * When needed, the 'header entity' types must be declared as first generic argument of
+     * {@link com.azure.core.http.rest.ResponseBase} returned by java proxy method corresponding to the REST API.
+     * e.g.
+     * {@code Mono<RestResponseBase<FooMetadataHeaders, Void>> getMetadata(args);}
+     * {@code
+     *      class FooMetadataHeaders {
+     *          String name;
+     *          @HeaderCollection("header-collection-prefix-")
+     *          Map<String,String> headerCollection;
+     *      }
+     * }
+     *
+     * in the case of above example, this method produces an instance of FooMetadataHeaders from provided {@headers}.
+     *
+     * @param headers the REST API returned headers
+     * @param <U> the type of the deserialized object
+     * @param type the type to deserialize
+     * @return instance of header entity type created based on provided {@headers}, if header entity model does
+     *     not exists then return null
+     * @throws IOException If an I/O error occurs
+     */
+    <U> U deserialize(HttpHeaders headers, Type type) throws IOException;
 }

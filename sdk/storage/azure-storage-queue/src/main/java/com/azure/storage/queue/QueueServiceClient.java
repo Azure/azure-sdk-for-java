@@ -7,17 +7,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.models.CorsRule;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
+import com.azure.storage.queue.models.QueueServiceProperties;
+import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.StorageException;
-import com.azure.storage.queue.models.StorageServiceProperties;
-import com.azure.storage.queue.models.StorageServiceStats;
+import com.azure.storage.queue.models.QueueStorageException;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -32,7 +33,7 @@ import reactor.core.publisher.Mono;
  *
  * @see QueueServiceClientBuilder
  * @see QueueServiceAsyncClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = QueueServiceClientBuilder.class)
 public final class QueueServiceClient {
@@ -52,6 +53,15 @@ public final class QueueServiceClient {
      */
     public String getQueueServiceUrl() {
         return client.getQueueServiceUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public QueueServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -77,7 +87,7 @@ public final class QueueServiceClient {
      *
      * @param queueName Name of the queue
      * @return A response containing the QueueClient and the status of creating the queue
-     * @throws StorageException If a queue with the same name and different metadata already exists
+     * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
     public QueueClient createQueue(String queueName) {
         return createQueueWithResponse(queueName, null, null, Context.NONE).getValue();
@@ -99,14 +109,14 @@ public final class QueueServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the QueueClient and the status of creating the queue
-     * @throws StorageException If a queue with the same name and different metadata already exists
+     * @throws QueueStorageException If a queue with the same name and different metadata already exists
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Duration timeout, Context context) {
 
         Mono<Response<QueueAsyncClient>> asyncResponse = client.createQueueWithResponse(queueName, metadata, context);
-        Response<QueueAsyncClient> response = Utility.blockWithOptionalTimeout(asyncResponse, timeout);
+        Response<QueueAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(asyncResponse, timeout);
         return new SimpleResponse<>(response, new QueueClient(response.getValue()));
     }
 
@@ -120,7 +130,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public void deleteQueue(String queueName) {
         deleteQueueWithResponse(queueName, null, Context.NONE);
@@ -140,12 +150,12 @@ public final class QueueServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of deleting the queue
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteQueueWithResponse(queueName, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -227,7 +237,7 @@ public final class QueueServiceClient {
      *
      * @return Storage account Queue service properties
      */
-    public StorageServiceProperties getProperties() {
+    public QueueServiceProperties getProperties() {
         return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
@@ -251,48 +261,49 @@ public final class QueueServiceClient {
      * @return A response containing the Storage account Queue service properties
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<StorageServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        Mono<Response<StorageServiceProperties>> response = client.getPropertiesWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+    public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
+        Mono<Response<QueueServiceProperties>> response = client.getPropertiesWithResponse(context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
      * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#getCors()
-     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#getCors()
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link QueueServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link QueueServiceProperties#getCors()
      * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.setProperties#storageServiceProperties}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setProperties#QueueServiceProperties}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#storageServiceProperties}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#QueueServiceProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
-     * @throws StorageException When one of the following is true
+     * @throws QueueStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
-     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
-     * headers}, or {@link CorsRule#getAllowedOrigins() allowedOrigins() allowed origins} exceeds 256 characters.
+     * Length of {@link QueueCorsRule#getAllowedHeaders() allowed headers}, {@link QueueCorsRule#getExposedHeaders()
+     * exposed headers}, or {@link QueueCorsRule#getAllowedOrigins() allowedOrigins() allowed origins} exceeds 256
+     * characters.
      * </li>
-     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * <li>{@link QueueCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
      * PUT</li>
      * </ul>
      */
-    public void setProperties(StorageServiceProperties properties) {
+    public void setProperties(QueueServiceProperties properties) {
         setPropertiesWithResponse(properties, null, Context.NONE);
     }
 
@@ -300,19 +311,19 @@ public final class QueueServiceClient {
      * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#getCors()
-     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#getCors()
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link QueueServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link QueueServiceProperties#getCors()
      * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#storageServiceProperties-duration-context}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#QueueServiceProperties-duration-context}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties-duration-context}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
@@ -323,24 +334,24 @@ public final class QueueServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException When one of the following is true
+     * @throws QueueStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
-     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
-     * headers}, or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * Length of {@link QueueCorsRule#getAllowedHeaders() allowed headers}, {@link QueueCorsRule#getExposedHeaders()
+     * exposed headers}, or {@link QueueCorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      * </li>
-     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * <li>{@link QueueCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
      * PUT</li>
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<Void> setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout,
+    public Response<Void> setPropertiesWithResponse(QueueServiceProperties properties, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.setPropertiesWithResponse(properties, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -357,7 +368,7 @@ public final class QueueServiceClient {
      *
      * @return The geo replication information about the Queue service
      */
-    public StorageServiceStats getStatistics() {
+    public QueueServiceStatistics getStatistics() {
         return getStatisticsWithResponse(null, Context.NONE).getValue();
     }
 
@@ -379,9 +390,9 @@ public final class QueueServiceClient {
      * @return A response containing the geo replication information about the Queue service
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<StorageServiceStats> getStatisticsWithResponse(Duration timeout, Context context) {
-        Mono<Response<StorageServiceStats>> response = client.getStatisticsWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+    public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
+        Mono<Response<QueueServiceStatistics>> response = client.getStatisticsWithResponse(context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
 

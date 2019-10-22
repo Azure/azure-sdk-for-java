@@ -3,11 +3,14 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
@@ -61,7 +64,7 @@ public final class FluxUtil {
         try {
             byteOutputStream.write(byteBufferToArray(byteBuffer));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error occurred writing ByteBuffer to ByteArrayOutputStream.", e);
         }
     }
 
@@ -108,6 +111,42 @@ public final class FluxUtil {
      */
     public static <T> Mono<T> toMono(Response<T> response) {
         return Mono.justOrEmpty(response.getValue());
+    }
+
+    /**
+     * Propagates a {@link RuntimeException} through the error channel of {@link Mono}.
+     *
+     * @param logger The {@link ClientLogger} to log the exception.
+     * @param ex The {@link RuntimeException}.
+     * @param <T> The return type.
+     * @return A {@link Mono} that terminates with error wrapping the {@link RuntimeException}.
+     */
+    public static <T> Mono<T> monoError(ClientLogger logger, RuntimeException ex) {
+        return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+    }
+
+    /**
+     * Propagates a {@link RuntimeException} through the error channel of {@link Flux}.
+     *
+     * @param logger The {@link ClientLogger} to log the exception.
+     * @param ex The {@link RuntimeException}.
+     * @param <T> The return type.
+     * @return A {@link Flux} that terminates with error wrapping the {@link RuntimeException}.
+     */
+    public static <T> Flux<T> fluxError(ClientLogger logger, RuntimeException ex) {
+        return Flux.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+    }
+
+    /**
+     * Propagates a {@link RuntimeException} through the error channel of {@link PagedFlux}.
+     *
+     * @param logger The {@link ClientLogger} to log the exception.
+     * @param ex The {@link RuntimeException}.
+     * @param <T> The return type.
+     * @return A {@link PagedFlux} that terminates with error wrapping the {@link RuntimeException}.
+     */
+    public static <T> PagedFlux<T> pagedFluxError(ClientLogger logger, RuntimeException ex) {
+        return new PagedFlux<>(() -> monoError(logger, ex));
     }
 
     /**
@@ -261,7 +300,7 @@ public final class FluxUtil {
             long size = fileChannel.size();
             return readFile(fileChannel, DEFAULT_CHUNK_SIZE, 0, size);
         } catch (IOException e) {
-            return Flux.error(e);
+            return Flux.error(new RuntimeException("Failed to read the file.", e));
         }
     }
 
