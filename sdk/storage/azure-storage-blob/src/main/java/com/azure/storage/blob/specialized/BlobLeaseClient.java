@@ -20,25 +20,25 @@ import java.time.Duration;
  * This class provides a client that contains all the leasing operations for {@link BlobContainerClient containers} and
  * {@link BlobClient blobs}. This client acts as a supplement to those clients and only handles leasing operations.
  *
- * <p><strong>Instantiating a LeaseClient</strong></p>
+ * <p><strong>Instantiating a BlobLeaseClient</strong></p>
  *
  * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlob}
  *
  * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainer}
  *
- * <p>View {@link LeaseClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link BlobLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
  * <p>For more information about leasing see the
  * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-container">container leasing</a> or
  * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">blob leasing</a> documentation.</p>
  *
- * @see LeaseClientBuilder
+ * @see BlobLeaseClientBuilder
  */
-@ServiceClient(builder =  LeaseClientBuilder.class)
-public final class LeaseClient {
-    private final LeaseAsyncClient client;
+@ServiceClient(builder =  BlobLeaseClientBuilder.class)
+public final class BlobLeaseClient {
+    private final BlobLeaseAsyncClient client;
 
-    LeaseClient(LeaseAsyncClient client) {
+    BlobLeaseClient(BlobLeaseAsyncClient client) {
         this.client = client;
     }
 
@@ -68,7 +68,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.acquireLease#int}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.acquireLease#int}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @return The lease ID.
@@ -84,7 +84,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -106,7 +106,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.renewLease}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.renewLease}
      *
      * @return The renewed lease ID.
      */
@@ -120,7 +120,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -141,7 +141,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.releaseLease}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.releaseLease}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releaseLease() {
@@ -153,7 +153,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -174,7 +174,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.breakLease}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.breakLease}
      *
      * @return The remaining time in the broken lease in seconds.
      */
@@ -191,7 +191,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context}
      *
      * @param breakPeriodInSeconds An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
@@ -216,7 +216,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.changeLease#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.changeLease#String}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @return The new lease ID.
@@ -231,7 +231,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and

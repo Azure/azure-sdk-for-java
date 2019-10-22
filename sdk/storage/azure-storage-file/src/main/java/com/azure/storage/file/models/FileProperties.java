@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.file.FileSmbProperties;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 /**
  * Contains property information about a File in the storage File service.
  */
+@Immutable
 public final class FileProperties {
     private final String eTag;
     private final OffsetDateTime lastModified;
@@ -19,7 +21,7 @@ public final class FileProperties {
     private final String fileType;
     private final Long contentLength;
     private final String contentType;
-    private final byte[] contentMD5;
+    private final byte[] contentMd5;
     private final String contentEncoding;
     private final String cacheControl;
     private final String contentDisposition;
@@ -42,7 +44,7 @@ public final class FileProperties {
      * @param contentLength The number of bytes present in the response body.
      * @param contentType The content type specified for the file. The default content type is
      * application/octet-stream.
-     * @param contentMD5 The MD5 hash of the file to check the message content integrity.
+     * @param contentMd5 The MD5 hash of the file to check the message content integrity.
      * @param contentEncoding This header returns the value that was specified for the Content-Encoding request header.
      * @param cacheControl This header is returned if it was previously specified for the file.
      * @param contentDisposition The value that was specified for the x-ms-content-disposition header and specifies how
@@ -70,7 +72,7 @@ public final class FileProperties {
      * @param smbProperties The SMB properties of the file.
      */
     public FileProperties(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata,
-        final String fileType, final Long contentLength, final String contentType, final byte[] contentMD5,
+        final String fileType, final Long contentLength, final String contentType, final byte[] contentMd5,
         final String contentEncoding, final String cacheControl, final String contentDisposition,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final String copyId,
         final String copyProgress, final String copySource, final CopyStatusType copyStatus,
@@ -81,7 +83,7 @@ public final class FileProperties {
         this.fileType = fileType;
         this.contentLength = contentLength;
         this.contentType = contentType;
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         this.contentEncoding = contentEncoding;
         this.cacheControl = cacheControl;
         this.contentDisposition = contentDisposition;
@@ -140,8 +142,8 @@ public final class FileProperties {
     /**
      * @return The MD5 hash of the file.
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(contentMd5);
     }
 
     /**

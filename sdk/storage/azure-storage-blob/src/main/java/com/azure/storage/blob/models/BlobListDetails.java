@@ -3,34 +3,33 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.BlobContainerClient;
 
 import java.util.ArrayList;
 
 /**
  * This type allows users to specify additional information the service should return with each blob when listing blobs
- * in a container (via a {@link BlobContainerClient} object). This type is immutable to ensure thread-safety of requests, so
- * changing the details for a different listing operation requires construction of a new object. Null may be passed if
- * none of the options are desirable.
+ * in a container (via a {@link BlobContainerClient} object). This type is immutable to ensure thread-safety of
+ * requests, so changing the details for a different listing operation requires construction of a new object. Null may
+ * be passed if none of the options are desirable.
  */
+@Fluent
 public final class BlobListDetails {
-
     private boolean retrieveCopy;
-
     private boolean retrieveMetadata;
-
     private boolean retrieveSnapshots;
-
     private boolean retrieveUncommittedBlobs;
-
     private boolean retrieveDeletedBlobs;
 
+    /**
+     * Constructs an unpopulated {@link BlobListDetails}.
+     */
     public BlobListDetails() {
     }
 
     /**
-     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the
-     * response.
+     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the response.
      *
      * @return a flag indicating if copy information will be returned in the listing
      */
@@ -39,8 +38,7 @@ public final class BlobListDetails {
     }
 
     /**
-     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the
-     * response.
+     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the response.
      *
      * @param retrieveCopy Flag indicating whether copy information should be returned
      * @return the updated BlobListDetails object
@@ -91,8 +89,8 @@ public final class BlobListDetails {
     }
 
     /**
-     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
-     * should be included in the response.
+     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List, should
+     * be included in the response.
      *
      * @return a flag indicating if uncommitted blobs will be returned in the listing
      */
@@ -101,8 +99,8 @@ public final class BlobListDetails {
     }
 
     /**
-     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
-     * should be included in the response.
+     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List, should
+     * be included in the response.
      *
      * @param retrieveUncommittedBlobs Flag indicating whether uncommitted blobs should be returned
      * @return the updated BlobListDetails object

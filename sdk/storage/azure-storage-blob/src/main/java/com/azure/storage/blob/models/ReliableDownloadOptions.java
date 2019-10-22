@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Locale;
@@ -10,6 +11,7 @@ import java.util.Locale;
 /**
  * This class contains the configuration options used to reliably download from the blob service.
  */
+@Fluent
 public final class ReliableDownloadOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 

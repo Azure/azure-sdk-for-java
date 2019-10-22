@@ -161,7 +161,7 @@ public final class BlobContainerClientBuilder {
         } else {
             this.customerProvidedKey = new CpkInfo()
                 .setEncryptionKey(customerProvidedKey.getKey())
-                .setEncryptionKeySha256(customerProvidedKey.getKeySHA256())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 
