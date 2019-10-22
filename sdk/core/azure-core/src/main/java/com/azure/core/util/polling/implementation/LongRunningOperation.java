@@ -30,10 +30,14 @@ import java.util.function.Supplier;
 //       .takeUntil(pr -> pr.getStatus() == PollResponse.OperationStatus.IN_PROGRESS)
 //       .block();
 //
+//    Keep receiving events from pollflux for a specific duration (e.g. timeout) and if after timeout
+//    the operation is not yet completed then cancel the server operation.
+//
 //    pollFlux
-//       .timeout(Duration.ofMinutes(15))
+//       .take(Duration.ofMinutes(timeoutInMs))
+//       .last()
 //       .flatmap(pr ->
-//           if(pr.getStatus() == PollResponse.OperationStatus.FAILED)) {
+//           if(!pr.isCompleted())) {
 //              return pr.cancel();
 //           } else {
 //              return Mono.just(pr);
