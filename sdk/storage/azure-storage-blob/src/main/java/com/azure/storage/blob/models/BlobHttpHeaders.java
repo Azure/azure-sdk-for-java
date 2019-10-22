@@ -19,183 +19,183 @@ public final class BlobHttpHeaders {
      * Optional. Sets the blob's cache control. If specified, this property is
      * stored with the blob and returned with a read request.
      */
-    @JsonProperty(value = "blobCacheControl")
-    private String blobCacheControl;
+    @JsonProperty(value = "cacheControl")
+    private String cacheControl;
 
     /*
      * Optional. Sets the blob's content type. If specified, this property is
      * stored with the blob and returned with a read request.
      */
-    @JsonProperty(value = "blobContentType")
-    private String blobContentType;
+    @JsonProperty(value = "contentType")
+    private String contentType;
 
     /*
      * Optional. An MD5 hash of the blob content. Note that this hash is not
      * validated, as the hashes for the individual blocks were validated when
      * each was uploaded.
      */
-    @JsonProperty(value = "blobContentMD5")
-    private byte[] blobContentMD5;
+    @JsonProperty(value = "contentMd5")
+    private byte[] contentMd5;
 
     /*
      * Optional. Sets the blob's content encoding. If specified, this property
      * is stored with the blob and returned with a read request.
      */
-    @JsonProperty(value = "blobContentEncoding")
-    private String blobContentEncoding;
+    @JsonProperty(value = "contentEncoding")
+    private String contentEncoding;
 
     /*
      * Optional. Set the blob's content language. If specified, this property
      * is stored with the blob and returned with a read request.
      */
-    @JsonProperty(value = "blobContentLanguage")
-    private String blobContentLanguage;
+    @JsonProperty(value = "contentLanguage")
+    private String contentLanguage;
 
     /*
      * Optional. Sets the blob's Content-Disposition header.
      */
-    @JsonProperty(value = "blobContentDisposition")
-    private String blobContentDisposition;
+    @JsonProperty(value = "contentDisposition")
+    private String contentDisposition;
 
     /**
-     * Get the blobCacheControl property: Optional. Sets the blob's cache
-     * control. If specified, this property is stored with the blob and
-     * returned with a read request.
+     * Get the cacheControl property: Optional. Sets the blob's cache control.
+     * If specified, this property is stored with the blob and returned with a
+     * read request.
      *
-     * @return the blobCacheControl value.
+     * @return the cacheControl value.
      */
-    public String getBlobCacheControl() {
-        return this.blobCacheControl;
+    public String getCacheControl() {
+        return this.cacheControl;
     }
 
     /**
-     * Set the blobCacheControl property: Optional. Sets the blob's cache
-     * control. If specified, this property is stored with the blob and
-     * returned with a read request.
+     * Set the cacheControl property: Optional. Sets the blob's cache control.
+     * If specified, this property is stored with the blob and returned with a
+     * read request.
      *
-     * @param blobCacheControl the blobCacheControl value to set.
+     * @param cacheControl the cacheControl value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    public BlobHttpHeaders setBlobCacheControl(String blobCacheControl) {
-        this.blobCacheControl = blobCacheControl;
+    public BlobHttpHeaders setCacheControl(String cacheControl) {
+        this.cacheControl = cacheControl;
         return this;
     }
 
     /**
-     * Get the blobContentType property: Optional. Sets the blob's content
-     * type. If specified, this property is stored with the blob and returned
-     * with a read request.
+     * Get the contentType property: Optional. Sets the blob's content type. If
+     * specified, this property is stored with the blob and returned with a
+     * read request.
      *
-     * @return the blobContentType value.
+     * @return the contentType value.
      */
-    public String getBlobContentType() {
-        return this.blobContentType;
+    public String getContentType() {
+        return this.contentType;
     }
 
     /**
-     * Set the blobContentType property: Optional. Sets the blob's content
-     * type. If specified, this property is stored with the blob and returned
-     * with a read request.
+     * Set the contentType property: Optional. Sets the blob's content type. If
+     * specified, this property is stored with the blob and returned with a
+     * read request.
      *
-     * @param blobContentType the blobContentType value to set.
+     * @param contentType the contentType value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    public BlobHttpHeaders setBlobContentType(String blobContentType) {
-        this.blobContentType = blobContentType;
+    public BlobHttpHeaders setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 
     /**
-     * Get the blobContentMD5 property: Optional. An MD5 hash of the blob
-     * content. Note that this hash is not validated, as the hashes for the
-     * individual blocks were validated when each was uploaded.
+     * Get the contentMd5 property: Optional. An MD5 hash of the blob content.
+     * Note that this hash is not validated, as the hashes for the individual
+     * blocks were validated when each was uploaded.
      *
-     * @return the blobContentMD5 value.
+     * @return the contentMd5 value.
      */
-    public byte[] getBlobContentMD5() {
-        return ImplUtils.clone(this.blobContentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(this.contentMd5);
     }
 
     /**
-     * Set the blobContentMD5 property: Optional. An MD5 hash of the blob
-     * content. Note that this hash is not validated, as the hashes for the
-     * individual blocks were validated when each was uploaded.
+     * Set the contentMd5 property: Optional. An MD5 hash of the blob content.
+     * Note that this hash is not validated, as the hashes for the individual
+     * blocks were validated when each was uploaded.
      *
-     * @param blobContentMD5 the blobContentMD5 value to set.
+     * @param contentMd5 the contentMd5 value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    public BlobHttpHeaders setBlobContentMD5(byte[] blobContentMD5) {
-        this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
+    public BlobHttpHeaders setContentMd5(byte[] contentMd5) {
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
 
     /**
-     * Get the blobContentEncoding property: Optional. Sets the blob's content
+     * Get the contentEncoding property: Optional. Sets the blob's content
      * encoding. If specified, this property is stored with the blob and
      * returned with a read request.
      *
-     * @return the blobContentEncoding value.
+     * @return the contentEncoding value.
      */
-    public String getBlobContentEncoding() {
-        return this.blobContentEncoding;
+    public String getContentEncoding() {
+        return this.contentEncoding;
     }
 
     /**
-     * Set the blobContentEncoding property: Optional. Sets the blob's content
+     * Set the contentEncoding property: Optional. Sets the blob's content
      * encoding. If specified, this property is stored with the blob and
      * returned with a read request.
      *
-     * @param blobContentEncoding the blobContentEncoding value to set.
+     * @param contentEncoding the contentEncoding value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    public BlobHttpHeaders setBlobContentEncoding(String blobContentEncoding) {
-        this.blobContentEncoding = blobContentEncoding;
+    public BlobHttpHeaders setContentEncoding(String contentEncoding) {
+        this.contentEncoding = contentEncoding;
         return this;
     }
 
     /**
-     * Get the blobContentLanguage property: Optional. Set the blob's content
+     * Get the contentLanguage property: Optional. Set the blob's content
      * language. If specified, this property is stored with the blob and
      * returned with a read request.
      *
-     * @return the blobContentLanguage value.
+     * @return the contentLanguage value.
      */
-    public String getBlobContentLanguage() {
-        return this.blobContentLanguage;
+    public String getContentLanguage() {
+        return this.contentLanguage;
     }
 
     /**
-     * Set the blobContentLanguage property: Optional. Set the blob's content
+     * Set the contentLanguage property: Optional. Set the blob's content
      * language. If specified, this property is stored with the blob and
      * returned with a read request.
      *
-     * @param blobContentLanguage the blobContentLanguage value to set.
+     * @param contentLanguage the contentLanguage value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    public BlobHttpHeaders setBlobContentLanguage(String blobContentLanguage) {
-        this.blobContentLanguage = blobContentLanguage;
+    public BlobHttpHeaders setContentLanguage(String contentLanguage) {
+        this.contentLanguage = contentLanguage;
         return this;
     }
 
     /**
-     * Get the blobContentDisposition property: Optional. Sets the blob's
+     * Get the contentDisposition property: Optional. Sets the blob's
      * Content-Disposition header.
      *
-     * @return the blobContentDisposition value.
+     * @return the contentDisposition value.
      */
-    public String getBlobContentDisposition() {
-        return this.blobContentDisposition;
+    public String getContentDisposition() {
+        return this.contentDisposition;
     }
 
     /**
-     * Set the blobContentDisposition property: Optional. Sets the blob's
+     * Set the contentDisposition property: Optional. Sets the blob's
      * Content-Disposition header.
      *
-     * @param blobContentDisposition the blobContentDisposition value to set.
+     * @param contentDisposition the contentDisposition value to set.
      * @return the BlobHttpHeaders object itself.
      */
-    public BlobHttpHeaders setBlobContentDisposition(String blobContentDisposition) {
-        this.blobContentDisposition = blobContentDisposition;
+    public BlobHttpHeaders setContentDisposition(String contentDisposition) {
+        this.contentDisposition = contentDisposition;
         return this;
     }
 }

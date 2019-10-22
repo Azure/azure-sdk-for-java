@@ -14,7 +14,7 @@ import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -96,7 +96,7 @@ public class BlobPartitionManagerTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
-        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobAccessConditions.class)))
+        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.just(new SimpleResponse<>(null, 200, new HttpHeaders(headers), null)));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
@@ -116,7 +116,7 @@ public class BlobPartitionManagerTest {
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
-            isNull(), any(Map.class), isNull(), any(BlobAccessConditions.class)))
+            isNull(), any(Map.class), isNull(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
@@ -157,7 +157,7 @@ public class BlobPartitionManagerTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
-        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobAccessConditions.class)))
+        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.error(new SocketTimeoutException()));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
@@ -174,7 +174,7 @@ public class BlobPartitionManagerTest {
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
-            isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), any(BlobAccessConditions.class)))
+            isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
         StepVerifier.create(blobPartitionManager.claimOwnership(po)).verifyComplete();

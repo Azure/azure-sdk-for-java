@@ -11,10 +11,9 @@ import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
-import com.azure.storage.common.implementation.StorageImplUtils
-import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasSignatureValues
@@ -190,8 +189,8 @@ class HelperTest extends APISpec {
             .setContentType(type)
 
         UserDelegationKey key = new UserDelegationKey()
-            .setSignedOid(keyOid)
-            .setSignedTid(keyTid)
+            .setSignedObjectId(keyOid)
+            .setSignedTenantId(keyTid)
             .setSignedStart(keyStart)
             .setSignedExpiry(keyExpiry)
             .setSignedService(keyService)
@@ -442,7 +441,7 @@ class HelperTest extends APISpec {
     def "accountSasSignatures string to sign"() {
         when:
         AccountSasSignatureValues v = new AccountSasSignatureValues()
-            .setPermissions(new AccountSasPermission().setReadPermission(true).toString())
+            .setPermissions(new AccountSasPermission().setReadPermission(true))
             .setServices("b")
             .setResourceTypes("o")
             .setStartTime(startTime)
@@ -470,12 +469,20 @@ class HelperTest extends APISpec {
     @Unroll
     def "accountSasSignatureValues IA"() {
         setup:
+        AccountSasPermission sasPermission = null
+        if (permissions != null) {
+            sasPermission = AccountSasPermission.parse(permissions)
+        }
+
         AccountSasSignatureValues v = new AccountSasSignatureValues()
-            .setPermissions(permissions)
             .setServices(service)
             .setResourceTypes(resourceType)
             .setExpiryTime(expiryTime)
             .setVersion(version)
+
+        if (sasPermission != null) {
+            v.setPermissions(sasPermission)
+        }
 
         when:
         v.generateSasQueryParameters(creds)
@@ -490,7 +497,6 @@ class HelperTest extends APISpec {
         "c"         | null    | "c"          | OffsetDateTime.now() | "v"     | primaryCredential || "services"
         "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCredential || "resourceTypes"
         "c"         | "b"     | "c"          | null                 | "v"     | primaryCredential || "expiryTime"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCredential || "version"
         "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "storageSharedKeyCredentials"
     }
 

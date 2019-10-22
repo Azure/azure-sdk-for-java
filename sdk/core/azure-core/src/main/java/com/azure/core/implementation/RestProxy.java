@@ -158,8 +158,7 @@ public class RestProxy implements InvocationHandler {
                 return handleHttpResponse(request, asyncDecodedResponse, methodParser, methodParser.getReturnType(),
                     context);
             }
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
     }

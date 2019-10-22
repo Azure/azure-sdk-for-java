@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
@@ -22,6 +23,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static final int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
     private static final ChronoUnit DEFAULT_TIME_UNIT = ChronoUnit.MILLIS;
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
+
+    private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
+
     private final int maxRetries;
     private final Duration delayDuration;
 
@@ -55,18 +59,24 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return next.clone().process()
             .flatMap(httpResponse -> {
                 if (shouldRetry(httpResponse, tryCount)) {
+                    final Duration delayDuration = determineDelayDuration(httpResponse);
+                    logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
+                        delayDuration.getSeconds());
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                        .delaySubscription(determineDelayDuration(httpResponse));
+                        .delaySubscription(delayDuration);
                 } else {
                     return Mono.just(httpResponse);
                 }
             })
             .onErrorResume(err -> {
                 if (tryCount < maxRetries) {
+                    logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(this.delayDuration);
                 } else {
-                    return Mono.error(err);
+                    return Mono.error(new RuntimeException(
+                        String.format("Max retries %d times exceeded. Error Details: %s", maxRetries, err.getMessage()),
+                        err));
                 }
             });
     }

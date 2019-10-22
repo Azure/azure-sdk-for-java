@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
@@ -10,10 +11,11 @@ import java.time.OffsetDateTime;
 /**
  * This class contains the properties about a page blob.
  */
+@Immutable
 public class PageBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
-    private final byte[] contentMD5;
+    private final byte[] contentMd5;
     private final Boolean isServerEncrypted;
     private final String encryptionKeySha256;
     private final Long blobSequenceNumber;
@@ -23,16 +25,16 @@ public class PageBlobItem {
      *
      * @param eTag ETag of the page blob.
      * @param lastModified Last modified time of the page blob.
-     * @param contentMD5 Content MD5 of the page blob.
+     * @param contentMd5 Content MD5 of the page blob.
      * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
      * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
      * @param blobSequenceNumber The current sequence number for the page blob.
      */
-    public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
+    public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final Boolean isServerEncrypted, final String encryptionKeySha256, final Long blobSequenceNumber) {
         this.eTag = eTag;
         this.lastModified = lastModified;
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.blobSequenceNumber = blobSequenceNumber;
@@ -69,8 +71,8 @@ public class PageBlobItem {
     /**
      * @return the MD5 of the page blob's content
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(contentMd5);
     }
 
     /**

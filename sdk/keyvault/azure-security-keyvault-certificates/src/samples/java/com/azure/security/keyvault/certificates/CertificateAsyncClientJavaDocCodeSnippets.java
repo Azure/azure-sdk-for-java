@@ -45,6 +45,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .endpoint("https://myvault.azure.net/")
+            .credential(new DefaultAzureCredentialBuilder().build())
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation

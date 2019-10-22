@@ -17,6 +17,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
@@ -112,7 +113,7 @@ public final class BlobServiceAsyncClient {
         }
 
         return new BlobContainerAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString(), getServiceVersion(), 
+            StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString(), getServiceVersion(),
             getAccountName(), containerName, customerProvidedKey);
     }
 
@@ -536,7 +537,10 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(context)
-            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                ServiceGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
+            });
     }
 
     /**
