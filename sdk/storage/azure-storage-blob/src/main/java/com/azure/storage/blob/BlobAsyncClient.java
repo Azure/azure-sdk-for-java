@@ -261,15 +261,17 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             Flux<ByteBuffer> chunkedSource = data
                 .filter(ByteBuffer::hasRemaining)
                 .flatMapSequential(buffer -> {
-                    if (buffer.remaining() <= blockSize) {
+                    if (buffer.remaining() <= finalParallelTransferOptions.getBlockSize()) {
                         return Flux.just(buffer);
                     }
-                    int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
+                    int numSplits =
+                        (int) Math.ceil(buffer.remaining() / (double) finalParallelTransferOptions.getBlockSize());
                     return Flux.range(0, numSplits)
                         .map(i -> {
                             ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                            duplicate.position(i * blockSize);
-                            duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
+                            duplicate.position(i * finalParallelTransferOptions.getBlockSize());
+                            duplicate.limit(Math.min(duplicate.limit(),
+                                (i + 1) * finalParallelTransferOptions.getBlockSize()));
                             return duplicate;
                         });
                 });
