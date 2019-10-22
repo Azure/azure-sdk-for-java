@@ -25,10 +25,10 @@ import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathLeaseAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
@@ -187,7 +187,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHttpHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         String cacheControl = null;
         if (pathHTTPHeaders != null) {
             cacheControl = pathHTTPHeaders.getCacheControl();
@@ -313,7 +313,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group, String permissions, String acl, String requestId, Integer timeout, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group, String permissions, String acl, String requestId, Integer timeout, PathHttpHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         byte[] transactionalContentMD5 = null;
         if (pathHTTPHeaders != null) {
             transactionalContentMD5 = pathHTTPHeaders.getTransactionalContentMD5();
@@ -734,7 +734,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Integer timeout, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String requestId, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Integer timeout, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String requestId, PathHttpHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String action = "flush";
         byte[] transactionalContentMD5 = null;
         if (pathHTTPHeaders != null) {
@@ -821,7 +821,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsAppendDataResponse> appendDataWithRestResponseAsync(Flux<ByteBuffer> body, Long position, Integer timeout, Long contentLength, String requestId, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Mono<PathsAppendDataResponse> appendDataWithRestResponseAsync(Flux<ByteBuffer> body, Long position, Integer timeout, Long contentLength, String requestId, PathHttpHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String action = "append";
         byte[] transactionalContentMD5 = null;
         if (pathHTTPHeaders != null) {

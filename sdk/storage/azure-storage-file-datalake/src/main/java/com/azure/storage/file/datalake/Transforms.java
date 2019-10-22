@@ -7,13 +7,14 @@ import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.blob.models.BlobContainerListDetails;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
@@ -24,10 +25,9 @@ import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
+import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 class Transforms {
 
@@ -160,11 +160,11 @@ class Transforms {
         }
     }
 
-    static BlobHTTPHeaders toBlobHttpHeaders(PathHTTPHeaders pathHTTPHeaders) {
+    static BlobHttpHeaders toBlobHttpHeaders(PathHttpHeaders pathHTTPHeaders) {
         if (pathHTTPHeaders == null) {
             return null;
         }
-        return new BlobHTTPHeaders()
+        return new BlobHttpHeaders()
             .setBlobCacheControl(pathHTTPHeaders.getCacheControl())
             .setBlobContentDisposition(pathHTTPHeaders.getContentDisposition())
             .setBlobContentEncoding(pathHTTPHeaders.getContentEncoding())
@@ -221,5 +221,12 @@ class Transforms {
             .setLeaseState(Transforms.toDataLakeLeaseStateType(blobContainerItemProperties.getLeaseState()))
             .setLeaseStatus(Transforms.toDataLakeLeaseStatusType(blobContainerItemProperties.getLeaseStatus()))
             .setPublicAccess(Transforms.toDataLakePublicAccessType(blobContainerItemProperties.getPublicAccess()));
+    }
+
+    public static PathItem toPathItem(Path path) {
+        if (path == null) {
+            return null;
+        }
+        return new PathItem(path);
     }
 }

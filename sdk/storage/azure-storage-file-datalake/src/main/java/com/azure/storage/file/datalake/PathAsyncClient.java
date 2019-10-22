@@ -7,13 +7,15 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
@@ -29,28 +31,43 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
  */
 public class PathAsyncClient {
+
+    private final ClientLogger logger = new ClientLogger(PathAsyncClient.class);
+
     protected final DataLakeStorageClientImpl dataLakeStorage;
     protected final String accountName;
     protected final String fileSystemName;
     protected final String pathName;
     protected final BlockBlobAsyncClient blockBlobAsyncClient;
-    private final ClientLogger logger = new ClientLogger(PathAsyncClient.class);
+    protected final DataLakeServiceVersion serviceVersion;
 
     /**
      * Package-private constructor for use by {@link PathClientBuilder}.
      *
-     * @param dataLakeStorage The API client for data lake storage.
-     * @param accountName The account name for storage account.
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param fileSystemName The file system name.
+     * @param pathName The path name.
+     * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
-    protected PathAsyncClient(DataLakeStorageClientImpl dataLakeStorage, String accountName, String fileSystemName,
-        String pathName, BlockBlobAsyncClient blockBlobAsyncClient) {
-        this.dataLakeStorage = dataLakeStorage;
+    protected PathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
+        String accountName, String fileSystemName, String pathName, BlockBlobAsyncClient blockBlobAsyncClient) {
+        this.dataLakeStorage = new DataLakeStorageClientBuilder()
+            .pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion.getVersion())
+            .build();
+        this.serviceVersion = serviceVersion;
+
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = pathName;
@@ -95,17 +112,8 @@ public class PathAsyncClient {
      *
      * @return the URL.
      */
-    public String getDataLakeUrl() {
+    protected String getPathUrl() {
         return dataLakeStorage.getUrl();
-    }
-
-    /**
-     * Gets the URL of the object represented by this client on the blob service.
-     *
-     * @return the URL.
-     */
-    public String getBlobUrl() {
-        return blockBlobAsyncClient.getBlobUrl();
     }
 
     /**
@@ -114,7 +122,7 @@ public class PathAsyncClient {
      * @return Account name associated with this storage resource.
      */
     public String getAccountName() {
-        return this.accountName;
+        return accountName;
     }
 
     /**
@@ -123,7 +131,7 @@ public class PathAsyncClient {
      * @return The name of the File System.
      */
     public String getFileSystemName() {
-        return this.fileSystemName;
+        return fileSystemName;
     }
 
     /**
@@ -131,8 +139,8 @@ public class PathAsyncClient {
      *
      * @return The path of the object.
      */
-    public final String getObjectPath() {
-        return this.pathName;
+    protected String getObjectPath() {
+        return pathName;
     }
 
     /**
@@ -140,7 +148,7 @@ public class PathAsyncClient {
      *
      * @return The name of the object.
      */
-    public final String getObjectName() {
+    public String getObjectName() {
         String[] pathParts = pathName.split("/");
         return pathParts[pathParts.length - 1];
     }
@@ -155,25 +163,47 @@ public class PathAsyncClient {
     }
 
     /**
-     * Gets the inner {@link BlockBlobAsyncClient}.
+     * Gets the service version the client is using.
      *
-     * @return The BlockBlobClient.
+     * @return the service version the client is using.
      */
-    public BlockBlobAsyncClient getBlockBlobAsyncClient() {
-        return this.blockBlobAsyncClient;
+    public DataLakeServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
-    Mono<Response<PathItem>> createWithResponse(PathResourceType resourceType, PathHTTPHeaders httpHeaders,
-        Map<String, String> metadata, String permissions, String umask, PathAccessConditions accessConditions,
+
+    /**
+     * Package-private create method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
+     *
+     * @param resourceType {@link PathResourceType}
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource.
+     * @param accessConditions {@link PathAccessConditions}
+     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
+     * @param umask Restricts permissions of the directory to be created.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * PathItem}.
+     */
+    Mono<Response<PathItem>> createWithResponse(PathResourceType resourceType, PathHttpHeaders headers,
+        Map<String, String> metadata, PathAccessConditions accessConditions, String permissions, String umask,
         Context context) {
         accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
 
         return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, null, null, httpHeaders,
+            buildMetadataString(metadata), permissions, umask, null, null, headers,
             accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), null, context)
             .map(response -> new SimpleResponse<>(response, new PathItem(response.getDeserializedHeaders())));
     }
 
+    /**
+     * Package-private delete method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
+     *
+     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param accessConditions {@link PathAccessConditions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Mono} containing containing status code and HTTP headers
+     */
     Mono<Response<Void>> deleteWithResponse(Boolean recursive, PathAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
 
@@ -197,7 +227,11 @@ public class PathAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> setMetadata(Map<String, String> metadata) {
-        return this.setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
+        try {
+            return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -217,8 +251,12 @@ public class PathAsyncClient {
      */
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         PathAccessConditions accessConditions) {
-        return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
-            Transforms.toBlobAccessConditions(accessConditions));
+        try {
+            return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
+                Transforms.toBlobAccessConditions(accessConditions));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
 
@@ -228,16 +266,20 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHTTPHeaders#PathHTTPHeaders}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setHTTPHeaders(PathHTTPHeaders headers) {
-        return setHTTPHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> setHttpHeaders(PathHttpHeaders headers) {
+        try {
+            return setHttpHeaders(headers, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -246,30 +288,109 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHTTPHeadersWithResponse#PathHTTPHeaders-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHttpHeaders-PathAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param accessConditions {@link PathAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setHTTPHeadersWithResponse(PathHTTPHeaders headers,
-        PathAccessConditions accessConditions) {
-        return this.blockBlobAsyncClient.setHTTPHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-            Transforms.toBlobAccessConditions(accessConditions));
+    public Mono<Response<Void>> setHttpHeaders(PathHttpHeaders headers, PathAccessConditions accessConditions) {
+        try {
+            return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
+                Transforms.toBlobAccessConditions(accessConditions));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    // Set access control
+    /**
+     * Returns the resources's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @return A reactive response containing the resource's properties and metadata.
+     */
+    public Mono<PathProperties> getProperties() {
+        try {
+            return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 
+    /**
+     * Returns the resource's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getPropertiesWithResponse#PathAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param accessConditions {@link PathAccessConditions}
+     * @return A reactive response containing the resource's properties and metadata.
+     */
+    public Mono<Response<PathProperties>> getPropertiesWithResponse(PathAccessConditions accessConditions) {
+        try {
+            return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobAccessConditions(accessConditions))
+                .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Changes the access control for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setAccessControl#PathAccessControl}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControl {@link PathAccessControl}
+     * @return A reactive response containing the resource info.
+     */
     public Mono<PathInfo> setAccessControl(PathAccessControl accessControl) {
-        return setAccessControlWithResponse(accessControl, null).flatMap(FluxUtil::toMono);
+        try {
+            return setAccessControlWithResponse(accessControl, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
     }
 
+    /**
+     * Changes the access control for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setAccessControlWithResponse#PathAccessControl-PathAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControl {@link PathAccessControl}
+     * @param accessConditions {@link PathAccessConditions}
+     * @return A reactive response containing the resource info.
+     */
     public Mono<Response<PathInfo>> setAccessControlWithResponse(PathAccessControl accessControl,
         PathAccessConditions accessConditions) {
-        return withContext(context -> setAccessControlWithResponse(accessControl, accessConditions, context));
+        try {
+            return withContext(context -> setAccessControlWithResponse(accessControl, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PathInfo>> setAccessControlWithResponse(PathAccessControl accessControl,
@@ -284,32 +405,76 @@ public class PathAsyncClient {
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders())));
     }
 
-    // Get access control
-
+    /**
+     * Returns the access control for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getAccessControl}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
+     *
+     * @return A reactive response containing the resource access control.
+     */
     public Mono<PathAccessControl> getAccessControl() {
-        return getAccessControlWithResponse(false, null).flatMap(FluxUtil::toMono);
+        try {
+            return getAccessControlWithResponse(false, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean upn,
+    /**
+     * Returns the access control for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getAccessControl#boolean-PathAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
+     *
+     * @param returnUpn When true, user identity values returned as User Principal Names. When false, user identity
+     * values returned as Azure Active Directory Object IDs. Default value is false.
+     * @param accessConditions {@link PathAccessConditions}
+     * @return A reactive response containing the resource access control.
+     */
+    public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean returnUpn,
         PathAccessConditions accessConditions) {
-        return withContext(context -> getAccessControlWithResponse(upn, accessConditions, context));
+        try {
+            return withContext(context -> getAccessControlWithResponse(returnUpn, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean upn, PathAccessConditions accessConditions,
-        Context context) {
+    Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean returnUpn,
+        PathAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
 
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
-            PathGetPropertiesAction.GET_ACCESS_CONTROL, upn, null, null, accessConditions.getLeaseAccessConditions(),
+            PathGetPropertiesAction.GET_ACCESS_CONTROL, returnUpn, null, null, accessConditions.getLeaseAccessConditions(),
             accessConditions.getModifiedAccessConditions(), context).map(response ->
             new SimpleResponse<>(response, new PathAccessControl(response.getDeserializedHeaders())));
     }
 
-
-    // Move
-
+    /**
+     * Package-private move method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
+     *
+     * @param destinationPath The path of the destination relative to the file system name
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource.
+     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
+     * @param umask Restricts permissions of the directory to be created.
+     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
+     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * PathAsyncClient} used to interact with the path created.
+     */
     Mono<Response<PathAsyncClient>> moveWithResponse(String destinationPath,
-        PathHTTPHeaders httpHeaders, Map<String, String> metadata, String permissions, String umask,
+        PathHttpHeaders headers, Map<String, String> metadata, String permissions, String umask,
         PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions, Context context) {
 
         destAccessConditions = destAccessConditions == null ? new PathAccessConditions() : destAccessConditions;
@@ -332,7 +497,7 @@ public class PathAsyncClient {
         return pathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
             null /* continuation */, PathRenameMode.LEGACY, renameSource,
             sourceAccessConditions.getLeaseAccessConditions().getLeaseId(), buildMetadataString(metadata), permissions,
-            umask, null /* request id */, null /* timeout */, httpHeaders,
+            umask, null /* request id */, null /* timeout */, headers,
             destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getModifiedAccessConditions(),
             sourceConditions, context).map(response -> new SimpleResponse<>(response, pathAsyncClient));
     }
@@ -346,19 +511,12 @@ public class PathAsyncClient {
         if (ImplUtils.isNullOrEmpty(destinationPath)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
-        try {
-            // Get current Datalake URL and replace current path with user provided path
-            String newDfsEndpoint = BlobUrlParts.parse(getDataLakeUrl(), logger)
-                .setBlobName(destinationPath).toURL().toString();
+        // Get current Datalake URL and replace current path with user provided path
+        String newDfsEndpoint = BlobUrlParts.parse(getPathUrl())
+            .setBlobName(destinationPath).toUrl().toString();
 
-            return new PathAsyncClient(new DataLakeStorageClientBuilder()
-                .url(newDfsEndpoint)
-                .pipeline(dataLakeStorage.getHttpPipeline())
-                .build(), accountName, fileSystemName, destinationPath,
-                prepareBuilderReplacePath(destinationPath).buildBlockBlobAsyncClient());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
-        }
+        return new PathAsyncClient(getHttpPipeline(), newDfsEndpoint, serviceVersion, accountName, fileSystemName,
+            destinationPath, prepareBuilderReplacePath(destinationPath).buildBlockBlobAsyncClient());
     }
 
     /**
@@ -367,53 +525,19 @@ public class PathAsyncClient {
      * @return An updated SpecializedBlobClientBuilder
      */
     SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationPath) {
-        try {
-            // Get current Blob URL and replace current path with user provided path
-            String newBlobEndpoint = BlobUrlParts.parse(getBlobUrl(), logger)
-                .setBlobName(destinationPath).toURL().toString();
+        // Get current Blob URL and replace current path with user provided path
+        String newBlobEndpoint = BlobUrlParts.parse(
+            Transforms.endpointToDesiredEndpoint(destinationPath, "dfs", "blob"))
+            .setBlobName(destinationPath).toUrl().toString();
 
-            return new SpecializedBlobClientBuilder()
-                .pipeline(getHttpPipeline())
-                .endpoint(getBlobUrl())
-                .serviceVersion(getServiceVersion());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
-        }
+        // TODO (gapra) : Investigate how to convert from datalake service version to blob service version
+        return new SpecializedBlobClientBuilder()
+            .pipeline(getHttpPipeline())
+            .endpoint(newBlobEndpoint)
+            .serviceVersion(BlobServiceVersion.getLatest());
     }
 
-    // Get properties
-    /**
-     * Returns the blob's metadata and properties.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getProperties}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
-     *
-     * @return A reactive response containing the blob properties and metadata.
-     */
-    public Mono<PathProperties> getProperties() {
-        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns the blob's metadata and properties.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getPropertiesWithResponse#BlobAccessConditions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
-     *
-     * @param accessConditions {@link PathAccessConditions}
-     * @return A reactive response containing the blob properties and metadata.
-     */
-    public Mono<Response<PathProperties>> getPropertiesWithResponse(PathAccessConditions accessConditions) {
-        return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobAccessConditions(accessConditions))
-            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), Transforms.toPathProperties(response.getValue())));
+    BlockBlobAsyncClient getBlockBlobAsyncClient() {
+        return this.blockBlobAsyncClient;
     }
 }

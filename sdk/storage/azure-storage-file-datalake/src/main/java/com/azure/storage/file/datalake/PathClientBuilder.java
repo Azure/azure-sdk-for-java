@@ -5,7 +5,7 @@ package com.azure.storage.file.datalake;
 
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -14,14 +14,16 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 
@@ -52,7 +54,6 @@ import java.util.Objects;
     DirectoryAsyncClient.class})
 public final class PathClientBuilder {
 
-    // TODO: Make sure pipeline includes exception mapping and etag scrubbing (post process)
     private final ClientLogger logger = new ClientLogger(PathClientBuilder.class);
     private BlobClientBuilder blobClientBuilder;
 
@@ -61,7 +62,7 @@ public final class PathClientBuilder {
     private String fileSystemName;
     private String pathName;
 
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
 
@@ -72,6 +73,7 @@ public final class PathClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private DataLakeServiceVersion version;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link FileClient FileClients}, {@link
@@ -111,29 +113,29 @@ public final class PathClientBuilder {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
         /*
-        Implicit and explicit root file system access are functionally equivalent, but explicit references are easier
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (ImplUtils.isNullOrEmpty(fileSystemName)) {
-            fileSystemName = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
-        }
+        String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
+            ? FileSystemAsyncClient.ROOT_FILESYSTEM_NAME
+            : fileSystemName;
+
+        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+                if (storageSharedKeyCredential != null) {
+                    return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+                } else if (tokenCredential != null) {
+                    return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
+                } else if (sasTokenCredential != null) {
+                    return new SasTokenCredentialPolicy(sasTokenCredential);
+                } else {
+                    return null;
+                }
+            }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new FileAsyncClient(new DataLakeStorageClientBuilder()
-            .url(String.format("%s/%s/%s", endpoint, fileSystemName, pathName))
-            .pipeline(pipeline)
-            .build(), accountName, fileSystemName, pathName,
+        return new FileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
+            serviceVersion, accountName, dataLakeFileSystemName, pathName,
             blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
@@ -166,16 +168,18 @@ public final class PathClientBuilder {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
         /*
-        Implicit and explicit root file system access are functionally equivalent, but explicit references are easier
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (ImplUtils.isNullOrEmpty(fileSystemName)) {
-            fileSystemName = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
-        }
+        String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
+            ? FileSystemAsyncClient.ROOT_FILESYSTEM_NAME
+            : fileSystemName;
+
+        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (tokenCredential != null) {
                 return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
             } else if (sasTokenCredential != null) {
@@ -183,12 +187,10 @@ public final class PathClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new DirectoryAsyncClient(new DataLakeStorageClientBuilder()
-            .url(String.format("%s/%s/%s", endpoint, fileSystemName, pathName))
-            .pipeline(pipeline)
-            .build(), accountName, fileSystemName, pathName,
+        return new DirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
+            serviceVersion, accountName, dataLakeFileSystemName, pathName,
             blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
@@ -202,16 +204,18 @@ public final class PathClientBuilder {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
         /*
-        Implicit and explicit root file system access are functionally equivalent, but explicit references are easier
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (ImplUtils.isNullOrEmpty(fileSystemName)) {
-            fileSystemName = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
-        }
+        String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
+            ? FileSystemAsyncClient.ROOT_FILESYSTEM_NAME
+            : fileSystemName;
+
+        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (tokenCredential != null) {
                 return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
             } else if (sasTokenCredential != null) {
@@ -219,25 +223,23 @@ public final class PathClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new PathAsyncClient(new DataLakeStorageClientBuilder()
-            .url(String.format("%s/%s/%s", endpoint, fileSystemName, pathName))
-            .pipeline(pipeline)
-            .build(), accountName, fileSystemName, pathName,
+        return new PathAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
+            serviceVersion, accountName, dataLakeFileSystemName, pathName,
             blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated PathClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public PathClientBuilder credential(SharedKeyCredential credential) {
+    public PathClientBuilder credential(StorageSharedKeyCredential credential) {
         blobClientBuilder.credential(credential);
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -253,7 +255,7 @@ public final class PathClientBuilder {
     public PathClientBuilder credential(TokenCredential credential) {
         blobClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
@@ -269,7 +271,7 @@ public final class PathClientBuilder {
         blobClientBuilder.sasToken(sasToken);
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
     }
@@ -283,27 +285,9 @@ public final class PathClientBuilder {
      */
     public PathClientBuilder setAnonymousAccess() {
         blobClientBuilder.setAnonymousAccess();
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.sasTokenCredential = null;
-        return this;
-    }
-
-    /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
-     *
-     * @param connectionString Connection string of the storage account.
-     * @return the updated PathClientBuilder
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain `AccountName` or `AccountKey`.
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
-     */
-    public PathClientBuilder connectionString(String connectionString) {
-        blobClientBuilder.connectionString(connectionString);
-        BuilderHelper.configureConnectionString(connectionString, (accountName) -> this.accountName = accountName,
-            this::credential, this::endpoint, logger);
-
         return this;
     }
 
@@ -452,4 +436,20 @@ public final class PathClientBuilder {
         this.httpPipeline = httpPipeline;
         return this;
     }
+
+    /**
+     * Sets the {@link DataLakeServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link DataLakeServiceVersion} of the service to be used when making requests.
+     * @return the updated PathClientBuilder object
+     */
+    public PathClientBuilder serviceVersion(DataLakeServiceVersion version) {
+        this.version = version;
+        return this;
+    }
+
 }

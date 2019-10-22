@@ -50,7 +50,7 @@ public class DataLakeServiceAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakeServiceAsyncClient.class);
 
-    private final DataLakeStorageClientImpl datalakeStorage;
+    private final DataLakeStorageClientImpl azureDataLakeStorage;
 
     private final String accountName;
     private final DataLakeServiceVersion serviceVersion;
@@ -59,10 +59,16 @@ public class DataLakeServiceAsyncClient {
 
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
+     *
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param blobServiceAsyncClient The underlying {@link BlobServiceAsyncClient}
      */
     DataLakeServiceAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, BlobServiceAsyncClient blobServiceAsyncClient) {
-        this.datalakeStorage = new DataLakeStorageClientBuilder()
+        this.azureDataLakeStorage = new DataLakeStorageClientBuilder()
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion.getVersion())
@@ -104,7 +110,7 @@ public class DataLakeServiceAsyncClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return datalakeStorage.getHttpPipeline();
+        return azureDataLakeStorage.getHttpPipeline();
     }
 
     /**
@@ -173,7 +179,7 @@ public class DataLakeServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystem#String}
      *
      * @param fileSystemName Name of the file system to delete
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A reactive response signalling completion.
      */
     public Mono<Void> deleteFileSystem(String fileSystemName) {
         try {
@@ -209,7 +215,7 @@ public class DataLakeServiceAsyncClient {
      * @return the URL.
      */
     public String getAccountUrl() {
-        return datalakeStorage.getUrl();
+        return azureDataLakeStorage.getUrl();
     }
 
     /**

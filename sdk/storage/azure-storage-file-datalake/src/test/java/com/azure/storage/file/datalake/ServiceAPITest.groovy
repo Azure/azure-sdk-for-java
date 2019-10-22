@@ -5,7 +5,7 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.BlobContainerItem
-import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.file.datalake.models.FileSystemListDetails
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.UserDelegationKey
@@ -24,7 +24,7 @@ class ServiceAPITest extends APISpec {
         for (BlobContainerItem c : response) {
             assert c.getName().startsWith(fileSystemPrefix)
             assert c.getProperties().getLastModified() != null
-            assert c.getProperties().getEtag() != null
+            assert c.getProperties().getETag() != null
             assert c.getProperties().getLeaseStatus() != null
             assert c.getProperties().getLeaseState() != null
             assert c.getProperties().getLeaseDuration() == null
@@ -39,7 +39,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.listFileSystems().iterator().hasNext()
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
     }
 
     def "List file systems marker"() {
@@ -95,7 +95,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.listFileSystems().streamByPage("garbage continuation token").count()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "List file systems with timeout still backed by PagedFlux"() {

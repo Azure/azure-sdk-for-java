@@ -9,11 +9,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.core.credential.TokenCredential;
 import com.azure.storage.blob.models.BlobContainerItem;
-import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
@@ -40,6 +38,9 @@ public class DataLakeServiceClient {
 
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
+     *
+     * @param dataLakeServiceAsyncClient the async data lake service client.
+     * @param blobServiceClient the sync blob service client.
      */
     DataLakeServiceClient(DataLakeServiceAsyncClient dataLakeServiceAsyncClient, BlobServiceClient blobServiceClient) {
         this.dataLakeServiceAsyncClient = dataLakeServiceAsyncClient;
@@ -117,6 +118,7 @@ public class DataLakeServiceClient {
     public Response<FileSystemClient> createFileSystemWithResponse(String fileSystemName,
         Map<String, String> metadata, PublicAccessType accessType, Context context) {
         FileSystemClient client = getFileSystemClient(fileSystemName);
+
         return new SimpleResponse<>(client.createWithResponse(metadata, accessType, null, context), client);
     }
 

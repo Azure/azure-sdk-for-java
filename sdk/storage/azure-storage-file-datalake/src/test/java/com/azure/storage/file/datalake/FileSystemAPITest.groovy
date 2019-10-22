@@ -1,15 +1,16 @@
 package com.azure.storage.file.datalake
 
-import com.azure.storage.blob.models.StorageErrorCode
-import com.azure.storage.blob.models.StorageException
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions
+import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.file.datalake.models.LeaseAccessConditions
+import com.azure.storage.file.datalake.models.ModifiedAccessConditions
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.PublicAccessType
 import spock.lang.Unroll
+
 
 class FileSystemAPITest extends APISpec {
 
@@ -86,9 +87,9 @@ class FileSystemAPITest extends APISpec {
         fsc.create()
 
         then:
-        def e = thrown(StorageException)
+        def e = thrown(BlobStorageException)
         e.getResponse().getStatusCode() == 409
-        e.getErrorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS
+        e.getErrorCode() == BlobErrorCode.CONTAINER_ALREADY_EXISTS
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
@@ -125,7 +126,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getPropertiesWithResponse(new LeaseAccessConditions().setLeaseId("garbage"), null, null)
 
         then:
-        thrown(StorageException)
+        thrown(Exception)
     }
 
     def "Get properties error"() {
@@ -136,7 +137,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getProperties()
 
         then:
-        thrown(StorageException)
+        thrown(Exception)
     }
 
     def "Set metadata"() {
@@ -219,7 +220,7 @@ class FileSystemAPITest extends APISpec {
         fsc.setMetadataWithResponse(null, cac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(Exception)
 
         where:
         modified | leaseID
@@ -256,7 +257,7 @@ class FileSystemAPITest extends APISpec {
         fsc.setMetadata(null)
 
         then:
-        thrown(StorageException)
+        thrown(Exception)
     }
 
     def "Delete"() {
@@ -278,9 +279,9 @@ class FileSystemAPITest extends APISpec {
         fsc.getProperties()
 
         then:
-        def e = thrown(StorageException)
+        def e = thrown(BlobStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == StorageErrorCode.CONTAINER_NOT_FOUND
+        e.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND
         e.getServiceMessage().contains("The specified container does not exist.")
     }
 
@@ -318,7 +319,7 @@ class FileSystemAPITest extends APISpec {
         fsc.deleteWithResponse(fsac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | leaseID
@@ -352,7 +353,7 @@ class FileSystemAPITest extends APISpec {
         fsc.delete()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "List paths"() {

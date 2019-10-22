@@ -3,11 +3,9 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.storage.file.datalake.implementation.models.FileSystemListPathsHeaders;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathCreateHeaders;
-import com.azure.storage.file.datalake.implementation.models.PathList;
+import com.sun.scenario.effect.Offset;
 
 import java.time.OffsetDateTime;
 
@@ -31,7 +29,14 @@ public class PathItem {
     }
 
     public PathItem(Path path) {
-
+        this.eTag = path.getETag();
+        this.lastModifiedTime = OffsetDateTime.parse(path.getLastModified());
+        this.contentLength = path.getContentLength();
+        this.group = path.getGroup();
+        this.isDirectory = path.isDirectory();
+        this.name = path.getName();
+        this.owner = path.getOwner();
+        this.permissions = path.getPermissions();
     }
 
     /**

@@ -3,14 +3,16 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
@@ -23,56 +25,107 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.implementation.util.FluxUtil.*;
 
 public class FileAsyncClient extends PathAsyncClient {
+
+    private final ClientLogger logger = new ClientLogger(FileAsyncClient.class);
+
     /**
      * Package-private constructor for use by {@link PathClientBuilder}.
      *
-     * @param dataLakeStorage The API client for data lake storage.
-     * @param accountName The account name for storage account.
-     * @param blockBlobAsyncClient
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param fileSystemName The file system name.
+     * @param fileName The file name.
+     * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
-    protected FileAsyncClient(DataLakeStorageClientImpl dataLakeStorage, String accountName, String fileSystemName,
-        String pathName, BlockBlobAsyncClient blockBlobAsyncClient) {
-        super(dataLakeStorage, accountName, fileSystemName, pathName, blockBlobAsyncClient);
+    FileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion, String accountName,
+        String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient) {
+        super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, blockBlobAsyncClient);
     }
 
     /**
-     * Creates the resource.
+     * Creates a file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.create}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.create}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @return A reactive response containing the information of the created resource.
+     * @return A reactive response containing information about the created file.
      */
     public Mono<PathItem> create() {
-        return createWithResponse(null, null, null, null, null).flatMap(FluxUtil::toMono);
-    }
-
-    public Mono<Response<PathItem>> createWithResponse(PathHTTPHeaders httpHeaders, Map<String, String> metadata,
-        String permissions, String umask, PathAccessConditions accessConditions) {
-        return withContext(context -> createWithResponse(PathResourceType.FILE, httpHeaders, metadata,
-            permissions, umask, accessConditions, context));
-    }
-
-    public Mono<Void> delete() {
-        return this.deleteWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return createWithResponse(null, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
-     * Deletes the specified resource.
+     * Creates a file.
      *
-     * <p><strong>Code Samples>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
-     * TODO (rickle-msft): code snippet
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.createWithResponse#PathHttpHeaders-Map-PathAccessConditions-String-String}
      *
-     * <p>For more information, see the
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource.
+     * @param accessConditions {@link PathAccessConditions}
+     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
+     * @param umask Restricts permissions of the file to be created.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * PathItem}.
+     */
+    public Mono<Response<PathItem>> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
+        PathAccessConditions accessConditions, String permissions, String umask) {
+        try {
+            return withContext(context -> createWithResponse(PathResourceType.FILE, headers, metadata,
+                accessConditions, permissions, umask, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Deletes a file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.delete}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     *
+     * @return A reactive response signalling completion.
+     */
+    public Mono<Void> delete() {
+        try {
+            return deleteWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Deletes a file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.deleteWithResponse#PathAccessConditions}
+     *
+     * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
@@ -82,17 +135,20 @@ public class FileAsyncClient extends PathAsyncClient {
      */
     public Mono<Response<Void>> deleteWithResponse(PathAccessConditions accessConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
-        return withContext(context -> deleteWithResponse(null /* recursive */, accessConditions, context));
-    }
+        try {
+            return withContext(context -> deleteWithResponse(null /* recursive */, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
 
-    // Append Data
+    }
 
     /**
      * Appends data to the specified resource to later be flushed (written) by a call to flushData
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.appendData#Flux-Long-Long}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.appendData#Flux-long-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -106,7 +162,11 @@ public class FileAsyncClient extends PathAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> appendData(Flux<ByteBuffer> data, long offset, long length) {
-        return appendDataWithResponse(data, offset, length, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return appendDataWithResponse(data, offset, length, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -114,7 +174,7 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.appendDataWithResponse#Flux-Long-Long-byte-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.appendDataWithResponse#Flux-long-long-byte-LeaseAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -126,13 +186,19 @@ public class FileAsyncClient extends PathAsyncClient {
      * data emitted by the {@code Flux}.
      * @param contentMd5 An MD5 hash of the content of the data. If specified, the service will calculate the MD5 of the
      * received data and fail the request if it does not match the provided MD5.
+     * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
+     * not match the active lease on the file.
      *
      * @return A reactive response signalling completion.
      */
     public Mono<Response<Void>> appendDataWithResponse(Flux<ByteBuffer> data, long offset, long length,
         byte[] contentMd5, LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> appendDataWithResponse(data, offset, length, contentMd5,
-            leaseAccessConditions, context));
+        try {
+            return withContext(context -> appendDataWithResponse(data, offset, length, contentMd5,
+                leaseAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> appendDataWithResponse(Flux<ByteBuffer> data, long offset, long length,
@@ -140,10 +206,10 @@ public class FileAsyncClient extends PathAsyncClient {
 
         leaseAccessConditions = leaseAccessConditions == null ? new LeaseAccessConditions() : leaseAccessConditions;
 
-        PathHTTPHeaders httpHeaders = new PathHTTPHeaders().setTransactionalContentMD5(contentMd5);
+        PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentMD5(contentMd5);
 
         return this.dataLakeStorage.paths().appendDataWithRestResponseAsync(data, offset, null, length, null,
-            httpHeaders, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response, null));
+            headers, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -163,7 +229,11 @@ public class FileAsyncClient extends PathAsyncClient {
      * @return A reactive response containing the information of the created resource.
      */
     public Mono<PathInfo> flushData(long position) {
-        return flushDataWithResponse(position, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return flushDataWithResponse(position, false, false, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -172,40 +242,34 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.flushDataWithResponse#Long-Boolean-Boolean-PathHTTPHeaders-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.flushDataWithResponse#Long-boolean-boolean-PathHttpHeaders-PathAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
-     * @param retainUncommittedData If "true", uncommitted data is retained after the flush operation completes;
-     * otherwise, the uncommitted data is deleted after the flush operation. The default is false. Data at offsets
-     * less than the specified position are written to the file when flush succeeds, but this optional parameter
-     * allows data after the flush position to be retained for a future flush operation.
-     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure
-     * Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is
-     * the final change to distinguish the difference between an intermediate flush to a file stream and the final close
-     * of a file stream. The close query parameter is valid only when the action is "flush" and change notifications
-     * are enabled. If the value of close is "true" and the flush operation completes successfully, the service raises
-     * a file change notification with a property indicating that this is the final update (the file stream has been
-     * closed). If "false" a change notification is raised indicating the file has changed. The default is false.
-     * This query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.
-     * @param httpHeaders {@link PathHTTPHeaders httpHeaders}
+     * @param retainUncommittedData Whether or not uncommitted data is to be retained after the operation.
+     * @param close Whether or not a file changed event raised indicates completion (true) or modification (false).
+     * @param httpHeaders {@link PathHttpHeaders httpHeaders}
      * @param accessConditions {@link PathAccessConditions accessConditions}
      *
      * @return A reactive response containing the information of the created resource.
      */
-    public Mono<Response<PathInfo>> flushDataWithResponse(long position, Boolean retainUncommittedData, Boolean close,
-        PathHTTPHeaders httpHeaders, PathAccessConditions accessConditions) {
-        return withContext(context -> flushDataWithResponse(position, retainUncommittedData, close, httpHeaders,
-            accessConditions, context));
+    public Mono<Response<PathInfo>> flushDataWithResponse(long position, boolean retainUncommittedData, boolean close,
+        PathHttpHeaders httpHeaders, PathAccessConditions accessConditions) {
+        try {
+            return withContext(context -> flushDataWithResponse(position, retainUncommittedData, close, httpHeaders,
+                accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<PathInfo>> flushDataWithResponse(long position, Boolean retainUncommittedData, Boolean close,
-        PathHTTPHeaders httpHeaders, PathAccessConditions accessConditions, Context context) {
+    Mono<Response<PathInfo>> flushDataWithResponse(long position, boolean retainUncommittedData, boolean close,
+        PathHttpHeaders httpHeaders, PathAccessConditions accessConditions, Context context) {
 
-        httpHeaders = httpHeaders == null ? new PathHTTPHeaders() : httpHeaders;
+        httpHeaders = httpHeaders == null ? new PathHttpHeaders() : httpHeaders;
         accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
 
         return this.dataLakeStorage.paths().flushDataWithRestResponseAsync(null, position, retainUncommittedData, close,
@@ -213,23 +277,6 @@ public class FileAsyncClient extends PathAsyncClient {
             accessConditions.getModifiedAccessConditions(), context)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders())));
     }
-
-//    public Mono<FileAsyncClient> move(String destinationPath) {
-//        return moveWithResponse(destinationPath, null, null, null, null, null, null).flatMap(FluxUtil::toMono);
-//    }
-//
-//    public Mono<Response<FileAsyncClient>> moveWithResponse(String destinationPath,
-//        PathHTTPHeaders httpHeaders, Map<String, String> metadata, String permissions, String umask,
-//        PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions) {
-//        return withContext(context -> moveWithResponse(PathResourceType.FILE, destinationPath, httpHeaders,
-//            metadata, permissions, umask, sourceAccessConditions, destAccessConditions, context))
-//            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-//                response.getHeaders(), new FileAsyncClient(response.getValue().dataLakeStorage,
-//                response.getValue().accountName, response.getValue().fileSystemName, response.getValue().pathName,
-//                response.getValue().blockBlobAsyncClient)));
-//    }
-
-    // Read
 
     /**
      * Reads the entire file.
@@ -244,7 +291,11 @@ public class FileAsyncClient extends PathAsyncClient {
      * @return A reactive response containing the file data.
      */
     public Flux<ByteBuffer> read() {
-        return readWithResponse(null, null, null, false).flatMapMany(Response::getValue);
+        try {
+            return readWithResponse(null, null, null, false).flatMapMany(Response::getValue);
+        } catch (RuntimeException ex) {
+            return fluxError(logger, ex);
+        }
     }
 
     /**
@@ -265,9 +316,13 @@ public class FileAsyncClient extends PathAsyncClient {
      */
     public Mono<Response<Flux<ByteBuffer>>> readWithResponse(FileRange range, ReliableDownloadOptions options,
         PathAccessConditions accessConditions, boolean rangeGetContentMD5) {
-        return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
-            Transforms.toBlobReliableDownloadOptions(options), Transforms.toBlobAccessConditions(accessConditions),
-            rangeGetContentMD5);
+        try {
+            return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
+                Transforms.toBlobReliableDownloadOptions(options), Transforms.toBlobAccessConditions(accessConditions),
+                rangeGetContentMD5);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
 }

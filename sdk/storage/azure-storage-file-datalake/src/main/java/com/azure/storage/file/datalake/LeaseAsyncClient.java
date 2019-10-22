@@ -8,7 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.models.ModifiedAccessConditions;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;

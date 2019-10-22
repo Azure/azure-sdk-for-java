@@ -1,7 +1,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -12,12 +12,11 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 
 import java.net.MalformedURLException;
@@ -51,7 +50,7 @@ public class FileSystemClientBuilder {
     private String accountName;
     private String fileSystemName;
     
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
 
@@ -62,6 +61,7 @@ public class FileSystemClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private DataLakeServiceVersion version;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link FileSystemClient FileSystemClients}
@@ -90,17 +90,19 @@ public class FileSystemClientBuilder {
      * @return a {@link FileSystemAsyncClient} created from the configurations in this builder.
      */
     public FileSystemAsyncClient buildAsyncClient() {
-        /*
+/*
         Implicit and explicit root file system access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (Objects.isNull(fileSystemName) || fileSystemName.isEmpty()) {
-            fileSystemName = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
-        }
+        String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
+            ? FileSystemAsyncClient.ROOT_FILESYSTEM_NAME
+            : fileSystemName;
+
+        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (tokenCredential != null) {
                 return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
             } else if (sasTokenCredential != null) {
@@ -108,14 +110,10 @@ public class FileSystemClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new FileSystemAsyncClient(fileSystemName, new DataLakeStorageClientBuilder()
-            .url(String.format("%s/%s", endpoint, fileSystemName))
-            .fileSystem(fileSystemName)
-            .pipeline(pipeline)
-            .build(), accountName, blobContainerClientBuilder.buildAsyncClient()
-        );
+        return new FileSystemAsyncClient(pipeline, String.format("%s/%s", endpoint, dataLakeFileSystemName),
+            serviceVersion, accountName, dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient());
     }
 
     /**
@@ -132,6 +130,7 @@ public class FileSystemClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.accountName = parts.getAccountName();
             this.fileSystemName = parts.getBlobContainerName();
 
             String sasToken = parts.getSasQueryParameters().encode();
@@ -140,22 +139,22 @@ public class FileSystemClientBuilder {
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
+                new IllegalArgumentException("The Azure Storage Datalake endpoint url is malformed."));
         }
 
         return this;
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated FileSystemClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public FileSystemClientBuilder credential(SharedKeyCredential credential) {
+    public FileSystemClientBuilder credential(StorageSharedKeyCredential credential) {
         blobContainerClientBuilder.credential(credential);
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -171,7 +170,7 @@ public class FileSystemClientBuilder {
     public FileSystemClientBuilder credential(TokenCredential credential) {
         blobContainerClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
@@ -187,7 +186,7 @@ public class FileSystemClientBuilder {
         blobContainerClientBuilder.sasToken(sasToken);
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
     }
@@ -201,29 +200,13 @@ public class FileSystemClientBuilder {
      */
     public FileSystemClientBuilder setAnonymousAccess() {
         blobContainerClientBuilder.setAnonymousAccess();
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
 
-    /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
-     *
-     * @param connectionString Connection string of the storage account.
-     * @return the updated FileSystemClientBuilder
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain `AccountName` or `AccountKey`.
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
-     */
-    public FileSystemClientBuilder connectionString(String connectionString) {
-        blobContainerClientBuilder.connectionString(connectionString);
-        BuilderHelper.configureConnectionString(connectionString, (accountName) -> this.accountName = accountName,
-            this::credential, this::endpoint, logger);
-
-        return this;
-    }
+    // TODO (gapra) : Connection String
 
     /**
      * Sets the name of the file system.
@@ -320,6 +303,22 @@ public class FileSystemClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    // TODO (gapra) : Determine how to set the blob service version here
+    /**
+     * Sets the {@link DataLakeServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link DataLakeServiceVersion} of the service to be used when making requests.
+     * @return the updated FileSystemClientBuilder object
+     */
+    public FileSystemClientBuilder serviceVersion(DataLakeServiceVersion version) {
+        this.version = version;
         return this;
     }
 }

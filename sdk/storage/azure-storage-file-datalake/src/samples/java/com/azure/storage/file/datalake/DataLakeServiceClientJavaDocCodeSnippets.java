@@ -74,18 +74,18 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
      * Code snippet for {@link DataLakeServiceClient#deleteFileSystemWithResponse(String, Context)}
      */
     public void deleteFileSystemWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.deleteBlobContainerWithResponse#String-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-Context
         Context context = new Context("Key", "Value");
         System.out.printf("Delete file system completed with status %d%n",
             client.deleteFileSystemWithResponse("fileSystemName", context).getStatusCode());
-        // END: com.azure.storage.file.datalake.DataLakeServiceClient.deleteBlobContainerWithResponse#String-Context
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-Context
     }
 
     /**
      * Code snippets for {@link DataLakeServiceClient#listFileSystems()} and
      * {@link DataLakeServiceClient#listFileSystems(ListFileSystemsOptions, Duration)}
      */
-    public void listContainers() {
+    public void listFileSystems() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems
         client.listFileSystems().forEach(fileSystem -> System.out.printf("Name: %s%n", fileSystem.getName()));
         // END: com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems

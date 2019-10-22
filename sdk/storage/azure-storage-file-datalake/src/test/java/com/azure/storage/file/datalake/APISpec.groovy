@@ -15,7 +15,7 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.credential.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobContainerItem
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -95,10 +95,10 @@ class APISpec extends Specification {
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def DATA_LAKE_STORAGE = "DATA_LAKE_STORAGE_"
 
-    protected static SharedKeyCredential primaryCredential
-    static SharedKeyCredential alternateCredential
-    static SharedKeyCredential pathCredential
-    static SharedKeyCredential premiumCredential
+    protected static StorageSharedKeyCredential primaryCredential
+    static StorageSharedKeyCredential alternateCredential
+    static StorageSharedKeyCredential pathCredential
+    static StorageSharedKeyCredential premiumCredential
     static TestMode testMode
 
     DataLakeServiceClient primaryDataLakeServiceClient
@@ -180,7 +180,7 @@ class APISpec extends Specification {
         return setupTestMode() == TestMode.RECORD
     }
 
-    private SharedKeyCredential getCredential(String accountType) {
+    private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
@@ -197,10 +197,10 @@ class APISpec extends Specification {
             return null
         }
 
-        return new SharedKeyCredential(accountName, accountKey)
+        return new StorageSharedKeyCredential(accountName, accountKey)
     }
 
-    DataLakeServiceClient setClient(SharedKeyCredential credential) {
+    DataLakeServiceClient setClient(StorageSharedKeyCredential credential) {
         try {
             return getServiceClient(credential)
         } catch (Exception ignore) {
@@ -230,15 +230,15 @@ class APISpec extends Specification {
         return getServiceClient(null, endpoint, null)
     }
 
-    DataLakeServiceClient getServiceClient(SharedKeyCredential credential) {
+    DataLakeServiceClient getServiceClient(StorageSharedKeyCredential credential) {
         return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
     }
 
-    DataLakeServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
+    DataLakeServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
         return getServiceClient(credential, endpoint, null)
     }
 
-    DataLakeServiceClient getServiceClient(SharedKeyCredential credential, String endpoint,
+    DataLakeServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
                                            HttpPipelinePolicy... policies) {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
@@ -247,12 +247,12 @@ class APISpec extends Specification {
         return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
     }
 
-    DataLakeServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
+    DataLakeServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
         return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.getAccountName()))
             .buildAsyncClient()
     }
 
-    DataLakeServiceClientBuilder getServiceClientBuilder(SharedKeyCredential credential, String endpoint,
+    DataLakeServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
                                                      HttpPipelinePolicy... policies) {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
             .endpoint(endpoint)

@@ -1,5 +1,6 @@
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -7,12 +8,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
-import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathInfo;
-import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -23,20 +23,75 @@ import java.util.Map;
  */
 public class PathClient {
     private final ClientLogger logger = new ClientLogger(PathClient.class);
-    protected final PathAsyncClient client;
-    private final BlockBlobClient syncClient;
+    protected final PathAsyncClient pathAsyncClient;
+    private final BlockBlobClient blockBlobClient;
 
     protected PathClient(PathAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient) {
-        this.client = pathAsyncClient;
-        this.syncClient = blockBlobClient;
+        this.pathAsyncClient = pathAsyncClient;
+        this.blockBlobClient = blockBlobClient;
     }
 
-    Response<PathItem> createWithResponse(PathResourceType resourceType, PathHTTPHeaders httpHeaders,
-        Map<String, String> metadata, String permissions, String umask, PathAccessConditions accessConditions,
-        Duration timeout, Context context) {
-        Mono<Response<PathItem>> response = client.createWithResponse(resourceType, httpHeaders, metadata, permissions,
-            umask, accessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+    /**
+     * Gets the URL of the object represented by this client on the Data Lake service.
+     *
+     * @return the URL.
+     */
+    protected String getPathUrl() {
+        return pathAsyncClient.getPathUrl();
+    }
+
+    /**
+     * Gets the associated account name.
+     *
+     * @return Account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return pathAsyncClient.getAccountName();
+    }
+
+    /**
+     * Gets the name of the File System in which this object lives.
+     *
+     * @return The name of the File System.
+     */
+    public String getFileSystemName() {
+        return pathAsyncClient.getFileSystemName();
+    }
+
+    /**
+     * Gets the path of this object, not including the name of the resource itself.
+     *
+     * @return The path of the object.
+     */
+    protected String getObjectPath() {
+        return pathAsyncClient.getObjectPath();
+    }
+
+    /**
+     * Gets the name of this object, not including its full path.
+     *
+     * @return The name of the object.
+     */
+    public String getObjectName() {
+        return pathAsyncClient.getObjectName();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return pathAsyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public DataLakeServiceVersion getServiceVersion() {
+        return pathAsyncClient.getServiceVersion();
     }
 
     /**
@@ -76,7 +131,7 @@ public class PathClient {
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, PathAccessConditions accessConditions,
         Duration timeout, Context context) {
-        return syncClient.setMetadataWithResponse(metadata, Transforms.toBlobAccessConditions(accessConditions),
+        return blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobAccessConditions(accessConditions),
             timeout, context);
     }
 
@@ -86,15 +141,15 @@ public class PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHTTPHeaders#PathHTTPHeaders}
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeaders#PathHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      */
-    public void setHTTPHeaders(PathHTTPHeaders headers) {
-        setHTTPHeadersWithResponse(headers, null, null, Context.NONE);
+    public void setHttpHeaders(PathHttpHeaders headers) {
+        setHttpHeadersWithResponse(headers, null, null, Context.NONE);
     }
 
     /**
@@ -103,63 +158,121 @@ public class PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHTTPHeaders.setHTTPHeadersWithResponse#PathHTTPHeaders-PathAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeadersWithResponse#PathHttpHeaders-PathAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param accessConditions {@link PathAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setHTTPHeadersWithResponse(PathHTTPHeaders headers, PathAccessConditions accessConditions,
+    public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers, PathAccessConditions accessConditions,
         Duration timeout, Context context) {
-        return syncClient.setHTTPHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
+        return blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
             Transforms.toBlobAccessConditions(accessConditions), timeout, context);
     }
 
-    // Set access control
-
+    /**
+     * Changes the access control for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.setAccessControl#PathAccessControl}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControl {@link PathAccessControl}
+     * @return The resource info.
+     */
     public PathInfo setAccessControl(PathAccessControl accessControl) {
         return setAccessControlWithResponse(accessControl, null, null, null).getValue();
     }
 
+    /**
+     * Changes the access control for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.setAccessControlWithResponse#PathAccessControl-PathAccessConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControl {@link PathAccessControl}
+     * @param accessConditions {@link PathAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the resource info.
+     */
     public Response<PathInfo> setAccessControlWithResponse(PathAccessControl accessControl,
         PathAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PathInfo>> response = client.setAccessControlWithResponse(accessControl, accessConditions,
+        Mono<Response<PathInfo>> response = pathAsyncClient.setAccessControlWithResponse(accessControl, accessConditions,
             context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    /**
+     * Returns the access control for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.getAccessControl}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
+     *
+     * @return The resource access control.
+     */
     public PathAccessControl getAccessControl() {
         return getAccessControlWithResponse(false, null, null, null).getValue();
     }
 
-    public Response<PathAccessControl> getAccessControlWithResponse(boolean upn,
-        PathAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PathAccessControl>> response = client.getAccessControlWithResponse(upn, accessConditions,
-            context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
-    }
-
-    private PathClient getPathClient(String destinationPath) {
-        return new PathClient(client.getPathAsyncClient(destinationPath),
-            client.prepareBuilderReplacePath(destinationPath).buildBlockBlobClient());
-    }
-
     /**
-     * Returns the file's metadata and properties.
+     * Returns the access control for a resource.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.specialized.BlobClientBase.getProperties}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getAccessControl#boolean-PathAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
-     * @return The file properties and metadata.
+     * @param returnUpn When true, user identity values returned as User Principal Names. When false, user identity
+     * values returned as Azure Active Directory Object IDs. Default value is false.
+     * @param accessConditions {@link PathAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the resource access control.
+     */
+    public Response<PathAccessControl> getAccessControlWithResponse(boolean returnUpn,
+        PathAccessConditions accessConditions, Duration timeout, Context context) {
+        Mono<Response<PathAccessControl>> response = pathAsyncClient.getAccessControlWithResponse(returnUpn, accessConditions,
+            context);
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    private PathClient getPathClient(String destinationPath) {
+        return new PathClient(pathAsyncClient.getPathAsyncClient(destinationPath),
+            pathAsyncClient.prepareBuilderReplacePath(destinationPath).buildBlockBlobClient());
+    }
+
+    /**
+     * Returns the resources's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.getProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @return The resource properties and metadata.
      */
     public PathProperties getProperties() {
         return getPropertiesWithResponse(null, null, Context.NONE).getValue();
@@ -170,22 +283,21 @@ public class PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.specialized.BlobClientBase.getPropertiesWithResponse#BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.getPropertiesWithResponse#PathAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
      * @param accessConditions {@link PathAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The file properties and metadata.
+     * @return A response containing the resource properties and metadata.
      */
     public Response<PathProperties> getPropertiesWithResponse(PathAccessConditions accessConditions, Duration timeout,
         Context context) {
-        Response<BlobProperties> response = syncClient.getPropertiesWithResponse(
+        Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
             Transforms.toBlobAccessConditions(accessConditions), timeout, context);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            Transforms.toPathProperties(response.getValue()));
+        return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
     }
 
 }
