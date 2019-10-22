@@ -21,7 +21,7 @@ To get the binaries of the official Microsoft Azure Event Grid Java SDK as distr
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-eventgrid</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
