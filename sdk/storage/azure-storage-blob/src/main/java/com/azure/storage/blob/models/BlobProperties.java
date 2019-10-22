@@ -3,11 +3,16 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 
+/**
+ * This class contains the response information returned from the service when getting blob properties.
+ */
+@Immutable
 public final class BlobProperties {
     private final OffsetDateTime creationTime;
     private final OffsetDateTime lastModified;
@@ -41,6 +46,44 @@ public final class BlobProperties {
     private final Map<String, String> metadata;
     private final Integer committedBlockCount;
 
+    /**
+     * Constructs a {@link BlobProperties}.
+     *
+     * @param creationTime Creation time of the blob.
+     * @param lastModified Datetime when the blob was last modified.
+     * @param eTag ETag of the blob.
+     * @param blobSize Size of the blob.
+     * @param contentType Content type specified for the blob.
+     * @param contentMd5 Content MD5 specified for the blob.
+     * @param contentEncoding Content encoding specified for the blob.
+     * @param contentDisposition Content disposition specified for the blob.
+     * @param contentLanguage Content language specified for the blob.
+     * @param cacheControl Cache control specified for the blob.
+     * @param blobSequenceNumber The current sequence number for a page blob, if the blob is an append or block blob
+     * pass {@code null}.
+     * @param blobType Type of the blob.
+     * @param leaseStatus Status of the lease on the blob.
+     * @param leaseState State of the lease on the blob.
+     * @param leaseDuration Type of lease on the blob.
+     * @param copyId Identifier of the last copy operation performed on the blob.
+     * @param copyStatus Status of the last copy operation performed on the blob.
+     * @param copySource Source of the last copy operation performed on the blob.
+     * @param copyProgress Progress of the last copy operation performed on the blob.
+     * @param copyCompletionTime Datetime when the last copy operation on the blob completed.
+     * @param copyStatusDescription Description of the last copy operation on the blob.
+     * @param isServerEncrypted Flag indicating if the blob's content is encrypted on the server.
+     * @param isIncrementalCopy Flag indicating if the blob was incrementally copied.
+     * @param copyDestinationSnapshot Snapshot identifier of the last incremental copy snapshot for the blob.
+     * @param accessTier Access tier of the blob.
+     * @param isAccessTierInferred Flag indicating if the access tier of the blob was inferred from properties of the
+     * blob.
+     * @param archiveStatus Archive status of the blob.
+     * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the server.
+     * @param accessTierChangeTime Datetime when the access tier of the blob last changed.
+     * @param metadata Metadata associated with the blob.
+     * @param committedBlockCount Number of blocks committed to an append blob, if the blob is a block or page blob
+     * pass {@code null}.
+     */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
         final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
         final String contentDisposition, final String contentLanguage, final String cacheControl,

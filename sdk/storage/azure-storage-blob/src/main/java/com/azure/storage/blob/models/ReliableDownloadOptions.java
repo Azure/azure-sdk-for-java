@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.DownloadAsyncResponse;
 
@@ -12,6 +13,7 @@ import java.util.Locale;
  * {@code ReliableDownloadOptions} contains properties which help the {@code Flux} returned from {@link
  * DownloadAsyncResponse#body(ReliableDownloadOptions)} determine when to retry.
  */
+@Fluent
 public final class ReliableDownloadOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 

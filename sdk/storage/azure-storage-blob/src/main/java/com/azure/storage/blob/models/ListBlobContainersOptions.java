@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
 
@@ -11,6 +12,7 @@ import com.azure.storage.blob.BlobServiceClient;
  * object. See the constructor for details on each of the options. Null may be passed in place of an object of this type
  * if no options are desirable.
  */
+@Fluent
 public final class ListBlobContainersOptions {
     private final ClientLogger logger = new ClientLogger(ListBlobContainersOptions.class);
 
@@ -20,6 +22,9 @@ public final class ListBlobContainersOptions {
 
     private Integer maxResultsPerPage;
 
+    /**
+     * Constructs an unpopulated {@link ListBlobContainersOptions}.
+     */
     public ListBlobContainersOptions() {
         this.details = new BlobContainerListDetails();
     }

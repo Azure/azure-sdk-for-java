@@ -49,19 +49,18 @@ import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
- * the client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers,
- * and deleting and un-deleting a blob.
+ * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by the
+ * client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers, and
+ * deleting and un-deleting a blob.
  *
  * <p>
- * This client is instantiated through {@link BlobClientBuilder} or retrieved via
- * {@link BlobContainerAsyncClient#getBlobAsyncClient(String) getBlobAsyncClient}.
+ * This client is instantiated through {@link BlobClientBuilder} or retrieved via {@link
+ * BlobContainerAsyncClient#getBlobAsyncClient(String) getBlobAsyncClient}.
  *
  * <p>
- * For operations on a specific blob type (i.e append, block, or page) use
- * {@link #getAppendBlobAsyncClient() getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient()
- * getBlockBlobAsyncClient}, or {@link #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that
- * allows blob specific operations.
+ * For operations on a specific blob type (i.e append, block, or page) use {@link #getAppendBlobAsyncClient()
+ * getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient() getBlockBlobAsyncClient}, or {@link
+ * #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that allows blob specific operations.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -191,9 +190,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
      * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and
      * {@link BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information,
-     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure
-     * Docs for Put Block</a> and the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure
-     * Docs for Put Block List</a>.
+     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
      * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
@@ -253,19 +251,21 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             buffer filling up with more data to write). We use flatMapSequential because we need to guarantee we
             preserve the ordering of the buffers, but we don't really care if one is split before another.
              */
-            Flux<ByteBuffer> chunkedSource = data.flatMapSequential(buffer -> {
-                if (buffer.remaining() <= blockSize) {
-                    return Flux.just(buffer);
-                }
-                int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
-                return Flux.range(0, numSplits)
-                    .map(i -> {
-                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                        duplicate.position(i * blockSize);
-                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
-                        return duplicate;
-                    });
-            });
+            Flux<ByteBuffer> chunkedSource = data
+                .filter(ByteBuffer::hasRemaining)
+                .flatMapSequential(buffer -> {
+                    if (buffer.remaining() <= blockSize) {
+                        return Flux.just(buffer);
+                    }
+                    int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
+                    return Flux.range(0, numSplits)
+                        .map(i -> {
+                            ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                            duplicate.position(i * blockSize);
+                            duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
+                            return duplicate;
+                        });
+                });
 
             /*
              Write to the pool and upload the output.
@@ -288,7 +288,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         .map(x -> blockId)
                         .doFinally(x -> pool.returnBuffer(buffer))
                         .flux();
-
                 }) // TODO: parallelism?
                 .collect(Collectors.toList())
                 .flatMap(ids ->
@@ -329,7 +328,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
-     *        transfers parameter is ignored.
+     * transfers parameter is ignored.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
@@ -385,6 +384,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Resource Supplier for UploadFile
+     *
      * @param filePath The path for the file
      * @return {@code AsynchronousFileChannel}
      * @throws UncheckedIOException an input output exception.
