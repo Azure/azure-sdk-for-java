@@ -934,7 +934,6 @@ class BlobAPITest extends APISpec {
 
         def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
         def blobAccessConditions = new BlobRequestConditions().setLeaseId(leaseId)
-        def leaseAccess = new LeaseAccessConditions().setLeaseId(garbageLeaseID)
 
         when:
         def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccessConditions, Duration.ofMillis(500))
@@ -943,7 +942,7 @@ class BlobAPITest extends APISpec {
         assert response.getStatus() != PollResponse.OperationStatus.FAILED
 
         def blobCopyInfo = response.getValue()
-        bu2.abortCopyFromURLWithResponse(blobCopyInfo.getCopyId(), leaseAccess, null, null)
+        bu2.abortCopyFromURLWithResponse(blobCopyInfo.getCopyId(), garbageLeaseID, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -1002,7 +1001,7 @@ class BlobAPITest extends APISpec {
         def bu2 = cu2.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu2.upload(defaultInputStream.get(), defaultDataSize)
         def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
-        def blobAccess = new BlobRequestConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+        def blobAccess = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
         def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, Duration.ofSeconds(1))
