@@ -26,7 +26,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final RetryStrategy retryStrategy;
 
     /**
-     * Creates a {@link FixedDelay} RetryPolicy with a default {@link ExponentialBackoff} strategy.
+     * Creates a default {@link ExponentialBackoff} retry policy.
      */
     public RetryPolicy() {
         this(new ExponentialBackoff());
