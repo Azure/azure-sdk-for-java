@@ -16,8 +16,6 @@ import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_S
  * This class contains configuration used to parallelize data transfer operations.
  */
 @Fluent
-public class ParallelTransferOptions {
-
 public final class ParallelTransferOptions {
 
     private static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
