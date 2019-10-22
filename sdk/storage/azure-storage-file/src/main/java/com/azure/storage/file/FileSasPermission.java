@@ -17,6 +17,10 @@ import java.util.Locale;
  * It is possible to construct the permissions string without this class, but the order of the permissions is particular
  * and this class guarantees correctness.
  * </p>
+ *
+ * @see FileServiceSasSignatureValues
+ * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-service-sas#permissions-for-a-file>
+ *     Permissions for a file</a>
  */
 public final class FileSasPermission {
     private boolean readPermission;
@@ -28,17 +32,17 @@ public final class FileSasPermission {
     private boolean deletePermission;
 
     /**
-     * Initializes an {@code FileSasPermission} object with all fields set to false.
+     * Initializes an {@link FileSasPermission} object with all fields set to false.
      */
     public FileSasPermission() {
     }
 
     /**
      * Creates an {@code FileSasPermission} from the specified permissions string. This method will throw an
-     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code FileSasPermission}.
-     * @return A {@code FileSasPermission} generated from the given {@code String}.
+     * @param permString A {@link String} which represents the {@link FileSasPermission}.
+     * @return A {@link FileSasPermission} generated from the given {@link String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, c, w, or d.
      */
     public static FileSasPermission parse(String permString) {
@@ -69,7 +73,10 @@ public final class FileSasPermission {
     }
 
     /**
-     * @return the read permission status
+     * Gets the read permission status.
+     *
+     * @return {@code true} if the SAS can read the content, properties, and metadata for a file. Can use the file as
+     * the source of a copy operation. {@code false}, otherwise.
      */
     public boolean hasReadPermission() {
         return readPermission;
@@ -78,7 +85,8 @@ public final class FileSasPermission {
     /**
      * Sets the read permission status.
      *
-     * @param hasReadPermission Permission status to set
+     * @param hasReadPermission {@code true} if the SAS can read the content, properties, and metadata for a file. Can
+     * use the file as the source of a copy operation. {@code false}, otherwise.
      * @return the updated FileSasPermission object
      */
     public FileSasPermission setReadPermission(boolean hasReadPermission) {
@@ -87,7 +95,9 @@ public final class FileSasPermission {
     }
 
     /**
-     * @return the create permission status
+     * Gets the create permission status.
+     *
+     * @return {@code true} if SAS can create a new file or copy a file to a new file. {@code false}, otherwise.
      */
     public boolean hasCreatePermission() {
         return createPermission;
@@ -96,7 +106,8 @@ public final class FileSasPermission {
     /**
      * Sets the create permission status.
      *
-     * @param hasCreatePermission Permission status to set
+     * @param hasCreatePermission {@code true} if SAS can create a new file or copy a file to a new file. {@code false},
+     * otherwise.
      * @return the updated FileSasPermission object
      */
     public FileSasPermission setCreatePermission(boolean hasCreatePermission) {
@@ -105,7 +116,10 @@ public final class FileSasPermission {
     }
 
     /**
-     * @return the write permission status
+     * Gets the write permission status.
+     *
+     * @return {@code true} if SAS can write content, properties, or metadata to the file. Or, use the file as the
+     * destination of a copy operation. {@code false}, otherwise.
      */
     public boolean hasWritePermission() {
         return writePermission;
@@ -114,7 +128,8 @@ public final class FileSasPermission {
     /**
      * Sets the write permission status.
      *
-     * @param hasWritePermission Permission status to set
+     * @param hasWritePermission {@code true} if SAS can write content, properties, or metadata to the file. Or, use the
+     * file as the destination of a copy operation. {@code false}, otherwise.
      * @return the updated FileSasPermission object
      */
     public FileSasPermission setWritePermission(boolean hasWritePermission) {
@@ -123,7 +138,9 @@ public final class FileSasPermission {
     }
 
     /**
-     * @return the delete permission status
+     * Gets the delete permission status.
+     *
+     * @return {@code true} if SAS can delete a file. {@code false}, otherwise.
      */
     public boolean hasDeletePermission() {
         return deletePermission;
@@ -132,7 +149,7 @@ public final class FileSasPermission {
     /**
      * Sets the delete permission status.
      *
-     * @param hasDeletePermission Permission status to set
+     * @param hasDeletePermission {@code true} if SAS can delete a file. {@code false}, otherwise.
      * @return the updated FileSasPermission object
      */
     public FileSasPermission setDeletePermission(boolean hasDeletePermission) {
@@ -141,10 +158,10 @@ public final class FileSasPermission {
     }
 
     /**
-     * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
+     * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@code String} which represents the {@code FileSasPermission}.
+     * @return A {@link String} which represents the {@link FileSasPermission}.
      */
     @Override
     public String toString() {
