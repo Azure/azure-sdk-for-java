@@ -397,8 +397,9 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
      */
-    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
-        BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
+    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
+        ReliableDownloadOptions options, BlobRequestConditions accessConditions, boolean rangeGetContentMD5,
+        Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)

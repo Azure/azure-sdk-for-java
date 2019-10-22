@@ -91,7 +91,7 @@ class BlobDownloadResponseTest extends APISpec {
     @Unroll
     def "Info null IA"() {
         when:
-        new BlobDownloadAsyncResponse(null, null, info, null)
+        new BlobDownloadAsyncResponse(null, 0, null, null, null, null, info, null)
 
         then:
         thrown(NullPointerException)
@@ -112,7 +112,7 @@ class BlobDownloadResponseTest extends APISpec {
 
     def "Getter IA"() {
         when:
-        new BlobDownloadAsyncResponse(null, null, new HttpGetterInfo().setETag("etag"), null)
+        new BlobDownloadAsyncResponse(null, 0, null, null, null, null, new HttpGetterInfo().setETag("etag"), null)
 
         then:
         thrown(NullPointerException)

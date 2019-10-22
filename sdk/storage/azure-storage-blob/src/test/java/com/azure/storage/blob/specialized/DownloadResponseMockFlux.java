@@ -159,7 +159,8 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
         this.tryNumber++;
         this.info = info;
         BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this, new BlobDownloadHeaders());
-        BlobDownloadAsyncResponse response = new BlobDownloadAsyncResponse(rawResponse, options, info, this::getter);
+        BlobDownloadAsyncResponse response = new BlobDownloadAsyncResponse(rawResponse.getRequest(), rawResponse.getStatusCode(),
+            rawResponse.getHeaders(), rawResponse.getValue(), rawResponse.getDeserializedHeaders(), options, info, this::getter);
 
         switch (this.scenario) {
             case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
