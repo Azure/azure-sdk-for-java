@@ -17,7 +17,6 @@ import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.ProgressReceiver
-
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
@@ -30,6 +29,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
@@ -786,6 +786,21 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         bc.getProperties().getAccessTier() == AccessTier.COOL
+    }
+
+    @Requires({ liveMode() })
+    def "Async buffered upload empty"() {
+        when:
+        def emptyUploadVerifier = StepVerifier.create(blobac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), new ParallelTransferOptions()))
+
+        then:
+        emptyUploadVerifier.assertNext({
+            assert it.getETag() != null
+        }).verifyComplete()
+
+        StepVerifier.create(blobac.download()).assertNext({
+            assert it.remaining() == 0
+        }).verifyComplete()
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
