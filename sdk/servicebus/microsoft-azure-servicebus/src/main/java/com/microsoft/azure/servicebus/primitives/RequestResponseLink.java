@@ -493,7 +493,9 @@ class RequestResponseLink extends ClientEntity {
     protected CompletableFuture<Void> onClose() {
         TRACE_LOGGER.info("Closing requestresponselink to {} by closing both internal sender and receiver links.", this.linkPath);
         this.cancelSASTokenRenewTimer();
-        return this.amqpSender.closeAsync().thenComposeAsync((v) -> this.amqpReceiver.closeAsync(), MessagingFactory.INTERNAL_THREAD_POOL);
+        CompletableFuture<Void> senderCloseFuture = this.amqpSender.closeAsync();
+        CompletableFuture<Void> receiverCloseFuture = this.amqpReceiver.closeAsync();
+        return CompletableFuture.allOf(senderCloseFuture, receiverCloseFuture);
     }
 
     private static void scheduleLinkCloseTimeout(CompletableFuture<Void> closeFuture, Duration timeout, String linkName) {
