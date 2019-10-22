@@ -114,7 +114,7 @@ public class BlobPartitionManager implements PartitionManager {
                 // New blob should be created
                 blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions().setIfNoneMatch("*"));
                 return blobAsyncClient.getBlockBlobAsyncClient()
-                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, blobAccessConditions)
+                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null, blobAccessConditions)
                     .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                         logger.info(CLAIM_ERROR, partitionId, error.getMessage());
                         return Mono.empty();

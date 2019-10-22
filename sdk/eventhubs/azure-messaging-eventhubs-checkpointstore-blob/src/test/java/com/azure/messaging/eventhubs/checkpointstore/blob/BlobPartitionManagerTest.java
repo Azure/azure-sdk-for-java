@@ -116,7 +116,7 @@ public class BlobPartitionManagerTest {
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
-            isNull(), any(Map.class), isNull(), any(BlobAccessConditions.class)))
+            isNull(), any(Map.class), isNull(), isNull(), any(BlobAccessConditions.class)))
             .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
@@ -174,7 +174,7 @@ public class BlobPartitionManagerTest {
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
-            isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), any(BlobAccessConditions.class)))
+            isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), isNull(), any(BlobAccessConditions.class)))
             .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
         StepVerifier.create(blobPartitionManager.claimOwnership(po)).verifyComplete();
