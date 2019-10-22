@@ -72,8 +72,8 @@ public class SetMetadataAndHTTPHeadersExample {
          * Create a blob with blob's blobMetadata and BlobHttpHeaders.
          */
         Map<String, String> blobMetadata = Collections.singletonMap("myblobmetadata", "sample");
-        BlobHttpHeaders blobHTTPHeaders = new BlobHttpHeaders().setBlobContentDisposition("attachment")
-            .setBlobContentType("text/html; charset=utf-8");
+        BlobHttpHeaders blobHTTPHeaders = new BlobHttpHeaders().setContentDisposition("attachment")
+            .setContentType("text/html; charset=utf-8");
 
         /*
          * Data which will upload to block blob.

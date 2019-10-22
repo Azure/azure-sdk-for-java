@@ -5,6 +5,7 @@ package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
 import com.azure.core.implementation.util.ImplUtils
+import com.azure.core.util.polling.PollResponse
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -32,6 +33,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.file.FileAlreadyExistsException
 import java.security.MessageDigest
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class BlobAPITest extends APISpec {
@@ -396,12 +398,12 @@ class BlobAPITest extends APISpec {
         setup:
         def properties = bc.getProperties()
         def headers = new BlobHttpHeaders()
-            .setBlobContentEncoding(properties.getContentEncoding())
-            .setBlobContentDisposition(properties.getContentDisposition())
-            .setBlobContentType("type")
-            .setBlobCacheControl(properties.getCacheControl())
-            .setBlobContentLanguage(properties.getContentLanguage())
-            .setBlobContentMD5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
+            .setContentEncoding(properties.getContentEncoding())
+            .setContentDisposition(properties.getContentDisposition())
+            .setContentType("type")
+            .setCacheControl(properties.getCacheControl())
+            .setContentLanguage(properties.getContentLanguage())
+            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
 
         bc.setHttpHeaders(headers)
 
@@ -412,12 +414,12 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set HTTP headers headers"() {
         setup:
-        def putHeaders = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType)
+        def putHeaders = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
 
         bc.setHttpHeaders(putHeaders)
 
@@ -708,33 +710,48 @@ class BlobAPITest extends APISpec {
     def "Copy"() {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def headers =
-            copyDestBlob.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getHeaders()
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
 
         when:
-        while (copyDestBlob.getProperties().getCopyStatus() == CopyStatusType.PENDING) {
-            sleepIfRecord(1000)
-        }
+        poller.block()
         def properties = copyDestBlob.getProperties()
+        def response = poller.getLastPollResponse()
 
         then:
         properties.getCopyStatus() == CopyStatusType.SUCCESS
         properties.getCopyCompletionTime() != null
         properties.getCopyProgress() != null
         properties.getCopySource() != null
-        validateBasicHeaders(headers)
-        headers.getValue("x-ms-copy-id") != null
+
+        response != null
+        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+
+        def blobInfo = response.getValue()
+        blobInfo != null
+        blobInfo.getCopyId() == properties.getCopyId()
     }
 
     def "Copy min"() {
-        expect:
-        bc.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 202
+        setup:
+        def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
+        def verifier = StepVerifier.create(poller.getObserver().take(1))
+
+        then:
+        verifier.assertNext({
+            assert it.getValue() != null
+            assert it.getValue().getCopyId() != null
+            assert it.getValue().getCopySourceUrl() == bc.getBlobUrl()
+            assert it.getStatus() == PollResponse.OperationStatus.IN_PROGRESS || it.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+        }).verifyComplete()
     }
 
     def "Copy poller"() {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null);
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null)
 
         when:
         def verifier = StepVerifier.create(poller.getObserver())
@@ -773,20 +790,11 @@ class BlobAPITest extends APISpec {
             metadata.put(key2, value2)
         }
 
-        def status = bu2.copyFromUrlWithResponse(bc.getBlobUrl(), metadata, null, null, null, null, null)
-            .getHeaders().getValue("x-ms-copy-status")
+        when:
+        def poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, Duration.ofSeconds(1))
+        poller.block()
 
-        def start = OffsetDateTime.now()
-        while (status != CopyStatusType.SUCCESS.toString()) {
-            sleepIfRecord(1000)
-            status = bu2.getPropertiesWithResponse(null, null, null).getHeaders().getValue("x-ms-copy-status")
-            def currentTime = OffsetDateTime.now()
-            if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
-                throw new Exception("Copy failed or took too long")
-            }
-        }
-
-        expect:
+        then:
         bu2.getProperties().getMetadata() == metadata
 
         where:
@@ -806,8 +814,13 @@ class BlobAPITest extends APISpec {
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
 
-        expect:
-        copyDestBlob.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null).getStatusCode() == 202
+        when:
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, mac, null, null)
+        poller.block()
+
+        then:
+        def response = poller.getLastPollResponse()
+        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
         modified | unmodified | match        | noneMatch
@@ -857,9 +870,13 @@ class BlobAPITest extends APISpec {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
 
+        when:
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, Duration.ofSeconds(1))
+        poller.block()
 
-        expect:
-        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null).getStatusCode() == 202
+        then:
+        def response = poller.getLastPollResponse()
+        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -914,12 +931,18 @@ class BlobAPITest extends APISpec {
         cu2.create()
         def bu2 = cu2.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu2.upload(defaultInputStream.get(), defaultDataSize)
-        def leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
+
+        def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        def blobAccessConditions = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def copyID = bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null,
-            new BlobRequestConditions().setLeaseId(leaseID), null, null).getValue()
-        bu2.abortCopyFromUrlWithResponse(copyID, garbageLeaseID, null, null)
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccessConditions, Duration.ofMillis(500))
+        def response = poller.getObserver().blockFirst()
+
+        assert response.getStatus() != PollResponse.OperationStatus.FAILED
+
+        def blobCopyInfo = response.getValue()
+        bu2.abortCopyFromUrlWithResponse(blobCopyInfo.getCopyId(), garbageLeaseID, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -932,7 +955,8 @@ class BlobAPITest extends APISpec {
     def "Abort copy"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
-        new SpecializedBlobClientBuilder().blobClient(bc)
+        new SpecializedBlobClientBuilder()
+            .blobClient(bc)
             .buildBlockBlobClient()
             .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
         // So we don't have to create a SAS.
@@ -943,8 +967,13 @@ class BlobAPITest extends APISpec {
         def bu2 = cu2.getBlobClient(generateBlobName())
 
         when:
-        def copyID = bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getValue()
-        def response = bu2.abortCopyFromUrlWithResponse(copyID, null, null, null)
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, Duration.ofSeconds(1))
+        def lastResponse = poller.getObserver().blockFirst()
+
+        assert lastResponse != null
+        assert lastResponse.getValue() != null
+
+        def response = bu2.abortCopyFromUrlWithResponse(lastResponse.getValue().getCopyId(), null, null, null)
         def headers = response.getHeaders()
 
         then:
@@ -952,28 +981,10 @@ class BlobAPITest extends APISpec {
         headers.getValue("x-ms-request-id") != null
         headers.getValue("x-ms-version") != null
         headers.getValue("Date") != null
+
+        cleanup:
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.deleteWithResponse(null, null, null).getStatusCode() == 202
-    }
-
-    def "Abort copy min"() {
-        setup:
-        // Data has to be large enough and copied between accounts to give us enough time to abort
-        new SpecializedBlobClientBuilder().blobClient(bc)
-            .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
-        // So we don't have to create a SAS.
-        cc.setAccessPolicy(PublicAccessType.BLOB, null)
-
-        def cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName())
-        cu2.create()
-        def bu2 = cu2.getBlobClient(generateBlobName())
-
-        when:
-        def copyID = bu2.copyFromUrl(bc.getBlobUrl())
-
-        then:
-        bu2.abortCopyFromUrlWithResponse(copyID, null, null, null).getStatusCode() == 204
     }
 
     def "Abort copy lease"() {
@@ -989,15 +1000,21 @@ class BlobAPITest extends APISpec {
         cu2.create()
         def bu2 = cu2.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu2.upload(defaultInputStream.get(), defaultDataSize)
-        def leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        def blobAccess = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def copyID =
-            bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null,
-                new BlobRequestConditions().setLeaseId(leaseID), null, null).getValue()
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, Duration.ofSeconds(1))
+        def lastResponse = poller.getObserver().blockFirst()
 
         then:
-        bu2.abortCopyFromUrlWithResponse(copyID, leaseID, null, null).getStatusCode() == 204
+        lastResponse != null
+        lastResponse.getValue() != null
+
+        def copyId = lastResponse.getValue().getCopyId()
+        bu2.abortCopyFromUrlWithResponse(copyId, leaseId, null, null).getStatusCode() == 204
+
+        cleanup:
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.delete()
     }

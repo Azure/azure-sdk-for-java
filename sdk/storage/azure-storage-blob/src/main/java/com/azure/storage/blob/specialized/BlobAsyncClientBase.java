@@ -15,15 +15,17 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollResponse.OperationStatus;
 import com.azure.core.util.polling.Poller;
-import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -918,7 +920,20 @@ public class BlobAsyncClientBase {
             null, null, snapshot, null, accessConditions.getLeaseId(), accessConditions.getIfModifiedSince(),
             accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
             null, customerProvidedKey, context)
-            .map(rb -> new SimpleResponse<>(rb, new BlobProperties(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                BlobGetPropertiesHeaders hd = rb.getDeserializedHeaders();
+                BlobProperties properties = new BlobProperties(hd.getCreationTime(), hd.getLastModified(), hd.getETag(),
+                    hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(), hd.getContentMD5(),
+                    hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(), hd.getCacheControl(),
+                    hd.getBlobSequenceNumber(), hd.getBlobType(), hd.getLeaseStatus(), hd.getLeaseState(),
+                    hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(), hd.getCopySource(), hd.getCopyProgress(),
+                    hd.getCopyCompletionTime(), hd.getCopyStatusDescription(), hd.isServerEncrypted(),
+                    hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
+                    hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
+                    hd.getEncryptionKeySha256(), hd.getAccessTierChangeTime(), hd.getMetadata(),
+                    hd.getBlobCommittedBlockCount());
+                return new SimpleResponse<>(rb, properties);
+            });
     }
 
     /**

@@ -27,17 +27,17 @@ public final class FileMetrics {
     private boolean enabled;
 
     /*
-     * Indicates whether metrics should generate summary statistics for called
-     * API operations.
-     */
-    @JsonProperty(value = "IncludeAPIs")
-    private Boolean includeAPIs;
-
-    /*
      * The retentionPolicy property.
      */
     @JsonProperty(value = "RetentionPolicy")
     private FileRetentionPolicy retentionPolicy;
+
+    /*
+     * Indicates whether metrics should generate summary statistics for called
+     * API operations.
+     */
+    @JsonProperty(value = "IncludeAPIs")
+    private Boolean includeApis;
 
     /**
      * Get the version property: The version of Storage Analytics to configure.
@@ -82,28 +82,6 @@ public final class FileMetrics {
     }
 
     /**
-     * Get the includeAPIs property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
-     *
-     * @return the includeAPIs value.
-     */
-    public Boolean isIncludeAPIs() {
-        return this.includeAPIs;
-    }
-
-    /**
-     * Set the includeAPIs property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
-     *
-     * @param includeAPIs the includeAPIs value to set.
-     * @return the FileMetrics object itself.
-     */
-    public FileMetrics setIncludeAPIs(Boolean includeAPIs) {
-        this.includeAPIs = includeAPIs;
-        return this;
-    }
-
-    /**
      * Get the retentionPolicy property: The retentionPolicy property.
      *
      * @return the retentionPolicy value.
@@ -120,6 +98,28 @@ public final class FileMetrics {
      */
     public FileMetrics setRetentionPolicy(FileRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
+        return this;
+    }
+
+    /**
+     * Get the includeApis property: Indicates whether metrics should generate
+     * summary statistics for called API operations.
+     *
+     * @return the includeApis value.
+     */
+    public Boolean isIncludeApis() {
+        return this.includeApis;
+    }
+
+    /**
+     * Set the includeApis property: Indicates whether metrics should generate
+     * summary statistics for called API operations.
+     *
+     * @param includeApis the includeApis value to set.
+     * @return the FileMetrics object itself.
+     */
+    public FileMetrics setIncludeApis(Boolean includeApis) {
+        this.includeApis = includeApis;
         return this;
     }
 }
