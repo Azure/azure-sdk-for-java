@@ -9,7 +9,7 @@ import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.KeyType;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;

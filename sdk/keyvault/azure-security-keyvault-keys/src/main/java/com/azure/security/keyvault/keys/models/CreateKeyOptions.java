@@ -4,8 +4,6 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -67,7 +65,7 @@ public class CreateKeyOptions {
      *
      * @return the key operations.
      */
-    public List<KeyOperation> keyOperations() {
+    public List<KeyOperation> getKeyOperations() {
         return this.keyOperations;
     }
 

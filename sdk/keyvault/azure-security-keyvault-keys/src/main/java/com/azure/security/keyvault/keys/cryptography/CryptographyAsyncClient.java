@@ -25,8 +25,8 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyOperation;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -36,11 +36,11 @@ import java.util.Objects;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.security.keyvault.keys.models.webkey.KeyType.EC;
-import static com.azure.security.keyvault.keys.models.webkey.KeyType.EC_HSM;
-import static com.azure.security.keyvault.keys.models.webkey.KeyType.RSA;
-import static com.azure.security.keyvault.keys.models.webkey.KeyType.RSA_HSM;
-import static com.azure.security.keyvault.keys.models.webkey.KeyType.OCT;
+import static com.azure.security.keyvault.keys.models.KeyType.EC;
+import static com.azure.security.keyvault.keys.models.KeyType.EC_HSM;
+import static com.azure.security.keyvault.keys.models.KeyType.RSA;
+import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
+import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 
 /**
  * The CryptographyAsyncClient provides asynchronous methods to perform cryptographic operations using asymmetric and

@@ -13,9 +13,9 @@ import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -169,7 +169,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyProperties-Context
         for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
-            KeyVaultKey keyResponse = keyClient.getKeyWithResponse(key, new Context(key1, value1)).getValue();
+            KeyVaultKey keyResponse = keyClient.getKeyFromPropertiesWithResponse(key, new Context(key1, value1)).getValue();
             System.out.printf("Received key with name %s and type %s", keyResponse.getName(),
                 keyResponse.getKey().getKeyType());
         }
@@ -196,7 +196,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.keyvault.keys.keyclient.getKey#KeyProperties
         for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
-            KeyVaultKey keyResponse = keyClient.getKey(key);
+            KeyVaultKey keyResponse = keyClient.getKeyFromProperties(key);
             System.out.printf("Received key with name %s and type %s", keyResponse.getName(),
                 keyResponse.getKey().getKeyType());
         }
@@ -350,7 +350,7 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeys
         for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
-            KeyVaultKey keyWithMaterial = keyClient.getKey(key);
+            KeyVaultKey keyWithMaterial = keyClient.getKeyFromProperties(key);
             System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(),
                 keyWithMaterial.getKey().getKeyType());
         }
@@ -358,7 +358,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeys#Context
         for (KeyProperties key : keyClient.listPropertiesOfKeys(new Context(key2, value2))) {
-            KeyVaultKey keyWithMaterial = keyClient.getKey(key);
+            KeyVaultKey keyWithMaterial = keyClient.getKeyFromProperties(key);
             System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(),
                 keyWithMaterial.getKey().getKeyType());
         }
@@ -369,7 +369,7 @@ public final class KeyClientJavaDocCodeSnippets {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
-                KeyVaultKey keyWithMaterial = keyClient.getKey(value);
+                KeyVaultKey keyWithMaterial = keyClient.getKeyFromProperties(value);
                 System.out.printf("Received key with name %s and type %s %n", keyWithMaterial.getName(),
                     keyWithMaterial.getKey().getKeyType());
             });
@@ -412,7 +412,7 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions
         for (KeyProperties key : keyClient.listPropertiesOfKeyVersions("keyName")) {
-            KeyVaultKey keyWithMaterial  = keyClient.getKey(key);
+            KeyVaultKey keyWithMaterial  = keyClient.getKeyFromProperties(key);
             System.out.printf("Received key's version with name %s, type %s and version %s",
                 keyWithMaterial.getName(),
                     keyWithMaterial.getKey().getKeyType(), keyWithMaterial.getProperties().getVersion());
@@ -421,7 +421,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions#Context
         for (KeyProperties key : keyClient.listPropertiesOfKeyVersions("keyName", new Context(key2, value2))) {
-            KeyVaultKey keyWithMaterial  = keyClient.getKey(key);
+            KeyVaultKey keyWithMaterial  = keyClient.getKeyFromProperties(key);
             System.out.printf("Received key's version with name %s, type %s and version %s",
                 keyWithMaterial.getName(),
                     keyWithMaterial.getKey().getKeyType(), keyWithMaterial.getProperties().getVersion());

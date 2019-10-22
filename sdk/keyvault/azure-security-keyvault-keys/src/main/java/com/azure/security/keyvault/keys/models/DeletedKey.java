@@ -5,7 +5,6 @@ package com.azure.security.keyvault.keys.models;
 
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.time.OffsetDateTime;

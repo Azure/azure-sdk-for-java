@@ -9,15 +9,16 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.identity.DefaultAzureCredential;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyType;
 import reactor.util.context.Context;
 
 import java.time.OffsetDateTime;
@@ -69,7 +70,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public KeyAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
+            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
             .build();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .pipeline(pipeline)
@@ -215,7 +216,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyProperties
         keyAsyncClient.listPropertiesOfKeys().subscribe(keyProperties ->
-            keyAsyncClient.getKeyWithResponse(keyProperties)
+            keyAsyncClient.getKeyFromPropertiesWithResponse(keyProperties)
                 .subscriberContext(Context.of(key1, value1, key2, value2))
                 .subscribe(keyResponse ->
                 System.out.printf("Key with name %s and value %s %n", keyResponse.getValue().getName(),
@@ -247,7 +248,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.getKey#KeyProperties
         keyAsyncClient.listPropertiesOfKeys().subscribe(keyProperties ->
-            keyAsyncClient.getKey(keyProperties)
+            keyAsyncClient.getKeyFromProperties(keyProperties)
                 .subscriberContext(Context.of(key1, value1, key2, value2))
                 .subscribe(keyResponse ->
                     System.out.printf("Key with name %s and value %s %n", keyResponse.getName(), keyResponse.getId())));
@@ -427,7 +428,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.listKeys
         keyAsyncClient.listPropertiesOfKeys()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(keyProperties -> keyAsyncClient.getKey(keyProperties)
+            .subscribe(keyProperties -> keyAsyncClient.getKeyFromProperties(keyProperties)
                 .subscribe(keyResponse -> System.out.printf("Received key with name %s and type %s",
                     keyResponse.getName(),
                      keyResponse.getKey().getKeyType())));
@@ -455,7 +456,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.listKeyVersions
         keyAsyncClient.listPropertiesOfKeyVersions("keyName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(keyProperties -> keyAsyncClient.getKey(keyProperties)
+            .subscribe(keyProperties -> keyAsyncClient.getKeyFromProperties(keyProperties)
                 .subscribe(keyResponse ->
                     System.out.printf("Received key's version with name %s, type %s and version %s",
                         keyResponse.getName(),

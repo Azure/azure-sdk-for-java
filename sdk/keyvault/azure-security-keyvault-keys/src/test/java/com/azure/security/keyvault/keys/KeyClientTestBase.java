@@ -19,7 +19,7 @@ import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguratio
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;

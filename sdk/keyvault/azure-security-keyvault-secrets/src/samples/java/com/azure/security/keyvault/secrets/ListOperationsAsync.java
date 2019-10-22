@@ -52,7 +52,7 @@ public class ListOperationsAsync {
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
         secretAsyncClient.listPropertiesOfSecrets()
             .subscribe(secretBase ->
-                secretAsyncClient.getSecret(secretBase).subscribe(secretResponse ->
+                secretAsyncClient.getSecretFromProperties(secretBase).subscribe(secretResponse ->
                     System.out.printf("Received secret with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue())));
 
         Thread.sleep(15000);
@@ -68,7 +68,7 @@ public class ListOperationsAsync {
 
         // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
         secretAsyncClient.listPropertiesOfSecretVersions("BankAccountPassword").subscribe(secretBase ->
-            secretAsyncClient.getSecret(secretBase).subscribe(secretResponse ->
+            secretAsyncClient.getSecretFromProperties(secretBase).subscribe(secretResponse ->
                 System.out.printf("Received secret's version with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue())));
 
         Thread.sleep(15000);

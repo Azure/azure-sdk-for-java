@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.keys;
+package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -41,6 +41,7 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
 
     /**
      * Adds the required header to authenticate a request to Azure Key Vault service.
+     *20
      *
      * @param context The request context
      * @param next The next HTTP pipeline policy to process the {@code context's} request after this policy

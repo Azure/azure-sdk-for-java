@@ -13,8 +13,8 @@ import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
@@ -52,7 +52,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @Override
     public void encryptDecryptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
-            JsonWebKey key = JsonWebKey.fromRSA(keyPair);
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair);
             String keyName = "testRsaKey";
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
@@ -88,7 +88,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @Override
     public void wrapUnwraptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
-            JsonWebKey key = JsonWebKey.fromRSA(keyPair);
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair);
             String keyName = "testRsaKeyWrapUnwrap";
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
@@ -125,7 +125,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @Override
     public void signVerifyRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
-            JsonWebKey key = JsonWebKey.fromRSA(keyPair);
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair);
             String keyName = "testRsaKeySignVerify";
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
@@ -181,7 +181,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             generator.initialize(gps);
             KeyPair keyPair = generator.generateKeyPair();
 
-            JsonWebKey key = JsonWebKey.fromEC(keyPair, provider);
+            JsonWebKey key = JsonWebKey.fromEc(keyPair, provider);
             String keyName = "testEcKey" + crv.toString();
             KeyVaultKey imported = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()

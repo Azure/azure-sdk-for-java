@@ -42,7 +42,7 @@ public class ListOperations {
         // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
         for (SecretProperties secret : client.listPropertiesOfSecrets()) {
-            KeyVaultSecret secretWithValue  = client.getSecret(secret);
+            KeyVaultSecret secretWithValue  = client.getSecretFromProperties(secret);
             System.out.printf("Received secret with name %s and value %s \n", secretWithValue.getName(), secretWithValue.getValue());
         }
 
@@ -52,7 +52,7 @@ public class ListOperations {
 
         // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
         for (SecretProperties secret : client.listPropertiesOfSecretVersions("BankAccountPassword")) {
-            KeyVaultSecret secretWithValue  = client.getSecret(secret);
+            KeyVaultSecret secretWithValue  = client.getSecretFromProperties(secret);
             System.out.printf("Received secret's version with name %s and value %s", secretWithValue.getName(), secretWithValue.getValue());
         }
     }

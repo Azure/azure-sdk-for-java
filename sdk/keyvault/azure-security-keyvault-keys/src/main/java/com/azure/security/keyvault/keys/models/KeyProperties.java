@@ -4,10 +4,6 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.codec.binary.Base64;
 

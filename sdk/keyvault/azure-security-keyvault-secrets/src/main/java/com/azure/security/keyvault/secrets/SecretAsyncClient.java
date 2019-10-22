@@ -278,9 +278,9 @@ public final class SecretAsyncClient {
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultSecret> getSecret(SecretProperties secretProperties) {
+    public Mono<KeyVaultSecret> getSecretFromProperties(SecretProperties secretProperties) {
         try {
-            return getSecretWithResponse(secretProperties).flatMap(FluxUtil::toMono);
+            return getSecretFromPropertiesWithResponse(secretProperties).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -307,15 +307,15 @@ public final class SecretAsyncClient {
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultSecret>> getSecretWithResponse(SecretProperties secretProperties) {
+    public Mono<Response<KeyVaultSecret>> getSecretFromPropertiesWithResponse(SecretProperties secretProperties) {
         try {
-            return withContext(context -> getSecretWithResponse(secretProperties, context));
+            return withContext(context -> getSecretFromPropertiesWithResponse(secretProperties, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyVaultSecret>> getSecretWithResponse(SecretProperties secretProperties, Context context) {
+    Mono<Response<KeyVaultSecret>> getSecretFromPropertiesWithResponse(SecretProperties secretProperties, Context context) {
         Objects.requireNonNull(secretProperties, "The Secret Base parameter cannot be null.");
         return getSecretWithResponse(secretProperties.getName(), secretProperties.getVersion() == null ? "" : secretProperties.getVersion(),
             context);
@@ -768,7 +768,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get full Secrets with values from this information. Convert the {@link Flux} containing
      * {@link SecretProperties secret properties} to
-     * {@link Flux} containing {@link KeyVaultSecret secret} using {@link SecretAsyncClient#getSecret(SecretProperties secretProperties)}
+     * {@link Flux} containing {@link KeyVaultSecret secret} using {@link SecretAsyncClient#getSecretFromProperties(SecretProperties secretProperties)}
      * within {@link Flux#flatMap(Function)}.</p>
      * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecrets}
      *
@@ -904,7 +904,7 @@ public final class SecretAsyncClient {
      *
      * <p>It is possible to get the Secret with value of all the versions from this information. Convert the {@link
      * Flux} containing {@link SecretProperties secret} to {@link Flux} containing {@link KeyVaultSecret secret} using
-     * {@link SecretAsyncClient#getSecret(SecretProperties secretProperties)} within {@link Flux#flatMap(Function)}.</p>
+     * {@link SecretAsyncClient#getSecretFromProperties(SecretProperties secretProperties)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecretVersions#string}
      *

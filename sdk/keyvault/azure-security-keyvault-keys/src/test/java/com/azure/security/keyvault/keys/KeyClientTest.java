@@ -9,7 +9,7 @@ import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.KeyType;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;

@@ -13,7 +13,7 @@ import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.BadPaddingException;
@@ -38,12 +38,12 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     RsaKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
         super(serviceClient);
-        keyPair = key.toRSA(key.hasPrivateKey());
+        keyPair = key.toRsa(key.hasPrivateKey());
     }
 
     private KeyPair getKeyPair(JsonWebKey key) {
         if (keyPair == null) {
-            keyPair = key.toRSA(key.hasPrivateKey());
+            keyPair = key.toRsa(key.hasPrivateKey());
         }
         return keyPair;
     }

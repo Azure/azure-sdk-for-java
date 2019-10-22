@@ -27,10 +27,10 @@ import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyType;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -199,7 +199,7 @@ public final class KeyAsyncClient {
         Objects.requireNonNull(createKeyOptions, "The key create options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createKeyOptions.getKeyType())
-            .setKeyOps(createKeyOptions.keyOperations())
+            .setKeyOps(createKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createKeyOptions));
         return service.createKey(endpoint, createKeyOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
@@ -278,7 +278,7 @@ public final class KeyAsyncClient {
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createRsaKeyOptions.getKeyType())
             .setKeySize(createRsaKeyOptions.getKeySize())
-            .setKeyOps(createRsaKeyOptions.keyOperations())
+            .setKeyOps(createRsaKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions));
         return service.createKey(endpoint, createRsaKeyOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
@@ -363,7 +363,7 @@ public final class KeyAsyncClient {
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createEcKeyOptions.getKeyType())
             .setCurve(createEcKeyOptions.getCurve())
-            .setKeyOps(createEcKeyOptions.keyOperations())
+            .setKeyOps(createEcKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions));
         return service.createKey(endpoint, createEcKeyOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
@@ -607,9 +607,9 @@ public final class KeyAsyncClient {
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultKey> getKey(KeyProperties keyProperties) {
+    public Mono<KeyVaultKey> getKeyFromProperties(KeyProperties keyProperties) {
         try {
-            return getKeyWithResponse(keyProperties).flatMap(FluxUtil::toMono);
+            return getKeyFromPropertiesWithResponse(keyProperties).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -634,7 +634,7 @@ public final class KeyAsyncClient {
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultKey>> getKeyWithResponse(KeyProperties keyProperties) {
+    public Mono<Response<KeyVaultKey>> getKeyFromPropertiesWithResponse(KeyProperties keyProperties) {
         try {
             Objects.requireNonNull(keyProperties, "The Key Properties parameter cannot be null.");
             return withContext(context -> getKeyWithResponse(keyProperties.getName(), keyProperties.getVersion() == null ? ""
@@ -1096,7 +1096,7 @@ public final class KeyAsyncClient {
      *
      * <p>It is possible to get full keys with key material from this information. Convert the {@link Flux} containing
      * {@link KeyProperties key properties} to {@link Flux} containing {@link KeyVaultKey key} using
-     * {@link KeyAsyncClient#getKey(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
+     * {@link KeyAsyncClient#getKeyFromProperties(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeys}
      *
@@ -1227,7 +1227,7 @@ public final class KeyAsyncClient {
      *
      * <p>It is possible to get the keys with key material of all the versions from this information. Convert the {@link
      * Flux} containing {@link KeyProperties key properties} to {@link Flux} containing {@link KeyVaultKey key} using
-     * {@link KeyAsyncClient#getKey(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
+     * {@link KeyAsyncClient#getKeyFromProperties(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeyVersions}
      *

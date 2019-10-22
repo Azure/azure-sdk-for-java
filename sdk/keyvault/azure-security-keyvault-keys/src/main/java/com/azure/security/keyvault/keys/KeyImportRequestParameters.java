@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;

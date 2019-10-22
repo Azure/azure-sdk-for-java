@@ -487,7 +487,7 @@
       <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateBase"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.IssuerBase"/>
       <Class name="com.azure.security.keyvault.certificates.models.Issuer"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
@@ -515,11 +515,11 @@
   <Match>
     <Or>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
+        <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
         <Method name="deserialize"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.ByteExtensions"/>
+        <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
         <Method name="clone"/>
       </And>
     </Or>

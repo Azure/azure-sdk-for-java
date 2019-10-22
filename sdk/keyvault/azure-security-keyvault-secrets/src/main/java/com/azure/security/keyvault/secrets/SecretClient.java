@@ -154,8 +154,8 @@ public final class SecretClient {
      * @throws HttpRequestException if {@link SecretProperties#getName()  name} or {@link SecretProperties#getVersion() version} is empty
      *     string.
      */
-    public Response<KeyVaultSecret> getSecretWithResponse(SecretProperties secretProperties, Context context) {
-        return client.getSecretWithResponse(secretProperties, context).block();
+    public Response<KeyVaultSecret> getSecretFromPropertiesWithResponse(SecretProperties secretProperties, Context context) {
+        return client.getSecretFromPropertiesWithResponse(secretProperties, context).block();
     }
 
     /**
@@ -176,8 +176,8 @@ public final class SecretClient {
      * @throws HttpRequestException if {@link SecretProperties#getName()  name} or {@link SecretProperties#getVersion() version} is
      *     empty string.
      */
-    public KeyVaultSecret getSecret(SecretProperties secretProperties) {
-        return getSecretWithResponse(secretProperties, Context.NONE).getValue();
+    public KeyVaultSecret getSecretFromProperties(SecretProperties secretProperties) {
+        return getSecretFromPropertiesWithResponse(secretProperties, Context.NONE).getValue();
     }
 
     /**
@@ -476,13 +476,13 @@ public final class SecretClient {
      * response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretProperties secret}
-     * and call {@link SecretClient#getSecret(SecretProperties baseSecret)} . This will return the {@link KeyVaultSecret secret} with
+     * and call {@link SecretClient#getSecretFromProperties(SecretProperties baseSecret)} . This will return the {@link KeyVaultSecret secret} with
      * value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets}
      *
      * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p>It is possible to get full secrets with values from this information. Iterate over all the {@link SecretProperties
-     * secret} by page and call {@link SecretClient#getSecret(SecretProperties baseSecret)} . This will return the
+     * secret} by page and call {@link SecretClient#getSecretFromProperties(SecretProperties baseSecret)} . This will return the
      * {@link KeyVaultSecret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets.iterableByPage}
      *
@@ -501,7 +501,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretProperties secret}
-     * and call {@link SecretClient#getSecret(SecretProperties baseSecret)} . This will return the {@link KeyVaultSecret secret} with
+     * and call {@link SecretClient#getSecretFromProperties(SecretProperties baseSecret)} . This will return the {@link KeyVaultSecret secret} with
      * value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets#Context}
      *
@@ -555,7 +555,7 @@ public final class SecretClient {
      * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link
-     * SecretProperties secret} and call {@link SecretClient#getSecret(SecretProperties)}. This will return the
+     * SecretProperties secret} and call {@link SecretClient#getSecretFromProperties(SecretProperties)}. This will return the
      * {@link KeyVaultSecret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string}
      *
@@ -575,14 +575,14 @@ public final class SecretClient {
      * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link
-     * SecretProperties secret} and call {@link SecretClient#getSecret(SecretProperties)} . This will return the
+     * SecretProperties secret} and call {@link SecretClient#getSecretFromProperties(SecretProperties)} . This will return the
      * {@link KeyVaultSecret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context}
      *
      *
      * <p><strong>Code Samples to iterate over secret versions by page</strong></p>
      * <p>It is possible to get full Secrets with values for each version from this information. Iterate over all the
-     * {@link SecretProperties secret} by each page and call {@link SecretClient#getSecret(SecretProperties)} . This will return the
+     * {@link SecretProperties secret} by each page and call {@link SecretClient#getSecretFromProperties(SecretProperties)} . This will return the
      * {@link KeyVaultSecret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage}
      *

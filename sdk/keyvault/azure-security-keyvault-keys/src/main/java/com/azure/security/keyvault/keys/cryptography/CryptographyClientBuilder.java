@@ -17,9 +17,9 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,7 @@ import java.util.Objects;
  * @see CryptographyClient
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
-public class CryptographyClientBuilder {
+public final class CryptographyClientBuilder {
     final List<HttpPipelinePolicy> policies;
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
     private TokenCredential credential;

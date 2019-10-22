@@ -50,7 +50,7 @@ public class ListOperationsAsync {
         // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
         keyAsyncClient.listPropertiesOfKeys()
             .subscribe(keyBase ->
-                keyAsyncClient.getKey(keyBase).subscribe(keyResponse ->
+                keyAsyncClient.getKeyFromProperties(keyBase).subscribe(keyResponse ->
                     System.out.printf("Received key with name %s and type %s \n", keyResponse.getName(), keyResponse.getKey().getKeyType())));
 
         Thread.sleep(15000);
@@ -66,7 +66,7 @@ public class ListOperationsAsync {
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
         keyAsyncClient.listPropertiesOfKeyVersions("CloudRsaKey").subscribe(keyBase ->
-            keyAsyncClient.getKey(keyBase).subscribe(keyResponse ->
+            keyAsyncClient.getKeyFromProperties(keyBase).subscribe(keyResponse ->
                 System.out.printf("Received key's version with name %s, type %s and version %s \n", keyResponse.getName(),
                         keyResponse.getKey().getKeyType(), keyResponse.getProperties().getVersion())));
 

@@ -18,6 +18,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;

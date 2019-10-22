@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 
 @Fluent
 public class ImportKeyOptions extends KeyProperties {

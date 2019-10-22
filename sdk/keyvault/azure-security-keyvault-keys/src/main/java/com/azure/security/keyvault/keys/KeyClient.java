@@ -18,10 +18,10 @@ import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyType;
 
 import java.util.List;
 import java.util.Objects;
@@ -408,8 +408,8 @@ public final class KeyClient {
      * @throws HttpRequestException if {@link KeyProperties#getName()}  name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
-    public KeyVaultKey getKey(KeyProperties keyProperties) {
-        return getKeyWithResponse(keyProperties, Context.NONE).getValue();
+    public KeyVaultKey getKeyFromProperties(KeyProperties keyProperties) {
+        return getKeyFromPropertiesWithResponse(keyProperties, Context.NONE).getValue();
     }
 
     /**
@@ -429,7 +429,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
-    public Response<KeyVaultKey> getKeyWithResponse(KeyProperties keyProperties, Context context) {
+    public Response<KeyVaultKey> getKeyFromPropertiesWithResponse(KeyProperties keyProperties, Context context) {
         Objects.requireNonNull(keyProperties, "The Key properties parameter cannot be null.");
         return client
             .getKeyWithResponse(keyProperties.getName(), keyProperties.getVersion() == null ? "" : keyProperties.getVersion(), context).block();
@@ -714,13 +714,13 @@ public final class KeyClient {
      * operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material from this information. Loop over the {@link KeyProperties key}
-     * and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key material
+     * and call {@link KeyClient#getKeyFromProperties(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key material
      * included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys}
      *
      * <p><strong>Code Samples to iterate keys by page</strong></p>
      * <p>It is possible to get full keys with key material from this information. Iterate over all the {@link KeyProperties
-     * key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key
+     * key} by page and call {@link KeyClient#getKeyFromProperties(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key
      * material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
      *
@@ -738,13 +738,13 @@ public final class KeyClient {
      * operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material from this information. Loop over the {@link KeyProperties key}
-     * and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key material
+     * and call {@link KeyClient#getKeyFromProperties(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key material
      * included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys#Context}
      *
      * <p><strong>Code Samples to iterate keys by page</strong></p>
      * <p>It is possible to get full keys with key material from this information. Iterate over all the {@link KeyProperties
-     * key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key
+     * key} by page and call {@link KeyClient#getKeyFromProperties(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key
      * material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
      *
@@ -802,13 +802,13 @@ public final class KeyClient {
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material for each version from this information. Loop over the
-     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey keys}
+     * {@link KeyProperties key} and call {@link KeyClient#getKeyFromProperties(KeyProperties key properties)}. This will return the {@link KeyVaultKey keys}
      * with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
      * <p><strong>Code Samples to iterate over key versions by page</strong></p>
      * <p>It is possible to get full keys with key material for each version from this information. Iterate over all
-     * the {@link KeyProperties key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link
+     * the {@link KeyProperties key} by page and call {@link KeyClient#getKeyFromProperties(KeyProperties key properties)}. This will return the {@link
      * KeyVaultKey keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
      *
@@ -828,13 +828,13 @@ public final class KeyClient {
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material for each version from this information. Loop over the
-     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey keys}
+     * {@link KeyProperties key} and call {@link KeyClient#getKeyFromProperties(KeyProperties key properties)}. This will return the {@link KeyVaultKey keys}
      * with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
      * <p><strong>Code Samples to iterate over key versions by page</strong></p>
      * <p>It is possible to get full keys with key material for each version from this information. Iterate over all
-     * the {@link KeyProperties key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the
+     * the {@link KeyProperties key} by page and call {@link KeyClient#getKeyFromProperties(KeyProperties key properties)}. This will return the
      * {@link KeyVaultKey keys} with key material included of the specified versions.</p>
      *
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}

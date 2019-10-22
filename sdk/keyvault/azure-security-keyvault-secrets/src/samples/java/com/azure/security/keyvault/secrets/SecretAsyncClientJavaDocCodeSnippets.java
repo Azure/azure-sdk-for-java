@@ -8,6 +8,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -31,18 +33,14 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
      */
     public SecretAsyncClient createAsyncClientWithHttpclient() {
         // BEGIN: com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
-            .build();
-        SecretAsyncClient keyClient = new SecretClientBuilder()
-            .pipeline(pipeline)
+        SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .vaultEndpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation
-        return keyClient;
+        return secretAsyncClient;
     }
 
     /**
@@ -68,26 +66,25 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     public SecretAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
+            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
             .build();
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .pipeline(pipeline)
             .vaultEndpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation
         return secretAsyncClient;
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#getSecret(SecretProperties)}
+     * Method to insert code snippets for {@link SecretAsyncClient#getSecretFromProperties(SecretProperties)}
      */
     public void getSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.getSecret#secretProperties
         secretAsyncClient.listPropertiesOfSecrets()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient.getSecret(secretProperties)
+            .subscribe(secretProperties -> secretAsyncClient.getSecretFromProperties(secretProperties)
                 .subscribe(secretResponse ->
                     System.out.printf("Secret is returned with name %s and value %s %n", secretResponse.getName(),
                         secretResponse.getValue())));
@@ -112,14 +109,14 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#getSecretWithResponse(SecretProperties)}
+     * Method to insert code snippets for {@link SecretAsyncClient#getSecretFromPropertiesWithResponse(SecretProperties)}
      */
     public void getSecretWithResponseCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretProperties
         secretAsyncClient.listPropertiesOfSecrets()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient.getSecretWithResponse(secretProperties)
+            .subscribe(secretProperties -> secretAsyncClient.getSecretFromPropertiesWithResponse(secretProperties)
                 .subscribe(secretResponse ->
                     System.out.printf("Secret is returned with name %s and value %s %n",
                         secretResponse.getValue().getName(), secretResponse.getValue().getValue())));
@@ -361,7 +358,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.secrets.secretclient.listSecrets
         secretAsyncClient.listPropertiesOfSecrets()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient.getSecret(secretProperties)
+            .subscribe(secretProperties -> secretAsyncClient.getSecretFromProperties(secretProperties)
                 .subscribe(secretResponse -> System.out.printf("Received secret with name %s and type %s",
                     secretResponse.getName(), secretResponse.getValue())));
         // END: com.azure.keyvault.secrets.secretclient.listSecrets
@@ -388,7 +385,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.secrets.secretclient.listSecretVersions#string
         secretAsyncClient.listPropertiesOfSecretVersions("secretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient.getSecret(secretProperties)
+            .subscribe(secretProperties -> secretAsyncClient.getSecretFromProperties(secretProperties)
                 .subscribe(secretResponse -> System.out.printf("Received secret with name %s and type %s",
                     secretResponse.getName(), secretResponse.getValue())));
         // END: com.azure.keyvault.secrets.secretclient.listSecretVersions#string
