@@ -59,7 +59,7 @@ public class PageBlobClientJavaDocCodeSnippets {
         boolean overwrite = false; // Default value
         PageBlobItem pageBlob = client.create(size, overwrite);
         System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.PageBlobClient.create#long-booolean
+        // END: com.azure.storage.blob.PageBlobClient.create#long-boolean
     }
 
     /**

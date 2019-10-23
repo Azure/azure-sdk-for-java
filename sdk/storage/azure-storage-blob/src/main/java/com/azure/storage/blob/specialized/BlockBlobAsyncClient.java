@@ -89,10 +89,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a new block blob. By default this method will not overwrite an existing blob. Updating an existing block blob
-     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
-     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
-     * and PutBlockList. For more information, see the
+     * Creates a new block blob. By default this method will not overwrite an existing blob. Updating an existing block
+     * blob overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content
+     * of the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use
+     * PutBlock and PutBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the

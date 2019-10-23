@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
@@ -65,6 +66,22 @@ public class EncryptedBlobClient extends BlobClient {
      * @param filePath Path of the file to upload
      */
     public void uploadFromFile(String filePath) {
+        uploadFromFile(filePath, false);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean}
+     *
+     * @param filePath Path of the file to upload
+     */
+    public void uploadFromFile(String filePath, boolean overwrite) {
+        if (!overwrite && exists()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+        }
         uploadFromFile(filePath, null, null, null, null, null, null);
     }
 
