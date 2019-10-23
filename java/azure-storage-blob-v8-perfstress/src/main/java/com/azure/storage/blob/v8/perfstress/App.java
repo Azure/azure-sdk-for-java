@@ -10,6 +10,7 @@ public class App {
             testClasses = new Class<?>[] {
                 Class.forName("com.azure.storage.blob.v8.perfstress.DownloadTest"),
                 Class.forName("com.azure.storage.blob.v8.perfstress.GetBlobsTest"),
+                Class.forName("com.azure.storage.blob.v8.perfstress.UploadTest"),
             };
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
