@@ -15,7 +15,6 @@ import java.time.Duration;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -29,34 +28,39 @@ import java.util.function.Supplier;
 public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     private final ClientLogger logger = new ClientLogger(DefaultSyncPoller.class);
     //
-    private final Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
+    private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
     private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<T>> cancelOperation;
     private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<U>> fetchResultOperation;
     //
-    private final PollResponse<T> activationResponse;
     private final PollerFlux<T, U> pollerFlux;
-    private PollResponse<T> lastResponse;
+    private final PollResponse<T> activationResponse;
+    private volatile PollResponse<T> lastResponse;
+    private volatile PollResponse<T> terminalPollResponse;
 
     /**
      * Creates DefaultSyncPoller.
      *
      * @param defaultPollInterval the default polling interval
      * @param activationOperation the activation operation to be invoked at most once across all subscriptions,
-     *                            this parameter can be null indicating absence of activation operation.
+     *                            this parameter is required, if there is no specific activation work to be
+     *                            done then invocation should return Mono.empty().
      * @param pollOperation the operation to poll the current state of long running operation, this parameter
-     *                      is required, the operation will be called with last {@link PollResponse}
+     *                      is required and the operation will be called with the activation {@link PollResponse}
+     *                      and last {@link PollResponse}.
      * @param cancelOperation the operation to cancel the long-running operation if service supports cancellation,
-     *                       this parameter can be null indicating absence of cancellation support, the operation
-     *                        will be called by passing {@link PollResponse} instances of activation result and last
-     *                        response.
+     *                        this parameter is required and if service does not support cancellation
+     *                        then the implementer should return Mono.error with a meaningful error message indicating
+     *                        absence of cancellation support.
      * @param fetchResultOperation the operation to retrieve final result of the long-running operation if service
-     *                             support it, this parameter can be null indicating absence of result retrieval
-     *                             support, the operation will be called by passing {@link PollResponse} instances
-     *                             of activation result and last response.
+     *                             support it, this parameter is required and operation will be called with the
+     *                             activation {@link PollResponse} and final {@link PollResponse},
+     *                             if service does not have an api to fetch final result and final result is same
+     *                             as final poll response value then implementer can simply return value from final
+     *                             poll response.
      */
     public DefaultSyncPoller(Duration defaultPollInterval,
                              Supplier<Mono<T>> activationOperation,
-                             Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
+                             BiFunction<PollResponse<T>, PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
                              BiFunction<PollResponse<T>, PollResponse<T>, Mono<T>> cancelOperation,
                              BiFunction<PollResponse<T>, PollResponse<T>, Mono<U>> fetchResultOperation) {
         Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
@@ -64,9 +68,10 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
-        this.pollOperation = Objects.requireNonNull(pollOperation, "' pollOperation' cannot be null.");
-        this.cancelOperation = cancelOperation;
-        this.fetchResultOperation = fetchResultOperation;
+        this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
+        this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
+        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
+            "'fetchResultOperation' cannot be null.");
         if (activationOperation != null) {
             this.activationResponse = new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 activationOperation.get().block());
@@ -83,17 +88,24 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
 
     @Override
     public PollResponse<T> poll() {
-        this.lastResponse = this.pollOperation
-            .apply(this.lastResponse)
+        PollResponse<T> currentLastResponse = this.lastResponse;
+        PollResponse<T> response = this.pollOperation
+            .apply(this.activationResponse, currentLastResponse)
             .block();
-        return this.lastResponse;
+        if (response.getStatus().isComplete()) {
+            this.terminalPollResponse = response;
+        }
+        this.lastResponse = response;
+        return response;
     }
 
     @Override
     public PollResponse<T> waitForCompletion() {
         AsyncPollResponse<T, U> finalAsyncPollResponse = this.pollerFlux
             .blockLast();
-        return toPollResponse(finalAsyncPollResponse);
+        PollResponse<T> response = toPollResponse(finalAsyncPollResponse);
+        this.terminalPollResponse = response;
+        return response;
     }
 
     @Override
@@ -102,7 +114,9 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             .timeout(timeout)
             .last()
             .block();
-        return toPollResponse(finalAsyncPollResponse);
+        PollResponse<T> response = toPollResponse(finalAsyncPollResponse);
+        this.terminalPollResponse = response;
+        return response;
     }
 
     @Override
@@ -116,7 +130,11 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             .switchIfEmpty(Mono.error(new NoSuchElementException("Polling completed without receiving the given status "
                 + "'" + statusToWaitFor + "'.")))
             .block();
-        return toPollResponse(asyncPollResponse);
+        PollResponse<T> response = toPollResponse(asyncPollResponse);
+        if (response.getStatus().isComplete()) {
+            this.terminalPollResponse = response;
+        }
+        return response;
     }
 
     @Override
@@ -135,46 +153,42 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             .switchIfEmpty(Mono.error(new NoSuchElementException("Polling completed without receiving the given status "
                 +  "'" + statusToWaitFor + "'.")))
             .block();
-        return toPollResponse(asyncPollResponse);
+        PollResponse<T> response = toPollResponse(asyncPollResponse);
+        if (response.getStatus().isComplete()) {
+            this.terminalPollResponse = response;
+        }
+        return response;
     }
 
     @Override
-    public U getFinalResult(PollResponse<T> finalPollResponse) {
-        if (this.fetchResultOperation == null) {
-            return null;
+    public U getFinalResult() {
+        PollResponse<T> currentTerminalResponse = this.terminalPollResponse;
+        if (currentTerminalResponse != null) {
+            return this.fetchResultOperation
+                .apply(this.activationResponse, currentTerminalResponse)
+                .block();
         } else {
-            try {
-                return this.fetchResultOperation
-                    .apply(this.activationResponse, finalPollResponse)
-                    .block();
-            } catch (OperationRequirePollResponse crp) {
-                Mono<AsyncPollResponse<T,U>> errorMono
-                    = Mono.error(new IllegalStateException("GetResult operation requires final PollResponse "
-                    +  "instance, but it is not provided"));
-                return this.pollerFlux
-                    .onErrorResume(t -> errorMono)
-                    .blockLast()
-                    .getFinalResult()
-                    .block();
-            }
+            AsyncPollResponse<T, U> asyncPollResponse = this.pollerFlux
+                .blockLast();
+            this.terminalPollResponse = toPollResponse(asyncPollResponse);
+            return asyncPollResponse
+                .getFinalResult()
+                .block();
         }
     }
 
     @Override
-    public void cancelOperation(PollResponse<T> lastPollResponse) {
-        if (this.cancelOperation == null) {
+    public void cancelOperation() {
+        PollResponse<T> currentLastResponse = this.lastResponse;
+        if (currentLastResponse == this.activationResponse) {
+            this.cancelOperation.apply(this.activationResponse, this.activationResponse)
+                .block();
+        } else {
             try {
-                this.cancelOperation.apply(this.activationResponse, lastPollResponse).block();
+                this.cancelOperation.apply(this.activationResponse, null).block();
             } catch (OperationRequirePollResponse crp) {
-                Mono<AsyncPollResponse<T,U>> errorMono
-                    = Mono.error(new IllegalStateException("Cancel operation requires a PollResponse "
-                    +  "instance, but it is not provided"));
-                //
                 AsyncPollResponse<T, U> asyncPollResponse = this.pollerFlux
-                    .take(2)
-                    .last()
-                    .onErrorResume(t -> errorMono)
-                    .switchIfEmpty(errorMono)
+                    .next() // Do one poll
                     .block();
                 this.cancelOperation
                     .apply(this.activationResponse, toPollResponse(asyncPollResponse))
@@ -183,7 +197,7 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
         }
     }
 
-    private PollResponse<T> toPollResponse(AsyncPollResponse<T, U> asyncPollResponse) {
+    private static <T, U> PollResponse<T> toPollResponse(AsyncPollResponse<T, U> asyncPollResponse) {
         return new PollResponse<>(asyncPollResponse.getStatus(),
             asyncPollResponse.getValue(),
             asyncPollResponse.getRetryAfter(),

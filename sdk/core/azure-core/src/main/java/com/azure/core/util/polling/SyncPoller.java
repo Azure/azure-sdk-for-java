@@ -7,8 +7,8 @@ import java.time.Duration;
 /**
  * Type for doing synchronous polling of a long-running operation.
  *
- * @param <T> The type of poll response value
- * @param <U> The type of the final result of long-running operation
+ * @param <T> The type of poll response value.
+ * @param <U> The type of the final result of long-running operation.
  */
 public interface SyncPoller<T, U> {
     /**
@@ -59,25 +59,14 @@ public interface SyncPoller<T, U> {
     PollResponse<T> waitUntil(LongRunningOperationStatus statusToWaitFor, Duration timeout);
 
     /**
-     * Given the final poll response, retrieve the final result of long running operation.
+     * Retrieve the final result of long running operation.
      *
-     * Null will be returned if service does not support retrieving final result
-     *
-     * if the given final poll response is null then this method starts the polling, wait for
-     * its completion and fetches the result.
-     *
-     * @param finalPollResponse the final poll response
-     * @return the result of long-running operation
+     * @return the final result of long-running operation if there is one
      */
-    U getFinalResult(PollResponse<T> finalPollResponse);
+    U getFinalResult();
 
     /**
      * cancels the remote long-running operation if cancellation is supported by the service.
-     *
-     * if the given poll response is null and cancellation requires a poll response then it will
-     * try to get a poll response by doing a poll.
-     *
-     * @param pollResponse an available poll response
      */
-    void cancelOperation(PollResponse<T> pollResponse);
+    void cancelOperation();
 }

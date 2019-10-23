@@ -12,7 +12,6 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -57,7 +56,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     private final ClientLogger logger = new ClientLogger(PollerFlux.class);
     //
     private final Duration defaultPollInterval;
-    private final Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
+    private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
     private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<T>> cancelOperation;
     private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<U>> fetchResultOperation;
     //
@@ -74,21 +73,25 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      *
      * @param defaultPollInterval the default polling interval
      * @param activationOperation the activation operation to be invoked at most once across all subscriptions,
-     *                            this parameter can be null indicating absence of activation operation.
+     *                            this parameter is required, if there is no specific activation work to be
+     *                            done then invocation should return Mono.empty().
      * @param pollOperation the operation to poll the current state of long running operation, this parameter
-     *                      is required, the operation will be called with last {@link PollResponse}
+     *                      is required and the operation will be called with the activation {@link PollResponse}
+     *                      and last {@link PollResponse}.
      * @param cancelOperation the operation to cancel the long-running operation if service supports cancellation,
-     *                       this parameter can be null indicating absence of cancellation support, the operation
-     *                        will be called by passing {@link PollResponse} instances of activation result and last
-     *                        response.
+     *                        this parameter is required and if service does not support cancellation
+     *                        then the implementer should return Mono.error with an error message indicating
+     *                        absence of cancellation support.
      * @param fetchResultOperation the operation to retrieve final result of the long-running operation if service
-     *                             support it, this parameter can be null indicating absence of result retrieval
-     *                             support, the operation will be called by passing {@link PollResponse} instances
-     *                             of activation result and last response.
+     *                             support it, this parameter is required and operation will be called with the
+     *                             activation {@link PollResponse} and final {@link PollResponse},
+     *                             if service does not have an api to fetch final result and if final result is same
+     *                             as final poll response value then implementer can choose to simply return value
+     *                             from provided final poll response.
      */
     public PollerFlux(Duration defaultPollInterval,
                       Supplier<Mono<T>> activationOperation,
-                      Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
+                      BiFunction<PollResponse<T>, PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
                       BiFunction<PollResponse<T>, PollResponse<T>, Mono<T>> cancelOperation,
                       BiFunction<PollResponse<T>, PollResponse<T>, Mono<U>> fetchResultOperation) {
         Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
@@ -96,11 +99,13 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
+        Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
         this.defaultPollInterval = defaultPollInterval;
         this.activateAndCacheResponse = deferredActivationMono(activationOperation);
-        this.pollOperation = Objects.requireNonNull(pollOperation, "' pollOperation' cannot be null.");
-        this.cancelOperation = cancelOperation;
-        this.fetchResultOperation = fetchResultOperation;
+        this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
+        this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
+        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
+            "'fetchResultOperation' cannot be null.");
     }
 
     @Override
@@ -135,13 +140,11 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                 return Mono.just(this.activationResponse);
             }
             if (this.guardActivationCall.compareAndSet(this, 0, 1)) {
-                Mono<T> activationMono = Mono.empty();
-                if (activationOperation != null) {
-                    try {
-                        activationMono = activationOperation.get();
-                    } catch (Throwable throwable) {
-                        return Mono.error(throwable);
-                    }
+                final Mono<T> activationMono;
+                try {
+                    activationMono = activationOperation.get();
+                } catch (Throwable throwable) {
+                    return Mono.error(throwable);
                 }
                 return activationMono.map((T result) -> {
                     this.activationResponse = new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, result);
@@ -170,7 +173,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             () -> new State<>(activationResponse),
             // Do polling
             // set|read in state as needed, reactor guarantee thread-safety of state object.
-            state -> Mono.defer(() -> pollOperation.apply(state.getLastResponse()))
+            state -> Mono.defer(() -> pollOperation.apply(activationResponse, state.getLastResponse()))
                 .delaySubscription(getDelay(state.getLastResponse()))
                 .repeat()
                 .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())

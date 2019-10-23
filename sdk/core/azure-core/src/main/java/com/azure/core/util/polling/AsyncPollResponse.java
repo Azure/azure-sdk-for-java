@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
@@ -40,15 +41,10 @@ public final class AsyncPollResponse<T, U> {
                       PollResponse<T> innerResponse,
                       BiFunction<PollResponse<T>, PollResponse<T>, Mono<T>> cancellationOperation,
                       BiFunction<PollResponse<T>, PollResponse<T>, Mono<U>> fetchResultOperation) {
-        this.activationResponse = activationResponse;
-        this.cancellationOperation = cancellationOperation;
-        this.fetchResultOperation = fetchResultOperation;
-        this.innerResponse = innerResponse;
-    }
-
-
-    public PollResponse<T> activationResponse() {
-        return this.activationResponse;
+        this.activationResponse = Objects.requireNonNull(activationResponse);
+        this.cancellationOperation = Objects.requireNonNull(cancellationOperation);
+        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation);
+        this.innerResponse = Objects.requireNonNull(innerResponse);
     }
 
     /**
@@ -95,14 +91,11 @@ public final class AsyncPollResponse<T, U> {
      */
     public Mono<T> cancelOperation() {
         return Mono.defer(() -> {
-            if (this.cancellationOperation != null) {
-                try {
-                    return this.cancellationOperation.apply(this.activationResponse, this.innerResponse);
-                } catch (Throwable throwable) {
-                    return Mono.error(throwable);
-                }
-            } else {
-                return Mono.empty();
+            try {
+                return this.cancellationOperation
+                        .apply(this.activationResponse, this.innerResponse);
+            } catch (Throwable throwable) {
+                return Mono.error(throwable);
             }
         });
     }
@@ -113,11 +106,12 @@ public final class AsyncPollResponse<T, U> {
      */
     public Mono<U> getFinalResult() {
         return Mono.defer(() -> {
-            if (this.fetchResultOperation == null || !this.innerResponse.getStatus().isComplete()) {
+            if (!this.innerResponse.getStatus().isComplete()) {
                 return Mono.empty();
             } else {
                 try {
-                    return this.fetchResultOperation.apply(this.activationResponse, this.innerResponse);
+                    return this.fetchResultOperation
+                            .apply(this.activationResponse, this.innerResponse);
                 } catch (Throwable throwable) {
                     return Mono.error(throwable);
                 }
