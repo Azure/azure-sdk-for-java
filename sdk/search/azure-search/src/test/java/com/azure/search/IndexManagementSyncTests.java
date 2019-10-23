@@ -251,7 +251,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(result.get(1).getName(), index2.getName());
     }
 
-
     @Override
     public void canAddSynonymFieldProperty() {
         client = getSearchServiceClientBuilder().buildClient();
@@ -278,6 +277,32 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
         List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
         Assert.assertEquals(actualSynonym, expectedSynonym);
+    }
+
+    @Override
+    public void canUpdateSynonymFieldProperty() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        String synonymMapName = "names";
+        SynonymMap synonymMap = new SynonymMap()
+            .setName(synonymMapName)
+            .setSynonyms("hotel,motel");
+
+        client.createSynonymMap(synonymMap);
+
+        // Create an index
+        Index index = createTestIndex();
+        Field hotelNameField = getFieldByName(index, "HotelName");
+        hotelNameField.setSynonymMaps(Collections.singletonList(synonymMapName));
+        client.createIndex(index);
+
+        // Update an existing index
+        Index existingIndex = client.getIndex(index.getName());
+        hotelNameField = getFieldByName(existingIndex, "HotelName");
+        hotelNameField.setSynonymMaps(Collections.<String>emptyList());
+
+        Index updatedIndex = client.upsertIndex(existingIndex, true);
+        assertIndexesEqual(existingIndex, updatedIndex);
     }
 
     public void canUpdateIndexDefinition() {

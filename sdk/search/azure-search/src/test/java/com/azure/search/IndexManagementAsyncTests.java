@@ -21,8 +21,8 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Collections;
 
 public class IndexManagementAsyncTests extends IndexManagementTestBase {
     private SearchServiceAsyncClient client;
@@ -321,7 +321,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                     .setName("HotelName")
                     .setType(DataType.EDM_STRING)
                     .setSynonymMaps(Arrays.asList(synonymMapName))
-
             ));
 
         StepVerifier
@@ -330,6 +329,36 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                 List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
                 List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
                 Assert.assertEquals(actualSynonym, expectedSynonym);
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canUpdateSynonymFieldProperty() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
+
+        String synonymMapName = "names";
+        SynonymMap synonymMap = new SynonymMap()
+            .setName(synonymMapName)
+            .setSynonyms("hotel,motel");
+
+        client.createSynonymMap(synonymMap).block();
+
+        // Create an index
+        Index index = createTestIndex();
+        Field hotelNameField = getFieldByName(index, "HotelName");
+        hotelNameField.setSynonymMaps(Collections.singletonList(synonymMapName));
+        client.createIndex(index).block();
+
+        // Update an existing index
+        Index existingIndex = client.getIndex(index.getName()).block();
+        hotelNameField = getFieldByName(existingIndex, "HotelName");
+        hotelNameField.setSynonymMaps(Collections.<String>emptyList());
+
+        StepVerifier
+            .create(client.upsertIndex(existingIndex, true))
+            .assertNext(res  -> {
+                assertIndexesEqual(existingIndex, res);
             })
             .verifyComplete();
     }

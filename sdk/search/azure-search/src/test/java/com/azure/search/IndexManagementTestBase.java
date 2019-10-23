@@ -83,6 +83,9 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void canAddSynonymFieldProperty();
 
     @Test
+    public abstract void canUpdateSynonymFieldProperty();
+
+    @Test
     public abstract void canUpdateIndexDefinition();
 
     @Test
@@ -127,6 +130,9 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
         }
         if (expected.isRetrievable() != null) {
             Assert.assertEquals(expected.isRetrievable(), actual.isRetrievable());
+        }
+        if (expected.getSynonymMaps() != null) {
+            Assert.assertTrue(ModelComparer.collectionEquals(expected.getSynonymMaps(), actual.getSynonymMaps()));
         }
     }
 
@@ -568,5 +574,12 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
      */
     protected AccessCondition generateEmptyAccessCondition() {
         return new AccessCondition();
+    }
+
+    protected Field getFieldByName(Index index, String name) {
+        return index.getFields()
+            .stream()
+            .filter(f -> f.getName().equals(name))
+            .findFirst().get();
     }
 }
