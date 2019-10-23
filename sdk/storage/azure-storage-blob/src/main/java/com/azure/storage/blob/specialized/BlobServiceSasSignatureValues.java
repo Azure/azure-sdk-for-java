@@ -288,7 +288,7 @@ public final class BlobServiceSasSignatureValues {
      * creating a container SAS.
      */
     public String getBlobName() {
-        return (blobName == null) ? null : Utility.urlDecode(blobName);
+        return blobName;
     }
 
     /**
@@ -298,7 +298,7 @@ public final class BlobServiceSasSignatureValues {
      * @return The updated BlobServiceSASSignatureValues object.
      */
     public BlobServiceSasSignatureValues setBlobName(String blobName) {
-        this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
+        this.blobName = (blobName == null) ? null : Utility.urlDecode(blobName);
         return this;
     }
 
