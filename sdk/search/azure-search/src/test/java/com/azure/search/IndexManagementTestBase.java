@@ -89,6 +89,12 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void canUpdateIndexDefinition();
 
     @Test
+    public abstract void canUpdateSuggesterWithNewIndexFields();
+
+    @Test
+    public abstract void upsertIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields();
+
+    @Test
     public abstract void upsertIndexCreatesWhenIndexDoesNotExist();
 
     @Test

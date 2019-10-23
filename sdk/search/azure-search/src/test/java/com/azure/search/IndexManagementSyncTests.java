@@ -16,6 +16,7 @@ import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.CorsOptions;
+import com.azure.search.models.Suggester;
 import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
@@ -345,6 +346,59 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         updatedIndex = client.upsertIndex(existingIndex, true);
         assertIndexesEqual(existingIndex, updatedIndex);
+    }
+
+    @Override
+    public void canUpdateSuggesterWithNewIndexFields() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        Index index = createTestIndex();
+        client.createIndex(index);
+
+        Index existingIndex = client.getIndex(index.getName());
+
+        existingIndex.getFields().addAll(Arrays.asList(
+            new Field()
+                .setName("HotelAmenities")
+                .setType(DataType.EDM_STRING),
+            new Field()
+                .setName("HotelRewards")
+                .setType(DataType.EDM_STRING)));
+        existingIndex.setSuggesters(Collections.singletonList(new Suggester()
+            .setName("Suggestion")
+            .setSourceFields(Arrays.asList("HotelAmenities", "HotelRewards"))
+        ));
+
+        Index updatedIndex = client.upsertIndex(existingIndex, true);
+
+        assertIndexesEqual(existingIndex, updatedIndex);
+    }
+
+    @Override
+    public void upsertIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        Index index = createTestIndex();
+        client.createIndex(index);
+
+        Index existingIndex = client.getIndex(index.getName());
+        String existingFieldName = "Category";
+        existingIndex.setSuggesters(Collections.singletonList(new Suggester()
+            .setName("Suggestion")
+            .setSourceFields(Collections.singletonList(existingFieldName))
+        ));
+
+        try {
+            client.upsertIndex(existingIndex, true);
+            Assert.fail("upsertIndex did not throw an expected Exception");
+        } catch (Exception ex) {
+            Assert.assertEquals(HttpResponseException.class, ex.getClass());
+            Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex)
+                .getResponse().getStatusCode());
+            String expectedMessage = String.format("Fields that were already present in an index (%s) cannot be "
+                + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.", existingFieldName);
+            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
+        }
     }
 
     @Override
