@@ -85,8 +85,6 @@ public final class SpecializedBlobClientBuilder {
      * append blob specific operations such as {@link AppendBlobClient#appendBlock(InputStream, long) append block},
      * only use this when the blob is known to be an append blob.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @return a {@link AppendBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
@@ -98,8 +96,6 @@ public final class SpecializedBlobClientBuilder {
      * Creates a {@link AppendBlobAsyncClient} based on options set in the Builder. AppendBlobAsyncClients are used to
      * perform append blob specific operations such as {@link AppendBlobAsyncClient#appendBlock(Flux, long) append
      * blob}, only use this when the blob is known to be an append blob.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -119,8 +115,6 @@ public final class SpecializedBlobClientBuilder {
      * blob specific operations such as {@link BlockBlobClient#stageBlock(String, InputStream, long) stage block} and
      * {@link BlockBlobClient#commitBlockList(List)}, only use this when the blob is known to be a block blob.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @return a {@link BlockBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
@@ -134,8 +128,6 @@ public final class SpecializedBlobClientBuilder {
      * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long,
      * String) stage block} and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list}, only use this
      * when the blob is known to be a block blob.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -155,8 +147,6 @@ public final class SpecializedBlobClientBuilder {
      * {@link PageBlobClient#clearPages(PageRange) clear pages}, only use this when the blob is known to be a page
      * blob.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @return a {@link PageBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
@@ -169,8 +159,6 @@ public final class SpecializedBlobClientBuilder {
      * perform page blob specific operations such as {@link PageBlobAsyncClient#uploadPages(PageRange, Flux) upload
      * pages} and {@link PageBlobAsyncClient#clearPages(PageRange) clear pages}, only use this when the blob is known to
      * be a page blob.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -258,8 +246,6 @@ public final class SpecializedBlobClientBuilder {
     /**
      * Configures the builder based on the {@link BlobContainerClient} and appends the blob name to the container's URL.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @param blobContainerClient The {@code ContainerClient} used to configure this builder.
      * @param blobName Name of the blob.
      * @return the updated SpecializedBlobClientBuilder object.
@@ -277,8 +263,6 @@ public final class SpecializedBlobClientBuilder {
      * Configures the builder based on the {@link BlobContainerAsyncClient} and appends the blob name to the container's
      * URL.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @param blobContainerAsyncClient The {@code ContainerAsyncClient} used to configure this builder.
      * @param blobName Name of the blob.
      * @return the updated SpecializedBlobClientBuilder object.
@@ -295,8 +279,6 @@ public final class SpecializedBlobClientBuilder {
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @param endpoint URL of the service
      * @return the updated SpecializedBlobClientBuilder object
@@ -448,8 +430,6 @@ public final class SpecializedBlobClientBuilder {
 
     /**
      * Sets the name of the blob.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @param blobName Name of the blob.
      * @return the updated SpecializedBlobClientBuilder object

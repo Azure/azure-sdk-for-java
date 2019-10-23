@@ -93,8 +93,6 @@ public class BlobAsyncClientBase {
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.
@@ -163,13 +161,13 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Get the blob name.
+     * Decodes and gets the blob name.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getBlobName}
      *
-     * @return The name of the blob.
+     * @return The decoded name of the blob.
      */
     public final String getBlobName() {
         return (blobName == null) ? null : Utility.urlDecode(blobName);

@@ -127,9 +127,9 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the blob name that will be used as part of the URL path.
+     * Decodes and gets the blob name that will be used as part of the URL path.
      *
-     * @return the blob name.
+     * @return the decoded blob name.
      */
     public String getBlobName() {
         return (blobName == null) ? null : Utility.urlDecode(blobName);
@@ -137,8 +137,6 @@ public final class BlobUrlParts {
 
     /**
      * Sets the blob name that will be used as part of the URL path.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @param blobName The blob name.
      * @return the updated BlobUrlParts object.
@@ -213,8 +211,6 @@ public final class BlobUrlParts {
     /**
      * Converts the blob URL parts to a {@link URL}.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @return A {@code URL} to the blob resource composed of all the elements in this object.
      * @throws IllegalStateException The fields present on the BlobUrlParts object were insufficient to construct a
      * valid URL or were ill-formatted.
@@ -271,8 +267,6 @@ public final class BlobUrlParts {
      * is no path element for the container, the name of this blob in the root container will be set as the
      * containerName field in the resulting {@code BlobURLParts}.</p>
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @param url The {@code URL} to be parsed.
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.
      * @throws IllegalArgumentException If {@code url} is a malformed {@link URL}.
@@ -295,8 +289,6 @@ public final class BlobUrlParts {
      * <p>If a URL points to a blob in the root container, and the root container is referenced implicitly, i.e. there
      * is no path element for the container, the name of this blob in the root container will be set as the
      * containerName field in the resulting {@code BlobURLParts}.</p>
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @param url The {@code URL} to be parsed.
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.

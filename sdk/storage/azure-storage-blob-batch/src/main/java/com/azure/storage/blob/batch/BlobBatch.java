@@ -126,8 +126,6 @@ public final class BlobBatch {
     /**
      * Adds a delete blob operation to the batch.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * <p><strong>Code sample</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String}
@@ -145,8 +143,6 @@ public final class BlobBatch {
 
     /**
      * Adds a delete blob operation to the batch.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * <p><strong>Code sample</strong></p>
      *
@@ -173,7 +169,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String}
      *
-     * @param blobUrl URL of the blob.
+     * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
@@ -189,7 +185,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions}
      *
-     * @param blobUrl URL of the blob.
+     * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @param deleteOptions Delete options for the blob and its snapshots.
      * @param blobRequestConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -211,8 +207,6 @@ public final class BlobBatch {
     /**
      * Adds a set tier operation to the batch.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * <p><strong>Code sample</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier}
@@ -231,8 +225,6 @@ public final class BlobBatch {
 
     /**
      * Adds a set tier operation to the batch.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * <p><strong>Code sample</strong></p>
      *
@@ -259,7 +251,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier}
      *
-     * @param blobUrl URL of the blob.
+     * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @param accessTier The tier to set on the blob.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
@@ -276,7 +268,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String}
      *
-     * @param blobUrl URL of the blob.
+     * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @param accessTier The tier to set on the blob.
      * @param leaseId The lease ID the active lease on the blob must match.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is

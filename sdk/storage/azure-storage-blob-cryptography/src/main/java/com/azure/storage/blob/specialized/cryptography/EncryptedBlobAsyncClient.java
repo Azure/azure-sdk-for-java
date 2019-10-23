@@ -86,8 +86,6 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.

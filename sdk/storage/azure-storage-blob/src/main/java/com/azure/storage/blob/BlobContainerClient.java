@@ -65,8 +65,6 @@ public final class BlobContainerClient {
      * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
      * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @param blobName A {@code String} representing the name of the blob.
      *
      * <p><strong>Code Samples</strong></p>
@@ -83,8 +81,6 @@ public final class BlobContainerClient {
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
      * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
      * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

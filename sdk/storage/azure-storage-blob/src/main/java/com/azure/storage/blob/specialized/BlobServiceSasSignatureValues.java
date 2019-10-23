@@ -281,10 +281,10 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the name of the blob the SAS user may access. {@code null} or an empty string is returned when a
+     * Decodes and gets the name of the blob the SAS user may access. {@code null} or an empty string is returned when a
      * creating a container SAS.
      *
-     * @return The name of the blob the SAS user may access. {@code null} or an empty string is returned when a
+     * @return The decoded name of the blob the SAS user may access. {@code null} or an empty string is returned when a
      * creating a container SAS.
      */
     public String getBlobName() {
@@ -293,8 +293,6 @@ public final class BlobServiceSasSignatureValues {
 
     /**
      * Sets the blob the SAS user may access. Use {@code null} or an empty string to create a container SAS.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @param blobName The name of the blob. Use {@code null} or an empty string to create a container SAS.
      * @return The updated BlobServiceSASSignatureValues object.

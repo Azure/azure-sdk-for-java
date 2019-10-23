@@ -82,8 +82,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.
@@ -101,8 +99,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Creates a new {@link BlobAsyncClient} linked to the {@code snapshot} of this blob resource.
-     *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @param snapshot the identifier for a specific snapshot of this blob
      *
