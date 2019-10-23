@@ -202,7 +202,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceRange {@link BlobRange}
-     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will
+     * @param sourceContentMd5 An MD5 hash of the block content from the source blob. If specified, the service will
      * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
      * @param destAccessConditions {@link AppendBlobRequestConditions}
      * @param sourceAccessConditions {@link BlobRequestConditions}
@@ -211,10 +211,10 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return The information of the append blob operation.
      */
     public Response<AppendBlobItem> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
-        byte[] sourceContentMD5, AppendBlobRequestConditions destAccessConditions,
+        byte[] sourceContentMd5, AppendBlobRequestConditions destAccessConditions,
         BlobRequestConditions sourceAccessConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(sourceUrl,
-            sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+            sourceRange, sourceContentMd5, destAccessConditions, sourceAccessConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

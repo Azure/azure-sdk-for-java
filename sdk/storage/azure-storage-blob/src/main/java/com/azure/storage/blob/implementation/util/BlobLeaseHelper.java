@@ -6,14 +6,15 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.specialized.BlobAsyncClientBase;
+import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 
 /**
- * The blob helper takes in the blob related client and has helper methods on getting the properties of the client.
+ * The blob lease helper takes in the blob lease sync and async client and
+ * has helper methods on getting the properties of the client.
  */
-public final class BlobHelper {
+public final class BlobLeaseHelper {
 
-    private BlobHelper() {
+    private BlobLeaseHelper() {
     }
 
     private static AsyncPropertyAccessor asyncPropertyAccessor;
@@ -21,7 +22,7 @@ public final class BlobHelper {
     /**
      * Sets the async property accessor
      *
-     * @param newAccessor
+     * @param newAccessor the accessor contains property value.
      */
     public static void setAsyncPropertyAccessor(final AsyncPropertyAccessor newAccessor) {
         if (newAccessor == null) {
@@ -36,7 +37,7 @@ public final class BlobHelper {
      * @param client the client with private field to retrieve.
      * @return the azureBlobStorage property.
      */
-    public static AzureBlobStorageImpl getAzureBlobStorageImpl(BlobAsyncClientBase client) {
+    public static AzureBlobStorageImpl getAzureBlobStorageImpl(BlobLeaseAsyncClient client) {
         return asyncPropertyAccessor.getAzureBlobStorageImpl(client);
     }
 
@@ -46,7 +47,7 @@ public final class BlobHelper {
      * @param client the client with private field to retrieve.
      * @return the serviceVersion property.
      */
-    public static BlobServiceVersion getServiceVersion(BlobAsyncClientBase client) {
+    public static BlobServiceVersion getServiceVersion(BlobLeaseAsyncClient client) {
         return asyncPropertyAccessor.getServiceVersion(client);
     }
 
@@ -56,7 +57,7 @@ public final class BlobHelper {
      * @param client the client with private field to retrieve.
      * @return the customerProvidedKey property.
      */
-    public static CpkInfo getCustomerProvidedKey(BlobAsyncClientBase client) {
+    public static CpkInfo getCustomerProvidedKey(BlobLeaseAsyncClient client) {
         return asyncPropertyAccessor.getCustomerProvidedKey(client);
     }
 
@@ -64,19 +65,19 @@ public final class BlobHelper {
      * The interface to get property value from async property accessor.
      */
     public interface AsyncPropertyAccessor {
-        AzureBlobStorageImpl getAzureBlobStorageImpl(BlobAsyncClientBase client);
-        CpkInfo getCustomerProvidedKey(BlobAsyncClientBase client);
-        BlobServiceVersion getServiceVersion(BlobAsyncClientBase client);
+        AzureBlobStorageImpl getAzureBlobStorageImpl(BlobLeaseAsyncClient client);
+        CpkInfo getCustomerProvidedKey(BlobLeaseAsyncClient client);
+        BlobServiceVersion getServiceVersion(BlobLeaseAsyncClient client);
     }
 
-    private static SyncPropertyAccessor syncPropertyAccessor;
+    private static BlobContainerHelper.SyncPropertyAccessor syncPropertyAccessor;
 
     /**
      * Sets the sync property accessor
      *
      * @param newAccessor
      */
-    public static void setSyncPropertyAccessor(final SyncPropertyAccessor newAccessor) {
+    public static void setSyncPropertyAccessor(final BlobContainerHelper.SyncPropertyAccessor newAccessor) {
         if (newAccessor == null) {
             throw new IllegalStateException();
         }

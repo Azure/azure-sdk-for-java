@@ -10,9 +10,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.util.BlobServiceHelper;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -48,6 +51,23 @@ public final class BlobServiceClient {
      */
     BlobServiceClient(BlobServiceAsyncClient blobServiceAsyncClient) {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
+
+        BlobServiceHelper.setSyncPropertyAccessor(new BlobServiceHelper.SyncPropertyAccessor() {
+            @Override
+            public AzureBlobStorageImpl getAzureBlobStorageImpl() {
+                return BlobServiceHelper.getAzureBlobStorageImpl(blobServiceAsyncClient);
+            }
+
+            @Override
+            public CpkInfo getCustomerProvidedKey() {
+                return BlobServiceHelper.getCustomerProvidedKey(blobServiceAsyncClient);
+            }
+
+            @Override
+            public BlobServiceVersion getServiceVersion() {
+                return BlobServiceHelper.getServiceVersion(blobServiceAsyncClient);
+            }
+        });
     }
 
     /**
@@ -72,15 +92,6 @@ public final class BlobServiceClient {
      */
     public HttpPipeline getHttpPipeline() {
         return blobServiceAsyncClient.getHttpPipeline();
-    }
-
-    /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public BlobServiceVersion getServiceVersion() {
-        return this.blobServiceAsyncClient.getServiceVersion();
     }
 
     /**

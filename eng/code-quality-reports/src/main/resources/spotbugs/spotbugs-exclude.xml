@@ -69,9 +69,6 @@
   <Match>
     <Or>
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
-      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
-      <Class name="com.azure.storage.file.implementation.AzureFileStorageBuilder"/>
-      <Class name="com.azure.storage.queue.implementation.AzureQueueStorageBuilder"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
@@ -257,7 +254,6 @@
   <Match>
     <Or>
       <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
-      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
@@ -381,8 +377,6 @@
   <!-- Exclude the confusing name bugs as it is designed to name the same as autorest. -->
   <Match>
     <Or>
-      <Package name="com.microsoft.azure.storage.blob"/>
-      <Package name="com.azure.storage.file.models"/>
       <Class name="com.azure.storage.blob.HttpGetterInfo"/>
       <Class name="com.azure.storage.blob.BlobProperties"/>
       <Class name="com.azure.storage.blob.BlobContainerProperties"/>
@@ -585,15 +579,6 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
-  <Match>
-    <Or>
-      <Class name="com.azure.storage.blob.models.StorageException"/>
-      <Class name="com.azure.storage.file.models.StorageException"/>
-      <Class name="com.azure.storage.queue.models.StorageException"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
   <!-- Retry thus does not throw -->
   <Match>
     <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
@@ -637,9 +622,18 @@
   </Match>
 
   <!-- Initial implementation of Storage Blob Batch is using an inline class -->
+  <!-- Storage blob is using an inline class for accessing property -->
   <Match>
-    <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    <Or>
+      <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
+      <Class name="com.azure.storage.blob.BlobContainerAsyncClient"/>
+      <Class name="com.azure.storage.blob.BlobContainerClient"/>
+      <Class name="com.azure.storage.blob.BlobServiceAsyncClient"/>
+      <Class name="com.azure.storage.blob.BlobServiceClient"/>
+      <Class name="com.azure.storage.blob.specialized.BlobAsyncClientBase"/>
+      <Class name="com.azure.storage.blob.specialized.BlobClientBase"/>
+      <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    </Or>
   </Match>
 
   <!-- Initial implementation of JacksonDeserializer is using an inline class in registerCustomDeserializer-->

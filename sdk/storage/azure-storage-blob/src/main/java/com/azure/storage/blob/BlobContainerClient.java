@@ -8,6 +8,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.util.BlobContainerHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
@@ -56,6 +58,22 @@ public final class BlobContainerClient {
      */
     BlobContainerClient(BlobContainerAsyncClient client) {
         this.client = client;
+        BlobContainerHelper.setSyncPropertyAccessor(new BlobContainerHelper.SyncPropertyAccessor() {
+            @Override
+            public AzureBlobStorageImpl getAzureBlobStorageImpl() {
+                return BlobContainerHelper.getAzureBlobStorageImpl(client);
+            }
+
+            @Override
+            public CpkInfo getCustomerProvidedKey() {
+                return BlobContainerHelper.getCustomerProvidedKey(client);
+            }
+
+            @Override
+            public BlobServiceVersion getServiceVersion() {
+                return BlobContainerHelper.getServiceVersion(client);
+            }
+        });
     }
 
 
@@ -126,31 +144,12 @@ public final class BlobContainerClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public BlobServiceVersion getServiceVersion() {
-        return this.client.getServiceVersion();
-    }
-
-    /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
         return client.getHttpPipeline();
-    }
-
-    /**
-     * Gets the {@link CpkInfo} associated with this client that will be passed to {@link BlobClient BlobClients} when
-     * {@link #getBlobClient(String) getBlobClient} is called.
-     *
-     * @return the customer provided key used for encryption.
-     */
-    public CpkInfo getCustomerProvidedKey() {
-        return client.getCustomerProvidedKey();
     }
 
     /**
@@ -549,7 +548,27 @@ public final class BlobContainerClient {
      */
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageAccountInfo>> response = client.getAccountInfoWithResponse(context);
-
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    BlobServiceVersion getServiceVersion() {
+        return BlobContainerHelper.getServiceVersion(client);
+    }
+
+
+    /**
+     * Gets the {@link CpkInfo} associated with this client that will be passed to {@link BlobClient BlobClients} when
+     * {@link #getBlobClient(String) getBlobClient} is called.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    CpkInfo getCustomerProvidedKey() {
+        return BlobContainerHelper.getCustomerProvidedKey(client);
     }
 }

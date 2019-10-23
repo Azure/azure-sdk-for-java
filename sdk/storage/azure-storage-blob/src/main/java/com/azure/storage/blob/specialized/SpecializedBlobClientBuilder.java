@@ -17,6 +17,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.BlobContainerHelper;
 import com.azure.storage.blob.implementation.util.BlobHelper;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
@@ -222,9 +223,9 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
         pipeline(blobClient.getHttpPipeline());
         endpoint(blobClient.getBlobUrl());
-        serviceVersion(blobClient.getServiceVersion());
+        serviceVersion(BlobHelper.getServiceVersion());
         this.snapshot = blobClient.getSnapshotId();
-        this.customerProvidedKey = blobClient.getCustomerProvidedKey();
+        this.customerProvidedKey = BlobHelper.getCustomerProvidedKey();
         return this;
     }
 
@@ -253,9 +254,9 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient, String blobName) {
         pipeline(blobContainerClient.getHttpPipeline());
         endpoint(blobContainerClient.getBlobContainerUrl());
-        serviceVersion(blobContainerClient.getServiceVersion());
+        serviceVersion(BlobContainerHelper.getServiceVersion());
         blobName(blobName);
-        this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
+        this.customerProvidedKey = BlobContainerHelper.getCustomerProvidedKey();
         return this;
     }
 
@@ -271,9 +272,9 @@ public final class SpecializedBlobClientBuilder {
         String blobName) {
         pipeline(blobContainerAsyncClient.getHttpPipeline());
         endpoint(blobContainerAsyncClient.getBlobContainerUrl());
-        serviceVersion(blobContainerAsyncClient.getServiceVersion());
+        serviceVersion(BlobContainerHelper.getServiceVersion(blobContainerAsyncClient));
         blobName(blobName);
-        this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
+        this.customerProvidedKey = BlobContainerHelper.getCustomerProvidedKey(blobContainerAsyncClient);
         return this;
     }
 
@@ -318,7 +319,7 @@ public final class SpecializedBlobClientBuilder {
         } else {
             this.customerProvidedKey = new CpkInfo()
                 .setEncryptionKey(customerProvidedKey.getKey())
-                .setEncryptionKeySha256(customerProvidedKey.getKeySHA256())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 

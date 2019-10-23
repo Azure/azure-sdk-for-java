@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.util.BlobServiceHelper;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link BlobBatchClient
@@ -29,7 +30,7 @@ public final class BlobBatchClientBuilder {
     public BlobBatchClientBuilder(BlobServiceClient client) {
         this.accountUrl = client.getAccountUrl();
         this.pipeline = client.getHttpPipeline();
-        this.version = client.getServiceVersion();
+        this.version = BlobServiceHelper.getServiceVersion();
     }
 
     /**
@@ -42,7 +43,7 @@ public final class BlobBatchClientBuilder {
     public BlobBatchClientBuilder(BlobServiceAsyncClient client) {
         this.accountUrl = client.getAccountUrl();
         this.pipeline = client.getHttpPipeline();
-        this.version = client.getServiceVersion();
+        this.version = BlobServiceHelper.getServiceVersion();
     }
 
     /**

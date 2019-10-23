@@ -16,9 +16,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.BlobContainerHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
@@ -104,6 +106,23 @@ public final class BlobContainerAsyncClient {
         this.accountName = accountName;
         this.containerName = containerName;
         this.customerProvidedKey = customerProvidedKey;
+
+        BlobContainerHelper.setAsyncPropertyAccessor(new BlobContainerHelper.AsyncPropertyAccessor() {
+            @Override
+            public AzureBlobStorageImpl getAzureBlobStorageImpl(final BlobContainerAsyncClient client) {
+                return client.azureBlobStorage;
+            }
+
+            @Override
+            public CpkInfo getCustomerProvidedKey(final BlobContainerAsyncClient client) {
+                return client.customerProvidedKey;
+            }
+
+            @Override
+            public BlobServiceVersion getServiceVersion(final BlobContainerAsyncClient client) {
+                return client.serviceVersion;
+            }
+        });
     }
 
     /**
@@ -139,8 +158,8 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), blobName).toString(), getServiceVersion(),
-            getAccountName(), getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
+            StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), blobName).toString(), serviceVersion,
+            accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
     /**
@@ -175,31 +194,12 @@ public final class BlobContainerAsyncClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public BlobServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
         return azureBlobStorage.getHttpPipeline();
-    }
-
-    /**
-     * Gets the {@link CpkInfo} associated with this client that will be passed to {@link BlobAsyncClient
-     * BlobAsyncClients} when {@link #getBlobAsyncClient(String) getBlobAsyncClient} is called.
-     *
-     * @return the customer provided key used for encryption.
-     */
-    public CpkInfo getCustomerProvidedKey() {
-        return customerProvidedKey;
     }
 
     /**
@@ -891,7 +891,10 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null, context)
-            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                ContainerGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
+            });
     }
 
 

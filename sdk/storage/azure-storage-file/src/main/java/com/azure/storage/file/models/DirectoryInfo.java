@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.FileSmbProperties;
 
 import java.time.OffsetDateTime;
@@ -10,6 +11,7 @@ import java.time.OffsetDateTime;
 /**
  * Contains information about a Directory in the storage File service.
  */
+@Immutable
 public final class DirectoryInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
