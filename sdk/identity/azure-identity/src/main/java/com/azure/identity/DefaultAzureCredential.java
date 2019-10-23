@@ -10,7 +10,7 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 
 /**
- * Creates a credential using environment variables and the shared token cache. It tries to create a valid credential in
+ * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in
  * the following order:
  *
  * <ol>
