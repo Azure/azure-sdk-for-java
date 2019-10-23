@@ -51,20 +51,20 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#abortCopyFromURL(String)}
+     * Code snippets for {@link BlobAsyncClient#abortCopyFromUrl(String)}
      */
-    public void abortCopyFromURLCodeSnippet() {
+    public void abortCopyFromUrlCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
+        client.abortCopyFromUrl(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
         // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURL(String)}
+     * Code snippets for {@link BlobAsyncClient#copyFromUrl(String)}
      */
-    public void copyFromURLCodeSnippet() {
+    public void copyFromUrlCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#String
-        client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
+        client.copyFromUrl(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#String
     }
 
@@ -153,8 +153,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void setHTTPHeadersCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHttpHeaders
         client.setHttpHeaders(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"));
+            .setContentLanguage("en-US")
+            .setContentType("binary"));
         // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHttpHeaders
     }
 
@@ -216,32 +216,32 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#abortCopyFromURLWithResponse(String, String)}
+     * Code snippets for {@link BlobAsyncClient#abortCopyFromUrlWithResponse(String, String)}
      */
-    public void abortCopyFromURLWithResponseCodeSnippets() {
+    public void abortCopyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-String
-        client.abortCopyFromURLWithResponse(copyId, leaseId)
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromUrlWithResponse#String-String
+        client.abortCopyFromUrlWithResponse(copyId, leaseId)
             .subscribe(
                 response -> System.out.printf("Aborted copy completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-String
+        // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromUrlWithResponse#String-String
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(String, Map, AccessTier,
+     * Code snippets for {@link BlobAsyncClient#copyFromUrlWithResponse(String, Map, AccessTier,
      * RequestConditions, BlobRequestConditions)}
      */
-    public void copyFromURLWithResponseCodeSnippets() {
+    public void copyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromUrlWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobRequestConditions)
+        client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobRequestConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.copyFromUrlWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions
     }
 
     /**
@@ -302,8 +302,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         client.setHttpHeadersWithResponse(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"), accessConditions).subscribe(
+            .setContentLanguage("en-US")
+            .setContentType("binary"), accessConditions).subscribe(
                 response ->
                     System.out.printf("Set HTTP headers completed with status %d%n",
                         response.getStatusCode()));
@@ -398,7 +398,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setNumBuffers(numBuffers);
         client.upload(data, parallelTransferOptions).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
         // END: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions
     }
 
@@ -408,9 +408,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void upload4() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobRequestConditions accessConditions = new BlobRequestConditions()
@@ -423,7 +423,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
         // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
     }
 
@@ -433,9 +433,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void upload5() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobRequestConditions accessConditions = new BlobRequestConditions()
@@ -450,7 +450,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
         // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter
     }
 
@@ -471,9 +471,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void uploadFromFile2() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobRequestConditions accessConditions = new BlobRequestConditions()

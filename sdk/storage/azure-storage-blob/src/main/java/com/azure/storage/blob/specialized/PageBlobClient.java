@@ -141,7 +141,7 @@ public final class PageBlobClient extends BlobClientBase {
     }
 
     /**
-     * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
+     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
@@ -163,7 +163,7 @@ public final class PageBlobClient extends BlobClientBase {
     }
 
     /**
-     * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
+     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
@@ -198,13 +198,13 @@ public final class PageBlobClient extends BlobClientBase {
     }
 
     /**
-     * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
-     * of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
+     * multiple of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURL#PageRange-String-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrl#PageRange-String-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -218,19 +218,19 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public PageBlobItem uploadPagesFromURL(PageRange range, String sourceUrl, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, null, null, null, null, Context.NONE)
+    public PageBlobItem uploadPagesFromUrl(PageRange range, String sourceUrl, Long sourceOffset) {
+        return uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, null, null, null, null, Context.NONE)
             .getValue();
     }
 
     /**
-     * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
-     * of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
+     * multiple of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions-Duration-Context}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -240,7 +240,7 @@ public final class PageBlobClient extends BlobClientBase {
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceOffset The source offset to copy from.  Pass null or 0 to copy from the beginning of source blob.
-     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will
+     * @param sourceContentMd5 An MD5 hash of the block content from the source blob. If specified, the service will
      * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
      * @param destAccessConditions {@link PageBlobRequestConditions}
      * @param sourceRequestConditions {@link BlobRequestConditions}
@@ -249,12 +249,12 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public Response<PageBlobItem> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
-        byte[] sourceContentMD5, PageBlobRequestConditions destAccessConditions,
+    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
+        byte[] sourceContentMd5, PageBlobRequestConditions destAccessConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceUrl,
-            sourceOffset, sourceContentMD5, destAccessConditions, sourceRequestConditions, context);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(range, sourceUrl,
+            sourceOffset, sourceContentMd5, destAccessConditions, sourceRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

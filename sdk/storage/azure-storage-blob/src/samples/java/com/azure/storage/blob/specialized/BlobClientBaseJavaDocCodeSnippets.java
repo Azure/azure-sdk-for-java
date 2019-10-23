@@ -7,7 +7,7 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.Poller;
-import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -56,7 +56,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     /**
      * Code snippets for {@link BlobClientBase#beginCopy(String, Duration)}
      */
-    public void startCopyFromURL() {
+    public void beginCopy() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-Duration
         final Poller<BlobCopyInfo, Void> poller = client.beginCopy(url, Duration.ofSeconds(2));
         poller.getObserver().subscribe(response -> {
@@ -66,22 +66,22 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#abortCopyFromURL(String)}
+     * Code snippets for {@link BlobClientBase#abortCopyFromUrl(String)}
      */
-    public void abortCopyFromURL() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId);
+    public void abortCopyFromUrl() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromUrl#String
+        client.abortCopyFromUrl(copyId);
         System.out.println("Aborted copy completed.");
-        // END: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURL#String
+        // END: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromUrl#String
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#copyFromURL(String)}
+     * Code snippets for {@link BlobClientBase#copyFromUrl(String)}
      */
-    public void copyFromURL() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#String
-        System.out.printf("Copy identifier: %s%n", client.copyFromURL(url));
-        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#String
+    public void copyFromUrl() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrl#String
+        System.out.printf("Copy identifier: %s%n", client.copyFromUrl(url));
+        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrl#String
     }
 
     /**
@@ -141,8 +141,8 @@ public class BlobClientBaseJavaDocCodeSnippets {
     public void setHTTPHeaders() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeaders#BlobHttpHeaders
         client.setHttpHeaders(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"));
+            .setContentLanguage("en-US")
+            .setContentType("binary"));
         System.out.println("Set HTTP headers completed");
         // END: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeaders#BlobHttpHeaders
     }
@@ -226,34 +226,34 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#abortCopyFromURLWithResponse(String, String, Duration, Context)}
+     * Code snippets for {@link BlobClientBase#abortCopyFromUrlWithResponse(String, String, Duration, Context)}
      */
-    public void abortCopyFromURLWithResponseCodeSnippets() {
+    public void abortCopyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURLWithResponse#String-String-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromUrlWithResponse#String-String-Duration-Context
         System.out.printf("Aborted copy completed with status %d%n",
-            client.abortCopyFromURLWithResponse(copyId, leaseId, timeout,
+            client.abortCopyFromUrlWithResponse(copyId, leaseId, timeout,
                 new Context(key2, value2)).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURLWithResponse#String-String-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromUrlWithResponse#String-String-Duration-Context
     }
 
     /**
      * Code snippets for {@link BlobClientBase#copyFromURLWithResponse(String, Map, AccessTier, RequestConditions,
      * BlobRequestConditions, Duration, Context)}
      */
-    public void copyFromURLWithResponseCodeSnippets() {
+    public void copyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         System.out.printf("Copy identifier: %s%n",
-            client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions,
+            client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions,
                 blobRequestConditions, timeout,
                 new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -310,8 +310,8 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
         System.out.printf("Set HTTP headers completed with status %d%n",
             client.setHttpHeadersWithResponse(new BlobHttpHeaders()
-                .setBlobContentLanguage("en-US")
-                .setBlobContentType("binary"), accessConditions, timeout, new Context(key1, value1))
+                .setContentLanguage("en-US")
+                .setContentType("binary"), accessConditions, timeout, new Context(key1, value1))
                 .getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobRequestConditions-Duration-Context
     }

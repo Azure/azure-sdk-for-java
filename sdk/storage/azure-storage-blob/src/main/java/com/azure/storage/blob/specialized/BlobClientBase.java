@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -274,15 +274,15 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromUrl#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @param copyId The id of the copy operation to abort.
      */
-    public void abortCopyFromURL(String copyId) {
-        abortCopyFromURLWithResponse(copyId, null, null, Context.NONE);
+    public void abortCopyFromUrl(String copyId) {
+        abortCopyFromUrlWithResponse(copyId, null, null, Context.NONE);
     }
 
     /**
@@ -290,7 +290,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURLWithResponse#String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromUrlWithResponse#String-String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -301,9 +301,9 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> abortCopyFromURLWithResponse(String copyId, String leaseId, Duration timeout,
-        Context context) {
-        return blockWithOptionalTimeout(client.abortCopyFromURLWithResponse(copyId, leaseId, context), timeout);
+    public Response<Void> abortCopyFromUrlWithResponse(String copyId, String leaseId, Duration timeout,
+            Context context) {
+        return blockWithOptionalTimeout(client.abortCopyFromUrlWithResponse(copyId, leaseId, context), timeout);
     }
 
     /**
@@ -311,7 +311,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrl#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -320,8 +320,8 @@ public class BlobClientBase {
      * @return The copy ID for the long running operation.
      * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
      */
-    public String copyFromURL(String copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).getValue();
+    public String copyFromUrl(String copySource) {
+        return copyFromUrlWithResponse(copySource, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -329,7 +329,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -347,11 +347,11 @@ public class BlobClientBase {
      * @return The copy ID for the long running operation.
      * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
      */
-    public Response<String> copyFromURLWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
-        RequestConditions sourceModifiedAccessConditions, BlobRequestConditions destAccessConditions,
-        Duration timeout, Context context) {
+    public Response<String> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
+            RequestConditions sourceModifiedAccessConditions, BlobRequestConditions destAccessConditions,
+            Duration timeout, Context context) {
         Mono<Response<String>> response = client
-            .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
+            .copyFromUrlWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
                 context);
 
         return blockWithOptionalTimeout(response, timeout);

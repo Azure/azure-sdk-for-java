@@ -117,8 +117,8 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
         this.contentType = contentType;
 
         if (key != null) {
-            this.keyObjectId = key.getSignedOid();
-            this.keyTenantId = key.getSignedTid();
+            this.keyObjectId = key.getSignedObjectId();
+            this.keyTenantId = key.getSignedTenantId();
             this.keyStart = key.getSignedStart();
             this.keyExpiry = key.getSignedExpiry();
             this.keyService = key.getSignedService();
@@ -229,10 +229,10 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
     UserDelegationKey userDelegationKey() {
         return new UserDelegationKey()
             .setSignedExpiry(this.keyExpiry)
-            .setSignedOid(this.keyObjectId)
+            .setSignedObjectId(this.keyObjectId)
             .setSignedService(this.keyService)
             .setSignedStart(this.keyStart)
-            .setSignedTid(this.keyTenantId)
+            .setSignedTenantId(this.keyTenantId)
             .setSignedVersion(this.keyVersion);
     }
 

@@ -59,7 +59,7 @@ class QueueTestHelper {
             return actual == null
         } else {
             return Objects.equals(expected.isEnabled(), actual.isEnabled()) &&
-                Objects.equals(expected.isIncludeAPIs(), actual.isIncludeAPIs()) &&
+                Objects.equals(expected.isIncludeApis(), actual.isIncludeApis()) &&
                 Objects.equals(expected.getVersion(), actual.getVersion()) &&
                 assertRetentionPoliciesAreEqual(expected.getRetentionPolicy(), actual.getRetentionPolicy())
         }
