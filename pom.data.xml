@@ -547,6 +547,53 @@
         <module>./sdk/template/azure-sdk-template</module>
       </modules>
     </profile>
+
+    <!-- Skip overview generation unless -Dgenerate-overview is passed as an argument.
+         This is specifically done to prevent requiring python as a pre-requisite since
+         this is only needed by the build system. -->
+    <profile>
+      <id>generate-overview-from-readme</id>
+      <activation>
+        <property>
+          <name>generate-overview</name>
+        </property>      
+      </activation>      
+      <build>
+        <plugins>  
+          <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>exec-maven-plugin</artifactId>
+              <executions>
+                  <execution>
+                      <id>generate-overview-from-readme</id>
+                      <phase>prepare-package</phase>
+                      <goals>
+                          <goal>exec</goal>
+                      </goals>
+                  </execution>
+              </executions>
+              <configuration>
+                <executable>python</executable>
+                <workingDirectory>${project.basedir}</workingDirectory>
+                <arguments>
+                      <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                      <argument>--rf</argument>
+                      <argument>${project.basedir}/README.md</argument>
+                </arguments>    
+              </configuration>
+          </plugin>
+          <!-- Add the overview argument to the javadoc args -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${maven-javadoc.version}</version>
+            <configuration combine.children="append">
+              <overview>${project.basedir}/readme_overview.html</overview>
+            </configuration>
+          </plugin>
+         </plugins>
+      </build>
+    </profile> 
   </profiles>
 
   <modules>
