@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public class StorageAllowedHeadersAndQueries {
     public static class BlobHeadersAndQueries {
-        private static Set<String> BLOB_HEADERS = Stream.of(
+        private static final Set<String> BLOB_HEADERS = Stream.of(
             "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
             "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
             "x-ms-request-id", "x-ms-return-client-request-id", "x-ms-version", "Accept-Ranges", "Content-Disposition",
@@ -40,7 +40,7 @@ public class StorageAllowedHeadersAndQueries {
             return BLOB_HEADERS;
         }
 
-        private static Set<String> BLOB_QUERIES = Stream.of(
+        private static final Set<String> BLOB_QUERIES = Stream.of(
             "comp", "maxresults", "rscc", "rscd", "rsce", "rscl", "rsct", "se", "si", "sip", "sp", "spr", "sr", "srt",
             "ss", "st", "sv", "include", "marker", "prefix", "copyid", "restype", "blockid", "blocklisttype",
             "delimiter", "prevsnapshot", "ske", "skoid", "sks", "skt", "sktid", "skv", "snapshot")
@@ -52,7 +52,7 @@ public class StorageAllowedHeadersAndQueries {
     }
 
     public static class FileShareHeadersAndQueries {
-        private static Set<String> FILE_SHARE_HEADERS = Stream.of(
+        private static final Set<String> FILE_SHARE_HEADERS = Stream.of(
             "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
             "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
             "x-ms-request-id", "x-ms-return-client-request-id", "x-ms-version", "Accept-Ranges", "Content-Disposition",
@@ -72,7 +72,7 @@ public class StorageAllowedHeadersAndQueries {
             return FILE_SHARE_HEADERS;
         }
 
-        private static Set<String> FILE_SHARE_QUERIES = Stream.of(
+        private static final Set<String> FILE_SHARE_QUERIES = Stream.of(
             "comp", "maxresults", "rscc", "rscd", "rsce", "rscl", "rsct", "se", "si", "sip", "sp", "spr", "sr", "srt",
             "ss", "st", "sv", "copyid", "restype")
             .collect(Collectors.toCollection(HashSet::new));
@@ -83,7 +83,7 @@ public class StorageAllowedHeadersAndQueries {
     }
 
     public static class QueueHeadersAndQueries {
-        private static Set<String> QUEUE_HEADERS = Stream.of(
+        private static final Set<String> QUEUE_HEADERS = Stream.of(
             "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
             "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
             "x-ms-request-id", "x-ms-return-client-request-id", "x-ms-version", "x-ms-approximate-messages-count",
@@ -94,7 +94,7 @@ public class StorageAllowedHeadersAndQueries {
             return QUEUE_HEADERS;
         }
 
-        private static Set<String> QUEUE_QUERIES = Stream.of(
+        private static final Set<String> QUEUE_QUERIES = Stream.of(
             "comp", "maxresults", "rscc", "rscd", "rsce", "rscl", "rsct", "se", "si", "sip", "sp", "spr", "sr", "srt",
             "ss", "st", "sv", "include", "marker", "prefix", "messagettl", "numofmessages", "peekonly", "popreceipt",
             "visibilitytimeout")
