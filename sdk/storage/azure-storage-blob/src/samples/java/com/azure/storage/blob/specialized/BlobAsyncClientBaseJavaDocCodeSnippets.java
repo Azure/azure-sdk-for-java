@@ -273,8 +273,8 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#copyFromURLWithResponse(String, Map, AccessTier,
-     * RequestConditions, BlobRequestConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#copyFromUrlWithResponse(String, Map, AccessTier, RequestConditions,
+     * BlobRequestConditions)}
      */
     public void copyFromUrlWithResponseCodeSnippets() {
 

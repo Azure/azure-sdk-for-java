@@ -77,6 +77,7 @@ public class EncryptedBlobClient extends BlobClient {
      * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean}
      *
      * @param filePath Path of the file to upload
+     * @param overwrite Whether or not to overwrite should data already exist on the blob
      */
     public void uploadFromFile(String filePath, boolean overwrite) {
         if (!overwrite && exists()) {
