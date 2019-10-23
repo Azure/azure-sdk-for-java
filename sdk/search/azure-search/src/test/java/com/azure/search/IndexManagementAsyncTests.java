@@ -3,6 +3,7 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.search.models.AnalyzerName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
@@ -388,6 +389,27 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                 assertIndexesEqual(fullFeaturedIndex, res);
             })
             .verifyComplete();
+
+        // Modify the fields on an existing index
+        Index existingIndex = client.getIndex(fullFeaturedIndex.getName()).block();
+
+        SynonymMap synonymMap = client.createSynonymMap(new SynonymMap()
+            .setName("names")
+            .setSynonyms("hotel,motel")
+        ).block();
+
+        Field tagsField = getFieldByName(existingIndex, "Description_Custom");
+        tagsField.setRetrievable(false)
+            .setSearchAnalyzer(AnalyzerName.WHITESPACE)
+            .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
+
+        StepVerifier
+            .create(client.upsertIndex(existingIndex, true))
+            .assertNext(res -> {
+                assertIndexesEqual(existingIndex, res);
+            })
+            .verifyComplete();
+
     }
 
     @Override

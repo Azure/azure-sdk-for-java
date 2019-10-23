@@ -6,6 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
@@ -328,6 +329,22 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index updatedIndex = client.upsertIndex(index);
 
         assertIndexesEqual(fullFeaturedIndex, updatedIndex);
+
+        // Modify the fields on an existing index
+        Index existingIndex = client.getIndex(fullFeaturedIndex.getName());
+
+        SynonymMap synonymMap = client.createSynonymMap(new SynonymMap()
+            .setName("names")
+            .setSynonyms("hotel,motel")
+        );
+
+        Field tagsField = getFieldByName(existingIndex, "Description_Custom");
+        tagsField.setRetrievable(false)
+            .setSearchAnalyzer(AnalyzerName.WHITESPACE)
+            .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
+
+        updatedIndex = client.upsertIndex(existingIndex, true);
+        assertIndexesEqual(existingIndex, updatedIndex);
     }
 
     @Override
