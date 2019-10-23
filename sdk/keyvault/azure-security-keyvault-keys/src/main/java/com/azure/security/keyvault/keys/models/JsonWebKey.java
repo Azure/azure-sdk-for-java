@@ -159,7 +159,7 @@ public class JsonWebKey {
      * @return the kid value
      */
     @JsonProperty("kid")
-    public String getKeyId() {
+    public String getId() {
         return this.keyId;
     }
 
@@ -169,7 +169,7 @@ public class JsonWebKey {
      * @param keyId The kid value to set
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setKeyId(String keyId) {
+    JsonWebKey setId(String keyId) {
         this.keyId = keyId;
         return this;
     }
@@ -467,7 +467,7 @@ public class JsonWebKey {
      * @return the crv value
      */
     @JsonProperty("crv")
-    public KeyCurveName getCrv() {
+    public KeyCurveName getCurveName() {
         return this.crv;
     }
 
@@ -477,7 +477,7 @@ public class JsonWebKey {
      * @param crv The crv value to set
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setCrv(KeyCurveName crv) {
+    JsonWebKey setCurveName(KeyCurveName crv) {
         this.crv = crv;
         return this;
     }
@@ -807,11 +807,11 @@ public class JsonWebKey {
         ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
 
         if (apriv != null) {
-            return new JsonWebKey().setKeyType(KeyType.EC).setCrv(getCurveFromKeyPair(keyPair, provider))
+            return new JsonWebKey().setKeyType(KeyType.EC).setCurveName(getCurveFromKeyPair(keyPair, provider))
                 .setX(point.getAffineX().toByteArray()).setY(point.getAffineY().toByteArray())
                 .setD(apriv.getS().toByteArray()).setKeyType(KeyType.EC);
         } else {
-            return new JsonWebKey().setKeyType(KeyType.EC).setCrv(getCurveFromKeyPair(keyPair, provider))
+            return new JsonWebKey().setKeyType(KeyType.EC).setCurveName(getCurveFromKeyPair(keyPair, provider))
                 .setX(point.getAffineX().toByteArray()).setY(point.getAffineY().toByteArray())
                 .setKeyType(KeyType.EC);
         }

@@ -77,19 +77,10 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#getSecretFromProperties(SecretProperties)}
+     * Method to insert code snippets for {@link SecretAsyncClient#getSecret(String, String)}
      */
     public void getSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.getSecret#secretProperties
-        secretAsyncClient.listPropertiesOfSecrets()
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient.getSecretFromProperties(secretProperties)
-                .subscribe(secretResponse ->
-                    System.out.printf("Secret is returned with name %s and value %s %n", secretResponse.getName(),
-                        secretResponse.getValue())));
-        // END: com.azure.keyvault.secrets.secretclient.getSecret#secretProperties
-
         // BEGIN: com.azure.keyvault.secrets.secretclient.getSecret#string-string
         String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
         secretAsyncClient.getSecret("secretName", secretVersion)
@@ -109,18 +100,10 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#getSecretFromPropertiesWithResponse(SecretProperties)}
+     * Method to insert code snippets for {@link SecretAsyncClient#getSecretWithResponse(String, String)}
      */
     public void getSecretWithResponseCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretProperties
-        secretAsyncClient.listPropertiesOfSecrets()
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient.getSecretFromPropertiesWithResponse(secretProperties)
-                .subscribe(secretResponse ->
-                    System.out.printf("Secret is returned with name %s and value %s %n",
-                        secretResponse.getValue().getName(), secretResponse.getValue().getValue())));
-        // END: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretProperties
 
         // BEGIN: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#string-string
         String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
@@ -358,7 +341,8 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.secrets.secretclient.listSecrets
         secretAsyncClient.listPropertiesOfSecrets()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient.getSecretFromProperties(secretProperties)
+            .subscribe(secretProperties -> secretAsyncClient
+                .getSecret(secretProperties.getName(), secretProperties.getVersion())
                 .subscribe(secretResponse -> System.out.printf("Received secret with name %s and type %s",
                     secretResponse.getName(), secretResponse.getValue())));
         // END: com.azure.keyvault.secrets.secretclient.listSecrets
@@ -385,7 +369,8 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.secrets.secretclient.listSecretVersions#string
         secretAsyncClient.listPropertiesOfSecretVersions("secretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient.getSecretFromProperties(secretProperties)
+            .subscribe(secretProperties -> secretAsyncClient
+                .getSecret(secretProperties.getName(), secretProperties.getVersion())
                 .subscribe(secretResponse -> System.out.printf("Received secret with name %s and type %s",
                     secretResponse.getName(), secretResponse.getValue())));
         // END: com.azure.keyvault.secrets.secretclient.listSecretVersions#string

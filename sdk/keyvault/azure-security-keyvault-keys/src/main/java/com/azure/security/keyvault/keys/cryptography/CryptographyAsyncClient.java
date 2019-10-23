@@ -18,12 +18,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
+import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
@@ -82,9 +82,9 @@ public class CryptographyAsyncClient {
         }
         this.key = key;
         service = RestProxy.create(CryptographyService.class, pipeline);
-        if (!Strings.isNullOrEmpty(key.getKeyId())) {
-            unpackAndValidateId(key.getKeyId());
-            cryptographyServiceClient = new CryptographyServiceClient(key.getKeyId(), service);
+        if (!Strings.isNullOrEmpty(key.getId())) {
+            unpackAndValidateId(key.getId());
+            cryptographyServiceClient = new CryptographyServiceClient(key.getId(), service);
         } else {
             cryptographyServiceClient = null;
         }
@@ -219,7 +219,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Encrypt Operation is missing "
-                + "permission/not supported for key with id %s", key.getKeyId()))));
+                + "permission/not supported for key with id %s", key.getId()))));
         }
         return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, context, key);
     }
@@ -272,7 +272,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for "
-                + "key with id %s", key.getKeyId()))));
+                + "key with id %s", key.getId()))));
         }
         return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, context, key);
     }
@@ -322,7 +322,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with id %s", key.getKeyId()))));
+                + "with id %s", key.getId()))));
         }
 
         return localKeyCryptographyClient.signAsync(algorithm, digest, context, key);
@@ -374,7 +374,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Verify Operation is not allowed for "
-                + "key with id %s", key.getKeyId()))));
+                + "key with id %s", key.getId()))));
         }
         return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key);
     }
@@ -395,14 +395,14 @@ public class CryptographyAsyncClient {
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
-     * @return A {@link Mono} containing a {@link KeyWrapResult} whose {@link KeyWrapResult#getEncryptedKey() encrypted
+     * @return A {@link Mono} containing a {@link WrapResult} whose {@link WrapResult#getEncryptedKey() encrypted
      *     key} contains the wrapped key result.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
      * @throws UnsupportedOperationException if the wrap operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code key} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyWrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
+    public Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
         try {
             return withContext(context -> wrapKey(algorithm, key, context));
         } catch (RuntimeException ex) {
@@ -410,7 +410,7 @@ public class CryptographyAsyncClient {
         }
     }
 
-    Mono<KeyWrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
+    Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         Objects.requireNonNull(algorithm, "Key Wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
         boolean keyAvailableLocally = ensureValidKeyAvailable();
@@ -421,7 +421,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for "
-                + "key with id %s", this.key.getKeyId()))));
+                + "key with id %s", this.key.getId()))));
         }
 
         return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
@@ -453,7 +453,7 @@ public class CryptographyAsyncClient {
      * @throws NullPointerException if {@code algorithm} or {@code encryptedKey} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyUnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
+    public Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         try {
             return withContext(context -> unwrapKey(algorithm, encryptedKey, context));
         } catch (RuntimeException ex) {
@@ -461,7 +461,7 @@ public class CryptographyAsyncClient {
         }
     }
 
-    Mono<KeyUnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
+    Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         Objects.requireNonNull(algorithm, "Key Wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
@@ -473,7 +473,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed "
-                + "for key with id %s", this.key.getKeyId()))));
+                + "for key with id %s", this.key.getId()))));
         }
         return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
     }
@@ -524,7 +524,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with id %s", this.key.getKeyId()))));
+                + "with id %s", this.key.getId()))));
         }
         return localKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
     }
@@ -576,7 +576,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
-                "Verify Operation is not allowed for key with id %s", this.key.getKeyId()))));
+                "Verify Operation is not allowed for key with id %s", this.key.getId()))));
         }
         return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
     }

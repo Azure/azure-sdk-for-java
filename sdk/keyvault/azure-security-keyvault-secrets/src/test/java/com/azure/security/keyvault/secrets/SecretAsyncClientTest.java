@@ -46,7 +46,6 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      * Tests that a secret can be created in the key vault.
      */
     public void setSecret() {
-
         setSecretRunner((expected) -> StepVerifier.create(client.setSecret(expected))
                 .assertNext(response -> assertSecretEquals(expected, response))
                 .verifyComplete());

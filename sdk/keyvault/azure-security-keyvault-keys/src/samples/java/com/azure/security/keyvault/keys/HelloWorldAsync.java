@@ -39,13 +39,13 @@ public class HelloWorldAsync {
 
         // Let's validate create key operation succeeded using the status code information in the response.
         System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.getStatusCode());
-        System.out.printf("Key is created with name %s and type %s \n", createKeyResponse.getValue().getName(), createKeyResponse.getValue().getKey().getKeyType());
+        System.out.printf("Key is created with name %s and type %s \n", createKeyResponse.getValue().getName(), createKeyResponse.getValue().getKeyType());
 
         Thread.sleep(2000);
 
         // Let's Get the Cloud Rsa Key from the key vault.
         keyAsyncClient.getKey("CloudRsaKey").subscribe(keyResponse ->
-                System.out.printf("Key returned with name %s and type %s \n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
+                System.out.printf("Key returned with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
@@ -68,7 +68,7 @@ public class HelloWorldAsync {
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(4096))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 

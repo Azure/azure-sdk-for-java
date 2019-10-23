@@ -3,11 +3,13 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 /**
  * Represents the details of decrypt operation result.
  */
+@Immutable
 public final class DecryptResult {
     /**
      * The decrypted content.

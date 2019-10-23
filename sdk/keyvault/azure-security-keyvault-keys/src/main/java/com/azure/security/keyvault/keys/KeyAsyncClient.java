@@ -359,7 +359,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<KeyVaultKey>> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions, Context context) {
-        Objects.requireNonNull(createEcKeyOptions, "The Ec key options options cannot be null.");
+        Objects.requireNonNull(createEcKeyOptions, "The Ec key options cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createEcKeyOptions.getKeyType())
             .setCurve(createEcKeyOptions.getCurve())
@@ -584,61 +584,6 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> getKey(String name) {
         try {
             return getKeyWithResponse(name, "").flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Get public part of the key which represents {@link KeyProperties keyProperties} from the key vault. The get key operation is
-     * applicable to all key types and it requires the {@code keys/get} permission.
-     *
-     * <p>The list operations {@link KeyAsyncClient#listPropertiesOfKeys()} and {@link KeyAsyncClient#listPropertiesOfKeyVersions(String)}
-     * return the {@link Flux} containing {@link KeyProperties key properties} as output excluding the key material of the key.
-     * This operation can then be used to get the full key with its key material from {@code keyProperties}.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKey#KeyProperties}
-     *
-     * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
-     * @return A {@link Mono} containing the requested {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
-     *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName()}  name} or {@link KeyProperties#getVersion() version} is empty
-     *     string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultKey> getKeyFromProperties(KeyProperties keyProperties) {
-        try {
-            return getKeyFromPropertiesWithResponse(keyProperties).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Get public part of the key which represents {@link KeyProperties keyProperties} from the key vault. The get key operation is
-     * applicable to all key types and it requires the {@code keys/get} permission.
-     *
-     * <p>The list operations {@link KeyAsyncClient#listPropertiesOfKeys()} and {@link KeyAsyncClient#listPropertiesOfKeyVersions(String)}
-     * return the {@link Flux} containing {@link KeyProperties key properties} as output excluding the key material of the key.
-     * This operation can then be used to get the full key with its key material from {@code keyProperties}.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyProperties}
-     *
-     * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
-     *     {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
-     *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName()}  name} or {@link KeyProperties#getVersion() version} is empty
-     *     string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultKey>> getKeyFromPropertiesWithResponse(KeyProperties keyProperties) {
-        try {
-            Objects.requireNonNull(keyProperties, "The Key Properties parameter cannot be null.");
-            return withContext(context -> getKeyWithResponse(keyProperties.getName(), keyProperties.getVersion() == null ? ""
-                : keyProperties.getVersion(), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1031,7 +976,7 @@ public final class KeyAsyncClient {
      * restored key details when a response has been received.</p>
      * //Pass the Key Backup Byte array to the restore operation.
      *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.restoreKey#byte}
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.restoreKeyBackup#byte}
      *
      * @param backup The backup blob associated with the key.
      * @return A {@link Mono} containing the {@link KeyVaultKey restored key}.
@@ -1062,7 +1007,7 @@ public final class KeyAsyncClient {
      * restored key details when a response has been received.</p>
      * //Pass the Key Backup Byte array to the restore operation.
      *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.restoreKeyWithResponse#byte}
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.restoreKeyBackupWithResponse#byte}
      *
      * @param backup The backup blob associated with the key.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey
@@ -1096,7 +1041,7 @@ public final class KeyAsyncClient {
      *
      * <p>It is possible to get full keys with key material from this information. Convert the {@link Flux} containing
      * {@link KeyProperties key properties} to {@link Flux} containing {@link KeyVaultKey key} using
-     * {@link KeyAsyncClient#getKeyFromProperties(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
+     * {@link KeyAsyncClient#getKey(String, String)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeys}
      *
@@ -1227,7 +1172,7 @@ public final class KeyAsyncClient {
      *
      * <p>It is possible to get the keys with key material of all the versions from this information. Convert the {@link
      * Flux} containing {@link KeyProperties key properties} to {@link Flux} containing {@link KeyVaultKey key} using
-     * {@link KeyAsyncClient#getKeyFromProperties(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
+     * {@link KeyAsyncClient#getKey(String, String)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeyVersions}
      *

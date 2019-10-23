@@ -3,11 +3,13 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 /**
  * Represents the details of sign operation result.
  */
+@Immutable
 public final class SignResult {
     /**
      * The signature created from the digest.

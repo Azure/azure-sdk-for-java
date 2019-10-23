@@ -3,12 +3,14 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 /**
  * Represents the details of key unwrap operation result.
  */
-public final class KeyUnwrapResult {
+@Immutable
+public final class UnwrapResult {
     /**
      * The unwrapped key content.
      */
@@ -31,7 +33,7 @@ public final class KeyUnwrapResult {
      * @param algorithm The algorithm used for the operation
      * @param keyId The id of key used for the operation
      */
-    public KeyUnwrapResult(byte[] key, KeyWrapAlgorithm algorithm, String keyId) {
+    public UnwrapResult(byte[] key, KeyWrapAlgorithm algorithm, String keyId) {
         this.key = ImplUtils.clone(key);
         this.algorithm = algorithm;
         this.keyId = keyId;

@@ -166,14 +166,6 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Key is returned with name %s and id %s %n", keyWithVersion.getName(),
             keyWithVersion.getId());
         // END: com.azure.keyvault.keys.keyclient.getKeyWithResponse#string-string-Context
-
-        // BEGIN: com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyProperties-Context
-        for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
-            KeyVaultKey keyResponse = keyClient.getKeyFromPropertiesWithResponse(key, new Context(key1, value1)).getValue();
-            System.out.printf("Received key with name %s and type %s", keyResponse.getName(),
-                keyResponse.getKey().getKeyType());
-        }
-        // END: com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyProperties-Context
     }
 
     /**
@@ -193,14 +185,6 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Key is returned with name %s and id %s %n", keyWithVersionValue.getName(),
             keyWithVersionValue.getId());
         // END: com.azure.keyvault.keys.keyclient.getKey#string
-
-        // BEGIN: com.azure.keyvault.keys.keyclient.getKey#KeyProperties
-        for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
-            KeyVaultKey keyResponse = keyClient.getKeyFromProperties(key);
-            System.out.printf("Received key with name %s and type %s", keyResponse.getName(),
-                keyResponse.getKey().getKeyType());
-        }
-        // END: com.azure.keyvault.keys.keyclient.getKey#KeyProperties
     }
 
     /**
@@ -322,11 +306,11 @@ public final class KeyClientJavaDocCodeSnippets {
      */
     public void restoreKeySnippets() {
         KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.keyclient.restoreKey#byte
+        // BEGIN: com.azure.keyvault.keys.keyclient.restoreKeyBackup#byte
         byte[] keyBackupByteArray = {};
         KeyVaultKey keyResponse = keyClient.restoreKeyBackup(keyBackupByteArray);
         System.out.printf("Restored Key with name %s and id %s %n", keyResponse.getName(), keyResponse.getId());
-        // END: com.azure.keyvault.keys.keyclient.restoreKey#byte
+        // END: com.azure.keyvault.keys.keyclient.restoreKeyBackup#byte
     }
 
     /**
@@ -334,13 +318,13 @@ public final class KeyClientJavaDocCodeSnippets {
      */
     public void restoreKeyWithResponseSnippets() {
         KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.keyclient.restoreKeyWithResponse#byte-Context
+        // BEGIN: com.azure.keyvault.keys.keyclient.restoreKeyBackupWithResponse#byte-Context
         byte[] keyBackupByteArray = {};
         Response<KeyVaultKey> keyResponse = keyClient.restoreKeyBackupWithResponse(keyBackupByteArray,
             new Context(key1, value1));
         System.out.printf("Restored Key with name %s and id %s %n",
             keyResponse.getValue().getName(), keyResponse.getValue().getId());
-        // END: com.azure.keyvault.keys.keyclient.restoreKeyWithResponse#byte-Context
+        // END: com.azure.keyvault.keys.keyclient.restoreKeyBackupWithResponse#byte-Context
     }
 
     /**
@@ -350,17 +334,17 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeys
         for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
-            KeyVaultKey keyWithMaterial = keyClient.getKeyFromProperties(key);
+            KeyVaultKey keyWithMaterial = keyClient.getKey(key.getName(), key.getVersion());
             System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(),
-                keyWithMaterial.getKey().getKeyType());
+                keyWithMaterial.getKeyType());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeys
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeys#Context
         for (KeyProperties key : keyClient.listPropertiesOfKeys(new Context(key2, value2))) {
-            KeyVaultKey keyWithMaterial = keyClient.getKeyFromProperties(key);
+            KeyVaultKey keyWithMaterial = keyClient.getKey(key.getName(), key.getVersion());
             System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(),
-                keyWithMaterial.getKey().getKeyType());
+                keyWithMaterial.getKeyType());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeys#Context
 
@@ -369,9 +353,9 @@ public final class KeyClientJavaDocCodeSnippets {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
-                KeyVaultKey keyWithMaterial = keyClient.getKeyFromProperties(value);
+                KeyVaultKey keyWithMaterial = keyClient.getKey(value.getName(), value.getVersion());
                 System.out.printf("Received key with name %s and type %s %n", keyWithMaterial.getName(),
-                    keyWithMaterial.getKey().getKeyType());
+                    keyWithMaterial.getKeyType());
             });
         });
         // END: com.azure.keyvault.keys.keyclient.listKeys.iterableByPage
@@ -412,19 +396,19 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions
         for (KeyProperties key : keyClient.listPropertiesOfKeyVersions("keyName")) {
-            KeyVaultKey keyWithMaterial  = keyClient.getKeyFromProperties(key);
+            KeyVaultKey keyWithMaterial  = keyClient.getKey(key.getName(), key.getVersion());
             System.out.printf("Received key's version with name %s, type %s and version %s",
                 keyWithMaterial.getName(),
-                    keyWithMaterial.getKey().getKeyType(), keyWithMaterial.getProperties().getVersion());
+                    keyWithMaterial.getKeyType(), keyWithMaterial.getProperties().getVersion());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions#Context
         for (KeyProperties key : keyClient.listPropertiesOfKeyVersions("keyName", new Context(key2, value2))) {
-            KeyVaultKey keyWithMaterial  = keyClient.getKeyFromProperties(key);
+            KeyVaultKey keyWithMaterial  = keyClient.getKey(key.getName(), key.getVersion());
             System.out.printf("Received key's version with name %s, type %s and version %s",
                 keyWithMaterial.getName(),
-                    keyWithMaterial.getKey().getKeyType(), keyWithMaterial.getProperties().getVersion());
+                    keyWithMaterial.getKeyType(), keyWithMaterial.getProperties().getVersion());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions#Context
 

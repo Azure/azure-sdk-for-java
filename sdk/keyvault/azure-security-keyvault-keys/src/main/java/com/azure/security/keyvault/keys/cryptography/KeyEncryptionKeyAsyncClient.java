@@ -35,7 +35,7 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
     @Override
     public Mono<String> getKeyId() {
         try {
-            return Mono.just(key.getKeyId());
+            return Mono.just(key.getId());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

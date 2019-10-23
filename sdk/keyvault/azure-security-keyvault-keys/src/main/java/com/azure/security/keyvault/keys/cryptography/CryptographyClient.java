@@ -12,12 +12,12 @@ import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
+import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 
@@ -343,13 +343,13 @@ public class CryptographyClient {
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
-     * @return The {@link KeyWrapResult} whose {@link KeyWrapResult#getEncryptedKey() encrypted key} contains the wrapped
+     * @return The {@link WrapResult} whose {@link WrapResult#getEncryptedKey() encrypted key} contains the wrapped
      *     key result.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
      * @throws UnsupportedOperationException if the wrap operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code key} is null.
      */
-    public KeyWrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
+    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
         return wrapKey(algorithm, key, Context.NONE);
     }
 
@@ -370,13 +370,13 @@ public class CryptographyClient {
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link KeyWrapResult} whose {@link KeyWrapResult#getEncryptedKey() encrypted key} contains the wrapped
+     * @return The {@link WrapResult} whose {@link WrapResult#getEncryptedKey() encrypted key} contains the wrapped
      *     key result.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
      * @throws UnsupportedOperationException if the wrap operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code key} is null.
      */
-    public KeyWrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
+    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         return client.wrapKey(algorithm, key, context).block();
     }
 
@@ -404,7 +404,7 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException if the unwrap operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code encryptedKey} is null.
      */
-    public KeyUnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
+    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         return unwrapKey(algorithm, encryptedKey, Context.NONE);
     }
 
@@ -434,7 +434,7 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException if the unwrap operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code encryptedKey} is null.
      */
-    public KeyUnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
+    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         return client.unwrapKey(algorithm, encryptedKey, context).block();
     }
 

@@ -41,7 +41,7 @@ public class BackupAndRestoreOperationsAsync {
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
+                        System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 

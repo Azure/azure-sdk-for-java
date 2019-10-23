@@ -213,15 +213,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Key is created with name %s and id %s %n",
                     keyResponse.getValue().getName(), keyResponse.getValue().getId()));
         // END: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string-string
-
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyProperties
-        keyAsyncClient.listPropertiesOfKeys().subscribe(keyProperties ->
-            keyAsyncClient.getKeyFromPropertiesWithResponse(keyProperties)
-                .subscriberContext(Context.of(key1, value1, key2, value2))
-                .subscribe(keyResponse ->
-                System.out.printf("Key with name %s and value %s %n", keyResponse.getValue().getName(),
-                    keyResponse.getValue().getId())));
-        // END: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyProperties
     }
 
     /**
@@ -245,14 +236,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getName(),
                     keyResponse.getId()));
         // END: com.azure.security.keyvault.keys.async.keyclient.getKey#string
-
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.getKey#KeyProperties
-        keyAsyncClient.listPropertiesOfKeys().subscribe(keyProperties ->
-            keyAsyncClient.getKeyFromProperties(keyProperties)
-                .subscriberContext(Context.of(key1, value1, key2, value2))
-                .subscribe(keyResponse ->
-                    System.out.printf("Key with name %s and value %s %n", keyResponse.getName(), keyResponse.getId())));
-        // END: com.azure.security.keyvault.keys.async.keyclient.getKey#KeyProperties
     }
 
     /**
@@ -395,14 +378,14 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
      */
     public void restoreKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.restoreKey#byte
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.restoreKeyBackup#byte
         byte[] keyBackupByteArray = {};
         keyAsyncClient.restoreKeyBackup(keyBackupByteArray)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse  ->
                 System.out.printf("Restored Key with name %s and id %s %n", keyResponse.getName(),
                     keyResponse.getId()));
-        // END: com.azure.security.keyvault.keys.async.keyclient.restoreKey#byte
+        // END: com.azure.security.keyvault.keys.async.keyclient.restoreKeyBackup#byte
     }
 
     /**
@@ -410,14 +393,14 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
      */
     public void restoreKeyWithResponseSnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.restoreKeyWithResponse#byte
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.restoreKeyBackupWithResponse#byte
         byte[] keyBackupByteArray = {};
         keyAsyncClient.restoreKeyBackupWithResponse(keyBackupByteArray)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse  ->
                 System.out.printf("Restored Key with name %s and id %s %n", keyResponse.getValue().getName(),
                     keyResponse.getValue().getId()));
-        // END: com.azure.security.keyvault.keys.async.keyclient.restoreKeyWithResponse#byte
+        // END: com.azure.security.keyvault.keys.async.keyclient.restoreKeyBackupWithResponse#byte
     }
 
     /**
@@ -428,10 +411,10 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.listKeys
         keyAsyncClient.listPropertiesOfKeys()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(keyProperties -> keyAsyncClient.getKeyFromProperties(keyProperties)
+            .subscribe(keyProperties -> keyAsyncClient.getKey(keyProperties.getName(), keyProperties.getVersion())
                 .subscribe(keyResponse -> System.out.printf("Received key with name %s and type %s",
                     keyResponse.getName(),
-                     keyResponse.getKey().getKeyType())));
+                     keyResponse.getKeyType())));
         // END: com.azure.security.keyvault.keys.async.keyclient.listKeys
     }
 
@@ -456,11 +439,11 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.listKeyVersions
         keyAsyncClient.listPropertiesOfKeyVersions("keyName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(keyProperties -> keyAsyncClient.getKeyFromProperties(keyProperties)
+            .subscribe(keyProperties -> keyAsyncClient.getKey(keyProperties.getName(), keyProperties.getVersion())
                 .subscribe(keyResponse ->
                     System.out.printf("Received key's version with name %s, type %s and version %s",
                         keyResponse.getName(),
-                        keyResponse.getKey().getKeyType(), keyResponse.getProperties().getVersion())));
+                        keyResponse.getKeyType(), keyResponse.getProperties().getVersion())));
         // END: com.azure.security.keyvault.keys.async.keyclient.listKeyVersions
     }
 

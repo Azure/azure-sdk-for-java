@@ -3,9 +3,12 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * Represents the details of verify operation result.
  */
+@Immutable
 public final class VerifyResult {
     /**
      * THe verify operation result.

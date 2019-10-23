@@ -35,14 +35,14 @@ public class ListOperationsAsync {
         keyAsyncClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
                 .setExpiresOn(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
         keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
                 .setExpiresOn(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
@@ -50,8 +50,8 @@ public class ListOperationsAsync {
         // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
         keyAsyncClient.listPropertiesOfKeys()
             .subscribe(keyBase ->
-                keyAsyncClient.getKeyFromProperties(keyBase).subscribe(keyResponse ->
-                    System.out.printf("Received key with name %s and type %s \n", keyResponse.getName(), keyResponse.getKey().getKeyType())));
+                keyAsyncClient.getKey(keyBase.getName(), keyBase.getVersion()).subscribe(keyResponse ->
+                    System.out.printf("Received key with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyType())));
 
         Thread.sleep(15000);
 
@@ -60,15 +60,15 @@ public class ListOperationsAsync {
         keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
             .setKeySize(4096)
             .setExpiresOn(OffsetDateTime.now().plusYears(1))).subscribe(keyResponse ->
-                System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
+                System.out.printf("Key is created with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
         keyAsyncClient.listPropertiesOfKeyVersions("CloudRsaKey").subscribe(keyBase ->
-            keyAsyncClient.getKeyFromProperties(keyBase).subscribe(keyResponse ->
+            keyAsyncClient.getKey(keyBase.getName(), keyBase.getVersion()).subscribe(keyResponse ->
                 System.out.printf("Received key's version with name %s, type %s and version %s \n", keyResponse.getName(),
-                        keyResponse.getKey().getKeyType(), keyResponse.getProperties().getVersion())));
+                        keyResponse.getKeyType(), keyResponse.getProperties().getVersion())));
 
         Thread.sleep(15000);
     }

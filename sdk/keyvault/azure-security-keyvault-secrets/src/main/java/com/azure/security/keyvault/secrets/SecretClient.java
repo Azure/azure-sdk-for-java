@@ -15,8 +15,6 @@ import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
-import java.util.List;
-
 /**
  * The SecretClient provides synchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault. The client
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link KeyVaultSecret
@@ -133,51 +131,6 @@ public final class SecretClient {
      */
     public KeyVaultSecret getSecret(String name, String version) {
         return getSecretWithResponse(name, version, Context.NONE).getValue();
-    }
-
-    /**
-     * Get the secret which represents {@link SecretProperties secretProperties} from the key vault. The get operation is applicable
-     * to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
-     *
-     * <p>The list operations {@link SecretClient#listPropertiesOfSecrets()} and {@link SecretClient#listPropertiesOfSecretVersions(String)}
-     * return the {@link List} containing {@link SecretProperties secret properties} as output excluding the include the value of
-     * the secret.
-     * This operation can then be used to get the full secret with its value from {@code secretProperties}.</p>
-     * <p><strong>Code Samples</strong></p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#secretProperties}
-     *
-     * @param secretProperties The {@link SecretProperties secret properties} holding attributes of the secret being requested.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
-     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretProperties#getName()  name} or {@link SecretProperties#getVersion() version} is empty
-     *     string.
-     */
-    public Response<KeyVaultSecret> getSecretFromPropertiesWithResponse(SecretProperties secretProperties, Context context) {
-        return client.getSecretFromPropertiesWithResponse(secretProperties, context).block();
-    }
-
-    /**
-     * Get the secret which represents {@link SecretProperties secretProperties} from the key vault. The get operation is applicable
-     * to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
-     *
-     * <p>The list operations {@link SecretClient#listPropertiesOfSecrets()} and {@link SecretClient#listPropertiesOfSecretVersions(String)}
-     * return the {@link List} containing {@link SecretProperties secret properties} as output excluding the include the value of
-     * the secret.
-     * This operation can then be used to get the full secret with its value from {@code secretProperties}.</p>
-     * <p><strong>Code Samples</strong></p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#secretProperties}
-     *
-     * @param secretProperties The {@link SecretProperties secret properties} holding attributes of the secret being requested.
-     * @return The requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
-     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretProperties#getName()  name} or {@link SecretProperties#getVersion() version} is
-     *     empty string.
-     */
-    public KeyVaultSecret getSecretFromProperties(SecretProperties secretProperties) {
-        return getSecretFromPropertiesWithResponse(secretProperties, Context.NONE).getValue();
     }
 
     /**
@@ -476,13 +429,13 @@ public final class SecretClient {
      * response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretProperties secret}
-     * and call {@link SecretClient#getSecretFromProperties(SecretProperties baseSecret)} . This will return the {@link KeyVaultSecret secret} with
+     * and call {@link SecretClient#getSecret(String, String)}. This will return the {@link KeyVaultSecret secret} with
      * value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets}
      *
      * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p>It is possible to get full secrets with values from this information. Iterate over all the {@link SecretProperties
-     * secret} by page and call {@link SecretClient#getSecretFromProperties(SecretProperties baseSecret)} . This will return the
+     * secret} by page and call {@link SecretClient#getSecret(String, String)}. This will return the
      * {@link KeyVaultSecret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets.iterableByPage}
      *
@@ -501,7 +454,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples to iterate over secrets by page</strong></p>
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretProperties secret}
-     * and call {@link SecretClient#getSecretFromProperties(SecretProperties baseSecret)} . This will return the {@link KeyVaultSecret secret} with
+     * and call {@link SecretClient#getSecret(String, String)}. This will return the {@link KeyVaultSecret secret} with
      * value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets#Context}
      *
@@ -555,7 +508,7 @@ public final class SecretClient {
      * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link
-     * SecretProperties secret} and call {@link SecretClient#getSecretFromProperties(SecretProperties)}. This will return the
+     * SecretProperties secret} and call {@link SecretClient#getSecret(String, String)}. This will return the
      * {@link KeyVaultSecret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string}
      *
@@ -575,14 +528,14 @@ public final class SecretClient {
      * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link
-     * SecretProperties secret} and call {@link SecretClient#getSecretFromProperties(SecretProperties)} . This will return the
+     * SecretProperties secret} and call {@link SecretClient#getSecret(String, String)}. This will return the
      * {@link KeyVaultSecret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context}
      *
      *
      * <p><strong>Code Samples to iterate over secret versions by page</strong></p>
      * <p>It is possible to get full Secrets with values for each version from this information. Iterate over all the
-     * {@link SecretProperties secret} by each page and call {@link SecretClient#getSecretFromProperties(SecretProperties)} . This will return the
+     * {@link SecretProperties secret} by each page and call {@link SecretClient#getSecret(String, String)}. This will return the
      * {@link KeyVaultSecret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage}
      *

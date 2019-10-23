@@ -43,8 +43,8 @@ public class ListOperations {
         // You need to check te type of keys already exist in your key vault. Let's list the keys and print their types.
         // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
         for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
-            KeyVaultKey keyWithMaterial = keyClient.getKeyFromProperties(key);
-            System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(), keyWithMaterial.getKey().getKeyType());
+            KeyVaultKey keyWithMaterial = keyClient.getKey(key.getName(), key.getVersion());
+            System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(), keyWithMaterial.getKeyType());
         }
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
@@ -55,8 +55,8 @@ public class ListOperations {
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
         for (KeyProperties key : keyClient.listPropertiesOfKeyVersions("CloudRsaKey")) {
-            KeyVaultKey keyWithMaterial  = keyClient.getKeyFromProperties(key);
-            System.out.printf("Received key's version with name %s, type %s and verison %s", keyWithMaterial.getName(), keyWithMaterial.getKey().getKeyType(), keyWithMaterial.getProperties().getVersion());
+            KeyVaultKey keyWithMaterial  = keyClient.getKey(key.getName(), key.getVersion());
+            System.out.printf("Received key's version with name %s, type %s and verison %s", keyWithMaterial.getName(), keyWithMaterial.getKeyType(), keyWithMaterial.getProperties().getVersion());
         }
     }
 }

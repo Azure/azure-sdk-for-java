@@ -9,12 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
+import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
@@ -68,7 +68,7 @@ class CryptographyServiceClient {
             .doOnError(error -> logger.warning("Failed to encrypt content with algorithm - {}", algorithm.toString(),
                 error))
             .flatMap(keyOperationResultResponse ->
-                Mono.just(new EncryptResult(keyOperationResultResponse.getValue().getResult(),  algorithm, keyId)));
+                Mono.just(new EncryptResult(keyOperationResultResponse.getValue().getResult(), algorithm, keyId)));
     }
 
     Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
@@ -109,7 +109,7 @@ class CryptographyServiceClient {
                 Mono.just(new VerifyResult(response.getValue().getValue(), algorithm, keyId)));
     }
 
-    Mono<KeyWrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
+    Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
 
         KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest().setAlgorithm(algorithm).setValue(key);
         return service.wrapKey(endpoint, keyName, version, API_VERSION, ACCEPT_LANGUAGE, parameters,
@@ -120,10 +120,10 @@ class CryptographyServiceClient {
             .doOnError(error -> logger.warning("Failed to verify content with algorithm - {}", algorithm.toString(),
                 error))
             .flatMap(keyOperationResultResponse ->
-                Mono.just(new KeyWrapResult(keyOperationResultResponse.getValue().getResult(), algorithm, keyId)));
+                Mono.just(new WrapResult(keyOperationResultResponse.getValue().getResult(), algorithm, keyId)));
     }
 
-    Mono<KeyUnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
+    Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
 
         KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest().setAlgorithm(algorithm).setValue(encryptedKey);
         return service.unwrapKey(endpoint, keyName, version, API_VERSION, ACCEPT_LANGUAGE, parameters,
@@ -134,7 +134,7 @@ class CryptographyServiceClient {
             .doOnError(error -> logger.warning("Failed to unwrap key content with algorithm - {}",
                 algorithm.toString(), error))
             .flatMap(response ->
-                Mono.just(new KeyUnwrapResult(response.getValue().getResult(), algorithm, keyId)));
+                Mono.just(new UnwrapResult(response.getValue().getResult(), algorithm, keyId)));
     }
 
 

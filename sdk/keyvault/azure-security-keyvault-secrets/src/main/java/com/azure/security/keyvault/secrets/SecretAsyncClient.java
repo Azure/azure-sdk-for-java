@@ -258,70 +258,6 @@ public final class SecretAsyncClient {
     }
 
     /**
-     * Get the secret which represents {@link SecretProperties secretProperties} from the key vault. The get
-     * operation is applicable to any secret stored in Azure Key Vault. This operation requires the
-     * {@code secrets/get} permission.
-     *
-     * <p>The list operations {@link SecretAsyncClient#listPropertiesOfSecrets()} and {@link
-     * SecretAsyncClient#listPropertiesOfSecretVersions(String)} return the {@link Flux} containing {@link SecretProperties secret properties}
-     * as output. This operation can then be used to get the full secret with its value from {@code secretProperties}. </p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecret#secretProperties}
-     *
-     * @param secretProperties The {@link SecretProperties secret properties} holding attributes of the secret being
-     *     requested.
-     * @return A {@link Mono} containing the requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
-     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretProperties#getName()}  name} or {@link SecretProperties#getVersion() version} is empty
-     *     string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultSecret> getSecretFromProperties(SecretProperties secretProperties) {
-        try {
-            return getSecretFromPropertiesWithResponse(secretProperties).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Get the secret which represents {@link SecretProperties secretProperties} from the key vault. The get
-     * operation is applicable to any secret stored in Azure Key Vault. This operation requires the
-     * {@code secrets/get} permission.
-     *
-     * <p>The list operations {@link SecretAsyncClient#listPropertiesOfSecrets()} and {@link
-     * SecretAsyncClient#listPropertiesOfSecretVersions(String)} return the {@link Flux} containing {@link SecretProperties secret properties}
-     * as output. This operation can then be used to get the full secret with its value from {@code secretProperties}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretProperties}
-     *
-     * @param secretProperties The {@link SecretProperties secret properties} holding attributes of the secret being
-     *     requested.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
-     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretProperties#getName()}  name} or {@link SecretProperties#getVersion() version} is empty
-     *     string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultSecret>> getSecretFromPropertiesWithResponse(SecretProperties secretProperties) {
-        try {
-            return withContext(context -> getSecretFromPropertiesWithResponse(secretProperties, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<KeyVaultSecret>> getSecretFromPropertiesWithResponse(SecretProperties secretProperties, Context context) {
-        Objects.requireNonNull(secretProperties, "The Secret Base parameter cannot be null.");
-        return getSecretWithResponse(secretProperties.getName(), secretProperties.getVersion() == null ? "" : secretProperties.getVersion(),
-            context);
-    }
-
-    /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret
      * stored in Azure Key Vault.
      * This operation requires the {@code secrets/get} permission.
@@ -768,7 +704,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get full Secrets with values from this information. Convert the {@link Flux} containing
      * {@link SecretProperties secret properties} to
-     * {@link Flux} containing {@link KeyVaultSecret secret} using {@link SecretAsyncClient#getSecretFromProperties(SecretProperties secretProperties)}
+     * {@link Flux} containing {@link KeyVaultSecret secret} using {@link SecretAsyncClient#getSecret(String, String)}
      * within {@link Flux#flatMap(Function)}.</p>
      * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecrets}
      *
@@ -904,7 +840,7 @@ public final class SecretAsyncClient {
      *
      * <p>It is possible to get the Secret with value of all the versions from this information. Convert the {@link
      * Flux} containing {@link SecretProperties secret} to {@link Flux} containing {@link KeyVaultSecret secret} using
-     * {@link SecretAsyncClient#getSecretFromProperties(SecretProperties secretProperties)} within {@link Flux#flatMap(Function)}.</p>
+     * {@link SecretAsyncClient#getSecret(String, String)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecretVersions#string}
      *

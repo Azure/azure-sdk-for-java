@@ -292,7 +292,7 @@ public class KeyProperties {
         JsonWebKey outputKey = new JsonWebKey()
                 .setY(base64.decode((String) key.get("y")))
                 .setX(base64.decode((String) key.get("x")))
-                .setCrv(KeyCurveName.fromString((String) key.get("crv")))
+                .setCurveName(KeyCurveName.fromString((String) key.get("crv")))
                 .setKeyOps(getKeyOperations((List<String>) key.get("key_ops")))
                 .setT(base64.decode((String) key.get("key_hsm")))
                 .setK(base64.decode((String) key.get("k")))
@@ -305,7 +305,7 @@ public class KeyProperties {
                 .setE(base64.decode((String) key.get("e")))
                 .setN(base64.decode((String) key.get("n")))
                 .setKeyType(KeyType.fromString((String) key.get("kty")))
-                .setKeyId((String) key.get("kid"));
+                .setId((String) key.get("kid"));
         unpackId((String) key.get("kid"));
         return outputKey;
     }

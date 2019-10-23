@@ -39,14 +39,14 @@ public class ManagingDeletedKeysAsync {
         keyAsyncClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
                 .setExpiresOn(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
         keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
                 .setExpiresOn(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
