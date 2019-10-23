@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.specialized;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
@@ -16,7 +15,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollResponse.OperationStatus;
 import com.azure.core.util.polling.Poller;
-import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.ProgressReceiver;
@@ -29,14 +27,15 @@ import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
@@ -67,6 +66,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static com.azure.core.implementation.util.FluxUtil.fluxError;
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -624,32 +624,32 @@ public class BlobAsyncClientBase {
 
     Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, ReliableDownloadOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Context context) {
+        return downloadHelper(range, options, accessConditions, rangeGetContentMD5, context)
+            .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
+    }
+
+    private Mono<ReliableDownload> downloadHelper(BlobRange range, ReliableDownloadOptions options,
+        BlobRequestConditions accessConditions, boolean rangeGetContentMd5, Context context) {
         range = range == null ? new BlobRange(0) : range;
+        Boolean getMD5 = rangeGetContentMd5 ? rangeGetContentMd5 : null;
         accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
         HttpGetterInfo info = new HttpGetterInfo()
             .setOffset(range.getOffset())
             .setCount(range.getCount())
             .setETag(accessConditions.getIfMatch());
 
-        // TODO: range is BlobRange but expected as String
-        // TODO: figure out correct response
-        return this.azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, null,
-            range.toHeaderValue(), accessConditions.getLeaseId(), rangeGetContentMD5, null,
-            accessConditions.getIfModifiedSince(), accessConditions.getIfUnmodifiedSince(),
-            accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(), null, customerProvidedKey, context)
-            // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
+        return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, null, range.toHeaderValue(),
+            accessConditions.getLeaseId(), getMD5, null, accessConditions.getIfModifiedSince(),
+            accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
+            null, customerProvidedKey, context)
             .map(response -> {
-                // If there wasn't an etag originally specified, lock on the one returned.
                 info.setETag(response.getDeserializedHeaders().getETag());
-                return new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), response.getValue(), response.getDeserializedHeaders(), options, info,
-                    // In the event of a stream failure, make a new request to pick up where we left off.
-                    newInfo ->
-                        this.downloadWithResponse(new BlobRange(newInfo.getOffset(), newInfo.getCount()), options,
-                            new BlobRequestConditions().setIfMatch(info.getETag()), false, context));
+                return new ReliableDownload(response, options, info, updatedInfo ->
+                    downloadHelper(new BlobRange(updatedInfo.getOffset(), updatedInfo.getCount()), options,
+                        new BlobRequestConditions().setIfMatch(info.getETag()), false, context));
             });
     }
-
 
     /**
      * Downloads the entire blob into a file specified by the path.
