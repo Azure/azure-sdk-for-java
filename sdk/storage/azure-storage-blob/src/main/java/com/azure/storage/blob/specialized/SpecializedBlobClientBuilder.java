@@ -17,6 +17,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.AsyncBlobHelper;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -236,9 +237,9 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         pipeline(blobAsyncClient.getHttpPipeline());
         endpoint(blobAsyncClient.getBlobUrl());
-        serviceVersion(blobAsyncClient.getServiceVersion());
+        serviceVersion(AsyncBlobHelper.getServiceVersion(blobAsyncClient));
         this.snapshot = blobAsyncClient.getSnapshotId();
-        this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
+        this.customerProvidedKey = AsyncBlobHelper.getCustomerProvidedKey(blobAsyncClient);
         return this;
     }
 

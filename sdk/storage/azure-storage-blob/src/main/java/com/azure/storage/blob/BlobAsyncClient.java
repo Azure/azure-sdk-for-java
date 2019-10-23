@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.AsyncBlobHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -98,8 +99,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @Override
     public BlobAsyncClient getSnapshotClient(String snapshot) {
-        return new BlobAsyncClient(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey());
+        BlobServiceVersion serviceVersion = AsyncBlobHelper.getServiceVersion(this);
+        return new BlobAsyncClient(getHttpPipeline(), getBlobUrl(), serviceVersion, getAccountName(),
+            getContainerName(), getBlobName(), snapshot, AsyncBlobHelper.getCustomerProvidedKey(this));
     }
 
     /**
@@ -134,9 +136,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .pipeline(getHttpPipeline())
             .endpoint(getBlobUrl())
             .snapshot(getSnapshotId())
-            .serviceVersion(getServiceVersion());
+            .serviceVersion(AsyncBlobHelper.getServiceVersion(this));
 
-        CpkInfo cpk = getCustomerProvidedKey();
+        CpkInfo cpk = AsyncBlobHelper.getCustomerProvidedKey(this);
         if (cpk != null) {
             builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
         }

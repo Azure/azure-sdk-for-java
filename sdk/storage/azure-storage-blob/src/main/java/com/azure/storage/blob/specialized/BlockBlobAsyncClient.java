@@ -12,8 +12,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.BlockBlobCommitBlockListHeaders;
 import com.azure.storage.blob.implementation.models.BlockBlobUploadHeaders;
+import com.azure.storage.blob.implementation.util.AsyncBlobHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -70,6 +72,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public static final int MAX_BLOCKS = 50000;
 
+    private AzureBlobStorageImpl azureBlobStorage;
+
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
@@ -86,6 +90,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     BlockBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
+        this.azureBlobStorage = AsyncBlobHelper.getAzureBlobStorageImpl(this);
+
     }
 
     /**
@@ -160,7 +166,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null, null, data, length, null, null,
             metadata, accessConditions.getLeaseId(), tier, accessConditions.getIfModifiedSince(),
             accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
-            null, headers, getCustomerProvidedKey(), context)
+            null, headers, AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -230,7 +236,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
         String leaseId, Context context) {
         return this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
-            base64BlockID, length, data, null, null, null, leaseId, null, getCustomerProvidedKey(), context)
+            base64BlockID, length, data, null, null, null, leaseId, null, AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -310,7 +316,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             url, sourceRange.toHeaderValue(), sourceContentMD5, null, null, leaseId,
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -423,8 +429,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(null, null,
             new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, accessConditions.getLeaseId(),
             tier, accessConditions.getIfModifiedSince(), accessConditions.getIfUnmodifiedSince(),
-            accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
-            context)
+            accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(), null, headers,
+            AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

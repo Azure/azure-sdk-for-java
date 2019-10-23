@@ -14,12 +14,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.PageBlobClearPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobCreateHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobResizeHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobUpdateSequenceNumberHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobUploadPagesFromURLHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobUploadPagesHeaders;
+import com.azure.storage.blob.implementation.util.AsyncBlobHelper;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -71,6 +73,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
     private final ClientLogger logger = new ClientLogger(PageBlobAsyncClient.class);
 
+    private AzureBlobStorageImpl azureBlobStorage;
+
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
@@ -87,6 +91,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     PageBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
+        this.azureBlobStorage = AsyncBlobHelper.getAzureBlobStorageImpl(this);
     }
 
     /**
@@ -160,7 +165,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, size, null, null, metadata,
             accessConditions.getLeaseId(), accessConditions.getIfModifiedSince(),
             accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
-            sequenceNumber, null, headers, getCustomerProvidedKey(), context)
+            sequenceNumber, null, headers, AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 PageBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -246,7 +251,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
-            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            pageBlobRequestConditions.getIfNoneMatch(), null, AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 PageBlobUploadPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -358,7 +363,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             destAccessConditions.getIfMatch(), destAccessConditions.getIfNoneMatch(),
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 PageBlobUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -429,7 +434,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
-            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            pageBlobRequestConditions.getIfNoneMatch(), null, AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 PageBlobClearPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -611,7 +616,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().resizeWithRestResponseAsync(null, null, size, null,
             accessConditions.getLeaseId(), accessConditions.getIfModifiedSince(),
             accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
-            null, getCustomerProvidedKey(), context)
+            null, AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 PageBlobResizeHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null,

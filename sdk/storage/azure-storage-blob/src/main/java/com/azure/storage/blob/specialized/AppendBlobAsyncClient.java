@@ -15,9 +15,11 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
+import com.azure.storage.blob.implementation.util.AsyncBlobHelper;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -70,6 +72,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     public static final int MAX_BLOCKS = 50000;
 
+    private final AzureBlobStorageImpl azureBlobStorage;
+
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
@@ -86,6 +90,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     AppendBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
+        azureBlobStorage = AsyncBlobHelper.getAzureBlobStorageImpl(this);
     }
 
     /**
@@ -134,7 +139,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
             accessConditions.getLeaseId(), accessConditions.getIfModifiedSince(),
             accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
-            null, headers, getCustomerProvidedKey(), context)
+            null, headers, AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -204,7 +209,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 AppendBlobAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -289,7 +294,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             destAccessConditions.getIfMatch(), destAccessConditions.getIfNoneMatch(),
             sourceAccessConditions.getIfModifiedSince(), sourceAccessConditions.getIfUnmodifiedSince(),
             sourceAccessConditions.getIfMatch(), sourceAccessConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            AsyncBlobHelper.getCustomerProvidedKey(this), context)
             .map(rb -> {
                 AppendBlobAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

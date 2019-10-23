@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollResponse.OperationStatus;
 import com.azure.core.util.polling.Poller;
+import com.azure.storage.blob.implementation.util.AsyncBlobHelper;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
@@ -80,13 +81,14 @@ public class BlobAsyncClientBase {
 
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
 
-    protected final AzureBlobStorageImpl azureBlobStorage;
+    private final AzureBlobStorageImpl azureBlobStorage;
     private final String snapshot;
     private final CpkInfo customerProvidedKey;
-    protected final String accountName;
-    protected final String containerName;
-    protected final String blobName;
-    protected final BlobServiceVersion serviceVersion;
+    private final String accountName;
+    private final String containerName;
+    private final String blobName;
+    private final BlobServiceVersion serviceVersion;
+    private AsyncBlobHelper blobPropertyHelper;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -115,6 +117,23 @@ public class BlobAsyncClientBase {
         this.blobName = blobName;
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
+        this.blobPropertyHelper = null;
+        AsyncBlobHelper.setNodeAccessor(new AsyncBlobHelper.PropertyAccessor() {
+            @Override
+            public AsyncBlobHelper getHelper(final BlobAsyncClientBase client) {
+                return client.blobPropertyHelper;
+            }
+
+            @Override
+            public AzureBlobStorageImpl getAzureBlobStorageImpl(final BlobAsyncClientBase client) {
+                return client.azureBlobStorage;
+            }
+
+            @Override
+            public CpkInfo getCustomerProvidedKey(final BlobAsyncClientBase client) {
+                return client.customerProvidedKey;
+            }
+        });
     }
 
     /**
@@ -124,8 +143,8 @@ public class BlobAsyncClientBase {
      * @return a {@link BlobAsyncClientBase} used to interact with the specific snapshot.
      */
     public BlobAsyncClientBase getSnapshotClient(String snapshot) {
-        return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey());
+        return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), serviceVersion, accountName, containerName,
+            blobName, snapshot, customerProvidedKey);
     }
 
     /**
@@ -181,30 +200,12 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Gets the {@link CpkInfo} used to encrypt this blob's content on the server.
-     *
-     * @return the customer provided key used for encryption.
-     */
-    public CpkInfo getCustomerProvidedKey() {
-        return customerProvidedKey;
-    }
-
-    /**
      * Get associated account name.
      *
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
         return accountName;
-    }
-
-    /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public BlobServiceVersion getServiceVersion() {
-        return serviceVersion;
     }
 
     /**
