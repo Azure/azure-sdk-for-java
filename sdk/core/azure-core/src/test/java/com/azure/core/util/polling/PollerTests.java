@@ -335,7 +335,7 @@ public class PollerTests {
 
     /**
      * Test where SDK Client is subscribed all responses. This scenario is setup where source will generate user
-     * cancelled response returned after few in-progress response. The sdk client will wait for it to cancel get final
+     * cancelled response returned after few in-progress response. The sdk client will wait for it to cancelOperation get final
      * USER_CANCELLED response.
      */
     @Test
@@ -354,7 +354,7 @@ public class PollerTests {
             .expectNext(first)
             .then(() -> poller.cancelOperation())
             .expectNext(cancellation)
-            .thenCancel() // cancel this actual subscriber, this does not affect the parent operation.
+            .thenCancel() // cancelOperation this actual subscriber, this does not affect the parent operation.
             .verify();
 
         Assert.assertEquals(OperationStatus.USER_CANCELLED, poller.getStatus());
