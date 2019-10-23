@@ -17,6 +17,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageAllowedHeadersAndQueries;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -123,6 +124,7 @@ final class BuilderHelper {
     static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, QueueServiceVersion serviceVersion) {
+
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -144,6 +146,9 @@ final class BuilderHelper {
 
         policies.add(getResponseValidationPolicy());
 
+        // Prepare load options for logging policy.
+        loadLogOptions(logOptions);
+
         policies.add(new HttpLoggingPolicy(logOptions));
 
         policies.add(new ScrubEtagPolicy());
@@ -152,6 +157,18 @@ final class BuilderHelper {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
+    }
+
+    /**
+     * Sets the allowed headers and queries to logOptions.
+     * @param logOptions the log options for headers and queries.
+     */
+    private static void loadLogOptions(final HttpLogOptions logOptions) {
+        Objects.requireNonNull(logOptions);
+
+        logOptions.setAllowedHeaderNames(StorageAllowedHeadersAndQueries.QueueHeadersAndQueries.getQueueHeaders());
+
+        logOptions.setAllowedQueryParamNames(StorageAllowedHeadersAndQueries.QueueHeadersAndQueries.getQueueQueries());
     }
 
     /*

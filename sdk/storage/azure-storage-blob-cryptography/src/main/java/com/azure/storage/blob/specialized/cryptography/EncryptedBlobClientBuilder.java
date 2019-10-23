@@ -26,6 +26,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageAllowedHeadersAndQueries;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -180,6 +181,9 @@ public final class EncryptedBlobClientBuilder {
             .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
             .build());
 
+        // Prepare load options for logging policy.
+        loadLogOptions(logOptions);
+
         policies.add(new HttpLoggingPolicy(logOptions));
 
         policies.add(new ScrubEtagPolicy());
@@ -188,6 +192,18 @@ public final class EncryptedBlobClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
+    }
+
+    /**
+     * Sets the allowed headers and queries to logOptions.
+     * @param logOptions the log options for headers and queries.
+     */
+    private static void loadLogOptions(final HttpLogOptions logOptions) {
+        Objects.requireNonNull(logOptions);
+
+        logOptions.setAllowedHeaderNames(StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobHeaders());
+
+        logOptions.setAllowedQueryParamNames(StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobQueries());
     }
 
     /**
