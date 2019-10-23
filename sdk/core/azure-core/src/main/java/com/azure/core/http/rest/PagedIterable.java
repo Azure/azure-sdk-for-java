@@ -5,6 +5,7 @@ package com.azure.core.http.rest;
 
 import com.azure.core.util.IterableStream;
 
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -27,68 +28,26 @@ import java.util.stream.Stream;
  * @see PagedResponse
  * @see IterableStream
  */
-public class PagedIterable<T> extends IterableStream<T> {
-    private final PagedFluxBase<T, ? extends PagedResponse<T>> pagedFluxBase;
+public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
+    private final PagedFlux<T> pagedFlux;
 
     /**
-     * Creates instance given {@link PagedFluxBase}.
-     * @param pagedFluxBase to use as iterable
-     * @param <P> The response extending from {@link PagedResponse}
+     * Creates instance given {@link PagedFlux}.
+     * @param pagedFlux to use as iterable
      */
-    public <P extends PagedResponse<T>> PagedIterable(PagedFluxBase<T, P> pagedFluxBase) {
-        super(pagedFluxBase);
-        this.pagedFluxBase = pagedFluxBase;
+    public PagedIterable(PagedFlux<T> pagedFlux) {
+        super(pagedFlux);
+        this.pagedFlux = pagedFlux;
     }
 
     /**
-     * Retrieve the {@link Stream}, one page at a time.
-     * It will provide same {@link Stream} of T values from starting if called multiple times.
+     * Maps this PagedIterable instance of T to a PagedIterable instance of type S as per the provided mapper function.
      *
-     * @param <P> The response extending from {@link PagedResponse}
-     * @return {@link Stream} of a Response that extends {@link PagedResponse}
+     * @param mapper The mapper function to convert from type T to type S.
+     * @param <S> The mapped type.
+     * @return A PagedIterable of type S.
      */
-    @SuppressWarnings("unchecked")
-    public <P extends PagedResponse<T>> Stream<P> streamByPage() {
-        return (Stream<P>) pagedFluxBase.byPage().toStream();
-    }
-
-    /**
-     * Retrieve the {@link Stream}, one page at a time, starting from the next page associated with the given
-     * continuation token. To start from first page, use {@link #streamByPage()} instead.
-     *
-     * @param continuationToken The continuation token used to fetch the next page
-     * @param <P> The response extending from {@link PagedResponse}
-     * @return {@link Stream} of a Response that extends {@link PagedResponse}, starting from the page associated
-     * with the continuation token
-     */
-    @SuppressWarnings("unchecked")
-    public <P extends PagedResponse<T>> Stream<P> streamByPage(String continuationToken) {
-        return (Stream<P>) pagedFluxBase.byPage(continuationToken).toStream();
-    }
-
-    /**
-     * Provides {@link Iterable} API for{ @link PagedResponse}
-     * It will provide same collection of {@code T} values from starting if called multiple times.
-     *
-     * @param <P> The response extending from {@link PagedResponse}
-     * @return {@link Iterable} interface
-     */
-    @SuppressWarnings("unchecked")
-    public <P extends  PagedResponse<T>> Iterable<P> iterableByPage() {
-        return (Iterable<P>) pagedFluxBase.byPage().toIterable();
-    }
-
-    /**
-     * Provides {@link Iterable} API for {@link PagedResponse}, starting from the next page associated with the given
-     * continuation token. To start from first page, use {@link #streamByPage()} instead.
-     * It will provide same collection of T values from starting if called multiple times.
-     *
-     * @param continuationToken The continuation token used to fetch the next page
-     * @param <P> The response extending from {@link PagedResponse}
-     * @return {@link Iterable} interface
-     */
-    @SuppressWarnings("unchecked")
-    public <P extends  PagedResponse<T>> Iterable<P> iterableByPage(String continuationToken) {
-        return (Iterable<P>) pagedFluxBase.byPage(continuationToken).toIterable();
+    public <S> PagedIterable<S> mapPage(Function<T, S> mapper) {
+        return new PagedIterable<>(pagedFlux.mapPage(mapper));
     }
 }
