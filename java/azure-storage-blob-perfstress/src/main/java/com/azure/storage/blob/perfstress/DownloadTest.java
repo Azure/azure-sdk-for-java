@@ -18,8 +18,9 @@ public class DownloadTest extends ContainerTest<SizeOptions> {
     public DownloadTest(SizeOptions options) {
         super(options);
 
-        _blobClient = BlobContainerClient.getBlobClient("downloadtest");
-        _blobAsyncClient = BlobContainerAsyncClient.getBlobAsyncClient("downloadtest");
+        String blobName = "downloadtest";
+        _blobClient = BlobContainerClient.getBlobClient(blobName);
+        _blobAsyncClient = BlobContainerAsyncClient.getBlobAsyncClient(blobName);
     }
 
     public Mono<Void> GlobalSetupAsync() {
@@ -35,11 +36,11 @@ public class DownloadTest extends ContainerTest<SizeOptions> {
 
     @Override
     public Mono<Void> RunAsync() {
-return _blobAsyncClient.download()
-    .map(b -> {
-        b.get(new byte[b.remaining()]);
-        return 1;
-    })
-    .then();
-    }
+        return _blobAsyncClient.download()
+            .map(b -> {
+                b.get(new byte[b.remaining()]);
+                return 1;
+            })
+            .then();
+            }
 }
