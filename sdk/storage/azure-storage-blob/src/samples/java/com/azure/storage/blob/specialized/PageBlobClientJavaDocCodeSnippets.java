@@ -52,6 +52,17 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link PageBlobClient#create(long, boolean)}
+     */
+    public void createWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.PageBlobClient.create#long-boolean
+        boolean overwrite = false; // Default value
+        PageBlobItem pageBlob = client.create(size, overwrite);
+        System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
+        // END: com.azure.storage.blob.PageBlobClient.create#long-booolean
+    }
+
+    /**
      * Code snippets for {@link PageBlobClient#createWithResponse(long, Long, BlobHttpHeaders, Map, BlobRequestConditions, Duration, Context)}
      */
     public void createWithResponseCodeSnippet() {

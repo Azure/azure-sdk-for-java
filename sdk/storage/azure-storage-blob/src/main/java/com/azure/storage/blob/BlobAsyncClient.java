@@ -153,7 +153,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob.
+     * Creates a new block blob. By default this method will not overwrite an existing blob.
      * <p>
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
      * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
@@ -360,8 +360,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified
-     * file.
+     * Creates a new block blob with the content of the specified file. By default this method will not overwrite an
+     * existing blob.
      *
      * <p><strong>Code Samples</strong></p>
      *

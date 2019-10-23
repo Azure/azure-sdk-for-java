@@ -99,7 +99,7 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob.
+     * Creates a new block blob. By default this method will not overwrite an existing blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
