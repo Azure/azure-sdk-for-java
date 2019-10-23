@@ -3,7 +3,7 @@
 
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.Configuration;
 import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.SearchOptions;
@@ -19,25 +19,21 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Sample demonstrates how to create a SearchIndexClient and issue search API
+ * This example shows how to work with {@link SearchOptions} while performing searches
  */
 public class SearchOptionsExample {
-
-    /**
-     * sample
-     *
-     * @param args arguments
+    /*
+      From the Azure portal, get your Azure Cognitive Search service URL and API key,
+      and set the values of these environment variables:
      */
-    public static void main(String[] args) {
-        ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials("<apiKeyCredentials>");
-        String searchServiceName = "<searchServiceName>";
-        String dnsSuffix = "search.windows.net";
-        String indexName = "<indexName>";
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
+    private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
 
+    public static void main(String[] args) {
         SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
-            .serviceEndpoint("https://" + searchServiceName + "." + dnsSuffix)
-            .indexName(indexName)
-            .credential(apiKeyCredentials)
+            .serviceEndpoint(ENDPOINT)
+            .credential(new ApiKeyCredentials(API_KEY))
+            .indexName("hotels")
             .buildAsyncClient();
 
 
@@ -103,15 +99,5 @@ public class SearchOptionsExample {
             .byPage()
             .take(1)
             .map(page -> ((SearchPagedResponse) page).facets());
-
-
-        System.out.println("Oh Yeah");
-
-    }
-
-    private static <T> T getDocument(Class<T> toValueType, Map<String, Object> document) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return mapper.convertValue(document, toValueType);
     }
 }

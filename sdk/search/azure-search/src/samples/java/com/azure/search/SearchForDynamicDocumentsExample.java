@@ -13,9 +13,10 @@ import reactor.core.publisher.Flux;
  */
 public class SearchForDynamicDocumentsExample {
     /*
-     * From the Azure portal, get your Azure Cognitive Search service name and API key.
+      From the Azure portal, get your Azure Cognitive Search service URL and API key,
+      and set the values of these environment variables:
      */
-    private static final String SEARCH_SERVICE = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_SERVICE");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
 
     public static void main(String[] args) {
@@ -29,7 +30,7 @@ public class SearchForDynamicDocumentsExample {
      */
     private static void searchWithSyncClient() {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
+            .serviceEndpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();
@@ -52,7 +53,7 @@ public class SearchForDynamicDocumentsExample {
      */
     private static void searchWithAsyncClient() {
         SearchIndexAsyncClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
+            .serviceEndpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildAsyncClient();

@@ -15,9 +15,10 @@ import java.util.List;
  */
 public class IndexContentManagementExample {
     /*
-     * From the Azure portal, get your Azure Cognitive Search service name and API key.
+      From the Azure portal, get your Azure Cognitive Search service URL and API key,
+      and set the values of these environment variables:
      */
-    private static final String SEARCH_SERVICE = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_SERVICE");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
 
     public static void main(String[] args) {
@@ -31,7 +32,7 @@ public class IndexContentManagementExample {
      */
     private static void basicIndexing() {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
+            .serviceEndpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();
@@ -51,7 +52,7 @@ public class IndexContentManagementExample {
      */
     private static void advancedIndexing() {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
+            .serviceEndpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();

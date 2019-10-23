@@ -5,19 +5,33 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.Configuration;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This example shows how to work with suggestions and search results
+ */
 public class SearchSuggestionExample {
+    /*
+      From the Azure portal, get your Azure Cognitive Search service URL and API key,
+      and set the values of these environment variables:
+     */
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
+    private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
 
     public static void main(String[] args) {
-        SearchIndexClient searchClient = getSearchClient();
+        SearchIndexClient client = new SearchIndexClientBuilder()
+            .serviceEndpoint(ENDPOINT)
+            .credential(new ApiKeyCredentials(API_KEY))
+            .indexName("hotels")
+            .buildClient();
 
-        SearchSuggestionHighlight(searchClient);
-        SearchSuggestionFuzzy(searchClient);
+        SearchSuggestionHighlight(client);
+        SearchSuggestionFuzzy(client);
     }
 
     private static void SearchSuggestionHighlight(SearchIndexClient searchClient) {
@@ -63,18 +77,5 @@ public class SearchSuggestionExample {
           Very popular hotel in town
           Cheapest hotel in town. Infact, a motel.
          */
-    }
-
-    private static SearchIndexClient getSearchClient() {
-        ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials("<apiKeyCredentials>");
-        String searchServiceName = "<searchServiceName>";
-        String dnsSuffix = "search.windows.net";
-        String indexName = "hotels";
-
-        return new SearchIndexClientBuilder()
-            .serviceEndpoint(searchServiceName + "." + dnsSuffix)
-            .indexName(indexName)
-            .credential(apiKeyCredentials)
-            .buildClient();
     }
 }

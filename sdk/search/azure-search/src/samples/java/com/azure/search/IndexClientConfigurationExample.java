@@ -11,9 +11,10 @@ import com.azure.core.util.Configuration;
  */
 public class IndexClientConfigurationExample {
     /*
-    * From the Azure portal, get your Azure Cognitive Search service name and API key.
-    */
-    private static final String SEARCH_SERVICE = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_SERVICE");
+      From the Azure portal, get your Azure Cognitive Search service URL and API key,
+      and set the values of these environment variables:
+     */
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
 
     public static void main(String[] args) {
@@ -27,7 +28,7 @@ public class IndexClientConfigurationExample {
      */
     private static SearchIndexClient createMinimalClient() {
         return new SearchIndexClientBuilder()
-            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
+            .serviceEndpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();
@@ -39,7 +40,7 @@ public class IndexClientConfigurationExample {
      */
     private static SearchIndexAsyncClient createAdvancedClient() {
         return new SearchIndexClientBuilder()
-            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
+            .serviceEndpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .apiVersion("2019-05-06")
