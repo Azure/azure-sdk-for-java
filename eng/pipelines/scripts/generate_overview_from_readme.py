@@ -14,6 +14,7 @@
 import argparse
 import markdown2
 import os.path
+from io import open
 
 def generate_overview(readme_file):
 
