@@ -187,7 +187,60 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
-            return uploadWithResponse(data, parallelTransferOptions, null, null, null, null).flatMap(FluxUtil::toMono);
+            return upload(data, parallelTransferOptions, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
+     * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
+     * update of a block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
+     * BlockBlobAsyncClient#commitBlockList(List)}. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
+     * <p>
+     * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
+     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
+     * support uploading any arbitrary data source, including network streams. This behavior is possible because this
+     * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
+     * this method may offer additional convenience, it will not be as performant as other options, which should be
+     * preferred when possible.
+     * <p>
+     * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
+     * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
+     * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
+     * for a given scenario.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean}
+     *
+     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
+     * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
+     * to produce the same values across subscriptions.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param overwrite Whether or not to overwrite, should the blob already exist.
+     *
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
+        boolean overwrite) {
+        try {
+            Mono<BlockBlobItem> uploadTask = uploadWithResponse(data, parallelTransferOptions, null,
+                null, null, null).flatMap(FluxUtil::toMono);
+
+            if (overwrite) {
+                return uploadTask;
+            } else {
+                return exists()
+                    .flatMap(exists -> exists
+                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                        : uploadTask);
+            }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -320,7 +373,37 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Void> uploadFromFile(String filePath) {
         try {
-            return uploadFromFile(filePath, null, null, null, null, null);
+            return uploadFromFile(filePath, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified
+     * file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-boolean}
+     *
+     * @param filePath Path to the upload file
+     * @param overwrite Whether or not to overwrite, should the blob already exist.
+     *
+     * @return An empty response
+     */
+    public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
+        try {
+            Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
+
+            if (overwrite) {
+                return uploadTask;
+            } else {
+                return exists()
+                    .flatMap(exists -> exists
+                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                        : uploadTask);
+            }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
