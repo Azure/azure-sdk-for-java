@@ -7,8 +7,7 @@ import io.opencensus.trace.Status;
 
 public final class AmqpTraceUtil {
 
-    private AmqpTraceUtil() {
-    }
+    private AmqpTraceUtil() { }
 
     /**
      * Parses an OpenTelemetry Status from AMQP Error Condition.
