@@ -1,24 +1,29 @@
 package com.azure.storage.blob.v8.perfstress;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import com.azure.perfstress.RandomStream;
 import com.azure.perfstress.SizeOptions;
 import com.azure.storage.blob.v8.perfstress.core.RandomBlobTest;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.BlobOutputStream;
 
 import reactor.core.publisher.Mono;
 
-public class UploadTest extends RandomBlobTest<SizeOptions> {
+public class UploadOutputStreamTest extends RandomBlobTest<SizeOptions> {
 
-    public UploadTest(SizeOptions options) {
+    public UploadOutputStreamTest(SizeOptions options) {
         super(options);
     }
 
     @Override
     public void Run() {
         try {
-            _cloudBlockBlob.upload(RandomStream.create(Options.Size), Options.Size);
+            InputStream inputStream = RandomStream.create(Options.Size);
+            BlobOutputStream outputStream = _cloudBlockBlob.openOutputStream();
+            inputStream.transferTo(outputStream);
+            outputStream.close();
         } catch (StorageException | IOException e) {
             throw new RuntimeException(e);
         }
