@@ -33,6 +33,7 @@ public class UploadTest extends ContainerTest<SizeOptions> {
             InputStream inputStream = RandomStream.create(Options.Size);
             BlobOutputStream blobOutputStream = _blobClient.getBlockBlobClient().getBlobOutputStream();
             inputStream.transferTo(blobOutputStream);
+            blobOutputStream.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
