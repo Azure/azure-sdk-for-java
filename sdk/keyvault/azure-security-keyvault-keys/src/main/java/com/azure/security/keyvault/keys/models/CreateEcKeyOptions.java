@@ -15,7 +15,7 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     /**
      * The Ec key curve.
      */
-    private KeyCurveName curve;
+    private KeyCurveName curveName;
 
     /**
      * The hardware protected indicator for the key.
@@ -36,18 +36,18 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
      *
      * @return the curve.
      */
-    public KeyCurveName getCurve() {
-        return this.curve;
+    public KeyCurveName getCurveName() {
+        return this.curveName;
     }
 
     /**
      * Set the curve.
      *
-     * @param curve The curve to set
+     * @param curveName The curve to set
      * @return the EcKeyCreateOptions object itself.
      */
-    public CreateEcKeyOptions setCurve(KeyCurveName curve) {
-        this.curve = curve;
+    public CreateEcKeyOptions setCurveName(KeyCurveName curveName) {
+        this.curveName = curveName;
         return this;
     }
 

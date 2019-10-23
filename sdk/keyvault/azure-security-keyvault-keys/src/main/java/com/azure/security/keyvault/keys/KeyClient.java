@@ -192,7 +192,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurve() key curve} can be
+     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurveName() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link CreateEcKeyOptions#getExpiresOn() expires} and {@link CreateEcKeyOptions#getNotBefore() notBefore}
      * values are optional. The {@link CreateEcKeyOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if
@@ -220,7 +220,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurve() key curve} can be
+     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurveName() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link CreateEcKeyOptions#getExpiresOn() expires} and {@link CreateEcKeyOptions#getNotBefore() notBefore}
      * values are optional. The {@link CreateEcKeyOptions#isEnabled()} enabled} field is set to true by Azure Key Vault, if

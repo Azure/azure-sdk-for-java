@@ -16,7 +16,6 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
-import com.azure.security.keyvault.secrets.models.Secret;
 
 /**
  * Samples for azure-identity readme.
@@ -76,7 +75,7 @@ public class IdentitySamples {
             .credential(deviceCodeCredential)
             .buildClient();
 
-        Secret secret = client.getSecret("{SECRET_NAME}");
+        KeyVaultSecret secret = client.getSecret("{SECRET_NAME}");
         System.out.println(secret.getValue());
     }
 

@@ -119,7 +119,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createEcKey#EcKeyCreateOptions
         CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions("keyName")
-            .setCurve(KeyCurveName.P_384)
+            .setCurveName(KeyCurveName.P_384)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
             .setExpiresOn(OffsetDateTime.now().plusYears(1));
         keyAsyncClient.createEcKey(createEcKeyOptions)
@@ -189,7 +189,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createEcKeyWithResponse#EcKeyCreateOptions
         CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions("keyName")
-            .setCurve(KeyCurveName.P_384)
+            .setCurveName(KeyCurveName.P_384)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
             .setExpiresOn(OffsetDateTime.now().plusYears(1));
         keyAsyncClient.createEcKeyWithResponse(createEcKeyOptions)

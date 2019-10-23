@@ -74,7 +74,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.keyvault.keys.keyclient.createEcKey#keyOptions
         CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions("keyName")
-            .setCurve(KeyCurveName.P_384)
+            .setCurveName(KeyCurveName.P_384)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
             .setExpiresOn(OffsetDateTime.now().plusYears(1));
         KeyVaultKey ecKey = keyClient.createEcKey(createEcKeyOptions);
@@ -146,7 +146,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context
         CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions("keyName")
-            .setCurve(KeyCurveName.P_384)
+            .setCurveName(KeyCurveName.P_384)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
             .setExpiresOn(OffsetDateTime.now().plusYears(1));
         KeyVaultKey ecKey = keyClient.createEcKeyWithResponse(createEcKeyOptions, new Context(key1, value1)).getValue();
