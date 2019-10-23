@@ -12,8 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.util.AsyncBlobHelper;
+import com.azure.storage.blob.implementation.util.BlobHelper;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
@@ -131,8 +130,8 @@ public class BlobClientBase {
      *
      * @return the customer provided key used for encryption.
      */
-    public CpkInfo getCustomerProvidedKey() {
-        return AsyncBlobHelper.getCustomerProvidedKey(client);
+    CpkInfo getCustomerProvidedKey() {
+        return BlobHelper.getCustomerProvidedKey(client);
     }
 
     /**
@@ -140,8 +139,8 @@ public class BlobClientBase {
      *
      * @return the service version the client is using.
      */
-    public BlobServiceVersion getServiceVersion() {
-        return BlobServiceVersion.valueOf(AsyncBlobHelper.getAzureBlobStorageImpl(client).getVersion());
+    BlobServiceVersion getServiceVersion() {
+        return BlobServiceVersion.getBlobServiceVersion(BlobHelper.getAzureBlobStorageImpl(client).getVersion());
     }
 
     /**

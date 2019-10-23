@@ -15,7 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollResponse.OperationStatus;
 import com.azure.core.util.polling.Poller;
-import com.azure.storage.blob.implementation.util.AsyncBlobHelper;
+import com.azure.storage.blob.implementation.util.BlobHelper;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
@@ -88,7 +88,7 @@ public class BlobAsyncClientBase {
     private final String containerName;
     private final String blobName;
     private final BlobServiceVersion serviceVersion;
-    private AsyncBlobHelper blobPropertyHelper;
+    private BlobHelper blobPropertyHelper;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -118,9 +118,9 @@ public class BlobAsyncClientBase {
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
         this.blobPropertyHelper = null;
-        AsyncBlobHelper.setNodeAccessor(new AsyncBlobHelper.PropertyAccessor() {
+        BlobHelper.PropertyAccessor propertyAccessor = new BlobHelper.PropertyAccessor() {
             @Override
-            public AsyncBlobHelper getHelper(final BlobAsyncClientBase client) {
+            public BlobHelper getHelper(final BlobAsyncClientBase client) {
                 return client.blobPropertyHelper;
             }
 
@@ -133,7 +133,9 @@ public class BlobAsyncClientBase {
             public CpkInfo getCustomerProvidedKey(final BlobAsyncClientBase client) {
                 return client.customerProvidedKey;
             }
-        });
+        };
+
+        BlobHelper.setPropertyAccessor(propertyAccessor);
     }
 
     /**

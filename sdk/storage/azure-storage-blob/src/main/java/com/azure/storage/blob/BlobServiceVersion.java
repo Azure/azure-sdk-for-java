@@ -33,4 +33,18 @@ public enum BlobServiceVersion implements ServiceVersion {
     public static BlobServiceVersion getLatest() {
         return V2019_02_02;
     }
+
+    /**
+     * Gets the enum BlobServiceVersion from version string
+     * @param serviceVersion the string value of the service version.
+     * @return
+     */
+    public static BlobServiceVersion getBlobServiceVersion(String serviceVersion) {
+        for(BlobServiceVersion version : values()){
+            if( version.getVersion().equals(serviceVersion)){
+                return version;
+            }
+        }
+        return null;
+    }
 }

@@ -11,7 +11,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
 
-import com.azure.storage.blob.implementation.util.AsyncBlobHelper;
+import com.azure.storage.blob.implementation.util.BlobHelper;
 import java.net.URL;
 import java.util.Objects;
 import java.util.UUID;
@@ -101,7 +101,7 @@ public final class LeaseClientBuilder {
         this.url = blobAsyncClient.getBlobUrl();
         this.isBlob = true;
         this.accountName = blobAsyncClient.getAccountName();
-        this.serviceVersion = AsyncBlobHelper.getServiceVersion(blobAsyncClient);
+        this.serviceVersion = BlobHelper.getServiceVersion(blobAsyncClient);
         return this;
     }
 
