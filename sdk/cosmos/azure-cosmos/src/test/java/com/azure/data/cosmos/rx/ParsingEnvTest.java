@@ -19,7 +19,7 @@ public class ParsingEnvTest {
     }
 
     @Test(groups = "unit")
-    public void parseDesiredConsistencies_null() {
+    public void parseDesiredConsistenciesNull() {
         assertThat(TestSuiteBase.parseDesiredConsistencies(null)).isNull();
     }
 

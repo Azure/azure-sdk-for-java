@@ -11,6 +11,7 @@ import com.azure.data.cosmos.internal.ResourceId;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
 import org.apache.commons.lang3.StringUtils;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -106,12 +107,13 @@ public abstract class RxCollectionCache {
         if (partitionKeyRangeIdentity != null && partitionKeyRangeIdentity.getCollectionRid() != null) {
             return this.resolveByRidAsync(partitionKeyRangeIdentity.getCollectionRid(), properties)
                     .onErrorResume(e -> {
-                        if (e instanceof NotFoundException) {
+                        Throwable unwrappedException = Exceptions.unwrap(e);
+                        if (unwrappedException instanceof NotFoundException) {
                             // This is signal to the upper logic either to refresh
                             // collection cache and retry.
                             return Mono.error(new InvalidPartitionException(RMResources.InvalidDocumentCollection));
                         }
-                        return Mono.error(e);
+                        return Mono.error(unwrappedException);
 
                     });
         }
