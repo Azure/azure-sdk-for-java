@@ -18,21 +18,21 @@ import java.util.function.Supplier;
  * each response will contain the items in the page as well as the request details like
  * status code and headers.
  *
- * <p>To process one item at a time, simply subscribe to this flux as shown below </p>
- * <p><strong>Code sample</strong></p>
+ * <p><strong>Process each item in Flux</strong></p>
+ * <p>To process one item at a time, simply subscribe to this Flux.</p>
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.items}
  *
- * <p>To process one page at a time, use {@link #byPage} method as shown below </p>
- * <p><strong>Code sample</strong></p>
+ * <p><strong>Process one page at a time</strong></p>
+ * <p>To process one page at a time, use {@link #byPage() byPage()} method.</p>
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.pages}
  *
+ * <p><strong>Process items starting from a continuation token</strong></p>
  * <p>To process items one page at a time starting from any page associated with a continuation token,
- * use {@link #byPage(String)} as shown below</p>
- * <p><strong>Code sample</strong></p>
+ * use {@link #byPage(String)}.</p>
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken}
  *
- * @param <T> The type of items in {@code P}
- * @param <P> The {@link PagedResponse} holding items of type {@code T}
+ * @param <T> The type of items in {@code P}.
+ * @param <P> The {@link PagedResponse} holding items of type {@code T}.
  *
  * @see PagedResponse
  * @see Page
