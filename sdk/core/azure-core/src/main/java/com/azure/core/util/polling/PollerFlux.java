@@ -22,6 +22,34 @@ import java.util.function.Supplier;
  * Each subscription to the PollerFlux will run it's own polling but the activation is guaranteed to be
  * called only once across all subscription.
  *
+ * e.g.: cancelling a long-running operation after a specified time.
+ *
+ *    PollerFlux<BlobCopyStatus, BlobInfo> cpBlobPollerFlux = asyncClient.beginBlobCopy();
+ *
+ *    cpBlobPollerFlux
+ *       .take(Duration.ofMinutes(30))
+ *       .last()
+ *       .flatMap(asyncPollResponse -> {
+ *           if (!asyncPollResponse.getStatus().isComplete()) {
+ *               return asyncPollResponse
+ *                   .cancelOperation()
+ *                   .then(Mono.error(new RuntimeException("LRO taking long time > 30 mins, operation is cancelled!")));
+ *           } else {
+ *               return Mono.just(asyncPollResponse);
+ *           }
+ *       }).block();
+ *
+ * e.g.: retrieving the final result of long-running operation after it's completion.
+ *
+ *   PollerFlux<BlobCopyStatus, BlobInfo> cpBlobPollerFlux = asyncClient.beginBlobCopy();
+ *
+ *   cpBlobPollerFlux
+ *       .last()
+ *       .flatMap(asyncPollResponse -> {
+ *           // LRO completed, retrieving final result.
+ *           return asyncPollResponse.getFinalResult();
+ *       }).block();
+ *
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of long-running operation
  */

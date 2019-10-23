@@ -46,6 +46,11 @@ public final class AsyncPollResponse<T, U> {
         this.innerResponse = innerResponse;
     }
 
+
+    public PollResponse<T> activationResponse() {
+        return this.activationResponse;
+    }
+
     /**
      * Represents the status of the long-running operation at the time the last polling operation finished successfully.
      * @return A {@link LongRunningOperationStatus} representing the result of the poll operation.
@@ -66,7 +71,7 @@ public final class AsyncPollResponse<T, U> {
 
     /**
      * Returns the delay the service has requested until the next polling operation is performed. A null or negative
-     * value will be taken to mean that the {@link Poller} should determine on its own when the next poll operation is
+     * value will be taken to mean that the Poller should determine on its own when the next poll operation is
      * to occur.
      * @return Duration How long to wait before next retry.
      */
