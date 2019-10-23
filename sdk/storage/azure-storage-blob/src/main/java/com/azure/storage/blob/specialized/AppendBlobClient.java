@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -91,7 +92,8 @@ public final class AppendBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     * Creates a 0-length append blob. Call appendBlock to append data to an append blob. By default this method will
+     * not overwrite an existing blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -100,7 +102,26 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return The information of the created appended blob.
      */
     public AppendBlobItem create() {
-        return createWithResponse(null, null, null, null, Context.NONE).getValue();
+        return create(false);
+    }
+
+    /**
+     * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.create#boolean}
+     *
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     *
+     * @return The information of the created appended blob.
+     */
+    public AppendBlobItem create(boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return createWithResponse(null, null, blobRequestConditions, null, Context.NONE).getValue();
     }
 
     /**

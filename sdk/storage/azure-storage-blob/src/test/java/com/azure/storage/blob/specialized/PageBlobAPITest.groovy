@@ -1091,4 +1091,20 @@ class PageBlobAPITest extends APISpec {
         expect:
         blobName == bc.getBlobName()
     }
+
+    def "Create overwrite false"() {
+        when:
+        bc.create(512)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Create overwrite true"() {
+        when:
+        bc.create(512, true)
+
+        then:
+        notThrown(Throwable)
+    }
 }

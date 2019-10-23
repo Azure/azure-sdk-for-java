@@ -41,6 +41,9 @@ public class HttpLogOptions {
         "User-Agent"
         );
 
+    /**
+     * Creates a new instance that does not log any information about HTTP requests or responses.
+     */
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.NONE;
         allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
@@ -59,7 +62,7 @@ public class HttpLogOptions {
     /**
      * Sets the level of detail to log on Http messages.
      *
-     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The {@link HttpLogDetailLevel}.
      * @return The updated HttpLogOptions object.
@@ -80,12 +83,14 @@ public class HttpLogOptions {
 
     /**
      * Sets the given whitelisted headers that should be logged.
+     *
      * <p>
-     * This method sets the provided header names to be the whitelisted header names which will be logged for all http
-     * requests and responses, overwriting any previously configured headers, including the default set.
-     * Additionally, user can use {@link HttpLogOptions#addAllowedHeaderName(String)}
-     * or {@link HttpLogOptions#getAllowedHeaderNames()} to add or remove more headers names to the existing set of
+     * This method sets the provided header names to be the whitelisted header names which will be logged for all HTTP
+     * requests and responses, overwriting any previously configured headers, including the default set. Additionally,
+     * users can use {@link HttpLogOptions#addAllowedHeaderName(String)} or
+     * {@link HttpLogOptions#getAllowedHeaderNames()} to add or remove more headers names to the existing set of
      * allowed header names.
+     * </p>
      *
      * @param allowedHeaderNames The list of whitelisted header names from the user.
      * @return The updated HttpLogOptions object.

@@ -86,7 +86,7 @@ public interface Tracer {
      *
      * <p>
      * Returns the diagnostic Id and span context of the returned span when {@code processKind} is
-     * {@link ProcessKind#RECEIVE ProcessKind.RECEIVE}.
+     * {@link ProcessKind#MESSAGE ProcessKind.MESSAGE}.
      *
      * <p>
      * Creates a new tracing span with remote parent and returns that scope when the given when {@code processKind}
@@ -97,8 +97,8 @@ public interface Tracer {
      * <p>Starts a tracing span with provided method name and AMQP operation SEND</p>
      * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-SEND}
      *
-     * <p>Starts a tracing span with provided method name and AMQP operation RECEIVE</p>
-     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-RECEIVE}
+     * <p>Starts a tracing span with provided method name and AMQP operation MESSAGE</p>
+     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-MESSAGE}
      *
      * <p>Starts a tracing span with provided method name and AMQP operation PROCESS</p>
      * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-PROCESS}
