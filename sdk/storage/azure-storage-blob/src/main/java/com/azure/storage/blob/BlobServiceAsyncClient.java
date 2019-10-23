@@ -132,7 +132,7 @@ public final class BlobServiceAsyncClient {
 
         return new BlobContainerAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString(), serviceVersion,
-            getAccountName(), containerName, customerProvidedKey);
+            accountName, containerName, customerProvidedKey);
     }
 
     /**

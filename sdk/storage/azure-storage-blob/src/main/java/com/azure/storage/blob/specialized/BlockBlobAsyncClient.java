@@ -234,9 +234,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         String leaseId, Context context) {
-        return this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
-            base64BlockId, length, data, null, null, null, leaseId,
-            null, BlobHelper.getCustomerProvidedKey(this), context)
+        return this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null, base64BlockId, length,
+            data, null, null, null, leaseId, null, BlobHelper.getCustomerProvidedKey(this), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
