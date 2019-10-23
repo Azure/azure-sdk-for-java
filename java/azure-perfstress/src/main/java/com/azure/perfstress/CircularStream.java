@@ -9,11 +9,11 @@ import java.util.Vector;
 import reactor.core.publisher.Flux;
 
 public class CircularStream {
-    public static InputStream create(byte[] byteArray, int size) {
+    public static InputStream create(byte[] byteArray, long size) {
         int remaining = byteArray.length;
         
-        int quotient = size / remaining;
-        int remainder = size % remaining;
+        int quotient = (int) size / remaining;
+        int remainder = (int) size % remaining;
 
         List<ByteArrayInputStream> list = Flux.range(0, quotient)
             .map(i -> new ByteArrayInputStream(byteArray))

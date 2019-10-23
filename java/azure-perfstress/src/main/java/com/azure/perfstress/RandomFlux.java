@@ -15,7 +15,7 @@ public class RandomFlux {
         _randomByteBuffer = ByteBuffer.wrap(_randomBytes).asReadOnlyBuffer();
     }
     
-    public static Flux<ByteBuffer> create(int size) {
+    public static Flux<ByteBuffer> create(long size) {
         return CircularFlux.create(_randomByteBuffer, size);
     }
 }

@@ -11,7 +11,7 @@ public class RandomStream {
         (new Random(0)).nextBytes(_randomBytes);
     }
     
-    public static InputStream create(int size) {
+    public static InputStream create(long size) {
         return CircularStream.create(_randomBytes, size);
     }
 }
