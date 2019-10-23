@@ -89,7 +89,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     * Creates a 0-length append blob. Call appendBlock to append data to an append blob. By default this method will
+     * not overwrite an existing blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -99,7 +100,30 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<AppendBlobItem> create() {
         try {
-            return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+            return create(false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.create#boolean}
+     *
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     *
+     * @return A {@link Mono} containing the information of the created appended blob.
+     */
+    public Mono<AppendBlobItem> create(boolean overwrite) {
+        try {
+            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+            if (!overwrite) {
+                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return createWithResponse(null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

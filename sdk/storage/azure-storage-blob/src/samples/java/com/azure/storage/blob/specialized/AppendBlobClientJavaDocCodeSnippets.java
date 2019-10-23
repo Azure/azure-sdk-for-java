@@ -43,6 +43,16 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link AppendBlobClient#create(boolean)}
+     */
+    public void createWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.create#boolean
+        boolean overwrite = false; // Default value
+        System.out.printf("Created AppendBlob at %s%n", client.create(overwrite).getLastModified());
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.create#boolean
+    }
+
+    /**
      * Code snippet for {@link AppendBlobClient#createWithResponse(BlobHttpHeaders, Map, BlobRequestConditions,
      * Duration, Context)}
      */

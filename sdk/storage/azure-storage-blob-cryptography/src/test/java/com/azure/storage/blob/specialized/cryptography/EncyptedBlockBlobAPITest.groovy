@@ -547,6 +547,61 @@ class EncyptedBlockBlobAPITest extends APISpec {
         stream.toByteArray() == defaultData.array()
     }
 
+    @Requires({liveMode()})
+    def "encrypted client file upload overwrite false"() {
+        setup:
+        def file = getRandomFile(KB)
+
+        when:
+        beac.uploadFromFile(file.toPath().toString()).block()
+
+        beac.uploadFromFile(file.toPath().toString()).block()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Requires({liveMode()})
+    def "encrypted client file upload overwrite true"() {
+        setup:
+        def file = getRandomFile(KB)
+
+        when:
+        beac.uploadFromFile(file.toPath().toString()).block()
+        beac.uploadFromFile(file.toPath().toString(), true).block()
+
+        then:
+        notThrown(Throwable)
+    }
+
+    @Requires({ liveMode() })
+    def "encrypted client upload overwrite false"() {
+        setup:
+        ByteBuffer byteBuffer = getRandomData(Constants.KB)
+
+        when:
+        beac.upload(Flux.just(byteBuffer), null).block()
+
+        beac.upload(Flux.just(byteBuffer), null).block()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Requires({ liveMode() })
+    def "encrypted client upload overwrite true"() {
+        setup:
+        ByteBuffer byteBuffer = getRandomData(Constants.KB)
+
+        when:
+        beac.upload(Flux.just(byteBuffer), null).block()
+
+        beac.upload(Flux.just(byteBuffer), null, true).block()
+
+        then:
+        notThrown(Throwable)
+    }
+
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
         result.position(0)
         for (ByteBuffer buffer : buffers) {
