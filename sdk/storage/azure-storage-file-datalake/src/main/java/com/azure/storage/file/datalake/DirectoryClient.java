@@ -19,11 +19,16 @@ import java.util.Map;
 public class DirectoryClient extends PathClient {
     private final ClientLogger logger = new ClientLogger(DirectoryClient.class);
 
-    private final DirectoryAsyncClient directoryAsyncClient;
+    private DirectoryAsyncClient directoryAsyncClient;
 
     DirectoryClient(DirectoryAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient) {
         super(pathAsyncClient, blockBlobClient);
         this.directoryAsyncClient = pathAsyncClient;
+    }
+
+    DirectoryClient(PathClient pathClient) {
+        super(pathClient.pathAsyncClient, pathClient.blockBlobClient);
+        this.directoryAsyncClient = (DirectoryAsyncClient) pathClient.pathAsyncClient;
     }
 
     /**
@@ -313,22 +318,51 @@ public class DirectoryClient extends PathClient {
         return directoryClient.deleteWithResponse(recursive, accessConditions, timeout, context);
     }
 
-//    public DirectoryClient move(String destinationPath) {
-//        return moveWithResponse(destinationPath, null, null, null, null, null, null, null, null).getValue();
-//    }
-//
-//    public Response<DirectoryClient> moveWithResponse(String destinationPath,
-//        PathHttpHeaders httpHeaders, Map<String, String> metadata, String permissions, String umask,
-//        ModifiedAccessConditions sourceModifiedAccessConditions,
-//        PathAccessConditions destAccessConditions, Duration timeout, Context context) {
-//
-//        Mono<Response<PathAsyncClient>> response = directoryAsyncClient.moveWithResponse(PathResourceType.DIRECTORY,
-//            destinationPath, httpHeaders, metadata, permissions, umask, sourceModifiedAccessConditions,
-//            destAccessConditions, context);
-//
-//        Response<PathAsyncClient> resp = Utility.blockWithOptionalTimeout(response, timeout);
-//        return new SimpleResponse<>(resp.getRequest(), resp.getStatusCode(), resp.getHeaders(),
-//            new DirectoryClient(resp.getValue(), new BlockBlobClient(resp.getValue().blockBlobAsyncClient)));
-//
-//    }
+    /**
+     * Moves the directory to another location within the file system.
+     * For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.move#String}
+     *
+     * @param destinationPath Relative path from the file system to move the directory to.
+     * @return A {@link DirectoryClient} used to interact with the new directory created.
+     */
+    public DirectoryClient move(String destinationPath) {
+        return moveWithResponse(destinationPath, null, null, null, null, null, null, null, null).getValue();
+    }
+
+    /**
+     * Moves the directory to another location within the file system.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryClient.moveWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     *
+     * @param destinationPath Relative path from the file system to move the directory to.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the directory.
+     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
+     * @param umask Restricts permissions of the sdirectory to be created.
+     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
+     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @return A {@link Response} whose {@link Response#getValue() value} that contains a {@link DirectoryClient} used
+     * to interact with the directory created.
+     */
+    public Response<DirectoryClient> moveWithResponse(String destinationPath, PathHttpHeaders headers,
+        Map<String, String> metadata, String permissions, String umask, PathAccessConditions sourceAccessConditions,
+        PathAccessConditions destAccessConditions, Duration timeout, Context context) {
+
+        Mono<Response<PathClient>> response = moveWithResponse(destinationPath, headers,
+            metadata, permissions, umask, sourceAccessConditions,
+            destAccessConditions, context);
+
+        Response<PathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return new SimpleResponse<>(resp, new DirectoryClient(resp.getValue()));
+    }
 }

@@ -289,23 +289,23 @@ class APISpec extends Specification {
         }
     }
 
-    static LeaseClient createLeaseClient(PathClient pathClient) {
+    static DataLakeLeaseClient createLeaseClient(PathClient pathClient) {
         return createLeaseClient(pathClient, null)
     }
 
-    static LeaseClient createLeaseClient(PathClient pathClient, String leaseId) {
-        return new LeaseClientBuilder()
+    static DataLakeLeaseClient createLeaseClient(PathClient pathClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
             .pathClient(pathClient)
             .leaseId(leaseId)
             .buildClient()
     }
 
-    static LeaseClient createLeaseClient(FileSystemClient fileSystemClient) {
+    static DataLakeLeaseClient createLeaseClient(FileSystemClient fileSystemClient) {
         return createLeaseClient(fileSystemClient, null)
     }
 
-    static LeaseClient createLeaseClient(FileSystemClient fileSystemClient, String leaseId) {
-        return new LeaseClientBuilder()
+    static DataLakeLeaseClient createLeaseClient(FileSystemClient fileSystemClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
             .fileSystemClient(fileSystemClient)
             .leaseId(leaseId)
             .buildClient()

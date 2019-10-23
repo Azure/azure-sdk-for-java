@@ -1,6 +1,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -32,12 +33,15 @@ public class FileClient extends PathClient {
     private ClientLogger logger = new ClientLogger(FileClient.class);
 
     private FileAsyncClient fileAsyncClient;
-    private BlockBlobClient blockBlobClient;
 
     FileClient(FileAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient) {
         super(pathAsyncClient, blockBlobClient);
         this.fileAsyncClient = pathAsyncClient;
-        this.blockBlobClient = blockBlobClient;
+    }
+
+    FileClient(PathClient pathClient) {
+        super(pathClient.pathAsyncClient, pathClient.blockBlobClient);
+        this.fileAsyncClient = (FileAsyncClient) pathClient.pathAsyncClient;
     }
 
     /**
@@ -276,5 +280,53 @@ public class FileClient extends PathClient {
         return blockBlobClient.downloadWithResponse(stream, Transforms.toBlobRange(range),
             Transforms.toBlobReliableDownloadOptions(options), Transforms.toBlobAccessConditions(accessConditions),
             rangeGetContentMD5, timeout, context);
+    }
+
+    /**
+     * Moves the file to another location within the file system.
+     * For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.move#String}
+     *
+     * @param destinationPath Relative path from the file system to move the file to.
+     * @return A {@link FileClient} used to interact with the new file created.
+     */
+    public FileClient move(String destinationPath) {
+        return moveWithResponse(destinationPath, null, null, null, null, null, null, null, null).getValue();
+    }
+
+    /**
+     * Moves the file to another location within the file system.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.moveWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     *
+     * @param destinationPath Relative path from the file system to move the file to.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the file.
+     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
+     * @param umask Restricts permissions of the file to be created.
+     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
+     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @return A {@link Response} whose {@link Response#getValue() value} that contains a {@link FileClient} used
+     * to interact with the file created.
+     */
+    public Response<FileClient> moveWithResponse(String destinationPath, PathHttpHeaders headers,
+        Map<String, String> metadata, String permissions, String umask, PathAccessConditions sourceAccessConditions,
+        PathAccessConditions destAccessConditions, Duration timeout, Context context) {
+
+        Mono<Response<PathClient>> response = moveWithResponse(destinationPath, headers,
+            metadata, permissions, umask, sourceAccessConditions,
+            destAccessConditions, context);
+
+        Response<PathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return new SimpleResponse<>(resp, new FileClient(resp.getValue()));
     }
 }

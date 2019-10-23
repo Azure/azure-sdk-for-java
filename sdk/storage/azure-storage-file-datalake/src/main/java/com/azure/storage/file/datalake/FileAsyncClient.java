@@ -47,6 +47,12 @@ public class FileAsyncClient extends PathAsyncClient {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, blockBlobAsyncClient);
     }
 
+    public FileAsyncClient(PathAsyncClient pathAsyncClient) {
+        super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
+            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.getObjectPath(),
+            pathAsyncClient.getBlockBlobAsyncClient());
+    }
+
     /**
      * Creates a file.
      *
@@ -324,5 +330,59 @@ public class FileAsyncClient extends PathAsyncClient {
             return monoError(logger, ex);
         }
     }
+
+    /**
+     * Moves the file to another location within the file system.
+     * For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.move#String}
+     *
+     * @param destinationPath Relative path from the file system to move the file to.
+     * @return A {@link Mono} containing a {@link FileAsyncClient} used to interact with the new file created.
+     */
+    public Mono<FileAsyncClient> move(String destinationPath) {
+        try {
+            return moveWithResponse(destinationPath, null, null, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new sub-directory within a directory. If a sub-directory with the same name already exists, the
+     * sub-directory will be overwritten. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.moveWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     *
+     * @param destinationPath Relative path from the file system to move the file to.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the file.
+     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
+     * @param umask Restricts permissions of the file to be created.
+     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
+     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * FileAsyncClient} used to interact with the file created.
+     */
+    public Mono<Response<FileAsyncClient>> moveWithResponse(String destinationPath,
+        PathHttpHeaders headers, Map<String, String> metadata, String permissions, String umask,
+        PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions) {
+        try {
+            return withContext(context -> moveWithResponse(destinationPath, headers,
+                metadata, permissions, umask, sourceAccessConditions, destAccessConditions, context))
+                .map(response -> new SimpleResponse<>(response,
+                    new FileAsyncClient(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
 
 }

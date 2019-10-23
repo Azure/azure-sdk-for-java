@@ -7,13 +7,12 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Lease
  * clients. Lease clients are able to interact with both container and blob clients and act as a supplement client. A
- * new instance of {@link LeaseClient} and {@link LeaseAsyncClient} are constructed every time
+ * new instance of {@link DataLakeLeaseClient} and {@link DataLakeLeaseAsyncClient} are constructed every time
  * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} are called
  * respectively.
  *
@@ -22,44 +21,44 @@ import java.util.UUID;
  *
  * <p><strong>Instantiating LeaseClients</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlobAndLeaseId}
+ * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithBlobAndLeaseId}
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainerAndLeaseId}
+ * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithContainerAndLeaseId}
  *
  * <p><strong>Instantiating LeaseAsyncClients</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId}
+ * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId}
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId}
+ * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId}
  *
- * @see LeaseClient
- * @see LeaseAsyncClient
+ * @see DataLakeLeaseClient
+ * @see DataLakeLeaseAsyncClient
  */
-@ServiceClientBuilder(serviceClients = { LeaseClient.class, LeaseAsyncClient.class })
-public final class LeaseClientBuilder {
+@ServiceClientBuilder(serviceClients = { DataLakeLeaseClient.class, DataLakeLeaseAsyncClient.class })
+public final class DataLakeLeaseClientBuilder {
 
     com.azure.storage.blob.specialized.LeaseClientBuilder blobLeaseClientBuilder;
 
-    public LeaseClientBuilder() {
+    public DataLakeLeaseClientBuilder() {
         blobLeaseClientBuilder = new com.azure.storage.blob.specialized.LeaseClientBuilder();
     }
 
     /**
-     * Creates a {@link LeaseClient} based on the configurations set in the builder.
+     * Creates a {@link DataLakeLeaseClient} based on the configurations set in the builder.
      *
-     * @return a {@link LeaseClient} based on the configurations in this builder.
+     * @return a {@link DataLakeLeaseClient} based on the configurations in this builder.
      */
-    public LeaseClient buildClient() {
-        return new LeaseClient(blobLeaseClientBuilder.buildClient());
+    public DataLakeLeaseClient buildClient() {
+        return new DataLakeLeaseClient(blobLeaseClientBuilder.buildClient());
     }
 
     /**
-     * Creates a {@link LeaseAsyncClient} based on the configurations set in the builder.
+     * Creates a {@link DataLakeLeaseAsyncClient} based on the configurations set in the builder.
      *
-     * @return a {@link LeaseAsyncClient} based on the configurations in this builder.
+     * @return a {@link DataLakeLeaseAsyncClient} based on the configurations in this builder.
      */
-    public LeaseAsyncClient buildAsyncClient() {
-    return new LeaseAsyncClient(blobLeaseClientBuilder.buildAsyncClient());
+    public DataLakeLeaseAsyncClient buildAsyncClient() {
+    return new DataLakeLeaseAsyncClient(blobLeaseClientBuilder.buildAsyncClient());
     }
 
     /**
@@ -67,10 +66,10 @@ public final class LeaseClientBuilder {
      * {@link URL} that are used to interact with the service.
      *
      * @param pathClient Client used to configure the builder.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated DataLakeLeaseClientBuilder object
      * @throws NullPointerException If {@code pathClient} is {@code null}.
      */
-    public LeaseClientBuilder pathClient(PathClient pathClient) {
+    public DataLakeLeaseClientBuilder pathClient(PathClient pathClient) {
 //        blobLeaseClientBuilder.blobClient(pathClient.getBlobClient());
         return this;
     }
@@ -80,10 +79,10 @@ public final class LeaseClientBuilder {
      * {@link URL} that are used to interact with the service.
      *
      * @param pathAsyncClient PathAsyncClient used to configure the builder.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated DataLakeLeaseClientBuilder object
      * @throws NullPointerException If {@code pathAsyncClient} is {@code null}.
      */
-    public LeaseClientBuilder pathAsyncClient(PathAsyncClient pathAsyncClient) {
+    public DataLakeLeaseClientBuilder pathAsyncClient(PathAsyncClient pathAsyncClient) {
 //        blobLeaseClientBuilder.blobAsyncClient(pathAsyncClient.getBlobAsyncClient());
         return this;
     }
@@ -93,10 +92,10 @@ public final class LeaseClientBuilder {
      * and {@link URL} that are used to interact with the service.
      *
      * @param fileSystemClient FileSystemClient used to configure the builder.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated DataLakeLeaseClientBuilder object
      * @throws NullPointerException If {@code fileSystemClient} is {@code null}.
      */
-    public LeaseClientBuilder fileSystemClient(FileSystemClient fileSystemClient) {
+    public DataLakeLeaseClientBuilder fileSystemClient(FileSystemClient fileSystemClient) {
         blobLeaseClientBuilder.containerClient(fileSystemClient.getBlobContainerClient());
         return this;
     }
@@ -106,10 +105,10 @@ public final class LeaseClientBuilder {
      * HttpPipeline} and {@link URL} that are used to interact with the service.
      *
      * @param fileSystemAsyncClient FileSystemAsyncClient used to configure the builder.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated DataLakeLeaseClientBuilder object
      * @throws NullPointerException If {@code fileSystemAsyncClient} is {@code null}.
      */
-    public LeaseClientBuilder fileSystemAsyncClient(FileSystemAsyncClient fileSystemAsyncClient) {
+    public DataLakeLeaseClientBuilder fileSystemAsyncClient(FileSystemAsyncClient fileSystemAsyncClient) {
         blobLeaseClientBuilder.containerAsyncClient(fileSystemAsyncClient.getBlobContainerAsyncClient());
         return this;
     }
@@ -120,9 +119,9 @@ public final class LeaseClientBuilder {
      * <p>If a lease ID isn't set then a {@link UUID} will be used.</p>
      *
      * @param leaseId Identifier for the lease.
-     * @return the updated LeaseClientBuilder object
+     * @return the updated DataLakeLeaseClientBuilder object
      */
-    public LeaseClientBuilder leaseId(String leaseId) {
+    public DataLakeLeaseClientBuilder leaseId(String leaseId) {
         blobLeaseClientBuilder.leaseId(leaseId);
         return this;
     }

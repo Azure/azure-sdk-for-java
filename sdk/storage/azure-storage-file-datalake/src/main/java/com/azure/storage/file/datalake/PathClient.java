@@ -9,6 +9,8 @@ import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
+import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
@@ -24,7 +26,7 @@ import java.util.Map;
 public class PathClient {
     private final ClientLogger logger = new ClientLogger(PathClient.class);
     protected final PathAsyncClient pathAsyncClient;
-    private final BlockBlobClient blockBlobClient;
+    protected final BlockBlobClient blockBlobClient;
 
     protected PathClient(PathAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient) {
         this.pathAsyncClient = pathAsyncClient;
@@ -298,6 +300,50 @@ public class PathClient {
         Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
             Transforms.toBlobAccessConditions(accessConditions), timeout, context);
         return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
+    }
+
+    /**
+     * Package-private move method for use by {@link FileClient} and {@link DirectoryClient}
+     *
+     * @param destinationPath The path of the destination relative to the file system name
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource.
+     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
+     * @param umask Restricts permissions of the directory to be created.
+     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
+     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * PathClient} used to interact with the path created.
+     */
+    Mono<Response<PathClient>> moveWithResponse(String destinationPath,
+        PathHttpHeaders headers, Map<String, String> metadata, String permissions, String umask,
+        PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions, Context context) {
+
+        destAccessConditions = destAccessConditions == null ? new PathAccessConditions() : destAccessConditions;
+        sourceAccessConditions = sourceAccessConditions == null ? new PathAccessConditions()
+            : sourceAccessConditions;
+
+        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
+        SourceModifiedAccessConditions sourceConditions = sourceAccessConditions.getModifiedAccessConditions() == null
+            ? new SourceModifiedAccessConditions()
+            : new SourceModifiedAccessConditions()
+            .setSourceIfModifiedSince(sourceAccessConditions.getModifiedAccessConditions().getIfModifiedSince())
+            .setSourceIfUnmodifiedSince(sourceAccessConditions.getModifiedAccessConditions().getIfUnmodifiedSince())
+            .setSourceIfMatch(sourceAccessConditions.getModifiedAccessConditions().getIfMatch())
+            .setSourceIfNoneMatch(sourceAccessConditions.getModifiedAccessConditions().getIfNoneMatch());
+
+        PathClient pathClient = getPathClient(destinationPath);
+
+        String renameSource = "/" + pathAsyncClient.getFileSystemName() + "/" + pathAsyncClient.getObjectPath();
+
+        return pathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
+            null /* continuation */, PathRenameMode.LEGACY, renameSource,
+            sourceAccessConditions.getLeaseAccessConditions().getLeaseId(),
+            PathAsyncClient.buildMetadataString(metadata), permissions, umask, null /* request id */,
+            null /* timeout */, headers, destAccessConditions.getLeaseAccessConditions(),
+            destAccessConditions.getModifiedAccessConditions(), sourceConditions, context)
+            .map(response -> new SimpleResponse<>(response, pathClient));
     }
 
 }

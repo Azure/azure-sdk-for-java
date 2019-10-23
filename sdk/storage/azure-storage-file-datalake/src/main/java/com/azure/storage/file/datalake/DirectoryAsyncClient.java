@@ -376,6 +376,19 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
         }
     }
 
+    /**
+     * Moves the directory to another location within the file system.
+     * For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.move#String}
+     *
+     * @param destinationPath Relative path from the file system to move the directory to.
+     * @return A {@link Mono} containing a {@link DirectoryAsyncClient} used to interact with the new directory created.
+     */
     public Mono<DirectoryAsyncClient> move(String destinationPath) {
         try {
             return moveWithResponse(destinationPath, null, null, null, null, null, null).flatMap(FluxUtil::toMono);
@@ -384,11 +397,30 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
         }
     }
 
+    /**
+     * Moves the directory to another location within the file system.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.moveWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     *
+     * @param destinationPath Relative path from the file system to move the directory to.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the directory.
+     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
+     * @param umask Restricts permissions of the sdirectory to be created.
+     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
+     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * DirectoryAsyncClient} used to interact with the directory created.
+     */
     public Mono<Response<DirectoryAsyncClient>> moveWithResponse(String destinationPath,
-        PathHttpHeaders httpHeaders, Map<String, String> metadata, String permissions, String umask,
+        PathHttpHeaders headers, Map<String, String> metadata, String permissions, String umask,
         PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions) {
         try {
-            return withContext(context -> moveWithResponse(destinationPath, httpHeaders,
+            return withContext(context -> moveWithResponse(destinationPath, headers,
                 metadata, permissions, umask, sourceAccessConditions, destAccessConditions, context))
                 .map(response -> new SimpleResponse<>(response,
                     new DirectoryAsyncClient(response.getValue())));

@@ -18,25 +18,25 @@ import java.time.Duration;
  * {@link PathClient files and directories}. This client acts as a supplement to those clients and only handles leasing
  * operations.
  *
- * <p><strong>Instantiating a LeaseClient</strong></p>
+ * <p><strong>Instantiating a DataLakeLeaseClient</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlob}
+ * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithBlob}
  *
- * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainer}
+ * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithContainer}
  *
- * <p>View {@link LeaseClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link DataLakeLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
  * <p>For more information about leasing see the
  * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-container">container leasing</a> or
  * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">blob leasing</a> documentation.</p>
  *
- * @see LeaseClientBuilder
+ * @see DataLakeLeaseClientBuilder
  */
-@ServiceClient(builder =  LeaseClientBuilder.class)
-public final class LeaseClient {
+@ServiceClient(builder =  DataLakeLeaseClientBuilder.class)
+public final class DataLakeLeaseClient {
     private final com.azure.storage.blob.specialized.LeaseClient blobLeaseClient;
 
-    LeaseClient(com.azure.storage.blob.specialized.LeaseClient blobLeaseClient) {
+    DataLakeLeaseClient(com.azure.storage.blob.specialized.LeaseClient blobLeaseClient) {
         this.blobLeaseClient = blobLeaseClient;
     }
 
@@ -66,7 +66,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.acquireLease#int}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.acquireLease#int}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @return The lease ID.
@@ -82,7 +82,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.acquireLeaseWithResponse#int-ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.acquireLeaseWithResponse#int-ModifiedAccessConditions-Duration-Context}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -104,7 +104,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.renewLease}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.renewLease}
      *
      * @return The renewed lease ID.
      */
@@ -118,7 +118,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.renewLeaseWithResponse#ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.renewLeaseWithResponse#ModifiedAccessConditions-Duration-Context}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -139,7 +139,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.releaseLease}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.releaseLease}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releaseLease() {
@@ -151,7 +151,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.releaseLeaseWithResponse#ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.releaseLeaseWithResponse#ModifiedAccessConditions-Duration-Context}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -172,7 +172,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.breakLease}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.breakLease}
      *
      * @return The remaining time in the broken lease in seconds.
      */
@@ -189,7 +189,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context}
      *
      * @param breakPeriodInSeconds An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
@@ -214,7 +214,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.changeLease#String}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.changeLease#String}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @return The new lease ID.
@@ -229,7 +229,7 @@ public final class LeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.changeLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClient.changeLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
