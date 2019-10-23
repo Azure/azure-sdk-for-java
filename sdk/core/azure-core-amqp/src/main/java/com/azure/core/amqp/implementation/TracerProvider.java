@@ -120,7 +120,7 @@ public class TracerProvider {
             case SEND:
                 spanName += "send";
                 break;
-            case RECEIVE:
+            case MESSAGE:
                 spanName += "message";
                 break;
             case PROCESS:

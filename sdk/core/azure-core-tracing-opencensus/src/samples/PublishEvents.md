@@ -7,7 +7,7 @@ Following documentation describes instructions to run a sample program for publi
 
 ### Adding the Azure client library for Event Hubs package to your project:
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
-```XML
+```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs</artifactId>
