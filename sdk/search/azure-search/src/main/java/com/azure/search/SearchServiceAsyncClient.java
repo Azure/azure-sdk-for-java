@@ -382,7 +382,7 @@ public class SearchServiceAsyncClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
-     * @param indexName The name of the index to retrieve
+     * @param indexName the name of the index to retrieve
      * @return the Index.
      */
     public Mono<Index> getIndex(String indexName) {
@@ -392,7 +392,7 @@ public class SearchServiceAsyncClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
-     * @param indexName The name of the index to retrieve
+     * @param indexName the name of the index to retrieve
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the Index.
@@ -404,8 +404,9 @@ public class SearchServiceAsyncClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
-     * @param indexName The name of the index to retrieve
-     * @param requestOptions Additional parameters for the operation
+     * @param indexName the name of the index to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the Index.
      */
     public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
@@ -423,7 +424,7 @@ public class SearchServiceAsyncClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
-     * @param indexName The name of the index
+     * @param indexName the name of the index
      * @return true if the index exists; false otherwise.
      */
     public Mono<Boolean> indexExists(String indexName) {
@@ -432,7 +433,7 @@ public class SearchServiceAsyncClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
-     * @param indexName The name of the index
+     * @param indexName the name of the index
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
@@ -443,8 +444,9 @@ public class SearchServiceAsyncClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
-     * @param indexName The name of the index
-     * @param requestOptions Additional parameters for the operation
+     * @param indexName the name of the index
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
     public Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
@@ -516,17 +518,17 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> this.listIndexesResponse(select, requestOptions, context)),
+            () -> withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
     PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
         return new PagedFlux<>(
-            () -> this.listIndexesResponse(select, requestOptions, context),
+            () -> this.listIndexesWithResponse(select, requestOptions, context),
             nextLink -> Mono.empty());
     }
 
-    private Mono<PagedResponse<Index>> listIndexesResponse(String select,
+    private Mono<PagedResponse<Index>> listIndexesWithResponse(String select,
                                                            RequestOptions requestOptions,
                                                            Context context) {
         return restClient.indexes()
@@ -558,7 +560,7 @@ public class SearchServiceAsyncClient {
      * @param index the definition of the index to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation
+     * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
@@ -588,7 +590,7 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      *
-     * @param index The definition of the index to create or update
+     * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
      *                           index by taking the index offline for at least a few seconds. This temporarily causes
      *                           indexing and query requests to fail. Performance and write availability of the index
@@ -596,7 +598,7 @@ public class SearchServiceAsyncClient {
      *                           large indexes
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation
+     * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
@@ -635,7 +637,7 @@ public class SearchServiceAsyncClient {
      *                           large indexes
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation
+     * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index that was created or updated
      */

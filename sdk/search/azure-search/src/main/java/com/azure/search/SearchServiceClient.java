@@ -423,7 +423,7 @@ public class SearchServiceClient {
      * @param index the definition of the index to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values.
-     * @param requestOptions additional parameters for the operation
+     * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
@@ -465,7 +465,7 @@ public class SearchServiceClient {
      *                           large indexes.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values.
-     * @param requestOptions additional parameters for the operation
+     * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
@@ -503,7 +503,7 @@ public class SearchServiceClient {
      *                           large indexes.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      *                        doesn't match specified values.
-     * @param requestOptions additional parameters for the operation
+     * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the Index that was created or updated.
