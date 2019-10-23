@@ -55,7 +55,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     protected void verifyDynamicDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
         Assert.assertEquals(2, suggestResultPagedResponse.getValue().size());
-        Hotel hotel = suggestResultPagedResponse.getValue().get(0).getAdditionalProperties().as(Hotel.class);
+        Hotel hotel = suggestResultPagedResponse.getValue().get(0).getDocument().as(Hotel.class);
         Assert.assertEquals("10", hotel.hotelId());
     }
 
@@ -64,7 +64,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         Assert.assertNotNull(suggestResultPagedResponse);
         List<Document> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(SuggestResult::getAdditionalProperties)
+            .map(SuggestResult::getDocument)
             .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
         List<Hotel> expectedHotelsList = expectedHotels.stream().map(hotel ->
@@ -111,7 +111,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         List<String> resultIds = suggestResultPagedResponse
             .getValue()
             .stream()
-            .map(hotel -> hotel.getAdditionalProperties().as(Hotel.class).hotelId())
+            .map(hotel -> hotel.getDocument().as(Hotel.class).hotelId())
             .collect(Collectors.toList());
 
         Assert.assertEquals(Arrays.asList("1", "10", "2"), resultIds);
@@ -121,7 +121,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         List<SuggestResult> books = suggestResultPagedResponse.getValue();
         List<Document> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(SuggestResult::getAdditionalProperties)
+            .map(SuggestResult::getDocument)
             .collect(Collectors.toList());
 
         Assert.assertEquals(1, docs.size());

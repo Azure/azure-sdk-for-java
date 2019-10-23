@@ -44,7 +44,7 @@ public final class SearchResult {
      *
      * @return the additionalProperties value.
      */
-    public Document getAdditionalProperties() {
+    public Document getDocument() {
         return this.additionalProperties;
     }
 
@@ -55,7 +55,7 @@ public final class SearchResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SearchResult object itself.
      */
-    public SearchResult setAdditionalProperties(Document additionalProperties) {
+    public SearchResult setDocument(Document additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

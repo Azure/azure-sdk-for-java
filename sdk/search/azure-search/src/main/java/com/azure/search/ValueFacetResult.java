@@ -15,7 +15,7 @@ public class ValueFacetResult {
      */
     public ValueFacetResult(FacetResult facetResult) {
         this.count = facetResult.getCount();
-        this.value = facetResult.getAdditionalProperties().get("value");
+        this.value = facetResult.getDocument().get("value");
     }
 
     /**

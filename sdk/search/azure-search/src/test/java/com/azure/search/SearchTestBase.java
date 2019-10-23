@@ -155,8 +155,8 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     void assertContainHotelIds(List<Map<String, Object>> expected, List<SearchResult> actual) {
         Assert.assertNotNull(actual);
-        List<String> actualKeys = actual.stream().filter(item -> item.getAdditionalProperties().containsKey("HotelId"))
-            .map(item -> (String) item.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = actual.stream().filter(item -> item.getDocument().containsKey("HotelId"))
+            .map(item -> (String) item.getDocument().get("HotelId")).collect(Collectors.toList());
         List<String> expectedKeys = expected.stream().filter(item -> item.containsKey("HotelId"))
             .map(item -> (String) item.get("HotelId")).collect(Collectors.toList());
         Assert.assertEquals(expectedKeys, actualKeys);
@@ -171,7 +171,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     String getSearchResultId(SearchResult searchResult, String idFieldName) {
-        return searchResult.getAdditionalProperties().get(idFieldName).toString();
+        return searchResult.getDocument().get(idFieldName).toString();
     }
 
     SearchOptions getSearchOptionsForRangeFacets() {
@@ -226,8 +226,8 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     void assertListEqualHotelIds(List<String> expected, List<SearchResult> actual) {
         Assert.assertNotNull(actual);
-        List<String> actualKeys = actual.stream().filter(item -> item.getAdditionalProperties().containsKey("HotelId"))
-            .map(item -> (String) item.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = actual.stream().filter(item -> item.getDocument().containsKey("HotelId"))
+            .map(item -> (String) item.getDocument().get("HotelId")).collect(Collectors.toList());
         Assert.assertEquals(expected, actualKeys);
     }
 

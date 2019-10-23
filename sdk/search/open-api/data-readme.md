@@ -171,4 +171,15 @@ directive:
     return $
     .replace(/(import com.fasterxml.jackson.annotation.JsonProperty;)/g, "$1\n\nimport java.io.Serializable;")
     .replace(/(class IndexingResult {)/g, "class IndexingResult implements Serializable {\n    private static final long serialVersionUID = -8604424005271188140L;")
+
+- from:
+  - FacetResult.java
+  - SearchResult.java
+  - SuggestResult.java
+  where: $
+  transform: >-
+    return $
+    .replace(/(getAdditionalProperties)/g, "getDocument")
+    .replace(/(setAdditionalProperties)/g, "setDocument")
+  reason: Provides a better description of the getter/setter for addtionalProperties
 ```

@@ -240,7 +240,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         StepVerifier.create(suggestResult.byPage())
             .assertNext(nextPage -> {
-                List<String> actualIds = nextPage.getValue().stream().map(s -> (String) s.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
+                List<String> actualIds = nextPage.getValue().stream().map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
                 List<String> expectedIds = Arrays.asList("1", "5");
                 Assert.assertEquals(expectedIds, actualIds);
             })
@@ -264,7 +264,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         StepVerifier
             .create(suggestResult.byPage())
             .assertNext(nextPage -> {
-                List<String> actualIds = nextPage.getValue().stream().map(s -> (String) s.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
+                List<String> actualIds = nextPage.getValue().stream().map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
                 List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
                 Assert.assertEquals(expectedIds, actualIds);
             })

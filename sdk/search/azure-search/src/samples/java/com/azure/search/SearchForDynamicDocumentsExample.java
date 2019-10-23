@@ -39,7 +39,7 @@ public class SearchForDynamicDocumentsExample {
         for (SearchResult result : client.search("luxury hotel", new SearchOptions(), new RequestOptions())) {
 
             // Each result is a dynamic Map
-            Document doc = result.getAdditionalProperties();
+            Document doc = result.getDocument();
             String hotelName = (String) doc.get("HotelName");
             Integer rating = (Integer) doc.get("Rating");
 
@@ -74,7 +74,7 @@ public class SearchForDynamicDocumentsExample {
         // Subscribe and process all results across all pages in the response
         results.subscribe(
             result -> {
-                Document doc = result.getAdditionalProperties();
+                Document doc = result.getDocument();
                 String hotelName = (String) doc.get("HotelName");
                 Integer rating = (Integer) doc.get("Rating");
 

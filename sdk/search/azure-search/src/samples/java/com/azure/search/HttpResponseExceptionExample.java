@@ -5,7 +5,6 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.Configuration;
 import com.azure.search.common.SearchPagedResponse;
@@ -48,7 +47,7 @@ public class HttpResponseExceptionExample {
 
             for (SearchResult result : results) {
                 // normal results processing
-                System.out.printf("Found hotel: %s%n", result.getAdditionalProperties().get("HotelName"));
+                System.out.printf("Found hotel: %s%n", result.getDocument().get("HotelName"));
             }
         }
         catch (HttpResponseException ex) {
@@ -78,7 +77,7 @@ public class HttpResponseExceptionExample {
             .subscribe(
             foo -> {
                 // normal results processing
-                System.out.printf("Found hotel: %s%n", foo.getAdditionalProperties().get("HotelName"));
+                System.out.printf("Found hotel: %s%n", foo.getDocument().get("HotelName"));
             },
             err -> {
                 if (err instanceof HttpResponseException) {

@@ -33,7 +33,7 @@ public final class SuggestResult {
      *
      * @return the additionalProperties value.
      */
-    public Document getAdditionalProperties() {
+    public Document getDocument() {
         return this.additionalProperties;
     }
 
@@ -44,7 +44,7 @@ public final class SuggestResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SuggestResult object itself.
      */
-    public SuggestResult setAdditionalProperties(Document additionalProperties) {
+    public SuggestResult setDocument(Document additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

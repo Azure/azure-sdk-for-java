@@ -77,7 +77,7 @@ public class SearchSyncTests extends SearchTestBase {
             result.getItems().forEach(item -> {
                 Assert.assertEquals(1, item.getScore(), 0);
                 Assert.assertNull(item.getHighlights());
-                actualResults.add(item.getAdditionalProperties());
+                actualResults.add(item.getDocument());
             });
         }
         Assert.assertEquals(hotels.size(), actualResults.size());
@@ -176,7 +176,7 @@ public class SearchSyncTests extends SearchTestBase {
             result.getItems().forEach(item -> {
                 Assert.assertEquals(1, item.getScore(), 0);
                 Assert.assertNull(item.getHighlights());
-                actualResults.add(item.getAdditionalProperties().as(Hotel.class));
+                actualResults.add(item.getDocument().as(Hotel.class));
             });
         }
 
@@ -222,8 +222,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         PagedResponse<SearchResult> result = iterator.next();
         Assert.assertEquals(2, result.getItems().size());
-        Assert.assertEquals(doc1, result.getItems().get(0).getAdditionalProperties().as(NonNullableModel.class));
-        Assert.assertEquals(doc2, result.getItems().get(1).getAdditionalProperties().as(NonNullableModel.class));
+        Assert.assertEquals(doc1, result.getItems().get(0).getDocument().as(NonNullableModel.class));
+        Assert.assertEquals(doc2, result.getItems().get(1).getDocument().as(NonNullableModel.class));
     }
 
     @Override
@@ -243,7 +243,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         PagedResponse<SearchResult> result = iterator.next();
         Assert.assertEquals(1, result.getItems().size());
-        Date actual = result.getItems().get(0).getAdditionalProperties().as(Hotel.class).lastRenovationDate();
+        Date actual = result.getItems().get(0).getDocument().as(Hotel.class).lastRenovationDate();
         Assert.assertEquals(expected, actual);
     }
 
@@ -695,7 +695,7 @@ public class SearchSyncTests extends SearchTestBase {
         while (resultsIterator.hasNext()) {
             SearchPagedResponse result = resultsIterator.next();
             Assert.assertNotNull(result.getItems());
-            result.getItems().forEach(item -> searchResults.add(dropUnnecessaryFields(item.getAdditionalProperties())));
+            result.getItems().forEach(item -> searchResults.add(dropUnnecessaryFields(item.getDocument())));
         }
 
         return searchResults;
@@ -703,7 +703,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     private Map<String, Object> extractAndTransformSingleResult(SearchResult result) {
         return dropUnnecessaryFields(convertLinkedHashMapToMap(
-                (result.getAdditionalProperties())));
+                (result.getDocument())));
     }
 
     /**
@@ -762,8 +762,8 @@ public class SearchSyncTests extends SearchTestBase {
     private void assertKeySequenceEqual(PagedIterable<SearchResult> results, List<String> expectedKeys) {
         Assert.assertNotNull(results);
 
-        List<String> actualKeys = results.stream().filter(doc -> doc.getAdditionalProperties().containsKey("HotelId"))
-            .map(doc -> (String) doc.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = results.stream().filter(doc -> doc.getDocument().containsKey("HotelId"))
+            .map(doc -> (String) doc.getDocument().get("HotelId")).collect(Collectors.toList());
 
         Assert.assertEquals(expectedKeys, actualKeys);
     }

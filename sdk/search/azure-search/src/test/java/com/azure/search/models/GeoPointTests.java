@@ -91,7 +91,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
             Assert.assertNotNull(result.getItems());
-            result.getItems().forEach(item -> searchResults.add(item.getAdditionalProperties()));
+            result.getItems().forEach(item -> searchResults.add(item.getDocument()));
         }
 
         return searchResults;
