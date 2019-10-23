@@ -23,12 +23,12 @@ import java.util.function.Supplier;
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.items}
  *
  * <p><strong>Process one page at a time</strong></p>
- * <p>To process one page at a time, use {@link #byPage() byPage()} method.</p>
+ * <p>To process one page at a time, starting from the beginning, use {@link #byPage() byPage()} method.</p>
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.pages}
  *
  * <p><strong>Process items starting from a continuation token</strong></p>
- * <p>To process items one page at a time starting from any page associated with a continuation token,
- * use {@link #byPage(String)}.</p>
+ * <p>To process items one page at a time starting from any page associated with a continuation token, use
+ * {@link #byPage(String)}.</p>
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken}
  *
  * @param <T> The type of items in {@code P}.
