@@ -202,10 +202,10 @@ public final class EncryptedBlobClientBuilder {
         Objects.requireNonNull(logOptions);
 
         StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobHeaders().stream()
-            .map(logOptions::addAllowedHeaderName);
+            .forEach(headerName -> logOptions.addAllowedHeaderName(headerName));
 
         StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobQueries().stream()
-            .map(logOptions::addAllowedQueryParamName);
+            .forEach(queryName -> logOptions.addAllowedQueryParamName(queryName));
     }
 
     /**

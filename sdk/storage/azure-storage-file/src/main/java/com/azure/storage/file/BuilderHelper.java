@@ -99,10 +99,10 @@ final class BuilderHelper {
         Objects.requireNonNull(logOptions);
 
         StorageAllowedHeadersAndQueries.FileShareHeadersAndQueries.getFileShareHeaders().stream()
-            .map(logOptions::addAllowedHeaderName);
+            .forEach(headerName -> logOptions.addAllowedHeaderName(headerName));
 
         StorageAllowedHeadersAndQueries.FileShareHeadersAndQueries.getFileShareQueries().stream()
-            .map(logOptions::addAllowedQueryParamName);
+            .forEach(queryName -> logOptions.addAllowedQueryParamName(queryName));
     }
 
     /*
