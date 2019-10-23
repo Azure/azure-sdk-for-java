@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * A fixed-delay implementation of {$link RetryStrategy} that has a fixed delay duration between each retry attempt.
+ * A fixed-delay implementation of {@link RetryStrategy} that has a fixed delay duration between each retry attempt.
  */
 public class FixedDelay implements RetryStrategy {
 
