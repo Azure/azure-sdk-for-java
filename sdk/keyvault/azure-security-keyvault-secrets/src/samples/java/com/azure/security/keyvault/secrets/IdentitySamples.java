@@ -14,6 +14,9 @@ import com.azure.identity.DeviceCodeCredential;
 import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.UsernamePasswordCredential;
+import com.azure.identity.UsernamePasswordCredentialBuilder;
+import com.azure.security.keyvault.secrets.models.Secret;
 
 /**
  * Samples for azure-identity readme.
@@ -62,16 +65,36 @@ public class IdentitySamples {
     public void authenticateWithDeviceCodeCredential() {
         // authenticate with client secret,
         DeviceCodeCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
-            .challengeConsumer(challenge -> {
-                // lets user know of the challenge, e.g., display the message on an IoT device
-                displayMessage(challenge.getMessage());
-            })
-            .build();
+                .challengeConsumer(challenge -> {
+                    // lets user know of the challenge, e.g., display the message on an IoT device
+                    displayMessage(challenge.getMessage());
+                })
+                .build();
 
         SecretClient client = new SecretClientBuilder()
             .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(deviceCodeCredential)
             .buildClient();
+
+        Secret secret = client.getSecret("{SECRET_NAME}");
+        System.out.println(secret.getValue());
+    }
+
+    /**
+     * A sample for authenticating a key vault secret client with a username password credential.
+     */
+    public void authenticateWithUsernamePasswordCredential() {
+        // authenticate with client secret,
+        UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder()
+                .clientId("<YOUR_CLIENT_ID>")
+                .username("<YOUR_USERNAME>")
+                .password("<YOUR_PASSWORD>")
+                .build();
+
+        SecretClient client = new SecretClientBuilder()
+                .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .credential(usernamePasswordCredential)
+                .buildClient();
 
         KeyVaultSecret secret = client.getSecret("{SECRET_NAME}");
         System.out.println(secret.getValue());
