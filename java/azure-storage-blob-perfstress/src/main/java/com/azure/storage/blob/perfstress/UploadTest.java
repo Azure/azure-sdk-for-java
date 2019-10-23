@@ -1,7 +1,7 @@
 package com.azure.storage.blob.perfstress;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.util.UUID;
 
 import com.azure.perfstress.RandomFlux;
@@ -11,6 +11,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.perfstress.core.ContainerTest;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 
 import reactor.core.publisher.Mono;
 
@@ -29,7 +30,9 @@ public class UploadTest extends ContainerTest<SizeOptions> {
     @Override
     public void Run() {
         try {
-            _blobClient.getBlockBlobClient().upload(RandomStream.create(Options.Size), Options.Size);
+            InputStream inputStream = RandomStream.create(Options.Size);
+            BlobOutputStream blobOutputStream = _blobClient.getBlockBlobClient().getBlobOutputStream();
+            inputStream.transferTo(blobOutputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
