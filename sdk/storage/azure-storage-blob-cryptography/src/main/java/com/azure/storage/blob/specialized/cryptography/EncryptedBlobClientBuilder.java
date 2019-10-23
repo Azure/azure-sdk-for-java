@@ -343,7 +343,7 @@ public final class EncryptedBlobClientBuilder {
             this.accountName = parts.getAccountName();
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();
-            this.blobName = parts.getBlobName();
+            this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
             String sasToken = parts.getSasQueryParameters().encode();

@@ -129,12 +129,10 @@ public final class BlobUrlParts {
     /**
      * Gets the blob name that will be used as part of the URL path.
      *
-     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
-     *
      * @return the blob name.
      */
     public String getBlobName() {
-        return blobName;
+        return (blobName == null) ? null : Utility.urlDecode(blobName);
     }
 
     /**

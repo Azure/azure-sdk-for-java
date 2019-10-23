@@ -9,6 +9,7 @@ import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -287,17 +288,19 @@ public final class BlobServiceSasSignatureValues {
      * creating a container SAS.
      */
     public String getBlobName() {
-        return blobName;
+        return (blobName == null) ? null : Utility.urlDecode(blobName);
     }
 
     /**
      * Sets the blob the SAS user may access. Use {@code null} or an empty string to create a container SAS.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @param blobName The name of the blob. Use {@code null} or an empty string to create a container SAS.
      * @return The updated BlobServiceSASSignatureValues object.
      */
     public BlobServiceSasSignatureValues setBlobName(String blobName) {
-        this.blobName = blobName;
+        this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         return this;
     }
 
