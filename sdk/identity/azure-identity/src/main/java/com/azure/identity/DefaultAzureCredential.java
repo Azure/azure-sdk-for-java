@@ -10,8 +10,8 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 
 /**
- * Creates a token credential to be used in an Azure client library. It tries to create a valid credential in the
- * following order:
+ * Creates a credential using environment variables and the shared token cache. It tries to create a valid credential in
+ * the following order:
  *
  * <ol>
  * <li>{@link EnvironmentCredential}</li>
