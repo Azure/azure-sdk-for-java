@@ -59,7 +59,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.0</version>
+    <version>5.0.0-preview.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

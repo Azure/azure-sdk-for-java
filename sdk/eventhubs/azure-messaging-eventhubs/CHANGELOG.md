@@ -1,8 +1,5 @@
 # Release History
 
-## 5.0.0 (2019-10-31)
-- This release consists of API improvements, performance enhancements, samples and updated documentation.
-
 ## 5.0.0-preview.4 (2019-10-08)
 - Proxy support for Event Hubs sync and async clients.
 - `EventHubConsumer` and `EventHubAsyncConsumer` now provides last enqueued event information.

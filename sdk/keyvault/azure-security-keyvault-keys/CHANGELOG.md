@@ -1,4 +1,6 @@
 # Release History
+## 4.0.0 (2019-10-31)
+- This release consists of API improvements, performance enhancements, samples and updated documentation.
 
 ## 4.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
