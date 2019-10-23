@@ -10,7 +10,15 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 
 /**
- * The base class for a token credential to be used in an Azure client library.
+ * Creates a token credential to be used in an Azure client library. It tries to create a valid credential in the
+ * following order:
+ *
+ * <ol>
+ * <li>{@link EnvironmentCredential}</li>
+ * <li>{@link ManagedIdentityCredential}</li>
+ * <li>{@link SharedTokenCacheCredential}</li>
+ * <li>Fails if none of the credentials above could be created.</li>
+ * </ol>
  */
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
