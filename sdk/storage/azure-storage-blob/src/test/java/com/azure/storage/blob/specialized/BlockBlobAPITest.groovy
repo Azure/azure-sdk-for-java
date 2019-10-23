@@ -991,7 +991,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(4).setNumBuffers(4)
-        blobac.upload(null, parallelTransferOptions).block()
+        blobac.upload(null, parallelTransferOptions, true).block()
 
         then:
         thrown(NullPointerException)
@@ -1002,7 +1002,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(bufferSize).setNumBuffers(numBuffs)
-        blobac.upload(Flux.just(defaultData), parallelTransferOptions).block()
+        blobac.upload(Flux.just(defaultData), parallelTransferOptions, true).block()
 
         then:
         thrown(IllegalArgumentException)
