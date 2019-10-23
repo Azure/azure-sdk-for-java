@@ -69,7 +69,7 @@ public final class FileDownloadHeaders {
      * then no value is returned for the 'Content-MD5' header.
      */
     @JsonProperty(value = "Content-MD5")
-    private byte[] contentMD5;
+    private byte[] contentMd5;
 
     /*
      * Returns the value that was specified for the Content-Encoding request
@@ -377,7 +377,7 @@ public final class FileDownloadHeaders {
     }
 
     /**
-     * Get the contentMD5 property: If the file has an MD5 hash and the request
+     * Get the contentMd5 property: If the file has an MD5 hash and the request
      * is to read the full file, this response header is returned so that the
      * client can check for message content integrity. If the request is to
      * read a specified range and the 'x-ms-range-get-content-md5' is set to
@@ -386,14 +386,14 @@ public final class FileDownloadHeaders {
      * conditions is true, then no value is returned for the 'Content-MD5'
      * header.
      *
-     * @return the contentMD5 value.
+     * @return the contentMd5 value.
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(this.contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(this.contentMd5);
     }
 
     /**
-     * Set the contentMD5 property: If the file has an MD5 hash and the request
+     * Set the contentMd5 property: If the file has an MD5 hash and the request
      * is to read the full file, this response header is returned so that the
      * client can check for message content integrity. If the request is to
      * read a specified range and the 'x-ms-range-get-content-md5' is set to
@@ -402,11 +402,11 @@ public final class FileDownloadHeaders {
      * conditions is true, then no value is returned for the 'Content-MD5'
      * header.
      *
-     * @param contentMD5 the contentMD5 value to set.
+     * @param contentMd5 the contentMd5 value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+    public FileDownloadHeaders setContentMd5(byte[] contentMd5) {
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
 

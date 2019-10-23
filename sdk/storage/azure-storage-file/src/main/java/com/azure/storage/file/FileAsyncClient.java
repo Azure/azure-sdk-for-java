@@ -462,7 +462,7 @@ public class FileAsyncClient {
                 return chunks;
             }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
                 downloadWithResponse(chunk, false, context)
-                .map(Response::getValue)
+                .map(FileDownloadAsyncResponse::getValue)
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(fbb -> FluxUtil
                     .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
@@ -505,7 +505,7 @@ public class FileAsyncClient {
      */
     public Flux<ByteBuffer> download() {
         try {
-            return downloadWithResponse(null, null).flatMapMany(Response::getValue);
+            return downloadWithResponse(null, null).flatMapMany(FileDownloadAsyncResponse::getValue);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
         }

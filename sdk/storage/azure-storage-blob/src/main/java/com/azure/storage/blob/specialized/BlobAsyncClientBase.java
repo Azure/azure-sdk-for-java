@@ -589,7 +589,7 @@ public class BlobAsyncClientBase {
     public Flux<ByteBuffer> download() {
         try {
             return downloadWithResponse(null, null, null, false)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(BlobDownloadAsyncResponse::getValue);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
         }

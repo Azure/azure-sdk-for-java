@@ -294,6 +294,8 @@ directive:
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.get.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        op.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+        op.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         op.head.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.head.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete op.head.responses.default.schema;
