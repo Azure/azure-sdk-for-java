@@ -10,7 +10,7 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.ReliableDownloadOptions
 import spock.lang.Unroll
 
-class BlobDownloadResponseTest extends APISpec {
+class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
     def setup() {
