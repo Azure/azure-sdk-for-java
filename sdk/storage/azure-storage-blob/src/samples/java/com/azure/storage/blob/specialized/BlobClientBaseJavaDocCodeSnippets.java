@@ -238,7 +238,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#copyFromURLWithResponse(String, Map, AccessTier, RequestConditions,
+     * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(String, Map, AccessTier, RequestConditions,
      * BlobRequestConditions, Duration, Context)}
      */
     public void copyFromUrlWithResponseCodeSnippets() {

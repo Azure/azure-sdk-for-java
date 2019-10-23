@@ -1108,4 +1108,20 @@ class PageBlobAPITest extends APISpec {
         "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
+
+    def "Create overwrite false"() {
+        when:
+        bc.create(512)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Create overwrite true"() {
+        when:
+        bc.create(512, true)
+
+        then:
+        notThrown(Throwable)
+    }
 }

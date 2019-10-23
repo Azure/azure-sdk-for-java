@@ -6,8 +6,8 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpResponse;
 
 /**
- * The exception thrown when an unsuccessful response is received
- *  with http status code (e.g. 3XX, 4XX, 5XX) from the service request.
+ * The exception thrown when an unsuccessful response is received with http status code (e.g. 3XX, 4XX, 5XX) from the
+ * service request.
  */
 public class HttpResponseException extends AzureException {
 
@@ -22,10 +22,10 @@ public class HttpResponseException extends AzureException {
     private final HttpResponse response;
 
     /**
-     * Initializes a new instance of the HttpResponseException class.
+     * Initializes a new instance of the {@link HttpResponseException} class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
+     * @param message The exception message or the response content if a message is not available.
+     * @param response The HTTP response associated with this exception.
      */
     public HttpResponseException(final String message, final HttpResponse response) {
         super(message);
@@ -34,11 +34,11 @@ public class HttpResponseException extends AzureException {
     }
 
     /**
-     * Initializes a new instance of the HTTPResponseException class.
+     * Initializes a new instance of the {@link HttpResponseException} class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response received from Azure service
-     * @param value the deserialized response value
+     * @param message The exception message or the response content if a message is not available.
+     * @param response The HTTP response associated with this exception.
+     * @param value The deserialized response value.
      */
     public HttpResponseException(final String message, final HttpResponse response, final Object value) {
         super(message);
@@ -47,11 +47,11 @@ public class HttpResponseException extends AzureException {
     }
 
     /**
-     * Initializes a new instance of the HttpResponseException class.
+     * Initializes a new instance of the {@link HttpResponseException} class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     * @param cause the Throwable which caused the creation of this HttpResponseException
+     * @param message The exception message or the response content if a message is not available.
+     * @param response The HTTP response associated with this exception.
+     * @param cause The {@link Throwable} which caused the creation of this exception.
      */
     public HttpResponseException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, cause);
@@ -59,16 +59,19 @@ public class HttpResponseException extends AzureException {
         this.response = response;
     }
 
-
     /**
-     * @return information about the associated HTTP response
+     * Gets the associated HTTP response that caused the exception.
+     *
+     * @return Gets the associated HTTP response.
      */
     public HttpResponse getResponse() {
         return response;
     }
 
     /**
-     * @return the HTTP response value
+     * Gets the deserialized HTTP response value.
+     *
+     * @return The deserialized HTTP response value.
      */
     public Object getValue() {
         return value;

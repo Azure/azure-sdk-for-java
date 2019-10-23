@@ -991,7 +991,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(4).setNumBuffers(4)
-        blobac.upload(null, parallelTransferOptions).block()
+        blobac.upload(null, parallelTransferOptions, true).block()
 
         then:
         thrown(NullPointerException)
@@ -1002,7 +1002,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(bufferSize).setNumBuffers(numBuffs)
-        blobac.upload(Flux.just(defaultData), parallelTransferOptions).block()
+        blobac.upload(Flux.just(defaultData), parallelTransferOptions, true).block()
 
         then:
         thrown(IllegalArgumentException)
@@ -1237,7 +1237,7 @@ class BlockBlobAPITest extends APISpec {
         // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(1024).setNumBuffers(4)
-        blobac.upload(nonReplayableFlux, parallelTransferOptions).block()
+        blobac.upload(nonReplayableFlux, parallelTransferOptions, true).block()
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
         then:
@@ -1271,5 +1271,45 @@ class BlockBlobAPITest extends APISpec {
         "path%2Fto%5Da%20blob" | "path/to]a blob"
         "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
+    }
+
+    @Requires({liveMode()})
+    def "BlobClient overwrite false"() {
+        setup:
+        def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
+
+        when:
+        blobClient.uploadFromFile(file.getPath())
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Requires({liveMode()})
+    def "BlobClient overwrite true"() {
+        setup:
+        def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
+
+        when:
+        blobClient.uploadFromFile(file.getPath(), true)
+
+        then:
+        notThrown(Throwable)
+    }
+
+    def "Upload overwrite false"() {
+        when:
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Upload overwrite true"() {
+        when:
+        bc.upload(defaultInputStream.get(), defaultDataSize, true)
+
+        then:
+        notThrown(Throwable)
     }
 }

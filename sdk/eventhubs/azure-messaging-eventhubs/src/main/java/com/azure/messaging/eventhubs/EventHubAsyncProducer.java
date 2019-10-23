@@ -393,7 +393,7 @@ public class EventHubAsyncProducer implements Closeable {
             return event;
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.RECEIVE);
+            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.MESSAGE);
             if (eventSpanContext != null) {
                 Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
 

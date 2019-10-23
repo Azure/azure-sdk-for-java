@@ -24,13 +24,12 @@ public final class AmqpTraceUtil {
                 ? Status.UNKNOWN.withDescription(message)
                 : Status.UNKNOWN.withDescription(error.getClass().getSimpleName());
 
-        } else if (statusMessage.equalsIgnoreCase("success")) {
+        }
+        if (statusMessage != null && statusMessage.equalsIgnoreCase("success")) {
             // No error.
             return Status.OK;
-        } else {
-            // return status with custom error condition message
-            return Status.UNKNOWN.withDescription(statusMessage);
         }
+        // return status with custom error condition message
+        return Status.UNKNOWN.withDescription(statusMessage);
     }
 }
-
