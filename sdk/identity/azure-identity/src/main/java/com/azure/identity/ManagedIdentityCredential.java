@@ -42,7 +42,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
     }
 
     /**
-     * @return the client id of user assigned or system assigned identity.
+     * Gets the client ID of user assigned or system assigned identity.
+     * @return the client ID of user assigned or system assigned identity.
      */
     public String getClientId() {
         return this.appServiceMSICredential != null

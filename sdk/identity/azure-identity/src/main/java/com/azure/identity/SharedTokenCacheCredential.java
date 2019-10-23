@@ -22,13 +22,12 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * A credential provider that provides token credentials from the MSAL shared token cache.
- * Requires a username and client ID. If a username is not provided, then the AZURE_USERNAME
- * environment variable will be used
+ * Requires a username and client Id. If a username is not provided, then the
+ * {@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME} environment variable will be used.
  */
 public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
-    private final String clientID;
-    private final Configuration configuration;
+    private final String clientId;
 
     private PublicClientApplication pubClient;
 
@@ -36,11 +35,10 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * Creates an instance of the Shared Token Cache Credential Provider.
      *
      * @param username the username of the account for the application
-     * @param clientID the client ID of the application
-     * @param identityClientOptions the options for configuring the identity client
+     * @param clientId the client ID of the application
      */
-    SharedTokenCacheCredential(String username, String clientID, IdentityClientOptions identityClientOptions) {
-        this.configuration = Configuration.getGlobalConfiguration().clone();
+    SharedTokenCacheCredential(String username, String clientId) {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         if (username == null) {
             this.username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
@@ -48,7 +46,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
             this.username = username;
         }
 
-        this.clientID = clientID;
+        this.clientId = clientId;
     }
 
     /**
@@ -60,7 +58,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
         if (pubClient == null) {
             try {
                 PersistentTokenCacheAccessAspect accessAspect = new PersistentTokenCacheAccessAspect();
-                pubClient = PublicClientApplication.builder(this.clientID)
+                pubClient = PublicClientApplication.builder(this.clientId)
                     .setTokenCacheAccessAspect(accessAspect)
                     .build();
             } catch (Exception e) {
