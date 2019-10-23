@@ -10,6 +10,7 @@ import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Permission;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -172,13 +173,14 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database){
         return database.read().onErrorResume(exception -> {
-            if (exception instanceof CosmosClientException) {
-                CosmosClientException cosmosClientException = (CosmosClientException) exception;
+            final Throwable unwrappedException = Exceptions.unwrap(exception);
+            if (unwrappedException instanceof CosmosClientException) {
+                final CosmosClientException cosmosClientException = (CosmosClientException) unwrappedException;
                 if (cosmosClientException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                     return createDatabase(new CosmosDatabaseProperties(database.getId()), new CosmosDatabaseRequestOptions());
                 }
             }
-            return Mono.error(exception);
+            return Mono.error(unwrappedException);
         });
     }
 

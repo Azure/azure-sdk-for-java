@@ -76,23 +76,25 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
 
         Function<? super Throwable, ? extends Flux<? extends FeedResponse<T>>> func  = t -> {
 
-            logger.debug("Received non result message from gateway", t);
-            if (!(t instanceof Exception)) {
-                logger.error("Unexpected failure", t);
-                return Flux.error(t);
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(t);
+
+            logger.debug("Received non result message from gateway", unwrappedException);
+            if (!(unwrappedException instanceof Exception)) {
+                logger.error("Unexpected failure", unwrappedException);
+                return Flux.error(unwrappedException);
             }
             
-            if (!isCrossPartitionQuery((Exception) t)) {
+            if (!isCrossPartitionQuery((Exception) unwrappedException)) {
                 // If this is not a cross partition query then propagate error
-                logger.debug("Failure from gateway", t);
-                return Flux.error(t);
+                logger.debug("Failure from gateway", unwrappedException);
+                return Flux.error(unwrappedException);
             }
 
             logger.debug("Setting up query pipeline using the query plan received form gateway");
 
             // cross partition query construct pipeline
 
-            CosmosClientException dce = (CosmosClientException) t;
+            CosmosClientException dce = (CosmosClientException) unwrappedException;
 
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo = new
                     PartitionedQueryExecutionInfo(dce.getError().getPartitionedQueryExecutionInfo());
