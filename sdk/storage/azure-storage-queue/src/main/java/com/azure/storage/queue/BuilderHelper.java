@@ -166,9 +166,11 @@ final class BuilderHelper {
     private static void loadLogOptions(final HttpLogOptions logOptions) {
         Objects.requireNonNull(logOptions);
 
-        logOptions.setAllowedHeaderNames(StorageAllowedHeadersAndQueries.QueueHeadersAndQueries.getQueueHeaders());
+        StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobHeaders().stream()
+            .map(logOptions::addAllowedHeaderName);
 
-        logOptions.setAllowedQueryParamNames(StorageAllowedHeadersAndQueries.QueueHeadersAndQueries.getQueueQueries());
+        StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobQueries().stream()
+            .map(logOptions::addAllowedQueryParamName);
     }
 
     /*

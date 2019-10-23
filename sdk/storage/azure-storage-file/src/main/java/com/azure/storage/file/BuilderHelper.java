@@ -98,11 +98,11 @@ final class BuilderHelper {
     private static void loadLogOptions(final HttpLogOptions logOptions) {
         Objects.requireNonNull(logOptions);
 
-        logOptions.setAllowedHeaderNames(StorageAllowedHeadersAndQueries.FileShareHeadersAndQueries
-            .getFileShareHeaders());
+        StorageAllowedHeadersAndQueries.FileShareHeadersAndQueries.getFileShareHeaders().stream()
+            .map(logOptions::addAllowedHeaderName);
 
-        logOptions.setAllowedQueryParamNames(StorageAllowedHeadersAndQueries.FileShareHeadersAndQueries
-            .getFileShareQueries());
+        StorageAllowedHeadersAndQueries.FileShareHeadersAndQueries.getFileShareQueries().stream()
+            .map(logOptions::addAllowedQueryParamName);
     }
 
     /*

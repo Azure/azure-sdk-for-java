@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.implementation;
 
 import java.util.HashSet;
@@ -7,7 +10,7 @@ import java.util.stream.Stream;
 
 public class StorageAllowedHeadersAndQueries {
     public static class BlobHeadersAndQueries {
-        private static Set<String> blobHeaders = Stream.of(
+        private static Set<String> BLOB_HEADERS = Stream.of(
             "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
             "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
             "x-ms-request-id", "x-ms-return-client-request-id", "x-ms-version", "Accept-Ranges", "Content-Disposition",
@@ -34,22 +37,22 @@ public class StorageAllowedHeadersAndQueries {
             .collect(Collectors.toCollection(HashSet::new));
 
         public static Set<String> getBlobHeaders() {
-            return blobHeaders;
+            return BLOB_HEADERS;
         }
 
-        private static Set<String> blobQueries = Stream.of(
+        private static Set<String> BLOB_QUERIES = Stream.of(
             "comp", "maxresults", "rscc", "rscd", "rsce", "rscl", "rsct", "se", "si", "sip", "sp", "spr", "sr", "srt",
             "ss", "st", "sv", "include", "marker", "prefix", "copyid", "restype", "blockid", "blocklisttype",
             "delimiter", "prevsnapshot", "ske", "skoid", "sks", "skt", "sktid", "skv", "snapshot")
             .collect(Collectors.toCollection(HashSet::new));
 
         public static Set<String> getBlobQueries() {
-            return blobQueries;
+            return BLOB_QUERIES;
         }
     }
 
     public static class FileShareHeadersAndQueries {
-        private static Set<String> fileShareHeaders = Stream.of(
+        private static Set<String> FILE_SHARE_HEADERS = Stream.of(
             "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
             "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
             "x-ms-request-id", "x-ms-return-client-request-id", "x-ms-version", "Accept-Ranges", "Content-Disposition",
@@ -66,21 +69,21 @@ public class StorageAllowedHeadersAndQueries {
             .collect(Collectors.toCollection(HashSet::new));
 
         public static Set<String> getFileShareHeaders() {
-            return fileShareHeaders;
+            return FILE_SHARE_HEADERS;
         }
 
-        private static Set<String> fileShareQueries = Stream.of(
+        private static Set<String> FILE_SHARE_QUERIES = Stream.of(
             "comp", "maxresults", "rscc", "rscd", "rsce", "rscl", "rsct", "se", "si", "sip", "sp", "spr", "sr", "srt",
             "ss", "st", "sv", "copyid", "restype")
             .collect(Collectors.toCollection(HashSet::new));
 
         public static Set<String> getFileShareQueries() {
-            return fileShareQueries;
+            return FILE_SHARE_QUERIES;
         }
     }
 
     public static class QueueHeadersAndQueries {
-        private static Set<String> queueHeaders = Stream.of(
+        private static Set<String> QUEUE_HEADERS = Stream.of(
             "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
             "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
             "x-ms-request-id", "x-ms-return-client-request-id", "x-ms-version", "x-ms-approximate-messages-count",
@@ -88,17 +91,17 @@ public class StorageAllowedHeadersAndQueries {
             .collect(Collectors.toCollection(HashSet::new));
 
         public static Set<String> getQueueHeaders() {
-            return queueHeaders;
+            return QUEUE_HEADERS;
         }
 
-        private static Set<String> queueQueries = Stream.of(
+        private static Set<String> QUEUE_QUERIES = Stream.of(
             "comp", "maxresults", "rscc", "rscd", "rsce", "rscl", "rsct", "se", "si", "sip", "sp", "spr", "sr", "srt",
             "ss", "st", "sv", "include", "marker", "prefix", "messagettl", "numofmessages", "peekonly", "popreceipt",
             "visibilitytimeout")
             .collect(Collectors.toCollection(HashSet::new));
 
         public static Set<String> getQueueQueries() {
-            return queueQueries;
+            return QUEUE_QUERIES;
         }
     }
 }

@@ -201,9 +201,11 @@ public final class EncryptedBlobClientBuilder {
     private static void loadLogOptions(final HttpLogOptions logOptions) {
         Objects.requireNonNull(logOptions);
 
-        logOptions.setAllowedHeaderNames(StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobHeaders());
+        StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobHeaders().stream()
+            .map(logOptions::addAllowedHeaderName);
 
-        logOptions.setAllowedQueryParamNames(StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobQueries());
+        StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobQueries().stream()
+            .map(logOptions::addAllowedQueryParamName);
     }
 
     /**
