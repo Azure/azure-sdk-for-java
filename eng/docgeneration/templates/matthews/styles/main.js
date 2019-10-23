@@ -3,7 +3,7 @@ var containers = $(".container");
 containers.removeClass("container");
 containers.addClass("container-fluid");
 
-var SELECTED_LANGUAGE = 'dotnet'
+var SELECTED_LANGUAGE = 'java'
 
 // Navbar Hamburger
 $(function () {

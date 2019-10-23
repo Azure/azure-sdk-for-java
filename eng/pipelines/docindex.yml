@@ -34,7 +34,9 @@ jobs:
           Copy-Item "$(Build.SourcesDirectory)/eng/docgeneration/docfx.json" -Destination "$(Build.SourcesDirectory)/docfx_project/" -Force
         displayName: Copy over docfx.json
       - pwsh: |
-          $ServiceListMgmt = Get-ChildItem "$(Build.SourcesDirectory)" -Directory -Exclude .azure-pipelines, .github, eng, sdk, template
+          # Right now the ServiceList is only going to include Client/Data. Management is still
+          # in the process of being moved into the unified pipelines and is not yet in the sdk
+          # directory/pipelines.
           $ServiceListData = Get-ChildItem "$(Build.SourcesDirectory)/sdk" -Directory
           $YmlPath = "$(Build.SourcesDirectory)/docfx_project/api"
           New-Item -Path $YmlPath -Name "toc.yml" -Force
@@ -63,28 +65,8 @@ jobs:
                   Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $PkgName"
               }
           }
-          foreach ($Dir in $ServiceListMgmt)
-          {    
-              if(Test-Path "$($YmlPath)\$($Dir.Name).md")
-              { 
-                  #Write-Host "$($Dir.Name) to Toc.yml"
-                  Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($Dir.Name.ToUpper())`r`n  href: $($Dir.Name).md"      
-              }
-              else
-              {
-                  New-Item -Path $YmlPath -Name "$($Dir.Name).md" -Force
-                  
-                  #Write-Host "$($Dir.Name) to Toc.yml"
-                  Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($Dir.Name.ToUpper())`r`n  href: $($Dir.Name).md"
-              }
-              #Write-Host "Write Mgmt Header"
-              Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# MANAGEMENT"
-              $PkgName = "azure-mgmt-$($Dir.Name)"
-              Write-Host "Write $($PkgName) to $($Dir.Name).md"
-              Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $PkgName"
-          }
           New-Item -Path "$(Build.SourcesDirectory)/docfx_project" -Name "toc.yml" -Force
-          Add-Content -Path "$(Build.SourcesDirectory)/docfx_project/toc.yml" -Value "- name: Azure SDK for Net Apis`r`n  href: api/`r`n  homepage: api/index.md"
+          Add-Content -Path "$(Build.SourcesDirectory)/docfx_project/toc.yml" -Value "- name: Azure SDK for Java Apis`r`n  href: api/`r`n  homepage: api/index.md"
           Copy-Item "$(Build.SourcesDirectory)/README.md" -Destination "$(Build.SourcesDirectory)/docfx_project/api/index.md" -Force
         displayName: Create main index and navigation toc.yml, copy over readme.
       - pwsh: ls
