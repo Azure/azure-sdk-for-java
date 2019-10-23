@@ -292,7 +292,7 @@ public final class KeyAsyncClient {
      * type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires
      * the {@code keys/create} permission.
      *
-     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurve() key curve} can be
+     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurveName() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link CreateEcKeyOptions#getExpiresOn() expires} and {@link CreateEcKeyOptions#getNotBefore() notBefore}
      * values are optional. The {@link CreateEcKeyOptions#isEnabled() enabled} field is set to true by Azure Key Vault,
@@ -327,7 +327,7 @@ public final class KeyAsyncClient {
      * type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires
      * the {@code keys/create} permission.
      *
-     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurve() key curve} can be
+     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurveName() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link CreateEcKeyOptions#getExpiresOn() expires} and {@link CreateEcKeyOptions#getNotBefore() notBefore}
      * values are optional. The {@link CreateEcKeyOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if
@@ -362,7 +362,7 @@ public final class KeyAsyncClient {
         Objects.requireNonNull(createEcKeyOptions, "The Ec key options cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createEcKeyOptions.getKeyType())
-            .setCurve(createEcKeyOptions.getCurve())
+            .setCurve(createEcKeyOptions.getCurveName())
             .setKeyOps(createEcKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions));
         return service.createKey(endpoint, createEcKeyOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
