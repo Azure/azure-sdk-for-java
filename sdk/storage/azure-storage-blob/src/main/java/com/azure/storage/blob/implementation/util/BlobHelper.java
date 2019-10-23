@@ -8,6 +8,8 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 
+import java.util.Objects;
+
 /**
  * The blob helper takes in the blob related client and has helper methods on getting the properties of the client.
  */
@@ -24,9 +26,7 @@ public final class BlobHelper {
      * @param newAccessor
      */
     public static void setAsyncPropertyAccessor(final AsyncPropertyAccessor newAccessor) {
-        if (newAccessor == null) {
-            throw new IllegalStateException();
-        }
+        Objects.requireNonNull(newAccessor);
         asyncPropertyAccessor = newAccessor;
     }
 
@@ -77,9 +77,7 @@ public final class BlobHelper {
      * @param newAccessor
      */
     public static void setSyncPropertyAccessor(final SyncPropertyAccessor newAccessor) {
-        if (newAccessor == null) {
-            throw new IllegalStateException();
-        }
+        Objects.requireNonNull(newAccessor);
         syncPropertyAccessor = newAccessor;
     }
 

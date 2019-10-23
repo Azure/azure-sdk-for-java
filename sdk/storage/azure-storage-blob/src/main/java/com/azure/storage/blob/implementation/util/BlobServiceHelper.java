@@ -8,6 +8,8 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CpkInfo;
 
+import java.util.Objects;
+
 /**
  * The blob service helper takes in the blob service related client and
  * has helper methods on getting the properties of the client.
@@ -25,9 +27,7 @@ public final class BlobServiceHelper {
      * @param newAccessor
      */
     public static void setAsyncPropertyAccessor(final AsyncPropertyAccessor newAccessor) {
-        if (newAccessor == null) {
-            throw new IllegalStateException();
-        }
+        Objects.requireNonNull(newAccessor);
         asyncPropertyAccessor = newAccessor;
     }
 
@@ -78,9 +78,7 @@ public final class BlobServiceHelper {
      * @param newAccessor
      */
     public static void setSyncPropertyAccessor(final SyncPropertyAccessor newAccessor) {
-        if (newAccessor == null) {
-            throw new IllegalStateException();
-        }
+        Objects.requireNonNull(newAccessor);
         syncPropertyAccessor = newAccessor;
     }
 

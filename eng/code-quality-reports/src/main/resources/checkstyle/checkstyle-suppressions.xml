@@ -218,7 +218,12 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.BlobClient.java"/>
 
   <!-- Suppress the public API checking for impl as it is intended to make it visible to other internal helper class.-->
-  <suppress checks="NoImplInPublicAPI" files="com[/\\]azure[/\\]storage[/\\]blob[/\\].*"/>
+  <suppress checks="NoImplInPublicAPI" files="com.azure.storage.blob.BlobServiceAsyncClient"/>
+  <suppress checks="NoImplInPublicAPI" files="com.azure.storage.blob.BlobServiceClient"/>
+  <suppress checks="NoImplInPublicAPI" files="com.azure.storage.blob.BlobContainerAsyncClient"/>
+  <suppress checks="NoImplInPublicAPI" files="com.azure.storage.blob.BlobContainerClient"/>
+  <suppress checks="NoImplInPublicAPI" files="com.azure.storage.blob.specialized.BlobAsyncClientBase"/>
+  <suppress checks="NoImplInPublicAPI" files="com.azure.storage.blob.specialized.BlobClientBase"/>
 
   <!-- Checkstyle rules should not check files in generated-test-sources -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]generated-test-sources[/\\]"/>

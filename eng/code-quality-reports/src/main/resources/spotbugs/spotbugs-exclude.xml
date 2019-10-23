@@ -626,12 +626,6 @@
   <Match>
     <Or>
       <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
-      <Class name="com.azure.storage.blob.BlobContainerAsyncClient"/>
-      <Class name="com.azure.storage.blob.BlobContainerClient"/>
-      <Class name="com.azure.storage.blob.BlobServiceAsyncClient"/>
-      <Class name="com.azure.storage.blob.BlobServiceClient"/>
-      <Class name="com.azure.storage.blob.specialized.BlobAsyncClientBase"/>
-      <Class name="com.azure.storage.blob.specialized.BlobClientBase"/>
       <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
     </Or>
   </Match>

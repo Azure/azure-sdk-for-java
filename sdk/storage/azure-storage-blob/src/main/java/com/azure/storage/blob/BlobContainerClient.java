@@ -58,22 +58,7 @@ public final class BlobContainerClient {
      */
     BlobContainerClient(BlobContainerAsyncClient client) {
         this.client = client;
-        BlobContainerHelper.setSyncPropertyAccessor(new BlobContainerHelper.SyncPropertyAccessor() {
-            @Override
-            public AzureBlobStorageImpl getAzureBlobStorageImpl() {
-                return BlobContainerHelper.getAzureBlobStorageImpl(client);
-            }
-
-            @Override
-            public CpkInfo getCustomerProvidedKey() {
-                return BlobContainerHelper.getCustomerProvidedKey(client);
-            }
-
-            @Override
-            public BlobServiceVersion getServiceVersion() {
-                return BlobContainerHelper.getServiceVersion(client);
-            }
-        });
+        BlobContainerHelper.setSyncPropertyAccessor(new BlobContainerPropertyAccessor());
     }
 
 
@@ -570,5 +555,22 @@ public final class BlobContainerClient {
      */
     CpkInfo getCustomerProvidedKey() {
         return BlobContainerHelper.getCustomerProvidedKey(client);
+    }
+
+    private class BlobContainerPropertyAccessor implements BlobContainerHelper.SyncPropertyAccessor {
+        @Override
+        public AzureBlobStorageImpl getAzureBlobStorageImpl() {
+            return BlobContainerHelper.getAzureBlobStorageImpl(client);
+        }
+
+        @Override
+        public CpkInfo getCustomerProvidedKey() {
+            return BlobContainerHelper.getCustomerProvidedKey(client);
+        }
+
+        @Override
+        public BlobServiceVersion getServiceVersion() {
+            return BlobContainerHelper.getServiceVersion(client);
+        }
     }
 }

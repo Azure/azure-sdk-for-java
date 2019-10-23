@@ -118,22 +118,7 @@ public class BlobAsyncClientBase {
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
 
-        BlobHelper.setAsyncPropertyAccessor(new BlobHelper.AsyncPropertyAccessor() {
-            @Override
-            public AzureBlobStorageImpl getAzureBlobStorageImpl(final BlobAsyncClientBase client) {
-                return client.azureBlobStorage;
-            }
-
-            @Override
-            public CpkInfo getCustomerProvidedKey(final BlobAsyncClientBase client) {
-                return client.customerProvidedKey;
-            }
-
-            @Override
-            public BlobServiceVersion getServiceVersion(BlobAsyncClientBase client) {
-                return client.serviceVersion;
-            }
-        });
+        BlobHelper.setAsyncPropertyAccessor(new BlobPropertyAccessor());
     }
 
     /**
@@ -1257,5 +1242,22 @@ public class BlobAsyncClientBase {
                 BlobGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
             });
+    }
+
+    private class BlobPropertyAccessor implements BlobHelper.AsyncPropertyAccessor {
+        @Override
+        public AzureBlobStorageImpl getAzureBlobStorageImpl(final BlobAsyncClientBase client) {
+            return client.azureBlobStorage;
+        }
+
+        @Override
+        public CpkInfo getCustomerProvidedKey(final BlobAsyncClientBase client) {
+            return client.customerProvidedKey;
+        }
+
+        @Override
+        public BlobServiceVersion getServiceVersion(BlobAsyncClientBase client) {
+            return client.serviceVersion;
+        }
     }
 }

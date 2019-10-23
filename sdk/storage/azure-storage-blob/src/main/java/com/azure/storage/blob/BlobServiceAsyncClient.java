@@ -94,22 +94,7 @@ public final class BlobServiceAsyncClient {
         this.accountName = accountName;
         this.customerProvidedKey = customerProvidedKey;
 
-        BlobServiceHelper.setAsyncPropertyAccessor(new BlobServiceHelper.AsyncPropertyAccessor() {
-            @Override
-            public AzureBlobStorageImpl getAzureBlobStorageImpl(final BlobServiceAsyncClient client) {
-                return client.azureBlobStorage;
-            }
-
-            @Override
-            public CpkInfo getCustomerProvidedKey(final BlobServiceAsyncClient client) {
-                return client.customerProvidedKey;
-            }
-
-            @Override
-            public BlobServiceVersion getServiceVersion(final BlobServiceAsyncClient client) {
-                return client.serviceVersion;
-            }
-        });
+        BlobServiceHelper.setAsyncPropertyAccessor(new BlobServicePropertyAccessor());
     }
 
     /**
@@ -559,5 +544,22 @@ public final class BlobServiceAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    private class BlobServicePropertyAccessor implements BlobServiceHelper.AsyncPropertyAccessor {
+        @Override
+        public AzureBlobStorageImpl getAzureBlobStorageImpl(final BlobServiceAsyncClient client) {
+            return client.azureBlobStorage;
+        }
+
+        @Override
+        public CpkInfo getCustomerProvidedKey(final BlobServiceAsyncClient client) {
+            return client.customerProvidedKey;
+        }
+
+        @Override
+        public BlobServiceVersion getServiceVersion(final BlobServiceAsyncClient client) {
+            return client.serviceVersion;
+        }
     }
 }

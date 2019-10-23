@@ -8,6 +8,8 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 
+import java.util.Objects;
+
 /**
  * The blob lease helper takes in the blob lease sync and async client and
  * has helper methods on getting the properties of the client.
@@ -25,9 +27,7 @@ public final class BlobLeaseHelper {
      * @param newAccessor the accessor contains property value.
      */
     public static void setAsyncPropertyAccessor(final AsyncPropertyAccessor newAccessor) {
-        if (newAccessor == null) {
-            throw new IllegalStateException();
-        }
+        Objects.requireNonNull(newAccessor);
         asyncPropertyAccessor = newAccessor;
     }
 
@@ -78,9 +78,7 @@ public final class BlobLeaseHelper {
      * @param newAccessor
      */
     public static void setSyncPropertyAccessor(final BlobContainerHelper.SyncPropertyAccessor newAccessor) {
-        if (newAccessor == null) {
-            throw new IllegalStateException();
-        }
+        Objects.requireNonNull(newAccessor);
         syncPropertyAccessor = newAccessor;
     }
 
