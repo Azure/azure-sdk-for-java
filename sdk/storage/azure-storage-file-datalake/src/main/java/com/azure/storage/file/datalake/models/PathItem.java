@@ -8,6 +8,7 @@ import com.azure.storage.file.datalake.implementation.models.PathCreateHeaders;
 import com.sun.scenario.effect.Offset;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * {@code PathItem} contains basic information about a path item that is returned by the service after certain
@@ -30,10 +31,14 @@ public class PathItem {
 
     public PathItem(Path path) {
         this.eTag = path.getETag();
-        this.lastModifiedTime = OffsetDateTime.parse(path.getLastModified());
+        this.lastModifiedTime = OffsetDateTime.parse(path.getLastModified(), DateTimeFormatter.RFC_1123_DATE_TIME);
         this.contentLength = path.getContentLength();
         this.group = path.getGroup();
-        this.isDirectory = path.isDirectory();
+        if (path.isDirectory() != null) {
+            this.isDirectory = path.isDirectory();
+        } else {
+            this.isDirectory = false;
+        }
         this.name = path.getName();
         this.owner = path.getOwner();
         this.permissions = path.getPermissions();
@@ -51,5 +56,29 @@ public class PathItem {
      */
     public OffsetDateTime getLastModifiedTime() {
         return lastModifiedTime;
+    }
+
+    public long getContentLength() {
+        return contentLength;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public boolean isDirectory() {
+        return isDirectory;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public String getPermissions() {
+        return permissions;
     }
 }

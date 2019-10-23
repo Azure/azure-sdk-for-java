@@ -2,12 +2,14 @@ package com.azure.storage.file.datalake
 
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.file.datalake.implementation.models.FileSystem
 import com.azure.storage.file.datalake.models.LeaseAccessConditions
 import com.azure.storage.file.datalake.models.ModifiedAccessConditions
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
+import com.azure.storage.file.datalake.models.PathItem
 import com.azure.storage.file.datalake.models.PublicAccessType
 import spock.lang.Unroll
 
@@ -126,7 +128,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getPropertiesWithResponse(new LeaseAccessConditions().setLeaseId("garbage"), null, null)
 
         then:
-        thrown(Exception)
+        thrown(BlobStorageException)
     }
 
     def "Get properties error"() {
@@ -137,7 +139,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getProperties()
 
         then:
-        thrown(Exception)
+        thrown(BlobStorageException)
     }
 
     def "Set metadata"() {
@@ -193,13 +195,13 @@ class FileSystemAPITest extends APISpec {
     def "Set metadata AC"() {
         setup:
         leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
-        def cac = new FileSystemAccessConditions()
+        def fsac = new FileSystemAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfModifiedSince(modified))
 
         expect:
-        fsc.setMetadataWithResponse(null, cac, null, null).getStatusCode() == 200
+        fsc.setMetadataWithResponse(null, fsac, null, null).getStatusCode() == 200
 
         where:
         modified | leaseID
@@ -211,16 +213,16 @@ class FileSystemAPITest extends APISpec {
     @Unroll
     def "Set metadata AC fail"() {
         setup:
-        def cac = new FileSystemAccessConditions()
+        def fsac = new FileSystemAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfModifiedSince(modified))
 
         when:
-        fsc.setMetadataWithResponse(null, cac, null, null)
+        fsc.setMetadataWithResponse(null, fsac, null, null)
 
         then:
-        thrown(Exception)
+        thrown(BlobStorageException)
 
         where:
         modified | leaseID
@@ -257,7 +259,7 @@ class FileSystemAPITest extends APISpec {
         fsc.setMetadata(null)
 
         then:
-        thrown(Exception)
+        thrown(BlobStorageException)
     }
 
     def "Delete"() {
@@ -357,11 +359,39 @@ class FileSystemAPITest extends APISpec {
     }
 
     def "List paths"() {
+        setup:
+        def dirName = generatePathName()
+        fsc.getDirectoryClient(dirName).create()
+
+        def fileName = generatePathName()
+        fsc.getFileClient(fileName).create()
+
         when:
-        def result = fsc.getPaths()
+        def response = fsc.getPaths().iterator()
 
         then:
-        notThrown(StorageErrorException)
-        result.iterator().size() > 0
+        def dirPath = response.next()
+        dirPath.getName() == dirName
+//        dirPath.getETag()
+        dirPath.getGroup()
+        dirPath.getLastModifiedTime()
+        dirPath.getOwner()
+        dirPath.getPermissions()
+//        dirPath.getContentLength()
+        dirPath.isDirectory()
+
+        response.hasNext()
+        def filePath = response.next()
+        filePath.getName() == fileName
+//        filePath.getETag()
+        filePath.getGroup()
+        filePath.getLastModifiedTime()
+        filePath.getOwner()
+        filePath.getPermissions()
+//        filePath.getContentLength()
+        !filePath.isDirectory()
+
+        !response.hasNext()
+
     }
 }

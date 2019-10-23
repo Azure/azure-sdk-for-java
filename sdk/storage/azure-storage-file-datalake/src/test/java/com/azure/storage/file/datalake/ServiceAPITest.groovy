@@ -48,12 +48,12 @@ class ServiceAPITest extends APISpec {
             primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())
         }
 
-        Iterator<BlobContainerItem> listResponse = primaryDataLakeServiceClient.listFileSystems().iterator()
-        String firstContainerName = listResponse.next().getName()
+        def listResponse = primaryDataLakeServiceClient.listFileSystems().iterator()
+        def firstFileSystemName = listResponse.next().getName()
 
         expect:
         // Assert that the second segment is indeed after the first alphabetically
-        firstContainerName < listResponse.next().getName()
+        firstFileSystemName < listResponse.next().getName()
     }
 
     def "List file systems details"() {
@@ -74,20 +74,24 @@ class ServiceAPITest extends APISpec {
 
     def "List file systems maxResults"() {
         setup:
-        def NUM_CONTAINERS = 5
+        def NUM_FILESYSTEMS = 5
         def PAGE_RESULTS = 3
+        def fileSystemName = generateFileSystemName()
+        def fileSystemPrefix = fileSystemName.substring(0, Math.min(60, fileSystemName.length()))
 
-        def containers = [] as Collection<FileSystemClient>
-        for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())
+        def fileSystems = [] as Collection<FileSystemClient>
+        for (i in (1..NUM_FILESYSTEMS)) {
+            fileSystems << primaryDataLakeServiceClient.createFileSystem(fileSystemPrefix + i)
         }
 
         expect:
-        primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setMaxResultsPerPage(PAGE_RESULTS), null)
+        primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
+            .setPrefix(fileSystemPrefix)
+            .setMaxResultsPerPage(PAGE_RESULTS), null)
             .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
 
         cleanup:
-        containers.each { container -> container.delete() }
+        fileSystems.each { fileSystem -> fileSystem.delete() }
     }
 
     def "List file systems error"() {
@@ -100,12 +104,12 @@ class ServiceAPITest extends APISpec {
 
     def "List file systems with timeout still backed by PagedFlux"() {
         setup:
-        def NUM_CONTAINERS = 5
+        def NUM_FILESYSTEMS = 5
         def PAGE_RESULTS = 3
 
-        def containers = [] as Collection<FileSystemClient>
-        for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())
+        def fileSystems = [] as Collection<FileSystemClient>
+        for (i in (1..NUM_FILESYSTEMS)) {
+            fileSystems << primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())
         }
 
         when: "Consume results by page"
@@ -115,7 +119,7 @@ class ServiceAPITest extends APISpec {
         notThrown(Exception)
 
         cleanup:
-        containers.each { container -> container.delete() }
+        fileSystems.each { fileSystem -> fileSystem.delete() }
     }
 
     def "Get UserDelegationKey"() {
