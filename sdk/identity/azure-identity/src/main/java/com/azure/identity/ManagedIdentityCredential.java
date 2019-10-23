@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Immutable
 public final class ManagedIdentityCredential implements TokenCredential {
     private final AppServiceMsiCredential appServiceMSICredential;
-    private final VirtualMachineMSICredential virtualMachineMSICredential;
+    private final VirtualMachineMsiCredential virtualMachineMSICredential;
 
     /**
      * Creates an instance of the ManagedIdentityCredential.
@@ -36,7 +36,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             appServiceMSICredential = new AppServiceMsiCredential(clientId, identityClient);
             virtualMachineMSICredential = null;
         } else {
-            virtualMachineMSICredential = new VirtualMachineMSICredential(clientId, identityClient);
+            virtualMachineMSICredential = new VirtualMachineMsiCredential(clientId, identityClient);
             appServiceMSICredential = null;
         }
     }
