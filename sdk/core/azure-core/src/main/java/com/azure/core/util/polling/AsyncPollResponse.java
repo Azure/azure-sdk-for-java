@@ -12,7 +12,7 @@ import java.util.function.BiFunction;
 
 /**
  * AsyncPollResponse represents an event emitted by the {@link PollerFlux} that asynchronously polls
- * a long-running operation (LRO) An AsyncPollResponse event provides information such as the current
+ * a long-running operation (LRO). An AsyncPollResponse event provides information such as the current
  * {@link LongRunningOperationStatus status} of the LRO, any {@link #getValue value} returned
  * in the poll, as well as other useful information provided by the service.
  * AsyncPollResponse also exposes {@link #cancelOperation} method to cancel the long-running operation
