@@ -1,6 +1,6 @@
 # Release History
 
-## Version 12.0.0 (2019-10-31)
+## Version 12.0.0-preview.5 (2019-10-31)
 - This release consists of API improvements, performance enhancements, samples and updated documentation.
 
 ## Version 12.0.0-preview.4 (2019-10-8)
