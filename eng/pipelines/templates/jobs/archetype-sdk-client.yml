@@ -67,6 +67,13 @@ jobs:
 
       - template: ../steps/cache-maven-repository.yml
 
+      - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
+        parameters:
+          TargetFolder: $(Build.SourcesDirectory)
+          RootFolder: $(Build.SourcesDirectory)
+          BuildSHA: $(Build.SourceVersion)
+          RepoId: 'Azure/azure-sdk-for-java'      
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:

@@ -39,7 +39,6 @@ Use [TestBase][TestBase.java] to easily create live and playback test cases. Ext
 // Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
 // live. By default, tests are run in playback mode.
 public class SessionTests extends TestBase {
-    @Test
     public void fooTest() {
         // Do some network calls.
     }
