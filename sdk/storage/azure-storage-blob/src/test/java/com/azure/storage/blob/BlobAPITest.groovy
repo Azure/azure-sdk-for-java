@@ -16,13 +16,13 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
+import com.azure.storage.blob.models.DownloadRetryOptions
 
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
-import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
@@ -104,7 +104,7 @@ class BlobAPITest extends APISpec {
     def "Download with retry range"() {
         /*
         We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
-        a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
+        a retry per the DownloadRetryOptions. The next request should have the same range header, which was generated
         from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
         don't need to check the data here, but we want to ensure that the correct range is set each time. This will
         test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it was
@@ -115,7 +115,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def range = new BlobRange(2, 5L)
-        def options = new ReliableDownloadOptions().setMaxRetryRequests(3)
+        def options = new DownloadRetryOptions().setMaxRetryRequests(3)
         bu2.downloadWithResponse(new ByteArrayOutputStream(), range, options, null, false, null, null)
 
         then:
