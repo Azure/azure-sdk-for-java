@@ -43,6 +43,6 @@ public class SharedTokenCacheCredentialBuilder extends CredentialBuilderBase<Man
      * @return a {@link SharedTokenCacheCredentialBuilder} with the current configurations.
      */
     public SharedTokenCacheCredential build() {
-        return new SharedTokenCacheCredential(username, clientId);
+        return new SharedTokenCacheCredential(username, clientId, identityClientOptions);
     }
 }

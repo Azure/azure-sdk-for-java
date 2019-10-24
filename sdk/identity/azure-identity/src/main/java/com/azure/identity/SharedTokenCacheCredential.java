@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
@@ -35,8 +36,9 @@ public class SharedTokenCacheCredential implements TokenCredential {
      *
      * @param username the username of the account for the application
      * @param clientId the client ID of the application
+     * @param identityClientOptions the options for configuring the identity client
      */
-    SharedTokenCacheCredential(String username, String clientId) {
+    SharedTokenCacheCredential(String username, String clientId, IdentityClientOptions identityClientOptions) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         if (username == null) {
