@@ -118,7 +118,7 @@ public class ListOperationsAsync {
         semaphore.acquire();
         // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
-        client.listSecrets()
+        client.listPropertiesOfSecrets()
             .subscriberContext(traceContext)
             .subscribe(secretBase -> client.getSecret(secretBase)
                 .subscriberContext(traceContext)

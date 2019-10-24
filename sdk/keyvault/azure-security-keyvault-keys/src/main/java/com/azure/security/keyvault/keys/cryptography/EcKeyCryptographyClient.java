@@ -8,13 +8,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
+import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 import java.security.KeyPair;
@@ -44,27 +44,25 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     EcKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
         super(serviceClient);
         this.provider = Security.getProvider("SunEC");
-        this.keyPair = key.toEC(key.hasPrivateKey(), provider);
+        this.keyPair = key.toEc(key.hasPrivateKey(), provider);
         this.serviceClient = serviceClient;
     }
 
     private KeyPair getKeyPair(JsonWebKey key) {
         if (keyPair == null) {
-            keyPair = key.toEC(key.hasPrivateKey());
+            keyPair = key.toEc(key.hasPrivateKey());
         }
         return keyPair;
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
-                                     byte[] authenticationData, Context context, JsonWebKey key) {
+    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv,
-                                     byte[] authenticationData, byte[] authenticationTag, Context context,
+    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context,
                                      JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Decrypt operation is not supported for EC key"));
@@ -104,7 +102,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
 
         try {
-            return Mono.just(new SignResult(signer.sign(digest), algorithm));
+            return Mono.just(new SignResult(signer.sign(digest), algorithm, key.getId()));
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -146,20 +144,20 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
 
         try {
-            return Mono.just(new VerifyResult(signer.verify(digest, signature)));
+            return Mono.just(new VerifyResult(signer.verify(digest, signature), algorithm, key.getId()));
         } catch (Exception e) {
             return Mono.error(e);
         }
     }
 
     @Override
-    Mono<KeyWrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey webKey) {
+    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey webKey) {
         return Mono.error(new UnsupportedOperationException("Wrap key operation is not supported for EC key"));
     }
 
     @Override
-    Mono<KeyUnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
-                                         JsonWebKey key) {
+    Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
+                                      JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Unwrap key operation is not supported for Ec key"));
     }

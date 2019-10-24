@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
@@ -25,24 +25,24 @@ public class ListOperations {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretClient client = new SecretClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
-        client.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
+        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.now().plusYears(1))));
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
-        client.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
+        client.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.now().plusYears(1))));
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
-        for (SecretProperties secret : client.listSecrets()) {
-            Secret secretWithValue  = client.getSecret(secret);
+        for (SecretProperties secret : client.listPropertiesOfSecrets()) {
+            KeyVaultSecret secretWithValue  = client.getSecret(secret.getName(), secret.getVersion());
             System.out.printf("Received secret with name %s and value %s \n", secretWithValue.getName(), secretWithValue.getValue());
         }
 
@@ -51,8 +51,8 @@ public class ListOperations {
         client.setSecret("BankAccountPassword", "sskdjfsdasdjsd");
 
         // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
-        for (SecretProperties secret : client.listSecretVersions("BankAccountPassword")) {
-            Secret secretWithValue  = client.getSecret(secret);
+        for (SecretProperties secret : client.listPropertiesOfSecretVersions("BankAccountPassword")) {
+            KeyVaultSecret secretWithValue  = client.getSecret(secret.getName(), secret.getVersion());
             System.out.printf("Received secret's version with name %s and value %s", secretWithValue.getName(), secretWithValue.getValue());
         }
     }
