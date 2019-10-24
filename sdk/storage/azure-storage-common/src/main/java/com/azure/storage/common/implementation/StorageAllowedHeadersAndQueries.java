@@ -8,8 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StorageAllowedHeadersAndQueries {
-    public static class BlobHeadersAndQueries {
+public final class StorageAllowedHeadersAndQueries {
+    public static final class BlobHeadersAndQueries {
         private static final Set<String> BLOB_HEADERS = Stream.of(
             "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
             "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
@@ -51,7 +51,7 @@ public class StorageAllowedHeadersAndQueries {
         }
     }
 
-    public static class FileShareHeadersAndQueries {
+    public static final class FileShareHeadersAndQueries {
         private static final Set<String> FILE_SHARE_HEADERS = Stream.of(
             "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
             "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
@@ -82,7 +82,7 @@ public class StorageAllowedHeadersAndQueries {
         }
     }
 
-    public static class QueueHeadersAndQueries {
+    public static final class QueueHeadersAndQueries {
         private static final Set<String> QUEUE_HEADERS = Stream.of(
             "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
             "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
