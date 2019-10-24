@@ -15,7 +15,7 @@ trigger:
     include:
       - sdk/keyvault/
     exclude:
-      - sdk/keyvault/azure-keyvault
+      - sdk/keyvault/azure-security
       - sdk/keyvault/microsoft-azure
 
 pr:
@@ -29,7 +29,7 @@ pr:
     include:
       - sdk/keyvault/
     exclude:
-      - sdk/keyvault/azure-keyvault
+      - sdk/keyvault/azure-security
       - sdk/keyvault/microsoft-azure
 
 variables:
@@ -40,7 +40,7 @@ jobs:
   - job: 'Build'
 
     variables:
-      - template: ../variables/globals.yml
+      - template: ../../eng/pipelines/templates/variables/globals.yml
 
     strategy:
       matrix:
