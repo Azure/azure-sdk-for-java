@@ -4,7 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
@@ -76,7 +76,7 @@ public class DirectoryJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link DirectoryClient} with {@code connectionString} which turns into
-     * {@link SharedKeyCredential}
+     * {@link StorageSharedKeyCredential}
      *
      * @return An instance of {@link DirectoryClient}
      */
@@ -165,11 +165,11 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
         FileHttpHeaders httpHeaders = new FileHttpHeaders()
-            .setFileContentType("text/html")
-            .setFileContentEncoding("gzip")
-            .setFileContentLanguage("en")
-            .setFileCacheControl("no-transform")
-            .setFileContentDisposition("attachment");
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
@@ -393,18 +393,42 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#forceCloseHandles(String, boolean, Duration, Context)}
+     * Code snippet for {@link DirectoryClient#forceCloseHandle(String)}
      */
-    public void forceCloseHandles() {
-        DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.forceCloseHandles
-        Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1),
-            new Context(key1, value1));
-        result.forEach(handleItem -> directoryClient
-            .forceCloseHandles(handleItem.getHandleId(), true, Duration.ofSeconds(1), new Context(key1, value1))
-            .forEach(numOfClosedHandles ->
-                System.out.printf("Get handles completed with handle id %s", handleItem.getHandleId())));
-        // END: com.azure.storage.file.directoryClient.forceCloseHandles
+    public void forceCloseHandle() {
+        DirectoryClient directoryClient = createClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryClient.forceCloseHandle#String
+        directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE).forEach(handleItem -> {
+            directoryClient.forceCloseHandle(handleItem.getHandleId());
+            System.out.printf("Closed handle %s on resource %s%n", handleItem.getHandleId(), handleItem.getPath());
+        });
+        // END: com.azure.storage.file.DirectoryClient.forceCloseHandle#String
+    }
+
+    /**
+     * Code snippet for {@link DirectoryClient#forceCloseHandleWithResponse(String, Duration, Context)}.
+     */
+    public void forceCloseHandleWithResponse() {
+        DirectoryClient directoryClient = createClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryClient.forceCloseHandleWithResponse#String-Duration-Context
+        directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE).forEach(handleItem -> {
+            Response<Void> closeResponse = directoryClient.forceCloseHandleWithResponse(handleItem.getHandleId(),
+                Duration.ofSeconds(30), Context.NONE);
+            System.out.printf("Closing handle %s on resource %s completed with status code %d%n",
+                handleItem.getHandleId(), handleItem.getPath(), closeResponse.getStatusCode());
+        });
+        // END: com.azure.storage.file.DirectoryClient.forceCloseHandleWithResponse#String-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DirectoryClient#forceCloseAllHandles(boolean, Duration, Context)}.
+     */
+    public void forceCloseAllHandles() {
+        DirectoryClient directoryClient = createClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryClient.forceCloseAllHandles#boolean-Duration-Context
+        int closedHandleCount = directoryClient.forceCloseAllHandles(true, Duration.ofSeconds(30), Context.NONE);
+        System.out.printf("Closed %d open handles on the directory%n", closedHandleCount);
+        // END: com.azure.storage.file.DirectoryClient.forceCloseAllHandles#boolean-Duration-Context
     }
 
     /**

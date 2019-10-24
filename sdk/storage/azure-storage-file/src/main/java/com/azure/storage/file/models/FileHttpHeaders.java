@@ -20,167 +20,167 @@ public final class FileHttpHeaders {
      * Sets the MIME content type of the file. The default type is
      * 'application/octet-stream'.
      */
-    @JsonProperty(value = "fileContentType")
-    private String fileContentType;
+    @JsonProperty(value = "contentType")
+    private String contentType;
 
     /*
      * Specifies which content encodings have been applied to the file.
      */
-    @JsonProperty(value = "fileContentEncoding")
-    private String fileContentEncoding;
+    @JsonProperty(value = "contentEncoding")
+    private String contentEncoding;
 
     /*
      * Specifies the natural languages used by this resource.
      */
-    @JsonProperty(value = "fileContentLanguage")
-    private String fileContentLanguage;
+    @JsonProperty(value = "contentLanguage")
+    private String contentLanguage;
 
     /*
      * Sets the file's cache control. The File service stores this value but
      * does not use or modify it.
      */
-    @JsonProperty(value = "fileCacheControl")
-    private String fileCacheControl;
+    @JsonProperty(value = "cacheControl")
+    private String cacheControl;
 
     /*
      * Sets the file's MD5 hash.
      */
-    @JsonProperty(value = "fileContentMD5")
-    private byte[] fileContentMD5;
+    @JsonProperty(value = "contentMd5")
+    private byte[] contentMd5;
 
     /*
      * Sets the file's Content-Disposition header.
      */
-    @JsonProperty(value = "fileContentDisposition")
-    private String fileContentDisposition;
+    @JsonProperty(value = "contentDisposition")
+    private String contentDisposition;
 
     /**
-     * Get the fileContentType property: Sets the MIME content type of the
-     * file. The default type is 'application/octet-stream'.
+     * Get the contentType property: Sets the MIME content type of the file.
+     * The default type is 'application/octet-stream'.
      *
-     * @return the fileContentType value.
+     * @return the contentType value.
      */
-    public String getFileContentType() {
-        return this.fileContentType;
+    public String getContentType() {
+        return this.contentType;
     }
 
     /**
-     * Set the fileContentType property: Sets the MIME content type of the
-     * file. The default type is 'application/octet-stream'.
+     * Set the contentType property: Sets the MIME content type of the file.
+     * The default type is 'application/octet-stream'.
      *
-     * @param fileContentType the fileContentType value to set.
+     * @param contentType the contentType value to set.
      * @return the FileHttpHeaders object itself.
      */
-    public FileHttpHeaders setFileContentType(String fileContentType) {
-        this.fileContentType = fileContentType;
+    public FileHttpHeaders setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 
     /**
-     * Get the fileContentEncoding property: Specifies which content encodings
-     * have been applied to the file.
+     * Get the contentEncoding property: Specifies which content encodings have
+     * been applied to the file.
      *
-     * @return the fileContentEncoding value.
+     * @return the contentEncoding value.
      */
-    public String getFileContentEncoding() {
-        return this.fileContentEncoding;
+    public String getContentEncoding() {
+        return this.contentEncoding;
     }
 
     /**
-     * Set the fileContentEncoding property: Specifies which content encodings
-     * have been applied to the file.
+     * Set the contentEncoding property: Specifies which content encodings have
+     * been applied to the file.
      *
-     * @param fileContentEncoding the fileContentEncoding value to set.
+     * @param contentEncoding the contentEncoding value to set.
      * @return the FileHttpHeaders object itself.
      */
-    public FileHttpHeaders setFileContentEncoding(String fileContentEncoding) {
-        this.fileContentEncoding = fileContentEncoding;
+    public FileHttpHeaders setContentEncoding(String contentEncoding) {
+        this.contentEncoding = contentEncoding;
         return this;
     }
 
     /**
-     * Get the fileContentLanguage property: Specifies the natural languages
-     * used by this resource.
+     * Get the contentLanguage property: Specifies the natural languages used
+     * by this resource.
      *
-     * @return the fileContentLanguage value.
+     * @return the contentLanguage value.
      */
-    public String getFileContentLanguage() {
-        return this.fileContentLanguage;
+    public String getContentLanguage() {
+        return this.contentLanguage;
     }
 
     /**
-     * Set the fileContentLanguage property: Specifies the natural languages
-     * used by this resource.
+     * Set the contentLanguage property: Specifies the natural languages used
+     * by this resource.
      *
-     * @param fileContentLanguage the fileContentLanguage value to set.
+     * @param contentLanguage the contentLanguage value to set.
      * @return the FileHttpHeaders object itself.
      */
-    public FileHttpHeaders setFileContentLanguage(String fileContentLanguage) {
-        this.fileContentLanguage = fileContentLanguage;
+    public FileHttpHeaders setContentLanguage(String contentLanguage) {
+        this.contentLanguage = contentLanguage;
         return this;
     }
 
     /**
-     * Get the fileCacheControl property: Sets the file's cache control. The
-     * File service stores this value but does not use or modify it.
+     * Get the cacheControl property: Sets the file's cache control. The File
+     * service stores this value but does not use or modify it.
      *
-     * @return the fileCacheControl value.
+     * @return the cacheControl value.
      */
-    public String getFileCacheControl() {
-        return this.fileCacheControl;
+    public String getCacheControl() {
+        return this.cacheControl;
     }
 
     /**
-     * Set the fileCacheControl property: Sets the file's cache control. The
-     * File service stores this value but does not use or modify it.
+     * Set the cacheControl property: Sets the file's cache control. The File
+     * service stores this value but does not use or modify it.
      *
-     * @param fileCacheControl the fileCacheControl value to set.
+     * @param cacheControl the cacheControl value to set.
      * @return the FileHttpHeaders object itself.
      */
-    public FileHttpHeaders setFileCacheControl(String fileCacheControl) {
-        this.fileCacheControl = fileCacheControl;
+    public FileHttpHeaders setCacheControl(String cacheControl) {
+        this.cacheControl = cacheControl;
         return this;
     }
 
     /**
-     * Get the fileContentMD5 property: Sets the file's MD5 hash.
+     * Get the contentMd5 property: Sets the file's MD5 hash.
      *
-     * @return the fileContentMD5 value.
+     * @return the contentMd5 value.
      */
-    public byte[] getFileContentMD5() {
-        return ImplUtils.clone(this.fileContentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(this.contentMd5);
     }
 
     /**
-     * Set the fileContentMD5 property: Sets the file's MD5 hash.
+     * Set the contentMd5 property: Sets the file's MD5 hash.
      *
-     * @param fileContentMD5 the fileContentMD5 value to set.
+     * @param contentMd5 the contentMd5 value to set.
      * @return the FileHttpHeaders object itself.
      */
-    public FileHttpHeaders setFileContentMD5(byte[] fileContentMD5) {
-        this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
+    public FileHttpHeaders setContentMd5(byte[] contentMd5) {
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
 
     /**
-     * Get the fileContentDisposition property: Sets the file's
-     * Content-Disposition header.
+     * Get the contentDisposition property: Sets the file's Content-Disposition
+     * header.
      *
-     * @return the fileContentDisposition value.
+     * @return the contentDisposition value.
      */
-    public String getFileContentDisposition() {
-        return this.fileContentDisposition;
+    public String getContentDisposition() {
+        return this.contentDisposition;
     }
 
     /**
-     * Set the fileContentDisposition property: Sets the file's
-     * Content-Disposition header.
+     * Set the contentDisposition property: Sets the file's Content-Disposition
+     * header.
      *
-     * @param fileContentDisposition the fileContentDisposition value to set.
+     * @param contentDisposition the contentDisposition value to set.
      * @return the FileHttpHeaders object itself.
      */
-    public FileHttpHeaders setFileContentDisposition(String fileContentDisposition) {
-        this.fileContentDisposition = fileContentDisposition;
+    public FileHttpHeaders setContentDisposition(String contentDisposition) {
+        this.contentDisposition = contentDisposition;
         return this;
     }
 }

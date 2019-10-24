@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.0.0-preview.4</version>
+  <version>12.0.0-preview.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-batch</artifactId>
-    <version>12.0.0-preview.4</version>
+    <version>12.0.0-preview.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -57,7 +57,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.6</version>
+  <version>1.0.0-preview.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -78,7 +78,7 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
 To create a Storage Account you can use the Azure Portal or [Azure CLI][storage_account_create_cli].
 
 ```Powershell
-az stoage account create \
+az storage account create \
     --resource-group <resource-group-name> \
     --name <storage-account-name> \
     --location <location>

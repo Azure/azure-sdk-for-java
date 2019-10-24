@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: AccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHTTPHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,CorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,Logging,Metrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,RetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,SignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,StorageError,StorageErrorCode,StorageErrorException,StorageServiceStats,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -202,6 +202,8 @@ directive:
         $.delete.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
         $.delete.parameters.splice(1, 0, { "$ref": path + "Blob" });
     }
+    $.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
 ```
 
 ### /{containerName}/{blob}?PageBlob
@@ -677,6 +679,46 @@ directive:
     $.properties.IsPrefix = { "type": "boolean" };
 ```
 
+### BlobItemProperties and ContainerItemProperties
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobContainerItemProperties) {
+        $.BlobContainerItemProperties = $.ContainerProperties;
+        delete $.ContainerProperties;
+        //
+        const etag = $.BlobContainerItemProperties.properties.Etag;
+        if (etag && !etag["x-ms-client-name"]) {
+            etag["x-ms-client-name"] = "eTag";
+            $.BlobContainerItemProperties.properties.Etag = etag;
+        }
+    }
+    if (!$.BlobContainerItem) {
+        $.BlobContainerItem = $.ContainerItem;
+        const path = $.BlobContainerItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobContainerItemProperties");
+        $.BlobContainerItem.properties.Properties.$ref = path;
+        delete $.ContainerItem;
+    }
+    if (!$.BlobItemProperties) {
+        $.BlobItemProperties = $.BlobProperties;
+        delete $.BlobProperties;
+        $.BlobItemProperties.properties.CustomerProvidedKeySha256 = { "type": "string" }
+        $.BlobItemProperties.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+        //
+        const etag = $.BlobItemProperties.properties.Etag;
+        if (etag && !etag["x-ms-client-name"]) {
+            etag["x-ms-client-name"] = "eTag";
+            $.BlobItemProperties.properties.Etag = etag;
+        }
+    }
+    if ($.BlobItem) {
+        const path = $.BlobItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemProperties");
+        $.BlobItem.properties.Properties.$ref = path;
+    }
+```
+
 ### BlobMetadata
 Deleting out Encryption until https://github.com/Azure/azure-sdk-for-java/issues/5000 is determined.
 ``` yaml
@@ -685,15 +727,6 @@ directive:
   where: $.definitions.BlobMetadata
   transform: >
     delete $.properties
-```
-
-### BlobProperties
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.BlobProperties
-  transform: >
-    $.properties.CustomerProvidedKeySha256 = { "type": "string" }
 ```
 
 ### ListBlobsFlatSegmentResponse
@@ -724,21 +757,6 @@ directive:
       $.required.push("Delimiter");
       $.required.push("NextMarker");
     }
-```
-
-### SignedIdentifier
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.SignedIdentifier
-  transform: >
-    if ($.xml) {
-      delete $.xml;
-    }
-- from: swagger-document
-  where: $.definitions.SignedIdentifiers
-  transform: >
-    $.items.xml = { "name": "SignedIdentifier" }
 ```
 
 ### KeyInfo
@@ -932,71 +950,6 @@ directive:
     $["x-ms-enum"].name = "ListBlobContainersIncludeType";
 ```
 
-### /?restype=service&comp=properties
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.BlobServiceProperties) {
-        $.BlobServiceProperties = $.StorageServiceProperties;
-        delete $.StorageServiceProperties;
-        $.BlobServiceProperties.xml = { "name": "StorageServiceProperties" };
-    }
-    if (!$.BlobContainerItemProperties) {
-        $.BlobContainerItemProperties = $.ContainerProperties;
-        delete $.ContainerProperties;
-        //
-        const etag = $.BlobContainerItemProperties.properties.Etag;
-        if (etag && !etag["x-ms-client-name"]) {
-            etag["x-ms-client-name"] = "eTag";
-            $.BlobContainerItemProperties.properties.Etag = etag;
-        }
-    }
-    if (!$.BlobContainerItem) {
-        $.BlobContainerItem = $.ContainerItem;
-        const path = $.BlobContainerItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobContainerItemProperties");
-        $.BlobContainerItem.properties.Properties.$ref = path;
-        delete $.ContainerItem;
-    }
-    if (!$.BlobItemProperties) {
-        $.BlobItemProperties = $.BlobProperties;
-        delete $.BlobProperties;
-        //
-        const etag = $.BlobItemProperties.properties.Etag;
-        if (etag && !etag["x-ms-client-name"]) {
-            etag["x-ms-client-name"] = "eTag";
-            $.BlobItemProperties.properties.Etag = etag;
-        }
-    }
-    if (!$.BlobItem) {
-        const path = $.BlobItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemProperties");
-        $.BlobItem.properties.Properties.$ref = path;
-    }
-- from: swagger-document
-  where: $.parameters
-  transform: >
-    if (!$.BlobServiceProperties) {
-        const props = $.BlobServiceProperties = $.StorageServiceProperties;
-        props.name = "BlobServiceProperties";
-        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/BlobServiceProperties") };
-        delete $.StorageServiceProperties;
-    }
-- from: swagger-document
-  where: $["x-ms-paths"]["/?restype=service&comp=properties"]
-  transform: >
-    const param = $.put.parameters[0];
-    if (param && param["$ref"] && param["$ref"].endsWith("StorageServiceProperties")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/BlobServiceProperties");
-        $.put.parameters[0] = { "$ref": path };
-    }
-    const def = $.get.responses["200"].schema;
-    if (def && def["$ref"] && def["$ref"].endsWith("StorageServiceProperties")) {
-        const path = def["$ref"].replace(/[#].*$/, "#/definitions/BlobServiceProperties");
-        $.get.responses["200"].schema = { "$ref": path };
-    }
-```
-
 ### /?comp=list
 ``` yaml
 directive:
@@ -1032,71 +985,282 @@ directive:
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: ContainersImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: BlobsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: AppendBlobsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: BlockBlobsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: PageBlobsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
+```
+
+### GeoReplication
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.GeoReplication.properties.Status
+  transform: >
+    $["x-ms-enum"].name = "GeoReplicationStatus";
+```
+
+### BlobErrorCode
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ErrorCode
+  transform: >
+    $["x-ms-enum"].name = "BlobErrorCode";
+```
+
+### BlobServiceProperties, BlobAnalyticsLogging, BlobMetrics, BlobCorsRule, and BlobRetentionPolicy
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobServiceProperties) {
+        $.BlobServiceProperties = $.StorageServiceProperties;
+        delete $.StorageServiceProperties;
+        $.BlobServiceProperties.xml = { "name": "StorageServiceProperties" };
+    }
+    if (!$.BlobAnalyticsLogging) {
+      $.BlobAnalyticsLogging = $.Logging;
+      delete $.Logging;
+      $.BlobAnalyticsLogging.xml = {"name": "Logging"};
+      $.BlobServiceProperties.properties.Logging["$ref"] = "#/definitions/BlobAnalyticsLogging";
+    }
+    if (!$.BlobMetrics) {
+      $.BlobMetrics = $.Metrics;
+      delete $.Metrics;
+      $.BlobMetrics.xml = {"name": "Metrics"};
+      $.BlobMetrics.properties.IncludeApis = $.BlobMetrics.properties.IncludeAPIs;
+      delete $.BlobMetrics.properties.IncludeAPIs;
+      $.BlobMetrics.properties.IncludeApis.xml = {"name": "IncludeAPIs"};
+      $.BlobServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/BlobMetrics";
+      $.BlobServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/BlobMetrics";
+    }
+    if (!$.BlobCorsRule) {
+      $.BlobCorsRule = $.CorsRule;
+      delete $.CorsRule;
+      $.BlobCorsRule.xml = {"name": "CorsRule"};
+      $.BlobServiceProperties.properties.Cors.items["$ref"] = "#/definitions/BlobCorsRule";
+    }
+    if (!$.BlobRetentionPolicy) {
+      $.BlobRetentionPolicy = $.RetentionPolicy;
+      delete $.RetentionPolicy;
+      $.BlobRetentionPolicy.xml = {"name": "RetentionPolicy"};
+      $.BlobAnalyticsLogging.properties.RetentionPolicy["$ref"] = "#/definitions/BlobRetentionPolicy";
+      $.BlobMetrics.properties.RetentionPolicy["$ref"] = "#/definitions/BlobRetentionPolicy";
+      $.BlobServiceProperties.properties.DeleteRetentionPolicy["$ref"] = "#/definitions/BlobRetentionPolicy";
+    }
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    if (!$.BlobServiceProperties) {
+        const props = $.BlobServiceProperties = $.StorageServiceProperties;
+        props.name = "BlobServiceProperties";
+        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/BlobServiceProperties") };
+        delete $.StorageServiceProperties;
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?restype=service&comp=properties"]
+  transform: >
+    const param = $.put.parameters[0];
+    if (param && param["$ref"] && param["$ref"].endsWith("StorageServiceProperties")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/BlobServiceProperties");
+        $.put.parameters[0] = { "$ref": path };
+    }
+    const def = $.get.responses["200"].schema;
+    if (def && def["$ref"] && def["$ref"].endsWith("StorageServiceProperties")) {
+        const path = def["$ref"].replace(/[#].*$/, "#/definitions/BlobServiceProperties");
+        $.get.responses["200"].schema = { "$ref": path };
+    }
+```
+
+### BlobServiceStatistics
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobServiceStatistics) {
+        $.BlobServiceStatistics = $.StorageServiceStats;
+        delete $.StorageServiceStats;
+        $.BlobServiceStatistics.xml = { "name": "StorageServiceStats" }
+        $.BlobServiceStatistics.description = "Statistics for the storage service.";
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?restype=service&comp=stats"].get.responses["200"]
+  transform: >
+    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("StorageServiceStats")) {
+        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/BlobServiceStatistics");
+        $.schema = { "$ref": path };
+    }
+```
+
+### BlobAccessPolicy and BlobSignedIdentifier
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobSignedIdentifier) {
+      $.BlobSignedIdentifier = $.SignedIdentifier;
+      delete $.SignedIdentifier;
+      $.BlobSignedIdentifier.xml = {"name": "SignedIdentifier"};
+      $.SignedIdentifiers.items["$ref"] = "#/definitions/BlobSignedIdentifier";
+    }
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobAccessPolicy) {
+      $.BlobAccessPolicy = $.AccessPolicy;
+      delete $.AccessPolicy;
+      $.BlobAccessPolicy.xml = {"name": "AccessPolicy"};
+      $.BlobAccessPolicy.properties.StartsOn = $.BlobAccessPolicy.properties.Start;
+      $.BlobAccessPolicy.properties.StartsOn.xml = {"name": "Start"};
+      delete $.BlobAccessPolicy.properties.Start;
+      $.BlobAccessPolicy.properties.ExpiresOn = $.BlobAccessPolicy.properties.Expiry;
+      $.BlobAccessPolicy.properties.ExpiresOn.xml = {"name": "Expiry"};
+      delete $.BlobAccessPolicy.properties.Expiry;
+      $.BlobAccessPolicy.properties.Permissions = $.BlobAccessPolicy.properties.Permission;
+      $.BlobAccessPolicy.properties.Permissions.xml = {"name": "Permission"};
+      delete $.BlobAccessPolicy.properties.Permission;
+    }
+    $.BlobSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/BlobAccessPolicy";
+```
+
+### BlobServiceProperties Annotation Fix
+``` yaml
+directive:
+- from: BlobServiceProperties.java
+  where: $
+  transform: >
+    return $.replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private BlobMetrics hourMetrics;').
+      replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private BlobMetrics minuteMetrics;').
+      replace('@JsonProperty(value = "RetentionPolicy")\n    private BlobRetentionPolicy deleteRetentionPolicy;', '@JsonProperty(value = "DeleteRetentionPolicy")\n    private BlobRetentionPolicy deleteRetentionPolicy;');
+```
+
+### Rename BlobHttpHeaders to BlobHttpHeader
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.BlobCacheControl["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobCacheControl["x-ms-client-name"] = "cacheControl";
+    $.BlobContentDisposition["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentDisposition["x-ms-client-name"] = "contentDisposition";
+    $.BlobContentEncoding["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentEncoding["x-ms-client-name"] = "contentEncoding";
+    $.BlobContentLanguage["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentLanguage["x-ms-client-name"] = "contentLanguage";
+    $.BlobContentMD5["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentMD5["x-ms-client-name"] = "contentMd5";
+    $.BlobContentType["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentType["x-ms-client-name"] = "contentType";
+```
+
+### Rename UserDelegationKey SignedOid and SignedTid
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.UserDelegationKey
+  transform: >
+    $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
+    $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
+```
+
+### Remove AccessConditions parameter groupings
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.SourceIfMatch["x-ms-parameter-grouping"];
+    delete $.SourceIfModifiedSince["x-ms-parameter-grouping"];
+    delete $.SourceIfNoneMatch["x-ms-parameter-grouping"];
+    delete $.SourceIfUnmodifiedSince["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.IfMatch["x-ms-parameter-grouping"];
+    delete $.IfModifiedSince["x-ms-parameter-grouping"];
+    delete $.IfNoneMatch["x-ms-parameter-grouping"];
+    delete $.IfUnmodifiedSince["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.BlobConditionAppendPos["x-ms-parameter-grouping"];
+    delete $.BlobConditionMaxSize["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.IfSequenceNumberEqualTo["x-ms-parameter-grouping"];
+    delete $.IfSequenceNumberLessThan["x-ms-parameter-grouping"];
+    delete $.IfSequenceNumberLessThanOrEqualTo["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.LeaseIdOptional["x-ms-parameter-grouping"];
 ```

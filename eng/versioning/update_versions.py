@@ -126,6 +126,23 @@ def update_versions_all(update_type, build_type, target_file):
                 if file_name == 'README.md' or (file_name.startswith('pom.') and file_name.endswith('.xml')):
                     update_versions(version_map, file_path)
 
+    # This is a temporary stop gap to deal with versions hard coded in java files. 
+    # Everything within the begin/end tags below can be deleted once
+    # https://github.com/Azure/azure-sdk-for-java/issues/3141 has been fixed.
+    # version_*_java_files.txt
+    # BEGIN:Versions_in_java_files
+    if not target_file:
+        # the good thing here is that the java files only contain library versions, not
+        # external versions
+        version_java_file = os.path.normpath('eng/versioning/version_' + build_type.name + '_java_files.txt')
+        with open(version_java_file) as f:
+            for raw_line in f:
+                java_file_to_update = raw_line.strip()
+                if not java_file_to_update or java_file_to_update.startswith('#'):
+                    continue
+                update_versions(version_map, java_file_to_update)
+    # END:Versions_in_java_files
+
 def main():
     parser = argparse.ArgumentParser(description='Replace version numbers in poms and READMEs.')
     parser.add_argument('--update-type', '--ut', type=UpdateType, choices=list(UpdateType))

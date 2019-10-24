@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.models.FileCorsRule;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @see FileServiceClientBuilder
  * @see FileServiceAsyncClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = FileServiceClientBuilder.class)
 public final class FileServiceClient {
@@ -55,6 +55,15 @@ public final class FileServiceClient {
      */
     public String getFileServiceUrl() {
         return fileServiceAsyncClient.getFileServiceUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public FileServiceVersion getServiceVersion() {
+        return fileServiceAsyncClient.getServiceVersion();
     }
 
     /**
@@ -171,7 +180,7 @@ public final class FileServiceClient {
      */
     public Response<FileServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<FileServiceProperties>> response = fileServiceAsyncClient.getPropertiesWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -258,7 +267,7 @@ public final class FileServiceClient {
     public Response<Void> setPropertiesWithResponse(FileServiceProperties properties, Duration timeout,
                                                     Context context) {
         Mono<Response<Void>> response = fileServiceAsyncClient.setPropertiesWithResponse(properties, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -356,7 +365,7 @@ public final class FileServiceClient {
     public Response<Void> deleteShareWithResponse(String shareName, String snapshot, Duration timeout,
                                                   Context context) {
         Mono<Response<Void>> response = fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
 

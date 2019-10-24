@@ -3,12 +3,14 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 
 /**
  * The range of a file in the storage file service.
  */
+@Immutable
 public final class FileRange {
     final ClientLogger logger = new ClientLogger(FileRange.class);
     private static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";

@@ -5,10 +5,10 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.common.BaseSasQueryParameters;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.sas.BaseSasQueryParameters;
+import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 
 import java.time.OffsetDateTime;
@@ -117,8 +117,8 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
         this.contentType = contentType;
 
         if (key != null) {
-            this.keyObjectId = key.getSignedOid();
-            this.keyTenantId = key.getSignedTid();
+            this.keyObjectId = key.getSignedObjectId();
+            this.keyTenantId = key.getSignedTenantId();
             this.keyStart = key.getSignedStart();
             this.keyExpiry = key.getSignedExpiry();
             this.keyService = key.getSignedService();
@@ -229,10 +229,10 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
     UserDelegationKey userDelegationKey() {
         return new UserDelegationKey()
             .setSignedExpiry(this.keyExpiry)
-            .setSignedOid(this.keyObjectId)
+            .setSignedObjectId(this.keyObjectId)
             .setSignedService(this.keyService)
             .setSignedStart(this.keyStart)
-            .setSignedTid(this.keyTenantId)
+            .setSignedTenantId(this.keyTenantId)
             .setSignedVersion(this.keyVersion);
     }
 

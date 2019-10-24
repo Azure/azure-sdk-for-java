@@ -36,6 +36,7 @@ module com.azure.core {
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer.jackson to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.util to com.fasterxml.jackson.databind;
+    opens com.azure.core.implementation.serializer.jsonwrapper to com.fasterxml.jackson.databind;
 
     // exporting some packages for internal use only
     exports com.azure.core.implementation to
@@ -129,4 +130,10 @@ module com.azure.core {
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;
     uses com.azure.core.http.policy.AfterRetryPolicyProvider;
+    uses com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
+
+
+    // indicate JacksonPlugin provides a service implementation for JsonPlugin
+    provides com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin
+        with com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonPlugin;
 }

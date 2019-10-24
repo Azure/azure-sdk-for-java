@@ -17,11 +17,11 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
-import com.azure.storage.blob.BlobProperties
+import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
-import com.azure.storage.blob.specialized.LeaseClient
-import com.azure.storage.blob.specialized.LeaseClientBuilder
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.blob.specialized.BlobLeaseClient
+import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
+import com.azure.storage.common.StorageSharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -66,10 +66,10 @@ class APISpec extends Specification {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
 
-    static SharedKeyCredential primaryCredential
-    static SharedKeyCredential alternateCredential
-    static SharedKeyCredential blobCredential
-    static SharedKeyCredential premiumCredential
+    static StorageSharedKeyCredential primaryCredential
+    static StorageSharedKeyCredential alternateCredential
+    static StorageSharedKeyCredential blobCredential
+    static StorageSharedKeyCredential premiumCredential
     static String connectionString
     static TestMode testMode
     private boolean recordLiveMode
@@ -141,7 +141,7 @@ class APISpec extends Specification {
         return setupTestMode() == TestMode.RECORD
     }
 
-    private SharedKeyCredential getCredential(String accountType) {
+    private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
@@ -149,7 +149,7 @@ class APISpec extends Specification {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountName = "storageaccount"
+            accountName = "azstoragesdkaccount"
             accountKey = "astorageaccountkey"
         }
 
@@ -158,7 +158,7 @@ class APISpec extends Specification {
             return null
         }
 
-        return new SharedKeyCredential(accountName, accountKey)
+        return new StorageSharedKeyCredential(accountName, accountKey)
     }
 
     /*
@@ -209,7 +209,7 @@ class APISpec extends Specification {
 
     EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,
                                                          AsyncKeyEncryptionKeyResolver keyResolver,
-                                                         SharedKeyCredential credential, String endpoint,
+                                                         StorageSharedKeyCredential credential, String endpoint,
                                                          HttpPipelinePolicy... policies) {
         EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder()
             .key(key, "keyWrapAlgorithm")
@@ -233,7 +233,7 @@ class APISpec extends Specification {
         return builder
     }
 
-    BlobServiceClientBuilder getServiceClientBuilder(SharedKeyCredential credential, String endpoint,
+    BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
                                                      HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
@@ -277,7 +277,7 @@ class APISpec extends Specification {
             response.getHeaders().getValue("Content-Type") == contentType
 
         if (checkContentMD5) {
-            return propertiesEqual && response.getValue().getContentMD5() == contentMD5
+            return propertiesEqual && response.getValue().getContentMd5() == contentMD5
         }
         return propertiesEqual
     }
@@ -339,7 +339,7 @@ class APISpec extends Specification {
     def setupBlobLeaseCondition(BlobAsyncClient bac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = new LeaseClientBuilder()
+            responseLeaseId = new BlobLeaseClientBuilder()
                 .blobAsyncClient(bac)
                 .buildAsyncClient()
                 .acquireLease(-1)
@@ -352,12 +352,12 @@ class APISpec extends Specification {
         }
     }
 
-    static LeaseClient createLeaseClient(BlobClient blobClient) {
+    static BlobLeaseClient createLeaseClient(BlobClient blobClient) {
         return createLeaseClient(blobClient, null)
     }
 
-    static LeaseClient createLeaseClient(BlobClient blobClient, String leaseId) {
-        return new LeaseClientBuilder()
+    static BlobLeaseClient createLeaseClient(BlobClient blobClient, String leaseId) {
+        return new BlobLeaseClientBuilder()
             .blobClient(blobClient)
             .leaseId(leaseId)
             .buildClient()

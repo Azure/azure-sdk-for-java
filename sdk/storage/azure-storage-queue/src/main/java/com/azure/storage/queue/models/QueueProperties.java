@@ -3,11 +3,14 @@
 
 package com.azure.storage.queue.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.Map;
 
 /**
  * Model class containing properties of a specific queue in the storage Queue service.
  */
+@Immutable
 public final class QueueProperties {
     private final Map<String, String> metadata;
     private final int approximateMessagesCount;

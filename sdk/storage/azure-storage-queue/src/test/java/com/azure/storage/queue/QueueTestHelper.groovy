@@ -49,7 +49,7 @@ class QueueTestHelper {
         } else {
             return assertMetricsAreEqual(expected.getHourMetrics(), actual.getHourMetrics()) &&
                 assertMetricsAreEqual(expected.getMinuteMetrics(), actual.getMinuteMetrics()) &&
-                assertLoggingAreEqual(expected.getLogging(), actual.getLogging()) &&
+                assertLoggingAreEqual(expected.getAnalyticsLogging(), actual.getAnalyticsLogging()) &&
                 assertCorsAreEqual(expected.getCors(), actual.getCors())
         }
     }
@@ -59,7 +59,7 @@ class QueueTestHelper {
             return actual == null
         } else {
             return Objects.equals(expected.isEnabled(), actual.isEnabled()) &&
-                Objects.equals(expected.isIncludeAPIs(), actual.isIncludeAPIs()) &&
+                Objects.equals(expected.isIncludeApis(), actual.isIncludeApis()) &&
                 Objects.equals(expected.getVersion(), actual.getVersion()) &&
                 assertRetentionPoliciesAreEqual(expected.getRetentionPolicy(), actual.getRetentionPolicy())
         }

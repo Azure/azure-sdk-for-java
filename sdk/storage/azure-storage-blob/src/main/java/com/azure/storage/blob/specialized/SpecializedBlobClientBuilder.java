@@ -15,19 +15,21 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
+import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
+import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -65,7 +67,7 @@ public final class SpecializedBlobClientBuilder {
     private String snapshot;
 
     private CpkInfo customerProvidedKey;
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
 
@@ -76,6 +78,7 @@ public final class SpecializedBlobClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private BlobServiceVersion version;
 
     /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
@@ -98,7 +101,12 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey, accountName);
+        validateConstruction();
+        String containerName = getContainerName();
+        BlobServiceVersion serviceVersion = getServiceVersion();
+
+        return new AppendBlobAsyncClient(getHttpPipeline(serviceVersion), getUrl(containerName), serviceVersion,
+            accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
     /**
@@ -118,14 +126,19 @@ public final class SpecializedBlobClientBuilder {
      * Creates a {@link BlockBlobAsyncClient} based on options set in the Builder. BlockBlobAsyncClients are used to
      * perform generic upload operations such as {@link BlockBlobAsyncClient#upload(Flux, long) upload from file}
      * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long,
-     * LeaseAccessConditions) stage block} and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list},
-     * only use this when the blob is known to be a block blob.
+     * String) stage block} and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list}, only use this
+     * when the blob is known to be a block blob.
      *
      * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey, accountName);
+        validateConstruction();
+        String containerName = getContainerName();
+        BlobServiceVersion serviceVersion = getServiceVersion();
+
+        return new BlockBlobAsyncClient(getHttpPipeline(serviceVersion), getUrl(containerName), serviceVersion,
+            accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
     /**
@@ -151,24 +164,37 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey, accountName);
+        validateConstruction();
+        String containerName = getContainerName();
+        BlobServiceVersion serviceVersion = getServiceVersion();
+
+        return new PageBlobAsyncClient(getHttpPipeline(serviceVersion), getUrl(containerName), serviceVersion,
+            accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
-    private AzureBlobStorageImpl constructImpl() {
+    /*
+     * Validate that the builder is able to construct a client.
+     */
+    private void validateConstruction() {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
+    }
 
-        /*
-        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
-        to read and debug.
-         */
-        if (Objects.isNull(containerName) || containerName.isEmpty()) {
-            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
-        }
+    /*
+     * Gets the container name to use in this client, if no container name has been passed the root container will be
+     * used.
+     *
+     * Implicit and explicit root container access are functionally equivalent, but explicit references are easier to
+     * read and debug.
+     */
+    private String getContainerName() {
+        return ImplUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
+    }
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+    private HttpPipeline getHttpPipeline(BlobServiceVersion serviceVersion) {
+        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (tokenCredential != null) {
                 return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
             } else if (sasTokenCredential != null) {
@@ -176,12 +202,15 @@ public final class SpecializedBlobClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+    }
 
-        return new AzureBlobStorageBuilder()
-            .pipeline(pipeline)
-            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-            .build();
+    private BlobServiceVersion getServiceVersion() {
+        return (version != null) ? version : BlobServiceVersion.getLatest();
+    }
+
+    private String getUrl(String containerName) {
+        return String.format("%s/%s/%s", endpoint, containerName, blobName);
     }
 
     /**
@@ -193,6 +222,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
         pipeline(blobClient.getHttpPipeline());
         endpoint(blobClient.getBlobUrl());
+        serviceVersion(blobClient.getServiceVersion());
         this.snapshot = blobClient.getSnapshotId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         return this;
@@ -207,6 +237,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         pipeline(blobAsyncClient.getHttpPipeline());
         endpoint(blobAsyncClient.getBlobUrl());
+        serviceVersion(blobAsyncClient.getServiceVersion());
         this.snapshot = blobAsyncClient.getSnapshotId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         return this;
@@ -222,6 +253,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient, String blobName) {
         pipeline(blobContainerClient.getHttpPipeline());
         endpoint(blobContainerClient.getBlobContainerUrl());
+        serviceVersion(blobContainerClient.getServiceVersion());
         blobName(blobName);
         this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
         return this;
@@ -239,6 +271,7 @@ public final class SpecializedBlobClientBuilder {
         String blobName) {
         pipeline(blobContainerAsyncClient.getHttpPipeline());
         endpoint(blobContainerAsyncClient.getBlobContainerUrl());
+        serviceVersion(blobContainerAsyncClient.getServiceVersion());
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
         return this;
@@ -259,7 +292,7 @@ public final class SpecializedBlobClientBuilder {
             this.accountName = parts.getAccountName();
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();
-            this.blobName = parts.getBlobName();
+            this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
             String sasToken = parts.getSasQueryParameters().encode();
@@ -285,7 +318,7 @@ public final class SpecializedBlobClientBuilder {
         } else {
             this.customerProvidedKey = new CpkInfo()
                 .setEncryptionKey(customerProvidedKey.getKey())
-                .setEncryptionKeySha256(customerProvidedKey.getKeySHA256())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 
@@ -293,14 +326,14 @@ public final class SpecializedBlobClientBuilder {
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated SpecializedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public SpecializedBlobClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public SpecializedBlobClientBuilder credential(StorageSharedKeyCredential credential) {
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -315,7 +348,7 @@ public final class SpecializedBlobClientBuilder {
      */
     public SpecializedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
@@ -330,7 +363,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
     }
@@ -343,26 +376,39 @@ public final class SpecializedBlobClientBuilder {
      * @return the updated SpecializedBlobClientBuilder
      */
     public SpecializedBlobClientBuilder setAnonymousAccess() {
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
 
     /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
+     * Sets the connection string to connect to the service.
      *
      * @param connectionString Connection string of the storage account.
      * @return the updated SpecializedBlobClientBuilder
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain `AccountName` or `AccountKey`.
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException If {@code connectionString} in invalid.
      */
     public SpecializedBlobClientBuilder connectionString(String connectionString) {
-        BuilderHelper.configureConnectionString(connectionString, (accountName) -> this.accountName = accountName,
-            this::credential, this::endpoint, logger);
-
+        StorageConnectionString storageConnectionString
+                = StorageConnectionString.create(connectionString, logger);
+        StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
+        if (endpoint == null || endpoint.getPrimaryUri() == null) {
+            throw logger
+                    .logExceptionAsError(new IllegalArgumentException(
+                            "connectionString missing required settings to derive blob service endpoint."));
+        }
+        this.endpoint(endpoint.getPrimaryUri());
+        if (storageConnectionString.getAccountName() != null) {
+            this.accountName = storageConnectionString.getAccountName();
+        }
+        StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+        if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+            this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
+                    authSettings.getAccount().getAccessKey()));
+        } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+            this.sasToken(authSettings.getSasToken());
+        }
         return this;
     }
 
@@ -390,7 +436,8 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public SpecializedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
+        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
+            "'blobName' cannot be null.")));
         return this;
     }
 
@@ -481,6 +528,21 @@ public final class SpecializedBlobClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link BlobServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
+        this.version = version;
         return this;
     }
 }

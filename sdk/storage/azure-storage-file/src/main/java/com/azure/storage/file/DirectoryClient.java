@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
@@ -36,7 +36,7 @@ import java.util.Map;
  *
  * @see FileClientBuilder
  * @see DirectoryClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = FileClientBuilder.class)
 public class DirectoryClient {
@@ -59,6 +59,15 @@ public class DirectoryClient {
      */
     public String getDirectoryUrl() {
         return directoryAsyncClient.getDirectoryUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public FileServiceVersion getServiceVersion() {
+        return directoryAsyncClient.getServiceVersion();
     }
 
     /**
@@ -134,7 +143,7 @@ public class DirectoryClient {
         Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<DirectoryInfo>> response = directoryAsyncClient
             .createWithResponse(smbProperties, filePermission, metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -176,7 +185,7 @@ public class DirectoryClient {
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = directoryAsyncClient.deleteWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -219,7 +228,7 @@ public class DirectoryClient {
      */
     public Response<DirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<DirectoryProperties>> response = directoryAsyncClient.getPropertiesWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -265,7 +274,7 @@ public class DirectoryClient {
         Duration timeout, Context context) {
         Mono<Response<DirectoryInfo>> response = directoryAsyncClient
             .setPropertiesWithResponse(smbProperties, filePermission, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -325,7 +334,7 @@ public class DirectoryClient {
         Context context) {
         Mono<Response<DirectorySetMetadataInfo>> response = directoryAsyncClient
             .setMetadataWithResponse(metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -406,32 +415,70 @@ public class DirectoryClient {
     }
 
     /**
-     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside
-     * {@link DirectoryClient#listHandles(Integer, boolean, Duration, Context)} .
+     * Closes a handle on the directory at the service. This is intended to be used alongside {@link
+     * #listHandles(Integer, boolean, Duration, Context)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Force close handles with handles returned by get handles in recursive.</p>
+     * <p>Force close handles returned by list handles.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.forceCloseHandles}
+     * {@codesnippet com.azure.storage.file.DirectoryClient.forceCloseHandle#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
-     * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all
-     * handles.
-     * @param recursive A boolean value that specifies if the operation should also apply to the files and
-     * subdirectories of the directory specified in the URI.
+     * @param handleId Handle ID to be closed.
+     */
+    public void forceCloseHandle(String handleId) {
+        forceCloseHandleWithResponse(handleId, null, Context.NONE);
+    }
+
+    /**
+     * Closes a handle on the directory at the service. This is intended to be used alongside {@link
+     * #listHandles(Integer, boolean, Duration, Context)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Force close handles returned by list handles.</p>
+     *
+     * {@codesnippet com.azure.storage.file.DirectoryClient.forceCloseHandleWithResponse#String-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
+     *
+     * @param handleId Handle ID to be clsoed.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The counts of number of handles closed.
-     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @return A response that only contains headers and response status code.
      */
-    public PagedIterable<Integer> forceCloseHandles(String handleId, boolean recursive, Duration timeout,
-        Context context) {
-        return new PagedIterable<>(directoryAsyncClient
-            .forceCloseHandlesWithOptionalTimeout(handleId, recursive, timeout, context));
+    public Response<Void> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(directoryAsyncClient
+            .forceCloseHandleWithResponse(handleId, context), timeout);
+    }
+
+    /**
+     * Closes all handles opened on the directory at the service.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Force close all handles recursively.</p>
+     *
+     * {@codesnippet com.azure.storage.file.DirectoryClient.forceCloseAllHandles#boolean-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
+     *
+     * @param recursive Flag indicating if the operation should apply to all subdirectories and files contained in the
+     * directory.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The number of handles closed.
+     */
+    public int forceCloseAllHandles(boolean recursive, Duration timeout, Context context) {
+        return new PagedIterable<>(directoryAsyncClient.forceCloseAllHandlesWithTimeout(recursive, timeout, context))
+            .stream().reduce(0, Integer::sum);
     }
 
     /**
@@ -534,7 +581,7 @@ public class DirectoryClient {
      */
     public Response<Void> deleteSubDirectoryWithResponse(String subDirectoryName, Duration timeout, Context context) {
         Mono<Response<Void>> response = directoryAsyncClient.deleteSubDirectoryWithResponse(subDirectoryName, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -638,7 +685,7 @@ public class DirectoryClient {
      */
     public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {
         Mono<Response<Void>> response = directoryAsyncClient.deleteFileWithResponse(fileName, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

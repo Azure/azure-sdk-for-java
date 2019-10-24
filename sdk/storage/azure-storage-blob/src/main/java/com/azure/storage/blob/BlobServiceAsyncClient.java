@@ -12,21 +12,24 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -34,6 +37,8 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.function.Function;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -61,18 +66,32 @@ public final class BlobServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
 
     private final AzureBlobStorageImpl azureBlobStorage;
-    private final CpkInfo customerProvidedKey;
+
     private final String accountName;
+    private final BlobServiceVersion serviceVersion;
+    private final CpkInfo customerProvidedKey;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
-     * @param azureBlobStorage the API client for blob storage
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
-    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo customerProvidedKey, String accountName) {
-        this.azureBlobStorage = azureBlobStorage;
-        this.customerProvidedKey = customerProvidedKey;
+    BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+        CpkInfo customerProvidedKey) {
+        this.azureBlobStorage = new AzureBlobStorageBuilder()
+            .pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion.getVersion())
+            .build();
+        this.serviceVersion = serviceVersion;
+
         this.accountName = accountName;
+        this.customerProvidedKey = customerProvidedKey;
     }
 
     /**
@@ -89,14 +108,13 @@ public final class BlobServiceAsyncClient {
      * @return A {@link BlobContainerAsyncClient} object pointing to the specified container
      */
     public BlobContainerAsyncClient getBlobContainerAsyncClient(String containerName) {
-        if (containerName == null || containerName.isEmpty()) {
+        if (ImplUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), customerProvidedKey, accountName);
+        return new BlobContainerAsyncClient(getHttpPipeline(),
+            StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString(), getServiceVersion(),
+            getAccountName(), containerName, customerProvidedKey);
     }
 
     /**
@@ -106,6 +124,15 @@ public final class BlobServiceAsyncClient {
      */
     public HttpPipeline getHttpPipeline() {
         return azureBlobStorage.getHttpPipeline();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public BlobServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
@@ -121,7 +148,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
      */
     public Mono<BlobContainerAsyncClient> createBlobContainer(String containerName) {
-        return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -142,7 +173,12 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType) {
-        return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
+        try {
+            return withContext(
+                context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
@@ -165,7 +201,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Void> deleteBlobContainer(String containerName) {
-        return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
+        try {
+            return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -181,7 +221,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName) {
-        return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
+        try {
+            return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName, Context context) {
@@ -208,7 +252,11 @@ public final class BlobServiceAsyncClient {
      * @return A reactive response emitting the list of containers.
      */
     public PagedFlux<BlobContainerItem> listBlobContainers() {
-        return this.listBlobContainers(new ListBlobContainersOptions());
+        try {
+            return this.listBlobContainers(new ListBlobContainersOptions());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -223,7 +271,11 @@ public final class BlobServiceAsyncClient {
      * @return A reactive response emitting the list of containers.
      */
     public PagedFlux<BlobContainerItem> listBlobContainers(ListBlobContainersOptions options) {
-        return listBlobContainersWithOptionalTimeout(options, null);
+        try {
+            return listBlobContainersWithOptionalTimeout(options, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<BlobContainerItem> listBlobContainersWithOptionalTimeout(ListBlobContainersOptions options,
@@ -245,7 +297,7 @@ public final class BlobServiceAsyncClient {
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
-        return Utility.applyOptionalTimeout(
+        return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toIncludeType(), null,
                 null, Context.NONE), timeout);
@@ -262,7 +314,11 @@ public final class BlobServiceAsyncClient {
      * @return A reactive response containing the storage account properties.
      */
     public Mono<BlobServiceProperties> getProperties() {
-        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -277,7 +333,11 @@ public final class BlobServiceAsyncClient {
      * account properties.
      */
     public Mono<Response<BlobServiceProperties>> getPropertiesWithResponse() {
-        return withContext(this::getPropertiesWithResponse);
+        try {
+            return withContext(this::getPropertiesWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
@@ -299,7 +359,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing the storage account properties.
      */
     public Mono<Void> setProperties(BlobServiceProperties properties) {
-        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        try {
+            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -315,7 +379,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing the storage account properties.
      */
     public Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties) {
-        return withContext(context -> setPropertiesWithResponse(properties, context));
+        try {
+            return withContext(context -> setPropertiesWithResponse(properties, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties, Context context) {
@@ -338,8 +406,12 @@ public final class BlobServiceAsyncClient {
      * @throws NullPointerException If {@code expiry} is null.
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
-            .flatMap(FluxUtil::toMono);
+        try {
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -359,12 +431,16 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
-        return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+        try {
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Context context) {
-        Utility.assertNotNull("expiry", expiry);
+        StorageImplUtils.assertNotNull("expiry", expiry);
         if (start != null && !start.isBefore(expiry)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
@@ -372,8 +448,8 @@ public final class BlobServiceAsyncClient {
 
         return this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
-                    .setStart(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                    .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
                 null, null, context).map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -389,8 +465,12 @@ public final class BlobServiceAsyncClient {
      *
      * @return A {@link Mono} containing the storage account statistics.
      */
-    public Mono<StorageServiceStats> getStatistics() {
-        return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
+    public Mono<BlobServiceStatistics> getStatistics() {
+        try {
+            return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -406,11 +486,15 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the
      * storage account statistics.
      */
-    public Mono<Response<StorageServiceStats>> getStatisticsWithResponse() {
-        return withContext(this::getStatisticsWithResponse);
+    public Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse() {
+        try {
+            return withContext(this::getStatisticsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
+    Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse(Context context) {
         return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
@@ -425,7 +509,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing containing the storage account info.
      */
     public Mono<StorageAccountInfo> getAccountInfo() {
-        return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -440,12 +528,19 @@ public final class BlobServiceAsyncClient {
      * info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
-        return withContext(this::getAccountInfoWithResponse);
+        try {
+            return withContext(this::getAccountInfoWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(context)
-            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                ServiceGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
+            });
     }
 
     /**
