@@ -37,6 +37,8 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
     }
 
     /**
+     * Creates a new {@link UsernamePasswordCredential} with the current configurations.
+     *
      * @return a {@link UsernamePasswordCredential} with the current configurations.
      */
     public UsernamePasswordCredential build() {

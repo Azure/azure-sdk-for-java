@@ -373,7 +373,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void listRevisionsWithRange();
 
     @Test
-    @Ignore("alzimmermsft to investigate")
+    @Ignore
     public abstract void listRevisionsInvalidRange();
 
     @Test

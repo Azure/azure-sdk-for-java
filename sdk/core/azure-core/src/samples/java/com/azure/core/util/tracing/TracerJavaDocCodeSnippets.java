@@ -39,14 +39,14 @@ public class TracerJavaDocCodeSnippets {
             updatedSendContext.getData(PARENT_SPAN_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context-processKind-SEND
 
-        // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-RECEIVE
+        // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-MESSAGE
         String diagnosticIdKey = "diagnostic-id";
         // start a new tracing span with explicit parent, sets the diagnostic Id (traceparent headers) on the current
-        // context when process kind RECEIVE
+        // context when process kind MESSAGE
         Context updatedReceiveContext = tracer.start("azure.eventhubs.receive", traceContext,
-            ProcessKind.RECEIVE);
+            ProcessKind.MESSAGE);
         System.out.printf("Diagnostic Id: %s%n", updatedReceiveContext.getData(diagnosticIdKey).get().toString());
-        // END: com.azure.core.util.tracing.start#string-context-processKind-RECEIVE
+        // END: com.azure.core.util.tracing.start#string-context-processKind-MESSAGE
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-PROCESS
         String spanImplContext = "span-context";
@@ -100,7 +100,7 @@ public class TracerJavaDocCodeSnippets {
         // use the parent context containing the current tracing span to start a child span
         Context parentContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
         // use the returned span context information of the current tracing span to link
-        Context spanContext = tracer.start("test.method", parentContext, ProcessKind.RECEIVE);
+        Context spanContext = tracer.start("test.method", parentContext, ProcessKind.MESSAGE);
 
         // Adds a link between multiple span's using the span context information of the Span
         // For each event processed, add a link with the created spanContext

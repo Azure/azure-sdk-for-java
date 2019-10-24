@@ -20,6 +20,7 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
@@ -136,7 +137,8 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> deleteBlob(String containerName, String blobName) {
-        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName, blobName), null, null);
+        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), null, null);
     }
 
     /**
@@ -156,8 +158,8 @@ public final class BlobBatch {
      */
     public Response<Void> deleteBlob(String containerName, String blobName,
         DeleteSnapshotsOptionType deleteOptions, BlobRequestConditions blobRequestConditions) {
-        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName, blobName),
-            deleteOptions, blobRequestConditions);
+        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), deleteOptions, blobRequestConditions);
     }
 
     /**
@@ -167,7 +169,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String}
      *
-     * @param blobUrl URL of the blob.
+     * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
@@ -183,7 +185,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions}
      *
-     * @param blobUrl URL of the blob.
+     * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @param deleteOptions Delete options for the blob and its snapshots.
      * @param blobRequestConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -217,7 +219,8 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
-        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, blobName), accessTier, null);
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), accessTier, null);
     }
 
     /**
@@ -237,7 +240,8 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
         String leaseId) {
-        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, blobName), accessTier, leaseId);
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), accessTier, leaseId);
     }
 
     /**
@@ -247,7 +251,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier}
      *
-     * @param blobUrl URL of the blob.
+     * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @param accessTier The tier to set on the blob.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
@@ -264,7 +268,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String}
      *
-     * @param blobUrl URL of the blob.
+     * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @param accessTier The tier to set on the blob.
      * @param leaseId The lease ID the active lease on the blob must match.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is

@@ -193,8 +193,8 @@ public class Poller<T, R> {
             .flux()
             .repeat()
             .takeUntil(pollResponse -> isComplete())
-            .share()
-            .delaySubscription(onActivation);
+            .delaySubscription(onActivation)
+            .share();
 
         // auto polling start here
         this.fluxDisposable = fluxHandle.subscribe();

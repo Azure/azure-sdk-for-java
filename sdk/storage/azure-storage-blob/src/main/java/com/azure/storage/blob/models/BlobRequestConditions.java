@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.http.RequestConditions;
 
 import java.time.OffsetDateTime;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
  * passed to a method to indicate that those conditions are not desired. Please refer to the type of each field for more
  * information on those particular access conditions.
  */
+@Fluent
 public class BlobRequestConditions extends RequestConditions {
     private String leaseId;
 
