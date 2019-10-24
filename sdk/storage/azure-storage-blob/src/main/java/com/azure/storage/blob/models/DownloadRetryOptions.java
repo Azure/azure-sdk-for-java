@@ -12,10 +12,10 @@ import java.util.Locale;
  * This class contains the configuration options used to reliably download from the blob service.
  */
 @Fluent
-public final class ReliableDownloadOptions {
+public final class DownloadRetryOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 
-    private final ClientLogger logger = new ClientLogger(ReliableDownloadOptions.class);
+    private final ClientLogger logger = new ClientLogger(com.azure.storage.blob.models.DownloadRetryOptions.class);
 
     /*
     We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
@@ -42,7 +42,7 @@ public final class ReliableDownloadOptions {
      * @return the updated ReliableDownloadOptions object
      * @throws IllegalArgumentException If {@code maxRetryRequests} is less than 0
      */
-    public ReliableDownloadOptions setMaxRetryRequests(int maxRetryRequests) {
+    public DownloadRetryOptions setMaxRetryRequests(int maxRetryRequests) {
         if (maxRetryRequests < 0) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,

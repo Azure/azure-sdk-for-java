@@ -8,7 +8,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.ReliableDownloadOptions;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,25 +21,25 @@ import java.util.function.Function;
  * This class automatically retries failed reads from a blob download stream.
  *
  * <p>
- * Failed downloads are automatically retied based on the {@link ReliableDownloadOptions download options}, the retry
+ * Failed downloads are automatically retried based on the {@link DownloadRetryOptions download options}, the retry
  * will be resumed from the point where the download failed. This allows for the download to be consumed as one
  * continuous stream.
  * </p>
  */
 final class ReliableDownload {
     private final BlobsDownloadResponse rawResponse;
-    private final ReliableDownloadOptions options;
+    private final DownloadRetryOptions options;
     private final HttpGetterInfo info;
     private final Function<HttpGetterInfo, Mono<ReliableDownload>> getter;
 
-    ReliableDownload(BlobsDownloadResponse rawResponse, ReliableDownloadOptions options, HttpGetterInfo info,
-        Function<HttpGetterInfo, Mono<ReliableDownload>> getter) {
+    ReliableDownload(BlobsDownloadResponse rawResponse, DownloadRetryOptions options, HttpGetterInfo info,
+                     Function<HttpGetterInfo, Mono<ReliableDownload>> getter) {
         StorageImplUtils.assertNotNull("getter", getter);
         StorageImplUtils.assertNotNull("info", info);
         StorageImplUtils.assertNotNull("info.eTag", info.getETag());
 
         this.rawResponse = rawResponse;
-        this.options = (options == null) ? new ReliableDownloadOptions() : options;
+        this.options = (options == null) ? new DownloadRetryOptions() : options;
         this.info = info;
         this.getter = getter;
     }
@@ -73,7 +73,7 @@ final class ReliableDownload {
         return value.switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
     }
 
-    private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, ReliableDownloadOptions options) {
+    private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, DownloadRetryOptions options) {
         // If all the errors are exhausted, return this error to the user.
         if (retryCount > options.getMaxRetryRequests() || !(t instanceof IOException)) {
             return Flux.error(t);
@@ -99,7 +99,7 @@ final class ReliableDownload {
     }
 
     private Flux<ByteBuffer> applyReliableDownload(Flux<ByteBuffer> data, int currentRetryCount,
-        ReliableDownloadOptions options) {
+        DownloadRetryOptions options) {
         return data.doOnNext(buffer -> {
             /*
             Update how much data we have received in case we need to retry and propagate to the user the data we

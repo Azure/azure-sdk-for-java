@@ -36,9 +36,9 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -608,12 +608,12 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param range {@link BlobRange}
-     * @param options {@link ReliableDownloadOptions}
+     * @param options {@link DownloadRetryOptions}
      * @param accessConditions {@link BlobRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
      */
-    public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, ReliableDownloadOptions options,
+    public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5) {
         try {
             return withContext(context ->
@@ -623,14 +623,14 @@ public class BlobAsyncClientBase {
         }
     }
 
-    Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, ReliableDownloadOptions options,
+    Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Context context) {
         return downloadHelper(range, options, accessConditions, rangeGetContentMD5, context)
             .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
 
-    private Mono<ReliableDownload> downloadHelper(BlobRange range, ReliableDownloadOptions options,
+    private Mono<ReliableDownload> downloadHelper(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMd5, Context context) {
         range = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = rangeGetContentMd5 ? rangeGetContentMd5 : null;
@@ -703,7 +703,7 @@ public class BlobAsyncClientBase {
      * @param range {@link BlobRange}
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      * transfers parameter is ignored.
-     * @param options {@link ReliableDownloadOptions}
+     * @param options {@link DownloadRetryOptions}
      * @param accessConditions {@link BlobRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @return An empty response
@@ -711,7 +711,7 @@ public class BlobAsyncClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5) {
         try {
             return withContext(context -> downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
@@ -723,7 +723,7 @@ public class BlobAsyncClientBase {
 
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMd5, Context context) {
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
             ? new ParallelTransferOptions()
@@ -744,7 +744,7 @@ public class BlobAsyncClientBase {
 
     private Mono<Response<BlobProperties>> processInRange(AsynchronousFileChannel channel,
         Response<BlobProperties> blobPropertiesResponse, BlobRange range, Integer blockSize,
-        ReliableDownloadOptions options, BlobRequestConditions accessConditions, boolean rangeGetContentMd5,
+        DownloadRetryOptions options, BlobRequestConditions accessConditions, boolean rangeGetContentMd5,
         Context context, AtomicLong totalProgress, Lock progressLock, ProgressReceiver progressReceiver) {
         return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new BlobRange(0,
             blobPropertiesResponse.getValue().getBlobSize()))).flatMapMany(rg ->

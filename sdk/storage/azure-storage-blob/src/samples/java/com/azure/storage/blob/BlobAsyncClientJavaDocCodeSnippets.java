@@ -9,9 +9,9 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import reactor.core.publisher.Flux;
 
@@ -87,7 +87,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions,
+     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, DownloadRetryOptions,
      * BlobRequestConditions, boolean)}
      *
      * @throws UncheckedIOException If an I/O error occurs
@@ -95,7 +95,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void downloadWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
         client.downloadWithResponse(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
@@ -112,7 +112,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClient#downloadToFile(String)} and {@link BlobAsyncClient#downloadToFileWithResponse(
-     * String, BlobRange, ParallelTransferOptions, ReliableDownloadOptions, BlobRequestConditions, boolean)}
+     * String, BlobRange, ParallelTransferOptions, DownloadRetryOptions, BlobRequestConditions, boolean)}
      */
     public void downloadToFileCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
@@ -121,7 +121,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
         client.downloadToFileWithResponse(file, range, null, options, null, false)
             .subscribe(response -> System.out.println("Completed download to file"));
@@ -245,7 +245,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions,
+     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, DownloadRetryOptions,
      * BlobRequestConditions, boolean)}
      *
      * @throws UncheckedIOException If an I/O error occurs
@@ -253,7 +253,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void downloadWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, (long) 2048);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
         client.downloadWithResponse(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();

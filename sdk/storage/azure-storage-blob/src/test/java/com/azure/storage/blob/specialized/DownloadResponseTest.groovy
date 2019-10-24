@@ -7,7 +7,7 @@ import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.HttpGetterInfo
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.ReliableDownloadOptions
+import com.azure.storage.blob.models.DownloadRetryOptions
 import spock.lang.Unroll
 
 class DownloadResponseTest extends APISpec {
@@ -40,7 +40,7 @@ class DownloadResponseTest extends APISpec {
             .setCount(flux.getScenarioData().remaining())
             .setETag("etag")
 
-        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5)
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
 
         when:
         ReliableDownload response = flux.setOptions(options).getter(info).block()
@@ -61,7 +61,7 @@ class DownloadResponseTest extends APISpec {
     def "Failure"() {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
-        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5)
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
         HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
 
         when:
@@ -106,7 +106,7 @@ class DownloadResponseTest extends APISpec {
 
     def "Options IA"() {
         when:
-        new ReliableDownloadOptions().setMaxRetryRequests(-1)
+        new DownloadRetryOptions().setMaxRetryRequests(-1)
 
         then:
         thrown(IllegalArgumentException)
@@ -128,7 +128,7 @@ class DownloadResponseTest extends APISpec {
             .setCount(10)
             .setETag("etag")
 
-        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5)
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
 
         when:
         ReliableDownload response = flux.setOptions(options).getter(info).block()
