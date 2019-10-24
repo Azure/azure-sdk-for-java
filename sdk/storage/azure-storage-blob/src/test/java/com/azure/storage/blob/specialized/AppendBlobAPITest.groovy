@@ -6,17 +6,12 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
-import com.azure.storage.blob.models.AppendBlobAccessConditions
-import com.azure.storage.blob.models.AppendPositionAccessConditions
-import com.azure.storage.blob.models.BlobAccessConditions
-import com.azure.storage.blob.models.BlobHTTPHeaders
+import com.azure.storage.blob.models.AppendBlobRequestConditions
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.LeaseAccessConditions
-
-import com.azure.storage.blob.models.ModifiedAccessConditions
+import com.azure.storage.blob.models.BlobRequestConditions
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.models.SourceModifiedAccessConditions
-import com.azure.storage.blob.models.StorageException
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -38,7 +33,7 @@ class AppendBlobAPITest extends APISpec {
         then:
         createResponse.getStatusCode() == 201
         validateBasicHeaders(createResponse.getHeaders())
-        createResponse.getValue().getContentMD5() == null
+        createResponse.getValue().getContentMd5() == null
         createResponse.getValue().isServerEncrypted()
     }
 
@@ -49,22 +44,21 @@ class AppendBlobAPITest extends APISpec {
 
     def "Create error"() {
         when:
-        bc.createWithResponse(null, null, new BlobAccessConditions()
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, Context.NONE)
+        bc.createWithResponse(null, null, new BlobRequestConditions().setIfMatch("garbage"), null, Context.NONE)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     @Unroll
     def "Create headers"() {
         setup:
-        def headers = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType)
+        def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
 
         when:
         bc.createWithResponse(headers, null, null, null, null)
@@ -111,13 +105,12 @@ class AppendBlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
-
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
         bc.createWithResponse(null, null, bac, null, null).getStatusCode() == 201
@@ -137,18 +130,18 @@ class AppendBlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
         bc.createWithResponse(null, null, bac, null, Context.NONE)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -202,7 +195,7 @@ class AppendBlobAPITest extends APISpec {
         bc.appendBlock(new ByteArrayInputStream(new byte[0]), 0)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Append block null body"() {
@@ -218,16 +211,14 @@ class AppendBlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
-        def bac = new AppendBlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
-                .setAppendPosition(appendPosE)
-                .setMaxSize(maxSizeLTE))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
 
 
         expect:
@@ -251,22 +242,20 @@ class AppendBlobAPITest extends APISpec {
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, leaseID)
 
-        def bac = new AppendBlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
-                .setAppendPosition(appendPosE)
-                .setMaxSize(maxSizeLTE))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
 
         when:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         cleanup:
         defaultInputStream.get().reset()
@@ -291,7 +280,7 @@ class AppendBlobAPITest extends APISpec {
         bc.appendBlock(defaultInputStream.get(), defaultDataSize)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Append block from URL min"() {
@@ -306,7 +295,7 @@ class AppendBlobAPITest extends APISpec {
         def blobRange = new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)
 
         when:
-        def response = destURL.appendBlockFromUrlWithResponse(new URL(bc.getBlobUrl()), blobRange, null, null, null, null, null)
+        def response = destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), blobRange, null, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -323,7 +312,7 @@ class AppendBlobAPITest extends APISpec {
         destURL.create()
 
         when:
-        destURL.appendBlockFromUrl(new URL(bc.getBlobUrl()), new BlobRange(2 * 1024, 1024))
+        destURL.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(2 * 1024, 1024))
 
         then:
         def downloadStream = new ByteArrayOutputStream(1024)
@@ -341,11 +330,11 @@ class AppendBlobAPITest extends APISpec {
         destURL.create()
 
         when:
-        destURL.appendBlockFromUrlWithResponse(new URL(bc.getBlobUrl()), null, MessageDigest.getInstance("MD5").digest(data),
+        destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
             null, null, null, Context.NONE)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
     }
 
     def "Append block from URL MD5 fail"() {
@@ -358,11 +347,11 @@ class AppendBlobAPITest extends APISpec {
         destURL.create()
 
         when:
-        destURL.appendBlockFromUrlWithResponse(new URL(bc.getBlobUrl()), null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
+        destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
             null, null, null, Context.NONE)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     @Unroll
@@ -371,23 +360,21 @@ class AppendBlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
-        def bac = new AppendBlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
-                .setAppendPosition(appendPosE)
-                .setMaxSize(maxSizeLTE))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
         sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
 
         expect:
-        bc.appendBlockFromUrlWithResponse(new URL(sourceURL.getBlobUrl()), null, null, bac, null, null, null).getStatusCode() == 201
+        bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
@@ -408,26 +395,24 @@ class AppendBlobAPITest extends APISpec {
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, leaseID)
 
-        def bac = new AppendBlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
-                .setAppendPosition(appendPosE)
-                .setMaxSize(maxSizeLTE))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
         sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
 
         when:
-        bc.appendBlockFromUrlWithResponse(new URL(sourceURL.getBlobUrl()), null, null, bac, null, null, Context.NONE)
+        bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null, null, Context.NONE)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE
@@ -449,14 +434,14 @@ class AppendBlobAPITest extends APISpec {
         sourceURL.create()
         sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
 
-        def smac = new SourceModifiedAccessConditions()
-            .setSourceIfModifiedSince(sourceIfModifiedSince)
-            .setSourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
-            .setSourceIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
-            .setSourceIfNoneMatch(sourceIfNoneMatch)
+        def smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
+            .setIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bc.appendBlockFromUrlWithResponse(new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null).getStatusCode() == 201
+        bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -476,17 +461,17 @@ class AppendBlobAPITest extends APISpec {
         sourceURL.create()
         sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
 
-        def smac = new SourceModifiedAccessConditions()
-            .setSourceIfModifiedSince(sourceIfModifiedSince)
-            .setSourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
-            .setSourceIfMatch(sourceIfMatch)
-            .setSourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
+        def smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(sourceIfMatch)
+            .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bc.appendBlockFromUrlWithResponse(new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, Context.NONE)
+        bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, null, smac, null, Context.NONE)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -504,5 +489,21 @@ class AppendBlobAPITest extends APISpec {
     def "Get Append Blob Name"() {
         expect:
         blobName == bc.getBlobName()
+    }
+
+    def "Create overwrite false"() {
+        when:
+        bc.create()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Create overwrite true"() {
+        when:
+        bc.create(true)
+
+        then:
+        notThrown(Throwable)
     }
 }

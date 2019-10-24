@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigrateSqlServerSqlMITaskOutputDatabaseLevel model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSqlServerSqlMITaskOutputDatabaseLevel.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("DatabaseLevelOutput")
 public class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateSqlServerSqlMITaskOutput {
     /**

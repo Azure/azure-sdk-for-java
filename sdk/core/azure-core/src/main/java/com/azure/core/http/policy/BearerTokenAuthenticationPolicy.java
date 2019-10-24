@@ -5,7 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.credential.SimpleTokenCache;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * The Pipeline policy that applies a token credential to an HTTP request
+ * The pipeline policy that applies a token credential to an HTTP request
  * with "Bearer" scheme.
  */
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
@@ -37,7 +37,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         assert scopes.length > 0;
         this.credential = credential;
         this.scopes = scopes;
-        this.cache = new SimpleTokenCache(() -> credential.getToken(new TokenRequest().addScopes(scopes)));
+        this.cache = new SimpleTokenCache(() -> credential.getToken(new TokenRequestContext().addScopes(scopes)));
     }
 
     @Override

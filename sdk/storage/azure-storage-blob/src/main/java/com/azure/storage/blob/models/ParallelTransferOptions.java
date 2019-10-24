@@ -3,10 +3,15 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.ProgressReceiver;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
+/**
+ * This class contains configuration used to parallelize data transfer operations.
+ */
+@Fluent
 public class ParallelTransferOptions {
 
     private static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
@@ -64,7 +69,7 @@ public class ParallelTransferOptions {
      * @throws IllegalArgumentException when block size is less than 0 or greater than max blob block size (10MB).
      */
     public ParallelTransferOptions setBlockSize(int blockSize) {
-        Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_BLOCK_SIZE);
+        StorageImplUtils.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_BLOCK_SIZE);
         this.blockSize = blockSize;
         return this;
     }
@@ -80,7 +85,7 @@ public class ParallelTransferOptions {
      * @throws IllegalArgumentException when numBuffers is less than 2.
      */
     public ParallelTransferOptions setNumBuffers(int numBuffers) {
-        Utility.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
+        StorageImplUtils.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
         this.numBuffers = numBuffers;
         return this;
     }

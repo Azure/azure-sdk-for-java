@@ -6,11 +6,13 @@ package com.azure.storage.file
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
-import com.azure.storage.common.Constants
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.core.util.polling.Poller
+import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileErrorCode
 import com.azure.storage.file.models.FileHttpHeaders
 import com.azure.storage.file.models.FileRange
+import com.azure.storage.file.models.FileStorageException
 import com.azure.storage.file.models.NtfsFileAttributes
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
@@ -21,6 +23,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -44,14 +47,14 @@ class FileAsyncAPITests extends APISpec {
         shareClient.create()
         primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHttpHeaders().setFileContentLanguage("en")
-            .setFileContentType("application/octet-stream")
+        httpHeaders = new FileHttpHeaders().setContentLanguage("en")
+            .setContentType("application/octet-stream")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get file URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -148,17 +151,17 @@ class FileAsyncAPITests extends APISpec {
 
         downloadVerifier.assertNext({ response ->
             assert FileTestHelper.assertResponseStatusCode(response, 200)
-            def headers = response.getHeaders()
-            assert Long.parseLong(headers.getValue("Content-Length")) == dataLength
-            assert headers.getValue("ETag")
-            assert headers.getValue("Last-Modified")
-            assert headers.getValue("x-ms-file-permission-key")
-            assert headers.getValue("x-ms-file-attributes")
-            assert headers.getValue("x-ms-file-last-write-time")
-            assert headers.getValue("x-ms-file-creation-time")
-            assert headers.getValue("x-ms-file-change-time")
-            assert headers.getValue("x-ms-file-parent-id")
-            assert headers.getValue("x-ms-file-id")
+            def headers = response.getDeserializedHeaders()
+            assert headers.getContentLength() == dataLength
+            assert headers.getETag()
+            assert headers.getLastModified()
+            assert headers.getFilePermissionKey()
+            assert headers.getFileAttributes()
+            assert headers.getFileLastWriteTime()
+            assert headers.getFileCreationTime()
+            assert headers.getFileChangeTime()
+            assert headers.getFileParentId()
+            assert headers.getFileId()
 
             FluxUtil.collectBytesInByteBufferStream(response.getValue())
                 .flatMap({ data -> assert defaultData.array() == data })
@@ -184,7 +187,7 @@ class FileAsyncAPITests extends APISpec {
 
         downloadVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 206)
-            assert Long.parseLong(it.getHeaders().getValue("Content-Length")) == dataLength
+            assert it.getDeserializedHeaders().getContentLength() == dataLength
             FluxUtil.collectBytesInByteBufferStream(it.getValue())
                 .flatMap({ data -> assert data == defaultData.array()})
         }.verifyComplete()
@@ -404,13 +407,13 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasToken = new FileServiceSasSignatureValues()
             .setExpiryTime(getUTCNow().plusDays(1))
-            .setPermissions(new FileSasPermission().setReadPermission(true).toString())
-            .setCanonicalName(primaryFileAsyncClient.getShareName(), primaryFileAsyncClient.getFilePath(), credential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
-            .generateSASQueryParameters(credential)
+            .setPermissions(new FileSasPermission().setReadPermission(true))
+            .setShareName(primaryFileAsyncClient.getShareName())
+            .setFilePath(primaryFileAsyncClient.getFilePath())
+            .generateSasQueryParameters(credential)
             .encode()
 
         when:
@@ -419,7 +422,7 @@ class FileAsyncAPITests extends APISpec {
             .buildFileAsyncClient()
 
         client.create(1024).block()
-        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() + "?" + sasToken).toURI()).block()
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, primaryFileAsyncClient.getFileUrl().toString() + "?" + sasToken).block()
 
         then:
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(client.download()))
@@ -439,26 +442,28 @@ class FileAsyncAPITests extends APISpec {
         def sourceURL = primaryFileAsyncClient.getFileUrl()
 
         when:
-        def copyInfoVerifier = StepVerifier.create(primaryFileAsyncClient.startCopyWithResponse(sourceURL, null))
+        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, Duration.ofSeconds(1))
+        def copyInfoVerifier = StepVerifier.create(poller.getObserver())
 
         then:
         copyInfoVerifier.assertNext {
-            assert FileTestHelper.assertResponseStatusCode(it, 202)
             assert it.getValue().getCopyId() != null
-        }.verifyComplete()
+        }.expectComplete().verify(Duration.ofMinutes(1))
     }
 
+    @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")
     def "Start copy error"() {
         given:
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        def startCopyErrorVerifier = StepVerifier.create(primaryFileAsyncClient.startCopyWithResponse("some url", testMetadata))
+        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata, Duration.ofSeconds(1))
+        def startCopyErrorVerifier = StepVerifier.create(poller.getObserver())
 
         then:
-        startCopyErrorVerifier.verifyErrorSatisfies {
+        startCopyErrorVerifier.expectErrorSatisfies({
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
-        }
+        }).verify(Duration.ofSeconds(30))
     }
 
     @Ignore
@@ -668,9 +673,32 @@ class FileAsyncAPITests extends APISpec {
             .verifyComplete()
     }
 
-    @Ignore
-    def "Force close handles"() {
-        // TODO: Need to find a way of mocking handles.
+    def "Force close handle min"() {
+        given:
+        primaryFileAsyncClient.create(512).block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("1"))
+            .verifyComplete()
+    }
+
+    def "Force close handle invalid handle ID"() {
+        given:
+        primaryFileAsyncClient.create(512).block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("invalidHandleId"))
+            .verifyErrorSatisfies({ it instanceof  FileStorageException })
+    }
+
+    def "Force close all handles min"() {
+        given:
+        primaryFileAsyncClient.create(512).block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.forceCloseAllHandles())
+            .assertNext({ it == 0 })
+            .verifyComplete()
     }
 
     def "Get snapshot id"() {

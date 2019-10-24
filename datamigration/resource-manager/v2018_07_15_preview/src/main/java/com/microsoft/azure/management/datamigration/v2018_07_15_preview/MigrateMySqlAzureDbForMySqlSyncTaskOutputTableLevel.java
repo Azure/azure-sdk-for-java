@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("TableLevelOutput")
 public class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel extends MigrateMySqlAzureDbForMySqlSyncTaskOutput {
     /**

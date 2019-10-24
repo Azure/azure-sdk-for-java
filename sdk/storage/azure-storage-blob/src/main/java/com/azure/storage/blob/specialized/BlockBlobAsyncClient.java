@@ -4,32 +4,36 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.BlockBlobCommitBlockListHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobUploadHeaders;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -49,6 +53,8 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
 public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
+    private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
+
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
@@ -67,17 +73,26 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
-     * @param azureBlobStorage the API client for blob storage
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
-    BlockBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
-        super(azureBlobStorage, snapshot, cpk, accountName);
+    BlockBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
-     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
-     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
-     * and PutBlockList. For more information, see the
+     * Creates a new block blob. By default this method will not overwrite an existing blob. Updating an existing block
+     * blob overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content
+     * of the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use
+     * PutBlock and PutBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
@@ -95,7 +110,45 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
-        return uploadWithResponse(data, length, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return upload(data, length, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
+     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
+     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
+     * and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     * <p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long-boolean}
+     *
+     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length, boolean overwrite) {
+        try {
+            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+            if (!overwrite) {
+                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return uploadWithResponse(data, length, null, null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -112,32 +165,42 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
-        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
-        return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, accessConditions,
-            context));
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
+        Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions) {
+        try {
+            return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, accessConditions,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
-        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
+        Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions, Context context) {
+        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
 
-        return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(),
-            getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
+        return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null, null, data, length, null, null,
+            metadata, accessConditions.getLeaseId(), tier, accessConditions.getIfModifiedSince(),
+            accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
+            null, headers, getCustomerProvidedKey(), context)
+            .map(rb -> {
+                BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -147,7 +210,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      *
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
      * @param data The data to write to the block. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -160,8 +223,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long}
      */
-    public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuffer> data, long length) {
-        return stageBlockWithResponse(base64BlockID, data, length, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> stageBlock(String base64BlockId, Flux<ByteBuffer> data, long length) {
+        try {
+            return stageBlockWithResponse(base64BlockId, data, length, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -174,29 +241,31 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-String}
      *
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
      * @param data The data to write to the block. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
-     * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
-     * not match the active lease on the blob.
+     * @param leaseId The lease ID the active lease on the blob must match.
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
-        LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> stageBlockWithResponse(base64BlockID, data, length, leaseAccessConditions,
-            context));
+    public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
+        String leaseId) {
+        try {
+            return withContext(context -> stageBlockWithResponse(base64BlockId, data, length, leaseId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
-        LeaseAccessConditions leaseAccessConditions, Context context) {
+    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
+        String leaseId, Context context) {
         return this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
-            base64BlockID, length, data, null, null, null, null, leaseAccessConditions, getCustomerProvidedKey(),
-            context).map(response -> new SimpleResponse<>(response, null));
+            base64BlockId, length, data, null, null, null, leaseId, null, getCustomerProvidedKey(), context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -206,60 +275,76 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURL#String-URL-BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrl#String-String-BlobRange}
      *
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceRange {@link BlobRange}
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
-        return this.stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null)
-            .flatMap(FluxUtil::toMono);
+    public Mono<Void> stageBlockFromUrl(String base64BlockId, String sourceUrl, BlobRange sourceRange) {
+        try {
+            return this.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange, null, null, null)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
      * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-from-url">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions}
      *
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceRange {@link BlobRange}
-     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will
+     * @param sourceContentMd5 An MD5 hash of the block content from the source blob. If specified, the service will
      * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
-     * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
-     * not match the active lease on the blob.
-     * @param sourceModifiedAccessConditions {@link SourceModifiedAccessConditions}
+     * @param leaseId The lease ID that the active lease on the blob must match.
+     * @param sourceRequestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL,
-        BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-        SourceModifiedAccessConditions sourceModifiedAccessConditions) {
-        return withContext(context -> stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange,
-            sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions));
+    public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
+        BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
+        try {
+            return withContext(context -> stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange,
+                sourceContentMd5, leaseId, sourceRequestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<Void>> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL,
-        BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-        SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
-        sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
+    Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
+        byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Context context) {
+        sourceRange = (sourceRange == null) ? new BlobRange(0) : sourceRange;
+        sourceRequestConditions = (sourceRequestConditions == null)
+            ? new BlobRequestConditions() : sourceRequestConditions;
 
-        return this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null,
-                base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5, null, null,
-                null, getCustomerProvidedKey(), leaseAccessConditions, sourceModifiedAccessConditions, context)
+        URL url;
+        try {
+            url = new URL(sourceUrl);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+        }
+
+        return this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null, base64BlockId, 0,
+            url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
+            sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
+            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
+            getCustomerProvidedKey(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -276,7 +361,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the list of blocks.
      */
     public Mono<BlockList> listBlocks(BlockListType listType) {
-        return this.listBlocksWithResponse(listType, null).map(Response::getValue);
+        try {
+            return this.listBlocksWithResponse(listType, null).map(Response::getValue);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -286,24 +375,24 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-String}
      *
      * @param listType Specifies which type of blocks to return.
-     * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
-     * not match the active lease on the blob.
+     * @param leaseId The lease ID the active lease on the blob must match.
      * @return A reactive response containing the list of blocks.
      */
-    public Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType,
-        LeaseAccessConditions leaseAccessConditions) {
-
-        return withContext(context -> listBlocksWithResponse(listType, leaseAccessConditions, context));
+    public Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId) {
+        try {
+            return withContext(context -> listBlocksWithResponse(listType, leaseId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType,
-        LeaseAccessConditions leaseAccessConditions, Context context) {
+    Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId, Context context) {
 
-        return this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(null,
-            null, listType, getSnapshotId(), null, null, leaseAccessConditions, context)
+        return this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
+            null, null, listType, getSnapshotId(), null, leaseId, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -319,11 +408,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List}
      *
-     * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @return A reactive response containing the information of the block blob.
      */
-    public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIDs) {
-        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null).flatMap(FluxUtil::toMono);
+    public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds) {
+        try {
+            return commitBlockListWithResponse(base64BlockIds, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -336,30 +429,41 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
      *
-     * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the block blob.
      */
-    public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
-        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
-        return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, tier,
-            accessConditions, context));
+    public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
+            BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+            BlobRequestConditions accessConditions) {
+        try {
+            return withContext(context -> commitBlockListWithResponse(base64BlockIds, headers, metadata, tier,
+                accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
-        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
-        Context context) {
-        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+    Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
+            BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+            BlobRequestConditions accessConditions, Context context) {
+        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
 
-        return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
-            null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tier, null,
-            headers, accessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
-            accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
+        return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(null, null,
+            new BlockLookupList().setLatest(base64BlockIds), null, null, null, metadata, accessConditions.getLeaseId(),
+            tier, accessConditions.getIfModifiedSince(), accessConditions.getIfUnmodifiedSince(),
+            accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
+            context)
+            .map(rb -> {
+                BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 }

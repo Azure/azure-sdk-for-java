@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
@@ -16,7 +16,7 @@
 
   <groupId>com.azure.search</groupId>
   <artifactId>azure-search</artifactId>
-  <version>1.0.0-preview.1</version>
+  <version>1.0.0-preview.2</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -45,12 +45,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.7</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.7</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -65,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.7</version>
       <scope>test</scope>
     </dependency>
     <dependency>

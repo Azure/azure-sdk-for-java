@@ -3,11 +3,12 @@
 
 package com.azure.storage.blob.specialized
 
+import com.azure.core.http.RequestConditions
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.LeaseDurationType
 import com.azure.storage.blob.models.LeaseStateType
-import com.azure.storage.blob.models.ModifiedAccessConditions
-import com.azure.storage.blob.models.StorageException
+
+import com.azure.storage.blob.models.BlobStorageException
 import spock.lang.Unroll
 
 class LeaseAPITest extends APISpec {
@@ -63,7 +64,7 @@ class LeaseAPITest extends APISpec {
         leaseClient.acquireLease(duration)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         duration | _
@@ -77,7 +78,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -89,12 +90,12 @@ class LeaseAPITest extends APISpec {
             .getStatusCode() == 201
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        oldDate | null            | null                 | null
-        null            | newDate | null                 | null
-        null            | null            | receivedEtag | null
-        null            | null            | null                 | garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -102,7 +103,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -112,14 +113,14 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc).acquireLeaseWithResponse(-1, mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        newDate | null            | null                | null
-        null            | oldDate | null                | null
-        null            | null            | garbageEtag | null
-        null            | null            | null                | receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Acquire blob lease error"() {
@@ -130,7 +131,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc).acquireLease(20)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Renew blob lease"() {
@@ -165,7 +166,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -177,12 +178,12 @@ class LeaseAPITest extends APISpec {
             .getStatusCode() == 200
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        oldDate | null            | null                 | null
-        null            | newDate | null                 | null
-        null            | null            | receivedEtag | null
-        null            | null            | null                 | garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -191,7 +192,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -201,14 +202,14 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, leaseID).renewLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        newDate | null            | null                | null
-        null            | oldDate | null                | null
-        null            | null            | garbageEtag | null
-        null            | null            | null                | receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Renew blob lease error"() {
@@ -219,7 +220,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, "id").renewLease()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Release blob lease"() {
@@ -248,7 +249,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -258,12 +259,12 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, leaseID).releaseLeaseWithResponse(mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        oldDate | null            | null                 | null
-        null            | newDate | null                 | null
-        null            | null            | receivedEtag | null
-        null            | null            | null                 | garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -272,7 +273,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -282,14 +283,14 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, leaseID).releaseLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        newDate | null            | null                | null
-        null            | oldDate | null                | null
-        null            | null            | garbageEtag | null
-        null            | null            | null                | receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Release blob lease error"() {
@@ -300,7 +301,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, "id").releaseLease()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     @Unroll
@@ -341,7 +342,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
         setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -351,12 +352,12 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc).breakLeaseWithResponse(null, mac, null, null).getStatusCode() == 202
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        oldDate | null            | null                 | null
-        null            | newDate | null                 | null
-        null            | null            | receivedEtag | null
-        null            | null            | null                 | garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -365,7 +366,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -375,14 +376,14 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc).breakLeaseWithResponse(null, mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        newDate | null            | null                | null
-        null            | oldDate | null                | null
-        null            | null            | garbageEtag | null
-        null            | null            | null                | receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Break blob lease error"() {
@@ -393,7 +394,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc).breakLease()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Change blob lease"() {
@@ -424,7 +425,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         match = setupBlobMatchCondition(bc, match)
         String leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -434,12 +435,12 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        oldDate | null            | null                 | null
-        null            | newDate | null                 | null
-        null            | null            | receivedEtag | null
-        null            | null            | null                 | garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -448,7 +449,7 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         String leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -458,14 +459,14 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        newDate | null            | null                | null
-        null            | oldDate | null                | null
-        null            | null            | garbageEtag | null
-        null            | null            | null                | receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Change blob lease error"() {
@@ -476,19 +477,8 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, "id").changeLease("id")
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Unroll
@@ -526,7 +516,7 @@ class LeaseAPITest extends APISpec {
         leaseClient.acquireLease(duration)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         duration | _
@@ -538,39 +528,39 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Acquire container lease AC"() {
         setup:
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
 
         expect:
-        createLeaseClient(cc).acquireLeaseWithResponse( -1, mac, null, null).getStatusCode() == 201
+        createLeaseClient(cc).acquireLeaseWithResponse(-1, mac, null, null).getStatusCode() == 201
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        oldDate | null            | null                 | null
-        null            | newDate | null                 | null
-        null            | null            | receivedEtag | null
-        null            | null            | null                 | garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
     def "Acquire container lease AC fail"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc).acquireLeaseWithResponse(-1, mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        newDate | null
-        null            | oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     def "Acquire container lease error"() {
@@ -581,7 +571,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(cc).acquireLease(50)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Renew container lease"() {
@@ -609,51 +599,51 @@ class LeaseAPITest extends APISpec {
     def "Renew container lease AC"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(cc, leaseID).renewLeaseWithResponse(mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified
-        null            | null
-        oldDate | null
-        null            | newDate
+        modified | unmodified
+        null     | null
+        oldDate  | null
+        null     | newDate
     }
 
     @Unroll
     def "Renew container lease AC fail"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc, leaseID).renewLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        newDate | null
-        null            | oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     @Unroll
     def "Renew container lease AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         createLeaseClient(cc, receivedEtag).renewLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        match                | noneMatch
+        match        | noneMatch
         receivedEtag | null
-        null                 | garbageEtag
+        null         | garbageEtag
     }
 
     def "Renew container lease error"() {
@@ -664,7 +654,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(cc, "id").renewLease()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Release container lease"() {
@@ -690,51 +680,51 @@ class LeaseAPITest extends APISpec {
     def "Release container lease AC"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(cc, leaseID).releaseLeaseWithResponse(mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified
-        null            | null
-        oldDate | null
-        null            | newDate
+        modified | unmodified
+        null     | null
+        oldDate  | null
+        null     | newDate
     }
 
     @Unroll
     def "Release container lease AC fail"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc, leaseID).releaseLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        newDate | null
-        null            | oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     @Unroll
     def "Release container lease AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         createLeaseClient(cc, receivedLeaseID).releaseLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        match                | noneMatch
+        match        | noneMatch
         receivedEtag | null
-        null                 | garbageEtag
+        null         | garbageEtag
     }
 
     def "Release container lease error"() {
@@ -745,7 +735,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(cc, "id").releaseLease()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     @Unroll
@@ -786,51 +776,51 @@ class LeaseAPITest extends APISpec {
     def "Break container lease AC"() {
         setup:
         setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(cc).breakLeaseWithResponse(null, mac, null, null).getStatusCode() == 202
 
         where:
-        modified        | unmodified
-        null            | null
-        oldDate | null
-        null            | newDate
+        modified | unmodified
+        null     | null
+        oldDate  | null
+        null     | newDate
     }
 
     @Unroll
     def "Break container lease AC fail"() {
         setup:
         setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc).breakLeaseWithResponse(null, mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        newDate | null
-        null            | oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     @Unroll
     def "Break container lease AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         createLeaseClient(cc).breakLeaseWithResponse(null, mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        match                | noneMatch
+        match        | noneMatch
         receivedEtag | null
-        null                 | garbageEtag
+        null         | garbageEtag
     }
 
     def "Break container lease error"() {
@@ -841,7 +831,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(cc).breakLease()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Change container lease"() {
@@ -868,51 +858,51 @@ class LeaseAPITest extends APISpec {
     def "Change container lease AC"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(cc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified
-        null            | null
-        oldDate | null
-        null            | newDate
+        modified | unmodified
+        null     | null
+        oldDate  | null
+        null     | newDate
     }
 
     @Unroll
     def "Change container lease AC fail"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         createLeaseClient(cc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        newDate | null
-        null            | oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     @Unroll
     def "Change container lease AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         createLeaseClient(cc, receivedLeaseID).changeLeaseWithResponse(garbageLeaseID, mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
-        match                | noneMatch
+        match        | noneMatch
         receivedEtag | null
-        null                 | garbageEtag
+        null         | garbageEtag
     }
 
     def "Change container lease error"() {
@@ -923,6 +913,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(cc, "id").changeLease("id")
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 }

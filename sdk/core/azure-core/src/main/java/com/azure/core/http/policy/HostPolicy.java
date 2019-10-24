@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 
 /**
- * The Pipeline policy that adds the given host to each HttpRequest.
+ * The pipeline policy that adds the given host to each HttpRequest.
  */
 public class HostPolicy implements HttpPipelinePolicy {
     private final String host;
@@ -39,7 +39,8 @@ public class HostPolicy implements HttpPipelinePolicy {
             context.getHttpRequest().setUrl(urlBuilder.setHost(host).toURL());
             result = next.process();
         } catch (MalformedURLException e) {
-            result = Mono.error(e);
+            result = Mono.error(new RuntimeException(String.format("Host URL '%s' is invalid.",
+                host), e));
         }
         return result;
     }

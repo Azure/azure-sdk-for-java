@@ -6,9 +6,8 @@ package com.azure.storage.blob.batch;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
 
 /**
  * Code snippets for {@link BlobBatch}
@@ -51,29 +50,27 @@ public class BlobBatchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobBatch#deleteBlob(String, String, DeleteSnapshotsOptionType, BlobAccessConditions)}
+     * Code snippet for {@link BlobBatch#deleteBlob(String, String, DeleteSnapshotsOptionType, BlobRequestConditions)}
      */
     public void addDeleteOperationWithNames() {
-        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobAccessConditions
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("{lease ID}"));
+        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobRequestConditions
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId("{lease ID}");
 
         Response<Void> deleteResponse = batch.deleteBlob("{container name}", "{blob name}",
-            DeleteSnapshotsOptionType.INCLUDE, blobAccessConditions);
-        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobAccessConditions
+            DeleteSnapshotsOptionType.INCLUDE, blobRequestConditions);
+        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobRequestConditions
     }
 
     /**
-     * Code snippet for {@link BlobBatch#deleteBlob(String, DeleteSnapshotsOptionType, BlobAccessConditions)}
+     * Code snippet for {@link BlobBatch#deleteBlob(String, DeleteSnapshotsOptionType, BlobRequestConditions)}
      */
     public void addDeleteOperationWithUrl() {
-        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobAccessConditions
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("{lease ID}"));
+        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId("{lease ID}");
 
         Response<Void> deleteResponse = batch.deleteBlob("{url of blob}", DeleteSnapshotsOptionType.INCLUDE,
-            blobAccessConditions);
-        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobAccessConditions
+            blobRequestConditions);
+        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions
     }
 
     /**
@@ -95,22 +92,21 @@ public class BlobBatchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobBatch#setBlobAccessTier(String, String, AccessTier, LeaseAccessConditions)}
+     * Code snippet for {@link BlobBatch#setBlobAccessTier(String, String, AccessTier, String)}
      */
     public void addSetTierWithNames() {
-        // BEGIN: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-LeaseAccessConditions
+        // BEGIN: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-String
         Response<Void> setTierResponse = batch.setBlobAccessTier("{container name}", "{blob name}", AccessTier.HOT,
-            new LeaseAccessConditions().setLeaseId("{lease ID}"));
-        // END: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-LeaseAccessConditions
+            "{lease ID}");
+        // END: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-String
     }
 
     /**
-     * Code snippet for {@link BlobBatch#setBlobAccessTier(String, AccessTier, LeaseAccessConditions)}
+     * Code snippet for {@link BlobBatch#setBlobAccessTier(String, AccessTier, String)}
      */
     public void addSetTierWithUrl() {
-        // BEGIN: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-LeaseAccessConditions
-        Response<Void> setTierResponse = batch.setBlobAccessTier("{url of blob}", AccessTier.HOT,
-            new LeaseAccessConditions().setLeaseId("{lease ID}"));
-        // END: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-LeaseAccessConditions
+        // BEGIN: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String
+        Response<Void> setTierResponse = batch.setBlobAccessTier("{url of blob}", AccessTier.HOT, "{lease ID}");
+        // END: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String
     }
 }

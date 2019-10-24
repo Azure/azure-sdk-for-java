@@ -31,7 +31,7 @@ public class HttpPipelineNextPolicy {
     /**
      * Invokes the next {@link HttpPipelinePolicy}.
      *
-     * @return a publisher upon subscription invokes next policy and emits response from the policy.
+     * @return A publisher which upon subscription invokes next policy and emits response from the policy.
      */
     public Mono<HttpResponse> process() {
         final int size = this.pipeline.getPolicyCount();
@@ -47,6 +47,11 @@ public class HttpPipelineNextPolicy {
         }
     }
 
+    /**
+     * Creates a new instance of this instance.
+     *
+     * @return A new instance of this next pipeline policy.
+     */
     @Override
     public HttpPipelineNextPolicy clone() {
         HttpPipelineNextPolicy cloned = new HttpPipelineNextPolicy(this.pipeline, this.context);

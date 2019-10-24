@@ -17,6 +17,7 @@ import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.TypeUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,6 +49,7 @@ final class HttpResponseBodyDecoder {
     static Mono<Object> decode(HttpResponse httpResponse, SerializerAdapter serializer,
                                HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
+        final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
         //
         return Mono.defer(() -> {
             if (isErrorStatus(httpResponse, decodeData)) {
@@ -56,13 +58,12 @@ final class HttpResponseBodyDecoder {
                         try {
                             final Object decodedErrorEntity = deserializeBody(bodyString,
                                 decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
-                                null,
-                                serializer,
-                                SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+                                null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
                             return decodedErrorEntity == null ? Mono.empty() : Mono.just(decodedErrorEntity);
-                        } catch (IOException | MalformedValueException ignored) {
+                        } catch (IOException | MalformedValueException ex) {
                             // This translates in RestProxy as a RestException with no deserialized body.
                             // The response content will still be accessible via the .response() member.
+                            logger.warning("Failed to deserialize the error entity.", ex);
                         }
                         return Mono.empty();
                     });
@@ -372,6 +373,7 @@ final class HttpResponseBodyDecoder {
      */
     private static Type extractEntityTypeFromReturnType(HttpResponseDecodeData decodeData) {
         Type token = decodeData.getReturnType();
+        final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
         if (token != null) {
             if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
                 token = TypeUtil.getTypeArgument(token);
@@ -385,6 +387,7 @@ final class HttpResponseBodyDecoder {
                         token = t;
                     }
                 } catch (ClassNotFoundException ignored) {
+                    logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus'.");
                 }
             }
 
@@ -399,7 +402,8 @@ final class HttpResponseBodyDecoder {
                     // Get Type of 'T' from OperationStatus<T>
                     token = TypeUtil.getTypeArgument(token);
                 }
-            } catch (Exception ignored) {
+            } catch (ClassNotFoundException ignored) {
+                logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus'.");
             }
         }
         return token;

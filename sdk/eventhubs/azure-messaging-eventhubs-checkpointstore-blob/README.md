@@ -27,7 +27,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.0.0-preview.2</version>
+    <version>1.0.0-preview.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

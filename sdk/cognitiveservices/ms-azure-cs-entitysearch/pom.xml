@@ -13,7 +13,7 @@
     </parent>
     <artifactId>azure-cognitiveservices-entitysearch</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <version>1.1.0-preview.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cognitiveservices-entitysearch;current} -->
+    <version>1.1.0-preview.1</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-entitysearch;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Entity Search</name>
     <description>This package contains Microsoft Cognitive Service Entity Search SDK.</description>

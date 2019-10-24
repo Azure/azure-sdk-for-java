@@ -3,7 +3,7 @@
 
 package com.azure.storage.file;
 
-import com.azure.storage.common.SR;
+import com.azure.storage.common.implementation.Constants;
 
 import java.util.Locale;
 
@@ -57,7 +57,7 @@ public final class FileSasPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
                             "Permissions", permString, c));
             }
         }
@@ -67,7 +67,7 @@ public final class FileSasPermission {
     /**
      * @return the read permission status
      */
-    public boolean getReadPermission() {
+    public boolean hasReadPermission() {
         return readPermission;
     }
 
@@ -85,7 +85,7 @@ public final class FileSasPermission {
     /**
      * @return the create permission status
      */
-    public boolean getCreatePermission() {
+    public boolean hasCreatePermission() {
         return createPermission;
     }
 
@@ -103,7 +103,7 @@ public final class FileSasPermission {
     /**
      * @return the write permission status
      */
-    public boolean getWritePermission() {
+    public boolean hasWritePermission() {
         return writePermission;
     }
 
@@ -121,7 +121,7 @@ public final class FileSasPermission {
     /**
      * @return the delete permission status
      */
-    public boolean getDeletePermission() {
+    public boolean hasDeletePermission() {
         return deletePermission;
     }
 

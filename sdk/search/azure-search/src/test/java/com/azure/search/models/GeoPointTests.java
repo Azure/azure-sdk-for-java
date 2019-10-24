@@ -3,7 +3,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.search.common.SearchPagedResponse;
 
 import com.azure.search.SearchIndexClient;
@@ -56,7 +56,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
-        PagedIterable<SearchResult> results = client.search("Location", searchOptions, new RequestOptions());
+        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("Location", searchOptions, new RequestOptions());
         Assert.assertNotNull(results);
 
         GeoPoint geoPointObj = (GeoPoint) getSearchResults(results).get(0).get("Location");
@@ -84,9 +84,8 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         Assert.assertTrue(indexResult.getResults().get(0).isSucceeded());
     }
 
-    private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
-        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
-        Iterator<SearchPagedResponse> iterator = pagesIterable.iterator();
+    private List<Map<String, Object>> getSearchResults(PagedIterableBase<SearchResult, SearchPagedResponse> results) {
+        Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
         List<Map<String, Object>> searchResults = new ArrayList<>();
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
