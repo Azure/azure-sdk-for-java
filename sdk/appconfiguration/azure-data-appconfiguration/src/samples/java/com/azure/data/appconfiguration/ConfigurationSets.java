@@ -12,8 +12,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Sample demonstrates how to use Azure App Configuration to switch between "beta" and "production"
@@ -39,12 +37,9 @@ public class ConfigurationSets {
      * "beta" configuration set.
      *
      * @param args Unused. Arguments to the program.
-     * @throws NoSuchAlgorithmException when credentials cannot be created because the service cannot resolve the
-     * HMAC-SHA256 algorithm.
-     * @throws InvalidKeyException when credentials cannot be created because the connection string is invalid.
      * @throws IOException If the service is unable to deserialize the complex configuration object.
      */
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+    public static void main(String[] args) throws IOException {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
         String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
@@ -89,7 +84,7 @@ public class ConfigurationSets {
         // Blocking so that the program does not exit before these tasks have completed.
         Flux.fromArray(new String[]{BETA, PRODUCTION})
             .flatMap(set -> client.listSettings(new SettingSelector().setLabels(set)))
-            .map(setting -> client.deleteSettingWithResponse(setting, false))
+            .map(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
             .blockLast();
     }
 
@@ -108,7 +103,7 @@ public class ConfigurationSets {
             .setValue(MAPPER.writeValueAsString(complexConfiguration))
             .setContentType("application/json");
 
-        return Flux.merge(client.addSetting(keyVaultSetting.getKey(), keyVaultSetting.getLabel(), keyVaultSetting.getValue()),
-            client.addSetting(endpointSetting.getKey(), endpointSetting.getLabel(), endpointSetting.getValue())).then();
+        return Flux.merge(client.addConfigurationSetting(keyVaultSetting.getKey(), keyVaultSetting.getLabel(), keyVaultSetting.getValue()),
+            client.addConfigurationSetting(endpointSetting.getKey(), endpointSetting.getLabel(), endpointSetting.getValue())).then();
     }
 }

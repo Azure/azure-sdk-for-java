@@ -15,8 +15,6 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -30,11 +28,8 @@ class PipelineSample {
      * Runs the sample algorithm and demonstrates how to add a custom policy to the HTTP pipeline.
      *
      * @param args Unused. Arguments to the program.
-     * @throws NoSuchAlgorithmException when credentials cannot be created because the service cannot resolve the
-     * HMAC-SHA256 algorithm.
-     * @throws InvalidKeyException when credentials cannot be created because the connection string is invalid.
      */
-    public static void main(String[] args)  throws NoSuchAlgorithmException, InvalidKeyException {
+    public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
         final String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
@@ -51,16 +46,14 @@ class PipelineSample {
 
         // Adding a couple of settings and then fetching all the settings in our repository.
         final List<ConfigurationSetting> settings = Flux.concat(
-            client.addSetting("hello", null, "world"),
-            client.setSetting("newSetting", null, "newValue"))
+            client.addConfigurationSetting("hello", null, "world"),
+            client.setConfigurationSetting("newSetting", null, "newValue"))
             .then(client.listSettings(new SettingSelector().setKeys("*")).collectList())
             .block();
 
         // Cleaning up after ourselves by deleting the values.
-        final Stream<ConfigurationSetting> stream = settings == null
-                ? Stream.empty()
-                : settings.stream();
-        Flux.merge(stream.map(setting -> client.deleteSettingWithResponse(setting, false))
+        final Stream<ConfigurationSetting> stream = settings == null ? Stream.empty() : settings.stream();
+        Flux.merge(stream.map(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
             .collect(Collectors.toList())).blockLast();
 
         // Check what sort of HTTP method calls we made.

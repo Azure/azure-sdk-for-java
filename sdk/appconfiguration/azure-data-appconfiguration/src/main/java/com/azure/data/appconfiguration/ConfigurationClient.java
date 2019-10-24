@@ -53,7 +53,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String-String}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String}
      *
      * @param key The key of the configuration setting to add.
      * @param label The label of the configuration setting to create, or optionally, null if a setting with
@@ -66,9 +66,9 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting addSetting(String key, String label, String value) {
-        return addSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
-            Context.NONE).getValue();
+    public ConfigurationSetting addConfigurationSetting(String key, String label, String value) {
+        return addConfigurationSettingWithResponse(
+            new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), Context.NONE).getValue();
     }
 
     /**
@@ -79,7 +79,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addSettingWithResponse#ConfigurationSetting-Context}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The setting to add based on its key and optional label combination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -92,8 +92,9 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> addSettingWithResponse(ConfigurationSetting setting, Context context) {
-        return client.addSetting(setting, context).block();
+    public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
+                                                                              Context context) {
+        return client.addConfigurationSetting(setting, context).block();
     }
 
     /**
@@ -104,7 +105,7 @@ public final class ConfigurationClient {
      * <p>Add a setting with the key "prodDBConnection", "westUS" and value "db_connection".</p>
      * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSetting#String-String-String}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String}
      *
      * @param key The key of the configuration setting to create or update.
      * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
@@ -117,9 +118,9 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting setSetting(String key, String label, String value) {
-        return setSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
-            false, Context.NONE).getValue();
+    public ConfigurationSetting setConfigurationSetting(String key, String label, String value) {
+        return setConfigurationSettingWithResponse(
+            new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), false, Context.NONE).getValue();
     }
 
     /**
@@ -135,7 +136,7 @@ public final class ConfigurationClient {
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSettingWithResponse#ConfigurationSetting-boolean-Context}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context}
      *
      * @param setting The setting to create or update based on its key, optional label and optional ETag combination.
      * @param ifUnchanged A boolean indicates if {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
@@ -152,9 +153,10 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> setSettingWithResponse(ConfigurationSetting setting, boolean ifUnchanged,
-                                                                 Context context) {
-        return client.setSetting(setting, ifUnchanged, context).block();
+    public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
+                                                                              boolean ifUnchanged,
+                                                                              Context context) {
+        return client.setConfigurationSetting(setting, ifUnchanged, context).block();
     }
 
     /**
@@ -164,7 +166,7 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string-string}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string}
      *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
@@ -176,8 +178,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getSetting(String key, String label) {
-        return getSetting(key, label, null);
+    public ConfigurationSetting getConfigurationSetting(String key, String label) {
+        return getConfigurationSetting(key, label, null);
     }
 
     /**
@@ -188,7 +190,7 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string-string-OffsetDateTime}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
@@ -202,8 +204,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getSetting(String key, String label, OffsetDateTime acceptDateTime) {
-        return client.getSetting(
+    public ConfigurationSetting getConfigurationSetting(String key, String label, OffsetDateTime acceptDateTime) {
+        return client.getConfigurationSetting(
             new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime, false, Context.NONE)
             .flatMap(FluxUtil::toMono).block();
     }
@@ -216,7 +218,7 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context}
      *
      * @param setting The setting to retrieve.
      * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
@@ -233,11 +235,11 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If the {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> getSettingWithResponse(ConfigurationSetting setting,
+    public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                  OffsetDateTime acceptDateTime,
                                                                  boolean ifChanged,
                                                                  Context context) {
-        return client.getSetting(setting, acceptDateTime, ifChanged, context).block();
+        return client.getConfigurationSetting(setting, acceptDateTime, ifChanged, context).block();
     }
 
     /**
@@ -247,7 +249,7 @@ public final class ConfigurationClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#string-string}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string}
      *
      * @param key The key of configuration setting to delete.
      * @param label The label of configuration setting to delete, or optionally, null if a setting with
@@ -259,8 +261,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting deleteSetting(String key, String label) {
-        return deleteSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label),
+    public ConfigurationSetting deleteConfigurationSetting(String key, String label) {
+        return deleteConfigurationSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label),
             false, Context.NONE).getValue();
     }
 
@@ -276,7 +278,7 @@ public final class ConfigurationClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-boolean-Context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context}
      *
      * @param setting The setting to delete based on its key, optional label and optional ETag combination.
      * @param ifUnchanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
@@ -294,9 +296,10 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> deleteSettingWithResponse(ConfigurationSetting setting, boolean ifUnchanged,
-                                                                    Context context) {
-        return client.deleteSetting(setting, ifUnchanged, context).block();
+    public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
+                                                                                 boolean ifUnchanged,
+                                                                                 Context context) {
+        return client.deleteConfigurationSetting(setting, ifUnchanged, context).block();
     }
 
     /**
