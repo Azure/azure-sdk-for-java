@@ -143,7 +143,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 
 // Create client with key identifier from key vault.
-cryptoClient = new CryptographyClientBuilder()
+CryptographyClient cryptoClient = new CryptographyClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .keyIdentifier("<Your-Key-Id-From-Keyvault>")
     .buildClient();
@@ -191,14 +191,14 @@ KeyClient keyClient = new KeyClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-Key rsaKey = keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .setExpires(OffsetDateTime.now().plusYears(1))
-                .setKeySize(2048));
+KeyVaultKey rsaKey = keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+    .setExpiresOn(OffsetDateTime.now().plusYears(1))
+    .setKeySize(2048));
 System.out.printf("Key is created with name %s and id %s \n", rsaKey.getName(), rsaKey.getId());
 
-Key ecKey = keyClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-                .setCurve(KeyCurveName.P_256)
-                .setExpires(OffsetDateTime.now().plusYears(1)));
+KeyVaultKey ecKey = keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
+    .setCurveName(KeyCurveName.P_256)
+    .setExpiresOn(OffsetDateTime.now().plusYears(1)));
 System.out.printf("Key is created with name %s and id %s \n", ecKey.getName(), ecKey.getId());
 ```
 
@@ -206,7 +206,7 @@ System.out.printf("Key is created with name %s and id %s \n", ecKey.getName(), e
 
 Retrieve a previously stored Key by calling `getKey`.
 ```Java
-Key key = keyClient.getKey("key_name");
+KeyVaultKey key = keyClient.getKey("key_name");
 System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId());
 ```
 
@@ -215,11 +215,11 @@ System.out.printf("Key is returned with name %s and id %s \n", key.getName(), ke
 Update an existing Key by calling `updateKey`.
 ```Java
 // Get the key to update.
-Key key = keyClient.getKey("key_name");
+KeyVaultKey key = keyClient.getKey("key_name");
 // Update the expiry time of the key.
-key.getProperties().setExpires(OffsetDateTime.now().plusDays(30));
-Key updatedKey = keyClient.updateKeyProperties(key.getProperties());
-System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpires().toString());
+key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(30));
+KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties());
+System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpiresOn().toString());
 ```
 
 ### Delete a Key
@@ -235,7 +235,7 @@ while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS)
 
 DeletedKey deletedKey = deletedKeyPoller.getLastPollResponse().getValue();
 System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
-System.out.printf("Deleted Key's deletion date %s", deletedKey.getDeletedDate().toString());
+System.out.printf("Deleted Key's deletion date %s", deletedKey.getDeletedOn().toString());
 
 // Key is being deleted on server.
 while (!deletedKeyPoller.isComplete()) {
@@ -251,10 +251,9 @@ List the keys in the key vault by calling `listKeys`.
 ```java
 // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
 for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
-    Key keyWithMaterial = keyClient.getKey(keyProperties.getName(), keyProperties.getVersion());
-    System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(),   keyWithMaterial.getKeyMaterial().getKty());
+    KeyVaultKey keyWithMaterial = keyClient.getKey(keyProperties.getName(), keyProperties.getVersion());
+    System.out.printf("Received key with name %s and type %s %n", keyWithMaterial.getName(), keyWithMaterial.getKey().getKeyType());
 }
-
 ```
 
 ### Encrypt
@@ -314,16 +313,16 @@ KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
 
-keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-    .setExpires(OffsetDateTime.now().plusYears(1))
+keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+    .setExpiresOn(OffsetDateTime.now().plusYears(1))
     .setKeySize(2048))
     .subscribe(key ->
-       System.out.printf("Key is created with name %s and id %s \n", key.getName(), key.getId()));
+        System.out.printf("Key is created with name %s and id %s \n", key.getName(), key.getId()));
 
-keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-    .setExpires(OffsetDateTime.now().plusYears(1)))
+keyAsyncClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
+    .setExpiresOn(OffsetDateTime.now().plusYears(1)))
     .subscribe(key ->
-      System.out.printf("Key is created with name %s and id %s \n", key.getName(), key.getId()));
+        System.out.printf("Key is created with name %s and id %s \n", key.getName(), key.getId()));
 ```
 
 ### Retrieve a Key Asynchronously
@@ -340,11 +339,11 @@ Update an existing Key by calling `updateKey`.
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
      // Get the Key
-     Key key = keyResponse;
+     KeyVaultKey key = keyResponse;
      // Update the expiry time of the key.
-     key.getProperties().setExpires(OffsetDateTime.now().plusDays(50));
+     key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(50));
      keyAsyncClient.updateKeyProperties(key.getProperties()).subscribe(updatedKey ->
-         System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpires().toString()));
+         System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpiresOn().toString()));
    });
 ```
 

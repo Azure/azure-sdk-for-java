@@ -171,7 +171,7 @@ SecretClient secretClient = new SecretClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-Secret secret = secretClient.setSecret("secret_name", "secret_value");
+KeyVaultSecret secret = secretClient.setSecret("secret_name", "secret_value");
 System.out.printf("Secret is created with name %s and value %s \n", secret.getName(), secret.getValue());
 ```
 
@@ -179,7 +179,7 @@ System.out.printf("Secret is created with name %s and value %s \n", secret.getNa
 
 Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
-Secret secret = secretClient.getSecret("secret_name");
+KeyVaultSecret secret = secretClient.getSecret("secret_name");
 System.out.printf("Secret is returned with name %s and value %s \n", secret.getName(), secret.getValue());
 ```
 
@@ -188,11 +188,11 @@ System.out.printf("Secret is returned with name %s and value %s \n", secret.getN
 Update an existing Secret by calling `updateSecret`.
 ```Java
 // Get the secret to update.
-Secret secret = secretClient.getSecret("secret_name");
+KeyVaultSecret secret = secretClient.getSecret("secret_name");
 // Update the expiry time of the secret.
-secret.getProperties().setExpires(OffsetDateTime.now().plusDays(30));
+secret.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(30));
 SecretProperties updatedSecretProperties = secretClient.updateSecretProperties(secret.getProperties());
-System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.getExpires().toString());
+System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.getExpiresOn().toString());
 ```
 
 ### Delete a Secret
@@ -210,7 +210,7 @@ while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRE
 // Deleted Secret is accessible as soon as polling begins
 DeletedSecret deletedSecret = deletedSecretPoller.getLastPollResponse().getValue();
 System.out.println("Deleted Date  %s" + deletedSecret.getDeletedOn().toString());
-System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
+System.out.printf("Deleted Secret's deletion date %s", deletedSecret.getDeletedOn().toString());
 
 // Ensure Secret gets completely deleted on the server.
 while (!deletedSecretPoller.isComplete()) {
@@ -226,7 +226,7 @@ List the secrets in the key vault by calling `listSecrets`.
 ```Java
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
 for (SecretProperties secretProperties : client.listPropertiesOfSecrets()) {
-    Secret secretWithValue  = client.getSecret(secretProperties.getName(), secretProperties.getVersion());
+    KeyVaultSecret secretWithValue  = client.getSecret(secretProperties.getName(), secretProperties.getVersion());
     System.out.printf("Received secret with name %s and value %s \n", secretWithValue.getName(), secretWithValue.getValue());
 }
 ```
@@ -274,9 +274,9 @@ Update an existing Secret by calling `updateSecret`.
 ```Java
 secretAsyncClient.getSecret("secretName").subscribe(secret -> {
      // Update the expiry time of the secret.
-     secret.getProperties().setExpires(OffsetDateTime.now().plusDays(50));
+     secret.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(50));
      secretAsyncClient.updateSecretProperties(secret.getProperties()).subscribe(updatedSecretProperties ->
-         System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.getExpires().toString()));
+         System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.getExpiresOn().toString()));
    });
 ```
 
@@ -299,8 +299,10 @@ List the secrets in the key vault by calling `listSecrets`.
 ```Java
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretAsyncClient.listPropertiesOfSecrets()
-  .flatMap(secretAsyncClient::getSecret).subscribe(secret ->
-    System.out.printf("Secret with name %s , value %s \n", secret.getName(), secret.getValue()));
+    .subscribe(secretProperties -> secretAsyncClient
+        .getSecret(secretProperties.getName(), secretProperties.getVersion())
+        .subscribe(secretResponse -> System.out.printf("Received secret with name %s and value %s",
+            secretResponse.getName(), secretResponse.getValue())));
 ```
 
 ## Troubleshooting

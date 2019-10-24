@@ -34,7 +34,7 @@ import java.util.Objects;
  * It constructs an instance of the desired client.
  *
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
- * {@link SecretAsyncClient} are {@link String endpoint} and {@link TokenCredential credential}. </p>
+ * {@link SecretAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
  * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.construct}
  *
@@ -47,7 +47,7 @@ import java.util.Objects;
  * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation}
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
- * {@link String endpoint}
+ * {@link String vaultUrl}
  * can be specified. It provides finer control over the construction of {@link SecretAsyncClient client}</p>
  *
  * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation}
@@ -86,7 +86,7 @@ public final class SecretClientBuilder {
      * {@link SecretClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
      * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link SecretClientBuilder#vaultUrl(String)} key vault endpoint are required to build the {@link SecretClient
+     * {@link SecretClientBuilder#vaultUrl(String)} key vault url are required to build the {@link SecretClient
      * client}.}</p>
      *
      * @return A SecretClient with the options set from the builder.
@@ -105,7 +105,7 @@ public final class SecretClientBuilder {
      * {@link SecretClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
      * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link SecretClientBuilder#vaultUrl(String)} key vault endpoint are required to build the {@link
+     * {@link SecretClientBuilder#vaultUrl(String)} key vault url are required to build the {@link
      * SecretAsyncClient client}.}</p>
      *
      * @return A SecretAsyncClient with the options set from the builder.
@@ -155,9 +155,9 @@ public final class SecretClientBuilder {
     }
 
     /**
-     * Sets the vault endpoint url to send HTTP requests to.
+     * Sets the vault url to send HTTP requests to.
      *
-     * @param vaultUrl The vault endpoint url is used as destination on Azure to send requests to.
+     * @param vaultUrl The vault url is used as destination on Azure to send requests to.
      * @return the updated {@link SecretClientBuilder} object.
      * @throws IllegalArgumentException if {@code vaultUrl} is null or it cannot be parsed into a valid URL.
      */
@@ -166,7 +166,7 @@ public final class SecretClientBuilder {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "The Azure Key Vault endpoint url is malformed."));
+                "The Azure Key Vault url is malformed."));
         }
         return this;
     }
@@ -228,7 +228,7 @@ public final class SecretClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link SecretClientBuilder#vaultUrl(String) endpoint} to build {@link SecretAsyncClient} or {@link SecretClient}.
+     * {@link SecretClientBuilder#vaultUrl(String) vaultUrl} to build {@link SecretAsyncClient} or {@link SecretClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return the updated {@link SecretClientBuilder} object.
