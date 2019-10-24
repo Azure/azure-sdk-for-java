@@ -12,7 +12,6 @@ public class SharedTokenCacheCredentialBuilder extends CredentialBuilderBase<Man
     private String clientId;
     private String username;
 
-
     /**
      * Sets the client ID for the application.
      *

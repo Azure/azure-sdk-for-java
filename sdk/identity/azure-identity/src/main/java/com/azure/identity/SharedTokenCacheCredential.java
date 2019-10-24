@@ -29,7 +29,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientId;
 
-    private PublicClientApplication pubClient;
+    private PublicClientApplication pubClient = null;
 
     /**
      * Creates an instance of the Shared Token Cache Credential Provider.
