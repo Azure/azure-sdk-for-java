@@ -31,9 +31,11 @@ def generate_overview(readme_file):
     # The html_readme_content needs to be encapsulated inside of <body> tags in order
     # for the content to correctly be added to the landing page
     with open(html_overview_file, 'w', encoding='utf-8') as f:
-        f.write("<body>")
+        # The literal strings have to be unicode otherwise the write will fail.
+        # This will allow this code to work for python 2 and 3
+        f.write(u'<body>')
         f.write(html_readme_content)
-        f.write("</body>")
+        f.write(u'</body>')
 
 
 def main():
