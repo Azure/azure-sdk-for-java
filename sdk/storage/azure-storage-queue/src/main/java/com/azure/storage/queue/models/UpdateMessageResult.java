@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.OffsetDateTime;
 
 /**
  * Response from the service when updating a message. Contains the information needed to continue working with
  * the specific message.
  */
+@Immutable
 public final class UpdateMessageResult {
     private final String popReceipt;
     private final OffsetDateTime timeNextVisible;

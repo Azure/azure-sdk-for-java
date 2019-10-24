@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 
@@ -15,18 +16,20 @@ import com.azure.storage.queue.QueueServiceClient;
  *         with the prefix.
  *     </li>
  *     <li>
- *         Providing {@link QueuesSegmentOptions#getMaxResultsPerPage() maxResultsPerPage} will limit the number of {@link QueueItem queues}
- *         returned in a single page.
+ *         Providing {@link QueuesSegmentOptions#getMaxResultsPerPage() maxResultsPerPage} will limit the number of
+ *         {@link QueueItem queues} returned in a single page.
  *     </li>
  *     <li>
- *         Setting {@link QueuesSegmentOptions#isIncludeMetadata() includeMetadata} to true will include the metadata of
- *         each {@link QueueItem queue}, if false {@link QueueItem#getMetadata()}  metadata} for each queue will be {@code null}.
+ *         Setting {@link QueuesSegmentOptions#isIncludeMetadata() includeMetadata} to true will include the metadata
+ *         of each {@link QueueItem queue}, if false {@link QueueItem#getMetadata()}  metadata} for each queue will be
+ *         {@code null}.
  *     </li>
  * </ul>
  *
  * @see QueueServiceClient
  * @see QueueServiceAsyncClient
  */
+@Fluent
 public final class QueuesSegmentOptions {
     private boolean includeMetadata;
 

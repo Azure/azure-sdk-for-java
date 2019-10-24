@@ -1047,7 +1047,7 @@ public class ShareAsyncClient {
     private Response<ShareProperties> mapGetPropertiesResponse(SharesGetPropertiesResponse response) {
         ShareGetPropertiesHeaders headers = response.getDeserializedHeaders();
         ShareProperties shareProperties = new ShareProperties().setQuota(headers.getQuota())
-            .setEtag(headers.getETag())
+            .setETag(headers.getETag())
             .setLastModified(headers.getLastModified())
             .setMetadata(headers.getMetadata());
 

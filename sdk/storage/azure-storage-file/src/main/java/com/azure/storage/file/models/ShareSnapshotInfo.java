@@ -3,11 +3,14 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.OffsetDateTime;
 
 /**
  * Contains information about a snapshot of a Share in the storage File service.
  */
+@Immutable
 public final class ShareSnapshotInfo {
     private final String snapshot;
     private final String eTag;

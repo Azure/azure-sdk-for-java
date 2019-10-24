@@ -217,6 +217,9 @@ directive:
       $.QueueMetrics = $.Metrics;
       delete $.Metrics;
       $.QueueMetrics.xml = {"name": "Metrics"};
+      $.QueueMetrics.properties.IncludeApis = $.QueueMetrics.properties.IncludeAPIs;
+      delete $.QueueMetrics.properties.IncludeAPIs;
+      $.QueueMetrics.properties.IncludeApis.xml = {"name": "IncludeAPIs"};
       $.QueueServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/QueueMetrics";
       $.QueueServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/QueueMetrics";
     }

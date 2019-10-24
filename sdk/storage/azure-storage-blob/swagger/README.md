@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/ab914bf38cf5afc78f09b163ca42f593dec84472/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-02-02/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-02-02/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,BlobSignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -202,6 +202,8 @@ directive:
         $.delete.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
         $.delete.parameters.splice(1, 0, { "$ref": path + "Blob" });
     }
+    $.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
 ```
 
 ### /{containerName}/{blob}?PageBlob
@@ -703,6 +705,7 @@ directive:
         $.BlobItemProperties = $.BlobProperties;
         delete $.BlobProperties;
         $.BlobItemProperties.properties.CustomerProvidedKeySha256 = { "type": "string" }
+        $.BlobItemProperties.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         //
         const etag = $.BlobItemProperties.properties.Etag;
         if (etag && !etag["x-ms-client-name"]) {
@@ -1090,6 +1093,9 @@ directive:
       $.BlobMetrics = $.Metrics;
       delete $.Metrics;
       $.BlobMetrics.xml = {"name": "Metrics"};
+      $.BlobMetrics.properties.IncludeApis = $.BlobMetrics.properties.IncludeAPIs;
+      delete $.BlobMetrics.properties.IncludeAPIs;
+      $.BlobMetrics.properties.IncludeApis.xml = {"name": "IncludeAPIs"};
       $.BlobServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/BlobMetrics";
       $.BlobServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/BlobMetrics";
     }
@@ -1202,9 +1208,59 @@ directive:
   where: $.parameters
   transform: >
     $.BlobCacheControl["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobCacheControl["x-ms-client-name"] = "cacheControl";
     $.BlobContentDisposition["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentDisposition["x-ms-client-name"] = "contentDisposition";
     $.BlobContentEncoding["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentEncoding["x-ms-client-name"] = "contentEncoding";
     $.BlobContentLanguage["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentLanguage["x-ms-client-name"] = "contentLanguage";
     $.BlobContentMD5["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentMD5["x-ms-client-name"] = "contentMd5";
     $.BlobContentType["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentType["x-ms-client-name"] = "contentType";
+```
+
+### Rename UserDelegationKey SignedOid and SignedTid
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.UserDelegationKey
+  transform: >
+    $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
+    $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
+```
+
+### Remove AccessConditions parameter groupings
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.SourceIfMatch["x-ms-parameter-grouping"];
+    delete $.SourceIfModifiedSince["x-ms-parameter-grouping"];
+    delete $.SourceIfNoneMatch["x-ms-parameter-grouping"];
+    delete $.SourceIfUnmodifiedSince["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.IfMatch["x-ms-parameter-grouping"];
+    delete $.IfModifiedSince["x-ms-parameter-grouping"];
+    delete $.IfNoneMatch["x-ms-parameter-grouping"];
+    delete $.IfUnmodifiedSince["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.BlobConditionAppendPos["x-ms-parameter-grouping"];
+    delete $.BlobConditionMaxSize["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.IfSequenceNumberEqualTo["x-ms-parameter-grouping"];
+    delete $.IfSequenceNumberLessThan["x-ms-parameter-grouping"];
+    delete $.IfSequenceNumberLessThanOrEqualTo["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.LeaseIdOptional["x-ms-parameter-grouping"];
 ```

@@ -55,22 +55,22 @@ public final class QueueServiceProperties {
     private CorsWrapper cors;
 
     /**
-     * Get the logging property: Azure Analytics Logging settings.
+     * Get the analyticsLogging property: Azure Analytics Logging settings.
      *
-     * @return the logging value.
+     * @return the analyticsLogging value.
      */
     public QueueAnalyticsLogging getAnalyticsLogging() {
         return this.analyticsLogging;
     }
 
     /**
-     * Set the logging property: Azure Analytics Logging settings.
+     * Set the analyticsLogging property: Azure Analytics Logging settings.
      *
-     * @param logging the logging value to set.
+     * @param analyticsLogging the analyticsLogging value to set.
      * @return the QueueServiceProperties object itself.
      */
-    public QueueServiceProperties setAnalyticsLogging(QueueAnalyticsLogging logging) {
-        this.analyticsLogging = logging;
+    public QueueServiceProperties setAnalyticsLogging(QueueAnalyticsLogging analyticsLogging) {
+        this.analyticsLogging = analyticsLogging;
         return this;
     }
 

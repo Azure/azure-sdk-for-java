@@ -8,9 +8,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -49,19 +49,18 @@ import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
- * the client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers,
- * and deleting and un-deleting a blob.
+ * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by the
+ * client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers, and
+ * deleting and un-deleting a blob.
  *
  * <p>
- * This client is instantiated through {@link BlobClientBuilder} or retrieved via
- * {@link BlobContainerAsyncClient#getBlobAsyncClient(String) getBlobAsyncClient}.
+ * This client is instantiated through {@link BlobClientBuilder} or retrieved via {@link
+ * BlobContainerAsyncClient#getBlobAsyncClient(String) getBlobAsyncClient}.
  *
  * <p>
- * For operations on a specific blob type (i.e append, block, or page) use
- * {@link #getAppendBlobAsyncClient() getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient()
- * getBlockBlobAsyncClient}, or {@link #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that
- * allows blob specific operations.
+ * For operations on a specific blob type (i.e append, block, or page) use {@link #getAppendBlobAsyncClient()
+ * getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient() getBlockBlobAsyncClient}, or {@link
+ * #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that allows blob specific operations.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -191,9 +190,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
      * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and
      * {@link BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information,
-     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure
-     * Docs for Put Block</a> and the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure
-     * Docs for Put Block List</a>.
+     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
      * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
@@ -222,18 +220,18 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
-        AccessTier tier, BlobAccessConditions accessConditions) {
+        AccessTier tier, BlobRequestConditions accessConditions) {
         try {
             // TODO: Parallelism parameter? Or let Reactor handle it?
             // TODO: Sample/api reference
             Objects.requireNonNull(data, "'data' must not be null");
-            BlobAccessConditions accessConditionsFinal = accessConditions == null
-                ? new BlobAccessConditions() : accessConditions;
+            BlobRequestConditions accessConditionsFinal = accessConditions == null
+                ? new BlobRequestConditions() : accessConditions;
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
                 ? new ParallelTransferOptions() : parallelTransferOptions;
             int blockSize = finalParallelTransferOptions.getBlockSize();
@@ -253,19 +251,21 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             buffer filling up with more data to write). We use flatMapSequential because we need to guarantee we
             preserve the ordering of the buffers, but we don't really care if one is split before another.
              */
-            Flux<ByteBuffer> chunkedSource = data.flatMapSequential(buffer -> {
-                if (buffer.remaining() <= blockSize) {
-                    return Flux.just(buffer);
-                }
-                int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
-                return Flux.range(0, numSplits)
-                    .map(i -> {
-                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                        duplicate.position(i * blockSize);
-                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
-                        return duplicate;
-                    });
-            });
+            Flux<ByteBuffer> chunkedSource = data
+                .filter(ByteBuffer::hasRemaining)
+                .flatMapSequential(buffer -> {
+                    if (buffer.remaining() <= blockSize) {
+                        return Flux.just(buffer);
+                    }
+                    int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
+                    return Flux.range(0, numSplits)
+                        .map(i -> {
+                            ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                            duplicate.position(i * blockSize);
+                            duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
+                            return duplicate;
+                        });
+                });
 
             /*
              Write to the pool and upload the output.
@@ -281,13 +281,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         UUID.randomUUID().toString().getBytes(UTF_8));
 
                     return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
-                       null, accessConditionsFinal.getLeaseAccessConditions())
+                        null, accessConditionsFinal.getLeaseId())
                         // We only care about the stageBlock insofar as it was successful,
                         // but we need to collect the ids.
                         .map(x -> blockId)
                         .doFinally(x -> pool.returnBuffer(buffer))
                         .flux();
-
                 }) // TODO: parallelism?
                 .collect(Collectors.toList())
                 .flatMap(ids ->
@@ -324,22 +323,23 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
-     *        transfers parameter is ignored.
+     * transfers parameter is ignored.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return An empty response
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobRequestConditions accessConditions) {
         try {
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
                 ? new ParallelTransferOptions()
@@ -383,6 +383,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Resource Supplier for UploadFile
+     *
      * @param filePath The path for the file
      * @return {@code AsynchronousFileChannel}
      * @throws UncheckedIOException an input output exception.

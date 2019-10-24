@@ -20,43 +20,43 @@ public final class FileHttpHeaders {
      * Sets the MIME content type of the file. The default type is
      * 'application/octet-stream'.
      */
-    @JsonProperty(value = "fileContentType")
+    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * Specifies which content encodings have been applied to the file.
      */
-    @JsonProperty(value = "fileContentEncoding")
+    @JsonProperty(value = "contentEncoding")
     private String contentEncoding;
 
     /*
      * Specifies the natural languages used by this resource.
      */
-    @JsonProperty(value = "fileContentLanguage")
+    @JsonProperty(value = "contentLanguage")
     private String contentLanguage;
 
     /*
      * Sets the file's cache control. The File service stores this value but
      * does not use or modify it.
      */
-    @JsonProperty(value = "fileCacheControl")
+    @JsonProperty(value = "cacheControl")
     private String cacheControl;
 
     /*
      * Sets the file's MD5 hash.
      */
-    @JsonProperty(value = "fileContentMD5")
-    private byte[] contentMD5;
+    @JsonProperty(value = "contentMd5")
+    private byte[] contentMd5;
 
     /*
      * Sets the file's Content-Disposition header.
      */
-    @JsonProperty(value = "fileContentDisposition")
+    @JsonProperty(value = "contentDisposition")
     private String contentDisposition;
 
     /**
-     * Get the contentType property: Sets the MIME content type of the
-     * file. The default type is 'application/octet-stream'.
+     * Get the contentType property: Sets the MIME content type of the file.
+     * The default type is 'application/octet-stream'.
      *
      * @return the contentType value.
      */
@@ -65,8 +65,8 @@ public final class FileHttpHeaders {
     }
 
     /**
-     * Set the contentType property: Sets the MIME content type of the
-     * file. The default type is 'application/octet-stream'.
+     * Set the contentType property: Sets the MIME content type of the file.
+     * The default type is 'application/octet-stream'.
      *
      * @param contentType the contentType value to set.
      * @return the FileHttpHeaders object itself.
@@ -77,8 +77,8 @@ public final class FileHttpHeaders {
     }
 
     /**
-     * Get the contentEncoding property: Specifies which content encodings
-     * have been applied to the file.
+     * Get the contentEncoding property: Specifies which content encodings have
+     * been applied to the file.
      *
      * @return the contentEncoding value.
      */
@@ -87,8 +87,8 @@ public final class FileHttpHeaders {
     }
 
     /**
-     * Set the contentEncoding property: Specifies which content encodings
-     * have been applied to the file.
+     * Set the contentEncoding property: Specifies which content encodings have
+     * been applied to the file.
      *
      * @param contentEncoding the contentEncoding value to set.
      * @return the FileHttpHeaders object itself.
@@ -99,8 +99,8 @@ public final class FileHttpHeaders {
     }
 
     /**
-     * Get the contentLanguage property: Specifies the natural languages
-     * used by this resource.
+     * Get the contentLanguage property: Specifies the natural languages used
+     * by this resource.
      *
      * @return the contentLanguage value.
      */
@@ -109,8 +109,8 @@ public final class FileHttpHeaders {
     }
 
     /**
-     * Set the contentLanguage property: Specifies the natural languages
-     * used by this resource.
+     * Set the contentLanguage property: Specifies the natural languages used
+     * by this resource.
      *
      * @param contentLanguage the contentLanguage value to set.
      * @return the FileHttpHeaders object itself.
@@ -121,8 +121,8 @@ public final class FileHttpHeaders {
     }
 
     /**
-     * Get the cacheControl property: Sets the file's cache control. The
-     * File service stores this value but does not use or modify it.
+     * Get the cacheControl property: Sets the file's cache control. The File
+     * service stores this value but does not use or modify it.
      *
      * @return the cacheControl value.
      */
@@ -131,8 +131,8 @@ public final class FileHttpHeaders {
     }
 
     /**
-     * Set the cacheControl property: Sets the file's cache control. The
-     * File service stores this value but does not use or modify it.
+     * Set the cacheControl property: Sets the file's cache control. The File
+     * service stores this value but does not use or modify it.
      *
      * @param cacheControl the cacheControl value to set.
      * @return the FileHttpHeaders object itself.
@@ -143,28 +143,28 @@ public final class FileHttpHeaders {
     }
 
     /**
-     * Get the contentMD5 property: Sets the file's MD5 hash.
+     * Get the contentMd5 property: Sets the file's MD5 hash.
      *
-     * @return the contentMD5 value.
+     * @return the contentMd5 value.
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(this.contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(this.contentMd5);
     }
 
     /**
-     * Set the contentMD5 property: Sets the file's MD5 hash.
+     * Set the contentMd5 property: Sets the file's MD5 hash.
      *
-     * @param contentMD5 the contentMD5 value to set.
+     * @param contentMd5 the contentMd5 value to set.
      * @return the FileHttpHeaders object itself.
      */
-    public FileHttpHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+    public FileHttpHeaders setContentMd5(byte[] contentMd5) {
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
 
     /**
-     * Get the contentDisposition property: Sets the file's
-     * Content-Disposition header.
+     * Get the contentDisposition property: Sets the file's Content-Disposition
+     * header.
      *
      * @return the contentDisposition value.
      */
@@ -173,8 +173,8 @@ public final class FileHttpHeaders {
     }
 
     /**
-     * Set the contentDisposition property: Sets the file's
-     * Content-Disposition header.
+     * Set the contentDisposition property: Sets the file's Content-Disposition
+     * header.
      *
      * @param contentDisposition the contentDisposition value to set.
      * @return the FileHttpHeaders object itself.

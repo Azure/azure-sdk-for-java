@@ -60,10 +60,10 @@ public final class BlobItemProperties {
     private String contentLanguage;
 
     /*
-     * The contentMD5 property.
+     * The contentMd5 property.
      */
     @JsonProperty(value = "Content-MD5")
-    private byte[] contentMD5;
+    private byte[] contentMd5;
 
     /*
      * The contentDisposition property.
@@ -361,22 +361,22 @@ public final class BlobItemProperties {
     }
 
     /**
-     * Get the contentMD5 property: The contentMD5 property.
+     * Get the contentMd5 property: The contentMd5 property.
      *
-     * @return the contentMD5 value.
+     * @return the contentMd5 value.
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(this.contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(this.contentMd5);
     }
 
     /**
-     * Set the contentMD5 property: The contentMD5 property.
+     * Set the contentMd5 property: The contentMd5 property.
      *
-     * @param contentMD5 the contentMD5 value to set.
+     * @param contentMd5 the contentMd5 value to set.
      * @return the BlobItemProperties object itself.
      */
-    public BlobItemProperties setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+    public BlobItemProperties setContentMd5(byte[] contentMd5) {
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
 

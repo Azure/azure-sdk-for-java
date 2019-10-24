@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
@@ -10,10 +11,11 @@ import java.time.OffsetDateTime;
 /**
  * This class contains the properties about a block blob.
  */
+@Immutable
 public class BlockBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
-    private final byte[] contentMD5;
+    private final byte[] contentMd5;
     private final Boolean isServerEncrypted;
     private final String encryptionKeySha256;
 
@@ -22,15 +24,15 @@ public class BlockBlobItem {
      *
      * @param eTag ETag of the block blob.
      * @param lastModified Last modified time of the block blob.
-     * @param contentMD5 Content MD5 of the block blob.
+     * @param contentMd5 Content MD5 of the block blob.
      * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
      * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
      */
-    public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
+    public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final boolean isServerEncrypted, final String encryptionKeySha256) {
         this.eTag = eTag;
         this.lastModified = lastModified;
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
     }
@@ -66,7 +68,7 @@ public class BlockBlobItem {
     /**
      * @return the MD5 of the block blob's comment
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(contentMd5);
     }
 }
