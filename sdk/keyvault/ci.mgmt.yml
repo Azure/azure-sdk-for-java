@@ -35,6 +35,7 @@ pr:
 variables:
   BuildOptions: '--batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false'
   ServiceDirectory: keyvault
+  ProfileFlag: ''
 
 jobs:
   - job: 'Build'
