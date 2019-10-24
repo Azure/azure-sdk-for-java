@@ -51,34 +51,34 @@ class BlobAPITest extends APISpec {
         def stream = new ByteArrayOutputStream()
         def response = bc.downloadWithResponse(stream, null, null, null, false, null, null)
         def body = ByteBuffer.wrap(stream.toByteArray())
-        def headers = response.getHeaders()
+        def headers = response.getDeserializedHeaders()
 
         then:
         body == defaultData
-        headers.toMap().keySet().stream().noneMatch({ it.startsWith("x-ms-meta-") })
-        headers.getValue("Content-Length") != null
-        headers.getValue("Content-Type") != null
-        headers.getValue("Content-Range") == null
-        headers.getValue("Content-MD5") != null
-        headers.getValue("Content-Encoding") == null
-        headers.getValue("Cache-Control") == null
-        headers.getValue("Content-Disposition") == null
-        headers.getValue("Content-Language") == null
-        headers.getValue("x-ms-blob-sequence-number") == null
-        headers.getValue("x-ms-blob-type") == BlobType.BLOCK_BLOB.toString()
-        headers.getValue("x-ms-copy-completion-time") == null
-        headers.getValue("x-ms-copy-status-description") == null
-        headers.getValue("x-ms-copy-id") == null
-        headers.getValue("x-ms-copy-progress") == null
-        headers.getValue("x-ms-copy-source") == null
-        headers.getValue("x-ms-copy-status") == null
-        headers.getValue("x-ms-lease-duration") == null
-        headers.getValue("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
-        headers.getValue("x-ms-lease-status") == LeaseStatusType.UNLOCKED.toString()
-        headers.getValue("Accept-Ranges") == "bytes"
-        headers.getValue("x-ms-blob-committed-block-count") == null
-        headers.getValue("x-ms-server-encrypted") != null
-        headers.getValue("x-ms-blob-content-md5") == null
+        ImplUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getContentLength() != null
+        headers.getContentType() != null
+        headers.getContentRange() == null
+        headers.getContentMd5() != null
+        headers.getContentEncoding() == null
+        headers.getCacheControl() == null
+        headers.getContentDisposition() == null
+        headers.getContentLanguage() == null
+        headers.getBlobSequenceNumber() == null
+        headers.getBlobType() == BlobType.BLOCK_BLOB
+        headers.getCopyCompletionTime() == null
+        headers.getCopyStatusDescription() == null
+        headers.getCopyId() == null
+        headers.getCopyProgress() == null
+        headers.getCopySource() == null
+        headers.getCopyStatus() == null
+        headers.getLeaseDuration() == null
+        headers.getLeaseState() == LeaseStateType.AVAILABLE
+        headers.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        headers.getAcceptRanges() == "bytes"
+        headers.getBlobCommittedBlockCount() == null
+        headers.isServerEncrypted() != null
+        headers.getBlobContentMD5() == null
     }
 
     def "Download empty file"() {
@@ -214,10 +214,10 @@ class BlobAPITest extends APISpec {
     def "Download md5"() {
         when:
         def response = bc.downloadWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
-        def contentMD5 = response.getHeaders().getValue("content-md5").getBytes()
+        def contentMD5 = response.getDeserializedHeaders().getContentMd5()
 
         then:
-        contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes()))
+        contentMD5 == MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
     }
 
     def "Download error"() {

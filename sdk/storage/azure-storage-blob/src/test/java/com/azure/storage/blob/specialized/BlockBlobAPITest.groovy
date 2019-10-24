@@ -980,7 +980,8 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(10)
-        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders().setCacheControl(cacheControl)
+        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders()
+            .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
