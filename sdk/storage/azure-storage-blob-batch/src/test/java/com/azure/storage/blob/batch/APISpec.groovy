@@ -23,8 +23,8 @@ import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
-import com.azure.storage.blob.specialized.LeaseClient
-import com.azure.storage.blob.specialized.LeaseClientBuilder
+import com.azure.storage.blob.specialized.BlobLeaseClient
+import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import spock.lang.Requires
 import spock.lang.Shared
@@ -151,7 +151,7 @@ class APISpec extends Specification {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountName = "storageaccount"
+            accountName = "azstoragesdkaccount"
             accountKey = "astorageaccountkey"
         }
 
@@ -254,8 +254,8 @@ class APISpec extends Specification {
         }
     }
 
-    static LeaseClient createLeaseClient(BlobContainerClient containerClient) {
-        return new LeaseClientBuilder()
+    static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient) {
+        return new BlobLeaseClientBuilder()
             .containerClient(containerClient)
             .buildClient()
     }

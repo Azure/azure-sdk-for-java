@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobListDetails
+import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobSignedIdentifier
 import com.azure.storage.blob.models.BlobStorageException
@@ -20,6 +21,7 @@ import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.common.Utility
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -585,7 +587,7 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
         blob.getProperties().getContentLength() != null
         blob.getProperties().getContentType() != null
-        blob.getProperties().getContentMD5() != null
+        blob.getProperties().getContentMd5() != null
         blob.getProperties().getContentEncoding() == null
         blob.getProperties().getContentDisposition() == null
         blob.getProperties().getContentLanguage() == null
@@ -635,7 +637,7 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
         blob.getProperties().getContentLength() != null
         blob.getProperties().getContentType() != null
-        blob.getProperties().getContentMD5() == null
+        blob.getProperties().getContentMd5() == null
         blob.getProperties().getContentEncoding() == null
         blob.getProperties().getContentDisposition() == null
         blob.getProperties().getContentLanguage() == null
@@ -665,17 +667,8 @@ class ContainerAPITest extends APISpec {
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
 
-        copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(2))
-        def start = OffsetDateTime.now()
-        def status = CopyStatusType.PENDING
-        while (status != CopyStatusType.SUCCESS) {
-            status = copyBlob.getProperties().getCopyStatus()
-            OffsetDateTime currentTime = OffsetDateTime.now()
-            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
-                throw new Exception("Copy failed or took too long")
-            }
-            sleepIfRecord(1000)
-        }
+        def poller = copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(1))
+        poller.block()
 
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()
@@ -1177,13 +1170,46 @@ class ContainerAPITest extends APISpec {
         blobs.next().getName() == name + "3"
 
         where:
-        name          | _
-        // "中文"                 | _  TODO: requires blob name to be url encoded, deferred for post preview-1, storage team to decide on encoding story across SDKS
-        "az[]"        | _
-        // "hello world"         | _  TODO: see previous TODO
-        "hello/world" | _
-        "hello&world" | _
-        // "!*'();:@&=+\$,/?#[]" | _  TODO: see previous TODO
+        name                  | _
+        "中文"                | _
+        "az[]"                | _
+        "hello world"         | _
+        "hello/world"         | _
+        "hello&world"         | _
+        "!*'();:@&=+\$,/?#[]" | _
+    }
+
+    @Unroll
+    def "Create URL special chars encoded"() {
+        // This test checks that we handle blob names with encoded special characters correctly.
+        setup:
+        def bu2 = cc.getBlobClient(name).getAppendBlobClient()
+        def bu3 = cc.getBlobClient(name + "2").getPageBlobClient()
+        def bu4 = cc.getBlobClient(name + "3").getBlockBlobClient()
+        def bu5 = cc.getBlobClient(name).getBlockBlobClient()
+
+        expect:
+        bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
+        bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+        bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
+        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).getStatusCode() == 201
+
+        when:
+        def blobs = cc.listBlobs().iterator()
+
+        then:
+        blobs.next().getName() == Utility.urlDecode(name)
+        blobs.next().getName() == Utility.urlDecode(name) + "2"
+        blobs.next().getName() == Utility.urlDecode(name) + "3"
+
+        where:
+        name                                                     | _
+        "%E4%B8%AD%E6%96%87"                                     | _
+        "az%5B%5D"                                               | _
+        "hello%20world"                                          | _
+        "hello%2Fworld"                                          | _
+        "hello%26world"                                          | _
+        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D" | _
     }
 
     def "Root explicit"() {

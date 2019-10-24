@@ -90,8 +90,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
-     * information, see the
+     * Creates a page blob of the specified length. By default this method will not overwrite an existing blob.
+     * Call PutPage to upload data data to a page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -104,7 +104,33 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<PageBlobItem> create(long size) {
         try {
-            return createWithResponse(size, null, null, null, null).flatMap(FluxUtil::toMono);
+            return create(size, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.create#long-boolean}
+     *
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return A reactive response containing the information of the created page blob.
+     */
+    public Mono<PageBlobItem> create(long size, boolean overwrite) {
+        try {
+            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+            if (!overwrite) {
+                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return createWithResponse(size, null, null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -170,7 +196,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
+     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
@@ -197,7 +223,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
+     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
@@ -256,13 +282,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
-     * of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
+     * multiple of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURL#PageRange-String-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrl#PageRange-String-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -275,9 +301,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * blob.
      * @return A reactive response containing the information of the uploaded pages.
      */
-    public Mono<PageBlobItem> uploadPagesFromURL(PageRange range, String sourceUrl, Long sourceOffset) {
+    public Mono<PageBlobItem> uploadPagesFromUrl(PageRange range, String sourceUrl, Long sourceOffset) {
         try {
-            return uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, null, null, null)
+            return uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, null, null, null)
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -285,13 +311,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
-     * of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
+     * multiple of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -301,28 +327,28 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceOffset The source offset to copy from.  Pass null or 0 to copy from the beginning of source blob.
-     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will
+     * @param sourceContentMd5 An MD5 hash of the block content from the source blob. If specified, the service will
      * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
      * @param destAccessConditions {@link PageBlobRequestConditions}
      * @param sourceRequestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded pages.
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
-    public Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl,
-        Long sourceOffset, byte[] sourceContentMD5, PageBlobRequestConditions destAccessConditions,
-        BlobRequestConditions sourceRequestConditions) {
+    public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl,
+            Long sourceOffset, byte[] sourceContentMd5, PageBlobRequestConditions destAccessConditions,
+            BlobRequestConditions sourceRequestConditions) {
         try {
             return withContext(
-                context -> uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
+                context -> uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, sourceContentMd5,
                     destAccessConditions, sourceRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
-        byte[] sourceContentMD5, PageBlobRequestConditions destAccessConditions,
-        BlobRequestConditions sourceRequestConditions, Context context) {
+    Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
+            byte[] sourceContentMd5, PageBlobRequestConditions destAccessConditions,
+            BlobRequestConditions sourceRequestConditions, Context context) {
         if (range == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -351,7 +377,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
 
         return this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(
-            null, null, url, sourceRangeString, 0, rangeString, sourceContentMD5, null, null,
+            null, null, url, sourceRangeString, 0, rangeString, sourceContentMd5, null, null,
             destAccessConditions.getLeaseId(), destAccessConditions.getIfSequenceNumberLessThanOrEqualTo(),
             destAccessConditions.getIfSequenceNumberLessThan(), destAccessConditions.getIfSequenceNumberEqualTo(),
             destAccessConditions.getIfModifiedSince(), destAccessConditions.getIfUnmodifiedSince(),

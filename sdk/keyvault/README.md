@@ -84,7 +84,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-complete</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.3</version>
     <type>pom</type>
 </dependency>
 ```

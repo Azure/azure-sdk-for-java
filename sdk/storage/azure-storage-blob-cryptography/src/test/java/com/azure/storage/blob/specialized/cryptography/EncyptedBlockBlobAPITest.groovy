@@ -225,12 +225,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Encryption HTTP headers"() {
         setup:
-        BlobHttpHeaders headers = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType)
+        BlobHttpHeaders headers = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
 
         when:
         // Buffered upload
@@ -545,6 +545,61 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         stream.toByteArray() == defaultData.array()
+    }
+
+    @Requires({liveMode()})
+    def "encrypted client file upload overwrite false"() {
+        setup:
+        def file = getRandomFile(KB)
+
+        when:
+        beac.uploadFromFile(file.toPath().toString()).block()
+
+        beac.uploadFromFile(file.toPath().toString()).block()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Requires({liveMode()})
+    def "encrypted client file upload overwrite true"() {
+        setup:
+        def file = getRandomFile(KB)
+
+        when:
+        beac.uploadFromFile(file.toPath().toString()).block()
+        beac.uploadFromFile(file.toPath().toString(), true).block()
+
+        then:
+        notThrown(Throwable)
+    }
+
+    @Requires({ liveMode() })
+    def "encrypted client upload overwrite false"() {
+        setup:
+        ByteBuffer byteBuffer = getRandomData(Constants.KB)
+
+        when:
+        beac.upload(Flux.just(byteBuffer), null).block()
+
+        beac.upload(Flux.just(byteBuffer), null).block()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Requires({ liveMode() })
+    def "encrypted client upload overwrite true"() {
+        setup:
+        ByteBuffer byteBuffer = getRandomData(Constants.KB)
+
+        when:
+        beac.upload(Flux.just(byteBuffer), null).block()
+
+        beac.upload(Flux.just(byteBuffer), null, true).block()
+
+        then:
+        notThrown(Throwable)
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {

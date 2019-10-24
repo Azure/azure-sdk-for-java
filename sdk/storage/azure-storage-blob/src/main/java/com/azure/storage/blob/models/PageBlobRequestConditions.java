@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -12,6 +14,7 @@ import java.time.OffsetDateTime;
  * Please refer to the request header section
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/put-page>here</a> for more conceptual information.
  */
+@Fluent
 public final class PageBlobRequestConditions extends BlobRequestConditions {
     private Long ifSequenceNumberLessThanOrEqualTo;
     private Long ifSequenceNumberLessThan;

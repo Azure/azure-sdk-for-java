@@ -70,13 +70,13 @@
       cross platform compatibility within SDKs -->
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-storage</artifactId>
-      <version>8.3.0</version>
+      <version>8.4.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-cryptography</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-cryptography;dependency} -->
+      <version>1.2.2</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-cryptography;dependency} -->
       <scope>test</scope>
     </dependency>
 <!--    <dependency>-->

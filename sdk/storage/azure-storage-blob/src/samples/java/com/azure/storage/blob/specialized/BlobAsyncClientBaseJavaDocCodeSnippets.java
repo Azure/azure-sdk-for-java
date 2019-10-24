@@ -56,21 +56,21 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromURL(String)}
+     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromUrl(String)}
      */
-    public void abortCopyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String
+    public void abortCopyFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrl#String
+        client.abortCopyFromUrl(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrl#String
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#copyFromURL(String)}
+     * Code snippets for {@link BlobAsyncClientBase#copyFromUrl(String)}
      */
-    public void copyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#String
-        client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#String
+    public void copyFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrl#String
+        client.copyFromUrl(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrl#String
     }
 
     /**
@@ -159,8 +159,8 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     public void setHTTPHeadersCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders
         client.setHttpHeaders(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"));
+            .setContentLanguage("en-US")
+            .setContentType("binary"));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders
     }
 
@@ -262,31 +262,31 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromURLWithResponse(String, String)}
+     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromUrlWithResponse(String, String)}
      */
-    public void abortCopyFromURLWithResponseCodeSnippets() {
+    public void abortCopyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURLWithResponse#String-String
-        client.abortCopyFromURLWithResponse(copyId, leaseId)
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrlWithResponse#String-String
+        client.abortCopyFromUrlWithResponse(copyId, leaseId)
             .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURLWithResponse#String-String
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrlWithResponse#String-String
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#copyFromURLWithResponse(String, Map, AccessTier,
-     * RequestConditions, BlobRequestConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#copyFromUrlWithResponse(String, Map, AccessTier, RequestConditions,
+     * BlobRequestConditions)}
      */
-    public void copyFromURLWithResponseCodeSnippets() {
+    public void copyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobRequestConditions)
+        client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobRequestConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions
     }
 
     /**
@@ -347,8 +347,8 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         client.setHttpHeadersWithResponse(new BlobHttpHeaders()
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary"), accessConditions).subscribe(
+            .setContentLanguage("en-US")
+            .setContentType("binary"), accessConditions).subscribe(
                 response ->
                     System.out.printf("Set HTTP headers completed with status %d%n",
                         response.getStatusCode()));

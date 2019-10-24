@@ -3,13 +3,15 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 
 /**
- * Defines options available to configure the behavior of a call to listBlobsFlatSegment on a {@link BlobContainerClient}
- * object. See the constructor for details on each of the options.
+ * Defines options available to configure the behavior of a call to listBlobsFlatSegment on a {@link
+ * BlobContainerClient} object. See the constructor for details on each of the options.
  */
+@Fluent
 public final class ListBlobsOptions {
     private final ClientLogger logger = new ClientLogger(ListBlobsOptions.class);
 
@@ -19,6 +21,9 @@ public final class ListBlobsOptions {
 
     private Integer maxResultsPerPage;
 
+    /**
+     * Constructs an unpopulated {@link ListBlobsOptions}.
+     */
     public ListBlobsOptions() {
         this.details = new BlobListDetails();
     }

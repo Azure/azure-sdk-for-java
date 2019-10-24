@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Properties for the task that gets TDE certificates in Base64 encoded format.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = GetTdeCertificatesSqlTaskProperties.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("GetTDECertificates.Sql")
 public class GetTdeCertificatesSqlTaskProperties extends ProjectTaskProperties {
     /**

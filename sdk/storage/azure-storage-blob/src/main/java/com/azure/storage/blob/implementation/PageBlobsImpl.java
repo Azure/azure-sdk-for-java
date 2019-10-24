@@ -31,18 +31,17 @@ import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumbe
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesResponse;
 import com.azure.storage.blob.implementation.models.PremiumPageBlobAccessTier;
-import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -79,7 +78,7 @@ public final class PageBlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsCreateResponse> create(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-access-tier") PremiumPageBlobAccessTier tier, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-blob-content-length") long blobContentLength, @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, Context context);
+        Mono<PageBlobsCreateResponse> create(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-access-tier") PremiumPageBlobAccessTier tier, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-blob-content-length") long blobContentLength, @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String contentType, @HeaderParam("x-ms-blob-content-encoding") String contentEncoding, @HeaderParam("x-ms-blob-content-language") String contentLanguage, @HeaderParam("x-ms-blob-content-md5") String contentMd5, @HeaderParam("x-ms-blob-cache-control") String cacheControl, @HeaderParam("x-ms-blob-content-disposition") String contentDisposition, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
@@ -144,18 +143,18 @@ public final class PageBlobsImpl {
         final Long blobSequenceNumber = 0L;
         final String requestId = null;
         final String blobType = "PageBlob";
-        final String blobContentType = null;
-        final String blobContentEncoding = null;
-        final String blobContentLanguage = null;
-        final String blobCacheControl = null;
-        final String blobContentDisposition = null;
+        final String contentType = null;
+        final String contentEncoding = null;
+        final String contentLanguage = null;
+        final String cacheControl = null;
+        final String contentDisposition = null;
         final String encryptionKey = null;
         final String encryptionKeySha256 = null;
         final EncryptionAlgorithmType encryptionAlgorithm = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        String blobContentMD5Converted = null;
-        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, context);
+        String contentMd5Converted = null;
+        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, context);
     }
 
     /**
@@ -184,29 +183,29 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, long blobContentLength, Integer timeout, PremiumPageBlobAccessTier tier, Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, Long blobSequenceNumber, String requestId, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, Context context) {
         final String blobType = "PageBlob";
-        String blobContentType = null;
+        String contentType = null;
         if (blobHttpHeaders != null) {
-            blobContentType = blobHttpHeaders.getBlobContentType();
+            contentType = blobHttpHeaders.getContentType();
         }
-        String blobContentEncoding = null;
+        String contentEncoding = null;
         if (blobHttpHeaders != null) {
-            blobContentEncoding = blobHttpHeaders.getBlobContentEncoding();
+            contentEncoding = blobHttpHeaders.getContentEncoding();
         }
-        String blobContentLanguage = null;
+        String contentLanguage = null;
         if (blobHttpHeaders != null) {
-            blobContentLanguage = blobHttpHeaders.getBlobContentLanguage();
+            contentLanguage = blobHttpHeaders.getContentLanguage();
         }
-        byte[] blobContentMD5 = null;
+        byte[] contentMd5 = null;
         if (blobHttpHeaders != null) {
-            blobContentMD5 = blobHttpHeaders.getBlobContentMD5();
+            contentMd5 = blobHttpHeaders.getContentMd5();
         }
-        String blobCacheControl = null;
+        String cacheControl = null;
         if (blobHttpHeaders != null) {
-            blobCacheControl = blobHttpHeaders.getBlobCacheControl();
+            cacheControl = blobHttpHeaders.getCacheControl();
         }
-        String blobContentDisposition = null;
+        String contentDisposition = null;
         if (blobHttpHeaders != null) {
-            blobContentDisposition = blobHttpHeaders.getBlobContentDisposition();
+            contentDisposition = blobHttpHeaders.getContentDisposition();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
@@ -222,8 +221,8 @@ public final class PageBlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
-        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, context);
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, context);
     }
 
     /**

@@ -57,6 +57,23 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, boolean)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadFromFileWithOverwrite() throws IOException {
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean
+        try {
+            boolean overwrite = false; // Default value
+            client.uploadFromFile(filePath, overwrite);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean
+    }
+
+    /**
      * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
@@ -64,9 +81,9 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
     public void uploadFromFile2() throws IOException {
         // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
 
         Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
         BlobRequestConditions accessConditions = new BlobRequestConditions()

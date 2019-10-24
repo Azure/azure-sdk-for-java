@@ -43,7 +43,7 @@ class PageBlobAPITest extends APISpec {
         then:
         response.getStatusCode() == 201
         validateBasicHeaders(response.getHeaders())
-        response.getValue().getContentMD5() == null
+        response.getValue().getContentMd5() == null
         response.getValue().isServerEncrypted()
     }
 
@@ -63,12 +63,12 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create headers"() {
         setup:
-        def headers = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType)
+        def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
 
         when:
         bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, headers, null, null, null, null)
@@ -292,7 +292,7 @@ class PageBlobAPITest extends APISpec {
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
 
         when:
-        def response = bc.uploadPagesFromURLWithResponse(pageRange, destURL.getBlobUrl(), null, null, null, null, null, null)
+        def response = bc.uploadPagesFromUrlWithResponse(pageRange, destURL.getBlobUrl(), null, null, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -314,7 +314,7 @@ class PageBlobAPITest extends APISpec {
         destURL.create(PageBlobClient.PAGE_BYTES * 2)
 
         when:
-        destURL.uploadPagesFromURL(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+        destURL.uploadPagesFromUrl(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
             sourceURL.getBlobUrl(), PageBlobClient.PAGE_BYTES * 2)
 
         then:
@@ -325,7 +325,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page from URL IA"() {
         when:
-        bc.uploadPagesFromURL(null, bc.getBlobUrl(), (Long) PageBlobClient.PAGE_BYTES)
+        bc.uploadPagesFromUrl(null, bc.getBlobUrl(), (Long) PageBlobClient.PAGE_BYTES)
 
         then:
         thrown(IllegalArgumentException)
@@ -341,7 +341,7 @@ class PageBlobAPITest extends APISpec {
         bc.uploadPages(pageRange, new ByteArrayInputStream(data))
 
         when:
-        destURL.uploadPagesFromURLWithResponse(pageRange, bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
+        destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
             null, null, null, null)
 
         then:
@@ -357,7 +357,7 @@ class PageBlobAPITest extends APISpec {
         bc.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
         when:
-        destURL.uploadPagesFromURLWithResponse(pageRange, bc.getBlobUrl(), null,
+        destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl(), null,
             MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null, null)
 
         then:
@@ -384,7 +384,7 @@ class PageBlobAPITest extends APISpec {
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
 
         expect:
-        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null).getStatusCode() == 201
+        bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -421,7 +421,7 @@ class PageBlobAPITest extends APISpec {
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
 
         when:
-        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null)
+        bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -455,7 +455,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
+        bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -482,7 +482,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null)
+        bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null)
         then:
         thrown(BlobStorageException)
 
@@ -505,7 +505,7 @@ class PageBlobAPITest extends APISpec {
         then:
         bc.getPageRanges(new BlobRange(0)).getPageRange().size() == 0
         validateBasicHeaders(response.getHeaders())
-        response.getValue().getContentMD5() == null
+        response.getValue().getContentMd5() == null
         response.getValue().getBlobSequenceNumber() == 0
     }
 
@@ -1090,5 +1090,38 @@ class PageBlobAPITest extends APISpec {
     def "Get Page Blob Name"() {
         expect:
         blobName == bc.getBlobName()
+    }
+
+    def "Get Blob Name and Build Client"() {
+        when:
+        def client = cc.getBlobClient(originalBlobName)
+        def blockClient = cc.getBlobClient(client.getBlobName()).getPageBlobClient()
+
+        then:
+        blockClient.getBlobName() == finalBlobName
+
+        where:
+        originalBlobName       | finalBlobName
+        "blob"                 | "blob"
+        "path/to]a blob"       | "path/to]a blob"
+        "path%2Fto%5Da%20blob" | "path/to]a blob"
+        "斑點"                 | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
+    }
+
+    def "Create overwrite false"() {
+        when:
+        bc.create(512)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Create overwrite true"() {
+        when:
+        bc.create(512, true)
+
+        then:
+        notThrown(Throwable)
     }
 }

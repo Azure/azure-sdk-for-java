@@ -127,12 +127,12 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the blob name that will be used as part of the URL path.
+     * Decodes and gets the blob name that will be used as part of the URL path.
      *
-     * @return the blob name.
+     * @return the decoded blob name.
      */
     public String getBlobName() {
-        return blobName;
+        return (blobName == null) ? null : Utility.urlDecode(blobName);
     }
 
     /**
@@ -142,7 +142,7 @@ public final class BlobUrlParts {
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setBlobName(String blobName) {
-        this.blobName = blobName;
+        this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         return this;
     }
 
@@ -252,7 +252,7 @@ public final class BlobUrlParts {
         try {
             return url.toURL();
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalStateException("The URL parts created a malformed URL."));
+            throw logger.logExceptionAsError(new IllegalStateException("The URL parts created a malformed URL.", ex));
         }
     }
 

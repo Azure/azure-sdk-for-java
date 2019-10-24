@@ -12,13 +12,12 @@ public class SharedTokenCacheCredentialBuilder extends CredentialBuilderBase<Man
     private String clientId;
     private String username;
 
-
     /**
-     * Sets clientId
+     * Sets the client ID for the application.
      *
-     * @param clientId client id for application
+     * @param clientId The client ID for the application.
      *
-     * @return SharedTokenCacheCredentialBuilder
+     * @return The updated SharedTokenCacheCredentialBuilder object.
      * */
     public SharedTokenCacheCredentialBuilder clientId(String clientId) {
         this.clientId = clientId;
@@ -26,11 +25,11 @@ public class SharedTokenCacheCredentialBuilder extends CredentialBuilderBase<Man
     }
 
     /**
-     * Sets username
+     * Sets the username for the account.
      *
-     * @param username username for user account
+     * @param username The username for the account.
      *
-     * @return SharedTokenCacheCredentialBuilder
+     * @return The updated SharedTokenCacheCredentialBuilder object.
      * */
     public SharedTokenCacheCredentialBuilder username(String username) {
         this.username = username;
@@ -38,11 +37,11 @@ public class SharedTokenCacheCredentialBuilder extends CredentialBuilderBase<Man
     }
 
     /**
+     * Creates a new {@link SharedTokenCacheCredentialBuilder} with the current configurations.
+     *
      * @return a {@link SharedTokenCacheCredentialBuilder} with the current configurations.
      */
     public SharedTokenCacheCredential build() {
         return new SharedTokenCacheCredential(username, clientId, identityClientOptions);
-
     }
-
 }

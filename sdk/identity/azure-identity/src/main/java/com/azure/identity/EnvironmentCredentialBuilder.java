@@ -20,6 +20,8 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
     }
 
     /**
+     * Creates a new {@link EnvironmentCredential} with the current configurations.
+     *
      * @return a {@link EnvironmentCredential} with the current configurations.
      */
     public EnvironmentCredential build() {

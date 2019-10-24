@@ -11,10 +11,9 @@ import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
-import com.azure.storage.common.implementation.StorageImplUtils
-import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasSignatureValues
@@ -190,8 +189,8 @@ class HelperTest extends APISpec {
             .setContentType(type)
 
         UserDelegationKey key = new UserDelegationKey()
-            .setSignedOid(keyOid)
-            .setSignedTid(keyTid)
+            .setSignedObjectId(keyOid)
+            .setSignedTenantId(keyTid)
             .setSignedStart(keyStart)
             .setSignedExpiry(keyExpiry)
             .setSignedService(keyService)
@@ -442,7 +441,7 @@ class HelperTest extends APISpec {
     def "accountSasSignatures string to sign"() {
         when:
         AccountSasSignatureValues v = new AccountSasSignatureValues()
-            .setPermissions(new AccountSasPermission().setReadPermission(true).toString())
+            .setPermissions(new AccountSasPermission().setReadPermission(true))
             .setServices("b")
             .setResourceTypes("o")
             .setStartTime(startTime)
@@ -470,12 +469,20 @@ class HelperTest extends APISpec {
     @Unroll
     def "accountSasSignatureValues IA"() {
         setup:
+        AccountSasPermission sasPermission = null
+        if (permissions != null) {
+            sasPermission = AccountSasPermission.parse(permissions)
+        }
+
         AccountSasSignatureValues v = new AccountSasSignatureValues()
-            .setPermissions(permissions)
             .setServices(service)
             .setResourceTypes(resourceType)
             .setExpiryTime(expiryTime)
             .setVersion(version)
+
+        if (sasPermission != null) {
+            v.setPermissions(sasPermission)
+        }
 
         when:
         v.generateSasQueryParameters(creds)
@@ -490,7 +497,6 @@ class HelperTest extends APISpec {
         "c"         | null    | "c"          | OffsetDateTime.now() | "v"     | primaryCredential || "services"
         "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCredential || "resourceTypes"
         "c"         | "b"     | "c"          | null                 | "v"     | primaryCredential || "expiryTime"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCredential || "version"
         "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "storageSharedKeyCredentials"
     }
 
@@ -648,18 +654,26 @@ class HelperTest extends APISpec {
 
     def "URLParser"() {
         when:
-        BlobUrlParts parts = BlobUrlParts.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+        BlobUrlParts parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
 
         then:
         parts.getScheme() == "http"
         parts.getHost() == "host"
         parts.getBlobContainerName() == "container"
-        parts.getBlobName() == "blob"
+        parts.getBlobName() == finalBlobName
         parts.getSnapshot() == "snapshot"
         parts.getSasQueryParameters().getPermissions() == "r"
         parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.getSasQueryParameters().getResource() == "c"
         parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+
+        where:
+        originalBlobName       | finalBlobName
+        "blob"                 | "blob"
+        "path/to]a blob"       | "path/to]a blob"
+        "path%2Fto%5Da%20blob" | "path/to]a blob"
+        "斑點"                 | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 
     @Unroll
@@ -675,12 +689,16 @@ class HelperTest extends APISpec {
         parts.getBlobName() == blobName
 
         where:
-        endpoint                                                 | scheme | host              | accountName        | blobContainerName | blobName
-        "http://127.0.0.1:10000/devstoreaccount1"                | "http" | "127.0.0.1:10000" | "devstoreaccount1" | null              | null
-        "http://127.0.0.1:10000/devstoreaccount1/container"      | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | null
-        "http://127.0.0.1:10000/devstoreaccount1/container/blob" | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | "blob"
-        "http://localhost:10000/devstoreaccount1"                | "http" | "localhost:10000" | "devstoreaccount1" | null              | null
-        "http://localhost:10000/devstoreaccount1/container"      | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | null
-        "http://localhost:10000/devstoreaccount1/container/blob" | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "blob"
+        endpoint                                                                 | scheme | host              | accountName        | blobContainerName | blobName
+        "http://127.0.0.1:10000/devstoreaccount1"                                | "http" | "127.0.0.1:10000" | "devstoreaccount1" | null              | null
+        "http://127.0.0.1:10000/devstoreaccount1/container"                      | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | null
+        "http://127.0.0.1:10000/devstoreaccount1/container/blob"                 | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | "blob"
+        "http://localhost:10000/devstoreaccount1"                                | "http" | "localhost:10000" | "devstoreaccount1" | null              | null
+        "http://localhost:10000/devstoreaccount1/container"                      | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | null
+        "http://localhost:10000/devstoreaccount1/container/blob"                 | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "blob"
+        "http://localhost:10000/devstoreaccount1/container/path/to]a blob"       | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "path/to]a blob"
+        "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob" | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "path/to]a blob"
+        "http://localhost:10000/devstoreaccount1/container/斑點"                 | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"
+        "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"   | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"
     }
 }
