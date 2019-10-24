@@ -530,7 +530,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         // Gets all versions of this value so we can get the one we want at that particular date.
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().setKeys(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
@@ -564,14 +564,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         // Get all revisions for a key, they are listed in descending order.
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().setKeys(keyName)))
+        StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(keyName)))
                 .assertNext(response -> assertConfigurationEquals(updated2, response))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
 
         // Verifies that we can select specific fields.
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().setKeys(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)))
+        StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)))
                 .assertNext(response -> validateListRevisions(updated2, response))
                 .assertNext(response -> validateListRevisions(updated, response))
                 .assertNext(response -> validateListRevisions(original, response))
@@ -604,7 +604,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(testInput.get(3), response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listSettingRevisions(new SettingSelector().setKeys(key, key2)))
+            StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key, key2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
@@ -642,7 +642,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(testInput.get(3), response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listSettingRevisions(new SettingSelector().setKeys(key).setLabels(label, label2)))
+            StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key).setLabels(label, label2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
@@ -674,7 +674,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(updated2, response))
             .verifyComplete();
 
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().setKeys(key).setRange(new Range(1, 2))))
+        StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key).setRange(new Range(1, 2))))
             .assertNext(response -> assertConfigurationEquals(updated, response))
             .assertNext(response -> assertConfigurationEquals(original, response))
             .verifyComplete();
@@ -691,7 +691,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(original, response))
             .verifyComplete();
 
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().setKeys(key).setRange(new Range(0, 10))))
+        StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key).setRange(new Range(0, 10))))
             .verifyErrorSatisfies(exception -> assertRestException(exception, 416)); // REQUESTED_RANGE_NOT_SATISFIABLE
     }
 
@@ -716,7 +716,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         // Gets all versions of this value.
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().setKeys(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
@@ -724,7 +724,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // We want to fetch all the revisions that existed up and including when the first revision was created.
         // Revisions are returned in descending order from creation date.
         SettingSelector options = new SettingSelector().setKeys(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
-        StepVerifier.create(client.listSettingRevisions(options))
+        StepVerifier.create(client.listRevisions(options))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
@@ -749,7 +749,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
 
         Flux.merge(results).blockLast();
-        StepVerifier.create(client.listSettingRevisions(filter))
+        StepVerifier.create(client.listRevisions(filter))
             .expectNextCount(numberExpected)
             .verifyComplete();
     }
@@ -775,7 +775,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
         List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
 
-        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listSettingRevisions(filter);
+        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listRevisions(filter);
         configurationSettingPagedFlux.toStream().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList1.size());
 
@@ -804,7 +804,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
         List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
 
-        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listSettingRevisions(filter);
+        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listRevisions(filter);
         configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList1.size());
 

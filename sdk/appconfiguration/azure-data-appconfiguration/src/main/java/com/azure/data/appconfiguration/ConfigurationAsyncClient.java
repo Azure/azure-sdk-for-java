@@ -667,17 +667,17 @@ public final class ConfigurationAsyncClient {
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+    public PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listSettingRevisionsFirstPage(selector, context)),
-                continuationToken -> withContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
+                withContext(context -> listRevisionsFirstPage(selector, context)),
+                continuationToken -> withContext(context -> listRevisionsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
-    Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsFirstPage(SettingSelector selector, Context context) {
+    Mono<PagedResponse<ConfigurationSetting>> listRevisionsFirstPage(SettingSelector selector, Context context) {
         try {
             Mono<PagedResponse<ConfigurationSetting>> result;
 
@@ -707,7 +707,7 @@ public final class ConfigurationAsyncClient {
         }
     }
 
-    Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsNextPage(String nextPageLink, Context context) {
+    Mono<PagedResponse<ConfigurationSetting>> listRevisionsNextPage(String nextPageLink, Context context) {
         try {
             Mono<PagedResponse<ConfigurationSetting>> result = service
                 .listKeyValues(serviceEndpoint, nextPageLink, context)
@@ -722,10 +722,10 @@ public final class ConfigurationAsyncClient {
 
     }
 
-    PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+    PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         return new PagedFlux<>(() ->
-            listSettingRevisionsFirstPage(selector, context),
-            continuationToken -> listSettingRevisionsNextPage(continuationToken, context));
+            listRevisionsFirstPage(selector, context),
+            continuationToken -> listRevisionsNextPage(continuationToken, context));
     }
 
     private Flux<ConfigurationSetting> listConfigurationSettings(String nextPageLink, Context context) {

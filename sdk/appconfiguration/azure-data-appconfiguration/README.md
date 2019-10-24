@@ -150,7 +150,7 @@ ConfigurationClient client = new ConfigurationClient()
         .buildClient();
 
 // urlLabel is optional
-String url = client.getSetting(urlKey, urlLabel).getValue();
+String url = client.getConfigurationSetting(urlKey, urlLabel).getValue();
 Connection conn;
 try {
     conn = DriverManager.getConnection(url);
@@ -167,61 +167,115 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .connectionString(appConfigConnectionString)
         .buildAsyncClient();
 
-client.listSettings(new SettingSelection().label(periodicUpdateLabel))
+client.listConfigurationSettings(new SettingSelection().label(periodicUpdateLabel))
     .subscribe(setting -> updateConfiguration(setting));
 ```
 
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Configuration Service tasks, including:
-- [Create a Configuration Setting](#create-a-Configuration-Setting)
-- [Retrieve a Configuration Setting](#retrieve-a-Configuration-Setting)
-- [Update an existing Configuration Setting](#update-an-existing-Configuration-Setting)
-- [Delete a Configuration Setting](#delete-a-Configuration-Setting)
+- [Create a Configuration Setting][sample_hello_world]
+- [Retrieve a Configuration Setting][sample_hello_world]
+- [Update an existing Configuration Setting][sample_hello_world]
+- [Delete a Configuration Setting][sample_hello_world]
+- [List Configuration Settings with Multiple Keys][sample_list_configuration_settings]
+- [List Revisions of Multiple Configuration Settings][sample_read_revision_history]
+- [Set a Configuration Setting to Read Only][sample_read_only]
+- [Clear Read Only from a Configuration Setting][sample_read_only]
+- [Conditional Request][sample_conditional_request]
+### Create a Configuration Client
+Create a configuration client by using ConfigurationClientBuilder by passing connection string.
+```Java
+ConfigurationClient client = new ConfigurationClientBuilder()
+        .connectionString(connectionString)
+        .buildClient();
+```
 
 ### Create a Configuration Setting
 
 Create a Configuration Setting to be stored in the Configuration Store. There are two ways to store a Configuration Setting:
-- addSetting creates a setting only if the setting does not already exist in the store.
-- setSetting creates a setting if it doesn't exist or overrides an existing setting.
+- addConfigurationSetting creates a setting only if the setting does not already exist in the store.
+- setConfigurationSetting creates a setting if it doesn't exist or overrides an existing setting.
+
 ```Java
-ConfigurationClient client = new ConfigurationClientBuilder()
-        .connectionString(connectionString)
-        .buildClient();
-ConfigurationSetting setting = client.setSetting("some_key", "some_label", "some_value");
+ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ```
 
 ### Retrieve a Configuration Setting
 
-Retrieve a previously stored Configuration Setting by calling getSetting.
+Retrieve a previously stored Configuration Setting by calling getConfigurationSetting.
 ```Java
-ConfigurationClient client = new ConfigurationClientBuilder()
-        .connectionString(connectionString)
-        .buildClient();
-client.setSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.getSetting("some_key", "some_label");
+ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
+ConfigurationSetting retrievedSetting = client.getConfigurationSetting("some_key", "some_label");
+```
+For coditional request,
+```Java
+Response<ConfigurationSetting> settingResponse = client.getConfigurationSettingWithResponse(setting, null, true, Context.NONE);
 ```
 
 ### Update an existing Configuration Setting
 
-Update an existing Configuration Setting by calling setSetting.
+Update an existing Configuration Setting by calling setConfigurationSetting.
 ```Java
-ConfigurationClient client = new ConfigurationClientBuilder()
-        .connectionString(connectionString)
-        .buildClient();
-client.setSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.setSetting("some_key", "some_label", "new_value");
+ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
+ConfigurationSetting updatedSetting = client.setConfigurationSetting("some_key", "some_label", "new_value");
+```
+For coditional request,
+```Java
+Response<ConfigurationSetting> settingResponse = client.setConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
 
 ### Delete a Configuration Setting
 
-Delete an existing Configuration Setting by calling deleteSetting.
+Delete an existing Configuration Setting by calling deleteConfigurationSetting.
 ```Java
-ConfigurationClient client = new ConfigurationClientBuilder()
-        .connectionString(connectionString)
-        .buildClient();
-client.setSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.deleteSetting("some_key", "some_label");
+ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
+ConfigurationSetting deletedSetting = client.deleteConfigurationSetting("some_key", "some_label");
+```
+For coditional request,
+```Java
+Response<ConfigurationSetting> settingResponse = client.deleteConfigurationSettingWithResponse(setting, true, Context.NONE);
+```
+
+### List Configuration Settings with Multiple Keys
+
+List multiple configuration settings by calling listConfigurationSettings.
+Pass null SettingSelector into the method If you want to fetch all configuration settings.
+```Java
+String key = "some_key";
+String key2 = "new_key";
+client.setConfigurationSetting(key, "some_label", "some_value");
+client.setConfigurationSetting(key2, "new_label", "new_value");
+SettingSelector selector = new SettingSelector().setKeys(key, key2);
+PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(selector);
+```
+
+### List Revisions of Multiple Configuration Settings
+
+List all revision of a configuration settings by calling listRevisions.
+```Java
+String key = "revisionKey";
+String Key2 = "newRevisionKey";
+client.setConfigurationSetting(key, "some_label", "some_value");
+client.setConfigurationSetting(key, "new_label", "new_value");
+client.setConfigurationSetting(key2, "some_label", "some_value");
+client.setConfigurationSetting(key2, "new_label", "new_value");
+SettingSelector selector = new SettingSelector().setKeys(key, key2);
+PagedIterable<ConfigurationSetting> settings = client.listRevisions(selector);
+``` 
+
+### Set a Configuration Setting to Read Only
+
+Set a configuration setting to read-only status.
+```Java
+client.setConfigurationSetting("some_key", "some_label", "some_value");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label");
+```
+### Clear Read Only from a Configuration Setting
+
+Clear read-only from a configuration setting.
+```Java
+ConfigurationSetting setting = client.clearReadOnly("some_key", "some_label");
 ```
 
 ## Troubleshooting
@@ -254,6 +308,11 @@ If you would like to become an active contributor to this project please follow 
 [package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [samples]: src/samples/java/com/azure/data/appconfiguration
+[sample_hello_world]: src/samples/java/com/azure/data/appconfiguration/HelloWorld.java
+[sample_list_configuration_settings]: src/samples/java/com/azure/data/appconfiguration/ConfigurationSets.java
+[sample_conditional_request]: src/samples/java/com/azure/data/appconfiguration/ConditionalRequest.java
+[sample_read_only]: src/samples/java/com/azure/data/appconfiguration/ReadOnlySample.java
+[sample_read_revision_history]: src/samples/java/com/azure/data/appconfiguration/ReadRevisionHistory.java
 [source_code]: src
 [spring_quickstart]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 

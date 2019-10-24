@@ -5,9 +5,12 @@ package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
+/**
+ * Sample demonstrates how to set and clear read-only a configuration setting.
+ */
 public class ReadOnlySample {
     /**
-     * Runs the sample algorithm and demonstrates how to add a custom policy to the HTTP pipeline.
+     * Runs the sample algorithm and demonstrates how to set and clear read-only a configuration setting.
      *
      * @param args Unused. Arguments to the program.
      */
@@ -17,40 +20,22 @@ public class ReadOnlySample {
         String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
 
         // Instantiate a client that will be used to call the service.
-        final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
+        final ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildClient();
 
         // Name of the key to add to the configuration service.
         final String key = "hello";
         final String value = "world";
 
-        client.setConfigurationSetting(key, null, value).subscribe(
-            result -> {
-                final ConfigurationSetting setting = result;
-                System.out.println(String.format("[setConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
-            },
-            error -> System.err.println("There was an error while adding the setting: " + error.toString()),
-            () -> System.out.println(String.format("Set setting with key=%s and value=%s added or updated.", key, value)));
-
+        final ConfigurationSetting setting = client.setConfigurationSetting(key, null, value);
         // Read-Only
-        client.setReadOnly(key, null).subscribe(
-            result -> {
-                final ConfigurationSetting setting = result;
-                System.out.println(String.format("[Locked Setting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
-            },
-            error -> System.err.println("There was an error while making the setting to read-only: " + error.toString()),
-            null
-        );
-
+        final ConfigurationSetting readOnlySetting = client.setReadOnly(setting.getKey(), setting.getLabel());
+        System.out.println(String.format("Setting is read-only now, Key: %s, Value: %s",
+            readOnlySetting.getKey(), readOnlySetting.getValue()));
         // Clear Read-Only
-        client.clearReadOnly(key, null).subscribe(
-            result -> {
-                final ConfigurationSetting setting = result;
-                System.out.println(String.format("[Locked Setting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
-            },
-            error -> System.err.println("There was an error while making the setting to read-only: " + error.toString()),
-            null
-        );
+        final ConfigurationSetting clearedReadOnlySetting = client.clearReadOnly(setting.getKey(), setting.getLabel());
+        System.out.println(String.format("Setting is no longer read-only, Key: %s, Value: %s",
+            clearedReadOnlySetting.getKey(), clearedReadOnlySetting.getValue()));
     }
 }

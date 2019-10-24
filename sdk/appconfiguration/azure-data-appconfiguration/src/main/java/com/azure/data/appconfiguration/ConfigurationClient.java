@@ -396,7 +396,7 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
+     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
      * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
      *
      * <p><strong>Code Samples</strong></p>
@@ -406,7 +406,7 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector}
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
-     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
      * provided, the List contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -415,7 +415,7 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
+     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
      * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
      *
      * <p><strong>Code Samples</strong></p>
@@ -426,7 +426,7 @@ public final class ConfigurationClient {
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
      * provided, the {@link PagedIterable} contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -439,21 +439,21 @@ public final class ConfigurationClient {
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date. Revisions expire
      * after a period of time. The service maintains change history for up to 7 days.
      *
-     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
-     * in their current state. Otherwise, the results returned match the parameters given in {@code options}.
+     * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
+     * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return listSettingRevisions(selector, Context.NONE);
+    public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector) {
+        return listRevisions(selector, Context.NONE);
     }
 
     /**
@@ -461,21 +461,21 @@ public final class ConfigurationClient {
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date. Revisions expire
      * after a period of time. The service maintains change history for up to 7 days.
      *
-     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
-     * in their current state. Otherwise, the results returned match the parameters given in {@code options}.
+     * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
+     * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
-        return new PagedIterable<>(client.listSettingRevisions(selector, context));
+    public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
+        return new PagedIterable<>(client.listRevisions(selector, context));
     }
 }

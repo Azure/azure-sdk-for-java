@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Sample demonstrates how to read configuration setting revision history.
+ * Sample demonstrates how to read configuration setting revision history asynchronously.
  */
-public class ReadRevisionHistory {
+public class ReadRevisionHistoryAsync {
     /**
-     * Runs the sample algorithm and demonstrates how to read configuration setting revision history.
+     * Runs the sample algorithm and demonstrates how to read configuration setting revision history asynchronously.
      *
      * @param args Unused. Arguments to the program.
      */
