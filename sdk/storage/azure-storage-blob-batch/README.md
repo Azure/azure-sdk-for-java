@@ -66,7 +66,6 @@ Netty and include OkHTTP client in your pom.xml.
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-blobserviceclient), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .port(8080)
@@ -112,7 +111,6 @@ BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).
 ```
 
 ### Bulk Deleting Blobs
-
 ```java
 blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
     System.out.printf("Deleting blob with URL %s completed with status code %d%n",
@@ -143,7 +141,7 @@ Response<Void> deleteSnapshotResponse =
 // Delete a blob that has a lease.
 Response<Void> deleteWithLeaseResponse =
     blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobAccessConditions()
-        .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+        .setLeaseId("leaseId"));
 
 blobBatchClient.submitBatch(blobBatch);
 System.out.printf("Deleting blob completed with status code %d%n", deleteResponse.getStatusCode());
@@ -165,7 +163,7 @@ Response<Void> setTierResponse2 = blobBatch.setBlobAccessTier(blobUrl2, AccessTi
 
 // Set AccessTier on a blob that has a lease.
 Response<Void> setTierWithLeaseResponse = blobBatch.setBlobAccessTier(blobUrlWithLease, AccessTier.HOT, 
-    new LeaseAccessConditions().setLeaseId("leaseId"));
+    .setLeaseId("leaseId");
 
 blobBatchClient.submitBatch(blobBatch);
 System.out.printf("Set AccessTier on blob completed with status code %d%n", setTierResponse.getStatusCode());

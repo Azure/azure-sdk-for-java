@@ -144,7 +144,7 @@ Uses the `queueServiceClient` generated from [Queue Service Client](#queue-servi
 ```java
 try {
    queueServiceClient.createQueue("myQueue");
-} catch (StorageException e) {
+} catch (QueueStorageException e) {
    logger.error("Failed to create a queue with error code: " + e.getErrorCode());
 }
 ```
@@ -164,7 +164,7 @@ The queue service do operations on the queues in the storage account and manage 
 The client performs the interactions with the Queue service, create or delete a queue, getting and setting Queue properties, list queues in account, and get queue statistics. An asynchronous, `QueueServiceAsyncClient`, and synchronous, `QueueClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
 Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${SASToken}`.
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
+String queueURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueURL).sasToken(SASToken).build();
 
 QueueClient newQueueClient = queueServiceClient.createQueue("myqueue");
@@ -301,7 +301,7 @@ Use `${SASToken}` as credential.
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).sasToken(SASToken).buildClient();
 
-StorageServiceProperties properties = queueServiceClient.getProperties();
+QueueServiceProperties properties = queueServiceClient.getProperties();
 ```
 
 ### Set properties in queue account
@@ -313,7 +313,7 @@ Use `${SASToken}` as credential.
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).sasToken(SASToken).buildClient();
 
-StorageServiceProperties properties = queueServiceClient.getProperties();
+QueueServiceProperties properties = queueServiceClient.getProperties();
 properties.setCors(Collections.emptyList());
 queueServiceClient.setProperties(properties);
 ```
@@ -327,7 +327,7 @@ It is only available on the secondary location endpoint when read-access geo-red
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).sasToken(SASToken).buildClient();
 
-StorageServiceStats queueStats = queueServiceClient.getStatistics();
+QueueServiceStatistics queueStats = queueServiceClient.getStatistics();
 ```
 
 ### Enqueue message into a queue
@@ -339,7 +339,7 @@ A message must be in a format that can be included in an XML request with UTF-8 
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SASToken).queueName("myqueue").buildClient();
 
-queueClient.enqueueMessage("myMessage");
+queueClient.sendMessage("myMessage");
 ```
 
 ### Update a message in a queue
@@ -350,7 +350,7 @@ QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(S
 // @param messageId Id of the message
 // @param popReceipt Unique identifier that must match the message for it to be updated
 // @param visibilityTimeout How long the message will be invisible in the queue in seconds
-queueClient.updateMessage("new message", messageId, popReceipt, visibilityTimeout);
+queueClient.updateMessage(messageId ,popReceipt, "new message", visibilityTimeout);
 ```
 
 ### Peek at messages in a queue
@@ -358,18 +358,19 @@ The operation retrieves one or more messages from the front of the queue. Use `$
 ```Java
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SASToken).queueName("myqueue").buildClient();
-
-queueClient.peekMessages().forEach(message-> {System.out.println(message.getMessageText());});
+// @param key The key with which the specified value should be associated.
+// @param value The value to be associated with the specified key.
+queueClient.peekMessages(5, Duration.ofSeconds(1), new Context(key, value)).forEach(message-> {System.out.println(message.getMessageText());});
 ```
 
 
-### Dequeue messages from a queue
+### Receive messages from a queue
 The operation retrieves one or more messages from the front of the queue. Use `${SASToken}` as credential.
 ```Java
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SASToken).queueName("myqueue").buildClient();
-
-queueClient.dequeueMessages(10).forEach(message-> {System.out.println(message.getMessageText());});
+// Try to receive 10 mesages: Maximum number of messages to get
+queueClient.receiveMessages(10).forEach(message-> {System.out.println(message.getMessageText());});
 ```
 
 
