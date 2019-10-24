@@ -430,12 +430,11 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
-     * @return The properties of the download blob.
+     *
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public BlobProperties downloadToFile(String filePath) {
-        return downloadToFileWithResponse(filePath, null, null, null, null,
-            false, null, Context.NONE).getValue();
+    public void downloadToFile(String filePath) {
+        downloadToFileWithResponse(filePath, null, null, null, null, null, Context.NONE);
     }
 
     /**
@@ -452,7 +451,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -463,18 +462,16 @@ public class BlobClientBase {
      *        transfers parameter is ignored.
      * @param options {@link ReliableDownloadOptions}
      * @param accessConditions {@link BlobRequestConditions}
-     * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The response of download blob properties.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
+    public void downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
-        BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, options, accessConditions, rangeGetContentMD5, context);
-        return blockWithOptionalTimeout(download, timeout);
+        BlobRequestConditions accessConditions, Duration timeout, Context context) {
+        Mono<Void> download = client.downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
+            accessConditions, context);
+        blockWithOptionalTimeout(download, timeout);
     }
 
     /**
