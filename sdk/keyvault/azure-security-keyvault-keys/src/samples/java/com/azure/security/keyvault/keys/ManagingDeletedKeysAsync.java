@@ -30,7 +30,7 @@ public class ManagingDeletedKeysAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-                .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 

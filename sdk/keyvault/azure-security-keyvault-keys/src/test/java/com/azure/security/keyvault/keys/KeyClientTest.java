@@ -32,12 +32,12 @@ public class KeyClientTest extends KeyClientTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(pipeline -> new KeyClientBuilder()
-                .vaultEndpoint(getEndpoint())
+                .vaultUrl(getEndpoint())
                 .pipeline(pipeline)
                 .buildClient());
         } else {
             client = clientSetup(pipeline -> new KeyClientBuilder()
-                .vaultEndpoint(getEndpoint())
+                .vaultUrl(getEndpoint())
                 .pipeline(pipeline)
                 .buildClient());
         }

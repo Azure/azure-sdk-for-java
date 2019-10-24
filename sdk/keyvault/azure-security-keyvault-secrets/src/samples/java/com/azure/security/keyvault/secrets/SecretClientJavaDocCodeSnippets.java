@@ -391,7 +391,7 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secretclient.sync.construct
         SecretClient secretClient = new SecretClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .vaultEndpoint("https://myvault.vault.azure.net/")
+            .vaultUrl("https://myvault.vault.azure.net/")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
         // END: com.azure.security.keyvault.secretclient.sync.construct

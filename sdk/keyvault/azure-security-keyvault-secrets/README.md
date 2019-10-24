@@ -129,7 +129,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 
 SecretClient client = new SecretClientBuilder()
-        .vaultEndpoint(<your-vault-url>)
+        .vaultUrl(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
@@ -167,7 +167,7 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
 SecretClient secretClient = new SecretClientBuilder()
-        .vaultEndpoint(<your-vault-url>)
+        .vaultUrl(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
@@ -251,7 +251,7 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
 SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-        .vaultEndpoint(<your-vault-url>)
+        .vaultUrl(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
 

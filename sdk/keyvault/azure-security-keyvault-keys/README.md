@@ -128,7 +128,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 
 KeyClient client = new KeyClientBuilder()
-        .vaultEndpoint(<your-vault-url>)
+        .vaultUrl(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
@@ -187,7 +187,7 @@ import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.KeyClient;
 
 KeyClient keyClient = new KeyClientBuilder()
-        .vaultEndpoint(<your-vault-url>)
+        .vaultUrl(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
@@ -310,7 +310,7 @@ import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 
 KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-        .vaultEndpoint(<your-vault-url>)
+        .vaultUrl(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
 

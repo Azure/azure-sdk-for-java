@@ -31,13 +31,13 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(pipeline -> new KeyClientBuilder()
-                .vaultEndpoint(getEndpoint())
+                .vaultUrl(getEndpoint())
                 .pipeline(pipeline)
                 .buildAsyncClient());
         } else {
             client = clientSetup(pipeline -> new KeyClientBuilder()
                 .pipeline(pipeline)
-                .vaultEndpoint(getEndpoint())
+                .vaultUrl(getEndpoint())
                 .buildAsyncClient());
         }
     }

@@ -38,7 +38,7 @@ public final class KeyClientJavaDocCodeSnippets {
     public KeyClient createClient() {
         // BEGIN: com.azure.security.keyvault.keys.keyclient.instantiation
         KeyClient keyClient = new KeyClientBuilder()
-            .vaultEndpoint("https://myvault.azure.net/")
+            .vaultUrl("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.keyvault.keys.keyclient.instantiation

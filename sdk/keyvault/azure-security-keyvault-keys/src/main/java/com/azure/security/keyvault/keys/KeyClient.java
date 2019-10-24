@@ -48,11 +48,11 @@ public final class KeyClient {
     }
 
     /**
-     * Get the vault endpoint
-     * @return the vault endpoint
+     * Get the vault endpoint url
+     * @return the vault endpoint url
      */
-    public String getVaultEndpoint() {
-        return client.getVaultEndpoint();
+    public String getVaultUrl() {
+        return client.getVaultUrl();
     }
 
     /**

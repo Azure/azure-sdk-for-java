@@ -40,7 +40,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public KeyAsyncClient createAsyncClientWithHttpClient() {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-            .vaultEndpoint("https://myvault.azure.net/")
+            .vaultUrl("https://myvault.azure.net/")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
             .httpClient(HttpClient.createDefault())
@@ -56,7 +56,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public KeyAsyncClient createAsyncClient() {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.instantiation
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-            .vaultEndpoint("https://myvault.azure.net/")
+            .vaultUrl("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.async.keyclient.instantiation
@@ -74,7 +74,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
             .build();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .pipeline(pipeline)
-            .vaultEndpoint("https://myvault.azure.net/")
+            .vaultUrl("https://myvault.azure.net/")
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation
         return keyAsyncClient;

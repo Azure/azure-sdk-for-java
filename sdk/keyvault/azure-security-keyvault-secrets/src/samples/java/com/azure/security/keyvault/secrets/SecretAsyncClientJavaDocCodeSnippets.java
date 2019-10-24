@@ -35,7 +35,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .vaultEndpoint("https://myvault.azure.net/")
+            .vaultUrl("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
@@ -52,7 +52,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secrets.async.secretclient.construct
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .vaultEndpoint("https://myvault.vault.azure.net/")
+            .vaultUrl("https://myvault.vault.azure.net/")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
         // END: com.azure.security.keyvault.secrets.async.secretclient.construct
@@ -70,7 +70,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
             .build();
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .pipeline(pipeline)
-            .vaultEndpoint("https://myvault.azure.net/")
+            .vaultUrl("https://myvault.azure.net/")
             .buildAsyncClient();
         // END: com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation
         return secretAsyncClient;

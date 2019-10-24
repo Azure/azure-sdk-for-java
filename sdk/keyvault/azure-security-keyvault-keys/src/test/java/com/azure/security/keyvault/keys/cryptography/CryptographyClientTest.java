@@ -35,7 +35,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 this.pipeline = pipeline;
                 return new KeyClientBuilder()
                     .pipeline(pipeline)
-                    .vaultEndpoint(getEndpoint())
+                    .vaultUrl(getEndpoint())
                     .buildClient();
             });
         } else {
@@ -43,7 +43,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 this.pipeline = pipeline;
                 return new KeyClientBuilder()
                     .pipeline(pipeline)
-                    .vaultEndpoint(getEndpoint())
+                    .vaultUrl(getEndpoint())
                     .buildClient();
             });
         }

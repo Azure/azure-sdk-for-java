@@ -30,7 +30,7 @@ public class IdentitySamples {
         // Azure SDK client builders accept the credential as a parameter
 
         SecretClient client = new SecretClientBuilder()
-            .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(defaultCredential)
             .buildClient();
 
@@ -50,7 +50,7 @@ public class IdentitySamples {
             .build();
 
         SecretClient client = new SecretClientBuilder()
-            .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(clientSecretCredential)
             .buildClient();
 
@@ -71,7 +71,7 @@ public class IdentitySamples {
                 .build();
 
         SecretClient client = new SecretClientBuilder()
-            .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(deviceCodeCredential)
             .buildClient();
 
@@ -91,7 +91,7 @@ public class IdentitySamples {
                 .build();
 
         SecretClient client = new SecretClientBuilder()
-                .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(usernamePasswordCredential)
                 .buildClient();
 
@@ -123,7 +123,7 @@ public class IdentitySamples {
 
         // the chain can be used anywhere a credential is required
         SecretClient client = new SecretClientBuilder()
-            .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(credentialChain)
             .buildClient();
 

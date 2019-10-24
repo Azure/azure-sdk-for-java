@@ -30,12 +30,12 @@ public class SecretClientTest extends SecretClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(pipeline -> new SecretClientBuilder()
                 .pipeline(pipeline)
-                .vaultEndpoint(getEndpoint())
+                .vaultUrl(getEndpoint())
                 .buildClient());
         } else {
             client = clientSetup(pipeline -> new SecretClientBuilder()
                 .pipeline(pipeline)
-                .vaultEndpoint(getEndpoint())
+                .vaultUrl(getEndpoint())
                 .buildClient());
         }
     }
