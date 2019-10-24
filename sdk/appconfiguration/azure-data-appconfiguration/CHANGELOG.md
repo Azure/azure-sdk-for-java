@@ -1,7 +1,17 @@
 # Change Log azure-data-appconfiguration
 
-## Version 1.0.0 (2019-10-31)
-- This release consists of API improvements, performance enhancements, samples and updated documentation.
+## Version 1.0.0 (2019-10-25)
+For details on the Azure SDK for Java (October 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview6-java).
+- Ensure exceptions are consistent for certain operations (c.f. other languages)
+- Conditional Request API: getSetting(), deleteSetting()
+- Renaming asOfDayTime to acceptDateTime, and lock to readOnly
+- Not explore ConfigurationCredentialsPolicy to public and move to implementation folder.gu
+- Fixed AzConfig Revisions Range Returns 416 Status Code
+- Add more samples including conditional request, setReadOnly, clearReadOnly, listSettingRevisions, etc.
+This package's 
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
+and 
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 
 ## Version 1.0.0-preview.5 (2019-10-11)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).

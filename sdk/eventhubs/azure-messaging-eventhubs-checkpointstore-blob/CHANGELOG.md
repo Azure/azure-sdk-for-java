@@ -1,8 +1,5 @@
 # Release History
 
-## 1.0.0 (2019-10-31)
-- This release consists of API improvements, performance enhancements, samples and updated documentation.
-
 ## 1.0.0-preview.2 (2019-10-08)
 - Added modules support for JDK 9+.
 

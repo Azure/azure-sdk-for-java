@@ -1,6 +1,4 @@
 # Release History
-## 1.0.0 (2019-10-31)
-- This release consists of API improvements, performance enhancements, samples and updated documentation.
 
 ## 1.0.0-preview.3 (2019-09-09)
 **New features**
