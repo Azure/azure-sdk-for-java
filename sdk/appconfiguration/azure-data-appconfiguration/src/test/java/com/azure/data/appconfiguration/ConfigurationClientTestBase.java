@@ -157,9 +157,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setConfigurationSettingIfEtag();
+    public abstract void setConfigurationSettingIfETag();
 
-    void setConfigurationSettingIfEtagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
+    void setConfigurationSettingIfETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
         String label = getLabel();
 

@@ -139,8 +139,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * etag. If the set etag doesn't match anything the update won't happen, this will result in a 412. This will
      * prevent set from doing an add as well.
      */
-    public void setConfigurationSettingIfEtag() {
-        setConfigurationSettingIfEtagRunner((initial, update) -> {
+    public void setConfigurationSettingIfETag() {
+        setConfigurationSettingIfETagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial.setETag("badEtag"), true))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));

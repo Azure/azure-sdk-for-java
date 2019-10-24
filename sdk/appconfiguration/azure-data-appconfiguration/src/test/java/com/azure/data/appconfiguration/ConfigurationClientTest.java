@@ -118,14 +118,14 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that when an etag is passed to set it will only set if the current representation of the setting has the
-     * etag. If the set etag doesn't match anything the update won't happen, this will result in a 412. This will
+     * Tests that when an ETag is passed to set it will only set if the current representation of the setting has the
+     * ETag. If the set ETag doesn't match anything the update won't happen, this will result in a 412. This will
      * prevent set from doing an add as well.
      */
-    public void setConfigurationSettingIfEtag() {
-        setConfigurationSettingIfEtagRunner((initial, update) -> {
-            // This etag is not the correct format. It is not the correct hash that the service is expecting.
-            assertRestException(() -> client.setConfigurationSettingWithResponse(initial.setETag("badEtag"), true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+    public void setConfigurationSettingIfETag() {
+        setConfigurationSettingIfETagRunner((initial, update) -> {
+            // This ETag is not the correct format. It is not the correct hash that the service is expecting.
+            assertRestException(() -> client.setConfigurationSettingWithResponse(initial.setETag("badETag"), true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
 
             final String etag = client.addConfigurationSettingWithResponse(initial, Context.NONE).getValue().getETag();
 
@@ -217,8 +217,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that when an etag is passed to delete it will only delete if the current representation of the setting has the etag.
-     * If the delete etag doesn't match anything the delete won't happen, this will result in a 412.
+     * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has the ETag.
+     * If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
      */
     public void deleteConfigurationSettingWithETag() {
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
