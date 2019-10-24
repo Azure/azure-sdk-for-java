@@ -166,7 +166,7 @@ public final class SecretClientBuilder {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "The Azure Key Vault url is malformed."));
+                "The Azure Key Vault url is malformed.", e));
         }
         return this;
     }
