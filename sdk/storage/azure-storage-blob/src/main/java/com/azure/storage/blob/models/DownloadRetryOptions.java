@@ -15,7 +15,7 @@ import java.util.Locale;
 public final class DownloadRetryOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 
-    private final ClientLogger logger = new ClientLogger(com.azure.storage.blob.models.DownloadRetryOptions.class);
+    private final ClientLogger logger = new ClientLogger(DownloadRetryOptions.class);
 
     /*
     We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
