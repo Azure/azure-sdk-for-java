@@ -23,6 +23,8 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
+import com.azure.storage.queue.implementation.util.BuilderHelper;
+import com.azure.storage.queue.implementation.util.QueueHeadersAndQueryParameters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -81,7 +83,7 @@ public final class QueueServiceClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new QueueLogOptions();
+    private HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -93,6 +95,7 @@ public final class QueueServiceClientBuilder {
      * and {@link QueueServiceAsyncClient QueueServiceAsyncClients}.
      */
     public QueueServiceClientBuilder() {
+        logOptions = BuilderHelper.getDefaultQueueLogOptions();
     }
 
     /**
@@ -277,13 +280,13 @@ public final class QueueServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link QueueLogOptions} for service requests.
+     * Sets the {@link HttpLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated QueueServiceClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public QueueServiceClientBuilder httpLogOptions(QueueLogOptions logOptions) {
+    public QueueServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

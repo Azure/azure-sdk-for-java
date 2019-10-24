@@ -4,11 +4,11 @@
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.BlobLogOptions;
 import java.util.StringJoiner;
 
 /**
@@ -29,7 +29,7 @@ public class BlobPartitionManagerSample {
             .connectionString("")
             .containerName("")
             .sasToken(sasToken)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);

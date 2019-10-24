@@ -28,7 +28,7 @@ class CPKTest extends APISpec {
             .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
             .httpClient(getHttpClient())
-            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(primaryCredential)
 
         if (testMode == TestMode.RECORD && recordLiveMode) {

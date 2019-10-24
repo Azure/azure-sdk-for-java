@@ -22,9 +22,9 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobLogOptions;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -86,7 +86,7 @@ public final class EncryptedBlobClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new BlobLogOptions();
+    private HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -101,6 +101,7 @@ public final class EncryptedBlobClientBuilder {
      * Creates a new instance of the EncryptedBlobClientBuilder
      */
     public EncryptedBlobClientBuilder() {
+        logOptions = BuilderHelper.getDefaultBlobLogOptions();
     }
 
     /**
@@ -416,13 +417,13 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Sets the {@link BlobLogOptions} for service requests.
+     * Sets the {@link HttpLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public EncryptedBlobClientBuilder httpLogOptions(BlobLogOptions logOptions) {
+    public EncryptedBlobClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

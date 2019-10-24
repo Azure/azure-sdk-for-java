@@ -23,6 +23,7 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 
+import com.azure.storage.file.implementation.util.BuilderHelper;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class ShareClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new FileLogOptions();
+    private HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -95,6 +96,7 @@ public class ShareClientBuilder {
      * ShareAsyncClient ShareAsyncClients}.
      */
     public ShareClientBuilder() {
+        logOptions = BuilderHelper.getDefaultFileLogOptions();
     }
 
     /**
@@ -310,13 +312,13 @@ public class ShareClientBuilder {
     }
 
     /**
-     * Sets the {@link FileLogOptions} for service requests.
+     * Sets the {@link HttpLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated ShareClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public ShareClientBuilder httpLogOptions(FileLogOptions logOptions) {
+    public ShareClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

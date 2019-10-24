@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file;
+package com.azure.storage.file.implementation.util;
 
-import com.azure.core.http.policy.HttpLogOptions;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * The log configuration for Storage File.
+ * Storage File whitelist headers and parameters for log options.
  */
-public final class FileLogOptions extends HttpLogOptions {
+public class FileHeadersAndQueryParameters {
     private static final Set<String> FILE_HEADERS = Stream.of(
         "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
         "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
@@ -29,34 +28,26 @@ public final class FileLogOptions extends HttpLogOptions {
         "x-ms-write")
         .collect(Collectors.toCollection(HashSet::new));
 
+    /**
+     * Gets the Storage File whitelist headers for log.
+     *
+     * @return the list of Storage File whitelist headers.
+     */
+    public static Set<String> getFileHeaders() {
+        return FILE_HEADERS;
+    }
+
     private static final Set<String> FILE_QUERY_PARAMETERS = Stream.of(
         "comp", "maxresults", "rscc", "rscd", "rsce", "rscl", "rsct", "se", "si", "sip", "sp", "spr", "sr", "srt",
         "ss", "st", "sv", "copyid", "restype")
         .collect(Collectors.toCollection(HashSet::new));
 
     /**
-     * Constructor for combining core and Storage File allowed whitelist headers and queries.
-     */
-    public FileLogOptions() {
-        super.getAllowedHeaderNames().addAll(FILE_HEADERS);
-        super.getAllowedQueryParamNames().addAll(FILE_QUERY_PARAMETERS);
-    }
-
-    /**
-     * Gets the whitelisted headers that should be logged.
+     * Gets the Storage File whitelist query parameters for log.
      *
-     * @return The list of whitelisted headers of Storage File.
+     * @return the list of Storage File whitelist query parameters.
      */
-    public Set<String> getFileHeaders() {
-        return FILE_HEADERS;
-    }
-
-    /**
-     * Gets the whitelisted query parameters.
-     *
-     * @return The list of whitelisted query parameters of Storage File.
-     */
-    public Set<String> getFileQueryParameters() {
+    public static Set<String> getFileQueryParameters() {
         return FILE_QUERY_PARAMETERS;
     }
 }

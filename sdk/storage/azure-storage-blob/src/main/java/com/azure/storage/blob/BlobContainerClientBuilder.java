@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.BlobHeadersAndQueryParameters;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -62,7 +63,7 @@ public final class BlobContainerClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new BlobLogOptions();
+    private com.azure.core.http.policy.HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -74,6 +75,7 @@ public final class BlobContainerClientBuilder {
      * and {@link BlobContainerAsyncClient ContainerAsyncClients}.
      */
     public BlobContainerClientBuilder() {
+        logOptions = BuilderHelper.getDefaultBlobLogOptions();
     }
 
     /**
@@ -295,13 +297,13 @@ public final class BlobContainerClientBuilder {
     }
 
     /**
-     * Sets the {@link BlobLogOptions} for service requests.
+     * Sets the {@link HttpLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public BlobContainerClientBuilder httpLogOptions(BlobLogOptions logOptions) {
+    public BlobContainerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

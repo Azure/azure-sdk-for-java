@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.http.policy.HttpLogOptions;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * The log configuration for Storage Blob.
+ * Storage Blob whitelist headers and parameters for log options.
  */
-public final class BlobLogOptions extends HttpLogOptions {
+public class BlobHeadersAndQueryParameters {
     private static final Set<String> BLOB_HEADERS = Stream.of(
         "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
         "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
@@ -39,6 +38,15 @@ public final class BlobLogOptions extends HttpLogOptions {
         "x-ms-encryption-key-sha256")
         .collect(Collectors.toCollection(HashSet::new));
 
+    /**
+     * Gets the Storage Blob whitelist headers for log.
+     *
+     * @return the list of Storage Blob whitelist headers.
+     */
+    public static Set<String> getBlobHeaders() {
+        return BLOB_HEADERS;
+    }
+
     private static final Set<String> BLOB_QUERY_PARAMETERS = Stream.of(
         "comp", "maxresults", "rscc", "rscd", "rsce", "rscl", "rsct", "se", "si", "sip", "sp", "spr", "sr", "srt",
         "ss", "st", "sv", "include", "marker", "prefix", "copyid", "restype", "blockid", "blocklisttype",
@@ -46,28 +54,12 @@ public final class BlobLogOptions extends HttpLogOptions {
         .collect(Collectors.toCollection(HashSet::new));
 
     /**
-     * Constructor for combining core and Storage Blob allowed whitelist headers and queries.
-     */
-    public BlobLogOptions() {
-        super.getAllowedHeaderNames().addAll(BLOB_HEADERS);
-        super.getAllowedQueryParamNames().addAll(BLOB_QUERY_PARAMETERS);
-    }
-
-    /**
-     * Gets the whitelisted headers that should be logged.
+     * Gets the Storage Blob whitelist query parameters for log.
      *
-     * @return The list of whitelisted headers of Storage Blob.
+     * @return the list of Storage Blob whitelist query parameters.
      */
-    public Set<String> getBlobHeaders() {
-        return BLOB_HEADERS;
-    }
-
-    /**
-     * Gets the whitelisted query parameters.
-     *
-     * @return The list of whitelisted query parameters of Storage Blob.
-     */
-    public Set<String> getBlobQueryParameters() {
+    public static Set<String> getBlobQueryParameters() {
         return BLOB_QUERY_PARAMETERS;
     }
+
 }

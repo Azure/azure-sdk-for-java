@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue;
+package com.azure.storage.queue.implementation.util;
 
-import com.azure.core.http.policy.HttpLogOptions;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * The log configuration for Storage Queue.
+ * Storage Queue whitelist headers and parameters for log options.
  */
-public final class QueueLogOptions extends HttpLogOptions {
+public class QueueHeadersAndQueryParameters {
     private static final Set<String> QUEUE_HEADERS = Stream.of(
         "Access-Control-Allow-Origin", "Cache-Control", "Content-Length", "Content-Type", "Date", "Request-Id",
         "traceparent", "Transfer-Encoding", "User-Agent", "x-ms-client-request-id", "x-ms-date", "x-ms-error-code",
@@ -20,6 +19,14 @@ public final class QueueLogOptions extends HttpLogOptions {
         "x-ms-popreceipt", "x-ms-time-next-visible")
         .collect(Collectors.toCollection(HashSet::new));
 
+    /**
+     * Gets the Storage Queue whitelist headers for log.
+     *
+     * @return the list of Storage Queue whitelist headers.
+     */
+    public static Set<String> getQueueHeaders() {
+        return QUEUE_HEADERS;
+    }
 
     private static final Set<String> QUEUE_QUERY_PARAMETERS = Stream.of(
         "comp", "maxresults", "rscc", "rscd", "rsce", "rscl", "rsct", "se", "si", "sip", "sp", "spr", "sr", "srt",
@@ -28,28 +35,11 @@ public final class QueueLogOptions extends HttpLogOptions {
         .collect(Collectors.toCollection(HashSet::new));
 
     /**
-     * Constructor for combining core and Storage Queue allowed whitelist headers and queries.
-     */
-    public QueueLogOptions() {
-        super.getAllowedHeaderNames().addAll(QUEUE_HEADERS);
-        super.getAllowedQueryParamNames().addAll(QUEUE_QUERY_PARAMETERS);
-    }
-
-    /**
-     * Gets the whitelisted headers that should be logged.
+     * Gets the Storage Queue whitelist query parameters for log.
      *
-     * @return The list of whitelisted headers of Storage Queue.
+     * @return the list of Storage Queue whitelist query parameters.
      */
-    public Set<String> getQueueHeaders() {
-        return QUEUE_HEADERS;
-    }
-
-    /**
-     * Gets the whitelisted query parameters.
-     *
-     * @return The list of whitelisted query parameters of Storage Queue.
-     */
-    public Set<String> getQueueQueryParameters() {
+    public static Set<String> getQueueQueryParameters() {
         return QUEUE_QUERY_PARAMETERS;
     }
 }

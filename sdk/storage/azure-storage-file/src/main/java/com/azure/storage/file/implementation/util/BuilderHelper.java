@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file;
+package com.azure.storage.file.implementation.util;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -21,6 +21,7 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 
+import com.azure.storage.file.FileServiceVersion;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.regex.Pattern;
 /**
  * This class provides helper methods for common builder patterns.
  */
-final class BuilderHelper {
+public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-file";
     // {x-version-update-start;com.azure:azure-storage-file;current}
     private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
@@ -51,7 +52,7 @@ final class BuilderHelper {
      * @param serviceVersion {@link FileServiceVersion} of the service to be used when making requests.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
+    public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, FileServiceVersion serviceVersion) {
 
@@ -86,6 +87,16 @@ final class BuilderHelper {
             .build();
     }
 
+    /**
+     * Gets the default Storage whitelist log headers and query parameters.
+     */
+    public static HttpLogOptions getDefaultFileLogOptions(){
+        HttpLogOptions defaultOptions = new HttpLogOptions();
+        FileHeadersAndQueryParameters.getFileHeaders().forEach(defaultOptions::addAllowedHeaderName);
+        FileHeadersAndQueryParameters.getFileQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
+        return defaultOptions;
+    }
+
     /*
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
@@ -117,7 +128,7 @@ final class BuilderHelper {
      * @param url Azure Storage URL.
      * @return the account name in the endpoint, or null if the URL doesn't match the expected formats.
      */
-    static String getAccountName(URL url) {
+    public static String getAccountName(URL url) {
         if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
             // URL is using an IP pattern of http://127.0.0.1:10000/accountName or http://localhost:10000/accountName
             String path = url.getPath();

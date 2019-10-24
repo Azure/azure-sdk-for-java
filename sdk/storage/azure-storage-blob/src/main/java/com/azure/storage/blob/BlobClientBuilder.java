@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
@@ -64,7 +65,7 @@ public final class BlobClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private BlobLogOptions logOptions = new BlobLogOptions();
+    private HttpLogOptions logOptions = new HttpLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -76,6 +77,7 @@ public final class BlobClientBuilder {
      * BlobAsyncClient BlobAsyncClients}.
      */
     public BlobClientBuilder() {
+        logOptions = BuilderHelper.getDefaultBlobLogOptions();
     }
 
     /**
@@ -341,13 +343,13 @@ public final class BlobClientBuilder {
     }
 
     /**
-     * Sets the {@link BlobLogOptions} for service requests.
+     * Sets the {@link HttpLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated BlobClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public BlobClientBuilder httpLogOptions(BlobLogOptions logOptions) {
+    public BlobClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

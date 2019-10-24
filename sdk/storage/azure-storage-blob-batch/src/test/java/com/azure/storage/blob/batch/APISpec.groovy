@@ -16,10 +16,10 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.BlobLogOptions
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
@@ -175,7 +175,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
-            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (testMode == TestMode.RECORD) {
             if (recordLiveMode) {
@@ -222,7 +222,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)

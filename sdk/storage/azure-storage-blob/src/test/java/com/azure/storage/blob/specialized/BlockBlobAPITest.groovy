@@ -15,7 +15,7 @@ import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
-import com.azure.storage.blob.BlobLogOptions
+
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
@@ -1188,7 +1188,7 @@ class BlockBlobAPITest extends APISpec {
             .credential(primaryCredential)
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
-            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
