@@ -1,12 +1,18 @@
 # Release History
 
-## Version 1.0.0-preview.4 (2019-10-25)
-For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
+## Version 1.0.0-preview.4 (2019-10-31)
 
+For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 Version 1.0.0-preview.4 added tracing support for AMQP and HTTP client libraries across different languages and platforms as possible.
+- Fixed Service loader provider configuration file to correctly trace HTTP requests.
+- Moved package under azure-core directory.
+- Removed client libraries dependencies from the package.
+- Moved ProcessKind enum to public tracing folder under azure-core.
+- Updated samples to be markdown files.
 See this package's
   [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-tracing-opencensus/README.md) and
   [samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-tracing-opencensus/src/samples) demonstrate the new API.
+
 
 ## Version 1.0.0-preview.3 (2019-10-07)
 For details on the Azure SDK for Java (October 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
