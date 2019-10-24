@@ -124,7 +124,7 @@ Licensed under the MIT License.
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <configuration>
-          <mainClass>com.azure.data.cosmos.benchmark.Main</mainClass>
+          <mainClass>com.azure.cosmos.benchmark.Main</mainClass>
         </configuration>
       </plugin>
 
@@ -137,7 +137,7 @@ Licensed under the MIT License.
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>com.azure.data.cosmos.benchmark.Main</mainClass>
+              <mainClass>com.azure.cosmos.benchmark.Main</mainClass>
             </manifest>
           </archive>
         </configuration>

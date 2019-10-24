@@ -26,7 +26,7 @@
 See the complete code for the above sample in [`HelloWorldDemo.java`](./microsoft-azure-cosmos-examples/src/main/java/com/azure/data/cosmos/examples/HelloWorldDemo.java)
 
 ```java
-import com.azure.data.cosmos.*;
+import com.azure.cosmos.*;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
