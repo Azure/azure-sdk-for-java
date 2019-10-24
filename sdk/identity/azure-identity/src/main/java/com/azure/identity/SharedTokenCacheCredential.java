@@ -17,7 +17,9 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.time.ZoneOffset;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -71,33 +73,25 @@ public class SharedTokenCacheCredential implements TokenCredential {
         // find if the Public Client app with the requested username exists
         return Mono.fromFuture(pubClient.getAccounts())
             .flatMap(set -> {
-                IAccount requestedAccount = null;
+                IAccount requestedAccount;
+                Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account
 
-                if (username != null) {
-                    for (IAccount cached : set) {
-                        if (username.equals(cached.username())) {
-                            requestedAccount = cached;
-                            break;
-                        }
-                    }
-                } else {
-                    for (IAccount cached : set) {
-                        if (requestedAccount != null) {
-                            if (!cached.username().equals(requestedAccount.username())
-                                    || !cached.environment().equals(requestedAccount.environment())
-                                    || !cached.homeAccountId().equals(requestedAccount.homeAccountId())) {
-                                return Mono.error(new RuntimeException("Multiple accounts found in the token cache. "
-                                    + "Please specify the username of the account in the AZURE_USERNAME environment "
-                                    + "variable"));
-                            }
-                        } else {
-                            requestedAccount = cached;
+                for (IAccount cached : set) {
+                    if (username == null || username.equals(cached.username())) {
+                        if (!accounts.containsKey(cached.homeAccountId())) {
+                            accounts.put(cached.homeAccountId(), cached);
                         }
                     }
                 }
 
-                if (requestedAccount == null) {
+                if (accounts.size() == 0) {
                     return Mono.error(new RuntimeException("Requested account was not found"));
+                } else if (accounts.size() > 1) {
+                    return Mono.error(new RuntimeException("Multiple accounts found in the token cache. "
+                            + "Please specify the username of the account in the AZURE_USERNAME environment "
+                            + "variable"));
+                } else {
+                    requestedAccount = accounts.values().iterator().next();
                 }
 
                 // if it does, then request the token
