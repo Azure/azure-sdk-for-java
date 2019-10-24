@@ -14,11 +14,15 @@ import java.util.List;
 
 /**
  * This example shows how to work with suggestions and search results
+ *
+ * This sample is based on the hotels-sample index available to install from the portal.
+ * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
  */
 public class SearchSuggestionExample {
-    /*
-      From the Azure portal, get your Azure Cognitive Search service URL and API key,
-      and set the values of these environment variables:
+
+    /**
+     * From the Azure portal, get your Azure Cognitive Search service URL and API key,
+     * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");

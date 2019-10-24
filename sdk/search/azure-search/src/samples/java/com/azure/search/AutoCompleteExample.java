@@ -12,20 +12,21 @@ import com.azure.search.models.AutocompleteOptions;
 
 import java.util.Iterator;
 
+/**
+ * This sample is based on the hotels-sample index available to install from the portal.
+ * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
+ */
 public class AutoCompleteExample {
 
-    /*
-      From the Azure portal, get your Azure Cognitive Search service URL and API key,
-      and set the values of these environment variables:
+    /**
+     * From the Azure portal, get your Azure Cognitive Search service URL and API key,
+     * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
 
     public static void main(String[] args) {
-        /*
-            This sample is based on the hotels-sample index available to install from the portal.
-            See [instructions here](https://docs.microsoft.com/en-us/azure/search/search-get-started-portal)
-         */
+
         SearchIndexClient searchClient = new SearchIndexClientBuilder()
             .serviceEndpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
