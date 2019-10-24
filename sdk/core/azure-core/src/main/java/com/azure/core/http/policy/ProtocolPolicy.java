@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 
 /**
- * The Pipeline policy that adds a given protocol to each HttpRequest.
+ * The pipeline policy that adds a given protocol to each HttpRequest.
  */
 public class ProtocolPolicy implements HttpPipelinePolicy {
     private final String protocol;
@@ -21,7 +21,7 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
     private final ClientLogger logger = new ClientLogger(ProtocolPolicy.class);
 
     /**
-     * Create a new ProtocolPolicy.
+     * Creates a new ProtocolPolicy.
      *
      * @param protocol The protocol to set.
      * @param overwrite Whether or not to overwrite a HttpRequest's protocol if it already has one.

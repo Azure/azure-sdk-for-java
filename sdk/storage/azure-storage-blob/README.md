@@ -78,7 +78,7 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
 To create a Storage Account you can use the [Azure Portal][storage_account_create_portal] or [Azure CLI][storage_account_create_cli].
 
 ```bash
-az stoage account create \
+az storage account create \
     --resource-group <resource-group-name> \
     --name <storage-account-name> \
     --location <location>
@@ -91,7 +91,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 #### Get credentials
 
-##### **SAS Token**
+##### SAS Token
 
 a. Use the Azure CLI snippet below to get the SAS token from the Storage Account.
 
@@ -320,8 +320,6 @@ This project welcomes contributions and suggestions. Most contributions require 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2FAzure.Storage.Blobs%2FREADME.png)
 
 <!-- LINKS -->
 [source]: src

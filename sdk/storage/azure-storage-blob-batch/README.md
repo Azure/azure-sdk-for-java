@@ -77,7 +77,7 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
 To create a Storage Account you can use the Azure Portal or [Azure CLI][storage_account_create_cli].
 
 ```Powershell
-az stoage account create \
+az storage account create \
     --resource-group <resource-group-name> \
     --name <storage-account-name> \
     --location <location>

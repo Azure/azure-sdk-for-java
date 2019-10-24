@@ -12,7 +12,7 @@ messages asynchronously on queue client with tracing instrumentation for Java SD
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.0.0-preview.4</version>
+  <version>12.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

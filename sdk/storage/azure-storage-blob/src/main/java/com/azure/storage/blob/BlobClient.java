@@ -14,6 +14,7 @@ import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
@@ -98,7 +99,7 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob.
+     * Creates a new block blob. By default this method will not overwrite an existing blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -108,6 +109,24 @@ public class BlobClient extends BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) {
+        uploadFromFile(filePath, false);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean}
+     *
+     * @param filePath Path of the file to upload
+     * @param overwrite Whether or not to overwrite, should the blob already exist
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void uploadFromFile(String filePath, boolean overwrite) {
+        if (!overwrite && exists()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+        }
         uploadFromFile(filePath, null, null, null, null, null, null);
     }
 
