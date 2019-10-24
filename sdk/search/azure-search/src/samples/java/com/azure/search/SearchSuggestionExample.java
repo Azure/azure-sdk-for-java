@@ -4,8 +4,11 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
+import com.azure.search.common.SearchPagedResponse;
+import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 
@@ -45,9 +48,9 @@ public class SearchSuggestionExample {
             .setFilter("Category eq 'Luxury'")
             .setTop(1);
 
-        PagedIterable<SuggestResult> suggestResult =
+        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult =
             searchClient.suggest("hotel", "sg", suggestOptions, null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+        Iterator<SuggestPagedResponse> iterator = suggestResult.iterableByPage().iterator();
 
         List<SuggestResult> response = iterator.next().getValue();
         System.out.println("Received results with highlight:");
@@ -65,9 +68,9 @@ public class SearchSuggestionExample {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
 
-        PagedIterable<SuggestResult> suggestResult =
+        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult =
             searchClient.suggest("hitel", "sg", suggestOptions, null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+        Iterator<SuggestPagedResponse> iterator = suggestResult.iterableByPage().iterator();
 
         List<SuggestResult> response = iterator.next().getValue();
         System.out.println("Received results with fuzzy option:");

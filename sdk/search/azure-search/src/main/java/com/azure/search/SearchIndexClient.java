@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.common.SearchPagedResponse;
@@ -188,7 +189,7 @@ public class SearchIndexClient {
      *
      * @return A {@link PagedIterable} of SearchResults
      */
-    public PagedIterable<SearchResult> search() {
+    public PagedIterableBase<SearchResult, SearchPagedResponse > search() {
         return this.search(null,
             null,
             null,
@@ -204,7 +205,7 @@ public class SearchIndexClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return A {@link PagedIterable} of SearchResults
      */
-    public PagedIterable<SearchResult> search(String searchText,
+    public PagedIterableBase<SearchResult, SearchPagedResponse > search(String searchText,
                                               SearchOptions searchOptions,
                                               RequestOptions requestOptions) {
         return this.search(searchText,
@@ -223,7 +224,7 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return A {@link PagedIterable} of SearchResults
      */
-    public PagedIterable<SearchResult> search(String searchText,
+    public PagedIterableBase<SearchResult, SearchPagedResponse > search(String searchText,
                                               SearchOptions searchOptions,
                                               RequestOptions requestOptions,
                                               Context context) {
@@ -232,7 +233,7 @@ public class SearchIndexClient {
             requestOptions,
             context);
 
-        return new PagedIterable<>(result);
+        return new PagedIterableBase<>(result);
     }
 
     /**
@@ -292,7 +293,7 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @return suggests result
      */
-    public PagedIterable<SuggestResult> suggest(String searchText, String suggesterName) {
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse > suggest(String searchText, String suggesterName) {
         return this.suggest(searchText,
             suggesterName,
             null,
@@ -310,7 +311,7 @@ public class SearchIndexClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return suggests results
      */
-    public PagedIterable<SuggestResult> suggest(String searchText,
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse > suggest(String searchText,
                                                 String suggesterName,
                                                 SuggestOptions suggestOptions,
                                                 RequestOptions requestOptions) {
@@ -332,7 +333,7 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return suggests results
      */
-    public PagedIterable<SuggestResult> suggest(String searchText,
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse > suggest(String searchText,
                                                 String suggesterName,
                                                 SuggestOptions suggestOptions,
                                                 RequestOptions requestOptions,
@@ -342,7 +343,7 @@ public class SearchIndexClient {
             suggestOptions,
             requestOptions,
             context);
-        return new PagedIterable<>(result);
+        return new PagedIterableBase<>(result);
     }
 
     /**
