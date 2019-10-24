@@ -103,7 +103,7 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());
 
         // Key is being deleted on server.
-        while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+        while (!deletedKeyPoller.isComplete()) {
             System.out.println(deletedKeyPoller.getStatus().toString());
             Thread.sleep(2000);
         }

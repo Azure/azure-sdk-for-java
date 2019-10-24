@@ -129,7 +129,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 
 SecretClient client = new SecretClientBuilder()
-        .endpoint(<your-vault-url>)
+        .vaultEndpoint(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
@@ -167,7 +167,7 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
 SecretClient secretClient = new SecretClientBuilder()
-        .endpoint(<your-vault-url>)
+        .vaultEndpoint(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
@@ -199,8 +199,25 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.
 
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
-DeletedSecret deletedSecret = client.deleteSecret("secret_name");
-System.out.printf("Deleted Secret's deletion date %s", deletedSecret.getDeletedDate().toString());
+Poller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
+
+while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+    && !deletedSecretPoller.isComplete()) {
+    System.out.println(deletedSecretPoller.getStatus().toString());
+    Thread.sleep(2000);
+}
+
+// Deleted Secret is accessible as soon as polling begins
+DeletedSecret deletedSecret = deletedSecretPoller.getLastPollResponse().getValue();
+System.out.println("Deleted Date  %s" + deletedSecret.getDeletedOn().toString());
+System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
+
+// Ensure Secret gets completely deleted on the server.
+while (!deletedSecretPoller.isComplete()) {
+    System.out.println("Delete Status" + deletedSecretPoller.getStatus().toString());
+    Thread.sleep(2000);
+}
+System.out.println("Delete Status " + deletedSecretPoller.getStatus().toString());
 ```
 
 ### List Secrets
@@ -208,8 +225,8 @@ System.out.printf("Deleted Secret's deletion date %s", deletedSecret.getDeletedD
 List the secrets in the key vault by calling `listSecrets`.
 ```Java
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
-for (SecretProperties secretProperties : client.listSecrets()) {
-    Secret secretWithValue  = client.getSecret(secretProperties);
+for (SecretProperties secretProperties : client.listPropertiesOfSecrets()) {
+    Secret secretWithValue  = client.getSecret(secretProperties.getName(), secretProperties.getVersion());
     System.out.printf("Received secret with name %s and value %s \n", secretWithValue.getName(), secretWithValue.getValue());
 }
 ```
@@ -234,7 +251,7 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
 SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-        .endpoint(<your-vault-url>)
+        .vaultEndpoint(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildAsyncClient();
 
@@ -267,8 +284,13 @@ secretAsyncClient.getSecret("secretName").subscribe(secret -> {
 
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
-secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecret ->
-   System.out.printf("Deleted Secret's deletion time %s \n", deletedSecret.getDeletedDate().toString()));
+secretAsyncClient.beginDeleteSecret("secretName")
+           .getObserver()
+           .subscribe(pollResponse -> {
+               System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+               System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
+               System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
+           });
 ```
 
 ### List Secrets Asynchronously
@@ -276,7 +298,7 @@ secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecret ->
 List the secrets in the key vault by calling `listSecrets`.
 ```Java
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
-secretAsyncClient.listSecrets()
+secretAsyncClient.listPropertiesOfSecrets()
   .flatMap(secretAsyncClient::getSecret).subscribe(secret ->
     System.out.printf("Secret with name %s , value %s \n", secret.getName(), secret.getValue()));
 ```

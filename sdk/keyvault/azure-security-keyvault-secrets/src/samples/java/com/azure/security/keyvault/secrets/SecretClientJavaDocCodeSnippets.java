@@ -151,7 +151,7 @@ public final class SecretClientJavaDocCodeSnippets {
         System.out.println("Deleted Date  %s" + deletedSecret.getDeletedOn().toString());
         System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
 
-        // Key is being deleted on server.
+        // Secret is being deleted on server.
         while (!deletedSecretPoller.isComplete()) {
             System.out.println(deletedSecretPoller.getStatus().toString());
             Thread.sleep(2000);

@@ -5,6 +5,8 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -129,23 +131,37 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that an existing key can be deleted.
      */
     public void deleteKey() {
-//        deleteKeyRunner((keyToDelete) -> {
-//            assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
-//            DeletedKey deletedKey = client.beginDeleteKey(keyToDelete.getName());
-//            pollOnKeyDeletion(keyToDelete.getName());
-//            assertNotNull(deletedKey.getDeletedOn());
-//            assertNotNull(deletedKey.getRecoveryId());
-//            assertNotNull(deletedKey.getScheduledPurgeDate());
-//            assertEquals(keyToDelete.getName(), deletedKey.getName());
-//            client.purgeDeletedKey(keyToDelete.getName());
-//            pollOnKeyPurge(keyToDelete.getName());
-//        });
+        deleteKeyRunner((keyToDelete) -> {
+            assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
+
+            Poller<DeletedKey, Void> deletedKeyPoller = client.beginDeleteKey(keyToDelete.getName());
+
+            while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+                && !deletedKeyPoller.isComplete()) {
+                sleepInRecordMode(2000);
+            }
+
+            DeletedKey deletedKey = deletedKeyPoller.getLastPollResponse().getValue();
+
+            // Key is being deleted on server.
+            while (!deletedKeyPoller.isComplete()) {
+                sleepInRecordMode(2000);
+            }
+
+            assertNotNull(deletedKey.getDeletedOn());
+            assertNotNull(deletedKey.getRecoveryId());
+            assertNotNull(deletedKey.getScheduledPurgeDate());
+            assertEquals(keyToDelete.getName(), deletedKey.getName());
+            client.purgeDeletedKey(keyToDelete.getName());
+            pollOnKeyPurge(keyToDelete.getName());
+        });
     }
 
     public void deleteKeyNotFound() {
-     //   assertRestException(() -> client.beginDeleteKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        Poller<DeletedKey, Void> deletedKeyPoller = client.beginDeleteKey("non-existing");
+        while (!deletedKeyPoller.isComplete()) { sleepInRecordMode(1000); }
+        assertEquals(deletedKeyPoller.getLastPollResponse().getStatus(), PollResponse.OperationStatus.FAILED);
     }
-
 
     /**
      * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete enabled vault.
@@ -159,22 +175,29 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that a deleted key can be recovered on a soft-delete enabled vault.
      */
     public void recoverDeletedKey() {
-//        recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
-//            assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
-//            assertNotNull(client.beginDeleteKey(keyToDeleteAndRecover.getName()));
-//            pollOnKeyDeletion(keyToDeleteAndRecover.getName());
-//            KeyVaultKey recoveredKey = client.beginRecoverDeletedKey(keyToDeleteAndRecover.getName());
-//            assertEquals(keyToDeleteAndRecover.getName(), recoveredKey.getName());
-//            assertEquals(keyToDeleteAndRecover.getNotBefore(), recoveredKey.getProperties().getNotBefore());
-//            assertEquals(keyToDeleteAndRecover.getExpiresOn(), recoveredKey.getProperties().getExpiresOn());
-//        });
+        recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
+            assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
+            Poller<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndRecover.getName());
+            while (!poller.isComplete()) { sleepInRecordMode(1000); }
+            assertNotNull(poller.getLastPollResponse().getValue());
+            Poller<KeyVaultKey, Void> recoverPoller = client.beginRecoverDeletedKey(keyToDeleteAndRecover.getName());
+            while (recoverPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+                && !recoverPoller.isComplete()) { sleepInRecordMode(1000); }
+            KeyVaultKey recoveredKey = recoverPoller.getLastPollResponse().getValue();
+            while (!recoverPoller.isComplete()) { sleepInRecordMode(1000); }
+            assertEquals(keyToDeleteAndRecover.getName(), recoveredKey.getName());
+            assertEquals(keyToDeleteAndRecover.getNotBefore(), recoveredKey.getProperties().getNotBefore());
+            assertEquals(keyToDeleteAndRecover.getExpiresOn(), recoveredKey.getProperties().getExpiresOn());
+        });
     }
 
     /**
      * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedKeyNotFound() {
-   //     assertRestException(() -> client.beginRecoverDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        Poller<KeyVaultKey, Void> poller = client.beginRecoverDeletedKey("non-existing");
+        while (!poller.isComplete()) { sleepInRecordMode(1000); }
+        assertEquals(poller.getStatus(), PollResponse.OperationStatus.FAILED);
     }
 
     /**
@@ -205,8 +228,8 @@ public class KeyClientTest extends KeyClientTestBase {
             byte[] backupBytes = (client.backupKey(keyToBackupAndRestore.getName()));
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
-            client.beginDeleteKey(keyToBackupAndRestore.getName());
-            pollOnKeyDeletion(keyToBackupAndRestore.getName());
+            Poller<DeletedKey, Void> poller = client.beginDeleteKey(keyToBackupAndRestore.getName());
+            while (!poller.isComplete()) { sleepInRecordMode(1000); }
             client.purgeDeletedKey(keyToBackupAndRestore.getName());
             pollOnKeyPurge(keyToBackupAndRestore.getName());
             sleepInRecordMode(60000);
@@ -253,8 +276,8 @@ public class KeyClientTest extends KeyClientTestBase {
     public void getDeletedKey() {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
             assertKeyEquals(keyToDeleteAndGet, client.createKey(keyToDeleteAndGet));
-            assertNotNull(client.beginDeleteKey(keyToDeleteAndGet.getName()));
-            pollOnKeyDeletion(keyToDeleteAndGet.getName());
+            Poller<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndGet.getName());
+            while (!poller.isComplete()) { sleepInRecordMode(1000); }
             sleepInRecordMode(30000);
             DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.getName());
             assertNotNull(deletedKey.getDeletedOn());
@@ -266,8 +289,8 @@ public class KeyClientTest extends KeyClientTestBase {
             sleepInRecordMode(10000);
         });
     }
-//
-//
+
+
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
@@ -280,8 +303,8 @@ public class KeyClientTest extends KeyClientTestBase {
             }
 
             for (CreateKeyOptions key : keysToDelete.values()) {
-                client.beginDeleteKey(key.getName());
-                pollOnKeyDeletion(key.getName());
+                Poller<DeletedKey, Void> poller = client.beginDeleteKey(key.getName());
+                while (!poller.isComplete()) { sleepInRecordMode(1000); }
             }
             sleepInRecordMode(60000);
             Iterable<DeletedKey> deletedKeys =  client.listDeletedKeys();
@@ -321,13 +344,12 @@ public class KeyClientTest extends KeyClientTestBase {
             keyVersionsOutput.forEach(keyVersionsList::add);
             assertEquals(keyVersions.size(), keyVersionsList.size());
 
-            client.beginDeleteKey(keyName);
-            pollOnKeyDeletion(keyName);
+            Poller<DeletedKey, Void> poller = client.beginDeleteKey(keyName);
+            while (!poller.isComplete()) { sleepInRecordMode(1000); }
 
             client.purgeDeletedKey(keyName);
             pollOnKeyPurge(keyName);
         });
-
     }
 
     private DeletedKey pollOnKeyDeletion(String keyName) {
