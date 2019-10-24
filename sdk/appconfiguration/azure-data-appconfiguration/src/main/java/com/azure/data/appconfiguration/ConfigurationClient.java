@@ -403,15 +403,15 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector}
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were
      * provided, the List contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector selector) {
-        return listSettings(selector, Context.NONE);
+    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
+        return listConfigurationSettings(selector, Context.NONE);
     }
 
     /**
@@ -422,7 +422,7 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context}
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -430,8 +430,8 @@ public final class ConfigurationClient {
      * provided, the {@link PagedIterable} contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector selector, Context context) {
-        return new PagedIterable<>(client.listSettings(selector, context));
+    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
+        return new PagedIterable<>(client.listConfigurationSettings(selector, context));
     }
 
     /**

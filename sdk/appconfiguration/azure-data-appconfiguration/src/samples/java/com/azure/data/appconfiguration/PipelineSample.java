@@ -48,7 +48,7 @@ class PipelineSample {
         final List<ConfigurationSetting> settings = Flux.concat(
             client.addConfigurationSetting("hello", null, "world"),
             client.setConfigurationSetting("newSetting", null, "newValue"))
-            .then(client.listSettings(new SettingSelector().setKeys("*")).collectList())
+            .then(client.listConfigurationSettings(new SettingSelector().setKeys("*")).collectList())
             .block();
 
         // Cleaning up after ourselves by deleting the values.

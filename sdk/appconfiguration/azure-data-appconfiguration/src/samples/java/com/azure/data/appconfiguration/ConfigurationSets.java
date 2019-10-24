@@ -66,7 +66,7 @@ public class ConfigurationSets {
         // services to communicate with. The sample below fetches all of the "beta" settings.
         SettingSelector selector = new SettingSelector().setLabels(BETA);
 
-        client.listSettings(selector).toStream().forEach(setting -> {
+        client.listConfigurationSettings(selector).toStream().forEach(setting -> {
             System.out.println("Key: " + setting.getKey());
             if ("application/json".equals(setting.getContentType())) {
                 try {
@@ -83,7 +83,7 @@ public class ConfigurationSets {
         // For the BETA and PRODUCTION sets, we fetch all of the settings we created in each set, and delete them.
         // Blocking so that the program does not exit before these tasks have completed.
         Flux.fromArray(new String[]{BETA, PRODUCTION})
-            .flatMap(set -> client.listSettings(new SettingSelector().setLabels(set)))
+            .flatMap(set -> client.listConfigurationSettings(new SettingSelector().setLabels(set)))
             .map(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
             .blockLast();
     }

@@ -57,7 +57,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @Override
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
-        client.listSettings(new SettingSelector().setKeys(keyPrefix + "*"))
+        client.listConfigurationSettings(new SettingSelector().setKeys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
                     Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.clearReadOnlyWithResponse(configurationSetting) : Mono.empty();
@@ -420,11 +420,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(expected, response))
             .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new SettingSelector().setKeys(key).setLabels(label)))
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label)))
             .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
             .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new SettingSelector().setKeys(key)))
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key)))
             .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
             .verifyComplete();
     }
@@ -448,7 +448,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listSettings(new SettingSelector().setKeys(key, key2)))
+            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key, key2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
@@ -477,7 +477,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listSettings(new SettingSelector().setKeys(key).setLabels(label, label2)))
+            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label, label2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
@@ -489,8 +489,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
-    public void listSettingsSelectFields() {
-        listSettingsSelectFieldsRunner((settings, selector) -> {
+    public void listConfigurationSettingsSelectFields() {
+        listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
             final List<Mono<Response<ConfigurationSetting>>> settingsBeingAdded = new ArrayList<>();
             for (ConfigurationSetting setting : settings) {
                 settingsBeingAdded.add(client.setConfigurationSettingWithResponse(setting, false));
@@ -500,7 +500,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             Flux.merge(settingsBeingAdded).blockLast();
 
             List<ConfigurationSetting> settingsReturned = new ArrayList<>();
-            StepVerifier.create(client.listSettings(selector))
+            StepVerifier.create(client.listConfigurationSettings(selector))
                 .assertNext(settingsReturned::add)
                 .assertNext(settingsReturned::add)
                 .verifyComplete();
@@ -512,7 +512,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
-    public void listSettingsAcceptDateTime() {
+    public void listConfigurationSettingsAcceptDateTime() {
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
@@ -537,7 +537,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // We want to fetch the configuration setting when we first updated its value.
         SettingSelector options = new SettingSelector().setKeys(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
-        StepVerifier.create(client.listSettings(options))
+        StepVerifier.create(client.listConfigurationSettings(options))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .verifyComplete();
     }
@@ -815,7 +815,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.
      */
-    public void listSettingsWithPagination() {
+    public void listConfigurationSettingsWithPagination() {
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
@@ -830,7 +830,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         SettingSelector filter = new SettingSelector().setKeys(keyPrefix + "-*").setLabels(labelPrefix);
 
         Flux.merge(results).blockLast();
-        StepVerifier.create(client.listSettings(filter))
+        StepVerifier.create(client.listConfigurationSettings(filter))
             .expectNextCount(numberExpected)
             .verifyComplete();
     }
@@ -863,7 +863,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     public void deleteAllSettings() {
-        client.listSettings(new SettingSelector().setKeys("*"))
+        client.listConfigurationSettings(new SettingSelector().setKeys("*"))
             .flatMap(configurationSetting -> {
                 logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
                 return client.deleteConfigurationSettingWithResponse(configurationSetting, false);

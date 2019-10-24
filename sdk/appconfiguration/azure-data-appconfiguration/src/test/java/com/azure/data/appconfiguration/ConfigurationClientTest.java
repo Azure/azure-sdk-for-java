@@ -55,7 +55,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Override
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
-        client.listSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
+        client.listConfigurationSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
             if (configurationSetting.isReadOnly()) {
                 client.clearReadOnlyWithResponse(configurationSetting, Context.NONE);
@@ -332,8 +332,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue(value).setLabel(label);
 
         assertConfigurationEquals(expected, client.setConfigurationSettingWithResponse(expected, false, Context.NONE).getValue());
-        assertConfigurationEquals(expected, client.listSettings(new SettingSelector().setKeys(key).setLabels(label)).iterator().next());
-        assertConfigurationEquals(expected, client.listSettings(new SettingSelector().setKeys(key)).iterator().next());
+        assertConfigurationEquals(expected, client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label)).iterator().next());
+        assertConfigurationEquals(expected, client.listConfigurationSettings(new SettingSelector().setKeys(key)).iterator().next());
     }
 
     /**
@@ -348,7 +348,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
             assertConfigurationEquals(setting2, client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
 
-            return client.listSettings(new SettingSelector().setKeys(key, key2));
+            return client.listConfigurationSettings(new SettingSelector().setKeys(key, key2));
         });
     }
 
@@ -365,24 +365,24 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
             assertConfigurationEquals(setting2, client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
 
-            return client.listSettings(new SettingSelector().setKeys(key).setLabels(label, label2));
+            return client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label, label2));
         });
     }
 
     /**
      * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
-    public void listSettingsSelectFields() {
-        listSettingsSelectFieldsRunner((settings, selector) -> {
+    public void listConfigurationSettingsSelectFields() {
+        listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
             settings.forEach(setting -> client.setConfigurationSettingWithResponse(setting, false, Context.NONE).getValue());
-            return client.listSettings(selector);
+            return client.listConfigurationSettings(selector);
         });
     }
 
     /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
-    public void listSettingsAcceptDateTime() {
+    public void listConfigurationSettingsAcceptDateTime() {
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
@@ -407,7 +407,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         // We want to fetch the configuration setting when we first updated its value.
         SettingSelector options = new SettingSelector().setKeys(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
-        assertConfigurationEquals(updated, (client.listSettings(options).stream().collect(Collectors.toList())).get(0));
+        assertConfigurationEquals(updated, (client.listConfigurationSettings(options).stream().collect(Collectors.toList())).get(0));
     }
 
     /**
@@ -598,14 +598,14 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    public void listSettingsWithPagination() {
+    public void listConfigurationSettingsWithPagination() {
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix), false, Context.NONE).getValue();
         }
         SettingSelector filter = new SettingSelector().setKeys(keyPrefix + "-*").setLabels(labelPrefix);
 
-        assertEquals(numberExpected, client.listSettings(filter).stream().count());
+        assertEquals(numberExpected, client.listConfigurationSettings(filter).stream().count());
     }
 
     /**
@@ -629,7 +629,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     public void deleteAllSettings() {
 
-        client.listSettings(new SettingSelector().setKeys("*")).forEach(configurationSetting -> {
+        client.listConfigurationSettings(new SettingSelector().setKeys("*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
             client.deleteConfigurationSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
         });

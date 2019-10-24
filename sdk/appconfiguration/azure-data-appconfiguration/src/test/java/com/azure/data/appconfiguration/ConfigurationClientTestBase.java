@@ -285,9 +285,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listSettingsSelectFields();
+    public abstract void listConfigurationSettingsSelectFields();
 
-    void listSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, Iterable<ConfigurationSetting>> testRunner) {
+    void listConfigurationSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, Iterable<ConfigurationSetting>> testRunner) {
         final String label = "my-first-mylabel";
         final String label2 = "my-second-mylabel";
         final int numberToCreate = 8;
@@ -321,7 +321,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listSettingsAcceptDateTime();
+    public abstract void listConfigurationSettingsAcceptDateTime();
 
     @Test
     public abstract void listRevisions();
@@ -383,7 +383,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void listRevisionsWithPagination();
 
     @Test
-    public abstract void listSettingsWithPagination();
+    public abstract void listConfigurationSettingsWithPagination();
 
     @Test
     public abstract void listRevisionsWithPaginationAndRepeatStream();

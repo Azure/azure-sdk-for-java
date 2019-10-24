@@ -594,7 +594,7 @@ public final class ConfigurationAsyncClient {
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSetting> listSettings(SettingSelector selector) {
+    public PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
         try {
             return new PagedFlux<>(() -> withContext(context -> listFirstPageSettings(selector, context)),
                 continuationToken -> withContext(context -> listNextPageSettings(context, continuationToken)));
@@ -603,7 +603,7 @@ public final class ConfigurationAsyncClient {
         }
     }
 
-    PagedFlux<ConfigurationSetting> listSettings(SettingSelector selector, Context context) {
+    PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
         return new PagedFlux<>(() -> listFirstPageSettings(selector, context),
             continuationToken -> listNextPageSettings(context, continuationToken));
     }
@@ -728,7 +728,7 @@ public final class ConfigurationAsyncClient {
             continuationToken -> listSettingRevisionsNextPage(continuationToken, context));
     }
 
-    private Flux<ConfigurationSetting> listSettings(String nextPageLink, Context context) {
+    private Flux<ConfigurationSetting> listConfigurationSettings(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
@@ -740,7 +740,7 @@ public final class ConfigurationAsyncClient {
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(
         PagedResponse<ConfigurationSetting> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listSettings);
+        return ImplUtils.extractAndFetch(page, context, this::listConfigurationSettings);
     }
 
     /*

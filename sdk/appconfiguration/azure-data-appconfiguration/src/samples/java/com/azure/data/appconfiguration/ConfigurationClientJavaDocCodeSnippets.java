@@ -260,30 +260,30 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector)}
+     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettings(SettingSelector)}
      */
-    public void listSettings() {
+    public void listConfigurationSettings() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
         SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
-        configurationClient.listSettings(settingSelector).forEach(setting -> {
+        configurationClient.listConfigurationSettings(settingSelector).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
+        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector, Context)}
+     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettings(SettingSelector, Context)}
      */
-    public void listSettingsContext() {
+    public void listConfigurationSettingsContext() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
         SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
         Context ctx = new Context(key2, value2);
-        configurationClient.listSettings(settingSelector, ctx).forEach(setting -> {
+        configurationClient.listConfigurationSettings(settingSelector, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
+        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
     }
 
     /**
