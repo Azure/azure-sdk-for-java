@@ -900,7 +900,6 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>${maven-javadoc.version}</version>
             <configuration combine.children="append">
-              <additionalparam>-Xdoclint:all -Xdoclint:-missing</additionalparam>
               <overview>${project.basedir}/readme_overview.html</overview>
             </configuration>
           </plugin>
