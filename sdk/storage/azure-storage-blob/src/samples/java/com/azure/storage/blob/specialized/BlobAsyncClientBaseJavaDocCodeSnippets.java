@@ -4,9 +4,9 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
      */
     public void beginCopyCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Duration
-        client.beginCopy(url, Duration.ofSeconds(3)).getObserver()
+        client.beginCopy(url, Duration.ofSeconds(3))
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Duration
     }
@@ -234,7 +235,6 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
         client.beginCopy(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
             modifiedAccessConditions, blobAccessConditions, Duration.ofSeconds(2))
-            .getObserver()
             .subscribe(response -> {
                 BlobCopyInfo info = response.getValue();
                 System.out.printf("CopyId: %s. Status: %s%n", info.getCopyId(), info.getCopyStatus());
@@ -253,11 +253,20 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        Poller<BlobCopyInfo, Void> poller = client.beginCopy(url, metadata, AccessTier.HOT,
+        PollerFlux<BlobCopyInfo, Void> poller = client.beginCopy(url, metadata, AccessTier.HOT,
             RehydratePriority.STANDARD, modifiedAccessConditions, blobRequestConditions, Duration.ofSeconds(2));
 
-        // Cancel a poll operation.
-        poller.cancelOperation().block();
+        poller.take(Duration.ofMinutes(30))
+                .last()
+                .flatMap(asyncPollResponse -> {
+                    if (!asyncPollResponse.getStatus().isComplete()) {
+                        return asyncPollResponse
+                                .cancelOperation()
+                                .then(Mono.error(new RuntimeException("Blob copy taking long time, " +
+                                        "operation is cancelled!")));
+                    }
+                    return Mono.just(asyncPollResponse);
+                }).block();
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
     }
 

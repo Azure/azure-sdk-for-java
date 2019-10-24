@@ -9,7 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -201,11 +201,14 @@ public class FileClient {
      * naming rules.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
-     * @return A {@link Poller} that polls the file copy operation until it has completed or has been cancelled.
+     * @return A {@link SyncPoller} to poll the progress of copy operation.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, Duration pollInterval) {
-        return fileAsyncClient.beginCopy(sourceUrl, metadata, pollInterval);
+    public SyncPoller<FileCopyInfo, Void> beginCopy(String sourceUrl,
+                                                    Map<String, String> metadata,
+                                                    Duration pollInterval) {
+        return fileAsyncClient.beginCopy(sourceUrl, metadata, pollInterval)
+                .getBlockingPoller();
     }
 
     /**

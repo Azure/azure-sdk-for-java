@@ -4,6 +4,7 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.implementation.DefaultSyncPoller;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -63,9 +64,11 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     private volatile PollResponse<T> activationResponse;
     //
     private volatile int lroStartFlag = 0;
+    @SuppressWarnings({"rawtypes"})
     private final AtomicIntegerFieldUpdater<PollerFlux> guardActivationCall =
         AtomicIntegerFieldUpdater.newUpdater(PollerFlux.class, "lroStartFlag");
     //
+    private final Supplier<Mono<T>> activationOperation;
     private final Mono<PollResponse<T>> activateAndCacheResponse;
 
     /**
@@ -99,7 +102,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
-        Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
+        this.activationOperation = Objects.requireNonNull(activationOperation,
+            "'activationOperation' cannot be null.");
         this.defaultPollInterval = defaultPollInterval;
         this.activateAndCacheResponse = deferredActivationMono(activationOperation);
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
@@ -111,8 +115,19 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     @Override
     public void subscribe(CoreSubscriber<? super AsyncPollResponse<T, U>> actual) {
         this.activateAndCacheResponse
-            .flatMapMany(lroStartResponse -> pollingLoop(lroStartResponse))
+            .flatMapMany(activationResponse -> pollingLoop(activationResponse))
             .subscribe(actual);
+    }
+
+    /**
+     * @return a synchronous blocking poller.
+     */
+    public SyncPoller<T, U> getBlockingPoller() {
+        return new DefaultSyncPoller<>(this.defaultPollInterval,
+            this.activationOperation,
+            this.pollOperation,
+            this.cancelOperation,
+            this.fetchResultOperation);
     }
 
     /**

@@ -22,8 +22,9 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.certificates.models.Certificate;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -44,6 +45,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -95,7 +97,7 @@ public class CertificateAsyncClient {
      * the certificates/create permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The {@link Poller poller} allows users to automatically poll on the create certificate
+     * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically poll on the create certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy-Boolean-Map}
@@ -105,24 +107,38 @@ public class CertificateAsyncClient {
      * @param enabled The enabled status for the certificate.
      * @param tags The application specific metadata to set.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link Poller} polling on the create certificate operation status.
+     * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
-    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
-        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), fetchResultOperation(name), activationOperation(name, policy, enabled, tags), cancelOperation(name));
+    public PollerFlux<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
+        return new PollerFlux<>(Duration.ofSeconds(1),
+                activationOperation(name, policy, enabled, tags),
+                createPollOperation(name),
+                cancelOperation(name),
+                fetchResultOperation(name));
     }
 
-    private Function<Poller<CertificateOperation, Certificate>, Mono<CertificateOperation>> cancelOperation(String name) {
-        return poller -> withContext(context -> cancelCertificateOperationWithResponse(name, context)).flatMap(FluxUtil::toMono);
+    private BiFunction<PollResponse<CertificateOperation>,
+            PollResponse<CertificateOperation>, Mono<CertificateOperation>> cancelOperation(String name) {
+        return (firstResponse, latestResponse)
+                -> withContext(context
+                    -> cancelCertificateOperationWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
 
-    private Supplier<Mono<CertificateOperation>> activationOperation(String name, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
+    private Supplier<Mono<CertificateOperation>> activationOperation(String name,
+                                                                     CertificatePolicy policy,
+                                                                     boolean enabled,
+                                                                     Map<String, String> tags) {
         return () -> withContext(context -> createCertificateWithResponse(name, policy, enabled, tags, context)
             .flatMap(certificateOperationResponse -> Mono.just(certificateOperationResponse.getValue())));
     }
 
-    private Supplier<Mono<Certificate>> fetchResultOperation(String name) {
-        return () -> withContext(context -> getCertificateWithResponse(name, "", context)
-            .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue())));
+    private BiFunction<PollResponse<CertificateOperation>,
+            PollResponse<CertificateOperation>,
+            Mono<Certificate>> fetchResultOperation(String name) {
+        return (firstResponse, finalResponse)
+                -> withContext(context
+                    -> getCertificateWithResponse(name, "", context)
+                        .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue())));
     }
 
     /**
@@ -130,7 +146,7 @@ public class CertificateAsyncClient {
      * the certificates/create permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The {@link Poller poller} allows users to automatically poll on the create certificate
+     * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically poll on the create certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy}
@@ -138,9 +154,9 @@ public class CertificateAsyncClient {
      * @param name The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link Poller} polling on the create certificate operation status.
+     * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
-    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy) {
+    public PollerFlux<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy) {
         return beginCreateCertificate(name, policy, true, null);
     }
 
@@ -149,16 +165,16 @@ public class CertificateAsyncClient {
      * the certificates/create permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The {@link Poller poller} allows users to automatically poll on the create certificate
+     * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically poll on the create certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy}
      *
      * @param name The name of the certificate to be created.
      * @throws ResourceModifiedException when certificate configuration is invalid.
-     * @return A {@link Poller} polling on the create certificate operation status.
+     * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
-    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name) {
+    public PollerFlux<CertificateOperation, Certificate> beginCreateCertificate(String name) {
         return beginCreateCertificate(name, getDefaultPolicy(), true, null);
     }
 
@@ -177,29 +193,29 @@ public class CertificateAsyncClient {
     /*
        Polling operation to poll on create certificate operation status.
      */
-    private Function<PollResponse<CertificateOperation>, Mono<PollResponse<CertificateOperation>>> createPollOperation(String certificateName) {
-        return prePollResponse -> {
+    private BiFunction<PollResponse<CertificateOperation>, PollResponse<CertificateOperation>, Mono<PollResponse<CertificateOperation>>> createPollOperation(String certificateName) {
+        return (firstResponse, prePollResponse) -> {
             try {
                 return withContext(context -> service.getCertificateOperation(endpoint, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                     .flatMap(this::processCertificateOperationResponse));
             } catch (HttpRequestException e) {
                 logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(PollResponse.OperationStatus.FAILED, null));
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED,null));
             }
         };
     }
 
     private Mono<PollResponse<CertificateOperation>> processCertificateOperationResponse(Response<CertificateOperation> certificateOperationResponse) {
-        PollResponse.OperationStatus status = null;
+        LongRunningOperationStatus status = null;
         switch (certificateOperationResponse.getValue().getStatus()) {
             case "inProgress":
-                status = PollResponse.OperationStatus.IN_PROGRESS;
+                status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
             case "completed":
-                status = PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED;
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case "failed":
-                status = PollResponse.OperationStatus.FAILED;
+                status = LongRunningOperationStatus.FAILED;
                 break;
             default:
                 //should not reach here

@@ -72,12 +72,8 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
         this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
             "'fetchResultOperation' cannot be null.");
-        if (activationOperation != null) {
-            this.activationResponse = new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                activationOperation.get().block());
-        } else {
-            this.activationResponse = new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null);
-        }
+        this.activationResponse = new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+            activationOperation.get().block());
         this.lastResponse = this.activationResponse;
         this.pollerFlux = new PollerFlux<>(defaultPollInterval,
             () -> Mono.empty(),

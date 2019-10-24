@@ -259,6 +259,7 @@ public class PollerTests {
             Mono.just(response1),
             Mono.just(response2));
 
+        @SuppressWarnings({"rawtypes"})
         final AsyncPollResponse<Response, CertificateOutput>[] secondAsyncResponse = new AsyncPollResponse[1];
         secondAsyncResponse[0] = null;
         //
@@ -315,6 +316,7 @@ public class PollerTests {
             Mono.just(response1),
             Mono.just(response2));
 
+        @SuppressWarnings({"rawtypes"})
         final AsyncPollResponse<Response, CertificateOutput>[] terminalAsyncResponse = new AsyncPollResponse[1];
 
         terminalAsyncResponse[0] = null;

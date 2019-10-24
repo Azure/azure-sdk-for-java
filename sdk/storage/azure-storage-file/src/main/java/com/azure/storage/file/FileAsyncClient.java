@@ -14,9 +14,9 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollResponse.OperationStatus;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -242,67 +242,64 @@ public class FileAsyncClient {
      * is used.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
-     * @return A {@link Poller} that polls the file copy operation until it has completed or has been cancelled.
+     * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, Duration pollInterval) {
+    public PollerFlux<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, Duration pollInterval) {
         final AtomicReference<String> copyId = new AtomicReference<>();
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
+        //
+        return new PollerFlux<>(interval,
+                () -> {
+                    try {
+                        return withContext(context -> azureFileStorageClient.files()
+                                .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
+                                        metadata,
+                                        context))
+                                .map(response -> {
+                                    final FileStartCopyHeaders headers = response.getDeserializedHeaders();
+                                    copyId.set(headers.getCopyId());
 
-        return new Poller<>(interval,
-            response -> {
-                try {
-                    return onPoll(response);
-                } catch (RuntimeException ex) {
-                    return monoError(logger, ex);
-                }
-            },
-            Mono::empty,
-            () -> {
-                try {
-                    return withContext(context -> azureFileStorageClient.files()
-                    .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null, metadata, context))
-                    .map(response -> {
-                        final FileStartCopyHeaders headers = response.getDeserializedHeaders();
-                        copyId.set(headers.getCopyId());
-
-                        return new FileCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
-                            headers.getETag(), headers.getLastModified(), headers.getErrorCode());
-                    });
-                } catch (RuntimeException ex) {
-                    return monoError(logger, ex);
-                }
-            },
-            poller -> {
-                final PollResponse<FileCopyInfo> response = poller.getLastPollResponse();
-
-                if (response == null || response.getValue() == null) {
-                    return Mono.error(logger.logExceptionAsError(
-                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
-                }
-
-                final String copyIdentifier = response.getValue().getCopyId();
-
-                if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
-                    logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
-
-                    return abortCopy(copyIdentifier).thenReturn(response.getValue());
-                }
-
-                return Mono.empty();
-            });
+                                    return new FileCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
+                                            headers.getETag(), headers.getLastModified(), headers.getErrorCode());
+                                });
+                    } catch (RuntimeException ex) {
+                        return monoError(logger, ex);
+                    }
+                },
+                (firstResponse, latestResponse) -> {
+                    try {
+                        return onPoll(latestResponse);
+                    } catch (RuntimeException ex) {
+                        return monoError(logger, ex);
+                    }
+                },
+                (firstResponse, latestResponse) -> {
+                    if (latestResponse == null || latestResponse.getValue() == null) {
+                        return Mono.error(logger.logExceptionAsError(
+                                new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                    }
+                    final String copyIdentifier = latestResponse.getValue().getCopyId();
+                    if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
+                        logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
+                        return abortCopy(copyIdentifier).thenReturn(latestResponse.getValue());
+                    }
+                    return Mono.empty();
+                },
+                (firstResponse, lastResponse) -> Mono.empty());
     }
 
     private Mono<PollResponse<FileCopyInfo>> onPoll(PollResponse<FileCopyInfo> pollResponse) {
-        if (pollResponse.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED
-            || pollResponse.getStatus() == OperationStatus.FAILED) {
+        if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+            || pollResponse.getStatus() == LongRunningOperationStatus.FAILED) {
             return Mono.just(pollResponse);
         }
 
         final FileCopyInfo lastInfo = pollResponse.getValue();
         if (lastInfo == null) {
             logger.warning("FileCopyInfo does not exist. Activation operation failed.");
-            return Mono.just(new PollResponse<>(OperationStatus.fromString("COPY_START_FAILED", true), null));
+            return Mono.just(new PollResponse<>(LongRunningOperationStatus.fromString("COPY_START_FAILED",
+                    true), null));
         }
 
         return getProperties()
@@ -311,19 +308,19 @@ public class FileAsyncClient {
                 final FileCopyInfo result = new FileCopyInfo(response.getCopySource(), response.getCopyId(), status,
                     response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
 
-                OperationStatus operationStatus;
+                LongRunningOperationStatus operationStatus;
                 switch (status) {
                     case SUCCESS:
-                        operationStatus = OperationStatus.SUCCESSFULLY_COMPLETED;
+                        operationStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                         break;
                     case FAILED:
-                        operationStatus = OperationStatus.FAILED;
+                        operationStatus = LongRunningOperationStatus.FAILED;
                         break;
                     case ABORTED:
-                        operationStatus = OperationStatus.USER_CANCELLED;
+                        operationStatus = LongRunningOperationStatus.USER_CANCELLED;
                         break;
                     case PENDING:
-                        operationStatus = OperationStatus.IN_PROGRESS;
+                        operationStatus = LongRunningOperationStatus.IN_PROGRESS;
                         break;
                     default:
                         throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -331,7 +328,8 @@ public class FileAsyncClient {
                 }
 
                 return new PollResponse<>(operationStatus, result);
-            }).onErrorReturn(new PollResponse<>(OperationStatus.fromString("POLLING_FAILED", true), lastInfo));
+            }).onErrorReturn(new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED",
+                        true), lastInfo));
     }
 
     /**
