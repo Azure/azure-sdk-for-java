@@ -26,6 +26,8 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
     }
 
     /**
+     * Creates a new {@link ClientCertificateCredential} with the current configurations.
+     *
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
      */
     public ClientSecretCredential build() {

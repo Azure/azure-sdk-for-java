@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
  * The Managed Service Identity credential for Virtual Machines.
  */
 @Immutable
-class VirtualMachineMSICredential {
+class VirtualMachineMsiCredential {
 
     private final IdentityClient identityClient;
     private final String clientId;
@@ -23,22 +23,23 @@ class VirtualMachineMSICredential {
      * @param clientId the client id of user assigned or system assigned identity
      * @param identityClient the identity client to acquire a token with.
      */
-    VirtualMachineMSICredential(String clientId, IdentityClient identityClient) {
+    VirtualMachineMsiCredential(String clientId, IdentityClient identityClient) {
         this.clientId = clientId;
         this.identityClient = identityClient;
     }
 
     /**
-     * @return the client id of user assigned or system assigned identity.
+     * @return the client ID of user assigned or system assigned identity.
      */
     public String getClientId() {
         return this.clientId;
     }
 
     /**
-     * Gets the token for a list of scopes.
-     * @param request the details of the token request
-     * @return a Publisher that emits an AccessToken
+     * Gets an access token for the token request.
+     *
+     * @param request The details of the token request.
+     * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
         return identityClient.authenticateToIMDSEndpoint(request);
