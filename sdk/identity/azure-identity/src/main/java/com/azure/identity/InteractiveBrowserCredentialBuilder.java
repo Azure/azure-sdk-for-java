@@ -28,6 +28,8 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
+     * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
+     *
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
      */
     public InteractiveBrowserCredential build() {

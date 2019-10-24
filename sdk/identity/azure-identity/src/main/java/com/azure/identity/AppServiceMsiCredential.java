@@ -11,21 +11,22 @@ import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
 /**
- * The Managed Service Identity credential for App Service.
+ * The Managed Service Identity credential for Azure App Service.
  */
 @Immutable
-class AppServiceMSICredential {
+class AppServiceMsiCredential {
     private final String msiEndpoint;
     private final String msiSecret;
     private final IdentityClient identityClient;
     private final String clientId;
 
     /**
-     * Creates an instance of AppServiceMSICredential.
-     * @param clientId the client id of user assigned or system assigned identity
-     * @param identityClient the identity client to acquire a token with.
+     * Creates an instance of {@link AppServiceMsiCredential}.
+     *
+     * @param clientId The client ID of user assigned or system assigned identity.
+     * @param identityClient The identity client to acquire a token with.
      */
-    AppServiceMSICredential(String clientId, IdentityClient identityClient) {
+    AppServiceMsiCredential(String clientId, IdentityClient identityClient) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
         this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
@@ -34,16 +35,19 @@ class AppServiceMSICredential {
     }
 
     /**
-     * @return the client id of user assigned or system assigned identity.
+     * Gets the client ID of the user assigned or system assigned identity.
+     *
+     * @return The client ID of user assigned or system assigned identity.
      */
     public String getClientId() {
         return this.clientId;
     }
 
     /**
-     * Gets the token for a list of scopes.
-     * @param request the details of the token request
-     * @return a Publisher that emits an AccessToken
+     * Gets an access token for a token request.
+     *
+     * @param request The details of the token request.
+     * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
         return identityClient.authenticateToManagedIdentityEndpoint(msiEndpoint, msiSecret, request);
