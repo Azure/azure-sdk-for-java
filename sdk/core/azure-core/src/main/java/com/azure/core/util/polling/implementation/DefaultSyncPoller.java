@@ -68,6 +68,7 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
+        Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
         this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
