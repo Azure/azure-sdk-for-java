@@ -1,155 +1,172 @@
-//// Copyright (c) Microsoft Corporation. All rights reserved.
-//// Licensed under the MIT License.
-//
-//package com.azure.core.util.polling;
-//
-//
-//import com.azure.core.util.polling.PollResponse.OperationStatus;
-//import reactor.core.publisher.Mono;
-//
-//import java.time.Duration;
-//import java.time.LocalDateTime;
-//import java.util.function.Predicate;
-//
-///**
-// * This class contains code samples for generating javadocs through doclets for {@link Poller}
-// */
-//public final class PollerJavaDocCodeSnippets {
-//    private final Poller<String, String> myPoller = new Poller<String, String>(Duration.ofMillis(100),
-//        response -> Mono.just(new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, "Completed")),
-//        () -> Mono.just("Final Output"));
-//
-//    /**
-//     * Initialise
-//     */
-//    public void initialize() {
-//        // BEGIN: com.azure.core.util.polling.poller.initialize.interval.polloperation
-//        LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMillis(800));
-//
-//        // Create poller instance
-//        Poller<String, String> poller = new Poller<String, String>(Duration.ofMillis(100),
-//            // Define your custom poll operation
-//            perPollResponse -> {
-//                if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
-//                    System.out.println("Returning intermediate response.");
-//                    return Mono.just(new PollResponse<>(OperationStatus.IN_PROGRESS, "Operation in progress."));
-//                } else {
-//                    System.out.println("Returning final response.");
-//                    return Mono.just(new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, "Operation completed."));
-//                }
-//            },
-//            () -> Mono.just("Final Output"));
-//
-//        // Default polling will start transparently.
-//        // END: com.azure.core.util.polling.poller.initialize.interval.polloperation
-//    }
-//
-//    /**
-//     * Initialise and subscribe snippet
-//     */
-//    public void initializeAndSubscribe() {
-//        // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribe
-//        LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMillis(800));
-//
-//        // Create poller instance
-//        Duration pollInterval = Duration.ofMillis(100);
-//        Poller<String, String> poller = new Poller<String, String>(pollInterval,
-//            // Define your custom poll operation
-//            prePollResponse -> {
-//                if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
-//                    System.out.println("Returning intermediate response.");
-//                    return Mono.just(new PollResponse<>(OperationStatus.IN_PROGRESS, "Operation in progress."));
-//                } else {
-//                    System.out.println("Returning final response.");
-//                    return Mono.just(new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, "Operation Completed."));
-//                }
-//            },
-//            () -> Mono.just("Final Output"));
-//
-//        // Listen to poll responses
-//        poller.getObserver().subscribe(response -> {
-//            // Process poll response
-//            System.out.printf("Got response. Status: %s, Value: %s%n", response.getStatus(), response.getValue());
-//        });
-//        // Do something else
-//
-//        // END: com.azure.core.util.polling.poller.instantiationAndSubscribe
-//    }
-//
-//    /**
-//     * block for response
-//     */
-//    public void block() {
-//        // BEGIN: com.azure.core.util.polling.poller.block
-//        String response = myPoller.block();
-//        System.out.printf("Polling complete. Final Output: %s %n", response);
-//        // END: com.azure.core.util.polling.poller.block
-//    }
-//
-//    /**
-//     * disable auto polling
-//     */
-//    public void setAutoPollingFalse() {
-//        // BEGIN: com.azure.core.util.polling.poller.disableautopolling
-//        myPoller.setAutoPollingEnabled(false);
-//        System.out.println("Polling Enabled? " + myPoller.isAutoPollingEnabled());
-//        // END: com.azure.core.util.polling.poller.disableautopolling
-//    }
-//
-//    /**
-//     * enable auto polling
-//     */
-//    public void setAutoPollingTrue() {
-//        // BEGIN: com.azure.core.util.polling.poller.enableautopolling
-//        myPoller.setAutoPollingEnabled(true);
-//        System.out.println("Polling Enabled? " + myPoller.isAutoPollingEnabled());
-//        // END: com.azure.core.util.polling.poller.enableautopolling
-//    }
-//
-//
-//    /**
-//     * manual auto polling.
-//     */
-//    public void poll() {
-//        // BEGIN: com.azure.core.util.polling.poller.poll-manually
-//        // Turns off auto polling.
-//        myPoller.setAutoPollingEnabled(false);
-//
-//        // Continue to poll every 500ms until the response emitted from poll() is SUCCESSFULLY_COMPLETED.
-//        myPoller.poll()
-//            .repeatWhen(attemptsCompleted -> attemptsCompleted.flatMap(attempt -> Mono.delay(Duration.ofMillis(500))))
-//            .takeUntil(response -> response.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED)
-//            .subscribe(
-//                response -> System.out.printf("Status: %s. Value: %s%n", response.getStatus(), response.getValue()),
-//                error -> System.err.printf("Exception occurred while polling: %s%n", error),
-//                () -> System.out.printf("Polling complete with status: %s%n", myPoller.getStatus()));
-//        // END: com.azure.core.util.polling.poller.poll-manually
-//    }
-//
-//    /**
-//     * manual auto polling. More in-depth example
-//     */
-//    public void pollIndepth() {
-//        // BEGIN: com.azure.core.util.polling.poller.poll-indepth
-//        final Predicate<PollResponse<String>> isComplete = response -> {
-//            return response.getStatus() != OperationStatus.IN_PROGRESS
-//                && response.getStatus() != OperationStatus.NOT_STARTED;
-//        };
-//
-//        // Turns off auto polling
-//        myPoller.setAutoPollingEnabled(false);
-//
-//        myPoller.poll()
-//            .repeatWhen(attemptsCompleted -> {
-//                // Retry each poll operation after 500ms.
-//                return attemptsCompleted.flatMap(attempt -> Mono.delay(Duration.ofMillis(500)));
-//            })
-//            .takeUntil(isComplete)
-//            .filter(isComplete)
-//            .subscribe(completed -> {
-//                System.out.println("Completed poll response: " + completed.getStatus());
-//                System.out.println("Polling complete with status: " + myPoller.getStatus().toString());
-//            });
-//        // END: com.azure.core.util.polling.poller.poll-indepth
-//    }
-//}
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.util.polling;
+
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.function.Predicate;
+
+/**
+ * This class contains code samples for generating javadocs through doclets for {@link PollerFlux}
+ */
+public final class PollerJavaDocCodeSnippets {
+    private final PollerFlux<String, String> pollerFlux = new PollerFlux<>(Duration.ofMillis(100),
+            () -> Mono.empty(),
+            (activationResponse, latestResponse) -> Mono.just(
+                    new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, "Completed")),
+            (activationResponse, latestResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            (activationResponse, latestResponse) -> Mono.just("Final Output"));
+
+    /**
+     * Initialise and subscribe
+     */
+    public void initializeAndSubscribe() {
+        // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribe
+        LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMillis(800));
+
+        // Create poller instance
+        PollerFlux<String, String> poller = new PollerFlux<>(Duration.ofMillis(100),
+                () -> Mono.empty(),
+                // Define your custom poll operation
+                (activationResponse, latestResponse) ->  {
+                    if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
+                        System.out.println("Returning intermediate response.");
+                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                                "Operation in progress."));
+                    } else {
+                        System.out.println("Returning final response.");
+                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                                "Operation completed."));
+                    }
+                },
+                (activationResponse, latestResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+                (activationResponse, latestResponse) -> Mono.just("Final Output"));
+
+        // Listen to poll responses
+        poller.subscribe(response -> {
+            // Process poll response
+            System.out.printf("Got response. Status: %s, Value: %s%n", response.getStatus(), response.getValue());
+        });
+        // Do something else
+
+        // END: com.azure.core.util.polling.poller.instantiationAndSubscribe
+    }
+
+    /**
+     * asynchronously wait poll to complete and retrieve final result from within
+     * reactor operator chain.
+     */
+    public void getResult() {
+        // BEGIN: com.azure.core.util.polling.poller.getResult
+        LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMinutes(5));
+
+        // Create poller instance
+        PollerFlux<String, String> poller = new PollerFlux<>(Duration.ofMillis(100),
+                () -> Mono.empty(),
+                (activationResponse, latestResponse) ->  {
+                    if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
+                        System.out.println("Returning intermediate response.");
+                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                                "Operation in progress."));
+                    } else {
+                        System.out.println("Returning final response.");
+                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                                "Operation completed."));
+                    }
+                },
+                (activationResponse, latestResponse) -> Mono.just("FromServer:OperationIsCancelled"),
+                (activationResponse, latestResponse) -> Mono.just("FromServer:FinalOutput"));
+
+        poller.take(Duration.ofMinutes(30))
+                .last()
+                .flatMap(asyncPollResponse -> {
+                    if (asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                        // operation completed successfully, retrieving final result.
+                        return asyncPollResponse
+                                .getFinalResult();
+                    } else {
+                        return Mono.error(new RuntimeException("polling completed unsuccessfully with status:"
+                                + asyncPollResponse.getStatus()));
+                    }
+                }).block();
+
+        // END: com.azure.core.util.polling.poller.getResult
+    }
+
+    /**
+     * block for final poll response and retrieve the final result if final response
+     * indicate a successful completion of the long running operation.
+     */
+    public void blockAndGetResult() {
+        // BEGIN: com.azure.core.util.polling.poller.blockAndGetResult
+        AsyncPollResponse<String, String> terminalResponse = pollerFlux.blockLast();
+        System.out.printf("Polling complete. Final Status: %s", terminalResponse.getStatus());
+        if (terminalResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            String finalResult = terminalResponse.getFinalResult().block();
+            System.out.printf("Polling complete. Final Status: %s", finalResult);
+        }
+        // END: com.azure.core.util.polling.poller.blockAndGetResult
+    }
+
+    /**
+     * asynchronously poll until service return a matching status.
+     */
+    public void polluntil() {
+        // BEGIN: com.azure.core.util.polling.poller.pollUntil
+        final Predicate<AsyncPollResponse<String, String>> isComplete = response -> {
+            return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
+                && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
+        };
+
+        pollerFlux
+            .takeUntil(isComplete)
+            .subscribe(completed -> {
+                System.out.println("Completed poll response, status: " + completed.getStatus());
+            });
+        // END: com.azure.core.util.polling.poller.pollUntil
+    }
+
+    /**
+     * cancel the long running operation.
+     */
+    public void cancelOperation() {
+        // BEGIN: com.azure.core.util.polling.poller.cancelOperation
+        LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMinutes(5));
+
+        // Create poller instance
+        PollerFlux<String, String> poller = new PollerFlux<>(Duration.ofMillis(100),
+                () -> Mono.empty(),
+                (activationResponse, latestResponse) ->  {
+                    if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
+                        System.out.println("Returning intermediate response.");
+                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                                "Operation in progress."));
+                    } else {
+                        System.out.println("Returning final response.");
+                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                                "Operation completed."));
+                    }
+                },
+                (activationResponse, latestResponse) -> Mono.just("FromServer:OperationIsCancelled"),
+                (activationResponse, latestResponse) -> Mono.just("FromServer:FinalOutput"));
+
+        // Asynchronously wait 30 minutes to complete the polling, if not completed
+        // within in the time then cancel the server operation.
+        poller.take(Duration.ofMinutes(30))
+                .last()
+                .flatMap(asyncPollResponse -> {
+                    if (!asyncPollResponse.getStatus().isComplete()) {
+                        return asyncPollResponse
+                                .cancelOperation()
+                                .then(Mono.error(new RuntimeException("Operation is cancelled!")));
+                } else {
+                    return Mono.just(asyncPollResponse);
+                }
+            }).block();
+
+        // END: com.azure.core.util.polling.poller.cancelOperation
+    }
+}
