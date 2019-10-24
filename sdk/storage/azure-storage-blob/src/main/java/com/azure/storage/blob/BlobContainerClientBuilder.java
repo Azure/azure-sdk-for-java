@@ -301,7 +301,7 @@ public final class BlobContainerClientBuilder {
      * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public BlobContainerClientBuilder httpLogOptions(com.azure.storage.blob.BlobLogOptions logOptions) {
+    public BlobContainerClientBuilder httpLogOptions(BlobLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

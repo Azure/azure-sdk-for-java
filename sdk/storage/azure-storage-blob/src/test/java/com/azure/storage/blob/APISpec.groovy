@@ -237,7 +237,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
-            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (testMode == TestMode.RECORD) {
             if (recordLiveMode) {
@@ -282,7 +282,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -317,7 +317,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .blobName(blobName)
             .httpClient(getHttpClient())
-            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -336,7 +336,7 @@ class APISpec extends Specification {
             .blobName(blobName)
             .snapshot(snapshotId)
             .httpClient(getHttpClient())
-            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -349,7 +349,7 @@ class APISpec extends Specification {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -367,7 +367,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .blobName(blobName)
             .httpClient(getHttpClient())
-            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -380,7 +380,7 @@ class APISpec extends Specification {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (!ImplUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)

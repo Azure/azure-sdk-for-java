@@ -145,9 +145,6 @@ final class BuilderHelper {
 
         policies.add(getResponseValidationPolicy());
 
-        // Prepare load options for logging policy.
-        loadLogOptions(logOptions);
-
         policies.add(new HttpLoggingPolicy(logOptions));
 
         policies.add(new ScrubEtagPolicy());
@@ -156,20 +153,6 @@ final class BuilderHelper {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-    }
-
-    /**
-     * Sets the allowed headers and queries to logOptions.
-     * @param logOptions the log options for headers and queries.
-     */
-    private static void loadLogOptions(final HttpLogOptions logOptions) {
-        Objects.requireNonNull(logOptions);
-
-        StorageAllowedHeadersAndQueries.QueueHeadersAndQueries.getQueueHeaders().stream()
-            .forEach(headerName -> logOptions.addAllowedHeaderName(headerName));
-
-        StorageAllowedHeadersAndQueries.QueueHeadersAndQueries.getQueueQueries().stream()
-            .forEach(queryName -> logOptions.addAllowedQueryParamName(queryName));
     }
 
     /*

@@ -422,7 +422,7 @@ public final class EncryptedBlobClientBuilder {
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public EncryptedBlobClientBuilder blobLogOptions(BlobLogOptions logOptions) {
+    public EncryptedBlobClientBuilder httpLogOptions(BlobLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

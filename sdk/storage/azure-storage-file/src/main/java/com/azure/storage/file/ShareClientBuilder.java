@@ -316,7 +316,7 @@ public class ShareClientBuilder {
      * @return the updated ShareClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public ShareClientBuilder fileLogOptions(FileLogOptions logOptions) {
+    public ShareClientBuilder httpLogOptions(FileLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

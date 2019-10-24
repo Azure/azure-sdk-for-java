@@ -255,7 +255,7 @@ public final class BlobServiceClientBuilder {
      * @return the updated BlobServiceClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public BlobServiceClientBuilder blobLogOptions(BlobLogOptions logOptions) {
+    public BlobServiceClientBuilder httpLogOptions(BlobLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

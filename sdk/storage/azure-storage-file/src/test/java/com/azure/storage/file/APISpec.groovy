@@ -110,7 +110,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             return new FileServiceClientBuilder()
                 .connectionString(connectionString)
-                .fileLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -125,7 +125,7 @@ class APISpec extends Specification {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .fileLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -142,7 +142,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(directoryPath)
-                .fileLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -160,7 +160,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(filePath)
-                .fileLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {

@@ -6,7 +6,6 @@ import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.BlobLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.FluxUtil
@@ -17,6 +16,7 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.BlobLogOptions
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.specialized.BlobLeaseClient
@@ -238,7 +238,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)

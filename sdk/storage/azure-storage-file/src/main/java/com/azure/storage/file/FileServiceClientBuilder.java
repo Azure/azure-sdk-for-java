@@ -270,7 +270,7 @@ public final class FileServiceClientBuilder {
      * @return the updated FileServiceClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public FileServiceClientBuilder fileLogOptions(FileLogOptions logOptions) {
+    public FileServiceClientBuilder httpLogOptions(FileLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

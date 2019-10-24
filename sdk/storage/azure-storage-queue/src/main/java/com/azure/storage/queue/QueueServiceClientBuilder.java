@@ -283,7 +283,7 @@ public final class QueueServiceClientBuilder {
      * @return the updated QueueServiceClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public QueueServiceClientBuilder queueLogOptions(QueueLogOptions logOptions) {
+    public QueueServiceClientBuilder httpLogOptions(QueueLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

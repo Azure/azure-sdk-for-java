@@ -9,13 +9,13 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.BlobLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.BlobLogOptions
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
@@ -1188,7 +1188,7 @@ class BlockBlobAPITest extends APISpec {
             .credential(primaryCredential)
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
-            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())

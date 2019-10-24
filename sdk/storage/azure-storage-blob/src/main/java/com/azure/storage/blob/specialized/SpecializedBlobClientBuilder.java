@@ -487,7 +487,7 @@ public final class SpecializedBlobClientBuilder {
      * @return the updated SpecializedBlobClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public SpecializedBlobClientBuilder blobLogOptions(BlobLogOptions logOptions) {
+    public SpecializedBlobClientBuilder httpLogOptions(BlobLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }
