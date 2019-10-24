@@ -17,8 +17,6 @@ module com.azure.storage.blob {
 
     exports com.azure.storage.blob.implementation.models to com.azure.storage.blob.batch;
 
-    exports com.azure.storage.blob.implementation.util to com.azure.storage.blob.cryptography;
-
     opens com.azure.storage.blob.models to
         com.fasterxml.jackson.databind,
         com.azure.core;

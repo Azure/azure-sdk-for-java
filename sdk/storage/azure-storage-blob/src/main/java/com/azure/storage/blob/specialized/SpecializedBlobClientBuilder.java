@@ -74,7 +74,7 @@ public final class SpecializedBlobClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private com.azure.core.http.policy.HttpLogOptions logOptions = getBlobDefaultLogOptions();
+    private HttpLogOptions logOptions = getBlobDefaultLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
