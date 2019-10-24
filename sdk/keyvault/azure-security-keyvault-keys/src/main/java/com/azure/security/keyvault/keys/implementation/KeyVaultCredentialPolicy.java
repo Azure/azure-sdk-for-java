@@ -41,7 +41,6 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
 
     /**
      * Adds the required header to authenticate a request to Azure Key Vault service.
-     *20
      *
      * @param context The request context
      * @param next The next HTTP pipeline policy to process the {@code context's} request after this policy
