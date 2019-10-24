@@ -24,7 +24,6 @@ import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
@@ -418,20 +417,23 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
-    // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions accessConditions) {
+        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+            ? new ParallelTransferOptions()
+            : parallelTransferOptions;
+
         try {
             return Mono.using(() -> uploadFileResourceSupplier(filePath),
                 channel -> {
                     try {
                         long fileSize = channel.size();
                         if (fileSize > 200 * Constants.MB) {
-                            return uploadByBlock(filePath, parallelTransferOptions, headers, metadata, tier,
+                            return uploadBlocks(fileSize, finalParallelTransferOptions, headers, metadata, tier,
                                 accessConditions, channel);
                         } else {
-                            return uploadByPut(headers, metadata, tier, accessConditions, channel, fileSize);
+                            return uploadFullBlob(headers, metadata, tier, accessConditions, channel, fileSize);
                         }
                     } catch (IOException ex) {
                         return Mono.error(new UncheckedIOException(ex));
@@ -442,30 +444,27 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    private Mono<Void> uploadByBlock(String filePath, ParallelTransferOptions parallelTransferOptions,
+    private Mono<Void> uploadBlocks(long fileSize, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions accessConditions, AsynchronousFileChannel channel) {
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions()
-            : parallelTransferOptions;
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        ProgressReceiver progressReceiver = parallelTransferOptions.getProgressReceiver();
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        AtomicLong totalProgress = new AtomicLong(0);
+        AtomicLong totalProgress = new AtomicLong();
         Lock progressLock = new ReentrantLock();
 
         final SortedMap<Long, String> blockIds = new TreeMap<>();
-        return Flux.fromIterable(sliceFile(filePath, finalParallelTransferOptions.getBlockSize()))
-            .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
+        return Flux.fromIterable(sliceFile(fileSize, parallelTransferOptions.getBlockSize()))
             .flatMap(chunk -> {
-                String blockId = blockIds.get(chunk.getOffset());
+                String blockId = getBlockID();
+                blockIds.put(chunk.getOffset(), blockId);
 
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                     FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
                     progressReceiver, progressLock, totalProgress);
 
                 return getBlockBlobAsyncClient()
-                    .stageBlockWithResponse(blockId, progressData, chunk.getCount(), null);
+                    .stageBlockWithResponse(blockId, progressData, chunk.getCount(), accessConditions.getLeaseId());
             })
             .then(Mono.defer(() -> getBlockBlobAsyncClient().commitBlockListWithResponse(
                 new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
@@ -473,10 +472,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .doOnTerminate(() -> uploadFileCleanup(channel));
     }
 
-    private Mono<Void> uploadByPut(BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+    private Mono<Void> uploadFullBlob(BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions accessConditions, AsynchronousFileChannel channel, long fileSize) {
-        return getBlockBlobAsyncClient().uploadWithResponse(FluxUtil.readFile(channel), fileSize, headers, metadata,
-            tier, accessConditions).then();
+        return getBlockBlobAsyncClient().uploadWithResponse(FluxUtil.readFile(channel),
+            fileSize, headers, metadata, tier, accessConditions)
+            .then();
     }
 
     /**
@@ -506,14 +506,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    private List<BlobRange> sliceFile(String path, int blockSize) {
-        File file = new File(path);
-        assert file.exists();
+    private List<BlobRange> sliceFile(long fileSize, int blockSize) {
         List<BlobRange> ranges = new ArrayList<>();
-        for (long pos = 0; pos < file.length(); pos += blockSize) {
+        for (long pos = 0; pos < fileSize; pos += blockSize) {
             long count = blockSize;
-            if (pos + count > file.length()) {
-                count = file.length() - pos;
+            if (pos + count > fileSize) {
+                count = fileSize - pos;
             }
             ranges.add(new BlobRange(pos, count));
         }

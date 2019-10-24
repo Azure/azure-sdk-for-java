@@ -394,7 +394,6 @@ public final class FluxUtil {
                         long pos = position;
                         int bytesWanted = Math.min(bytesRead, maxRequired(pos));
                         long position2 = pos + bytesWanted;
-                        //noinspection NonAtomicOperationOnVolatileField
                         position = position2;
                         buffer.position(bytesWanted);
                         buffer.flip();
