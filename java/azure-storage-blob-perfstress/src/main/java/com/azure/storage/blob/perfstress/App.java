@@ -10,6 +10,7 @@ public class App {
             testClasses = new Class<?>[] {
                 Class.forName("com.azure.storage.blob.perfstress.DownloadTest"),
                 Class.forName("com.azure.storage.blob.perfstress.GetBlobsTest"),
+                Class.forName("com.azure.storage.blob.perfstress.UploadBlockBlobTest"),
                 Class.forName("com.azure.storage.blob.perfstress.UploadFromFileTest"),
                 Class.forName("com.azure.storage.blob.perfstress.UploadOutputStreamTest"),
                 Class.forName("com.azure.storage.blob.perfstress.UploadTest"),
