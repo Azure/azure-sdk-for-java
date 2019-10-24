@@ -107,7 +107,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
 
         client.downloadToFileWithResponse(file, range, new ParallelTransferOptions().setBlockSize(4 * Constants.MB),
             options, null, false, timeout, new Context(key2, value2));
@@ -264,7 +264,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     public void downloadWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadWithResponse#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
 
         System.out.printf("Download completed with status %d%n",
             client.downloadWithResponse(new ByteArrayOutputStream(), range, options, null, false,

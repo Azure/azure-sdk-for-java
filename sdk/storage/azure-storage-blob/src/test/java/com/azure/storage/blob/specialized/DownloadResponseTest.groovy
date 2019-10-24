@@ -40,7 +40,7 @@ class DownloadResponseTest extends APISpec {
             .setCount(flux.getScenarioData().remaining())
             .setETag("etag")
 
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5)
 
         when:
         ReliableDownload response = flux.setOptions(options).getter(info).block()
@@ -61,7 +61,7 @@ class DownloadResponseTest extends APISpec {
     def "Failure"() {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5)
         HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
 
         when:
@@ -106,7 +106,7 @@ class DownloadResponseTest extends APISpec {
 
     def "Options IA"() {
         when:
-        new ReliableDownloadOptions().maxRetryRequests(-1)
+        new ReliableDownloadOptions().setMaxRetryRequests(-1)
 
         then:
         thrown(IllegalArgumentException)
@@ -128,7 +128,7 @@ class DownloadResponseTest extends APISpec {
             .setCount(10)
             .setETag("etag")
 
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5)
 
         when:
         ReliableDownload response = flux.setOptions(options).getter(info).block()

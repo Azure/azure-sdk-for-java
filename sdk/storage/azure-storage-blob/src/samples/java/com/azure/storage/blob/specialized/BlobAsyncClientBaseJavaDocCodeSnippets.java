@@ -100,7 +100,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     public void downloadWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
 
         client.downloadWithResponse(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
@@ -127,7 +127,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-boolean
 
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
 
         client.downloadToFileWithResponse(file, range, null, options, null, false)
             .subscribe(response -> System.out.println("Completed download to file"));
@@ -298,7 +298,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     public void downloadWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, (long) 2048);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
 
         client.downloadWithResponse(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();

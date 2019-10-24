@@ -66,7 +66,7 @@ final class ReliableDownload {
         retries as we have not actually retried yet, only made the initial try. Because applyReliableDownload() will
         add 1 before calling into tryContinueFlux, we set the initial value to -1.
          */
-        Flux<ByteBuffer> value = (options.maxRetryRequests() == 0)
+        Flux<ByteBuffer> value = (options.getMaxRetryRequests() == 0)
             ? rawResponse.getValue()
             : applyReliableDownload(rawResponse.getValue(), -1, options);
 
@@ -75,7 +75,7 @@ final class ReliableDownload {
 
     private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, ReliableDownloadOptions options) {
         // If all the errors are exhausted, return this error to the user.
-        if (retryCount > options.maxRetryRequests() || !(t instanceof IOException)) {
+        if (retryCount > options.getMaxRetryRequests() || !(t instanceof IOException)) {
             return Flux.error(t);
         } else {
             /*

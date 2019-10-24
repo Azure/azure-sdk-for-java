@@ -95,7 +95,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void downloadWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
 
         client.downloadWithResponse(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
@@ -121,7 +121,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
 
         client.downloadToFileWithResponse(file, range, null, options, null, false)
             .subscribe(response -> System.out.println("Completed download to file"));
@@ -253,7 +253,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void downloadWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, (long) 2048);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        ReliableDownloadOptions options = new ReliableDownloadOptions().setMaxRetryRequests(5);
 
         client.downloadWithResponse(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();

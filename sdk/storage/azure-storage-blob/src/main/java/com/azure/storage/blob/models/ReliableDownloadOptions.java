@@ -30,7 +30,7 @@ public final class ReliableDownloadOptions {
      *
      * @return the maximum number of retries to attempt before the request finally fails
      */
-    public int maxRetryRequests() {
+    public int getMaxRetryRequests() {
         return maxRetryRequests;
     }
 
@@ -42,7 +42,7 @@ public final class ReliableDownloadOptions {
      * @return the updated ReliableDownloadOptions object
      * @throws IllegalArgumentException If {@code maxRetryRequests} is less than 0
      */
-    public ReliableDownloadOptions maxRetryRequests(int maxRetryRequests) {
+    public ReliableDownloadOptions setMaxRetryRequests(int maxRetryRequests) {
         if (maxRetryRequests < 0) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,
