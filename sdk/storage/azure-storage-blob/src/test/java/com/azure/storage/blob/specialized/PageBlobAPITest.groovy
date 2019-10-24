@@ -1115,4 +1115,37 @@ class PageBlobAPITest extends APISpec {
         expect:
         blobName == bc.getBlobName()
     }
+
+    def "Get Blob Name and Build Client"() {
+        when:
+        def client = cc.getBlobClient(originalBlobName)
+        def blockClient = cc.getBlobClient(client.getBlobName()).getPageBlobClient()
+
+        then:
+        blockClient.getBlobName() == finalBlobName
+
+        where:
+        originalBlobName       | finalBlobName
+        "blob"                 | "blob"
+        "path/to]a blob"       | "path/to]a blob"
+        "path%2Fto%5Da%20blob" | "path/to]a blob"
+        "斑點"                 | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
+    }
+
+    def "Create overwrite false"() {
+        when:
+        bc.create(512)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Create overwrite true"() {
+        when:
+        bc.create(512, true)
+
+        then:
+        notThrown(Throwable)
+    }
 }

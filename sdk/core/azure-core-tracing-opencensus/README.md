@@ -53,7 +53,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.7</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -194,7 +194,7 @@ These following samples provide example code for additional scenarios commonly e
     * Create new version of an existing secret.
     * List versions of an existing secret.
 #### Publish multiple Events to an Event Hub
-* [PublishEvents.java][sample_publish_events] - Contains sample for publishing multiple events with tracing support.
+* [PublishEvents][sample_publish_events] - Contains sample for publishing multiple events with tracing support.
 
 ### Additional Documentation
 For more extensive documentation on OpenCensus, see the [API reference documentation][opencensus].
@@ -226,4 +226,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [opencensus-quickstart]: https://opencensus.io/quickstart/java/tracing/
 [zipkin-quickstart]: https://zipkin.io/pages/quickstart
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/tracing/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core-tracing-opencensus/README.png)

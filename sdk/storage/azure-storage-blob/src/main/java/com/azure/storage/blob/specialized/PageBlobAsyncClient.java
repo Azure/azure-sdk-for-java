@@ -106,8 +106,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
-     * information, see the
+     * Creates a page blob of the specified length. By default this method will not overwrite an existing blob.
+     * Call PutPage to upload data data to a page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -121,7 +121,33 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<PageBlobItem> create(long size) {
         try {
-            return createWithResponse(size, null, null, null, null).flatMap(FluxUtil::toMono);
+            return create(size, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.create#long-boolean}
+     *
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return A reactive response containing the information of the created page blob.
+     */
+    public Mono<PageBlobItem> create(long size, boolean overwrite) {
+        try {
+            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+            if (!overwrite) {
+                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return createWithResponse(size, null, null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

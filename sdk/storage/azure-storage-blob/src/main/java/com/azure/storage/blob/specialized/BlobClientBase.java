@@ -103,13 +103,13 @@ public class BlobClientBase {
     }
 
     /**
-     * Get the blob name.
+     * Decodes and gets the blob name.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getBlobName}
      *
-     * @return The name of the blob.
+     * @return The decoded name of the blob.
      */
     public final String getBlobName() {
         return client.getBlobName();

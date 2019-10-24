@@ -20,17 +20,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Base class for all types of DMS task properties. If task is not supported by
  * current client, this object is returned.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = ProjectTaskProperties.class)
-@JsonTypeName("Unknown")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeName("ProjectTaskProperties")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Migrate.SqlServer.AzureDbSqlMi.Complete", value = MigrateMISyncCompleteCommandProperties.class),
-    @JsonSubTypes.Type(name = "Migrate.Sync.Complete.Database", value = MigrateSyncCompleteCommandProperties.class),
-    @JsonSubTypes.Type(name = "MiSqlConnectionInfo", value = MiSqlConnectionInfo.class),
-    @JsonSubTypes.Type(name = "PostgreSqlConnectionInfo", value = PostgreSqlConnectionInfo.class),
-    @JsonSubTypes.Type(name = "OracleConnectionInfo", value = OracleConnectionInfo.class),
-    @JsonSubTypes.Type(name = "MySqlConnectionInfo", value = MySqlConnectionInfo.class),
-    @JsonSubTypes.Type(name = "MongoDbConnectionInfo", value = MongoDbConnectionInfo.class),
-    @JsonSubTypes.Type(name = "SqlConnectionInfo", value = SqlConnectionInfo.class),
     @JsonSubTypes.Type(name = "Migrate.Ssis", value = MigrateSsisTaskProperties.class),
     @JsonSubTypes.Type(name = "GetTDECertificates.Sql", value = GetTdeCertificatesSqlTaskProperties.class),
     @JsonSubTypes.Type(name = "Validate.Oracle.AzureDbPostgreSql.Sync", value = ValidateOracleAzureDbForPostgreSqlSyncTaskProperties.class),
@@ -64,9 +56,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "Connect.MongoDb", value = ConnectToMongoDbTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToSource.MySql", value = ConnectToSourceMySqlTaskProperties.class),
     @JsonSubTypes.Type(name = "MigrateSchemaSqlServerSqlDb", value = MigrateSchemaSqlServerSqlDbTaskProperties.class),
-    @JsonSubTypes.Type(name = "cancel", value = MongoDbCancelCommand.class),
-    @JsonSubTypes.Type(name = "finish", value = MongoDbFinishCommand.class),
-    @JsonSubTypes.Type(name = "restart", value = MongoDbRestartCommand.class),
     @JsonSubTypes.Type(name = "Service.Check.OCI", value = CheckOCIDriverTaskProperties.class),
     @JsonSubTypes.Type(name = "Service.Upload.OCI", value = UploadOCIDriverTaskProperties.class),
     @JsonSubTypes.Type(name = "Service.Install.OCI", value = InstallOCIDriverTaskProperties.class)

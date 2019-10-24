@@ -1582,4 +1582,21 @@ class BlobAPITest extends APISpec {
         expect:
         blobName == bc.getBlobName()
     }
+
+    def "Get Blob Name and Build Client"() {
+        when:
+        BlobClient client = cc.getBlobClient(originalBlobName)
+        BlobClientBase baseClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient()
+
+        then:
+        baseClient.getBlobName() == finalBlobName
+
+        where:
+        originalBlobName       | finalBlobName
+        "blob"                 | "blob"
+        "path/to]a blob"       | "path/to]a blob"
+        "path%2Fto%5Da%20blob" | "path/to]a blob"
+        "斑點"                 | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
+    }
 }

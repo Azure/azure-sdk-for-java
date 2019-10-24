@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://storageaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -22,7 +22,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://storageaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller1blobapitestcopypoller4c77708991b060a",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller1blobapitestcopypoller4c77708991b060a",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -47,7 +47,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://storageaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller2blobapitestcopypoller4c7989982b85210",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller2blobapitestcopypoller4c7989982b85210",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -70,7 +70,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://storageaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller2blobapitestcopypoller4c7989982b85210",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller2blobapitestcopypoller4c7989982b85210",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -92,7 +92,7 @@
       "Content-Type" : "application/octet-stream",
       "x-ms-version" : "2019-02-02",
       "x-ms-copy-id" : "96961cc0-f791-4c6f-91e0-1d6fc92f1cf3",
-      "x-ms-copy-source" : "https://storageaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller1blobapitestcopypoller4c77708991b060a",
+      "x-ms-copy-source" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller1blobapitestcopypoller4c77708991b060a",
       "x-ms-copy-progress" : "7/7",
       "Date" : "Mon, 21 Oct 2019 17:04:02 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
@@ -106,7 +106,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://storageaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller2blobapitestcopypoller4c7989982b85210",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller2blobapitestcopypoller4c7989982b85210",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -128,7 +128,7 @@
       "Content-Type" : "application/octet-stream",
       "x-ms-version" : "2019-02-02",
       "x-ms-copy-id" : "96961cc0-f791-4c6f-91e0-1d6fc92f1cf3",
-      "x-ms-copy-source" : "https://storageaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller1blobapitestcopypoller4c77708991b060a",
+      "x-ms-copy-source" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040/javablobcopypoller1blobapitestcopypoller4c77708991b060a",
       "x-ms-copy-progress" : "7/7",
       "Date" : "Mon, 21 Oct 2019 17:04:02 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
@@ -155,7 +155,7 @@
       "retry-after" : "0",
       "StatusCode" : "200",
       "x-ms-request-id" : "0a101878-f01e-012c-4031-88f41e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://storageaccount.blob.core.windows.net/\"><Prefix>jtccopypoller</Prefix><Containers><Container><Name>jtccopypoller0blobapitestcopypoller4c77667741fdc13040</Name><Properties><Last-Modified>Mon, 21 Oct 2019 17:04:01 GMT</Last-Modified><Etag>\"0x8D75648AB963243\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccopypoller</Prefix><Containers><Container><Name>jtccopypoller0blobapitestcopypoller4c77667741fdc13040</Name><Properties><Last-Modified>Mon, 21 Oct 2019 17:04:01 GMT</Last-Modified><Etag>\"0x8D75648AB963243\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
       "Date" : "Mon, 21 Oct 2019 17:04:02 GMT",
       "x-ms-client-request-id" : "395ea55c-19ac-4c21-b8d8-87309a6d952a",
       "Content-Type" : "application/xml"
@@ -163,7 +163,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://storageaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040?restype=container",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccopypoller0blobapitestcopypoller4c77667741fdc13040?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",

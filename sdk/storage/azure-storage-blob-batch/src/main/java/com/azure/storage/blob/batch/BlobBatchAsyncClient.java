@@ -128,7 +128,7 @@ public final class BlobBatchAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.deleteBlobs#List-DeleteSnapshotsOptionType}
      *
-     * @param blobUrls Urls of the blobs to delete.
+     * @param blobUrls Urls of the blobs to delete. Blob names must be encoded to UTF-8.
      * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
      * @throws BlobStorageException If the batch request is malformed.
@@ -162,7 +162,7 @@ public final class BlobBatchAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.setBlobsAccessTier#List-AccessTier}
      *
-     * @param blobUrls Urls of the blobs to set their access tier.
+     * @param blobUrls Urls of the blobs to set their access tier. Blob names must be encoded to UTF-8.
      * @param accessTier {@link AccessTier} to set on each blob.
      * @return The status of each set tier operation.
      * @throws BlobStorageException If the batch request is malformed.

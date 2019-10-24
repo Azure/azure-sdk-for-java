@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * The Pipeline policy that applies a token credential to an HTTP request
+ * The pipeline policy that applies a token credential to an HTTP request
  * with "Bearer" scheme.
  */
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {

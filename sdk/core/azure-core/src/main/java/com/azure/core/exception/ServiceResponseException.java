@@ -5,10 +5,12 @@ package com.azure.core.exception;
 
 /**
  * A runtime exception indicating service response failure caused by one of the following scenarios:
- * 1. The request was sent, but the client failed to understand the response. (Not in the right format, partial response
- * etc.)
- * 2. The connection may have timed out. These errors can be retried for idempotent or
- *    safe operations.
+ *
+ * <ol>
+ * <li>The request was sent, but the client failed to understand the response. (Not in the right format, partial
+ * response, etc.).</li>
+ * <li>The connection may have timed out. These errors can be retried for idempotent or safe operations.</li>
+ * </ol>
  */
 public class ServiceResponseException extends AzureException {
 

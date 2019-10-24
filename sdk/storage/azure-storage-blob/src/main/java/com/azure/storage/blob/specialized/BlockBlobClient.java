@@ -19,6 +19,7 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -97,10 +98,10 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
-     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
-     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
-     * and PutBlockList. For more information, see the
+     * Creates a new block blob. By default this method will not overwrite an existing blob. Updating an existing block
+     * blob overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content
+     * of the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use
+     * PutBlock and PutBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -110,12 +111,38 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
-     *
      * @return The information of the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
     public BlockBlobItem upload(InputStream data, long length) {
-        return uploadWithResponse(data, length, null, null, null, null, null,null, Context.NONE).getValue();
+        return upload(data, length, false);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
+     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
+     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
+     * and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long-boolean}
+     *
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return The information of the uploaded block blob.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public BlockBlobItem upload(InputStream data, long length, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return uploadWithResponse(data, length, null, null, null, null, blobRequestConditions, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -330,12 +357,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List}
      *
-<<<<<<< HEAD
-     * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
-     *
-=======
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
->>>>>>> upstream/master
      * @return The information of the block blob.
      */
     public BlockBlobItem commitBlockList(List<String> base64BlockIds) {
