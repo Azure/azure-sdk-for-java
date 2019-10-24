@@ -72,7 +72,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
      * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHttpHeaders, Map, AccessTier, byte[], BlobRequestConditions, Duration, Context)}
      */
     public void upload2() throws NoSuchAlgorithmException {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
