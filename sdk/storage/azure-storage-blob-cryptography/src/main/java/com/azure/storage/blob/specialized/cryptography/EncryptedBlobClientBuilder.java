@@ -24,6 +24,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
@@ -336,7 +337,7 @@ public final class EncryptedBlobClientBuilder {
             this.accountName = parts.getAccountName();
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();
-            this.blobName = parts.getBlobName();
+            this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
             String sasToken = parts.getSasQueryParameters().encode();
@@ -370,7 +371,8 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public EncryptedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
+        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
+            "'blobName' cannot be null.")));
         return this;
     }
 

@@ -59,6 +59,21 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link EncryptedBlobAsyncClient#upload(Flux, ParallelTransferOptions, boolean)}
+     */
+    public void uploadWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize)
+            .setNumBuffers(numBuffers);
+        boolean overwrite = false; // Default behavior
+        client.upload(data, parallelTransferOptions, overwrite).subscribe(response ->
+            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean
+    }
+
+    /**
      * Code snippet for {@link EncryptedBlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void upload2() {
@@ -91,6 +106,18 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
         // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String
+    }
+
+    /**
+     * Code snippet for {@link EncryptedBlobAsyncClient#uploadFromFile(String, boolean)}
+     */
+    public void uploadFromFileWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-boolean
+        boolean overwrite = false; // Default behavior
+        client.uploadFromFile(filePath, overwrite)
+            .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
+            .subscribe(completion -> System.out.println("Upload from file succeeded"));
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-boolean
     }
 
     /**

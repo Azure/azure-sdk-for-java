@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.common.Utility
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -1169,13 +1170,46 @@ class ContainerAPITest extends APISpec {
         blobs.next().getName() == name + "3"
 
         where:
-        name          | _
-        // "中文"                 | _  TODO: requires blob name to be url encoded, deferred for post preview-1, storage team to decide on encoding story across SDKS
-        "az[]"        | _
-        // "hello world"         | _  TODO: see previous TODO
-        "hello/world" | _
-        "hello&world" | _
-        // "!*'();:@&=+\$,/?#[]" | _  TODO: see previous TODO
+        name                  | _
+        "中文"                | _
+        "az[]"                | _
+        "hello world"         | _
+        "hello/world"         | _
+        "hello&world"         | _
+        "!*'();:@&=+\$,/?#[]" | _
+    }
+
+    @Unroll
+    def "Create URL special chars encoded"() {
+        // This test checks that we handle blob names with encoded special characters correctly.
+        setup:
+        def bu2 = cc.getBlobClient(name).getAppendBlobClient()
+        def bu3 = cc.getBlobClient(name + "2").getPageBlobClient()
+        def bu4 = cc.getBlobClient(name + "3").getBlockBlobClient()
+        def bu5 = cc.getBlobClient(name).getBlockBlobClient()
+
+        expect:
+        bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
+        bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+        bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
+        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).getStatusCode() == 201
+
+        when:
+        def blobs = cc.listBlobs().iterator()
+
+        then:
+        blobs.next().getName() == Utility.urlDecode(name)
+        blobs.next().getName() == Utility.urlDecode(name) + "2"
+        blobs.next().getName() == Utility.urlDecode(name) + "3"
+
+        where:
+        name                                                     | _
+        "%E4%B8%AD%E6%96%87"                                     | _
+        "az%5B%5D"                                               | _
+        "hello%20world"                                          | _
+        "hello%2Fworld"                                          | _
+        "hello%26world"                                          | _
+        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D" | _
     }
 
     def "Root explicit"() {

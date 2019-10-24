@@ -30,6 +30,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
@@ -139,9 +140,9 @@ public final class BlobContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
-        return new BlobAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), blobName).toString(), getServiceVersion(),
-            getAccountName(), getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
+        return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
+            Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
+            getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
     }
 
     /**

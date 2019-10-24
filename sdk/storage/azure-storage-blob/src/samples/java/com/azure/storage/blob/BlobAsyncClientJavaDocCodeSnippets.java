@@ -403,6 +403,21 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlobAsyncClient#upload(Flux, ParallelTransferOptions, boolean)}
+     */
+    public void uploadOverwrite() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize)
+            .setNumBuffers(numBuffers);
+        boolean overwrite = false; // Default behavior
+        client.upload(data, parallelTransferOptions, overwrite).subscribe(response ->
+            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
+        // END: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean
+    }
+
+    /**
      * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void upload4() {
@@ -463,6 +478,18 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
         // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String, boolean)}
+     */
+    public void uploadFromFileOverwrite() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-boolean
+        boolean overwrite = false; // Default behavior
+        client.uploadFromFile(filePath, overwrite)
+            .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
+            .subscribe(completion -> System.out.println("Upload from file succeeded"));
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-boolean
     }
 
     /**

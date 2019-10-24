@@ -638,7 +638,7 @@
     <Or>
       <Class name="com.azure.core.implementation.http.UrlBuilder"/>
       <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
-      <Class name="com.azure.storage.file.implementation.models.FileDownloadHeaders"/>
+      <Class name="com.azure.storage.file.implementation.models.FileGetPropertiesHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>

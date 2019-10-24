@@ -132,6 +132,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<HttpHeader> iterator() {
         return headers.values().iterator();

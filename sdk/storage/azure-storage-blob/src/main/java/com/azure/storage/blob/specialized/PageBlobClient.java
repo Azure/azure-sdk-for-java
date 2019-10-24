@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,8 +97,8 @@ public final class PageBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
-     * information, see the
+     * Creates a page blob of the specified length. By default this method will not overwrite an existing blob.
+     * Call PutPage to upload data data to a page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -109,7 +110,29 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the created page blob.
      */
     public PageBlobItem create(long size) {
-        return createWithResponse(size, null, null, null, null, null, Context.NONE).getValue();
+        return create(size, false);
+    }
+
+    /**
+     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobClient.create#long-boolean}
+     *
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return The information of the created page blob.
+     */
+    public PageBlobItem create(long size, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return createWithResponse(size, null, null, null, blobRequestConditions, null, Context.NONE).getValue();
     }
 
 
