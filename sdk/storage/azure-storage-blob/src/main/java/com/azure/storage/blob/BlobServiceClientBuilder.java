@@ -60,7 +60,7 @@ public final class BlobServiceClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new HttpLogOptions();
+    private HttpLogOptions logOptions = new BlobLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -249,13 +249,13 @@ public final class BlobServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpLogOptions} for service requests.
+     * Sets the {@link BlobLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated BlobServiceClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public BlobServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public BlobServiceClientBuilder blobLogOptions(BlobLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

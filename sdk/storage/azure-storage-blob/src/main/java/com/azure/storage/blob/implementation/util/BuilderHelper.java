@@ -16,7 +16,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageAllowedHeadersAndQueries;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -24,7 +23,6 @@ import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -74,9 +72,6 @@ public final class BuilderHelper {
 
         policies.add(getResponseValidationPolicy());
 
-        // Prepare load options for logging policy.
-        loadLogOptions(logOptions);
-
         policies.add(new HttpLoggingPolicy(logOptions));
 
         policies.add(new ScrubEtagPolicy());
@@ -85,20 +80,6 @@ public final class BuilderHelper {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-    }
-
-    /**
-     * Sets the allowed headers and queries to logOptions.
-     * @param logOptions the log options for headers and queries.
-     */
-    private static void loadLogOptions(final HttpLogOptions logOptions) {
-        Objects.requireNonNull(logOptions);
-
-        StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobHeaders().stream()
-            .forEach(headerName -> logOptions.addAllowedHeaderName(headerName));
-
-        StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobQueries().stream()
-            .forEach(queryName -> logOptions.addAllowedQueryParamName(queryName));
     }
 
     /*

@@ -9,7 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.http.policy.BlobLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
@@ -1228,7 +1228,7 @@ class BlockBlobAPITest extends APISpec {
             .credential(primaryCredential)
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .blobLogOptions(new BlobLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())

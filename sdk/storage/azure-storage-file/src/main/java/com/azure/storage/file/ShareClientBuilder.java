@@ -83,7 +83,7 @@ public class ShareClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new HttpLogOptions();
+    private HttpLogOptions logOptions = new FileLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -310,13 +310,13 @@ public class ShareClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpLogOptions} for service requests.
+     * Sets the {@link FileLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated ShareClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public ShareClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public ShareClientBuilder fileLogOptions(FileLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

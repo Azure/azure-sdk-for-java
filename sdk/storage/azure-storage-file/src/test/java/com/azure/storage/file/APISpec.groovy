@@ -13,11 +13,6 @@ import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.file.FileClientBuilder
-import com.azure.storage.file.FileServiceAsyncClient
-import com.azure.storage.file.FileServiceClient
-import com.azure.storage.file.FileServiceClientBuilder
-import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
@@ -115,7 +110,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             return new FileServiceClientBuilder()
                 .connectionString(connectionString)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .fileLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -130,7 +125,7 @@ class APISpec extends Specification {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .fileLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -147,7 +142,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(directoryPath)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .fileLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -165,7 +160,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(filePath)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .fileLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {

@@ -81,7 +81,7 @@ public final class QueueServiceClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new HttpLogOptions();
+    private HttpLogOptions logOptions = new QueueLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -277,13 +277,13 @@ public final class QueueServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpLogOptions} for service requests.
+     * Sets the {@link QueueLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated QueueServiceClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public QueueServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public QueueServiceClientBuilder queueLogOptions(QueueLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

@@ -12,7 +12,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.BlobLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
@@ -26,7 +26,6 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.StorageAllowedHeadersAndQueries;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -85,7 +84,7 @@ public final class EncryptedBlobClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new HttpLogOptions();
+    private BlobLogOptions logOptions = new BlobLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -181,9 +180,6 @@ public final class EncryptedBlobClientBuilder {
             .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
             .build());
 
-        // Prepare load options for logging policy.
-        loadLogOptions(logOptions);
-
         policies.add(new HttpLoggingPolicy(logOptions));
 
         policies.add(new ScrubEtagPolicy());
@@ -192,20 +188,6 @@ public final class EncryptedBlobClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-    }
-
-    /**
-     * Sets the allowed headers and queries to logOptions.
-     * @param logOptions the log options for headers and queries.
-     */
-    private static void loadLogOptions(final HttpLogOptions logOptions) {
-        Objects.requireNonNull(logOptions);
-
-        StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobHeaders().stream()
-            .forEach(headerName -> logOptions.addAllowedHeaderName(headerName));
-
-        StorageAllowedHeadersAndQueries.BlobHeadersAndQueries.getBlobQueries().stream()
-            .forEach(queryName -> logOptions.addAllowedQueryParamName(queryName));
     }
 
     /**
@@ -431,13 +413,13 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpLogOptions} for service requests.
+     * Sets the {@link BlobLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public EncryptedBlobClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public EncryptedBlobClientBuilder blobLogOptions(BlobLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }

@@ -17,7 +17,6 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageAllowedHeadersAndQueries;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
