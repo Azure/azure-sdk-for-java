@@ -33,7 +33,7 @@ class AppendBlobAPITest extends APISpec {
         then:
         createResponse.getStatusCode() == 201
         validateBasicHeaders(createResponse.getHeaders())
-        createResponse.getValue().getContentMD5() == null
+        createResponse.getValue().getContentMd5() == null
         createResponse.getValue().isServerEncrypted()
     }
 
@@ -489,5 +489,21 @@ class AppendBlobAPITest extends APISpec {
     def "Get Append Blob Name"() {
         expect:
         blobName == bc.getBlobName()
+    }
+
+    def "Create overwrite false"() {
+        when:
+        bc.create()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Create overwrite true"() {
+        when:
+        bc.create(true)
+
+        then:
+        notThrown(Throwable)
     }
 }

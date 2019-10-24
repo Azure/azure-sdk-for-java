@@ -33,8 +33,8 @@ import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.blob.specialized.LeaseClient
-import com.azure.storage.blob.specialized.LeaseClientBuilder
+import com.azure.storage.blob.specialized.BlobLeaseClient
+import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
@@ -214,7 +214,7 @@ class APISpec extends Specification {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountName = "storageaccount"
+            accountName = "azstoragesdkaccount"
             accountKey = "astorageaccountkey"
         }
 
@@ -409,23 +409,23 @@ class APISpec extends Specification {
         }
     }
 
-    static LeaseClient createLeaseClient(BlobClientBase blobClient) {
+    static BlobLeaseClient createLeaseClient(BlobClientBase blobClient) {
         return createLeaseClient(blobClient, null)
     }
 
-    static LeaseClient createLeaseClient(BlobClientBase blobClient, String leaseId) {
-        return new LeaseClientBuilder()
+    static BlobLeaseClient createLeaseClient(BlobClientBase blobClient, String leaseId) {
+        return new BlobLeaseClientBuilder()
             .blobClient(blobClient)
             .leaseId(leaseId)
             .buildClient()
     }
 
-    static LeaseClient createLeaseClient(BlobContainerClient containerClient) {
+    static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient) {
         return createLeaseClient(containerClient, null)
     }
 
-    static LeaseClient createLeaseClient(BlobContainerClient containerClient, String leaseId) {
-        return new LeaseClientBuilder()
+    static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient, String leaseId) {
+        return new BlobLeaseClientBuilder()
             .containerClient(containerClient)
             .leaseId(leaseId)
             .buildClient()
@@ -532,7 +532,7 @@ class APISpec extends Specification {
     def setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = new LeaseClientBuilder()
+            responseLeaseId = new BlobLeaseClientBuilder()
                 .blobAsyncClient(bac)
                 .buildAsyncClient()
                 .acquireLease(-1)
@@ -651,7 +651,7 @@ class APISpec extends Specification {
             response.getValue().getContentDisposition() == contentDisposition &&
             response.getValue().getContentEncoding() == contentEncoding &&
             response.getValue().getContentLanguage() == contentLanguage &&
-            response.getValue().getContentMD5() == contentMD5 &&
+            response.getValue().getContentMd5() == contentMD5 &&
             response.getHeaders().getValue("Content-Type") == contentType
     }
 

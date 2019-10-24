@@ -3,9 +3,15 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
+/**
+ * This class contains the response information returned from the service when getting container properties.
+ */
+@Immutable
 public final class BlobContainerProperties {
 
     private final Map<String, String> metadata;
@@ -18,6 +24,19 @@ public final class BlobContainerProperties {
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
 
+    /**
+     * Constructs a {@link BlobContainerProperties}.
+     *
+     * @param metadata Metadata associated with the container.
+     * @param eTag ETag of the container.
+     * @param lastModified Datetime when the container was last modified.
+     * @param leaseDuration Type of the lease on the container.
+     * @param leaseState State of the lease on the container.
+     * @param leaseStatus Status of the lease on the container.
+     * @param blobPublicAccess Public access status for the container.
+     * @param hasImmutabilityPolicy Flag indicating if the container has an immutability policy set on it.
+     * @param hasLegalHold Flag indicating if the container has a legal hold.
+     */
     public BlobContainerProperties(final Map<String, String> metadata, final String eTag,
         final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
         final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
@@ -95,8 +114,4 @@ public final class BlobContainerProperties {
     public boolean hasLegalHold() {
         return hasLegalHold;
     }
-
-
-
-
 }

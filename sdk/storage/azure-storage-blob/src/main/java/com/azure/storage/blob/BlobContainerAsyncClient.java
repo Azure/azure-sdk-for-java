@@ -16,6 +16,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
@@ -29,6 +30,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
@@ -138,9 +140,9 @@ public final class BlobContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
-        return new BlobAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), blobName).toString(), getServiceVersion(),
-            getAccountName(), getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
+        return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
+            Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
+            getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
     }
 
     /**
@@ -891,7 +893,10 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null, context)
-            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                ContainerGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
+            });
     }
 
 

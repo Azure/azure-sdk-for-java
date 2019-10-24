@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -13,6 +15,7 @@ import java.time.OffsetDateTime;
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/append-block>here</a> for more conceptual
  * information.
  */
+@Fluent
 public final class AppendBlobRequestConditions extends BlobRequestConditions {
     private Long maxSize;
     private Long appendPosition;

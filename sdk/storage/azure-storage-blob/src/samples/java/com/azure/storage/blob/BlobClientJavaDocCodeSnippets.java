@@ -55,22 +55,22 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#abortCopyFromURL(String)}
+     * Code snippets for {@link BlobClient#abortCopyFromUrl(String)}
      */
-    public void abortCopyFromURL() {
-        // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId);
+    public void abortCopyFromUrl() {
+        // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromUrl#String
+        client.abortCopyFromUrl(copyId);
         System.out.println("Aborted copy completed.");
-        // END: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
+        // END: com.azure.storage.blob.BlobClient.abortCopyFromUrl#String
     }
 
     /**
-     * Code snippets for {@link BlobClient#copyFromURL(String)}
+     * Code snippets for {@link BlobClient#copyFromUrl(String)}
      */
-    public void copyFromURL() {
-        // BEGIN: com.azure.storage.blob.BlobClient.copyFromURL#String
-        System.out.printf("Copy identifier: %s%n", client.copyFromURL(url));
-        // END: com.azure.storage.blob.BlobClient.copyFromURL#String
+    public void copyFromUrl() {
+        // BEGIN: com.azure.storage.blob.BlobClient.copyFromUrl#String
+        System.out.printf("Copy identifier: %s%n", client.copyFromUrl(url));
+        // END: com.azure.storage.blob.BlobClient.copyFromUrl#String
     }
 
     /**
@@ -196,34 +196,34 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#abortCopyFromURLWithResponse(String, String, Duration, Context)}
+     * Code snippets for {@link BlobClient#abortCopyFromUrlWithResponse(String, String, Duration, Context)}
      */
-    public void abortCopyFromURLWithResponseCodeSnippets() {
+    public void abortCopyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURLWithResponse#String-String-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromUrlWithResponse#String-String-Duration-Context
         System.out.printf("Aborted copy completed with status %d%n",
-            client.abortCopyFromURLWithResponse(copyId, leaseId, timeout,
+            client.abortCopyFromUrlWithResponse(copyId, leaseId, timeout,
                 new Context(key2, value2)).getStatusCode());
-        // END: com.azure.storage.blob.BlobClient.abortCopyFromURLWithResponse#String-String-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.abortCopyFromUrlWithResponse#String-String-Duration-Context
     }
 
     /**
-     * Code snippets for {@link BlobClient#copyFromURLWithResponse(String, Map, AccessTier, RequestConditions,
+     * Code snippets for {@link BlobClient#copyFromUrlWithResponse(String, Map, AccessTier, RequestConditions,
      * BlobRequestConditions, Duration, Context)}
      */
-    public void copyFromURLWithResponseCodeSnippets() {
+    public void copyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobClient.copyFromURLWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.copyFromUrlWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         System.out.printf("Copy identifier: %s%n",
-            client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions,
+            client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions,
                 blobRequestConditions, timeout,
                 new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.BlobClient.copyFromURLWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.copyFromUrlWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -380,6 +380,23 @@ public class BlobClientJavaDocCodeSnippets {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
         // END: com.azure.storage.blob.BlobClient.uploadFromFile#String
+    }
+
+    /**
+     * Code snippet for {@link BlobClient#uploadFromFile(String, boolean)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadFromFileOverwrite() throws IOException {
+        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean
+        try {
+            boolean overwrite = false;
+            client.uploadFromFile(filePath, overwrite);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean
     }
 
     /**
