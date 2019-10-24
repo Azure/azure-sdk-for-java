@@ -99,7 +99,7 @@ public final class QueueClientBuilder {
      * QueueAsyncClient QueueAsyncClients}.
      */
     public QueueClientBuilder() {
-        logOptions = BuilderHelper.getDefaultQueueLogOptions();
+        logOptions = getQueueDefaultLogOptions();
     }
 
     /**
@@ -310,6 +310,16 @@ public final class QueueClientBuilder {
     public QueueClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
+    }
+
+    /**
+     * Gets the default Storage whitelist log headers and query parameters.
+     */
+    public static HttpLogOptions getQueueDefaultLogOptions(){
+        HttpLogOptions defaultOptions = new HttpLogOptions();
+        QueueHeadersAndQueryParameters.getQueueHeaders().forEach(defaultOptions::addAllowedHeaderName);
+        QueueHeadersAndQueryParameters.getQueueQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
+        return defaultOptions;
     }
 
     /**

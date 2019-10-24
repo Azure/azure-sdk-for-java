@@ -157,16 +157,6 @@ public final class BuilderHelper {
             .build();
     }
 
-    /**
-     * Gets the default Storage whitelist log headers and query parameters.
-     */
-    public static HttpLogOptions getDefaultQueueLogOptions(){
-        HttpLogOptions defaultOptions = new HttpLogOptions();
-        QueueHeadersAndQueryParameters.getQueueHeaders().forEach(defaultOptions::addAllowedHeaderName);
-        QueueHeadersAndQueryParameters.getQueueQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        return defaultOptions;
-    }
-
     /*
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *

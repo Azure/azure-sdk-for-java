@@ -73,7 +73,7 @@ public final class BlobServiceClientBuilder {
      * and {@link BlobServiceAsyncClient BlobServiceAsyncClients}.
      */
     public BlobServiceClientBuilder() {
-        logOptions = BuilderHelper.getDefaultBlobLogOptions();
+        logOptions = getBlobDefaultLogOptions();
     }
 
     /**
@@ -260,6 +260,16 @@ public final class BlobServiceClientBuilder {
     public BlobServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
+    }
+
+    /**
+     * Gets the default Storage whitelist log headers and query parameters.
+     */
+    public static HttpLogOptions getBlobDefaultLogOptions(){
+        HttpLogOptions defaultOptions = new HttpLogOptions();
+        BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
+        BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
+        return defaultOptions;
     }
 
     /**

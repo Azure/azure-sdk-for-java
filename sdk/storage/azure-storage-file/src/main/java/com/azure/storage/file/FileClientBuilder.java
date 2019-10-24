@@ -24,6 +24,7 @@ import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 
 import com.azure.storage.file.implementation.util.BuilderHelper;
+import com.azure.storage.file.implementation.util.FileHeadersAndQueryParameters;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ public class FileClientBuilder {
      * FileAsyncClient FileAsyncClients}.
      */
     public FileClientBuilder() {
-        logOptions = BuilderHelper.getDefaultFileLogOptions();
+        logOptions = getFileDefaultLogOptions();
     }
 
     private FileServiceVersion getServiceVersion() {
@@ -387,6 +388,17 @@ public class FileClientBuilder {
     public FileClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
+    }
+
+    /**
+     * Gets the default log options with Storage headers and query parameters.
+     * @return the default log options.
+     */
+    public static HttpLogOptions getFileDefaultLogOptions() {
+        HttpLogOptions defaultOptions = new HttpLogOptions();
+        FileHeadersAndQueryParameters.getFileHeaders().forEach(defaultOptions::addAllowedHeaderName);
+        FileHeadersAndQueryParameters.getFileQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
+        return defaultOptions;
     }
 
     /**
