@@ -39,7 +39,7 @@ public final class DownloadRetryOptions {
      * response body.
      *
      * @param maxRetryRequests The number of retries to attempt before the request finally fails
-     * @return the updated ReliableDownloadOptions object
+     * @return the updated DownloadRetryOptions object
      * @throws IllegalArgumentException If {@code maxRetryRequests} is less than 0
      */
     public DownloadRetryOptions setMaxRetryRequests(int maxRetryRequests) {

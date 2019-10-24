@@ -139,7 +139,7 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 
 ## 2018.09.11 Version 10.1.0
 - Interfaces for helper types updated to be more consistent throughout the library. All types, with the exception of the options for pipeline factories, use a fluent pattern.
-- Removed RetryReader type as it's functionality was moved to be built into the DownloadResponse. RetryReaderOptions are now named ReliableDownloadOptions.
+- Removed RetryReader type as it's functionality was moved to be built into the DownloadResponse. RetryReaderOptions are now named DownloadRetryOptions.
 - Restructured the access conditions to be more logically adhere to their respective functions.
 - Added support for context parameter on each api to allow communication with the pipeline from the application level
 
