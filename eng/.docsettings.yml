@@ -48,7 +48,7 @@ known_presence_issues:
   - ['sdk/core/azure-core-management', '#2847']
   - ['cosmosdb/data-plane/commons-test-utils', '#2847']
   - ['cosmosdb/data-plane/sdk', '#2847']
-  - ['sdk/cosmos/microsoft-azure-cosmos', '#2847']
+  - ['sdk/cosmos/azure-cosmos', '#2847']
   - ['cosmosdb/data-plane/gateway', '#2847']
   - ['cosmosdb/data-plane/commons', '#2847']
   - ['cosmosdb/data-plane/direct-impl', '#2847']
