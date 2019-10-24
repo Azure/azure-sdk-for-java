@@ -1,7 +1,32 @@
 # Release History
 
 ## Version 12.0.0-preview.5 (2019-10-31)
-- This release consists of API improvements, performance enhancements, samples and updated documentation.
+
+- Renamed FileReference to StorageFileItem
+- Changed response of ShareClient.listFilesAndDirectories FileReference to StorageFileItem
+- FileUploadRangeFromUrlInfo eTag() changed to getETag() and lastModified() changed to getLastModidified()
+- Changed response of FileAsyncClient.download() from Mono<FileDownloadInfo> to Flux<ByteBuffer>
+- Renamed FileAsyncClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
+- Removed FileAsyncClient.uploadWithResponse(Flux<ByteBuffer>, long, long)
+- Changed response of FileClient.download() from FileDownloadInfo to voif
+- Renamed FileClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
+- Changed FileClient upload methods to take InputStreams instead of ByteBuffers
+- Removed FileClient.uploadWithResponse(ByteBuffer, long, long)
+- Deleted FileDownloadInfo
+- Removed FileProperty from public API
+- Removed BaseFileClientBuilder
+- Removed FileClientBuilder, ShareClientBuilder, and FileServiceClientBuilder inheritance of BaseFileClientBuilder
+- Renamed ListShatesOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
+- Removes StorageError and StorageErrorException from public API
+- Renamed StorageErrorCode to FileErrorCode, SignedIdentifier to FileSignedIdentifier, StorageServiceProperties to FileServiceProperties, CorRules to FileCorRules, AccessPolicy to FileAccessPolicy, and Metrics to FileMetrics
+- Renamed FileHTTPHeaders to FileHttpHeaders and removed File from getter names
+- Replaced forceCloseHandles(String, boolean) with forceCloseHandle(String) and forceCloseHandles(boolean)
+- Renamed StorageException to FileStorageException
+- Added FileServiceVersion and the ability to set it on client builders
+- Replaced URL parameters with String on uploadRangeFromUrl
+- Replaced startCopy with beginCopy and return poller
+- Renamed FileSasPermission getters to use has prefix
+- Changed return type for FileClient.downloadWithProperties from Response<Void> to FileDownloadResponse and FileAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<FileDownloadAsyncResponse>
 
 ## Version 12.0.0-preview.4 (2019-10-8)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).

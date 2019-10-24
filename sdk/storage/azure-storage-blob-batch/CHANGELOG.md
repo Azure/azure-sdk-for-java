@@ -1,6 +1,8 @@
 # Change Log azure-storage-blob-batch
 ## Version 12.0.0 (2019-10-31)
-- This release consists of API improvements, performance enhancements, samples and updated documentation.
+
+- Added BlobBatchStorageException
+- Changed exception throwing to throw StorageBlobException on invalid request and BlobBatchStorageException when batch operations fail
 
 ## Version 12.0.0-preview.4 (2019-10-8)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).

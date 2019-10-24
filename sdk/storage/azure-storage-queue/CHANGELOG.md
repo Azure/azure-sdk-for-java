@@ -1,7 +1,18 @@
 # Release History
 ## Version 12.0.0 (2019-10-31)
-- This release consists of API improvements, performance enhancements, samples and updated documentation.
-
+- Removed QueueMessage from public API
+- Removed BaseQueueClientBuilder
+- Removed QueueClientBuilder and QueueServiceClientBuilder inheritance of BaseQueueClientBuilder
+- Renamed QueueSegmentOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
+- Removes StorageError and StorageErrorException from public API
+- Renamed StorageErrorCode to QueueErrorCode, SignedIdentifier to QueueSignedIdentifier, StorageServiceProperties to QueueServiceProperties, StorageServiceStats to QueueServiceStatistics, CorRules to QueueCorRules, AccessPolicy to QueueAccessPolicy, Logging to QueueAnalyticsLogging, Metrics to QueueMetrics, and RetentionPolicy to QueueRetentionPolicy
+- Renamed StorageException to QueueStorageException
+- Added QueueServiceVersion and the ability to set it on client builders
+- Renamed enqueueMessage to sendMessage and changed the response type from EnqueueMessage to SendMessageResult
+- Renamed dequeueMessages to receiveMessages and changed the response type from DequeuedMessage to QueueMessageItem
+- Renamed PeekedMessage to PeekedMessageItem and UpdatedMessage to UpdatedMessageResult
+- Added support for emulator endpoints
+- Renamed QueueSasPermission getters to use has prefix
 ## Version 12.0.0-preview.4 (2019-10-8)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
