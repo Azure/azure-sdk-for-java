@@ -10,9 +10,7 @@ import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,9 +25,6 @@ import static com.azure.search.SearchTestBase.HOTELS_INDEX_NAME;
 public class SuggestSyncTests extends SuggestTestBase {
 
     private SearchIndexClient client;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void canSuggestDynamicDocuments() {
@@ -57,7 +52,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSearchFields("HotelName");
 
-        Iterator<SuggestPagedResponse> suggestResultIterator  = client.suggest("luxury", "sg", suggestOptions, null)
+        Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("luxury", "sg", suggestOptions, null)
             .iterableByPage()
             .iterator();
 
@@ -121,7 +116,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canSuggestWithDateTimeInStaticModel() throws Exception {
+    public void canSuggestWithDateTimeInStaticModel() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getClientBuilder(BOOKS_INDEX_NAME).buildClient();
 
@@ -168,12 +163,13 @@ public class SuggestSyncTests extends SuggestTestBase {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("The specified suggester name 'Suggester does not exist' "
-            + "does not exist in this index definition.");
+        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResultIterator =
+            client.suggest("Hotel", "Suggester does not exist", null, null);
 
-        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("Hotel", "Suggester does not exist", null, null);
-        suggestResult.iterableByPage().iterator().next();
+        assertException(
+            () -> suggestResultIterator.iterableByPage().iterator().next(),
+            HttpResponseException.class,
+            "The specified suggester name 'Suggester does not exist' does not exist in this index definition.");
     }
 
     @Override
@@ -181,15 +177,15 @@ public class SuggestSyncTests extends SuggestTestBase {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
+        SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("This is not a valid orderby.");
 
-        uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy("This is not a valid orderby.");
+        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResultIterator =
+            client.suggest("hotel", "sg", suggestOptions, null);
 
-        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult  = client.suggest("hotel", "sg", suggestOptions, null);
-        suggestResult.iterableByPage().iterator().next();
+        assertException(
+            () -> suggestResultIterator.iterableByPage().iterator().next(),
+            HttpResponseException.class,
+            "Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
     }
 
     @Override
@@ -205,7 +201,7 @@ public class SuggestSyncTests extends SuggestTestBase {
             .setMinimumCoverage(50.0);
 
         //act
-        SuggestPagedResponse suggestPagedResponse  = client
+        SuggestPagedResponse suggestPagedResponse = client
             .suggest("luxury", "sg", suggestOptions, null)
             .iterableByPage()
             .iterator()
@@ -227,7 +223,8 @@ public class SuggestSyncTests extends SuggestTestBase {
             .setTop(3);
 
         //act
-        Iterator<SuggestPagedResponse> suggestResultIterator  = client.suggest("hotel",
+        Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest(
+            "hotel",
             "sg",
             suggestOptions,
             null)
@@ -249,13 +246,14 @@ public class SuggestSyncTests extends SuggestTestBase {
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
             .setOrderBy("HotelId");
 
-        SuggestPagedResponse suggestPagedResponse  = client.suggest("hotel", "sg", suggestOptions, null)
+        SuggestPagedResponse suggestPagedResponse = client.suggest("hotel", "sg", suggestOptions, null)
             .iterableByPage()
             .iterator()
             .next();
 
         Assert.assertNotNull(suggestPagedResponse);
-        List<String> actualIds = suggestPagedResponse.getValue().stream().map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
+        List<String> actualIds = suggestPagedResponse.getValue().stream()
+            .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "5");
         Assert.assertEquals(expectedIds, actualIds);
     }
@@ -268,15 +266,17 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SuggestOptions suggestOptions = new SuggestOptions()
-            .setOrderBy("Rating desc",
+            .setOrderBy(
+                "Rating desc",
                 "LastRenovationDate asc",
                 "geo.distance(Location, geography'POINT(-122.0 49.0)')");
 
         SuggestPagedResponse suggestPagedResponse = client.suggest("hotel", "sg", suggestOptions, null)
-                                            .iterableByPage().iterator().next();
+            .iterableByPage().iterator().next();
 
         Assert.assertNotNull(suggestPagedResponse);
-        List<String> actualIds = suggestPagedResponse.getValue().stream().map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
+        List<String> actualIds = suggestPagedResponse.getValue().stream()
+            .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
         Assert.assertEquals(expectedIds, actualIds);
     }

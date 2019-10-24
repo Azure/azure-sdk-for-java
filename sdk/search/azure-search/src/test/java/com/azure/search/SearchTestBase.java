@@ -15,9 +15,7 @@ import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.models.Index;
 import com.azure.search.models.SynonymMap;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.text.ParseException;
 import java.time.OffsetDateTime;
@@ -46,9 +44,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     static final String NON_NULLABLE_INDEX_NAME = "non-nullable-index";
 
     protected List<Map<String, Object>> hotels;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Override
     protected void beforeTest() {
@@ -233,24 +228,22 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     @Test
     public void searchThrowsWhenRequestIsMalformed() {
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'");
+        SearchOptions invalidSearchOptions = new SearchOptions().setFilter("This is not a valid filter.");
 
-        SearchOptions invalidSearchOptions = new SearchOptions()
-            .setFilter("This is not a valid filter.");
-
-        search("*", invalidSearchOptions, new RequestOptions());
+        assertException(
+            () -> search("*", invalidSearchOptions, new RequestOptions()),
+            HttpResponseException.class,
+            "Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'");
     }
 
     @Test
     public void searchThrowsWhenSpecialCharInRegexIsUnescaped() {
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("Failed to parse query string at line 1, column 8.");
+        SearchOptions invalidSearchOptions = new SearchOptions().setQueryType(QueryType.FULL);
 
-        SearchOptions invalidSearchOptions = new SearchOptions()
-            .setQueryType(QueryType.FULL);
-
-        search("/.*/.*/", invalidSearchOptions, new RequestOptions());
+        assertException(
+            () -> search("/.*/.*/", invalidSearchOptions, new RequestOptions()),
+            HttpResponseException.class,
+            "Failed to parse query string at line 1, column 8.");
     }
 
     @Test

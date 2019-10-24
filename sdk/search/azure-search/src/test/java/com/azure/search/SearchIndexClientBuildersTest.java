@@ -5,9 +5,7 @@ package com.azure.search;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class SearchIndexClientBuildersTest {
     private ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials("");
@@ -119,13 +117,17 @@ public class SearchIndexClientBuildersTest {
                                                ApiKeyCredentials apiKeyCredentials,
                                                String apiVersion,
                                                String dnsSuffix) {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(expectedMsg);
+        try {
+            if (isAsync) {
+                buildAsyncClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
+            } else {
+                buildClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
+            }
+            Assert.fail();
 
-        if (isAsync) {
-            buildAsyncClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
-        } else {
-            buildClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
+        } catch (Exception e) {
+            Assert.assertEquals(IllegalArgumentException.class, e.getClass());
+            Assert.assertTrue(e.getMessage().contains(expectedMsg));
         }
     }
 
@@ -186,9 +188,6 @@ public class SearchIndexClientBuildersTest {
         buildClientAndVerifyInternal(false);
         buildClientAndVerifyInternal(true);
     }
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void verifyEmptySearchServiceNameIsInvalidAsyncTest() {

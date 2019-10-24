@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 public class SearchIndexClientTestBase extends SearchServiceTestBase {
 
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
@@ -140,6 +139,16 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    void assertException(Runnable exceptionThrower, Class<? extends Exception> expectedExceptionType, String expectedMessage) {
+        try {
+            exceptionThrower.run();
+            Assert.fail();
+        } catch (Throwable ex) {
+            Assert.assertEquals(expectedExceptionType, ex.getClass());
+            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
 }

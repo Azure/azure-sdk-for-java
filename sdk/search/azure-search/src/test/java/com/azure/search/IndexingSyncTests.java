@@ -5,9 +5,12 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.models.GeoPoint;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.DataType;
 import com.azure.search.models.DocumentIndexResult;
+import com.azure.search.models.Field;
+import com.azure.search.models.GeoPoint;
+import com.azure.search.models.Index;
+import com.azure.search.models.IndexBatch;
 import com.azure.search.models.IndexingResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.test.environment.models.Author;
@@ -16,13 +19,8 @@ import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.LoudHotel;
-import com.azure.search.models.DataType;
-import com.azure.search.models.Field;
-import com.azure.search.models.Index;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -41,9 +39,6 @@ import java.util.Map;
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Override
     public void countingDocsOfNewIndexGivesZero() {
@@ -266,12 +261,14 @@ public class IndexingSyncTests extends IndexingTestBase {
         createHotelIndex();
         client = getClientBuilder(INDEX_NAME).buildClient();
 
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("The request is invalid. Details: actions : 0: Document key cannot be missing or empty.");
-
         List<Document> docs = new ArrayList<>();
         docs.add(new Document());
-        client.uploadDocuments(docs);
+
+        assertException(
+            () -> client.uploadDocuments(docs),
+            HttpResponseException.class,
+            "The request is invalid. Details: actions : 0: Document key cannot be missing or empty."
+        );
     }
 
     @Override

@@ -9,9 +9,7 @@ import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -24,9 +22,6 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
 
     private SearchIndexClient client;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Override
     protected void initializeClient() {
         createHotelIndex();
@@ -36,14 +31,14 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
 
     @Test
     public void canAutocompleteThrowsWhenGivenBadSuggesterName() {
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name");
-
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("very po", "Invalid suggester", params, null);
-        results.iterableByPage().iterator().next();
+        assertException(
+            () -> results.iterableByPage().iterator().next(),
+            HttpResponseException.class,
+            "The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name");
     }
 
     @Override
@@ -129,11 +124,12 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
 
     @Test
     public void canAutocompleteThrowsWhenRequestIsMalformed() {
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\\r\\nParameter name: suggestions");
-
         PagedIterable<AutocompleteItem> results = client.autocomplete("very po", "");
-        results.iterableByPage().iterator().next();
+        assertException(
+            () -> results.iterableByPage().iterator().next(),
+            HttpResponseException.class,
+            "Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\\r\\nParameter name: suggestions"
+        );
     }
 
     @Override
