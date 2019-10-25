@@ -10,8 +10,8 @@ import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The type responsible for creating individual Swagger interface method parsers from a Swagger
@@ -20,7 +20,7 @@ import java.util.Map;
 public class SwaggerInterfaceParser {
     private final String host;
     private final String serviceName;
-    private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
+    private static final Map<Method, SwaggerMethodParser> methodParsers = new ConcurrentHashMap<>(); // TODO (perf): Should we use a String of classname-methodname-args?
 
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface
