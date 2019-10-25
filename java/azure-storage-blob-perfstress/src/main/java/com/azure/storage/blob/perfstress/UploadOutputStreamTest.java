@@ -20,7 +20,7 @@ public class UploadOutputStreamTest extends RandomBlobTest<SizeOptions> {
     public void Run() {
         try {
             InputStream inputStream = RandomStream.create(Options.Size);
-            BlobOutputStream blobOutputStream = _blobClient.getBlockBlobClient().getBlobOutputStream();
+            BlobOutputStream blobOutputStream = _blockBlobClient.getBlobOutputStream();
             inputStream.transferTo(blobOutputStream);
             blobOutputStream.close();
         } catch (IOException e) {
