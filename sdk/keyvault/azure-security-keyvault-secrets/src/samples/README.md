@@ -55,19 +55,6 @@ For more extensive documentation on Azure Key Vault, see the [API reference docu
 
 <!-- LINKS -->
 [source_code]:  src
-[api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
-[azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[maven]: https://maven.apache.org/
-[azure_subscription]: https://azure.microsoft.com/
-[azure_keyvault]: https://docs.microsoft.com/azure/key-vault/quick-create-portal
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[rest_api]: https://docs.microsoft.com/rest/api/keyvault/
-[azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
-[azure_create_application_in_portal]:https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
-[azure_keyvault_cli]:https://docs.microsoft.com/azure/key-vault/quick-create-cli
-[azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
-[secrets_samples]: src/samples/java/com/azure/security/keyvault/secrets
 [sample_helloWorld]: src/samples/java/com/azure/security/keyvault/secrets/HelloWorld.java
 [sample_helloWorldAsync]: src/samples/java/com/azure/security/keyvault/secrets/HelloWorldAsync.java
 [sample_list]: src/samples/java/com/azure/security/keyvault/secrets/ListOperations.java
