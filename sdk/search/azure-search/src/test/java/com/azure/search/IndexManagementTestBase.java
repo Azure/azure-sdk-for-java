@@ -35,10 +35,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public abstract class IndexManagementTestBase extends SearchServiceTestBase {
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-    }
 
     @Test
     public abstract void createIndexReturnsCorrectDefinition();

@@ -4,21 +4,20 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
-import com.azure.search.models.GeoPoint;
+import com.azure.search.models.DataType;
 import com.azure.search.models.DocumentIndexResult;
+import com.azure.search.models.Field;
+import com.azure.search.models.GeoPoint;
+import com.azure.search.models.Index;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.IndexingResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.test.environment.models.Author;
-import com.azure.search.test.environment.models.Hotel;
-import com.azure.search.test.environment.models.HotelRoom;
-import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.Book;
+import com.azure.search.test.environment.models.Hotel;
+import com.azure.search.test.environment.models.HotelAddress;
+import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.LoudHotel;
-import com.azure.search.models.DataType;
-import com.azure.search.models.Field;
-import com.azure.search.models.Index;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
@@ -241,9 +240,8 @@ public class IndexingAsyncTests extends IndexingTestBase {
             ));
 
         if (!interceptorManager.isPlaybackMode()) {
-            getSearchServiceClient().indexes()
-                .createWithRestResponseAsync(indexWithReservedName, Context.NONE)
-                .block();
+            SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
+            searchServiceClient.createOrUpdateIndex(indexWithReservedName);
         }
 
         client = getClientBuilder(indexWithReservedName.getName()).buildAsyncClient();

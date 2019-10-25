@@ -26,11 +26,6 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
     protected static final String DATA_TYPES_INDEX_NAME = "data-types-tests-index";
     protected static final String MODEL_WITH_DATA_TYPES_INDEX_JSON = "DataTypesTestsIndexData.json";
 
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-    }
-
     Hotel prepareExpectedHotel() throws ParseException {
         return new Hotel().hotelId("1")
             .hotelName("Fancy Stay")

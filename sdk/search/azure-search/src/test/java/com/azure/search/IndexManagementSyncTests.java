@@ -31,9 +31,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     private SearchServiceClient client;
 
     @Override
-    public void createIndexReturnsCorrectDefinition() {
+    protected void beforeTest() {
+        super.beforeTest();
         client = getSearchServiceClientBuilder().buildClient();
+    }
 
+    @Override
+    public void createIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         Index createdIndex = client.createIndex(index);
 
@@ -42,8 +46,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createIndexReturnsCorrectDefaultValues() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         index.setCorsOptions(new CorsOptions().setAllowedOrigins(Collections.singletonList("*")));
         index.setScoringProfiles(Collections.singletonList(new ScoringProfile()
@@ -67,8 +69,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createIndexFailsWithUsefulMessageOnUserError() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         String indexName = "hotels";
         Index index = new Index()
             .setName(indexName)
@@ -93,8 +93,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void getIndexReturnsCorrectDefinition() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         client.createIndex(index);
         Index createdIndex = client.getIndex(index.getName());
@@ -104,8 +102,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void getIndexThrowsOnNotFound() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         try {
             client.getIndex("thisindexdoesnotexist");
             Assert.fail("getIndex did not throw an expected Exception");
@@ -118,8 +114,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void existsReturnsTrueForExistingIndex() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         client.createIndex(index);
 
@@ -128,15 +122,11 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void existsReturnsFalseForNonExistingIndex() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Assert.assertFalse(client.indexExists("invalidindex"));
     }
 
     @Override
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         Index staleResource = client.createOrUpdateIndex(index);
         Index currentResource = client.createOrUpdateIndex(mutateCorsOptionsInIndex(staleResource));
@@ -153,8 +143,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         client.createIndex(index);
 
@@ -170,8 +158,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void deleteIndexIsIdempotent() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = new Index()
             .setName("hotels")
             .setFields(Collections.singletonList(
@@ -196,8 +182,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void canCreateAndDeleteIndex() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         client.createIndex(index);
         client.deleteIndex(index.getName());
@@ -206,8 +190,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void canCreateAndListIndexes() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
 
@@ -224,8 +206,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void canListIndexesWithSelectedField() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
 
@@ -255,8 +235,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void canAddSynonymFieldProperty() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
         client.createSynonymMap(synonymMap);
@@ -283,8 +261,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void canUpdateSynonymFieldProperty() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap()
             .setName(synonymMapName)
@@ -308,8 +284,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     public void canUpdateIndexDefinition() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index fullFeaturedIndex = createTestIndex();
         Index initialIndex = createTestIndex();
 
@@ -350,8 +324,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void canUpdateSuggesterWithNewIndexFields() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         client.createIndex(index);
 
@@ -376,8 +348,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         client.createIndex(index);
 
@@ -403,8 +373,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExist() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
 
         Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(index,
@@ -417,8 +385,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
@@ -434,8 +400,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index resource = createTestIndex();
         Index updatedResource = client.createOrUpdateIndex(resource, generateIfNotExistsAccessCondition(), null);
 
@@ -444,8 +408,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
@@ -457,8 +419,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfExistsFailsOnNoResource() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index resource = createTestIndex();
 
         try {
@@ -474,8 +434,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
@@ -488,8 +446,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);

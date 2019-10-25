@@ -30,9 +30,13 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     private SearchServiceAsyncClient client;
 
     @Override
-    public void createIndexReturnsCorrectDefinition() {
+    protected void beforeTest() {
+        super.beforeTest();
         client = getSearchServiceClientBuilder().buildAsyncClient();
+    }
 
+    @Override
+    public void createIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         StepVerifier
             .create(client.createIndex(index))
@@ -44,8 +48,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createIndexReturnsCorrectDefaultValues() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         index.setCorsOptions(new CorsOptions().setAllowedOrigins(Collections.singletonList("*")));
         index.setScoringProfiles(Collections.singletonList(new ScoringProfile()
@@ -73,8 +75,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createIndexFailsWithUsefulMessageOnUserError() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         String indexName = "hotels";
         Index index = new Index()
             .setName(indexName)
@@ -99,8 +99,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void getIndexReturnsCorrectDefinition() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         client.createIndex(index).block();
 
@@ -114,8 +112,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void getIndexThrowsOnNotFound() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         StepVerifier
             .create(client.getIndex("thisindexdoesnotexist"))
             .verifyErrorSatisfies(error -> {
@@ -127,8 +123,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void existsReturnsTrueForExistingIndex() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         client.createIndex(index).block();
 
@@ -140,8 +134,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void existsReturnsFalseForNonExistingIndex() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         StepVerifier
             .create(client.indexExists("invalidindex"))
             .assertNext(res -> Assert.assertFalse(res))
@@ -150,8 +142,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         Index staleResource = client.createOrUpdateIndex(index).block();
         Index currentResource = client.createOrUpdateIndex(mutateCorsOptionsInIndex(staleResource)).block();
@@ -167,8 +157,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         client.createIndex(index).block();
 
@@ -186,8 +174,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void deleteIndexIsIdempotent() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = new Index()
             .setName("hotels")
             .setFields(Collections.singletonList(
@@ -228,8 +214,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void canCreateAndDeleteIndex() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         client.createIndex(index).block();
         client.deleteIndex(index.getName()).block();
@@ -244,8 +228,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void canCreateAndListIndexes() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
 
@@ -266,8 +248,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void canListIndexesWithSelectedField() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
 
@@ -306,8 +286,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void canAddSynonymFieldProperty() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
         client.createSynonymMap(synonymMap).block();
@@ -337,8 +315,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void canUpdateSynonymFieldProperty() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap()
             .setName(synonymMapName)
@@ -366,8 +342,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     }
 
     public void canUpdateIndexDefinition() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index fullFeaturedIndex = createTestIndex();
         Index initialIndex = createTestIndex();
 
@@ -415,8 +389,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void canUpdateSuggesterWithNewIndexFields() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         client.createIndex(index).block();
 
@@ -442,8 +414,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         client.createIndex(index).block();
 
@@ -468,8 +438,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExist() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
 
         StepVerifier
@@ -480,8 +448,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
@@ -496,8 +462,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index resource = createTestIndex();
         Mono<Index> updatedResource = client.createOrUpdateIndex(resource, generateIfNotExistsAccessCondition(), null);
 
@@ -509,8 +473,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
@@ -527,8 +489,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfExistsFailsOnNoResource() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index resource = createTestIndex();
 
         StepVerifier
@@ -544,8 +504,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
@@ -563,8 +521,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);

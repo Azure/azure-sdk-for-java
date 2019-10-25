@@ -2,13 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.search.common.SearchApiKeyPipelinePolicy;
-import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.IndexingResult;
-import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
@@ -26,24 +21,6 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     static final String INDEX_NAME = "hotels";
     static final String BOOKS_INDEX_NAME = "books";
     static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
-
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-    }
-
-    protected SearchServiceRestClientImpl getSearchServiceClient() {
-        return new SearchServiceRestClientBuilder()
-            .apiVersion("2019-05-06")
-            .searchServiceName(searchServiceName)
-            .searchDnsSuffix(searchDnsSuffix)
-            .pipeline(
-                new HttpPipelineBuilder()
-                    .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                    .policies(new SearchApiKeyPipelinePolicy(apiKeyCredentials))
-                    .build()
-            ).build();
-    }
 
     @Test
     public abstract void countingDocsOfNewIndexGivesZero();

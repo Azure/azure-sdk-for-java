@@ -7,10 +7,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public abstract class SynonymMapTestBase extends SearchServiceTestBase {
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-    }
 
     @Test
     public abstract void createSynonymMapReturnsCorrectDefinition();

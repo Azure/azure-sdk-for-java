@@ -4,15 +4,12 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.search.models.FacetResult;
+import com.azure.search.models.Index;
 import com.azure.search.models.QueryType;
 import com.azure.search.models.RequestOptions;
-import com.azure.search.models.SearchResult;
 import com.azure.search.models.SearchOptions;
-import com.azure.search.implementation.SearchServiceRestClientImpl;
-import com.azure.search.models.Index;
+import com.azure.search.models.SearchResult;
 import com.azure.search.models.SynonymMap;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,11 +41,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     static final String NON_NULLABLE_INDEX_NAME = "non-nullable-index";
 
     protected List<Map<String, Object>> hotels;
-
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-    }
 
     List<Map<String, Object>> createHotelsList(int count) {
         List<Map<String, Object>> documents = new ArrayList<>();
@@ -186,29 +178,21 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     void prepareHotelsSynonymMap(String name, String synonyms, String fieldName) {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
-            SearchServiceRestClientImpl searchServiceClient = searchServiceHotelsIndex.searchServiceClient();
+            SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
 
             // Create a new SynonymMap
-            searchServiceClient.synonymMaps().createOrUpdateWithRestResponseAsync(name,
-                new SynonymMap()
-                    .setName(name)
-                    .setSynonyms(synonyms),
-                Context.NONE)
-            .block();
+            searchServiceClient.createSynonymMap(new SynonymMap()
+                .setName(name)
+                .setSynonyms(synonyms));
 
             // Attach index field to SynonymMap
-            Index hotelsIndex = searchServiceClient.indexes()
-                .getWithRestResponseAsync(HOTELS_INDEX_NAME, Context.NONE)
-                .map(Response::getValue)
-                .block();
+            Index hotelsIndex = searchServiceClient.getIndex(HOTELS_INDEX_NAME);
             hotelsIndex.getFields().stream()
                 .filter(f -> fieldName.equals(f.getName()))
                 .findFirst().get().setSynonymMaps(Collections.singletonList(name));
 
             // Update the index with the SynonymMap
-            searchServiceClient.indexes()
-                .createOrUpdateWithRestResponseAsync(HOTELS_INDEX_NAME, hotelsIndex, Context.NONE)
-                .block();
+            searchServiceClient.createOrUpdateIndex(hotelsIndex);
 
             // Wait for the index to update with the SynonymMap
             try {

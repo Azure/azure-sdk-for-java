@@ -80,9 +80,8 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
     protected SearchIndexClientBuilder getClientBuilder(String indexName) {
         if (!interceptorManager.isPlaybackMode()) {
             return new SearchIndexClientBuilder()
-                .serviceEndpoint("https://" + searchServiceName + ".search.windows.net")
+                .serviceEndpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
                 .indexName(indexName)
-                .apiVersion("2019-05-06")
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                 .credential(apiKeyCredentials)
                 .addPolicy(interceptorManager.getRecordPolicy())
@@ -91,9 +90,8 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
                     new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
         } else {
             return new SearchIndexClientBuilder()
-                .serviceEndpoint("https://" + searchServiceName + ".search.windows.net")
+                .serviceEndpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
                 .indexName(indexName)
-                .apiVersion("2019-05-06")
                 .httpClient(interceptorManager.getPlaybackClient());
         }
     }

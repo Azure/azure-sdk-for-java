@@ -12,9 +12,13 @@ public class SynonymMapAsyncTests extends SynonymMapTestBase {
     private SearchServiceAsyncClient client;
 
     @Override
-    public void createSynonymMapReturnsCorrectDefinition() {
+    protected void beforeTest() {
+        super.beforeTest();
         client = getSearchServiceClientBuilder().buildAsyncClient();
+    }
 
+    @Override
+    public void createSynonymMapReturnsCorrectDefinition() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
 
         StepVerifier
@@ -27,8 +31,6 @@ public class SynonymMapAsyncTests extends SynonymMapTestBase {
 
     @Override
     public void createSynonymMapFailsWithUsefulMessageOnUserError() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         SynonymMap expectedSynonymMap = createTestSynonymMap();
         // Set invalid Synonym
         expectedSynonymMap.setSynonyms("a => b => c");
