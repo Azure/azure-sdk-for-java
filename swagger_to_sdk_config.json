@@ -6,7 +6,8 @@
       "verbose": "",
       "sdkrel:azure-libraries-for-java-folder": ".",
       "multiapi": "",
-      "use": "@microsoft.azure/autorest.java@preview"
+      "use": "@microsoft.azure/autorest.java@preview",
+      "java.clear-output-folder": ""
     },
     "version": "0.2.0",
     "advanced_options": {
