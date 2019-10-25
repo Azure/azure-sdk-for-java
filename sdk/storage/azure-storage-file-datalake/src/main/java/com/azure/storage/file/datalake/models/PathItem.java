@@ -4,8 +4,6 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.storage.file.datalake.implementation.models.Path;
-import com.azure.storage.file.datalake.implementation.models.PathCreateHeaders;
-import com.sun.scenario.effect.Offset;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +23,7 @@ public class PathItem {
     private String permissions;
 
     public PathItem(Path path) {
-        this.eTag = path.getETag();
+        this.eTag = path.getEtag();
         this.lastModifiedTime = OffsetDateTime.parse(path.getLastModified(), DateTimeFormatter.RFC_1123_DATE_TIME);
         this.contentLength = path.getContentLength();
         this.group = path.getGroup();

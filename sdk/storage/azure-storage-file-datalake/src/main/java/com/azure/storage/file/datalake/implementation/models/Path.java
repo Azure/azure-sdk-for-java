@@ -31,12 +31,6 @@ public final class Path {
     private String lastModified;
 
     /*
-     * The eTag property.
-     */
-    @JsonProperty(value = "eTag")
-    private String eTag;
-
-    /*
      * The contentLength property.
      */
     @JsonProperty(value = "contentLength")
@@ -59,6 +53,12 @@ public final class Path {
      */
     @JsonProperty(value = "permissions")
     private String permissions;
+
+    /*
+     * The etag property.
+     */
+    @JsonProperty(value = "etag")
+    private String etag;
 
     /**
      * Get the name property: The name property.
@@ -117,26 +117,6 @@ public final class Path {
      */
     public Path setLastModified(String lastModified) {
         this.lastModified = lastModified;
-        return this;
-    }
-
-    /**
-     * Get the eTag property: The eTag property.
-     *
-     * @return the eTag value.
-     */
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag property: The eTag property.
-     *
-     * @param eTag the eTag value to set.
-     * @return the Path object itself.
-     */
-    public Path setETag(String eTag) {
-        this.eTag = eTag;
         return this;
     }
 
@@ -217,6 +197,26 @@ public final class Path {
      */
     public Path setPermissions(String permissions) {
         this.permissions = permissions;
+        return this;
+    }
+
+    /**
+     * Get the etag property: The etag property.
+     *
+     * @return the etag value.
+     */
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: The etag property.
+     *
+     * @param etag the etag value to set.
+     * @return the Path object itself.
+     */
+    public Path setEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 }

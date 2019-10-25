@@ -13,8 +13,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerProperties;
-import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import com.azure.storage.file.datalake.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.GetPathsOptions;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
@@ -343,10 +343,10 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHTTPHeaders-Map-PathAccessConditions-String-String}
      *
      * @param fileName Name of the file to create.
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the file.
      * @param accessConditions {@link PathAccessConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
@@ -355,7 +355,7 @@ public class FileSystemClient {
      * to interact with the file created.
      */
     public Response<FileClient> createFileWithResponse(String fileName,
-        PathHttpHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
+        PathHTTPHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
         String permissions, String umask, Duration timeout, Context context) {
         FileClient fileClient = getFileClient(fileName);
 
@@ -421,10 +421,10 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHTTPHeaders-Map-PathAccessConditions-String-String}
      *
      * @param directoryName Name of the directory to create.
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the directory.
      * @param accessConditions {@link PathAccessConditions}
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
@@ -433,7 +433,7 @@ public class FileSystemClient {
      * interact with the directory created.
      */
     public Response<DirectoryClient> createDirectoryWithResponse(String directoryName,
-        PathHttpHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
+        PathHTTPHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
         String permissions, String umask, Duration timeout, Context context) {
         DirectoryClient directoryClient = getDirectoryClient(directoryName);
 

@@ -15,7 +15,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
-import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
@@ -25,7 +25,6 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.Map;
@@ -176,7 +175,7 @@ public class PathAsyncClient {
      * Package-private create method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
      *
      * @param resourceType {@link PathResourceType}
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the resource.
      * @param accessConditions {@link PathAccessConditions}
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
@@ -185,7 +184,7 @@ public class PathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
-    Mono<Response<PathInfo>> createWithResponse(PathResourceType resourceType, PathHttpHeaders headers,
+    Mono<Response<PathInfo>> createWithResponse(PathResourceType resourceType, PathHTTPHeaders headers,
         Map<String, String> metadata, PathAccessConditions accessConditions, String permissions, String umask,
         Context context) {
         accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
@@ -266,15 +265,15 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHttpHeaders}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHTTPHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setHttpHeaders(PathHttpHeaders headers) {
+    public Mono<Void> setHttpHeaders(PathHTTPHeaders headers) {
         try {
             return setHttpHeaders(headers, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -288,16 +287,16 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHttpHeaders-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHTTPHeaders-PathAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param accessConditions {@link PathAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setHttpHeaders(PathHttpHeaders headers, PathAccessConditions accessConditions) {
+    public Mono<Response<Void>> setHttpHeaders(PathHTTPHeaders headers, PathAccessConditions accessConditions) {
         try {
             return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
                 Transforms.toBlobAccessConditions(accessConditions));

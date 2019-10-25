@@ -4,17 +4,16 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.core.credential.TokenCredential;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
-import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 

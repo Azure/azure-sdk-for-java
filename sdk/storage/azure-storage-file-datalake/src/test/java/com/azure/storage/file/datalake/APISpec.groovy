@@ -1,11 +1,6 @@
 package com.azure.storage.file.datalake
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.HttpHeaders
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpResponse
-import com.azure.core.http.ProxyOptions
+import com.azure.core.http.*
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
@@ -33,7 +28,6 @@ import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
-
 
 class APISpec extends Specification {
     @Shared

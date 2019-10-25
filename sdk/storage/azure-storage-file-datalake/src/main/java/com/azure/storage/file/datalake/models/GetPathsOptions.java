@@ -2,8 +2,8 @@ package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
-import com.azure.storage.file.datalake.FileSystemClient;
 import com.azure.storage.file.datalake.FileSystemAsyncClient;
+import com.azure.storage.file.datalake.FileSystemClient;
 
 /**
  * Defines options available to configure the behavior of a call to listContainersSegment on a {@link FileSystemClient}

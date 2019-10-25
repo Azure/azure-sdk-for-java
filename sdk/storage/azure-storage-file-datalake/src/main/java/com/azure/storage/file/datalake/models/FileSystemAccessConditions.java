@@ -3,6 +3,9 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+
 /**
  * This class contains values which will restrict the successful operation of a variety of requests to the conditions
  * present. These conditions are entirely optional. The entire object or any of its properties may be set to null when

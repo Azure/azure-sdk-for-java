@@ -10,7 +10,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PathInfo;
@@ -88,13 +88,13 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createWithResponse#PathHttpHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createWithResponse#PathHTTPHeaders-Map-PathAccessConditions-String-String}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the resource.
      * @param accessConditions {@link PathAccessConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
@@ -102,7 +102,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
-    public Mono<Response<PathInfo>> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
+    public Mono<Response<PathInfo>> createWithResponse(PathHTTPHeaders headers, Map<String, String> metadata,
         PathAccessConditions accessConditions, String permissions, String umask) {
         try {
             return withContext(context -> createWithResponse(PathResourceType.DIRECTORY, headers, metadata,
@@ -208,10 +208,10 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createFileWithResponse#String-PathHTTPHeaders-Map-PathAccessConditions-String-String}
      *
      * @param fileName Name of the file to create.
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the file.
      * @param accessConditions {@link PathAccessConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
@@ -219,7 +219,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * FileAsyncClient} used to interact with the file created.
      */
-    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, PathHttpHeaders headers,
+    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, PathHTTPHeaders headers,
         Map<String, String> metadata, PathAccessConditions accessConditions, String permissions, String umask) {
         try {
             FileAsyncClient fileAsyncClient = getFileAsyncClient(fileName);
@@ -324,10 +324,10 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHTTPHeaders-Map-PathAccessConditions-String-String}
      *
      * @param subDirectoryName Name of the sub-directory to create.
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the sub-directory.
      * @param accessConditions {@link PathAccessConditions}
      * @param permissions POSIX access permissions for the sub-directory owner, the sub-directory owning group, and
@@ -337,7 +337,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      * DirectoryAsyncClient} used to interact with the sub-directory created.
      */
     public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
-        PathHttpHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
+        PathHTTPHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
         String permissions, String umask) {
         try {
             DirectoryAsyncClient directoryAsyncClient = getSubDirectoryAsyncClient(subDirectoryName);
@@ -420,7 +420,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.renameWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.renameWithResponse#String-PathHTTPHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
      *
      * @param destinationPath Relative path from the file system to rename the directory to.
      * @param sourceAccessConditions {@link PathAccessConditions} against the source.

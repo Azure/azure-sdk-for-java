@@ -11,10 +11,10 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.Path;
-import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import com.azure.storage.file.datalake.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
@@ -160,7 +160,7 @@ class Transforms {
         }
     }
 
-    static BlobHttpHeaders toBlobHttpHeaders(PathHttpHeaders pathHTTPHeaders) {
+    static BlobHttpHeaders toBlobHttpHeaders(PathHTTPHeaders pathHTTPHeaders) {
         if (pathHTTPHeaders == null) {
             return null;
         }
@@ -170,7 +170,7 @@ class Transforms {
             .setBlobContentEncoding(pathHTTPHeaders.getContentEncoding())
             .setBlobContentLanguage(pathHTTPHeaders.getContentLanguage())
             .setBlobContentType(pathHTTPHeaders.getContentType())
-            .setBlobContentMD5(pathHTTPHeaders.getTransactionalContentMD5());
+            .setBlobContentMD5(pathHTTPHeaders.getContentMD5());
     }
 
     static BlobRange toBlobRange(FileRange fileRange) {

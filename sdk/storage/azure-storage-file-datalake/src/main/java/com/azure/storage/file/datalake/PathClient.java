@@ -7,11 +7,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathInfo;
@@ -144,14 +143,14 @@ public class PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeaders#PathHttpHeaders}
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeaders#PathHTTPHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      */
-    public void setHttpHeaders(PathHttpHeaders headers) {
+    public void setHttpHeaders(PathHTTPHeaders headers) {
         setHttpHeadersWithResponse(headers, null, null, Context.NONE);
     }
 
@@ -161,18 +160,18 @@ public class PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeadersWithResponse#PathHttpHeaders-PathAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeadersWithResponse#PathHTTPHeaders-PathAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param accessConditions {@link PathAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers, PathAccessConditions accessConditions,
+    public Response<Void> setHttpHeadersWithResponse(PathHTTPHeaders headers, PathAccessConditions accessConditions,
         Duration timeout, Context context) {
         return blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
             Transforms.toBlobAccessConditions(accessConditions), timeout, context);

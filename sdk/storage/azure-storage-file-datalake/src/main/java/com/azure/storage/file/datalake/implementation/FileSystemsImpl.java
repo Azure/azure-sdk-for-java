@@ -27,7 +27,7 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsDeleteRe
 import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPropertiesResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsSetPropertiesResponse;
-import com.azure.storage.file.datalake.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;

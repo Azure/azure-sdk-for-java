@@ -6,9 +6,9 @@ package com.azure.storage.file.datalake;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
-import com.azure.storage.file.datalake.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 
 import java.time.Duration;

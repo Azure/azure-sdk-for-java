@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: C:\azure-rest-api-specs\specification\storage\data-plane\Microsoft.StorageDataLake\stable\2018-11-09\DataLakeStorage.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2018-11-09/DataLakeStorage.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: FileSystemInfo, FileSystemItem, FileSystemProperties, PathAccessConditions, PathInfo, PathItem, PathProperties, ListFileSystemsOptions
+custom-types: FileSystemInfo, FileSystemItem, FileSystemProperties, PathAccessConditions, PathInfo, PathItem, PathProperties, ListFileSystemsOptions, LeaseAccessConditions
 custom-types-subpackage: models
 ```
 
@@ -118,4 +118,14 @@ directive:
   where: $["x-ms-paths"]["/{filesystem}/{path}?action=append"]
   transform: >
     $.patch.consumes = ["application/octet-stream"];
+```
+
+### Make etag on Path lower case
+``` yaml
+directive:
+- from: swagger-document
+  where: $["definitions"]["Path"]
+  transform: >
+      delete $.properties.eTag;
+      $.properties.etag = {"type": "string"};
 ```

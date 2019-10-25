@@ -3,20 +3,12 @@ package com.azure.storage.file.datalake
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.file.datalake.implementation.models.FileSystem
-import com.azure.storage.file.datalake.models.GetPathsOptions
-import com.azure.storage.file.datalake.models.LeaseAccessConditions
-import com.azure.storage.file.datalake.models.ModifiedAccessConditions
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
-import com.azure.storage.file.datalake.models.FileSystemAccessConditions
-import com.azure.storage.file.datalake.models.LeaseStateType
-import com.azure.storage.file.datalake.models.LeaseStatusType
-import com.azure.storage.file.datalake.models.PathAccessConditions
-import com.azure.storage.file.datalake.models.PathHttpHeaders
-import com.azure.storage.file.datalake.models.PathItem
-import com.azure.storage.file.datalake.models.PublicAccessType
+import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
-
 
 class FileSystemAPITest extends APISpec {
 
@@ -393,7 +385,7 @@ class FileSystemAPITest extends APISpec {
     def "Create file headers"() {
         // Create does not set md5
         setup:
-        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+        def headers = new PathHTTPHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -616,7 +608,7 @@ class FileSystemAPITest extends APISpec {
     def "Create dir headers"() {
         // Create does not set md5
         setup:
-        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+        def headers = new com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -843,7 +835,7 @@ class FileSystemAPITest extends APISpec {
         response.hasNext()
         def filePath = response.next()
         filePath.getName() == fileName
-//        filePath.getETag()
+        filePath.getETag()
         filePath.getGroup()
         filePath.getLastModifiedTime()
         filePath.getOwner()

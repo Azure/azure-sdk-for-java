@@ -4,17 +4,11 @@ import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
-import com.azure.storage.file.datalake.models.AccessTier
-import com.azure.storage.file.datalake.models.FileRange
-import com.azure.storage.file.datalake.models.LeaseAccessConditions
-import com.azure.storage.file.datalake.models.LeaseStateType
-import com.azure.storage.file.datalake.models.LeaseStatusType
-import com.azure.storage.file.datalake.models.ModifiedAccessConditions
-import com.azure.storage.file.datalake.models.PathAccessConditions
-import com.azure.storage.file.datalake.models.PathAccessControl
-import com.azure.storage.file.datalake.models.PathHttpHeaders
-import com.azure.storage.file.datalake.models.ReliableDownloadOptions
+import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -71,7 +65,7 @@ class FileAPITest extends APISpec {
     def "Create headers"() {
         // Create does not set md5
         setup:
-        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+        def headers = new PathHTTPHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -531,13 +525,13 @@ class FileAPITest extends APISpec {
     def "Set HTTP headers min"() {
         setup:
         def properties = fc.getProperties()
-        def headers = new PathHttpHeaders()
+        def headers = new PathHTTPHeaders()
             .setContentEncoding(properties.getContentEncoding())
             .setContentDisposition(properties.getContentDisposition())
             .setContentType("type")
             .setCacheControl(properties.getCacheControl())
             .setContentLanguage(properties.getContentLanguage())
-            .setTransactionalContentMD5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
+            .setContentMD5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
 
         fc.setHttpHeaders(headers)
 
@@ -550,12 +544,12 @@ class FileAPITest extends APISpec {
         setup:
         fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
         fc.flush(defaultDataSize)
-        def putHeaders = new PathHttpHeaders()
+        def putHeaders = new PathHTTPHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
-            .setTransactionalContentMD5(contentMD5)
+            .setContentMD5(contentMD5)
             .setContentType(contentType)
 
         fc.setHttpHeaders(putHeaders)
@@ -1219,7 +1213,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
         fc.create()
         fc.append(defaultInputStream.get(), 0, defaultDataSize)
-        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+        def headers = new PathHTTPHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)

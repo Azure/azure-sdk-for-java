@@ -20,17 +20,14 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
-import com.azure.storage.file.datalake.models.AccessTier;
-import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import com.azure.storage.file.datalake.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.GetPathsOptions;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
-import com.azure.storage.file.datalake.models.ModifiedAccessConditions;
-
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -454,10 +451,10 @@ public class FileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createFileWithResponse#String-PathHTTPHeaders-Map-PathAccessConditions-String-String}
      *
      * @param fileName Name of the file to create.
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the file.
      * @param accessConditions {@link PathAccessConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
@@ -466,7 +463,7 @@ public class FileSystemAsyncClient {
      * FileAsyncClient} used to interact with the file created.
      */
     public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName,
-        PathHttpHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
+        PathHTTPHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
         String permissions, String umask) {
         try {
             FileAsyncClient fileAsyncClient = getFileAsyncClient(fileName);
@@ -546,10 +543,10 @@ public class FileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createDirectoryWithResponse#String-PathHTTPHeaders-Map-PathAccessConditions-String-String}
      *
      * @param directoryName Name of the directory to create.
-     * @param headers {@link PathHttpHeaders}
+     * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the directory.
      * @param accessConditions {@link PathAccessConditions}
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
@@ -558,7 +555,7 @@ public class FileSystemAsyncClient {
      * DirectoryAsyncClient} used to interact with the directory created.
      */
     public Mono<Response<DirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
-        PathHttpHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
+        PathHTTPHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
         String permissions, String umask) {
         try {
             DirectoryAsyncClient directoryAsyncClient = getDirectoryAsyncClient(directoryName);
