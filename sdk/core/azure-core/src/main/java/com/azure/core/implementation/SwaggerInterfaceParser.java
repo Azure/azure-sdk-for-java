@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SwaggerInterfaceParser {
     private final String host;
     private final String serviceName;
-    private static final Map<Method, SwaggerMethodParser> methodParsers = new ConcurrentHashMap<>();
+    private static final Map<Method, SwaggerMethodParser> METHOD_PARSERS = new ConcurrentHashMap<>();
 
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface
@@ -67,10 +67,10 @@ public class SwaggerInterfaceParser {
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
     public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
-        SwaggerMethodParser result = methodParsers.get(swaggerMethod);
+        SwaggerMethodParser result = METHOD_PARSERS.get(swaggerMethod);
         if (result == null) {
             result = new SwaggerMethodParser(swaggerMethod, getHost());
-            methodParsers.put(swaggerMethod, result);
+            METHOD_PARSERS.put(swaggerMethod, result);
         }
         return result;
     }

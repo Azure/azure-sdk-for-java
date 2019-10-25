@@ -428,15 +428,18 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             return Mono.using(() -> uploadFileResourceSupplier(filePath),
                 channel -> {
                     try {
+                        BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
                         long fileSize = channel.size();
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
                         if (fileSize > 256 * Constants.MB) {
                             return uploadBlocks(fileSize, finalParallelTransferOptions, headers, metadata, tier,
-                                accessConditions, channel);
+                                accessConditions, channel, blockBlobAsyncClient);
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
-                            return uploadFullBlob(headers, metadata, tier, accessConditions, channel, fileSize);
+                            return blockBlobAsyncClient.uploadWithResponse(FluxUtil.readFile(channel), fileSize,
+                                headers, metadata, tier, accessConditions)
+                                .then();
                         }
                     } catch (IOException ex) {
                         return Mono.error(new UncheckedIOException(ex));
@@ -449,7 +452,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
     private Mono<Void> uploadBlocks(long fileSize, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
-        BlobRequestConditions accessConditions, AsynchronousFileChannel channel) {
+        BlobRequestConditions accessConditions, AsynchronousFileChannel channel, BlockBlobAsyncClient client) {
         ProgressReceiver progressReceiver = parallelTransferOptions.getProgressReceiver();
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
@@ -466,19 +469,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
                     progressReceiver, progressLock, totalProgress);
 
-                return getBlockBlobAsyncClient()
-                    .stageBlockWithResponse(blockId, progressData, chunk.getCount(), accessConditions.getLeaseId());
+                return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(),
+                    accessConditions.getLeaseId());
             })
-            .then(Mono.defer(() -> getBlockBlobAsyncClient().commitBlockListWithResponse(
+            .then(Mono.defer(() -> client.commitBlockListWithResponse(
                 new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
-            .then()
-            .doOnTerminate(() -> uploadFileCleanup(channel));
-    }
-
-    private Mono<Void> uploadFullBlob(BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
-        BlobRequestConditions accessConditions, AsynchronousFileChannel channel, long fileSize) {
-        return getBlockBlobAsyncClient().uploadWithResponse(FluxUtil.readFile(channel),
-            fileSize, headers, metadata, tier, accessConditions)
             .then();
     }
 
