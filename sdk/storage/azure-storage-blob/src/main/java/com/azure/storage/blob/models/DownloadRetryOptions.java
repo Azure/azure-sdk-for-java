@@ -9,7 +9,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 
 /**
- * This class contains the configuration options used to reliably download from the blob service.
+ * This class contains the configuration options used to download from the blob service using smart retries, starting
+ * from a checkpoint, rather than starting over from the beginning.
  */
 @Fluent
 public final class DownloadRetryOptions {
