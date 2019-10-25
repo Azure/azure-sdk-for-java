@@ -29,7 +29,7 @@
       </run>
     </groups>
     <packages>
-      <package name="com.azure.data.cosmos.*"/>
+      <package name="com.azure.cosmos.*"/>
     </packages>
   </test>
 </suite>

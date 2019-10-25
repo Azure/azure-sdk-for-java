@@ -8,12 +8,12 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-cosmos-parent</artifactId>
-    <version>4.0.0-preview.4</version>
+    <version>4.0.0-preview.1</version>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-examples</artifactId>
-  <version>4.0.0-preview.4</version>
+  <version>4.0.0-preview.1</version>
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service - Examples</name>
   <description>This package contains examples for Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -56,7 +56,7 @@ Licensed under the MIT License.
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <configuration>
-          <mainClass>com.azure.data.cosmos.benchmark.Main</mainClass>
+          <mainClass>Main</mainClass>
         </configuration>
       </plugin>
 
@@ -68,7 +68,7 @@ Licensed under the MIT License.
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>com.azure.data.cosmos.rx.examples.multimaster.samples.Main</mainClass>
+              <mainClass>com.azure.cosmos.rx.examples.multimaster.samples.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -89,7 +89,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.0.0-preview.4</version>
+      <version>4.0.0-preview.1</version>
     </dependency>
 
     <dependency>
