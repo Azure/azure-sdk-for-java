@@ -138,7 +138,12 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
         }
-        client.deleteIndex(index.getName(), generateIfMatchAccessCondition(currentResource.getETag()), null);
+
+        Response<Void> response = client.deleteIndexWithResponse(index.getName(),
+            generateIfMatchAccessCondition(currentResource.getETag()),
+            null,
+            null);
+        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
     }
 
     @Override

@@ -291,7 +291,7 @@ public class SearchServiceClient {
      * @return the created Index.
      */
     public Index createIndex(Index index) {
-        return this.createIndexWithResponse(index, null, Context.NONE).getValue();
+        return asyncClient.createIndex(index).block();
     }
 
     /**
@@ -302,7 +302,7 @@ public class SearchServiceClient {
      * @return the created Index.
      */
     public Index createIndex(Index index, RequestOptions requestOptions) {
-        return this.createIndexWithResponse(index, requestOptions, Context.NONE).getValue();
+        return asyncClient.createIndex(index, requestOptions).block();
     }
 
     /**
@@ -325,7 +325,7 @@ public class SearchServiceClient {
      * @return the Index.
      */
     public Index getIndex(String indexName) {
-        return this.getIndexWithResponse(indexName, null, Context.NONE).getValue();
+        return asyncClient.getIndex(indexName).block();
     }
 
     /**
@@ -337,7 +337,7 @@ public class SearchServiceClient {
      */
     public Index getIndex(String indexName,
                           RequestOptions requestOptions) {
-        return this.getIndexWithResponse(indexName, requestOptions, Context.NONE).getValue();
+        return asyncClient.getIndex(indexName, requestOptions).block();
     }
 
     /**
@@ -360,7 +360,7 @@ public class SearchServiceClient {
      * @return true if the index exists; false otherwise.
      */
     public Boolean indexExists(String indexName) {
-        return indexExistsWithResponse(indexName, null, Context.NONE).getValue();
+        return asyncClient.indexExists(indexName).block();
     }
 
     /**
@@ -372,7 +372,7 @@ public class SearchServiceClient {
      */
     public Boolean indexExists(String indexName,
                                RequestOptions requestOptions) {
-        return indexExistsWithResponse(indexName, requestOptions, Context.NONE).getValue();
+        return asyncClient.indexExists(indexName, requestOptions).block();
     }
 
     /**
@@ -411,7 +411,7 @@ public class SearchServiceClient {
      * @return the list of indexes.
      */
     public PagedIterable<Index> listIndexes() {
-        return this.listIndexes(null, null, Context.NONE);
+        return new PagedIterable<>(asyncClient.listIndexes());
     }
 
     /**
@@ -423,7 +423,7 @@ public class SearchServiceClient {
      * @return the list of indexes.
      */
     public PagedIterable<Index> listIndexes(String select) {
-        return this.listIndexes(select, null, Context.NONE);
+        return new PagedIterable<>(asyncClient.listIndexes(select));
     }
 
     /**
@@ -437,7 +437,7 @@ public class SearchServiceClient {
      * @return the list of indexes.
      */
     public PagedIterable<Index> listIndexes(String select, RequestOptions requestOptions) {
-        return this.listIndexes(select, requestOptions, Context.NONE);
+        return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions));
     }
 
     /**
@@ -461,14 +461,14 @@ public class SearchServiceClient {
      * @return the index that was created or updated
      */
     public Index createOrUpdateIndex(Index index) {
-        return this.createOrUpdateIndexWithResponse(index, null, null, null, Context.NONE).getValue();
+        return asyncClient.createOrUpdateIndex(index).block();
     }
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      * @param index the definition of the index to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values.
+     *                        doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
@@ -476,11 +476,7 @@ public class SearchServiceClient {
     public Index createOrUpdateIndex(Index index,
                                      AccessCondition accessCondition,
                                      RequestOptions requestOptions) {
-        return this.createOrUpdateIndexWithResponse(index,
-            null,
-            accessCondition,
-            requestOptions,
-            Context.NONE).getValue();
+        return asyncClient.createOrUpdateIndex(index, accessCondition, requestOptions).block();
     }
 
     /**
@@ -494,11 +490,7 @@ public class SearchServiceClient {
      * @return the index that was created or updated
      */
     public Index createOrUpdateIndex(Index index, Boolean allowIndexDowntime) {
-        return this.createOrUpdateIndexWithResponse(index,
-            allowIndexDowntime,
-            null,
-            null,
-            Context.NONE).getValue();
+        return asyncClient.createOrUpdateIndex(index, allowIndexDowntime).block();
     }
 
     /**
@@ -510,7 +502,7 @@ public class SearchServiceClient {
      *                           can be impaired for several minutes after the index is updated, or longer for very
      *                           large indexes.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values.
+     *                        doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
@@ -519,11 +511,10 @@ public class SearchServiceClient {
                                      Boolean allowIndexDowntime,
                                      AccessCondition accessCondition,
                                      RequestOptions requestOptions) {
-        return this.createOrUpdateIndexWithResponse(index,
+        return asyncClient.createOrUpdateIndex(index,
             allowIndexDowntime,
             accessCondition,
-            requestOptions,
-            Context.NONE).getValue();
+            requestOptions).block();
     }
 
     /**
@@ -532,11 +523,7 @@ public class SearchServiceClient {
      * @return a response containing the Index that was created or updated.
      */
     public Response<Index> createOrUpdateIndexWithResponse(Index index) {
-        return asyncClient.createOrUpdateIndexWithResponse(index,
-            null,
-            null,
-            null,
-            Context.NONE).block();
+        return asyncClient.createOrUpdateIndexWithResponse(index).block();
     }
 
     /**
@@ -548,7 +535,7 @@ public class SearchServiceClient {
      *                           can be impaired for several minutes after the index is updated, or longer for very
      *                           large indexes.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values.
+     *                        doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -572,7 +559,7 @@ public class SearchServiceClient {
      * @param indexName the name of the index to delete
      */
     public void deleteIndex(String indexName) {
-        this.deleteIndexWithResponse(indexName, null, null, Context.NONE);
+        asyncClient.deleteIndex(indexName).block();
     }
 
     /**
@@ -580,14 +567,14 @@ public class SearchServiceClient {
      *
      * @param indexName the name of the index to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values.
+     *                        doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      */
     public void deleteIndex(String indexName,
                             AccessCondition accessCondition,
                             RequestOptions requestOptions) {
-        this.deleteIndexWithResponse(indexName, accessCondition, requestOptions, Context.NONE);
+        asyncClient.deleteIndex(indexName, accessCondition, requestOptions).block();
     }
 
     /**
@@ -595,7 +582,7 @@ public class SearchServiceClient {
      *
      * @param indexName the name of the index to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values.
+     *                        doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -713,7 +700,7 @@ public class SearchServiceClient {
      * @return the created {@link SynonymMap}.
      */
     public SynonymMap createSynonymMap(SynonymMap synonymMap) {
-        return this.createSynonymMapWithResponse(synonymMap, null, Context.NONE).getValue();
+        return asyncClient.createSynonymMap(synonymMap).block();
     }
 
     /**
@@ -726,7 +713,7 @@ public class SearchServiceClient {
      */
     public SynonymMap createSynonymMap(SynonymMap synonymMap,
                                        RequestOptions requestOptions) {
-        return this.createSynonymMapWithResponse(synonymMap, requestOptions, Context.NONE).getValue();
+        return asyncClient.createSynonymMap(synonymMap, requestOptions).block();
     }
 
     /**

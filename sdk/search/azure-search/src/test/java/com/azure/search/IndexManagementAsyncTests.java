@@ -3,6 +3,7 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.search.models.AnalyzerName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.models.DataType;
@@ -152,7 +153,14 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
             });
-        client.deleteIndex(index.getName(), generateIfMatchAccessCondition(currentResource.getETag()), null).block();
+
+        Response<Void> response = client.deleteIndexWithResponse(index.getName(),
+            generateIfMatchAccessCondition(currentResource.getETag()),
+            null,
+            null
+            )
+            .block();
+        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
     }
 
     @Override

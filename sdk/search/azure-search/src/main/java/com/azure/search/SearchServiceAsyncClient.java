@@ -361,7 +361,7 @@ public class SearchServiceAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search index.
-     * @param index definition of the index to create.
+     * @param index definition of the index to create
      * @return the created Index.
      */
     public Mono<Index> createIndex(Index index) {
@@ -704,9 +704,9 @@ public class SearchServiceAsyncClient {
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
      * @param indexName the name of the index to delete
+     * @param accessCondition the access condition
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
-     * @param accessCondition the access condition
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndex(String indexName,
@@ -722,9 +722,9 @@ public class SearchServiceAsyncClient {
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
      * @param indexName the name of the index to delete
+     * @param accessCondition the access condition
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
-     * @param accessCondition the access condition
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
