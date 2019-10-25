@@ -41,7 +41,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.0.0-preview.5</version>
+    <version>12.0.0</version>
     <exclusions>
         <exclusion>
             <groupId>com.azure</groupId>
@@ -57,7 +57,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.0.0-preview.7</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -279,7 +279,7 @@ blobClient.downloadToFile("downloaded-file.jpg");
 Enumerating all blobs using a `BlobContainerClient`.
 
 ```java
-blobContainerClient.listBlobsFlat()
+blobContainerClient.listBlobs()
         .forEach(
             blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
         );
