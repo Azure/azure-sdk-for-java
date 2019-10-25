@@ -47,16 +47,17 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
      * @param pollOperation the operation to poll the current state of long running operation, this parameter
      *                      is required and the operation will be called with the activation {@link PollResponse}
      *                      and last {@link PollResponse}.
-     * @param cancelOperation the operation to cancel the long-running operation if service supports cancellation,
-     *                        this parameter is required and if service does not support cancellation
-     *                        then the implementer should return Mono.error with a meaningful error message indicating
-     *                        absence of cancellation support.
-     * @param fetchResultOperation the operation to retrieve final result of the long-running operation if service
-     *                             support it, this parameter is required and operation will be called with the
-     *                             activation {@link PollResponse} and final {@link PollResponse},
-     *                             if service does not have an api to fetch final result and final result is same
-     *                             as final poll response value then implementer can simply return value from final
-     *                             poll response.
+     * @param cancelOperation a {@link BiFunction} that represents the operation to cancel the long-running operation
+     *                        if service supports cancellation, this parameter is required and if service does not
+     *                        support cancellation then the implementer should return Mono.error with an error message
+     *                        indicating absence of cancellation support, the operation will be called with the
+     *                        activation {@link PollResponse} and latest {@link PollResponse}.
+     * @param fetchResultOperation a {@link BiFunction} that represents the  operation to retrieve final result of
+     *                             the long-running operation if service support it, this parameter is required and
+     *                             operation will be called with the activation {@link PollResponse} and final
+     *                             {@link PollResponse}, if service does not have an api to fetch final result and
+     *                             if final result is same as final poll response value then implementer can choose
+     *                             to simply return value from provided final poll response.
      */
     public DefaultSyncPoller(Duration defaultPollInterval,
                              Supplier<Mono<T>> activationOperation,
@@ -89,6 +90,9 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
         PollResponse<T> response = this.pollOperation
             .apply(this.activationResponse, currentLastResponse)
             .block();
+        if (response == null) {
+            logger.error("PollOperation returned empty publisher.");
+        }
         if (response.getStatus().isComplete()) {
             this.terminalPollResponse = response;
         }
@@ -100,6 +104,9 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     public PollResponse<T> waitForCompletion() {
         AsyncPollResponse<T, U> finalAsyncPollResponse = this.pollerFlux
             .blockLast();
+        if (finalAsyncPollResponse == null) {
+            logger.error("PollerFlux completed without emitting any event.");
+        }
         PollResponse<T> response = toPollResponse(finalAsyncPollResponse);
         this.terminalPollResponse = response;
         return response;
@@ -125,7 +132,7 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             .takeUntil(apr -> matchStatus(apr, statusToWaitFor))
             .last()
             .switchIfEmpty(Mono.error(new NoSuchElementException("Polling completed without receiving the given status "
-                + "'" + statusToWaitFor + "'.")))
+                    + "'" + statusToWaitFor + "'.")))
             .block();
         PollResponse<T> response = toPollResponse(asyncPollResponse);
         if (response.getStatus().isComplete()) {
@@ -139,7 +146,10 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
         if (statusToWaitFor == null) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("Null value for status is not allowed."));
         }
-        if (timeout != null && timeout.toNanos() <= 0) {
+        if (timeout == null) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null value for timeout is not allowed."));
+        }
+        if (timeout.toNanos() <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for timeout is not allowed."));
         }
@@ -148,7 +158,7 @@ public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             .last()
             .timeout(timeout)
             .switchIfEmpty(Mono.error(new NoSuchElementException("Polling completed without receiving the given status "
-                +  "'" + statusToWaitFor + "'.")))
+                    +  "'" + statusToWaitFor + "'.")))
             .block();
         PollResponse<T> response = toPollResponse(asyncPollResponse);
         if (response.getStatus().isComplete()) {

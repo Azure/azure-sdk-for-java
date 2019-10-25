@@ -30,8 +30,8 @@ public final class LongRunningOperationStatus extends ExpandableStringEnum<LongR
 
     /**
      * Represents that the long-running operation has failed to successfully complete, however this is still
-     * considered as complete long-running operation, meaning that the {@link Poller} instance will report that it
-     * is complete.
+     * considered as complete long-running operation, meaning that the {@link PollerFlux} instance will report
+     * that it is complete.
      */
     public static final LongRunningOperationStatus FAILED = fromString("FAILED", true);
 

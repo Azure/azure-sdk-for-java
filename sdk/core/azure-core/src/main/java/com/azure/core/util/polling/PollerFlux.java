@@ -16,60 +16,43 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
- * A Flux that asynchronously invokes an activation operation and poll the progress of a long-running
- * operation until it complete.
+ * A Flux that simplifies the task of executing long-running operations against an Azure service.
+ * A subscription to {@link PollerFlux} initiate a long-running operation and polls the status
+ * until it completes.
  *
- * Each subscription to the PollerFlux will run it's own polling but the activation is guaranteed to be
- * called only once across all subscription.
+ * <p><strong>Code samples</strong></p>
  *
- * e.g.: cancelling a long-running operation after a specified time.
+ * <p><strong>Instantiating and subscribing to PollerFlux</strong></p>
+ * {@codesnippet com.azure.core.util.polling.poller.instantiationAndSubscribe}
  *
- *    PollerFlux<BlobCopyStatus, BlobInfo> cpBlobPollerFlux = asyncClient.beginBlobCopy();
+ * <p><strong>Asynchronously wait for polling to complete and then retrieve the final result</strong></p>
+ * {@codesnippet com.azure.core.util.polling.poller.getResult}
  *
- *    cpBlobPollerFlux
- *       .take(Duration.ofMinutes(30))
- *       .last()
- *       .flatMap(asyncPollResponse -> {
- *           if (!asyncPollResponse.getStatus().isComplete()) {
- *               return asyncPollResponse
- *                   .cancelOperation()
- *                   .then(Mono.error(new RuntimeException("LRO taking long time > 30 mins, operation is cancelled!")));
- *           } else {
- *               return Mono.just(asyncPollResponse);
- *           }
- *       }).block();
+ * <p><strong>Block for polling to complete and then retrieve the final result</strong></p>
+ * {@codesnippet com.azure.core.util.polling.poller.blockAndGetResult}
  *
- * e.g.: retrieving the final result of long-running operation after it's completion.
+ * <p><strong>Asynchronously poll until poller receives matching status</strong></p>
+ * {@codesnippet com.azure.core.util.polling.poller.pollUntil}
  *
- *   PollerFlux<BlobCopyStatus, BlobInfo> cpBlobPollerFlux = asyncClient.beginBlobCopy();
+ * <p><strong>Asynchronously cancel the long running operation</strong></p>
+ * {@codesnippet com.azure.core.util.polling.poller.cancelOperation}
  *
- *   cpBlobPollerFlux
- *       .last()
- *       .flatMap(asyncPollResponse -> {
- *           // LRO completed, retrieving final result.
- *           return asyncPollResponse.getFinalResult();
- *       }).block();
- *
- * @param <T> The type of poll response value
- * @param <U> The type of the final result of long-running operation
+ * @param <T> The type of poll response value.
+ * @param <U> The type of the final result of long-running operation.
  */
 public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     private final ClientLogger logger = new ClientLogger(PollerFlux.class);
-    //
     private final Duration defaultPollInterval;
+    private final Supplier<Mono<T>> activationOperation;
     private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
     private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<T>> cancelOperation;
     private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<U>> fetchResultOperation;
-    //
+    private final Mono<PollResponse<T>> oneTimeActivationMono;
     private volatile PollResponse<T> activationResponse;
-    //
-    private volatile int lroStartFlag = 0;
+    private volatile int activationGuardFlag = 0;
     @SuppressWarnings({"rawtypes"})
     private final AtomicIntegerFieldUpdater<PollerFlux> guardActivationCall =
-        AtomicIntegerFieldUpdater.newUpdater(PollerFlux.class, "lroStartFlag");
-    //
-    private final Supplier<Mono<T>> activationOperation;
-    private final Mono<PollResponse<T>> activateAndCacheResponse;
+        AtomicIntegerFieldUpdater.newUpdater(PollerFlux.class, "activationGuardFlag");
 
     /**
      * Creates PollerFlux.
@@ -81,16 +64,17 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * @param pollOperation the operation to poll the current state of long running operation, this parameter
      *                      is required and the operation will be called with the activation {@link PollResponse}
      *                      and last {@link PollResponse}.
-     * @param cancelOperation the operation to cancel the long-running operation if service supports cancellation,
-     *                        this parameter is required and if service does not support cancellation
-     *                        then the implementer should return Mono.error with an error message indicating
-     *                        absence of cancellation support.
-     * @param fetchResultOperation the operation to retrieve final result of the long-running operation if service
-     *                             support it, this parameter is required and operation will be called with the
-     *                             activation {@link PollResponse} and final {@link PollResponse},
-     *                             if service does not have an api to fetch final result and if final result is same
-     *                             as final poll response value then implementer can choose to simply return value
-     *                             from provided final poll response.
+     * @param cancelOperation a {@link BiFunction} that represents the operation to cancel the long-running operation
+     *                        if service supports cancellation, this parameter is required and if service does not
+     *                        support cancellation then the implementer should return Mono.error with an error message
+     *                        indicating absence of cancellation support, the operation will be called with the
+     *                        activation {@link PollResponse} and latest {@link PollResponse}.
+     * @param fetchResultOperation a {@link BiFunction} that represents the  operation to retrieve final result of
+     *                             the long-running operation if service support it, this parameter is required and
+     *                             operation will be called with the activation {@link PollResponse} and final
+     *                             {@link PollResponse}, if service does not have an api to fetch final result and
+     *                             if final result is same as final poll response value then implementer can choose
+     *                             to simply return value from provided final poll response.
      */
     public PollerFlux(Duration defaultPollInterval,
                       Supplier<Mono<T>> activationOperation,
@@ -102,10 +86,10 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
+        this.defaultPollInterval = defaultPollInterval;
         this.activationOperation = Objects.requireNonNull(activationOperation,
             "'activationOperation' cannot be null.");
-        this.defaultPollInterval = defaultPollInterval;
-        this.activateAndCacheResponse = deferredActivationMono(activationOperation);
+        this.oneTimeActivationMono = oneTimeActivationMono(activationOperation);
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
         this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
@@ -114,7 +98,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
 
     @Override
     public void subscribe(CoreSubscriber<? super AsyncPollResponse<T, U>> actual) {
-        this.activateAndCacheResponse
+        this.oneTimeActivationMono
             .flatMapMany(activationResponse -> pollingLoop(activationResponse))
             .subscribe(actual);
     }
@@ -135,21 +119,21 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * time activation. The decorated Mono caches the result of activation operation in a PollResponse,
      * this cached response will be replayed for any future subscriptions.
      *
-     * Note: we can't use the reactor standard cache() operator, because it caches error terminal signal
-     * and forward it to any future subscriptions. If there is an error from activation Mono
-     * then we don't want to cache it but just forward it to subscription that initiated the failed activation.
-     * For any future subscriptions we don't want to forward the past error instead activation
-     * should again invoked. Once a subscription received a successful event from activation Mono then we want
-     * to cache it and replay it to any future subscriptions.
+     * Note: we can't use standard cache() operator, because it caches error terminal signal and forward
+     * it to any future subscriptions. If there is an error from activation Mono then we don't want to cache
+     * it but just forward it to subscription that initiated the failed activation. For any future subscriptions
+     * we don't want to forward the past error instead activation should again invoked. Once a subscription
+     * received a successful event from activation Mono then we want to cache it and replay it to any future
+     * subscriptions.
      *
      * The decorated Mono also handles concurrent calls to activation. Only one of them will be able to call
      * activation and other subscriptions will keep resubscribing until it sees a cached response or get a chance
      * to call activation as the one previously entered the critical section got an error on activation.
      *
      * @param activationOperation a supplier that provide a Mono upon subscription execute activation operation.
-     * @return
+     * @return a one time activation mono
      */
-    private Mono<PollResponse<T>> deferredActivationMono(final Supplier<Mono<T>> activationOperation) {
+    private Mono<PollResponse<T>> oneTimeActivationMono(final Supplier<Mono<T>> activationOperation) {
         return Mono.defer(() -> {
             if (this.activationResponse != null) {
                 return Mono.just(this.activationResponse);
@@ -194,7 +178,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                 .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .onErrorResume(throwable -> {
                     logger.warning("Received an error from pollOperation. Any error from pollOperation " +
-                        "will be ignored and polling will be continued.");
+                        "will be ignored and polling will be continued. Error:" + throwable.getMessage());
                     return Mono.empty();
                 })
                 .concatMap(currentPollResponse -> {

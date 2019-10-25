@@ -21,7 +21,7 @@ public final class PollerJavaDocCodeSnippets {
             (activationResponse, latestResponse) -> Mono.just("Final Output"));
 
     /**
-     * Initialise and subscribe
+     * Instantiating and subscribing to PollerFlux.
      */
     public void initializeAndSubscribe() {
         // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribe
@@ -56,8 +56,7 @@ public final class PollerJavaDocCodeSnippets {
     }
 
     /**
-     * asynchronously wait poll to complete and retrieve final result from within
-     * reactor operator chain.
+     * Asynchronously wait for polling to complete and then retrieve the final result.
      */
     public void getResult() {
         // BEGIN: com.azure.core.util.polling.poller.getResult
@@ -97,8 +96,7 @@ public final class PollerJavaDocCodeSnippets {
     }
 
     /**
-     * block for final poll response and retrieve the final result if final response
-     * indicate a successful completion of the long running operation.
+     * Block for polling to complete and then retrieve the final result.
      */
     public void blockAndGetResult() {
         // BEGIN: com.azure.core.util.polling.poller.blockAndGetResult
@@ -112,7 +110,7 @@ public final class PollerJavaDocCodeSnippets {
     }
 
     /**
-     * asynchronously poll until service return a matching status.
+     * Asynchronously poll until poller receives matching status.
      */
     public void polluntil() {
         // BEGIN: com.azure.core.util.polling.poller.pollUntil
@@ -130,7 +128,7 @@ public final class PollerJavaDocCodeSnippets {
     }
 
     /**
-     * cancel the long running operation.
+     * Asynchronously cancel the long running operation.
      */
     public void cancelOperation() {
         // BEGIN: com.azure.core.util.polling.poller.cancelOperation
