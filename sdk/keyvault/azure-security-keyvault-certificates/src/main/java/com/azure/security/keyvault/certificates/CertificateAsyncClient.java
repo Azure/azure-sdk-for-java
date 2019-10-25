@@ -25,6 +25,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.certificates.models.Certificate;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -47,7 +48,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
 import reactor.core.publisher.Flux;
@@ -117,25 +117,29 @@ public class CertificateAsyncClient {
                 fetchResultOperation(name));
     }
 
-    private BiFunction<PollResponse<CertificateOperation>,
-            PollResponse<CertificateOperation>, Mono<CertificateOperation>> cancelOperation(String name) {
-        return (firstResponse, latestResponse)
+    private BiFunction<PollingContext<CertificateOperation>,
+            PollResponse<CertificateOperation>,
+            Mono<CertificateOperation>> cancelOperation(String name) {
+        return (pollingContext, firstResponse)
                 -> withContext(context
                     -> cancelCertificateOperationWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
 
-    private Supplier<Mono<CertificateOperation>> activationOperation(String name,
-                                                                     CertificatePolicy policy,
-                                                                     boolean enabled,
-                                                                     Map<String, String> tags) {
-        return () -> withContext(context -> createCertificateWithResponse(name, policy, enabled, tags, context)
+    private Function<PollingContext<CertificateOperation>, Mono<CertificateOperation>> activationOperation(String name,
+                                                                                      CertificatePolicy policy,
+                                                                                      boolean enabled,
+                                                                                      Map<String, String> tags) {
+        return (pollingContext) -> withContext(context -> createCertificateWithResponse(name,
+                policy,
+                enabled,
+                tags,
+                context)
             .flatMap(certificateOperationResponse -> Mono.just(certificateOperationResponse.getValue())));
     }
 
-    private BiFunction<PollResponse<CertificateOperation>,
-            PollResponse<CertificateOperation>,
+    private Function<PollingContext<CertificateOperation>,
             Mono<Certificate>> fetchResultOperation(String name) {
-        return (firstResponse, finalResponse)
+        return (pollingContext)
                 -> withContext(context
                     -> getCertificateWithResponse(name, "", context)
                         .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue())));
@@ -193,8 +197,9 @@ public class CertificateAsyncClient {
     /*
        Polling operation to poll on create certificate operation status.
      */
-    private BiFunction<PollResponse<CertificateOperation>, PollResponse<CertificateOperation>, Mono<PollResponse<CertificateOperation>>> createPollOperation(String certificateName) {
-        return (firstResponse, prePollResponse) -> {
+    private Function<PollingContext<CertificateOperation>, Mono<PollResponse<CertificateOperation>>> createPollOperation(String certificateName) {
+        return (pollingContext) -> {
+
             try {
                 return withContext(context -> service.getCertificateOperation(endpoint, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                     .flatMap(this::processCertificateOperationResponse));
