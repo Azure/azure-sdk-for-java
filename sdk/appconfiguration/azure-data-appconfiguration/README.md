@@ -37,7 +37,7 @@ AppConfiguration to use Netty HTTP client.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-netty</artifactId>
-    <version>1.0.0-preview.7</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -67,7 +67,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.7</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -145,8 +145,8 @@ The client performs the interactions with the App Configuration service, getting
 An application that needs to retrieve startup configurations is better suited using the synchronous client, for example setting up a SQL connection.
 
 ```Java
-ConfigurationClient client = new ConfigurationClient()
-        .connectionString(appConfigConnectionString)
+ConfigurationClient client = new ConfigurationClientBuilder()
+        .connectionString(connectionString)
         .buildClient();
 
 // urlLabel is optional
@@ -167,7 +167,7 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .connectionString(appConfigConnectionString)
         .buildAsyncClient();
 
-client.listConfigurationSettings(new SettingSelection().label(periodicUpdateLabel))
+client.listConfigurationSettings(new SettingSelector().setLabels(periodicUpdateLabel))
     .subscribe(setting -> updateConfiguration(setting));
 ```
 
