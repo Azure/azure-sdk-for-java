@@ -416,7 +416,7 @@ public final class SecretAsyncClient {
 
     /**
      * Gets a secret that has been deleted for a soft-delete enabled key vault. This operation requires the
-     *      * {@code secrets/list} permission.
+     * {@code secrets/list} permission.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Gets the deleted secret from the key vault <b>enabled for soft-delete</b>. Subscribes to the call
