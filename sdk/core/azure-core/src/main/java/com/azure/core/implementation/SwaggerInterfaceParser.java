@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SwaggerInterfaceParser {
     private final String host;
     private final String serviceName;
-    private static final Map<Method, SwaggerMethodParser> methodParsers = new ConcurrentHashMap<>(); // TODO (perf): Should we use a String of classname-methodname-args?
+    private static final Map<Method, SwaggerMethodParser> methodParsers = new ConcurrentHashMap<>();
 
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface
