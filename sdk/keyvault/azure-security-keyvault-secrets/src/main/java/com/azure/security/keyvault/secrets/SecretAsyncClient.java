@@ -645,7 +645,6 @@ public final class SecretAsyncClient {
      * <p>Restores the secret in the key vault from its backup. Subscribes to the call asynchronously
      * and prints out the restored secret details when a response is received.</p>
      *
-     * //Pass the Secret Backup Byte array to the restore operation.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecret#byte}
      *
      * @param backup The backup blob associated with the secret.
@@ -669,7 +668,6 @@ public final class SecretAsyncClient {
      * <p>Restores the secret in the key vault from its backup. Subscribes to the call asynchronously
      * and prints out the restored secret details when a response is received.</p>
      *
-     * //Pass the Secret Backup Byte array to the restore operation.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecretWithResponse#byte}
      *
      * @param backup The backup blob associated with the secret.

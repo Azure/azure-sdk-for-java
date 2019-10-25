@@ -311,6 +311,8 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     public void restoreSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.restoreSecret#byte
+
+        // Pass the secret backup byte array to the restore operation.
         byte[] secretBackupByteArray = {};
         secretAsyncClient.restoreSecretBackup(secretBackupByteArray)
             .subscriberContext(Context.of(key1, value1, key2, value2))
@@ -325,6 +327,8 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     public void restoreSecretWithResponseCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.restoreSecretWithResponse#byte
+
+        // Pass the secret backup byte array to the restore operation.
         byte[] secretBackupByteArray = {};
         secretAsyncClient.restoreSecretBackupWithResponse(secretBackupByteArray)
             .subscriberContext(Context.of(key1, value1, key2, value2))
