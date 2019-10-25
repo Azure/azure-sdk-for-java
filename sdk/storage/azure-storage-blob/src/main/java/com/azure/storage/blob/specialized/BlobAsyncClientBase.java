@@ -748,8 +748,11 @@ public class BlobAsyncClientBase {
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Context context) {
-        ParallelTransferOptions finalParallelTransferOptions = new ParallelTransferOptions();
-        finalParallelTransferOptions.populateAndApplyDefaults(parallelTransferOptions);
+        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+            ? new ParallelTransferOptions(null, null, null) :
+            new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
+                parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
+
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);

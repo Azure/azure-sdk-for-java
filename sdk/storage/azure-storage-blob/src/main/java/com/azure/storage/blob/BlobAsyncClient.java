@@ -241,8 +241,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             Objects.requireNonNull(data, "'data' must not be null");
             BlobRequestConditions accessConditionsFinal = accessConditions == null
                 ? new BlobRequestConditions() : accessConditions;
-            final ParallelTransferOptions finalParallelTransferOptions = new ParallelTransferOptions();
-            finalParallelTransferOptions.populateAndApplyDefaults(parallelTransferOptions);
+            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+                ? new ParallelTransferOptions(null, null, null) :
+                new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
+                    parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
 
             // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
             AtomicLong totalProgress = new AtomicLong(0);
@@ -351,8 +353,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions accessConditions) {
         try {
-            ParallelTransferOptions finalParallelTransferOptions = new ParallelTransferOptions();
-            finalParallelTransferOptions.populateAndApplyDefaults(parallelTransferOptions);
+            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+                ? new ParallelTransferOptions(null, null, null) :
+                new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
+                    parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
+
 
             // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
             AtomicLong totalProgress = new AtomicLong(0);
