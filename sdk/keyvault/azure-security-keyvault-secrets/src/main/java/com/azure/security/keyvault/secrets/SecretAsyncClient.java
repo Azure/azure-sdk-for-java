@@ -40,11 +40,11 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * The SecretAsyncClient provides asynchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault. The
- * client supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link
+ * client supports creating, retrieving, updating, deleting, purging, backing up, restoring, and listing the {@link
  * KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled
  * Azure Key Vault.
  *
- * <p><strong>Samples to construct the async client</strong></p>
+ * <p><strong>Construct the async client</strong></p>
  * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.construct}
  *
  * @see SecretClientBuilder
@@ -78,32 +78,34 @@ public final class SecretAsyncClient {
 
     /**
      * Get the vault endpoint url to which service requests are sent to.
-     * @return the vault endpoint url
+     * @return the vault endpoint url.
      */
     public String getVaultUrl() {
         return vaultUrl;
     }
 
     /**
-     * The set operation adds a secret to the key vault. If the named secret already exists, Azure Key Vault creates
-     * a new version of that secret. This operation requires the {@code secrets/set} permission.
+     * Adds or creates a new version of a secret to the key vault. If the named secret exists, Azure Key Vault creates a
+     * new version of that secret. This operation requires the {@code secrets/set} permission.
      *
-     * <p>The {@link KeyVaultSecret} is required. The {@link SecretProperties#getExpiresOn() expires},
-     * {@link SecretProperties#getContentType() contentType} and {@link SecretProperties#getNotBefore() notBefore}
-     * values in {@code secret} are optional. The {@link SecretProperties#isEnabled() enabled} field is set to true
-     * by key vault, if not specified.</p>
+     * <p>The {@link SecretProperties#getExpiresOn() expires}, {@link SecretProperties#getContentType() contentType},
+     * and {@link SecretProperties#getNotBefore() notBefore} values in {@code secret} are optional.
+     * If not specified, {@link SecretProperties#isEnabled() enabled} is set to true by key vault.</p>
      *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new secret which activates in 1 day and expires in 1 year in the Azure Key Vault. Subscribes to the
-     * call asynchronously and prints out the newly created secret details when a response is received.</p>
+     * <p><strong>Create a new secret</strong></p>
+     * <p>Creates a new secret which activates in one day and expires in one year. Subscribes to the call asynchronously
+     * and prints out the newly created secret details when a response is received.</p>
+     *
      * {@codesnippet com.azure.keyvault.secrets.secretclient.setSecret#secret}
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties
-     *     secret.name and secret.value must be non null.
+     *     {@link KeyVaultSecret#getName() secret.name} and {@link KeyVaultSecret#getValue() secret.value} cannot be
+     *     null.
      * @return A {@link Mono} containing the {@link KeyVaultSecret created secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceModifiedException if {@code secret} is malformed.
-     * @throws HttpRequestException if {@link KeyVaultSecret#getName()  name} or {@link KeyVaultSecret#getValue() value} is empty string.
+     * @throws HttpRequestException if {@link KeyVaultSecret#getName()  name} or {@link KeyVaultSecret#getValue() value}
+     *      is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> setSecret(KeyVaultSecret secret) {
@@ -115,26 +117,28 @@ public final class SecretAsyncClient {
     }
 
     /**
-     * The set operation adds a secret to the key vault. If the named secret already exists, Azure Key Vault creates
-     * a new version of that secret. This operation requires the {@code secrets/set} permission.
+     * Adds or creates a new version of a secret to the key vault. If the named secret exists, Azure Key Vault creates a
+     * new version of that secret. This operation requires the {@code secrets/set} permission.
      *
-     * <p>The {@link KeyVaultSecret} is required. The {@link SecretProperties#getExpiresOn() expires},
-     * {@link SecretProperties#getContentType() contentType} and {@link SecretProperties#getNotBefore() notBefore}
-     * values in {@code secret} are optional. The {@link SecretProperties#isEnabled() enabled} field is set to true by
-     * key vault, if not specified.</p>
+     * <p>The {@link SecretProperties#getExpiresOn() expires}, {@link SecretProperties#getContentType() contentType},
+     * and {@link SecretProperties#getNotBefore() notBefore} values in {@code secret} are optional.
+     * If not specified, {@link SecretProperties#isEnabled() enabled} is set to true by key vault.</p>
      *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new secret which activates in 1 day and expires in 1 year in the Azure Key Vault. Subscribes to the
-     * call asynchronously and prints out the newly created secret details when a response is received.</p>
+     * <p><strong>Create a new secret</strong></p>
+     * <p>Creates a new secret which activates in one day and expires in one year. Subscribes to the call asynchronously
+     * and prints out the newly created secret details when a response is received.</p>
+     *
      * {@codesnippet com.azure.keyvault.secrets.secretclient.setSecretWithResponse#secret}
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties
-     *     secret.name and secret.value must be non null.
+     *     {@link KeyVaultSecret#getName() secret.name} and {@link KeyVaultSecret#getValue() secret.value} cannot be
+     *     null.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     KeyVaultSecret created secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceModifiedException if {@code secret} is malformed.
-     * @throws HttpRequestException if {@link KeyVaultSecret#getName() name} or {@link KeyVaultSecret#getValue() value} is empty string.
+     * @throws HttpRequestException if {@link KeyVaultSecret#getName() name} or {@link KeyVaultSecret#getValue() value}
+     *      is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> setSecretWithResponse(KeyVaultSecret secret) {
@@ -161,11 +165,10 @@ public final class SecretAsyncClient {
     }
 
     /**
-     * The set operation adds a secret to the key vault. If the named secret already exists, Azure Key
-     * Vault creates a new version of that secret. This operation requires the {@code secrets/set}
-     * permission.
+     * Adds or creates a new version of a secret to the key vault. If the named secret exists, Azure Key Vault creates a
+     * new version of that secret. This operation requires the {@code secrets/set} permission.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Create a new secret</strong></p>
      * <p>Creates a new secret in the key vault. Subscribes to the call asynchronously and prints out
      * the newly created secret details when a response is received.</p>
      * {@codesnippet com.azure.keyvault.secrets.secretclient.setSecret#string-string}
@@ -195,15 +198,16 @@ public final class SecretAsyncClient {
     }
 
     /**
-     * Get the specified secret with specified version from the key vault. The get operation is applicable to any secret
-     * stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
+     * Get the specified secret with specified version from the key vault. This operation requires the
+     * {@code secrets/get} permission.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Get a secret</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
      * asynchronously and prints out the returned secret details when a response is received.</p>
+     *
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecret#string-string}
      *
-     * @param name The name of the secret, cannot be null
+     * @param name The name of the secret, cannot be null.
      * @param version The version of the secret to retrieve. If this is an empty String or null, this
      *     call is equivalent to calling {@link #getSecret(String)}, with the latest version being
      *     retrieved.
@@ -409,14 +413,13 @@ public final class SecretAsyncClient {
     }
 
     /**
-     * The get deleted secret operation returns the secrets that have been deleted for a vault enabled
-     * for soft-delete. This operation requires the {@code secrets/list} permission.
+     * Gets a secret that has been deleted for a <b>soft-delete enabled</b> key vault. This operation requires the
+     * {@code secrets/list} permission.
      *
-     * <p><strong>Code Samples</strong></p>
-     * <p> Gets the deleted secret from the key vault enabled for soft-delete. Subscribes to the call
+     * <p><strong>Get a deleted secret</strong></p>
+     * <p>Gets the deleted secret from the key vault enabled for <b>soft-delete</b>. Subscribes to the call
      * asynchronously and prints out the deleted secret details when a response is received.</p>
      *
-     * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecret#string}
      *
      * @param name The name of the deleted secret.
@@ -434,14 +437,13 @@ public final class SecretAsyncClient {
     }
 
     /**
-     * The get deleted secret operation returns the secrets that have been deleted for a vault enabled
-     * for soft-delete. This operation requires the {@code secrets/list} permission.
+     * Gets a secret that has been deleted for a <b>soft-delete enabled</b> key vault. This operation requires the
+     * {@code secrets/list} permission.
      *
-     * <p><strong>Code Samples</strong></p>
-     * <p> Gets the deleted secret from the key vault enabled for soft-delete. Subscribes to the call
+     * <p><strong>Get a deleted secret</strong></p>
+     * <p>Gets the deleted secret from the key vault enabled for <b>soft-delete</b>. Subscribes to the call
      * asynchronously and prints out the deleted secret details when a response is received.</p>
      *
-     * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecretWithResponse#string}
      *
      * @param name The name of the deleted secret.
@@ -468,15 +470,13 @@ public final class SecretAsyncClient {
     }
 
     /**
-     * The purge deleted secret operation removes the secret permanently, without the possibility of
-     * recovery. This operation can only be enabled on a soft-delete enabled vault. This operation
-     * requires the {@code secrets/purge} permission.
+     * Permanently removes a deleted secret, without the possibility of recovery. This operation can only be performed
+     * on a <b>soft-delete enabled</b> vault. This operation requires the {@code secrets/purge} permission.
      *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Purges the deleted secret from the key vault enabled for soft-delete. Subscribes to the call
+     * <p><strong>Purge a deleted secret</strong></p>
+     * <p>Purges the deleted secret from the key vault enabled for <b>soft-delete</b>. Subscribes to the call
      * asynchronously and prints out the status code from the server response when a response is received.</p>
      *
-     * //Assuming secret is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string}
      *
      * @param name The name of the secret.
