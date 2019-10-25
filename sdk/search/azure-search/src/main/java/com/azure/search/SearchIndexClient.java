@@ -4,6 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedIterable;
@@ -46,6 +47,14 @@ public class SearchIndexClient {
      */
     public String getIndexName() {
         return asyncClient.getIndexName();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     * @return the pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.asyncClient.getHttpPipeline();
     }
 
     /**

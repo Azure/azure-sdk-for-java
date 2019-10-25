@@ -37,7 +37,7 @@ public class HttpResponseExceptionExample {
      */
     private static void handleErrorsWithSyncClient() {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint(ENDPOINT)
+            .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();
@@ -68,7 +68,7 @@ public class HttpResponseExceptionExample {
      */
     private static void handleErrorsWithAsyncClient() {
         SearchIndexAsyncClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint(ENDPOINT)
+            .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildAsyncClient();

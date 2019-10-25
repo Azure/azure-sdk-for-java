@@ -20,7 +20,7 @@ public class GetSingleDocumentExample {
 
     public static void main(String[] args) {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint(ENDPOINT)
+            .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();

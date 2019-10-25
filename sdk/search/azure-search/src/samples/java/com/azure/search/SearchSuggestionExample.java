@@ -3,11 +3,8 @@
 
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedIterableBase;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
-import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
@@ -32,7 +29,7 @@ public class SearchSuggestionExample {
 
     public static void main(String[] args) {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint(ENDPOINT)
+            .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();

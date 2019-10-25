@@ -9,11 +9,8 @@ import com.azure.search.models.FacetResult;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchResult;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -35,7 +32,7 @@ public class SearchOptionsExample {
 
     public static void main(String[] args) {
         SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
-            .serviceEndpoint(ENDPOINT)
+            .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildAsyncClient();

@@ -3,6 +3,7 @@
 package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -33,6 +34,51 @@ public class SearchServiceClient {
 
     SearchServiceClient(SearchServiceAsyncClient searchServiceAsyncClient) {
         this.asyncClient = searchServiceAsyncClient;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     * @return the pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.asyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Initializes a new {@link SearchIndexClient} using the given Index name and the
+     * same configuration as the SearchServiceClient.
+     * @param indexName the name of the Index for the client
+     * @return a {@link SearchIndexClient} created from the service client configuration
+     */
+    public SearchIndexClient getIndexClient(String indexName) {
+        return new SearchIndexClient(asyncClient.getIndexClient(indexName));
+    }
+
+    /**
+     * Gets Client Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.asyncClient.getApiVersion();
+    }
+
+    /**
+     * Gets The DNS suffix of the Azure Cognitive Search service. The default is search.windows.net.
+     *
+     * @return the searchDnsSuffix value.
+     */
+    public String getSearchDnsSuffix() {
+        return this.asyncClient.getSearchDnsSuffix();
+    }
+
+    /**
+     * Gets The name of the Azure Cognitive Search service.
+     *
+     * @return the searchServiceName value.
+     */
+    public String getSearchServiceName() {
+        return this.asyncClient.getSearchServiceName();
     }
 
     /**

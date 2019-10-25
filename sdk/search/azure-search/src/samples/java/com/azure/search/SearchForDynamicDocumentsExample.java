@@ -34,7 +34,7 @@ public class SearchForDynamicDocumentsExample {
      */
     private static void searchWithSyncClient() {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint(ENDPOINT)
+            .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();
@@ -57,7 +57,7 @@ public class SearchForDynamicDocumentsExample {
      */
     private static void searchWithAsyncClient() {
         SearchIndexAsyncClient client = new SearchIndexClientBuilder()
-            .serviceEndpoint(ENDPOINT)
+            .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildAsyncClient();

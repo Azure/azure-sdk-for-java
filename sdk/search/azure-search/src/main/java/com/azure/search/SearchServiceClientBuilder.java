@@ -4,6 +4,8 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.common.SearchApiKeyPipelinePolicy;
@@ -12,6 +14,20 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class provides a fluent builder API to help aid the configuration and instantiation of
+ * {@link SearchServiceClient SearchServiceClients} and {@link SearchServiceAsyncClient SearchServiceAsyncClients}.
+ * Call {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct
+ * an instance of the desired client.
+ *
+ * <p>
+ *     The following information must be provided on this builder:
+ *     <ul>
+ *         <li>the search service endpoint through {@code .endpoint()}
+ *         <li>the API key through {@code .credential()}</li>
+ *     </ul>
+ * </p>
+ */
 @ServiceClientBuilder(serviceClients = { SearchServiceClient.class, SearchServiceAsyncClient.class})
 public class SearchServiceClientBuilder {
     private ApiKeyCredentials apiKeyCredentials;
@@ -45,13 +61,16 @@ public class SearchServiceClientBuilder {
     }
 
     /**
-     * Sets search service name
+     * Sets the search service endpoint
      *
-     * @param serviceName name of the service
-     * @return the updated SearchServiceClientBuilder object
+     * @param endpoint the endpoint URL to the search service
+     * @return the updated SearchIndexClientBuilder object
+     * @throws IllegalArgumentException on invalid service endpoint
      */
-    public SearchServiceClientBuilder serviceName(String serviceName) {
-        this.serviceName = serviceName;
+    public SearchServiceClientBuilder endpoint(String endpoint) throws IllegalArgumentException {
+        SearchServiceUrlParser.SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
+        this.serviceName = parts.serviceName;
+        this.searchDnsSuffix = parts.dnsSuffix;
         return this;
     }
 
@@ -67,8 +86,8 @@ public class SearchServiceClientBuilder {
     }
 
     /**
-     * Sets the api key to use for requests authentication.
-     * @param apiKeyCredentials api key for requests authentication
+     * Sets the api key to use for request authentication.
+     * @param apiKeyCredentials api key for request authentication
      * @throws IllegalArgumentException when the api key is empty
      * @return the updated SearchServiceClientBuilder object
      */
@@ -92,17 +111,6 @@ public class SearchServiceClientBuilder {
     }
 
     /**
-     * Set search service dns suffix
-     *
-     * @param searchDnsSuffix search service dns suffix
-     * @return the updated SearchServiceClientBuilder object
-     */
-    public SearchServiceClientBuilder searchDnsSuffix(String searchDnsSuffix) {
-        this.searchDnsSuffix = searchDnsSuffix;
-        return this;
-    }
-
-    /**
      * @return a {@link SearchServiceClient} created from the configurations in this builder.
      */
     public SearchServiceClient buildClient() {
@@ -117,10 +125,14 @@ public class SearchServiceClientBuilder {
             this.policies.add(new SearchApiKeyPipelinePolicy(apiKeyCredentials));
         }
 
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
+
         return new SearchServiceAsyncClient(serviceName,
             searchDnsSuffix,
             apiVersion,
-            httpClient,
-            policies);
+            pipeline);
     }
 }

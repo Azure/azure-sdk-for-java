@@ -30,7 +30,7 @@ public class SearchIndexService {
      *
      * @param indexDataFileName the name of a file that contains a JSON index definition.
      * @param searchServiceName the name of Search Service in Azure.
-     * @param searchServiceName the DNS suffix for the Search Service.
+     * @param searchDnsSuffix the DNS suffix for the Search Service.
      * @param apiAdminKey       the Admin Key of Search Service
      */
     public SearchIndexService(String indexDataFileName, String searchServiceName, String searchDnsSuffix, String apiAdminKey) {
@@ -50,8 +50,7 @@ public class SearchIndexService {
 
         if (searchServiceClient == null) {
             searchServiceClient = new SearchServiceClientBuilder()
-                .serviceName(searchServiceName)
-                .searchDnsSuffix(searchDnsSuffix)
+                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
                 .credential(new ApiKeyCredentials(apiAdminKey))
                 .buildClient();
         }

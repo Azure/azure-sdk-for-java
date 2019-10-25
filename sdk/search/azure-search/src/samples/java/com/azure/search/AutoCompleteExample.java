@@ -28,7 +28,7 @@ public class AutoCompleteExample {
     public static void main(String[] args) {
 
         SearchIndexClient searchClient = new SearchIndexClientBuilder()
-            .serviceEndpoint(ENDPOINT)
+            .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels-sample")
             .buildClient();

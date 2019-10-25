@@ -4,11 +4,9 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -19,6 +17,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeResult;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceListResult;
@@ -27,17 +26,15 @@ import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.IndexerListResult;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
-import com.azure.search.models.AccessCondition;
-import com.azure.search.models.RequestOptions;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -67,13 +64,18 @@ public class SearchServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(SearchServiceAsyncClient.class);
 
     /**
-     * The underlying REST client to be used to actually interact with the Search service
+     * The underlying AutoRest client used to interact with the Search service
      */
     private final SearchServiceRestClientImpl restClient;
 
+    /**
+     * The pipeline that powers this client.
+     */
+    private final HttpPipeline httpPipeline;
+
     SearchServiceAsyncClient(
         String searchServiceName, String searchDnsSuffix, String apiVersion,
-        HttpClient httpClient, List<HttpPipelinePolicy> policies) {
+        HttpPipeline httpPipeline) {
         if (StringUtils.isBlank(searchServiceName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid searchServiceName"));
         }
@@ -83,24 +85,43 @@ public class SearchServiceAsyncClient {
         if (StringUtils.isBlank(apiVersion)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
         }
-        if (httpClient == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid httpClient"));
-        }
-        if (policies == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid policies"));
+        if (httpPipeline == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid httpPipeline"));
         }
 
         this.searchServiceName = searchServiceName;
         this.searchDnsSuffix = searchDnsSuffix;
         this.apiVersion = apiVersion;
+        this.httpPipeline = httpPipeline;
         this.restClient = new SearchServiceRestClientBuilder()
             .searchServiceName(searchServiceName)
             .searchDnsSuffix(searchDnsSuffix)
             .apiVersion(apiVersion)
-            .pipeline(new HttpPipelineBuilder()
-                .httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build())
+            .pipeline(httpPipeline)
             .build();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     * @return the pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * Initializes a new {@link SearchIndexAsyncClient} using the given Index name and the
+     * same configuration as the SearchServiceAsyncClient.
+     * @param indexName the name of the Index for the client
+     * @return a {@link SearchIndexAsyncClient} created from the service client configuration
+     */
+    public SearchIndexAsyncClient getIndexClient(String indexName) {
+        return new SearchIndexAsyncClient(
+            searchServiceName,
+            searchDnsSuffix,
+            indexName,
+            apiVersion,
+            httpPipeline);
     }
 
     /**

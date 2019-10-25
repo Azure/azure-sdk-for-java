@@ -4,9 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
@@ -15,6 +13,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.common.AutoCompletePagedResponse;
 import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
@@ -26,18 +25,16 @@ import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
-import com.azure.search.models.SearchRequest;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SearchOptions;
+import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestOptions;
-import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SuggestRequest;
 import com.azure.search.models.SuggestResult;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
 import java.util.function.Function;
@@ -72,20 +69,27 @@ public class SearchIndexAsyncClient {
      */
     private final String indexName;
 
+    /**
+     * The logger to be used
+     */
     private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
 
     /**
-     * The underlying REST client to be used to actually interact with the Search service
+     * The underlying AutoRest client used to interact with the Search service
      */
     private final SearchIndexRestClientImpl restClient;
+
+    /**
+     * The pipeline that powers this client.
+     */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
     SearchIndexAsyncClient(
             String searchServiceName, String searchDnsSuffix, String indexName, String apiVersion,
-            HttpClient httpClient,
-            List<HttpPipelinePolicy> policies) {
+            HttpPipeline httpPipeline) {
         if (StringUtils.isBlank(searchServiceName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid searchServiceName"));
         }
@@ -98,26 +102,22 @@ public class SearchIndexAsyncClient {
         if (StringUtils.isBlank(apiVersion)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
         }
-        if (httpClient == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid httpClient"));
-        }
-        if (policies == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid policies"));
+        if (httpPipeline == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid httpPipeline"));
         }
 
         this.searchServiceName = searchServiceName;
         this.searchDnsSuffix = searchDnsSuffix;
         this.indexName = indexName;
         this.apiVersion = apiVersion;
+        this.httpPipeline = httpPipeline;
 
         restClient = new SearchIndexRestClientBuilder()
             .searchServiceName(searchServiceName)
             .indexName(indexName)
             .searchDnsSuffix(searchDnsSuffix)
             .apiVersion(apiVersion)
-            .pipeline(new HttpPipelineBuilder()
-                .httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build())
+            .pipeline(httpPipeline)
             .serializer(SERIALIZER)
             .build();
     }
@@ -129,6 +129,14 @@ public class SearchIndexAsyncClient {
      */
     public String getIndexName() {
         return this.indexName;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     * @return the pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
     }
 
     /**

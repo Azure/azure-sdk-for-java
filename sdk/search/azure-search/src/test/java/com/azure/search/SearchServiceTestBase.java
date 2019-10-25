@@ -75,8 +75,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     protected SearchServiceClientBuilder getSearchServiceClientBuilder() {
         if (!interceptorManager.isPlaybackMode()) {
             return new SearchServiceClientBuilder()
-                .serviceName(searchServiceName)
-                .searchDnsSuffix(searchDnsSuffix)
+                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                 .credential(apiKeyCredentials)
                 .addPolicy(interceptorManager.getRecordPolicy())
@@ -85,8 +84,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
         } else {
             return new SearchServiceClientBuilder()
-                .serviceName("searchServiceName")
-                .searchDnsSuffix(searchDnsSuffix)
+                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
                 .httpClient(interceptorManager.getPlaybackClient());
         }
     }

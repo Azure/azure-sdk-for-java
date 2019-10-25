@@ -5,34 +5,30 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.common.SearchApiKeyPipelinePolicy;
 import org.apache.commons.lang3.StringUtils;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fluent SearchIndexClientBuilder
- * for instantiating a {@link SearchIndexClient} or a {@link SearchIndexAsyncClient}
- * using {@link SearchIndexClientBuilder#buildClient()} or {@link SearchIndexClientBuilder#buildAsyncClient()}
+ * This class provides a fluent builder API to help aid the configuration and instantiation of
+ * {@link SearchIndexClient SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}.
+ * Call {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct
+ * an instance of the desired client.
  *
  * <p>
- * The following information must be provided on this builder:
- *
- * <ul>
- * <li>the search service name through {@code .serviceName()}
- * <li>the index name through {@code .indexName()}
- * <li>the api version through {@code .apiVersion()}
- * <li>the api-key though {@code .policy()}</li>
- * </ul>
- *
- * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
- * {@link SearchIndexClient} or {@code .buildAsyncClient()} to create a {@link SearchIndexAsyncClient}
+ *     The following information must be provided on this builder:
+ *     <ul>
+ *         <li>the search service endpoint through {@code .endpoint()}
+ *         <li>the index name through {@code .indexName()}
+ *         <li>the API key through {@code .credential()}</li>
+ *     </ul>
+ * </p>
  */
 @ServiceClientBuilder(serviceClients = { SearchIndexClient.class, SearchIndexAsyncClient.class})
 public class SearchIndexClientBuilder {
@@ -68,43 +64,16 @@ public class SearchIndexClientBuilder {
     }
 
     /**
-     * Sets search service name
+     * Sets the search service endpoint
      *
      * @param endpoint the endpoint URL to the search service
      * @return the updated SearchIndexClientBuilder object
      * @throws IllegalArgumentException on invalid service endpoint
      */
-    public SearchIndexClientBuilder serviceEndpoint(String endpoint) throws IllegalArgumentException {
-        if (StringUtils.isBlank(endpoint)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Illegal endpoint URL: endpoint cannot be blank"));
-        }
-
-        URL url;
-        try {
-            // Using the URL class to validate the given endpoint structure
-            url = new URL(endpoint);
-        } catch (MalformedURLException exc) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Illegal endpoint URL: " + exc.getMessage()));
-        }
-
-        // Now that we know that the endpoint is in a valid form, extract the host part
-        // (e.g. http://myservice.search.windows.net ==> myservice.search.windows.net) and verify its structure,
-        // we expect the service name and domain to be present.
-        String extractedHost = url.getHost();
-        if (StringUtils.isBlank(extractedHost) || extractedHost.startsWith(".") || extractedHost.endsWith(".")) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Illegal endpoint URL: invalid host"));
-        }
-
-        String[] tokens = StringUtils.split(extractedHost, ".");
-        if ((tokens.length < 3) || (StringUtils.isBlank(tokens[0]))) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Illegal endpoint URL: invalid host"));
-        }
-
-        // split the service name and dns suffix
-        this.serviceName = tokens[0];
-        int index = StringUtils.indexOf(extractedHost, ".");
-        this.searchDnsSuffix = extractedHost.substring(index + 1);
+    public SearchIndexClientBuilder endpoint(String endpoint) throws IllegalArgumentException {
+        SearchServiceUrlParser.SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
+        this.serviceName = parts.serviceName;
+        this.searchDnsSuffix = parts.dnsSuffix;
         return this;
     }
 
@@ -131,8 +100,8 @@ public class SearchIndexClientBuilder {
     }
 
     /**
-     * Sets the api key to use for requests authentication.
-     * @param apiKeyCredentials api key for requests authentication
+     * Sets the api key to use for request authentication.
+     * @param apiKeyCredentials api key for request authentication
      * @throws IllegalArgumentException when the api key is empty
      * @return the updated SearchIndexClientBuilder object
      * @throws IllegalArgumentException when the api key is empty
@@ -171,11 +140,15 @@ public class SearchIndexClientBuilder {
             this.policies.add(new SearchApiKeyPipelinePolicy(apiKeyCredentials));
         }
 
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
+
         return new SearchIndexAsyncClient(serviceName,
             searchDnsSuffix,
             indexName,
             apiVersion,
-            httpClient,
-            policies);
+            pipeline);
     }
 }
