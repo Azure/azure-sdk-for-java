@@ -29,22 +29,21 @@ public class DeploymentResourceProperties {
     private String appName;
 
     /**
+     * Provisioning state of the Deployment. Possible values include:
+     * 'Creating', 'Updating', 'Succeeded', 'Failed'.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private DeploymentResourceProvisioningState provisioningState;
+
+    /**
      * Deployment settings of the Deployment.
      */
     @JsonProperty(value = "deploymentSettings")
     private DeploymentSettings deploymentSettings;
 
     /**
-     * Provisioning state of the Deployment. Possible values include:
-     * 'Creating', 'Processing', 'Succeeded', 'Failed'.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private DeploymentResourceProvisioningState provisioningState;
-
-    /**
      * Status of the Deployment. Possible values include: 'Unknown', 'Stopped',
-     * 'Running', 'Failed', 'Processing', 'Allocating', 'Upgrading',
-     * 'Compiling'.
+     * 'Running', 'Failed', 'Allocating', 'Upgrading', 'Compiling'.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentResourceStatus status;
@@ -97,6 +96,15 @@ public class DeploymentResourceProperties {
     }
 
     /**
+     * Get provisioning state of the Deployment. Possible values include: 'Creating', 'Updating', 'Succeeded', 'Failed'.
+     *
+     * @return the provisioningState value
+     */
+    public DeploymentResourceProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Get deployment settings of the Deployment.
      *
      * @return the deploymentSettings value
@@ -117,16 +125,7 @@ public class DeploymentResourceProperties {
     }
 
     /**
-     * Get provisioning state of the Deployment. Possible values include: 'Creating', 'Processing', 'Succeeded', 'Failed'.
-     *
-     * @return the provisioningState value
-     */
-    public DeploymentResourceProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get status of the Deployment. Possible values include: 'Unknown', 'Stopped', 'Running', 'Failed', 'Processing', 'Allocating', 'Upgrading', 'Compiling'.
+     * Get status of the Deployment. Possible values include: 'Unknown', 'Stopped', 'Running', 'Failed', 'Allocating', 'Upgrading', 'Compiling'.
      *
      * @return the status value
      */

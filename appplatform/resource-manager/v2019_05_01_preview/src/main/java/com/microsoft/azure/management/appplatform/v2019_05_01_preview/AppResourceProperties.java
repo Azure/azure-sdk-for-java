@@ -29,7 +29,7 @@ public class AppResourceProperties {
 
     /**
      * Provisioning state of the App. Possible values include: 'Succeeded',
-     * 'Failed'.
+     * 'Failed', 'Creating', 'Updating'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AppResourceProvisioningState provisioningState;
@@ -88,7 +88,7 @@ public class AppResourceProperties {
     }
 
     /**
-     * Get provisioning state of the App. Possible values include: 'Succeeded', 'Failed'.
+     * Get provisioning state of the App. Possible values include: 'Succeeded', 'Failed', 'Creating', 'Updating'.
      *
      * @return the provisioningState value
      */
