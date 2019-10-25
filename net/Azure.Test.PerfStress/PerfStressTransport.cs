@@ -1,4 +1,4 @@
-﻿using Azure.Core.Http;
+﻿using Azure.Core;
 using Azure.Core.Pipeline;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -51,19 +51,19 @@ namespace Azure.Test.PerfStress
                 return _transport.CreateRequest();
             }
 
-            public override void Process(HttpPipelineMessage message)
+            public override void Process(HttpMessage message)
             {
                 ChangeUri(message);
                 _transport.Process(message);
             }
 
-            public override ValueTask ProcessAsync(HttpPipelineMessage message)
+            public override ValueTask ProcessAsync(HttpMessage message)
             {
                 ChangeUri(message);
                 return _transport.ProcessAsync(message);
             }
 
-            private void ChangeUri(HttpPipelineMessage message)
+            private void ChangeUri(HttpMessage message)
             {
                 message.Request.Headers.Add("Host", message.Request.Uri.Host);
 

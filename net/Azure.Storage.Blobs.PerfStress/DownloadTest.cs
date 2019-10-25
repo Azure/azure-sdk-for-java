@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class DownloadTest : ContainerTest<ParallelTransferOptionsOptions>
+    public class DownloadTest : ContainerTest<StorageTransferOptionsOptions>
     {
         private readonly BlobClient _blobClient;
 
-        public DownloadTest(ParallelTransferOptionsOptions options) : base(options)
+        public DownloadTest(StorageTransferOptionsOptions options) : base(options)
         {
             _blobClient = BlobContainerClient.GetBlobClient("downloadtest");
         }
@@ -26,12 +26,12 @@ namespace Azure.Storage.Blobs.PerfStress
 
         public override void Run(CancellationToken cancellationToken)
         {
-            _blobClient.Download(Stream.Null, parallelTransferOptions: Options.ParallelTransferOptions, cancellationToken: cancellationToken);
+            _blobClient.DownloadTo(Stream.Null, transferOptions: Options.StorageTransferOptions, cancellationToken: cancellationToken);
         }
 
         public override async Task RunAsync(CancellationToken cancellationToken)
         {
-            await _blobClient.DownloadAsync(Stream.Null, parallelTransferOptions: Options.ParallelTransferOptions, cancellationToken: cancellationToken);
+            await _blobClient.DownloadToAsync(Stream.Null, transferOptions: Options.StorageTransferOptions, cancellationToken: cancellationToken);
         }
     }
 }
