@@ -18,8 +18,8 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 public final class ManagedIdentityCredential implements TokenCredential {
-    private final AppServiceMSICredential appServiceMSICredential;
-    private final VirtualMachineMSICredential virtualMachineMSICredential;
+    private final AppServiceMsiCredential appServiceMSICredential;
+    private final VirtualMachineMsiCredential virtualMachineMSICredential;
 
     /**
      * Creates an instance of the ManagedIdentityCredential.
@@ -33,16 +33,17 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .build();
         Configuration configuration = Configuration.getGlobalConfiguration();
         if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
-            appServiceMSICredential = new AppServiceMSICredential(clientId, identityClient);
+            appServiceMSICredential = new AppServiceMsiCredential(clientId, identityClient);
             virtualMachineMSICredential = null;
         } else {
-            virtualMachineMSICredential = new VirtualMachineMSICredential(clientId, identityClient);
+            virtualMachineMSICredential = new VirtualMachineMsiCredential(clientId, identityClient);
             appServiceMSICredential = null;
         }
     }
 
     /**
-     * @return the client id of user assigned or system assigned identity.
+     * Gets the client ID of user assigned or system assigned identity.
+     * @return the client ID of user assigned or system assigned identity.
      */
     public String getClientId() {
         return this.appServiceMSICredential != null

@@ -8,7 +8,6 @@ import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.polling.Poller
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileErrorCode
 import com.azure.storage.file.models.FileHttpHeaders
@@ -152,17 +151,17 @@ class FileAsyncAPITests extends APISpec {
 
         downloadVerifier.assertNext({ response ->
             assert FileTestHelper.assertResponseStatusCode(response, 200)
-            def headers = response.getHeaders()
-            assert Long.parseLong(headers.getValue("Content-Length")) == dataLength
-            assert headers.getValue("ETag")
-            assert headers.getValue("Last-Modified")
-            assert headers.getValue("x-ms-file-permission-key")
-            assert headers.getValue("x-ms-file-attributes")
-            assert headers.getValue("x-ms-file-last-write-time")
-            assert headers.getValue("x-ms-file-creation-time")
-            assert headers.getValue("x-ms-file-change-time")
-            assert headers.getValue("x-ms-file-parent-id")
-            assert headers.getValue("x-ms-file-id")
+            def headers = response.getDeserializedHeaders()
+            assert headers.getContentLength() == dataLength
+            assert headers.getETag()
+            assert headers.getLastModified()
+            assert headers.getFilePermissionKey()
+            assert headers.getFileAttributes()
+            assert headers.getFileLastWriteTime()
+            assert headers.getFileCreationTime()
+            assert headers.getFileChangeTime()
+            assert headers.getFileParentId()
+            assert headers.getFileId()
 
             FluxUtil.collectBytesInByteBufferStream(response.getValue())
                 .flatMap({ data -> assert defaultData.array() == data })
@@ -188,7 +187,7 @@ class FileAsyncAPITests extends APISpec {
 
         downloadVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 206)
-            assert Long.parseLong(it.getHeaders().getValue("Content-Length")) == dataLength
+            assert it.getDeserializedHeaders().getContentLength() == dataLength
             FluxUtil.collectBytesInByteBufferStream(it.getValue())
                 .flatMap({ data -> assert data == defaultData.array()})
         }.verifyComplete()

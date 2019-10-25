@@ -383,6 +383,23 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlobClient#uploadFromFile(String, boolean)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadFromFileOverwrite() throws IOException {
+        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean
+        try {
+            boolean overwrite = false;
+            client.uploadFromFile(filePath, overwrite);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean
+    }
+
+    /**
      * Code snippet for {@link BlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs

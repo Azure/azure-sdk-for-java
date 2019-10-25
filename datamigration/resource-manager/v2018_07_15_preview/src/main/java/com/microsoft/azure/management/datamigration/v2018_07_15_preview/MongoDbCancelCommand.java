@@ -16,7 +16,7 @@ import com.microsoft.azure.management.datamigration.v2018_07_15_preview.implemen
 /**
  * Properties for the command that cancels a migration in whole or in part.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType", defaultImpl = MongoDbCancelCommand.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
 @JsonTypeName("cancel")
 public class MongoDbCancelCommand extends CommandPropertiesInner {
     /**

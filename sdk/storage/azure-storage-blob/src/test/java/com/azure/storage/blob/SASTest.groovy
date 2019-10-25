@@ -1182,17 +1182,25 @@ class SASTest extends APISpec {
 
     def "URLParser"() {
         when:
-        def parts = BlobUrlParts.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
 
         then:
         parts.getScheme() == "http"
         parts.getHost() == "host"
         parts.getBlobContainerName() == "container"
-        parts.getBlobName() == "blob"
+        parts.getBlobName() == finalBlobName
         parts.getSnapshot() == "snapshot"
         parts.getSasQueryParameters().getPermissions() == "r"
         parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.getSasQueryParameters().getResource() == "c"
         parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+
+        where:
+        originalBlobName       | finalBlobName
+        "blob"                 | "blob"
+        "path/to]a blob"       | "path/to]a blob"
+        "path%2Fto%5Da%20blob" | "path/to]a blob"
+        "斑點"                 | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 }

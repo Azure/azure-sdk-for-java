@@ -19,6 +19,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,7 +34,7 @@ import java.util.Objects;
  * respectively. It constructs an instance of the desired client.
  *
  * <p> The minimal configuration options required by {@link KeyClientBuilder} to build {@link KeyAsyncClient} are
- * {@link String endpoint} and {@link TokenCredential credential}. </p>
+ * {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
  * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
  *
@@ -43,13 +44,13 @@ import java.util.Objects;
  * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation}
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
- * {@link String endpoint} can be specified. It provides finer control over the construction of {@link KeyAsyncClient}
+ * {@link String vaultUrl} can be specified. It provides finer control over the construction of {@link KeyAsyncClient}
  * and {@link KeyClient}</p>
  *
  * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation}
  *
  * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link
- * KeyClient} are {@link String endpoint} and {@link TokenCredential credential}. </p>
+ * KeyClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
  * {@codesnippet com.azure.security.keyvault.keys.keyclient.instantiation}
  *
@@ -63,7 +64,7 @@ public final class KeyClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private URL endpoint;
+    private URL vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private final RetryPolicy retryPolicy;
@@ -84,14 +85,14 @@ public final class KeyClientBuilder {
      * Every time {@code buildClient()} is called, a new instance of {@link KeyClient} is created.
      *
      * <p>If {@link KeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link KeyClientBuilder#endpoint(String) serviceEndpoint} are used to create the {@link KeyClientBuilder client}.
+     * {@link KeyClientBuilder#vaultUrl(String) vaultUrl} are used to create the {@link KeyClientBuilder client}.
      * All other builder settings are ignored. If {@code pipeline} is not set, then {@link
      * KeyClientBuilder#credential(TokenCredential) key vault credential} and {@link
-     * KeyClientBuilder#endpoint(String) key vault endpoint} are required to build the {@link KeyClient client}.</p>
+     * KeyClientBuilder#vaultUrl(String) key vault url} are required to build the {@link KeyClient client}.</p>
      *
      * @return A {@link KeyClient} with the options set from the builder.
      * @throws IllegalStateException If {@link KeyClientBuilder#credential(TokenCredential)} or
-     *     {@link KeyClientBuilder#endpoint(String)} have not been set.
+     *     {@link KeyClientBuilder#vaultUrl(String)} have not been set.
      */
     public KeyClient buildClient() {
         return new KeyClient(buildAsyncClient());
@@ -102,14 +103,14 @@ public final class KeyClientBuilder {
      * Every time {@code buildAsyncClient()} is called, a new instance of {@link KeyAsyncClient} is created.
      *
      * <p>If {@link KeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link KeyClientBuilder#endpoint(String) serviceEndpoint} are used to create the {@link KeyClientBuilder client}.
+     * {@link KeyClientBuilder#vaultUrl(String) vaultUrl} are used to create the {@link KeyClientBuilder client}.
      * All other builder settings are ignored. If {@code pipeline} is not set, then {@link
-     * KeyClientBuilder#credential(TokenCredential) key vault credential and {@link KeyClientBuilder#endpoint(String)}
-     * key vault endpoint are required to build the {@link KeyAsyncClient client}.}</p>
+     * KeyClientBuilder#credential(TokenCredential) key vault credential and {@link KeyClientBuilder#vaultUrl(String)}
+     * key vault url are required to build the {@link KeyAsyncClient client}.}</p>
      *
      * @return A {@link KeyAsyncClient} with the options set from the builder.
      * @throws IllegalStateException If {@link KeyClientBuilder#credential(TokenCredential)} or
-     *     {@link KeyClientBuilder#endpoint(String)} have not been set.
+     *     {@link KeyClientBuilder#vaultUrl(String)} have not been set.
      */
     public KeyAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
@@ -124,7 +125,7 @@ public final class KeyClientBuilder {
         KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new KeyAsyncClient(endpoint, pipeline, serviceVersion);
+            return new KeyAsyncClient(vaultUrl, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -149,22 +150,22 @@ public final class KeyClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new KeyAsyncClient(endpoint, pipeline, serviceVersion);
+        return new KeyAsyncClient(vaultUrl, pipeline, serviceVersion);
     }
 
     /**
-     * Sets the vault endpoint url to send HTTP requests to.
+     * Sets the vault url to send HTTP requests to.
      *
-     * @param endpoint The vault endpoint url is used as destination on Azure to send requests to.
+     * @param vaultUrl The vault url is used as destination on Azure to send requests to.
      * @return the updated ServiceClientBuilder object.
-     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException if {@code vaultUrl} is null or it cannot be parsed into a valid URL.
      */
-    public KeyClientBuilder endpoint(String endpoint) {
+    public KeyClientBuilder vaultUrl(String vaultUrl) {
         try {
-            this.endpoint = new URL(endpoint);
-        } catch (MalformedURLException e) {
+            this.vaultUrl = new URL(vaultUrl);
+        } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "The Azure Key Vault endpoint url is malformed."));
+                "The Azure Key Vault url is malformed.", ex));
         }
         return this;
     }
@@ -226,7 +227,7 @@ public final class KeyClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link KeyClientBuilder#endpoint(String) endpoint} to build {@link KeyClient} or {@link KeyAsyncClient}.
+     * {@link KeyClientBuilder#vaultUrl(String) vaultUrl} to build {@link KeyClient} or {@link KeyAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return the updated {@link KeyClientBuilder} object.
@@ -267,8 +268,8 @@ public final class KeyClientBuilder {
     }
 
     private URL getBuildEndpoint(Configuration configuration) {
-        if (endpoint != null) {
-            return endpoint;
+        if (vaultUrl != null) {
+            return vaultUrl;
         }
 
         String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");

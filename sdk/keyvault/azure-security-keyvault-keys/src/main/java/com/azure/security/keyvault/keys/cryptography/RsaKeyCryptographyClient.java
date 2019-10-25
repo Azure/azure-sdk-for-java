@@ -7,13 +7,13 @@ import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
+import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.BadPaddingException;
@@ -38,25 +38,20 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     RsaKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
         super(serviceClient);
-        keyPair = key.toRSA(key.hasPrivateKey());
+        keyPair = key.toRsa(key.hasPrivateKey());
     }
 
     private KeyPair getKeyPair(JsonWebKey key) {
         if (keyPair == null) {
-            keyPair = key.toRSA(key.hasPrivateKey());
+            keyPair = key.toRsa(key.hasPrivateKey());
         }
         return keyPair;
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
-                                     byte[] authenticationData, Context context, JsonWebKey jsonWebKey) {
+    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context,
+                                     JsonWebKey jsonWebKey) {
         keyPair = getKeyPair(jsonWebKey);
-
-        if (iv != null || authenticationData != null) {
-            Mono.error(new IllegalArgumentException(
-                "iv and authenticationData parameters are not allowed for Rsa encrypt operation"));
-        }
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
@@ -84,7 +79,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createEncryptor(keyPair);
-            return Mono.just(new EncryptResult(transform.doFinal(plaintext), (byte[]) null, algorithm));
+            return Mono.just(new EncryptResult(transform.doFinal(plaintext), algorithm, jsonWebKey.getId()));
         } catch (InvalidKeyException
             | NoSuchAlgorithmException
             | NoSuchPaddingException
@@ -95,14 +90,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv,
-                                     byte[] authenticationData, byte[] authenticationTag, Context context,
+    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context,
                                      JsonWebKey jsonWebKey) {
-
-        if (iv != null || authenticationData != null || authenticationTag != null) {
-            return Mono.error(new IllegalArgumentException(
-                "iv, authenticationData and authenticationTag parameters are not supported for Rsa decrypt operation"));
-        }
 
         keyPair = getKeyPair(jsonWebKey);
 
@@ -131,7 +120,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createDecryptor(keyPair);
-            return Mono.just(new DecryptResult(transform.doFinal(cipherText)));
+            return Mono.just(new DecryptResult(transform.doFinal(cipherText), algorithm, jsonWebKey.getId()));
         } catch (InvalidKeyException
             | NoSuchAlgorithmException
             | NoSuchPaddingException
@@ -156,7 +145,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<KeyWrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey jsonWebKey) {
+    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey jsonWebKey) {
 
         keyPair = getKeyPair(jsonWebKey);
 
@@ -185,7 +174,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createEncryptor(keyPair);
-            return Mono.just(new KeyWrapResult(transform.doFinal(key), algorithm));
+            return Mono.just(new WrapResult(transform.doFinal(key), algorithm, jsonWebKey.getId()));
         } catch (InvalidKeyException
             | NoSuchAlgorithmException
             | NoSuchPaddingException
@@ -196,8 +185,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<KeyUnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
-                                         JsonWebKey jsonWebKey) {
+    Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
+                                      JsonWebKey jsonWebKey) {
 
         keyPair = getKeyPair(jsonWebKey);
 
@@ -227,7 +216,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createDecryptor(keyPair);
-            return Mono.just(new KeyUnwrapResult(transform.doFinal(encryptedKey)));
+            return Mono.just(new UnwrapResult(transform.doFinal(encryptedKey), algorithm, jsonWebKey.getId()));
         } catch (InvalidKeyException
             | NoSuchAlgorithmException
             | NoSuchPaddingException

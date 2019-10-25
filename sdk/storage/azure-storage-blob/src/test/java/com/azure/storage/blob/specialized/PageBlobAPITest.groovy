@@ -685,7 +685,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges diff"() {
         setup:
-        bc.create(PageBlobClient.PAGE_BYTES * 2)
+        bc.create(PageBlobClient.PAGE_BYTES * 2, true)
 
         bc.uploadPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
@@ -1090,5 +1090,38 @@ class PageBlobAPITest extends APISpec {
     def "Get Page Blob Name"() {
         expect:
         blobName == bc.getBlobName()
+    }
+
+    def "Get Blob Name and Build Client"() {
+        when:
+        def client = cc.getBlobClient(originalBlobName)
+        def blockClient = cc.getBlobClient(client.getBlobName()).getPageBlobClient()
+
+        then:
+        blockClient.getBlobName() == finalBlobName
+
+        where:
+        originalBlobName       | finalBlobName
+        "blob"                 | "blob"
+        "path/to]a blob"       | "path/to]a blob"
+        "path%2Fto%5Da%20blob" | "path/to]a blob"
+        "斑點"                 | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
+    }
+
+    def "Create overwrite false"() {
+        when:
+        bc.create(512)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Create overwrite true"() {
+        when:
+        bc.create(512, true)
+
+        then:
+        notThrown(Throwable)
     }
 }

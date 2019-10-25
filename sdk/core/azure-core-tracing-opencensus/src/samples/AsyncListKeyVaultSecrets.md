@@ -11,7 +11,7 @@ Following documentation describes instructions to run a sample program for listi
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-secrets</artifactId>
-  <version>4.0.0-preview.5</version>
+  <version>4.0.0</version>
   <exclusions>
     <exclusion>
       <groupId>com.azure</groupId>
@@ -22,12 +22,12 @@ Following documentation describes instructions to run a sample program for listi
 ```
 [//]: # ({x-version-update-end})
 [//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
-```
+```xml
 <!-- Add OkHTTP client to use with KeyVault Secrets -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -118,7 +118,7 @@ public class ListOperationsAsync {
         semaphore.acquire();
         // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
-        client.listSecrets()
+        client.listPropertiesOfSecrets()
             .subscriberContext(traceContext)
             .subscribe(secretBase -> client.getSecret(secretBase)
                 .subscriberContext(traceContext)

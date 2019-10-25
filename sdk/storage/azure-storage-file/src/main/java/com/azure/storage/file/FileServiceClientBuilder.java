@@ -22,6 +22,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.implementation.util.BuilderHelper;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public final class FileServiceClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new HttpLogOptions();
+    private HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -91,6 +92,7 @@ public final class FileServiceClientBuilder {
      * and {@link FileServiceAsyncClient FileServiceAsyncClients}.
      */
     public FileServiceClientBuilder() {
+        logOptions = getDefaultHttpLogOptions();
     }
 
     /**
@@ -273,6 +275,15 @@ public final class FileServiceClientBuilder {
     public FileServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
+    }
+
+    /**
+     * Gets the default log options with Storage headers and query parameters.
+     *
+     * @return the default log options.
+     */
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        return BuilderHelper.getDefaultHttpLogOptions();
     }
 
     /**

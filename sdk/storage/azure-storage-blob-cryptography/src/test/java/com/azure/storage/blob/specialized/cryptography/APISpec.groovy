@@ -17,6 +17,7 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
+
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.specialized.BlobLeaseClient
@@ -149,7 +150,7 @@ class APISpec extends Specification {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountName = "storageaccount"
+            accountName = "azstoragesdkaccount"
             accountKey = "astorageaccountkey"
         }
 

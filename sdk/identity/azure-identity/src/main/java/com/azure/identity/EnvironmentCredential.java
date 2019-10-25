@@ -14,8 +14,14 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
 /**
- * A credential provider that provides token credentials based on environment
- * variables.
+ * A credential provider that provides token credentials based on environment variables.  The environment variables
+ * expected are:
+ * <p>
+ * <ul>
+ *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
+ *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_SECRET AZURE_CLIENT_SECRET}</li>
+ *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
+ * </ul>
  */
 @Immutable
 public class EnvironmentCredential implements TokenCredential {
@@ -25,6 +31,7 @@ public class EnvironmentCredential implements TokenCredential {
 
     /**
      * Creates an instance of the default environment credential provider.
+     *
      * @param identityClientOptions the options for configuring the identity client
      */
     EnvironmentCredential(IdentityClientOptions identityClientOptions) {
