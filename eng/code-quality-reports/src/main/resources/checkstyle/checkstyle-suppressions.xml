@@ -226,4 +226,8 @@
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
+
+  <!-- Suppress ConfigurationCredentialsPolicy for HttpPipelinePolicyCheck.
+   This suppression need to be deleted after AzConfig using AAD credential. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" files="com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy.java"/>
 </suppressions>
