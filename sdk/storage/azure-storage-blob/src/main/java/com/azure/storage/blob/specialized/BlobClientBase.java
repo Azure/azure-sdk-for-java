@@ -432,11 +432,11 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
-     *
+     * @return The blob properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void downloadToFile(String filePath) {
-        downloadToFileWithResponse(filePath, null, null, null, null, null, Context.NONE);
+    public BlobProperties downloadToFile(String filePath) {
+        return downloadToFileWithResponse(filePath, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -463,17 +463,18 @@ public class BlobClientBase {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      *        transfers parameter is ignored.
      * @param options {@link ReliableDownloadOptions}
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the blob properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public void downloadToFileWithResponse(String filePath, BlobRange range,
+    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
-        BlobRequestConditions accessConditions, Duration timeout, Context context) {
-        Mono<Void> download = client.downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
-            accessConditions, context);
-        blockWithOptionalTimeout(download, timeout);
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
+            parallelTransferOptions, options, requestConditions, context);
+        return blockWithOptionalTimeout(download, timeout);
     }
 
     /**
