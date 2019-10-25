@@ -14,28 +14,30 @@ import com.azure.core.http.HttpRequest;
 public interface Response<T> {
 
     /**
-     * Get the HTTP response status code.
+     * Gets the HTTP response status code.
      *
-     * @return the status code of the HTTP response.
+     * @return The status code of the HTTP response.
      */
     int getStatusCode();
 
     /**
-     * Get the headers from the HTTP response.
+     * Gets the headers from the HTTP response.
      *
-     * @return an HttpHeaders instance containing the HTTP response headers.
+     * @return The HTTP response headers.
      */
     HttpHeaders getHeaders();
 
     /**
-     * Get the HTTP request which resulted in this response.
+     * Gets the HTTP request which resulted in this response.
      *
-     * @return the HTTP request.
+     * @return The HTTP request.
      */
     HttpRequest getRequest();
 
     /**
-     * @return the deserialized value of the HTTP response.
+     * Gets the deserialized value of the HTTP response.
+     *
+     * @return The deserialized value of the HTTP response.
      */
     T getValue();
 }

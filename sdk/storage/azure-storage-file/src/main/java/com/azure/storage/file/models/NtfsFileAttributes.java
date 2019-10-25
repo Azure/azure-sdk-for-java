@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.storage.common.Constants;
-
 import java.util.EnumSet;
 
 /**
@@ -23,8 +21,8 @@ public enum NtfsFileAttributes {
     HIDDEN,
 
     /**
-     * The file is a system file. That is, the file is part of the operating system
-     * or is used exclusively by the operating system.
+     * The file is a system file. That is, the file is part of the operating system or is used exclusively by the
+     * operating system.
      */
     SYSTEM,
 
@@ -44,11 +42,10 @@ public enum NtfsFileAttributes {
     ARCHIVE,
 
     /**
-     * The file is temporary. A temporary file contains data that is needed while an
-     * application is executing but is not needed after the application is finished.
-     * File systems try to keep all the data in memory for quicker access rather than
-     * flushing the data back to mass storage. A temporary file should be deleted by
-     * the application as soon as it is no longer needed.
+     * The file is temporary. A temporary file contains data that is needed while an application is executing but is not
+     * needed after the application is finished. File systems try to keep all the data in memory for quicker access
+     * rather than flushing the data back to mass storage. A temporary file should be deleted by the application as soon
+     * as it is no longer needed.
      */
     TEMPORARY,
 
@@ -63,21 +60,21 @@ public enum NtfsFileAttributes {
     NOT_CONTENT_INDEXED,
 
     /**
-     * The file or directory is excluded from the data integrity scan. When this value
-     * is applied to a directory, by default, all new files and subdirectories within
-     * that directory are excluded from data integrity.
+     * The file or directory is excluded from the data integrity scan. When this value is applied to a directory, by
+     * default, all new files and subdirectories within that directory are excluded from data integrity.
      */
     NO_SCRUB_DATA;
 
     /**
      * Converts an enum set of {@code NtfsFileAttributes} to a string.
      *
-     * @return A <code>String</code> that represents the NTFS Attributes in the correct format delimited by |
-     *         which is described at {@link #toAttributes(String)}.
+     * @param ntfsAttributes Set of {@link NtfsFileAttributes} to convert to a string.
+     * @return a string that represents the NTFS Attributes in the correct format delimited by {@code |} which is
+     * described at {@link #toAttributes(String)}.
      */
     public static String toString(EnumSet<NtfsFileAttributes> ntfsAttributes) {
         if (ntfsAttributes == null) {
-            return Constants.EMPTY_STRING;
+            return "";
         }
 
         final StringBuilder builder = new StringBuilder();
@@ -109,27 +106,28 @@ public enum NtfsFileAttributes {
     /**
      * Creates an enum set of {@code NtfsFileAttributes} from a valid String .
      *
-     * @param ntfsAttributes
-     *            A <code>String</code> that represents the ntfs attributes. The string must contain one or
-     *            more of the following values delimited by a |. Note they are case sensitive.
-     *            <ul>
-     *            <li><code>ReadOnly</code></li>
-     *            <li><code>Hidden</code></li>
-     *            <li><code>System</code></li>
-     *            <li><code>None</code></li>
-     *            <li><code>Directory</code></li>
-     *            <li><code>Archive</code></li>
-     *            <li><code>Temporary</code></li>
-     *            <li><code>Offline</code></li>
-     *            <li><code>NotContentIndexed</code></li>
-     *            <li><code>NoScrubData</code></li>
-     *            </ul>
+     * @param ntfsAttributes A <code>String</code> that represents the ntfs attributes. The string must contain one or
+     * more of the following values delimited by a |. Note they are case sensitive.
+     * <ul>
+     * <li><code>ReadOnly</code></li>
+     * <li><code>Hidden</code></li>
+     * <li><code>System</code></li>
+     * <li><code>None</code></li>
+     * <li><code>Directory</code></li>
+     * <li><code>Archive</code></li>
+     * <li><code>Temporary</code></li>
+     * <li><code>Offline</code></li>
+     * <li><code>NotContentIndexed</code></li>
+     * <li><code>NoScrubData</code></li>
+     * </ul>
+     * @return A set of {@link NtfsFileAttributes} that were contained in the passed string.
+     * @throws IllegalArgumentException If {@code ntfsAttributes} contains an attribute that is unknown.
      */
     public static EnumSet<NtfsFileAttributes> toAttributes(String ntfsAttributes) {
         EnumSet<NtfsFileAttributes> attributes = EnumSet.noneOf(NtfsFileAttributes.class);
         String[] splitAttributes = ntfsAttributes.split("\\|");
 
-        for(String sa: splitAttributes) {
+        for (String sa : splitAttributes) {
             if (sa.equals("ReadOnly")) {
                 attributes.add(NtfsFileAttributes.READ_ONLY);
             } else if (sa.equals("Hidden")) {
@@ -157,8 +155,4 @@ public enum NtfsFileAttributes {
 
         return attributes;
     }
-
-
-
 }
-

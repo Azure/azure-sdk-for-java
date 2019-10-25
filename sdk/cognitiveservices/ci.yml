@@ -6,6 +6,10 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
 
 trigger:
   branches:
@@ -63,6 +67,9 @@ stages:
           stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-imagesearch
           safeName: azurecognitiveservicesimagesearch
+          stagingProfileId: 534d15ee3800f4
+        - name: azure-cognitiveservices-inkrecognizer
+          safeName: azurecognitiveservicesinkrecognizer
           stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-luis-authoring
           safeName: azurecognitiveservicesluisauthoring

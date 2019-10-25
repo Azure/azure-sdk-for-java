@@ -3,11 +3,19 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+/**
+ * Contains the customer provided key information used to encrypt a blob's content on the server.
+ */
+@Immutable
 public class CustomerProvidedKey {
+    private final ClientLogger logger = new ClientLogger(CustomerProvidedKey.class);
 
     /**
      * Base64 encoded string of the encryption key.
@@ -17,7 +25,7 @@ public class CustomerProvidedKey {
     /**
      * Base64 encoded string of the encryption key's SHA256 hash.
      */
-    private final String keySHA256;
+    private final String keySha256;
 
     /**
      * The algorithm for Azure Blob Storage to encrypt with.
@@ -25,20 +33,24 @@ public class CustomerProvidedKey {
      */
     private final EncryptionAlgorithmType encryptionAlgorithm = EncryptionAlgorithmType.AES256;
 
-
     /**
      * Creates a new wrapper for a client provided key.
      *
      * @param key The encryption key encoded as a base64 string.
-     * @throws NoSuchAlgorithmException Throws if MessageDigest "SHA-256" cannot be found.
+     * @throws RuntimeException If "SHA-256" cannot be found.
      */
-    public CustomerProvidedKey(String key) throws NoSuchAlgorithmException {
+    public CustomerProvidedKey(String key) {
 
         this.key = key;
 
-        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+        MessageDigest sha256;
+        try {
+            sha256 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
         byte[] keyhash = sha256.digest(Base64.getDecoder().decode(key));
-        this.keySHA256 = Base64.getEncoder().encodeToString(keyhash);
+        this.keySha256 = Base64.getEncoder().encodeToString(keyhash);
     }
 
     /**
@@ -46,17 +58,21 @@ public class CustomerProvidedKey {
      *
      * @param key The encryption key bytes.
      *
-     * @throws NoSuchAlgorithmException Throws if MessageDigest "SHA-256" cannot be found.
+     * @throws RuntimeException If "SHA-256" cannot be found.
      */
-    public CustomerProvidedKey(byte[] key) throws NoSuchAlgorithmException {
+    public CustomerProvidedKey(byte[] key) {
 
         this.key = Base64.getEncoder().encodeToString(key);
 
-        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+        MessageDigest sha256;
+        try {
+            sha256 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
         byte[] keyhash = sha256.digest(key);
-        this.keySHA256 = Base64.getEncoder().encodeToString(keyhash);
+        this.keySha256 = Base64.getEncoder().encodeToString(keyhash);
     }
-
 
     /**
      * Gets the encryption key.
@@ -72,8 +88,8 @@ public class CustomerProvidedKey {
      *
      * @return A base64 encoded string of the encryption key hash.
      */
-    public String getKeySHA256() {
-        return keySHA256;
+    public String getKeySha256() {
+        return keySha256;
     }
 
     /**

@@ -3,22 +3,17 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
 import com.azure.core.util.Context;
-import com.azure.storage.common.credentials.SASTokenCredential;
-import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.models.AccessPolicy;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.models.FileAccessPolicy;
+import com.azure.storage.file.models.FileHttpHeaders;
+import com.azure.storage.file.models.FileSignedIdentifier;
 import com.azure.storage.file.models.NtfsFileAttributes;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
-import com.azure.storage.file.models.SignedIdentifier;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -49,7 +44,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link ShareClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link ShareClient} with SAS token
      * @return An instance of {@link ShareClient}
      */
     public ShareClient createClientWithSASToken() {
@@ -65,7 +60,7 @@ public class ShareJavaDocCodeSamples {
 
 
     /**
-     * Generates code sample for creating a {@link ShareClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link ShareClient} with SAS token
      * @return An instance of {@link ShareClient}
      */
     public ShareClient createClientWithCredential() {
@@ -73,7 +68,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.instantiation.credential
         ShareClient shareClient = new ShareClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .shareName("myshare")
             .buildClient();
         // END: com.azure.storage.file.shareClient.instantiation.credential
@@ -81,7 +76,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link ShareClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link ShareClient} with {@code connectionString} which turns into {@link StorageSharedKeyCredential}
      * @return An instance of {@link ShareClient}
      */
     public ShareClient createClientWithConnectionString() {
@@ -205,17 +200,17 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map, Duration, Context)}
+     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileHttpHeaders, FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .setFileContentType("text/html")
-            .setFileContentEncoding("gzip")
-            .setFileContentLanguage("en")
-            .setFileCacheControl("no-transform")
-            .setFileContentDisposition("attachment");
+        FileHttpHeaders httpHeaders = new FileHttpHeaders()
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
@@ -247,7 +242,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteDirectoryWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-duration-context
-        VoidResponse response = shareClient.deleteDirectoryWithResponse("mydirectory",
+        Response<Void> response = shareClient.deleteDirectoryWithResponse("mydirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the directory with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-duration-context
@@ -270,7 +265,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteFileWithResponse#string-duration-context
-        VoidResponse response = shareClient.deleteFileWithResponse("myfile",
+        Response<Void> response = shareClient.deleteFileWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.shareClient.deleteFileWithResponse#string-duration-context
@@ -293,7 +288,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteShareWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteWithResponse#duration-context
-        VoidResponse response = shareClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Void> response = shareClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the share with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.shareClient.deleteWithResponse#duration-context
     }
@@ -386,9 +381,9 @@ public class ShareJavaDocCodeSamples {
     public void getAccessPolicy() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.getAccessPolicy
-        for (SignedIdentifier result : shareClient.getAccessPolicy()) {
+        for (FileSignedIdentifier result : shareClient.getAccessPolicy()) {
             System.out.printf("Access policy %s allows these permissions: %s",
-                result.getId(), result.getAccessPolicy().getPermission());
+                result.getId(), result.getAccessPolicy().getPermissions());
         }
         // END: com.azure.storage.file.shareClient.getAccessPolicy
     }
@@ -399,11 +394,11 @@ public class ShareJavaDocCodeSamples {
     public void setAccessPolicy() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.ShareClient.setAccessPolicy#List
-        AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
-            .setStart(OffsetDateTime.now(ZoneOffset.UTC))
-            .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+        FileAccessPolicy accessPolicy = new FileAccessPolicy().setPermissions("r")
+            .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
+            .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        FileSignedIdentifier permission = new FileSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 
         shareClient.setAccessPolicy(Collections.singletonList(permission));
         System.out.println("Setting access policies completed.");
@@ -416,11 +411,11 @@ public class ShareJavaDocCodeSamples {
     public void setAccessPolicyWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.setAccessPolicyWithResponse#list-duration-context
-        AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
-            .setStart(OffsetDateTime.now(ZoneOffset.UTC))
-            .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+        FileAccessPolicy accessPolicy = new FileAccessPolicy().setPermissions("r")
+            .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
+            .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        FileSignedIdentifier permission = new FileSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 
         Response<ShareInfo> response = shareClient.setAccessPolicyWithResponse(Collections.singletonList(permission),
             Duration.ofSeconds(1), new Context(key1, value1));
@@ -503,7 +498,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.getSnapshotId
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         ShareClient shareClient = new ShareClientBuilder().endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .sasToken("${SASToken}")
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildClient();
@@ -513,33 +508,13 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#generateSAS(String, ShareSASPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Generates a code sample for using {@link ShareClient#getShareName()}
      */
-    public void generateSAS() {
-        ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.ShareClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        String identifier = "identifier";
-        ShareSASPermission permissions = new ShareSASPermission()
-            .setRead(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setWrite(true)
-            .setList(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String sas = shareClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.ShareClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+    public void getShareName() {
+        ShareClient shareAsyncClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareClient.getShareName
+        String shareName = shareAsyncClient.getShareName();
+        System.out.println("The name of the share is " + shareName);
+        // END: com.azure.storage.file.shareClient.getShareName
     }
 }

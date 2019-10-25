@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
-import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -22,9 +22,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.implementation.tracing.ProcessKind;
-import com.azure.core.implementation.tracing.Tracer;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -51,7 +51,6 @@ import reactor.test.StepVerifier;
  * Unit tests for {@link EventProcessor}.
  */
 public class EventProcessorTest {
-
     @Mock
     private EventHubAsyncClient eventHubAsyncClient;
 
@@ -208,16 +207,16 @@ public class EventProcessorTest {
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT, "value");
+                return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
         when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT, "value1")
+                return passed.addData(SPAN_CONTEXT_KEY, "value1")
                     .addData("scope", (Closeable) () -> {
                     })
-                    .addData(OPENTELEMETRY_SPAN_KEY, "value2");
+                    .addData(PARENT_SPAN_KEY, "value2");
             }
         );
 
@@ -266,15 +265,15 @@ public class EventProcessorTest {
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT, "value");
+                return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
         when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT, "value1").addData("scope", (Closeable) () -> {
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (Closeable) () -> {
                     return;
-                }).addData(OPENTELEMETRY_SPAN_KEY, "value2");
+                }).addData(PARENT_SPAN_KEY, "value2");
             }
         );
 

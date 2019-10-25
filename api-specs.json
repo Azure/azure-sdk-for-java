@@ -19,6 +19,10 @@
       "source": "specification/applicationinsights/data-plane/readme.md",
       "args": "--payload-flattening-threshold=1"
     },
+  "appplatform/resource-manager": {
+    "source": "specification/appplatform/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "appservice/resource-manager": {
     "source": "specification/web/resource-manager/readme.md",
     "args": "--multiapi --fluent",
@@ -195,6 +199,10 @@
     "source": "specification/operationsmanagement/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "peering/resource-manager": {
+    "source": "specification/peering/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "policyinsights/resource-manager": {
     "source": "specification/policyinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -289,6 +297,13 @@
     "args": "--multiapi --fluent",
     "fconfig": {
       "\"moduleName\"": "\"StreamAnalytics\""
+    }
+  },
+  "vmwarecloudsimple/resource-manager": {
+    "source": "specification/vmwarecloudsimple/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"VMwareCloudSimple\""
     }
   }
 }

@@ -41,8 +41,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        boolean considerSecondary = (this.requestRetryOptions.secondaryHost() != null)
-            && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod()) || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
+        boolean considerSecondary = (this.requestRetryOptions.getSecondaryHost() != null)
+            && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
+            || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
 
         return this.attemptAsync(context, next, context.getHttpRequest(), considerSecondary, 1, 1);
     }
@@ -64,7 +65,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
      * @param primaryTry Number of attempts against the primary DC.
      * @param attempt This indicates the total number of attempts to send the request.
      * @return A single containing either the successful response or an error that was not retryable because either the
-     * maxTries was exceeded or retries will not mitigate the issue.
+     * {@code maxTries} was exceeded or retries will not mitigate the issue.
      */
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, HttpPipelineNextPolicy next,
                                             final HttpRequest originalRequest, final boolean considerSecondary,
@@ -91,14 +92,14 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
          duplicates the ByteBuffer object, not the underlying data.
          */
-        context.setHttpRequest(originalRequest.buffer());
+        context.setHttpRequest(originalRequest.copy());
         Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null)
             ? null
             : context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
         context.getHttpRequest().setBody(bufferedBody);
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            builder.setHost(this.requestRetryOptions.secondaryHost());
+            builder.setHost(this.requestRetryOptions.getSecondaryHost());
             try {
                 context.getHttpRequest().setUrl(builder.toURL());
             } catch (MalformedURLException e) {
@@ -111,7 +112,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          until after the retry backoff delay, so we call delaySubscription.
          */
         return next.clone().process()
-            .timeout(Duration.ofSeconds(this.requestRetryOptions.tryTimeout()))
+            .timeout(Duration.ofSeconds(this.requestRetryOptions.getTryTimeout()))
             .delaySubscription(Duration.ofMillis(delayMs))
             .flatMap(response -> {
                 boolean newConsiderSecondary = considerSecondary;
@@ -132,7 +133,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     action = "NoRetry: Successful HTTP request";
                 }
 
-                if (action.charAt(0) == 'R' && attempt < requestRetryOptions.maxTries()) {
+                if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
                         /*
                         We increment primaryTry if we are about to try the primary again (which is when we
                         consider the secondary and tried the secondary this time (tryingPrimary==false) or
@@ -140,7 +141,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         ensure primaryTry is correct when passed to calculate the delay.
                          */
                     int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry, attempt + 1);
+                    return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                        attempt + 1);
                 }
                 return Mono.just(response);
             }).onErrorResume(throwable -> {
@@ -173,7 +175,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     action = "NoRetry: Unknown error";
                 }
 
-                if (action.charAt(0) == 'R' && attempt < requestRetryOptions.maxTries()) {
+                if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
                         /*
                         We increment primaryTry if we are about to try the primary again (which is when we
                         consider the secondary and tried the secondary this time (tryingPrimary==false) or

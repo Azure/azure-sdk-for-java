@@ -17,14 +17,14 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
      *
      * @return The connection identifier.
      */
-    String getIdentifier();
+    String getId();
 
     /**
-     * Gets the host for the AMQP connection.
+     * Gets the hostname for the AMQP connection.
      *
-     * @return The host for the AMQP connection.
+     * @return The hostname for the AMQP connection.
      */
-    String getHost();
+    String getHostname();
 
     /**
      * Gets the maximum frame size for the connection.

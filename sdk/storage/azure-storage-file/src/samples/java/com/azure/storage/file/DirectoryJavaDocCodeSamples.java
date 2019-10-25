@@ -3,15 +3,12 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.NtfsFileAttributes;
 
@@ -44,7 +41,7 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link DirectoryClient} with SAS token
      *
      * @return An instance of {@link DirectoryClient}
      */
@@ -60,7 +57,7 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link DirectoryClient} with SAS token
      *
      * @return An instance of {@link DirectoryClient}
      */
@@ -69,7 +66,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.instantiation.credential
         DirectoryClient directoryClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .shareName("myshare")
             .resourcePath("mydirectory")
             .buildDirectoryClient();
@@ -79,7 +76,7 @@ public class DirectoryJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link DirectoryClient} with {@code connectionString} which turns into
-     * {@link SharedKeyCredential}
+     * {@link StorageSharedKeyCredential}
      *
      * @return An instance of {@link DirectoryClient}
      */
@@ -161,18 +158,18 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders,
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHttpHeaders,
      * FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .setFileContentType("text/html")
-            .setFileContentEncoding("gzip")
-            .setFileContentLanguage("en")
-            .setFileCacheControl("no-transform")
-            .setFileContentDisposition("attachment");
+        FileHttpHeaders httpHeaders = new FileHttpHeaders()
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
@@ -232,7 +229,7 @@ public class DirectoryJavaDocCodeSamples {
     public void deleteFileWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string-duration-context
-        VoidResponse response = directoryClient.deleteFileWithResponse("myfile",
+        Response<Void> response = directoryClient.deleteFileWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string-duration-context
@@ -256,7 +253,7 @@ public class DirectoryJavaDocCodeSamples {
     public void deleteSubDirectoryWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-duration-context
-        VoidResponse response = directoryClient.deleteSubDirectoryWithResponse("mysubdirectory",
+        Response<Void> response = directoryClient.deleteSubDirectoryWithResponse("mysubdirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the subdirectory with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-duration-context
@@ -279,7 +276,7 @@ public class DirectoryJavaDocCodeSamples {
     public void deleteWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.DirectoryClient.deleteWithResponse#duration-context
-        VoidResponse response = directoryClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Void> response = directoryClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.DirectoryClient.deleteWithResponse#duration-context
     }
@@ -396,18 +393,42 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#forceCloseHandles(String, boolean, Duration, Context)}
+     * Code snippet for {@link DirectoryClient#forceCloseHandle(String)}
      */
-    public void forceCloseHandles() {
-        DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.forceCloseHandles
-        Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1),
-            new Context(key1, value1));
-        result.forEach(handleItem -> directoryClient
-            .forceCloseHandles(handleItem.getHandleId(), true, Duration.ofSeconds(1), new Context(key1, value1))
-            .forEach(numOfClosedHandles ->
-                System.out.printf("Get handles completed with handle id %s", handleItem.getHandleId())));
-        // END: com.azure.storage.file.directoryClient.forceCloseHandles
+    public void forceCloseHandle() {
+        DirectoryClient directoryClient = createClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryClient.forceCloseHandle#String
+        directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE).forEach(handleItem -> {
+            directoryClient.forceCloseHandle(handleItem.getHandleId());
+            System.out.printf("Closed handle %s on resource %s%n", handleItem.getHandleId(), handleItem.getPath());
+        });
+        // END: com.azure.storage.file.DirectoryClient.forceCloseHandle#String
+    }
+
+    /**
+     * Code snippet for {@link DirectoryClient#forceCloseHandleWithResponse(String, Duration, Context)}.
+     */
+    public void forceCloseHandleWithResponse() {
+        DirectoryClient directoryClient = createClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryClient.forceCloseHandleWithResponse#String-Duration-Context
+        directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE).forEach(handleItem -> {
+            Response<Void> closeResponse = directoryClient.forceCloseHandleWithResponse(handleItem.getHandleId(),
+                Duration.ofSeconds(30), Context.NONE);
+            System.out.printf("Closing handle %s on resource %s completed with status code %d%n",
+                handleItem.getHandleId(), handleItem.getPath(), closeResponse.getStatusCode());
+        });
+        // END: com.azure.storage.file.DirectoryClient.forceCloseHandleWithResponse#String-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DirectoryClient#forceCloseAllHandles(boolean, Duration, Context)}.
+     */
+    public void forceCloseAllHandles() {
+        DirectoryClient directoryClient = createClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryClient.forceCloseAllHandles#boolean-Duration-Context
+        int closedHandleCount = directoryClient.forceCloseAllHandles(true, Duration.ofSeconds(30), Context.NONE);
+        System.out.printf("Closed %d open handles on the directory%n", closedHandleCount);
+        // END: com.azure.storage.file.DirectoryClient.forceCloseAllHandles#boolean-Duration-Context
     }
 
     /**
@@ -418,7 +439,7 @@ public class DirectoryJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         DirectoryClient directoryClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .sasToken("${SASToken}")
             .shareName("myshare")
             .resourcePath("mydirectory")
             .snapshot(currentTime.toString())
@@ -426,5 +447,27 @@ public class DirectoryJavaDocCodeSamples {
 
         System.out.printf("Snapshot ID: %s%n", directoryClient.getShareSnapshotId());
         // END: com.azure.storage.file.directoryClient.getShareSnapshotId
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryClient#getShareName()}
+     */
+    public void getShareName() {
+        DirectoryClient directoryAsyncClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.getShareName
+        String shareName = directoryAsyncClient.getShareName();
+        System.out.println("The share name of the directory is " + shareName);
+        // END: com.azure.storage.file.directoryClient.getShareName
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryClient#getDirectoryPath()}
+     */
+    public void getDirectoryPath() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.getDirectoryPath
+        String directoryPath = directoryClient.getDirectoryPath();
+        System.out.println("The name of the directory is " + directoryPath);
+        // END: com.azure.storage.file.directoryClient.getDirectoryPath
     }
 }

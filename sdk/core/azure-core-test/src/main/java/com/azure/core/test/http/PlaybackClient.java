@@ -39,7 +39,7 @@ public final class PlaybackClient implements HttpClient {
      * @param textReplacementRules A set of rules to replace text in network call responses.
      */
     public PlaybackClient(RecordedData recordedData, Map<String, String> textReplacementRules) {
-        Objects.requireNonNull(recordedData);
+        Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
 
         this.recordedData = recordedData;
         this.textReplacementRules = textReplacementRules == null ? new HashMap<>() : textReplacementRules;
@@ -79,9 +79,9 @@ public final class PlaybackClient implements HttpClient {
         if (networkCallRecord.getHeaders().containsKey(X_MS_CLIENT_REQUEST_ID)) {
             request.setHeader(X_MS_CLIENT_REQUEST_ID, networkCallRecord.getHeaders().get(X_MS_CLIENT_REQUEST_ID));
         }
-        if (request.getHeaders().value(X_MS_ENCRYPTION_KEY_SHA256) != null) {
+        if (request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256) != null) {
             networkCallRecord.getResponse().put(X_MS_ENCRYPTION_KEY_SHA256,
-                request.getHeaders().value(X_MS_ENCRYPTION_KEY_SHA256));
+                request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.getResponse().get("StatusCode"));

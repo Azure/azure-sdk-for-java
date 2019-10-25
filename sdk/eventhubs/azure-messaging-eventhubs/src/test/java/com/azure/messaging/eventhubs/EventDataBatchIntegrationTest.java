@@ -3,11 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
@@ -22,7 +21,6 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -57,10 +55,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
+        client = createBuilder().buildAsyncClient();
         producer = client.createProducer();
     }
 
@@ -75,7 +70,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendSmallEventsFullBatch() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -92,12 +87,13 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Test for sending a message batch that is {@link EventHubAsyncProducer#MAX_MESSAGE_LENGTH_BYTES} with partition key.
+     * Test for sending a message batch that is {@link ClientConstants#MAX_MESSAGE_LENGTH_BYTES} with partition
+     * key.
      */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -122,7 +118,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         final String messageValue = UUID.randomUUID().toString();
 
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
@@ -157,9 +153,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                         logger.warning(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
                             event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_TRACKING_ID)));
                     }
-                }, error -> {
-                        Assert.fail("An error should not have occurred:" + error.toString());
-                    }, () -> {
+                }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
+                    () -> {
                         logger.info("Disposing of consumer now that the receive is complete.");
                         dispose(consumer);
                     });
@@ -171,7 +166,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
             subscriptions.addAll(consumerSubscriptions);
 
             // Act
-            producer.send(batch.getEvents(), sendOptions).block(TIMEOUT);
+            producer.send(batch.getEvents(), sendOptions).block();
 
             // Assert
             // Wait for all the events we sent to be received.

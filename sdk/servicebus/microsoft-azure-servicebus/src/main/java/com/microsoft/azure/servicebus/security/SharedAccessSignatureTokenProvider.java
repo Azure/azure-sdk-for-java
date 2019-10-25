@@ -80,7 +80,7 @@ public class SharedAccessSignatureTokenProvider extends TokenProvider {
                     String genereatedSASToken = SASUtil.generateSharedAccessSignatureToken(this.sasKeyName, this.sasKey, audience, this.tokenValidityInSeconds);
                     tokenGeneratingFuture.complete(new SecurityToken(SecurityTokenType.SAS, audience, genereatedSASToken, Instant.now(), Instant.now().plus(Duration.ofSeconds(this.tokenValidityInSeconds))));
                 } catch (InvalidKeyException e) {
-                    TRACE_LOGGER.error("SharedAccessSignature token generation failed.", e);
+                    TRACE_LOGGER.info("SharedAccessSignature token generation failed.", e);
                     tokenGeneratingFuture.completeExceptionally(e);
                 }
             });

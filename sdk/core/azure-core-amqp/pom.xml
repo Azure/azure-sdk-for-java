@@ -7,13 +7,13 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-amqp</artifactId>
-  <version>1.0.0-preview.5</version>
+  <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Java Core AMQP Library</name>
@@ -58,7 +58,15 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.5</version>
+      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>qpid-proton-j-extensions</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.qpid</groupId>
+      <artifactId>proton-j</artifactId>
     </dependency>
 
     <dependency>

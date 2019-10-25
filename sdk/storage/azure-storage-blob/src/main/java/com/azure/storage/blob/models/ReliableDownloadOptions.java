@@ -3,16 +3,19 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.DownloadAsyncResponse;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Locale;
 
 /**
- * {@code ReliableDownloadOptions} contains properties which help the {@code Flux} returned from
- * {@link DownloadAsyncResponse#body(ReliableDownloadOptions)} determine when to retry.
+ * This class contains the configuration options used to reliably download from the blob service.
  */
+@Fluent
 public final class ReliableDownloadOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
+
+    private final ClientLogger logger = new ClientLogger(ReliableDownloadOptions.class);
 
     /*
     We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
@@ -41,8 +44,9 @@ public final class ReliableDownloadOptions {
      */
     public ReliableDownloadOptions maxRetryRequests(int maxRetryRequests) {
         if (maxRetryRequests < 0) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,
-                "options.maxRetryRequests", 0, Integer.MAX_VALUE));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,
+                    "options.maxRetryRequests", 0, Integer.MAX_VALUE)));
         }
 
         this.maxRetryRequests = maxRetryRequests;

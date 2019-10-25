@@ -5,22 +5,20 @@ package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingPage;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnValueWireType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnValueWireType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.http.ContentType;
@@ -38,7 +36,6 @@ import reactor.core.publisher.Mono;
 interface ConfigurationService {
     @Get("kv/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> getKeyValue(
         @HostParam("url") String url,
@@ -52,8 +49,6 @@ interface ConfigurationService {
 
     @Put("kv/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
-    @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> setKey(
         @HostParam("url") String url,
@@ -66,8 +61,6 @@ interface ConfigurationService {
 
     @Delete("kv/{key}")
     @ExpectedResponses({200, 204})
-    @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
-    @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> delete(
         @HostParam("url") String url,
@@ -79,7 +72,6 @@ interface ConfigurationService {
 
     @Put("locks/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> lockKeyValue(
         @HostParam("url") String url,
@@ -91,7 +83,6 @@ interface ConfigurationService {
 
     @Delete("locks/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> unlockKeyValue(
         @HostParam("url") String url,

@@ -18,7 +18,7 @@ public class GetImagesByIdsOptionalParameter {
     /**
      * The list of image ids to retrieve. Limited to 256.
      */
-    private List<String> imageIds;
+    private List<UUID> imageIds;
 
     /**
      * The iteration id. Defaults to workspace.
@@ -35,7 +35,7 @@ public class GetImagesByIdsOptionalParameter {
      *
      * @return the imageIds value
      */
-    public List<String> imageIds() {
+    public List<UUID> imageIds() {
         return this.imageIds;
     }
 
@@ -45,7 +45,7 @@ public class GetImagesByIdsOptionalParameter {
      * @param imageIds the imageIds value to set
      * @return the GetImagesByIdsOptionalParameter object itself.
      */
-    public GetImagesByIdsOptionalParameter withImageIds(List<String> imageIds) {
+    public GetImagesByIdsOptionalParameter withImageIds(List<UUID> imageIds) {
         this.imageIds = imageIds;
         return this;
     }

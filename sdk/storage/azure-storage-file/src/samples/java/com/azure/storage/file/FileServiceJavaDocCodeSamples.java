@@ -3,17 +3,8 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
 import com.azure.core.util.Context;
-import com.azure.storage.common.credentials.SASTokenCredential;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
 import java.time.Duration;
@@ -55,7 +46,7 @@ public class FileServiceJavaDocCodeSamples {
         // END: com.azure.storage.file.fileServiceAsyncClient.instantiation
     }
     /**
-     * Generates code sample for creating a {@link FileServiceClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileServiceClient} with SAS token.
      * @return An instance of {@link FileServiceClient}
      */
     public FileServiceClient createClientWithSASToken() {
@@ -68,7 +59,7 @@ public class FileServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileServiceClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileServiceClient} with SAS token.
      * {@code SASTokenQueryParams} is composed of the Key
      * @return An instance of {@link FileServiceClient}
      */
@@ -76,14 +67,14 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceClient.instantiation.credential
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .buildClient();
         // END: com.azure.storage.file.fileServiceClient.instantiation.credential
         return fileServiceClient;
     }
 
     /**
-     * Generates code sample for creating a {@link FileServiceClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link FileServiceClient} with {@code connectionString} which turns into {@link StorageSharedKeyCredential}
      * @return An instance of {@link FileServiceClient}
      */
     public FileServiceClient createClientWithConnectionString() {
@@ -180,7 +171,7 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context
         OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        VoidResponse response = fileServiceClient.deleteShareWithResponse("test", midnight.toString(),
+        Response<Void> response = fileServiceClient.deleteShareWithResponse("test", midnight.toString(),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Deleting the snapshot completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context
@@ -239,7 +230,7 @@ public class FileServiceJavaDocCodeSamples {
         properties.getMinuteMetrics().setEnabled(true);
         properties.getHourMetrics().setEnabled(true);
 
-        VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties,
+        Response<Void> response = fileServiceClient.setPropertiesWithResponse(properties,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting File service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context
@@ -254,49 +245,9 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceProperties properties = fileServiceClient.getProperties();
         properties.setCors(Collections.emptyList());
 
-        VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties,
+        Response<Void> response = fileServiceClient.setPropertiesWithResponse(properties,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting File service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
     }
-
-    /**
-     * Generates a code sample for using {@link FileServiceClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
-     */
-    public void generateAccountSAS() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
-        AccountSASService service = new AccountSASService()
-            .setBlob(true)
-            .setFile(true)
-            .setQueue(true)
-            .setTable(true);
-        AccountSASResourceType resourceType = new AccountSASResourceType()
-            .setContainer(true)
-            .setObject(true)
-            .setService(true);
-        AccountSASPermission permission = new AccountSASPermission()
-            .setRead(true)
-            .setAdd(true)
-            .setCreate(true)
-            .setWrite(true)
-            .setDelete(true)
-            .setList(true)
-            .setProcessMessages(true)
-            .setUpdate(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        String sas = fileServiceClient.generateAccountSAS(service, resourceType, permission, expiryTime, startTime,
-            version, ipRange, sasProtocol);
-        // END: com.azure.storage.file.FileServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
-    }
-
-
 }

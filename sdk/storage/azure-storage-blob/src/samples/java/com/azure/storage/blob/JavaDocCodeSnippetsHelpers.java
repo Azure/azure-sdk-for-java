@@ -3,16 +3,13 @@
 
 package com.azure.storage.blob;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 final class JavaDocCodeSnippetsHelpers {
-    static ContainerAsyncClient getContainerAsyncClient() {
-        return new ContainerClientBuilder().buildAsyncClient();
+    static BlobContainerAsyncClient getContainerAsyncClient() {
+        return new BlobContainerClientBuilder().buildAsyncClient();
     }
 
-    static ContainerClient getContainerClient() {
-        return new ContainerClientBuilder().buildClient();
+    static BlobContainerClient getContainerClient() {
+        return new BlobContainerClientBuilder().buildClient();
     }
 
     static BlobAsyncClient getBlobAsyncClient(String blobName) {
@@ -29,13 +26,5 @@ final class JavaDocCodeSnippetsHelpers {
 
     static BlobServiceClient getBlobServiceClient() {
         return new BlobServiceClientBuilder().buildClient();
-    }
-
-    static URL generateURL(String urlString) {
-        try {
-            return new URL(urlString);
-        } catch (MalformedURLException ex) {
-            throw new RuntimeException(ex);
-        }
     }
 }

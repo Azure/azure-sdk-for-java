@@ -45,10 +45,14 @@ class ManagementPoliciesImpl extends WrapperImpl<ManagementPoliciesInner> implem
     public Observable<ManagementPolicy> getAsync(String resourceGroupName, String accountName) {
         ManagementPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, accountName)
-        .map(new Func1<ManagementPolicyInner, ManagementPolicy>() {
+        .flatMap(new Func1<ManagementPolicyInner, Observable<ManagementPolicy>>() {
             @Override
-            public ManagementPolicy call(ManagementPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<ManagementPolicy> call(ManagementPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ManagementPolicy)wrapModel(inner));
+                }
             }
        });
     }

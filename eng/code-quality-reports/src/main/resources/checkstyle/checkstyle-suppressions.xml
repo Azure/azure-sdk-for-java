@@ -76,25 +76,21 @@
   <suppress checks="FinalClass" files="RequestResponseLink.java"/>
   <suppress checks="FinalClass" files="Util.java"/>
 
-  <!-- Public API with Impl in Public API TODO confirm, remove -->
-  <suppress checks="NoImplInPublicAPI" files="OpenTelemetryTracer.java"/>
-
   <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
   <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
   <!-- All auto generated files need to exclude from checkstyle -->
-  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
   <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
 
   <!-- The constant name is public static. -->
-  <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
+  <suppress checks="ConstantNames" files=".*[/\\]azure[/\\]storage[/\\].*LoggingOptions.java"/>
 
   <!-- Custom checkstyle rules only check track 2 libraries -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CredentialBuilderBase.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*KeyCreateOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CreateKeyOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*LocalKeyCryptographyClient.java"/>
 
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5021 -->
@@ -103,6 +99,9 @@
   <!-- Don't apply custom Checkstyle rules to files under test package -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
+  <!-- Do not worry about leaking implementation API out of azure-core-test -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.core.test.*"/>
 
   <!-- Don't apply custom Checkstyle rules to files under implementation package -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck)"
@@ -118,9 +117,6 @@
   <!-- Suppress LineLength for samples and tests -->
   <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for Storage on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5125 -->
-  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]storage[/\\]"/>
-
   <!-- Suppress LineLength for Keyvault on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5335 -->
   <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]security[/\\]keyvault[/\\]"/>
 
@@ -130,12 +126,15 @@
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
 
-  <!-- OpenCensus should only be depended on from within the tracing-opencensus module -->
-  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+  <!-- Identity and OpenCensus tracing are plugin packages and shouldn't be referenced -->
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opencensus[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved: https://github.com/Azure/azure-sdk/issues/321 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*EventHubClientBuilder.java"/>
+
+  <!-- Suppress warnings for KeyEncryptionKey as it is a specialized client and doesn't follow the guidelines completely -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*KeyEncryptionKeyClientBuilder.java"/>
 
   <!-- Some classes are named *Builder but are not @ServiceClientBuilder -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
@@ -149,12 +148,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlobOutputStream.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlockBlobClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.PageBlobAsyncClient.java"/>
-
-  <!-- Suppress requirement that abstract builder classes require the ServiceClientBuilder annotation -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.common.BaseClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.blob.BaseBlobClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.file.BaseFileClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.queue.BaseQueueClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.specialized.BlobInputStream.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.specialized.BlobOutputStream.java"/>
 
   <!-- Suppress external dependency Checkstyle on Netty and OkHttp HttpClient packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
@@ -172,6 +168,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
   <!-- Use the logger in Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
 
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
@@ -194,4 +191,39 @@
 
   <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.identity.implementation.msalextensions.CacheLock"/>
+
+  <!-- Suppress the check on any implementation code and codegen classes -->
+  <suppress checks="LineLength" files=".*[/\\]storage[/\\].*implementation[/\\].*"/>
+  <suppress checks="LineLength" files="com.azure.storage.blob.models.BlobErrorCode.java"/>
+  <suppress checks="LineLength" files="com.azure.storage.file.models.FileErrorCode.java"/>
+  <suppress checks="LineLength" files="com.azure.storage.queue.models.QueueErrorCode.java"/>
+
+  <!-- Suppress datalake for now as it is new development -->
+  <suppress checks="LineLength" files=".*[/\\]storage[/\\]file[/\\]datalake[/\\]models[/\\].*"/>
+
+  <!-- Suppress CRUD operation names as they won't feel fluent -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.BlobLeaseClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.BlobLeaseAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.batch.BlobBatchClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.batch.BlobBatchAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.data.appconfiguration.ConfigurationClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
+
+  <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.BlobAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.BlobClient.java"/>
+
+  <!-- Checkstyle rules should not check files in generated-test-sources -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]generated-test-sources[/\\]"/>
+
+  <!-- Allows the SasTokenCredentialPolicy in Implementation -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy.java"/>
+
+  <!-- Empty while loop waiting for Reactor stream completion -->
+  <suppress checks="EmptyBlock" files="com.azure.storage.blob.batch.BlobBatch.java"/>
+
+  <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
 </suppressions>

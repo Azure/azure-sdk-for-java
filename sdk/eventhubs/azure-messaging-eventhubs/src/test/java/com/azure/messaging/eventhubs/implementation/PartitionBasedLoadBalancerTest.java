@@ -16,12 +16,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.implementation.tracing.Tracer;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.InMemoryPartitionManager;
-import com.azure.messaging.eventhubs.LogPartitionProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.PartitionProcessor;
 import com.azure.messaging.eventhubs.TestUtils;
@@ -29,7 +29,6 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -40,7 +39,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +55,7 @@ public class PartitionBasedLoadBalancerTest {
 
     private final String eventHubName = "test-event-hub";
     private final String consumerGroupName = "test-consumer-group";
+    private final ClientLogger logger = new ClientLogger(PartitionBasedLoadBalancerTest.class);
 
     private List<EventData> eventDataList;
     private PartitionManager partitionManager;
@@ -400,7 +399,16 @@ public class PartitionBasedLoadBalancerTest {
         final List<Tracer> tracers = Arrays.asList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(partitionManager,
-            LogPartitionProcessor::new, EventPosition.earliest(), eventHubAsyncClient, tracerProvider);
+            () -> new PartitionProcessor() {
+                @Override
+                public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
+                    logger.info(
+                        "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
+                        partitionContext.getEventHubName(), partitionContext.getConsumerGroup(), partitionContext.getPartitionId(),
+                        eventData.getSequenceNumber());
+                    return partitionContext.updateCheckpoint(eventData);
+                }
+            }, EventPosition.earliest(), eventHubAsyncClient, tracerProvider);
         return new PartitionBasedLoadBalancer(partitionManager, eventHubAsyncClient,
             eventHubName, consumerGroupName, owner, TimeUnit.SECONDS.toSeconds(5), partitionPumpManager);
     }

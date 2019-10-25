@@ -2,20 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.queue.models.QueueServiceProperties;
+import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.StorageServiceProperties;
-import com.azure.storage.queue.models.StorageServiceStats;
 
-import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -40,7 +31,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueServiceAsyncClient} with SAS token.
      *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
@@ -54,7 +45,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueServiceAsyncClient} with SAS token.
      *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
@@ -62,7 +53,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential
         QueueServiceAsyncClient client = new QueueServiceClientBuilder()
             .endpoint("https://{accountName}.queue.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("{SASTokenQueryParams}")))
+            .sasToken("{SASTokenQueryParams}")
             .buildAsyncClient();
         // END: com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential
         return client;
@@ -70,7 +61,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@code connectionString} which turns
-     * into {@link SharedKeyCredential}
+     * into {@link StorageSharedKeyCredential}
      *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
@@ -183,7 +174,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse
         client.getPropertiesWithResponse()
             .subscribe(response -> {
-                StorageServiceProperties properties = response.getValue();
+                QueueServiceProperties properties = response.getValue();
                 System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
                     properties.getHourMetrics().isEnabled(), properties.getMinuteMetrics().isEnabled());
             });
@@ -191,56 +182,56 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#setProperties(StorageServiceProperties)}
+     * Generates a code sample for using {@link QueueServiceAsyncClient#setProperties(QueueServiceProperties)}
      */
     public void setPropertiesAsync() {
-        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setProperties#storageServiceProperties
-        StorageServiceProperties properties = client.getProperties().block();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setProperties#QueueServiceProperties
+        QueueServiceProperties properties = client.getProperties().block();
         client.setProperties(properties)
-            .doOnSuccess(response -> System.out.printf("Setting Queue service properties completed."));
-        // END: com.azure.storage.queue.queueServiceAsyncClient.setProperties#storageServiceProperties
+            .doOnSuccess(response -> System.out.println("Setting Queue service properties completed."));
+        // END: com.azure.storage.queue.queueServiceAsyncClient.setProperties#QueueServiceProperties
     }
 
 
     /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#setPropertiesWithResponse(StorageServiceProperties)}
+     * Generates a code sample for using {@link QueueServiceAsyncClient#setPropertiesWithResponse(QueueServiceProperties)}
      */
     public void setPropertiesWithResponse() {
-        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponse#storageServiceProperties
-        StorageServiceProperties properties = client.getProperties().block();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponse#QueueServiceProperties
+        QueueServiceProperties properties = client.getProperties().block();
         client.setPropertiesWithResponse(properties)
             .subscribe(response -> System.out.printf("Setting Queue service properties completed with status code %d",
                 response.getStatusCode()));
-        // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponse#storageServiceProperties
+        // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponse#QueueServiceProperties
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#setProperties(StorageServiceProperties)} with
+     * Generates a code sample for using {@link QueueServiceAsyncClient#setProperties(QueueServiceProperties)} with
      * metrics enabled.
      */
     public void setPropertiesEnableMetrics() {
-        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties
-        StorageServiceProperties properties = client.getProperties().block();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#QueueServiceProperties
+        QueueServiceProperties properties = client.getProperties().block();
         properties.getMinuteMetrics().setEnabled(true);
         properties.getHourMetrics().setEnabled(true);
         client.setProperties(properties).subscribe(
-            response -> System.out.printf("Setting Queue service properties completed."));
-        // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties
+            response -> System.out.println("Setting Queue service properties completed."));
+        // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#QueueServiceProperties
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#setPropertiesWithResponse(StorageServiceProperties)}
+     * Generates a code sample for using {@link QueueServiceAsyncClient#setPropertiesWithResponse(QueueServiceProperties)}
      * with metrics enabled.
      */
     public void setPropertiesAsyncEnableMetrics() {
-        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties
-        StorageServiceProperties properties = client.getProperties().block();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties
+        QueueServiceProperties properties = client.getProperties().block();
         properties.getMinuteMetrics().setEnabled(true);
         properties.getHourMetrics().setEnabled(true);
         client.setPropertiesWithResponse(properties)
             .subscribe(response -> System.out.printf("Setting Queue service properties completed with status code %d",
                 response.getStatusCode()));
-        // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties
+        // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties
     }
 
     /**
@@ -263,47 +254,10 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse
         client.getStatisticsWithResponse()
             .subscribe(response -> {
-                StorageServiceStats stats = response.getValue();
+                QueueServiceStatistics stats = response.getValue();
                 System.out.printf("Geo replication status: %s, Last synced: %s",
                     stats.getGeoReplication().getStatus(), stats.getGeoReplication().getLastSyncTime());
             });
         // END: com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse
-    }
-
-    /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
-     */
-    public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
-        AccountSASService service = new AccountSASService()
-            .setBlob(true)
-            .setFile(true)
-            .setQueue(true)
-            .setTable(true);
-        AccountSASResourceType resourceType = new AccountSASResourceType()
-            .setContainer(true)
-            .setObject(true)
-            .setService(true);
-        AccountSASPermission permission = new AccountSASPermission()
-            .setRead(true)
-            .setAdd(true)
-            .setCreate(true)
-            .setWrite(true)
-            .setDelete(true)
-            .setList(true)
-            .setProcessMessages(true)
-            .setUpdate(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
-            ipRange, sasProtocol);
-        // END: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
     }
 }

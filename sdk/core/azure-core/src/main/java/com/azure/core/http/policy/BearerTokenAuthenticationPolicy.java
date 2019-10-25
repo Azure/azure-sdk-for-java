@@ -3,8 +3,9 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.credentials.SimpleTokenCache;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.SimpleTokenCache;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -13,7 +14,7 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * The Pipeline policy that applies a token credential to an HTTP request
+ * The pipeline policy that applies a token credential to an HTTP request
  * with "Bearer" scheme.
  */
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
@@ -28,16 +29,6 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * Creates BearerTokenAuthenticationPolicy.
      *
      * @param credential the token credential to authenticate the request
-     * @param scope the scope of authentication the credential should get token for
-     */
-    public BearerTokenAuthenticationPolicy(TokenCredential credential, String scope) {
-        this(credential, new String[] { scope });
-    }
-
-    /**
-     * Creates BearerTokenAuthenticationPolicy.
-     *
-     * @param credential the token credential to authenticate the request
      * @param scopes the scopes of authentication the credential should get token for
      */
     public BearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
@@ -46,7 +37,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         assert scopes.length > 0;
         this.credential = credential;
         this.scopes = scopes;
-        this.cache = new SimpleTokenCache(() -> credential.getToken(scopes));
+        this.cache = new SimpleTokenCache(() -> credential.getToken(new TokenRequestContext().addScopes(scopes)));
     }
 
     @Override

@@ -4,8 +4,8 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -24,10 +24,10 @@ public final class ShareProperties {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The etag property.
+     * The eTag property.
      */
     @JsonProperty(value = "Etag", required = true)
-    private String etag;
+    private String eTag;
 
     /*
      * The quota property.
@@ -69,22 +69,22 @@ public final class ShareProperties {
     }
 
     /**
-     * Get the etag property: The etag property.
+     * Get the eTag property: The eTag property.
      *
-     * @return the etag value.
+     * @return the eTag value.
      */
-    public String getEtag() {
-        return this.etag;
+    public String getETag() {
+        return this.eTag;
     }
 
     /**
-     * Set the etag property: The etag property.
+     * Set the eTag property: The eTag property.
      *
-     * @param etag the etag value to set.
+     * @param eTag the eTag value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties setEtag(String etag) {
-        this.etag = etag;
+    public ShareProperties setETag(String eTag) {
+        this.eTag = eTag;
         return this;
     }
 

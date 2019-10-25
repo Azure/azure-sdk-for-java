@@ -22,7 +22,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 public class RequestIdPolicyTests {
-    private final HttpResponse mockResponse = new HttpResponse() {
+    private final HttpResponse mockResponse = new HttpResponse(null) {
         @Override
         public int getStatusCode() {
             return 500;
@@ -69,12 +69,12 @@ public class RequestIdPolicyTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
-                        String newRequestId = request.getHeaders().value(REQUEST_ID_HEADER);
+                        String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
                         Assert.assertNotNull(newRequestId);
                         Assert.assertNotEquals(newRequestId, firstRequestId);
                     }
 
-                    firstRequestId = request.getHeaders().value(REQUEST_ID_HEADER);
+                    firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
                     if (firstRequestId == null) {
                         Assert.fail();
                     }
@@ -97,18 +97,18 @@ public class RequestIdPolicyTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
-                        String newRequestId = request.getHeaders().value(REQUEST_ID_HEADER);
+                        String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
                         Assert.assertNotNull(newRequestId);
                         Assert.assertEquals(newRequestId, firstRequestId);
                     }
-                    firstRequestId = request.getHeaders().value(REQUEST_ID_HEADER);
+                    firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
                     if (firstRequestId == null) {
                         Assert.fail();
                     }
                     return Mono.just(mockResponse);
                 }
             })
-            .policies(new RequestIdPolicy(), new RetryPolicy(1, Duration.of(0, ChronoUnit.SECONDS)))
+            .policies(new RequestIdPolicy(), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
             .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();

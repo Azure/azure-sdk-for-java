@@ -61,7 +61,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
      * @param recordedData The record to persist network calls into.
      */
     public RecordNetworkCallPolicy(RecordedData recordedData) {
-        Objects.requireNonNull(recordedData);
+        Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
         this.recordedData = recordedData;
     }
 
@@ -114,8 +114,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,
         String... headerNames) {
         for (String headerName : headerNames) {
-            if (requestHeaders.value(headerName) != null) {
-                captureHeaders.put(headerName, requestHeaders.value(headerName));
+            if (requestHeaders.getValue(headerName) != null) {
+                captureHeaders.put(headerName, requestHeaders.getValue(headerName));
             }
         }
     }

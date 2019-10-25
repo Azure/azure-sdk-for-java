@@ -14,21 +14,21 @@ public class HttpHeadersTests {
         final HttpHeaders headers = new HttpHeaders();
 
         headers.put("a", "b");
-        assertEquals("b", headers.value("a"));
+        assertEquals("b", headers.getValue("a"));
 
         headers.put("a", "c");
-        assertEquals("c", headers.value("a"));
+        assertEquals("c", headers.getValue("a"));
 
         headers.put("a", null);
-        assertNull(headers.value("a"));
+        assertNull(headers.getValue("a"));
 
         headers.put("A", "");
-        assertEquals("", headers.value("a"));
+        assertEquals("", headers.getValue("a"));
 
         headers.put("A", "b");
-        assertEquals("b", headers.value("A"));
+        assertEquals("b", headers.getValue("A"));
 
         headers.put("a", null);
-        assertNull(headers.value("a"));
+        assertNull(headers.getValue("a"));
     }
 }

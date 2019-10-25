@@ -3,18 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
-import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,11 +17,8 @@ import org.junit.rules.TestName;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
-import java.util.Locale;
 
 /**
  * Tests the metadata operations such as fetching partition properties and event hub properties.
@@ -34,7 +26,6 @@ import java.util.Locale;
 public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     private final String[] expectedPartitionIds = new String[]{"0", "1"};
     private EventHubAsyncClient client;
-    private ReactorHandlerProvider handlerProvider;
     private String eventHubName;
 
     public EventHubClientMetadataIntegrationTest() {
@@ -51,11 +42,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        eventHubName = getConnectionOptions().getEventHubName();
-        handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
+        client = createBuilder().buildAsyncClient();
+        eventHubName = getConnectionStringProperties().getEntityPath();
     }
 
     @Override
@@ -129,19 +117,14 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final ConnectionStringProperties invalidCredentials = getCredentials(original.getEndpoint(), original.getEventHubName(),
-            original.getSharedAccessKeyName(), "invalid-sas-key-value");
-        final TokenCredential badTokenProvider = new EventHubSharedAccessKeyCredential(
-            invalidCredentials.getSharedAccessKeyName(), invalidCredentials.getSharedAccessKey(), TIMEOUT);
-        final ConnectionOptions connectionOptions = new ConnectionOptions(original.getEndpoint().getHost(),
-            original.getEventHubName(), badTokenProvider, getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
-            ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().getScheduler());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);
+        final TokenCredential invalidTokenCredential = new EventHubSharedAccessKeyCredential(
+            original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
+        final EventHubAsyncClient invalidClient = createBuilder()
+            .credential(original.getEndpoint().getHost(), original.getEntityPath(), invalidTokenCredential)
+            .buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.getProperties())
+        StepVerifier.create(invalidClient.getProperties())
             .expectErrorSatisfies(error -> {
                 Assert.assertTrue(error instanceof AmqpException);
 
@@ -157,18 +140,17 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
      * Verifies that error conditions are handled for fetching partition metadata.
      */
     @Test
-    public void getPartitionPropertiesNonExistentHub() {
+    public void getPartitionPropertiesNonExistentHub() throws InvalidKeyException, NoSuchAlgorithmException {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final ConnectionOptions connectionOptions = new ConnectionOptions(original.getEndpoint().getHost(),
-            "invalid-event-hub", getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
-            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().getScheduler());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);
+        final TokenCredential validCredentials = new EventHubSharedAccessKeyCredential(
+            original.getSharedAccessKeyName(), original.getSharedAccessKey(), TIMEOUT);
+        final EventHubAsyncClient invalidClient = createBuilder()
+            .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
+            .buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.getPartitionIds())
+        StepVerifier.create(invalidClient.getPartitionIds())
             .expectErrorSatisfies(error -> {
                 Assert.assertTrue(error instanceof AmqpException);
 
@@ -178,14 +160,5 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                 Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
-    }
-
-    private static ConnectionStringProperties getCredentials(URI endpoint, String eventHubName, String sasKeyName,
-                                                             String sasKeyValue) {
-        final String connectionString = String.format(Locale.ROOT,
-            "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s;", endpoint.toString(),
-            sasKeyName, sasKeyValue, eventHubName);
-
-        return new ConnectionStringProperties(connectionString);
     }
 }

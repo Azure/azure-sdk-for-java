@@ -37,7 +37,7 @@ import java.util.function.BiFunction;
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
  */
-public class NettyAsyncHttpClient implements HttpClient {
+class NettyAsyncHttpClient implements HttpClient {
     final reactor.netty.http.client.HttpClient nettyClient;
 
     /**
@@ -59,9 +59,9 @@ public class NettyAsyncHttpClient implements HttpClient {
     /** {@inheritDoc} */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
-        Objects.requireNonNull(request.getHttpMethod());
-        Objects.requireNonNull(request.getUrl());
-        Objects.requireNonNull(request.getUrl().getProtocol());
+        Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");
+        Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
+        Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
 
         return nettyClient
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
@@ -103,15 +103,16 @@ public class NettyAsyncHttpClient implements HttpClient {
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
         final HttpRequest restRequest) {
         return (reactorNettyResponse, reactorNettyConnection) ->
-            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection)
-                .setRequest(restRequest));
+            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest));
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
 
-        ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection) {
+        ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
+                                 HttpRequest httpRequest) {
+            super(httpRequest);
             this.reactorNettyResponse = reactorNettyResponse;
             this.reactorNettyConnection = reactorNettyConnection;
         }

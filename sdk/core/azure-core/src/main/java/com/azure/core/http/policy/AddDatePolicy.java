@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * The Pipeline policy that adds Date header in RFC 1123 format when sending an HTTP request.
+ * The pipeline policy that adds a "Date" header in RFC 1123 format when sending an HTTP request.
  */
 public class AddDatePolicy implements HttpPipelinePolicy {
     private final DateTimeFormatter format = DateTimeFormatter

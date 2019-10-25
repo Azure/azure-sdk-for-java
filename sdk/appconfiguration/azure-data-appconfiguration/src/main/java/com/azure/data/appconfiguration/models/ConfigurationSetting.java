@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.models;
 
-import com.azure.core.implementation.annotation.Fluent;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * ConfigurationSetting is a resource identified by unique combination of {@link #getKey() key} and {@link #getLabel()
@@ -41,7 +39,7 @@ public class ConfigurationSetting {
     private OffsetDateTime lastModified;
 
     @JsonProperty(value = "locked")
-    private boolean locked;
+    private boolean readOnly;
 
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
@@ -163,15 +161,15 @@ public class ConfigurationSetting {
     }
 
     /**
-     * Gets whether or not the configuration setting is locked. If the setting is locked, then no modifications can be
+     * Gets whether or not the configuration setting is read-only. If it is, then no modifications can be
      * made to this setting.
      *
      * This is a <b>readonly</b> property. It is populated from responses from the Azure App Configuration service.
      *
-     * @return true if locked; false otherwise.
+     * @return true if read-only; false otherwise.
      */
-    public boolean isLocked() {
-        return locked;
+    public boolean isReadOnly() {
+        return readOnly;
     }
 
     /**
@@ -201,47 +199,5 @@ public class ConfigurationSetting {
             this.label,
             this.value,
             this.etag);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof ConfigurationSetting)) {
-            return false;
-        }
-
-        ConfigurationSetting other = (ConfigurationSetting) o;
-
-        if (!Objects.equals(this.key, other.key)
-            || !Objects.equals(this.label, other.label)
-            || !Objects.equals(this.value, other.value)
-            || !Objects.equals(this.etag, other.etag)
-            || !Objects.equals(this.lastModified, other.lastModified)
-            || !Objects.equals(this.locked, other.locked)
-            || !Objects.equals(this.contentType, other.contentType)
-            || ImplUtils.isNullOrEmpty(this.tags) != ImplUtils.isNullOrEmpty(other.tags)) {
-            return false;
-        }
-
-        if (!ImplUtils.isNullOrEmpty(this.tags)) {
-            return Objects.equals(this.tags, other.tags);
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.key,
-            this.label,
-            this.value,
-            this.etag,
-            this.lastModified,
-            this.locked,
-            this.contentType,
-            this.tags);
     }
 }

@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training;
 
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.implementation.TrainingApiImpl;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.implementation.CustomVisionTrainingClientImpl;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.OkHttpClient;
@@ -21,7 +21,7 @@ public class CustomVisionTrainingManager {
      * @param apiKey the Custom Vision Training API key
      * @return the Computer Vision Training API client
      */
-    public static TrainingApi authenticate(String apiKey) {
+    public static CustomVisionTrainingClient authenticate(String apiKey) {
         return authenticate("https://southcentralus.api.cognitive.microsoft.com/customvision/v2.1/Training/", apiKey);
     }
 
@@ -32,7 +32,7 @@ public class CustomVisionTrainingManager {
      * @param apiKey the Custom Vision Training API key
      * @return the Custom Vision Training API client
      */
-    public static TrainingApi authenticate(String baseUrl, final String apiKey) {
+    public static CustomVisionTrainingClient authenticate(String baseUrl, final String apiKey) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
             @Override
             public void applyCredentialsFilter(OkHttpClient.Builder builder) {
@@ -48,7 +48,7 @@ public class CustomVisionTrainingManager {
      * @param apiKey the Custom Vision Training API key
      * @return the Computer Vision Training API client
      */
-    public static TrainingApi authenticate(ServiceClientCredentials credentials, final String apiKey) {
+    public static CustomVisionTrainingClient authenticate(ServiceClientCredentials credentials, final String apiKey) {
         return authenticate("https://southcentralus.api.cognitive.microsoft.com/customvision/v2.1/Training/", credentials, apiKey);
     }
 
@@ -60,8 +60,8 @@ public class CustomVisionTrainingManager {
      * @param apiKey the Custom Vision Training API key
      * @return the Custom Vision Training API client
      */
-    public static TrainingApi authenticate(String baseUrl, ServiceClientCredentials credentials, final String apiKey) {
-        return new TrainingApiImpl(baseUrl, credentials).withApiKey(apiKey);
+    public static CustomVisionTrainingClient authenticate(String baseUrl, ServiceClientCredentials credentials, final String apiKey) {
+        return new CustomVisionTrainingClientImpl(baseUrl, credentials).withApiKey(apiKey);
     }
 
     /**
@@ -71,7 +71,7 @@ public class CustomVisionTrainingManager {
      * @param apiKey the Custom Vision Training API key
      * @return the Custom Vision Training API client
      */
-    public static TrainingApi authenticate(RestClient restClient, final String apiKey) {
-        return new TrainingApiImpl(restClient).withApiKey(apiKey);
+    public static CustomVisionTrainingClient authenticate(RestClient restClient, final String apiKey) {
+        return new CustomVisionTrainingClientImpl(restClient).withApiKey(apiKey);
     }
 }

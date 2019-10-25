@@ -79,14 +79,16 @@ For more information on using Java with Azure, see [here](https://azure.microsof
 
 To get the binaries of this library as distributed by Microsoft, ready for use within your project, you can use Maven. Add the following fragment to you POM's dependencies.
 
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-complete;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-complete</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.3</version>
     <type>pom</type>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ## Pre-requisites
 - A Java Developer Kit (JDK), v 1.7 or later
@@ -114,7 +116,7 @@ If you would like to become an active contributor to this project please follow 
 # Previous Versions
 
 | Version | Comments |
-| :-------: | :-------- |
+| :-------: | :--------- |
 | [1.1.2](https://github.com/Azure/azure-keyvault-java/tree/1.1.2)   | Version 1.1.2 release |
 | [1.1.1](https://github.com/Azure/azure-keyvault-java/tree/1.1.1)   | Version 1.1.1 release |
 | [1.1](https://github.com/Azure/azure-keyvault-java/tree/1.1)   | Version 1.1 release |

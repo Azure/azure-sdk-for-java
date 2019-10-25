@@ -8,21 +8,27 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.prediction.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.PredictImageWithNoStoreOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.PredictImageUrlWithNoStoreOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.PredictImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.PredictImageUrlOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.DetectImageWithNoStoreOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.DetectImageUrlWithNoStoreOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.DetectImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.DetectImageUrlOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ClassifyImageWithNoStoreOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ClassifyImageUrlWithNoStoreOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ClassifyImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ClassifyImageUrlOptionalParameter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.Predictions;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.CustomVisionErrorException;
 import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ImagePrediction;
 import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ImageUrl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.UUID;
 import okhttp3.ResponseBody;
@@ -46,7 +52,7 @@ public class PredictionsImpl implements Predictions {
     /** The Retrofit service to perform REST calls. */
     private PredictionsService service;
     /** The service client containing this operation class. */
-    private PredictionEndpointImpl client;
+    private CustomVisionPredictionClientImpl client;
 
     /**
      * Initializes an instance of PredictionsImpl.
@@ -54,7 +60,7 @@ public class PredictionsImpl implements Predictions {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PredictionsImpl(Retrofit retrofit, PredictionEndpointImpl client) {
+    public PredictionsImpl(Retrofit retrofit, CustomVisionPredictionClientImpl client) {
         this.service = retrofit.create(PredictionsService.class);
         this.client = client;
     }
@@ -65,64 +71,83 @@ public class PredictionsImpl implements Predictions {
      */
     interface PredictionsService {
         @Multipart
-        @POST("{projectId}/image/nostore")
-        Observable<Response<ResponseBody>> predictImageWithNoStore(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("application") String application, @Part("imageData") RequestBody imageData, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @POST("{projectId}/detect/iterations/{publishedName}/image/nostore")
+        Observable<Response<ResponseBody>> detectImageWithNoStore(@Path("projectId") UUID projectId, @Path("publishedName") String publishedName, @Query("application") String application, @Part("imageData") RequestBody imageData, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.prediction.Predictions predictImageUrlWithNoStore" })
-        @POST("{projectId}/url/nostore")
-        Observable<Response<ResponseBody>> predictImageUrlWithNoStore(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("application") String application, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.prediction.Predictions detectImageUrlWithNoStore" })
+        @POST("{projectId}/detect/iterations/{publishedName}/url/nostore")
+        Observable<Response<ResponseBody>> detectImageUrlWithNoStore(@Path("projectId") UUID projectId, @Path("publishedName") String publishedName, @Query("application") String application, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Multipart
-        @POST("{projectId}/image")
-        Observable<Response<ResponseBody>> predictImage(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("application") String application, @Part("imageData") RequestBody imageData, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @POST("{projectId}/detect/iterations/{publishedName}/image")
+        Observable<Response<ResponseBody>> detectImage(@Path("projectId") UUID projectId, @Path("publishedName") String publishedName, @Query("application") String application, @Part("imageData") RequestBody imageData, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.prediction.Predictions predictImageUrl" })
-        @POST("{projectId}/url")
-        Observable<Response<ResponseBody>> predictImageUrl(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("application") String application, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.prediction.Predictions detectImageUrl" })
+        @POST("{projectId}/detect/iterations/{publishedName}/url")
+        Observable<Response<ResponseBody>> detectImageUrl(@Path("projectId") UUID projectId, @Path("publishedName") String publishedName, @Query("application") String application, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Multipart
+        @POST("{projectId}/classify/iterations/{publishedName}/image/nostore")
+        Observable<Response<ResponseBody>> classifyImageWithNoStore(@Path("projectId") UUID projectId, @Path("publishedName") String publishedName, @Query("application") String application, @Part("imageData") RequestBody imageData, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.prediction.Predictions classifyImageUrlWithNoStore" })
+        @POST("{projectId}/classify/iterations/{publishedName}/url/nostore")
+        Observable<Response<ResponseBody>> classifyImageUrlWithNoStore(@Path("projectId") UUID projectId, @Path("publishedName") String publishedName, @Query("application") String application, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Multipart
+        @POST("{projectId}/classify/iterations/{publishedName}/image")
+        Observable<Response<ResponseBody>> classifyImage(@Path("projectId") UUID projectId, @Path("publishedName") String publishedName, @Query("application") String application, @Part("imageData") RequestBody imageData, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.prediction.Predictions classifyImageUrl" })
+        @POST("{projectId}/classify/iterations/{publishedName}/url")
+        Observable<Response<ResponseBody>> classifyImageUrl(@Path("projectId") UUID projectId, @Path("publishedName") String publishedName, @Query("application") String application, @Header("Prediction-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
 
     /**
-     * Predict an image without saving the result.
+     * Detect objects in an image without saving the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param predictImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param detectImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction predictImageWithNoStore(UUID projectId, byte[] imageData, PredictImageWithNoStoreOptionalParameter predictImageWithNoStoreOptionalParameter) {
-        return predictImageWithNoStoreWithServiceResponseAsync(projectId, imageData, predictImageWithNoStoreOptionalParameter).toBlocking().single().body();
+    public ImagePrediction detectImageWithNoStore(UUID projectId, String publishedName, byte[] imageData, DetectImageWithNoStoreOptionalParameter detectImageWithNoStoreOptionalParameter) {
+        return detectImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, detectImageWithNoStoreOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Predict an image without saving the result.
+     * Detect objects in an image without saving the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param predictImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param detectImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> predictImageWithNoStoreAsync(UUID projectId, byte[] imageData, PredictImageWithNoStoreOptionalParameter predictImageWithNoStoreOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(predictImageWithNoStoreWithServiceResponseAsync(projectId, imageData, predictImageWithNoStoreOptionalParameter), serviceCallback);
+    public ServiceFuture<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, DetectImageWithNoStoreOptionalParameter detectImageWithNoStoreOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(detectImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, detectImageWithNoStoreOptionalParameter), serviceCallback);
     }
 
     /**
-     * Predict an image without saving the result.
+     * Detect objects in an image without saving the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param predictImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param detectImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> predictImageWithNoStoreAsync(UUID projectId, byte[] imageData, PredictImageWithNoStoreOptionalParameter predictImageWithNoStoreOptionalParameter) {
-        return predictImageWithNoStoreWithServiceResponseAsync(projectId, imageData, predictImageWithNoStoreOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, DetectImageWithNoStoreOptionalParameter detectImageWithNoStoreOptionalParameter) {
+        return detectImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, detectImageWithNoStoreOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -131,17 +156,24 @@ public class PredictionsImpl implements Predictions {
     }
 
     /**
-     * Predict an image without saving the result.
+     * Detect objects in an image without saving the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param predictImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param detectImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> predictImageWithNoStoreWithServiceResponseAsync(UUID projectId, byte[] imageData, PredictImageWithNoStoreOptionalParameter predictImageWithNoStoreOptionalParameter) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, DetectImageWithNoStoreOptionalParameter detectImageWithNoStoreOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
         }
         if (imageData == null) {
             throw new IllegalArgumentException("Parameter imageData is required and cannot be null.");
@@ -149,26 +181,30 @@ public class PredictionsImpl implements Predictions {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        final UUID iterationId = predictImageWithNoStoreOptionalParameter != null ? predictImageWithNoStoreOptionalParameter.iterationId() : null;
-        final String application = predictImageWithNoStoreOptionalParameter != null ? predictImageWithNoStoreOptionalParameter.application() : null;
+        final String application = detectImageWithNoStoreOptionalParameter != null ? detectImageWithNoStoreOptionalParameter.application() : null;
 
-        return predictImageWithNoStoreWithServiceResponseAsync(projectId, imageData, iterationId, application);
+        return detectImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, application);
     }
 
     /**
-     * Predict an image without saving the result.
+     * Detect objects in an image without saving the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
-                 The default iteration for the project will be used when not specified
-     * @param application Optional. Specifies the name of application using the endpoint
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> predictImageWithNoStoreWithServiceResponseAsync(UUID projectId, byte[] imageData, UUID iterationId, String application) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, String application) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
         }
         if (imageData == null) {
             throw new IllegalArgumentException("Parameter imageData is required and cannot be null.");
@@ -176,13 +212,14 @@ public class PredictionsImpl implements Predictions {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageDataConverted = RequestBody.create(MediaType.parse("multipart/form-data"), imageData);
-        return service.predictImageWithNoStore(projectId, iterationId, application, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.detectImageWithNoStore(projectId, publishedName, application, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
                 @Override
                 public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImagePrediction> clientResponse = predictImageWithNoStoreDelegate(response);
+                        ServiceResponse<ImagePrediction> clientResponse = detectImageWithNoStoreDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -191,68 +228,68 @@ public class PredictionsImpl implements Predictions {
             });
     }
 
-    private ServiceResponse<ImagePrediction> predictImageWithNoStoreDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImagePrediction> detectImageWithNoStoreDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImagePrediction>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
     @Override
-    public PredictionsPredictImageWithNoStoreParameters predictImageWithNoStore() {
-        return new PredictionsPredictImageWithNoStoreParameters(this);
+    public PredictionsDetectImageWithNoStoreParameters detectImageWithNoStore() {
+        return new PredictionsDetectImageWithNoStoreParameters(this);
     }
 
     /**
-     * Internal class implementing PredictionsPredictImageWithNoStoreDefinition.
+     * Internal class implementing PredictionsDetectImageWithNoStoreDefinition.
      */
-    class PredictionsPredictImageWithNoStoreParameters implements PredictionsPredictImageWithNoStoreDefinition {
+    class PredictionsDetectImageWithNoStoreParameters implements PredictionsDetectImageWithNoStoreDefinition {
         private PredictionsImpl parent;
         private UUID projectId;
+        private String publishedName;
         private byte[] imageData;
-        private UUID iterationId;
         private String application;
 
         /**
          * Constructor.
          * @param parent the parent object.
          */
-        PredictionsPredictImageWithNoStoreParameters(PredictionsImpl parent) {
+        PredictionsDetectImageWithNoStoreParameters(PredictionsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public PredictionsPredictImageWithNoStoreParameters withProjectId(UUID projectId) {
+        public PredictionsDetectImageWithNoStoreParameters withProjectId(UUID projectId) {
             this.projectId = projectId;
             return this;
         }
 
         @Override
-        public PredictionsPredictImageWithNoStoreParameters withImageData(byte[] imageData) {
+        public PredictionsDetectImageWithNoStoreParameters withPublishedName(String publishedName) {
+            this.publishedName = publishedName;
+            return this;
+        }
+
+        @Override
+        public PredictionsDetectImageWithNoStoreParameters withImageData(byte[] imageData) {
             this.imageData = imageData;
             return this;
         }
 
         @Override
-        public PredictionsPredictImageWithNoStoreParameters withIterationId(UUID iterationId) {
-            this.iterationId = iterationId;
-            return this;
-        }
-
-        @Override
-        public PredictionsPredictImageWithNoStoreParameters withApplication(String application) {
+        public PredictionsDetectImageWithNoStoreParameters withApplication(String application) {
             this.application = application;
             return this;
         }
 
         @Override
         public ImagePrediction execute() {
-        return predictImageWithNoStoreWithServiceResponseAsync(projectId, imageData, iterationId, application).toBlocking().single().body();
+        return detectImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, application).toBlocking().single().body();
     }
 
         @Override
         public Observable<ImagePrediction> executeAsync() {
-            return predictImageWithNoStoreWithServiceResponseAsync(projectId, imageData, iterationId, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+            return detectImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
                 @Override
                 public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                     return response.body();
@@ -263,42 +300,48 @@ public class PredictionsImpl implements Predictions {
 
 
     /**
-     * Predict an image url without saving the result.
+     * Detect objects in an image url without saving the result.
      *
-     * @param projectId The project id
-     * @param predictImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction predictImageUrlWithNoStore(UUID projectId, PredictImageUrlWithNoStoreOptionalParameter predictImageUrlWithNoStoreOptionalParameter) {
-        return predictImageUrlWithNoStoreWithServiceResponseAsync(projectId, predictImageUrlWithNoStoreOptionalParameter).toBlocking().single().body();
+    public ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedName, String url, DetectImageUrlWithNoStoreOptionalParameter detectImageUrlWithNoStoreOptionalParameter) {
+        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, detectImageUrlWithNoStoreOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Predict an image url without saving the result.
+     * Detect objects in an image url without saving the result.
      *
-     * @param projectId The project id
-     * @param predictImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> predictImageUrlWithNoStoreAsync(UUID projectId, PredictImageUrlWithNoStoreOptionalParameter predictImageUrlWithNoStoreOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(predictImageUrlWithNoStoreWithServiceResponseAsync(projectId, predictImageUrlWithNoStoreOptionalParameter), serviceCallback);
+    public ServiceFuture<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, DetectImageUrlWithNoStoreOptionalParameter detectImageUrlWithNoStoreOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, detectImageUrlWithNoStoreOptionalParameter), serviceCallback);
     }
 
     /**
-     * Predict an image url without saving the result.
+     * Detect objects in an image url without saving the result.
      *
-     * @param projectId The project id
-     * @param predictImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> predictImageUrlWithNoStoreAsync(UUID projectId, PredictImageUrlWithNoStoreOptionalParameter predictImageUrlWithNoStoreOptionalParameter) {
-        return predictImageUrlWithNoStoreWithServiceResponseAsync(projectId, predictImageUrlWithNoStoreOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, DetectImageUrlWithNoStoreOptionalParameter detectImageUrlWithNoStoreOptionalParameter) {
+        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, detectImageUrlWithNoStoreOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -307,53 +350,71 @@ public class PredictionsImpl implements Predictions {
     }
 
     /**
-     * Predict an image url without saving the result.
+     * Detect objects in an image url without saving the result.
      *
-     * @param projectId The project id
-     * @param predictImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> predictImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, PredictImageUrlWithNoStoreOptionalParameter predictImageUrlWithNoStoreOptionalParameter) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String url, DetectImageUrlWithNoStoreOptionalParameter detectImageUrlWithNoStoreOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        final UUID iterationId = predictImageUrlWithNoStoreOptionalParameter != null ? predictImageUrlWithNoStoreOptionalParameter.iterationId() : null;
-        final String application = predictImageUrlWithNoStoreOptionalParameter != null ? predictImageUrlWithNoStoreOptionalParameter.application() : null;
-        final String url = predictImageUrlWithNoStoreOptionalParameter != null ? predictImageUrlWithNoStoreOptionalParameter.url() : null;
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        final String application = detectImageUrlWithNoStoreOptionalParameter != null ? detectImageUrlWithNoStoreOptionalParameter.application() : null;
 
-        return predictImageUrlWithNoStoreWithServiceResponseAsync(projectId, iterationId, application, url);
+        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application);
     }
 
     /**
-     * Predict an image url without saving the result.
+     * Detect objects in an image url without saving the result.
      *
-     * @param projectId The project id
-     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
-                 The default iteration for the project will be used when not specified
-     * @param application Optional. Specifies the name of application using the endpoint
-     * @param url the String value
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> predictImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, UUID iterationId, String application, String url) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String url, String application) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        return service.predictImageUrlWithNoStore(projectId, iterationId, application, this.client.apiKey(), this.client.acceptLanguage(), imageUrl, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.detectImageUrlWithNoStore(projectId, publishedName, application, this.client.apiKey(), this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
                 @Override
                 public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImagePrediction> clientResponse = predictImageUrlWithNoStoreDelegate(response);
+                        ServiceResponse<ImagePrediction> clientResponse = detectImageUrlWithNoStoreDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -362,68 +423,68 @@ public class PredictionsImpl implements Predictions {
             });
     }
 
-    private ServiceResponse<ImagePrediction> predictImageUrlWithNoStoreDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImagePrediction> detectImageUrlWithNoStoreDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImagePrediction>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
     @Override
-    public PredictionsPredictImageUrlWithNoStoreParameters predictImageUrlWithNoStore() {
-        return new PredictionsPredictImageUrlWithNoStoreParameters(this);
+    public PredictionsDetectImageUrlWithNoStoreParameters detectImageUrlWithNoStore() {
+        return new PredictionsDetectImageUrlWithNoStoreParameters(this);
     }
 
     /**
-     * Internal class implementing PredictionsPredictImageUrlWithNoStoreDefinition.
+     * Internal class implementing PredictionsDetectImageUrlWithNoStoreDefinition.
      */
-    class PredictionsPredictImageUrlWithNoStoreParameters implements PredictionsPredictImageUrlWithNoStoreDefinition {
+    class PredictionsDetectImageUrlWithNoStoreParameters implements PredictionsDetectImageUrlWithNoStoreDefinition {
         private PredictionsImpl parent;
         private UUID projectId;
-        private UUID iterationId;
-        private String application;
+        private String publishedName;
         private String url;
+        private String application;
 
         /**
          * Constructor.
          * @param parent the parent object.
          */
-        PredictionsPredictImageUrlWithNoStoreParameters(PredictionsImpl parent) {
+        PredictionsDetectImageUrlWithNoStoreParameters(PredictionsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public PredictionsPredictImageUrlWithNoStoreParameters withProjectId(UUID projectId) {
+        public PredictionsDetectImageUrlWithNoStoreParameters withProjectId(UUID projectId) {
             this.projectId = projectId;
             return this;
         }
 
         @Override
-        public PredictionsPredictImageUrlWithNoStoreParameters withIterationId(UUID iterationId) {
-            this.iterationId = iterationId;
+        public PredictionsDetectImageUrlWithNoStoreParameters withPublishedName(String publishedName) {
+            this.publishedName = publishedName;
             return this;
         }
 
         @Override
-        public PredictionsPredictImageUrlWithNoStoreParameters withApplication(String application) {
-            this.application = application;
-            return this;
-        }
-
-        @Override
-        public PredictionsPredictImageUrlWithNoStoreParameters withUrl(String url) {
+        public PredictionsDetectImageUrlWithNoStoreParameters withUrl(String url) {
             this.url = url;
             return this;
         }
 
         @Override
+        public PredictionsDetectImageUrlWithNoStoreParameters withApplication(String application) {
+            this.application = application;
+            return this;
+        }
+
+        @Override
         public ImagePrediction execute() {
-        return predictImageUrlWithNoStoreWithServiceResponseAsync(projectId, iterationId, application, url).toBlocking().single().body();
+        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application).toBlocking().single().body();
     }
 
         @Override
         public Observable<ImagePrediction> executeAsync() {
-            return predictImageUrlWithNoStoreWithServiceResponseAsync(projectId, iterationId, application, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+            return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
                 @Override
                 public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                     return response.body();
@@ -434,45 +495,48 @@ public class PredictionsImpl implements Predictions {
 
 
     /**
-     * Predict an image and saves the result.
+     * Detect objects in an image and saves the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param predictImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param detectImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction predictImage(UUID projectId, byte[] imageData, PredictImageOptionalParameter predictImageOptionalParameter) {
-        return predictImageWithServiceResponseAsync(projectId, imageData, predictImageOptionalParameter).toBlocking().single().body();
+    public ImagePrediction detectImage(UUID projectId, String publishedName, byte[] imageData, DetectImageOptionalParameter detectImageOptionalParameter) {
+        return detectImageWithServiceResponseAsync(projectId, publishedName, imageData, detectImageOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Predict an image and saves the result.
+     * Detect objects in an image and saves the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param predictImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param detectImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> predictImageAsync(UUID projectId, byte[] imageData, PredictImageOptionalParameter predictImageOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(predictImageWithServiceResponseAsync(projectId, imageData, predictImageOptionalParameter), serviceCallback);
+    public ServiceFuture<ImagePrediction> detectImageAsync(UUID projectId, String publishedName, byte[] imageData, DetectImageOptionalParameter detectImageOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(detectImageWithServiceResponseAsync(projectId, publishedName, imageData, detectImageOptionalParameter), serviceCallback);
     }
 
     /**
-     * Predict an image and saves the result.
+     * Detect objects in an image and saves the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param predictImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param detectImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> predictImageAsync(UUID projectId, byte[] imageData, PredictImageOptionalParameter predictImageOptionalParameter) {
-        return predictImageWithServiceResponseAsync(projectId, imageData, predictImageOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> detectImageAsync(UUID projectId, String publishedName, byte[] imageData, DetectImageOptionalParameter detectImageOptionalParameter) {
+        return detectImageWithServiceResponseAsync(projectId, publishedName, imageData, detectImageOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -481,17 +545,24 @@ public class PredictionsImpl implements Predictions {
     }
 
     /**
-     * Predict an image and saves the result.
+     * Detect objects in an image and saves the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param predictImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param detectImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> predictImageWithServiceResponseAsync(UUID projectId, byte[] imageData, PredictImageOptionalParameter predictImageOptionalParameter) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, DetectImageOptionalParameter detectImageOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
         }
         if (imageData == null) {
             throw new IllegalArgumentException("Parameter imageData is required and cannot be null.");
@@ -499,26 +570,30 @@ public class PredictionsImpl implements Predictions {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        final UUID iterationId = predictImageOptionalParameter != null ? predictImageOptionalParameter.iterationId() : null;
-        final String application = predictImageOptionalParameter != null ? predictImageOptionalParameter.application() : null;
+        final String application = detectImageOptionalParameter != null ? detectImageOptionalParameter.application() : null;
 
-        return predictImageWithServiceResponseAsync(projectId, imageData, iterationId, application);
+        return detectImageWithServiceResponseAsync(projectId, publishedName, imageData, application);
     }
 
     /**
-     * Predict an image and saves the result.
+     * Detect objects in an image and saves the result.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
-                 The default iteration for the project will be used when not specified
-     * @param application Optional. Specifies the name of application using the endpoint
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> predictImageWithServiceResponseAsync(UUID projectId, byte[] imageData, UUID iterationId, String application) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, String application) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
         }
         if (imageData == null) {
             throw new IllegalArgumentException("Parameter imageData is required and cannot be null.");
@@ -526,13 +601,14 @@ public class PredictionsImpl implements Predictions {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageDataConverted = RequestBody.create(MediaType.parse("multipart/form-data"), imageData);
-        return service.predictImage(projectId, iterationId, application, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.detectImage(projectId, publishedName, application, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
                 @Override
                 public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImagePrediction> clientResponse = predictImageDelegate(response);
+                        ServiceResponse<ImagePrediction> clientResponse = detectImageDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -541,68 +617,68 @@ public class PredictionsImpl implements Predictions {
             });
     }
 
-    private ServiceResponse<ImagePrediction> predictImageDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImagePrediction> detectImageDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImagePrediction>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
     @Override
-    public PredictionsPredictImageParameters predictImage() {
-        return new PredictionsPredictImageParameters(this);
+    public PredictionsDetectImageParameters detectImage() {
+        return new PredictionsDetectImageParameters(this);
     }
 
     /**
-     * Internal class implementing PredictionsPredictImageDefinition.
+     * Internal class implementing PredictionsDetectImageDefinition.
      */
-    class PredictionsPredictImageParameters implements PredictionsPredictImageDefinition {
+    class PredictionsDetectImageParameters implements PredictionsDetectImageDefinition {
         private PredictionsImpl parent;
         private UUID projectId;
+        private String publishedName;
         private byte[] imageData;
-        private UUID iterationId;
         private String application;
 
         /**
          * Constructor.
          * @param parent the parent object.
          */
-        PredictionsPredictImageParameters(PredictionsImpl parent) {
+        PredictionsDetectImageParameters(PredictionsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public PredictionsPredictImageParameters withProjectId(UUID projectId) {
+        public PredictionsDetectImageParameters withProjectId(UUID projectId) {
             this.projectId = projectId;
             return this;
         }
 
         @Override
-        public PredictionsPredictImageParameters withImageData(byte[] imageData) {
+        public PredictionsDetectImageParameters withPublishedName(String publishedName) {
+            this.publishedName = publishedName;
+            return this;
+        }
+
+        @Override
+        public PredictionsDetectImageParameters withImageData(byte[] imageData) {
             this.imageData = imageData;
             return this;
         }
 
         @Override
-        public PredictionsPredictImageParameters withIterationId(UUID iterationId) {
-            this.iterationId = iterationId;
-            return this;
-        }
-
-        @Override
-        public PredictionsPredictImageParameters withApplication(String application) {
+        public PredictionsDetectImageParameters withApplication(String application) {
             this.application = application;
             return this;
         }
 
         @Override
         public ImagePrediction execute() {
-        return predictImageWithServiceResponseAsync(projectId, imageData, iterationId, application).toBlocking().single().body();
+        return detectImageWithServiceResponseAsync(projectId, publishedName, imageData, application).toBlocking().single().body();
     }
 
         @Override
         public Observable<ImagePrediction> executeAsync() {
-            return predictImageWithServiceResponseAsync(projectId, imageData, iterationId, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+            return detectImageWithServiceResponseAsync(projectId, publishedName, imageData, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
                 @Override
                 public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                     return response.body();
@@ -613,42 +689,48 @@ public class PredictionsImpl implements Predictions {
 
 
     /**
-     * Predict an image url and saves the result.
+     * Detect objects in an image url and saves the result.
      *
-     * @param projectId The project id
-     * @param predictImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction predictImageUrl(UUID projectId, PredictImageUrlOptionalParameter predictImageUrlOptionalParameter) {
-        return predictImageUrlWithServiceResponseAsync(projectId, predictImageUrlOptionalParameter).toBlocking().single().body();
+    public ImagePrediction detectImageUrl(UUID projectId, String publishedName, String url, DetectImageUrlOptionalParameter detectImageUrlOptionalParameter) {
+        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, url, detectImageUrlOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Predict an image url and saves the result.
+     * Detect objects in an image url and saves the result.
      *
-     * @param projectId The project id
-     * @param predictImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> predictImageUrlAsync(UUID projectId, PredictImageUrlOptionalParameter predictImageUrlOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(predictImageUrlWithServiceResponseAsync(projectId, predictImageUrlOptionalParameter), serviceCallback);
+    public ServiceFuture<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String url, DetectImageUrlOptionalParameter detectImageUrlOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(detectImageUrlWithServiceResponseAsync(projectId, publishedName, url, detectImageUrlOptionalParameter), serviceCallback);
     }
 
     /**
-     * Predict an image url and saves the result.
+     * Detect objects in an image url and saves the result.
      *
-     * @param projectId The project id
-     * @param predictImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> predictImageUrlAsync(UUID projectId, PredictImageUrlOptionalParameter predictImageUrlOptionalParameter) {
-        return predictImageUrlWithServiceResponseAsync(projectId, predictImageUrlOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String url, DetectImageUrlOptionalParameter detectImageUrlOptionalParameter) {
+        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, url, detectImageUrlOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -657,53 +739,71 @@ public class PredictionsImpl implements Predictions {
     }
 
     /**
-     * Predict an image url and saves the result.
+     * Detect objects in an image url and saves the result.
      *
-     * @param projectId The project id
-     * @param predictImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> predictImageUrlWithServiceResponseAsync(UUID projectId, PredictImageUrlOptionalParameter predictImageUrlOptionalParameter) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String url, DetectImageUrlOptionalParameter detectImageUrlOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        final UUID iterationId = predictImageUrlOptionalParameter != null ? predictImageUrlOptionalParameter.iterationId() : null;
-        final String application = predictImageUrlOptionalParameter != null ? predictImageUrlOptionalParameter.application() : null;
-        final String url = predictImageUrlOptionalParameter != null ? predictImageUrlOptionalParameter.url() : null;
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        final String application = detectImageUrlOptionalParameter != null ? detectImageUrlOptionalParameter.application() : null;
 
-        return predictImageUrlWithServiceResponseAsync(projectId, iterationId, application, url);
+        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, url, application);
     }
 
     /**
-     * Predict an image url and saves the result.
+     * Detect objects in an image url and saves the result.
      *
-     * @param projectId The project id
-     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
-                 The default iteration for the project will be used when not specified
-     * @param application Optional. Specifies the name of application using the endpoint
-     * @param url the String value
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> predictImageUrlWithServiceResponseAsync(UUID projectId, UUID iterationId, String application, String url) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String url, String application) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        return service.predictImageUrl(projectId, iterationId, application, this.client.apiKey(), this.client.acceptLanguage(), imageUrl, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.detectImageUrl(projectId, publishedName, application, this.client.apiKey(), this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
                 @Override
                 public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImagePrediction> clientResponse = predictImageUrlDelegate(response);
+                        ServiceResponse<ImagePrediction> clientResponse = detectImageUrlDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -712,68 +812,846 @@ public class PredictionsImpl implements Predictions {
             });
     }
 
-    private ServiceResponse<ImagePrediction> predictImageUrlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImagePrediction> detectImageUrlDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImagePrediction>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
     @Override
-    public PredictionsPredictImageUrlParameters predictImageUrl() {
-        return new PredictionsPredictImageUrlParameters(this);
+    public PredictionsDetectImageUrlParameters detectImageUrl() {
+        return new PredictionsDetectImageUrlParameters(this);
     }
 
     /**
-     * Internal class implementing PredictionsPredictImageUrlDefinition.
+     * Internal class implementing PredictionsDetectImageUrlDefinition.
      */
-    class PredictionsPredictImageUrlParameters implements PredictionsPredictImageUrlDefinition {
+    class PredictionsDetectImageUrlParameters implements PredictionsDetectImageUrlDefinition {
         private PredictionsImpl parent;
         private UUID projectId;
-        private UUID iterationId;
-        private String application;
+        private String publishedName;
         private String url;
+        private String application;
 
         /**
          * Constructor.
          * @param parent the parent object.
          */
-        PredictionsPredictImageUrlParameters(PredictionsImpl parent) {
+        PredictionsDetectImageUrlParameters(PredictionsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public PredictionsPredictImageUrlParameters withProjectId(UUID projectId) {
+        public PredictionsDetectImageUrlParameters withProjectId(UUID projectId) {
             this.projectId = projectId;
             return this;
         }
 
         @Override
-        public PredictionsPredictImageUrlParameters withIterationId(UUID iterationId) {
-            this.iterationId = iterationId;
+        public PredictionsDetectImageUrlParameters withPublishedName(String publishedName) {
+            this.publishedName = publishedName;
             return this;
         }
 
         @Override
-        public PredictionsPredictImageUrlParameters withApplication(String application) {
-            this.application = application;
-            return this;
-        }
-
-        @Override
-        public PredictionsPredictImageUrlParameters withUrl(String url) {
+        public PredictionsDetectImageUrlParameters withUrl(String url) {
             this.url = url;
             return this;
         }
 
         @Override
+        public PredictionsDetectImageUrlParameters withApplication(String application) {
+            this.application = application;
+            return this;
+        }
+
+        @Override
         public ImagePrediction execute() {
-        return predictImageUrlWithServiceResponseAsync(projectId, iterationId, application, url).toBlocking().single().body();
+        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, url, application).toBlocking().single().body();
     }
 
         @Override
         public Observable<ImagePrediction> executeAsync() {
-            return predictImageUrlWithServiceResponseAsync(projectId, iterationId, application, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+            return detectImageUrlWithServiceResponseAsync(projectId, publishedName, url, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+                @Override
+                public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Classify an image without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param classifyImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImagePrediction object if successful.
+     */
+    public ImagePrediction classifyImageWithNoStore(UUID projectId, String publishedName, byte[] imageData, ClassifyImageWithNoStoreOptionalParameter classifyImageWithNoStoreOptionalParameter) {
+        return classifyImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, classifyImageWithNoStoreOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Classify an image without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param classifyImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, ClassifyImageWithNoStoreOptionalParameter classifyImageWithNoStoreOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(classifyImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, classifyImageWithNoStoreOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Classify an image without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param classifyImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, ClassifyImageWithNoStoreOptionalParameter classifyImageWithNoStoreOptionalParameter) {
+        return classifyImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, classifyImageWithNoStoreOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+            @Override
+            public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Classify an image without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param classifyImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, ClassifyImageWithNoStoreOptionalParameter classifyImageWithNoStoreOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
+        }
+        if (imageData == null) {
+            throw new IllegalArgumentException("Parameter imageData is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        final String application = classifyImageWithNoStoreOptionalParameter != null ? classifyImageWithNoStoreOptionalParameter.application() : null;
+
+        return classifyImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, application);
+    }
+
+    /**
+     * Classify an image without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param application Optional. Specifies the name of application using the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, String application) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
+        }
+        if (imageData == null) {
+            throw new IllegalArgumentException("Parameter imageData is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        RequestBody imageDataConverted = RequestBody.create(MediaType.parse("multipart/form-data"), imageData);
+        return service.classifyImageWithNoStore(projectId, publishedName, application, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
+                @Override
+                public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ImagePrediction> clientResponse = classifyImageWithNoStoreDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ImagePrediction> classifyImageWithNoStoreDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ImagePrediction>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public PredictionsClassifyImageWithNoStoreParameters classifyImageWithNoStore() {
+        return new PredictionsClassifyImageWithNoStoreParameters(this);
+    }
+
+    /**
+     * Internal class implementing PredictionsClassifyImageWithNoStoreDefinition.
+     */
+    class PredictionsClassifyImageWithNoStoreParameters implements PredictionsClassifyImageWithNoStoreDefinition {
+        private PredictionsImpl parent;
+        private UUID projectId;
+        private String publishedName;
+        private byte[] imageData;
+        private String application;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PredictionsClassifyImageWithNoStoreParameters(PredictionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PredictionsClassifyImageWithNoStoreParameters withProjectId(UUID projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageWithNoStoreParameters withPublishedName(String publishedName) {
+            this.publishedName = publishedName;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageWithNoStoreParameters withImageData(byte[] imageData) {
+            this.imageData = imageData;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageWithNoStoreParameters withApplication(String application) {
+            this.application = application;
+            return this;
+        }
+
+        @Override
+        public ImagePrediction execute() {
+        return classifyImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, application).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImagePrediction> executeAsync() {
+            return classifyImageWithNoStoreWithServiceResponseAsync(projectId, publishedName, imageData, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+                @Override
+                public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Classify an image url without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImagePrediction object if successful.
+     */
+    public ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedName, String url, ClassifyImageUrlWithNoStoreOptionalParameter classifyImageUrlWithNoStoreOptionalParameter) {
+        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, classifyImageUrlWithNoStoreOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Classify an image url without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, ClassifyImageUrlWithNoStoreOptionalParameter classifyImageUrlWithNoStoreOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, classifyImageUrlWithNoStoreOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Classify an image url without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, ClassifyImageUrlWithNoStoreOptionalParameter classifyImageUrlWithNoStoreOptionalParameter) {
+        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, classifyImageUrlWithNoStoreOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+            @Override
+            public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Classify an image url without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String url, ClassifyImageUrlWithNoStoreOptionalParameter classifyImageUrlWithNoStoreOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        final String application = classifyImageUrlWithNoStoreOptionalParameter != null ? classifyImageUrlWithNoStoreOptionalParameter.application() : null;
+
+        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application);
+    }
+
+    /**
+     * Classify an image url without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String url, String application) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        ImageUrl imageUrl = new ImageUrl();
+        imageUrl.withUrl(url);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.classifyImageUrlWithNoStore(projectId, publishedName, application, this.client.apiKey(), this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
+                @Override
+                public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ImagePrediction> clientResponse = classifyImageUrlWithNoStoreDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ImagePrediction> classifyImageUrlWithNoStoreDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ImagePrediction>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public PredictionsClassifyImageUrlWithNoStoreParameters classifyImageUrlWithNoStore() {
+        return new PredictionsClassifyImageUrlWithNoStoreParameters(this);
+    }
+
+    /**
+     * Internal class implementing PredictionsClassifyImageUrlWithNoStoreDefinition.
+     */
+    class PredictionsClassifyImageUrlWithNoStoreParameters implements PredictionsClassifyImageUrlWithNoStoreDefinition {
+        private PredictionsImpl parent;
+        private UUID projectId;
+        private String publishedName;
+        private String url;
+        private String application;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PredictionsClassifyImageUrlWithNoStoreParameters(PredictionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PredictionsClassifyImageUrlWithNoStoreParameters withProjectId(UUID projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageUrlWithNoStoreParameters withPublishedName(String publishedName) {
+            this.publishedName = publishedName;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageUrlWithNoStoreParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageUrlWithNoStoreParameters withApplication(String application) {
+            this.application = application;
+            return this;
+        }
+
+        @Override
+        public ImagePrediction execute() {
+        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImagePrediction> executeAsync() {
+            return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+                @Override
+                public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Classify an image and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param classifyImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImagePrediction object if successful.
+     */
+    public ImagePrediction classifyImage(UUID projectId, String publishedName, byte[] imageData, ClassifyImageOptionalParameter classifyImageOptionalParameter) {
+        return classifyImageWithServiceResponseAsync(projectId, publishedName, imageData, classifyImageOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Classify an image and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param classifyImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ImagePrediction> classifyImageAsync(UUID projectId, String publishedName, byte[] imageData, ClassifyImageOptionalParameter classifyImageOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(classifyImageWithServiceResponseAsync(projectId, publishedName, imageData, classifyImageOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Classify an image and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param classifyImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ImagePrediction> classifyImageAsync(UUID projectId, String publishedName, byte[] imageData, ClassifyImageOptionalParameter classifyImageOptionalParameter) {
+        return classifyImageWithServiceResponseAsync(projectId, publishedName, imageData, classifyImageOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+            @Override
+            public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Classify an image and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param classifyImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, ClassifyImageOptionalParameter classifyImageOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
+        }
+        if (imageData == null) {
+            throw new IllegalArgumentException("Parameter imageData is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        final String application = classifyImageOptionalParameter != null ? classifyImageOptionalParameter.application() : null;
+
+        return classifyImageWithServiceResponseAsync(projectId, publishedName, imageData, application);
+    }
+
+    /**
+     * Classify an image and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param application Optional. Specifies the name of application using the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, String application) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
+        }
+        if (imageData == null) {
+            throw new IllegalArgumentException("Parameter imageData is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        RequestBody imageDataConverted = RequestBody.create(MediaType.parse("multipart/form-data"), imageData);
+        return service.classifyImage(projectId, publishedName, application, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
+                @Override
+                public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ImagePrediction> clientResponse = classifyImageDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ImagePrediction> classifyImageDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ImagePrediction>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public PredictionsClassifyImageParameters classifyImage() {
+        return new PredictionsClassifyImageParameters(this);
+    }
+
+    /**
+     * Internal class implementing PredictionsClassifyImageDefinition.
+     */
+    class PredictionsClassifyImageParameters implements PredictionsClassifyImageDefinition {
+        private PredictionsImpl parent;
+        private UUID projectId;
+        private String publishedName;
+        private byte[] imageData;
+        private String application;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PredictionsClassifyImageParameters(PredictionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PredictionsClassifyImageParameters withProjectId(UUID projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageParameters withPublishedName(String publishedName) {
+            this.publishedName = publishedName;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageParameters withImageData(byte[] imageData) {
+            this.imageData = imageData;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageParameters withApplication(String application) {
+            this.application = application;
+            return this;
+        }
+
+        @Override
+        public ImagePrediction execute() {
+        return classifyImageWithServiceResponseAsync(projectId, publishedName, imageData, application).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImagePrediction> executeAsync() {
+            return classifyImageWithServiceResponseAsync(projectId, publishedName, imageData, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+                @Override
+                public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Classify an image url and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImagePrediction object if successful.
+     */
+    public ImagePrediction classifyImageUrl(UUID projectId, String publishedName, String url, ClassifyImageUrlOptionalParameter classifyImageUrlOptionalParameter) {
+        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url, classifyImageUrlOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Classify an image url and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String url, ClassifyImageUrlOptionalParameter classifyImageUrlOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url, classifyImageUrlOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Classify an image url and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String url, ClassifyImageUrlOptionalParameter classifyImageUrlOptionalParameter) {
+        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url, classifyImageUrlOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+            @Override
+            public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Classify an image url and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String url, ClassifyImageUrlOptionalParameter classifyImageUrlOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        final String application = classifyImageUrlOptionalParameter != null ? classifyImageUrlOptionalParameter.application() : null;
+
+        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url, application);
+    }
+
+    /**
+     * Classify an image url and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String url, String application) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (publishedName == null) {
+            throw new IllegalArgumentException("Parameter publishedName is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        ImageUrl imageUrl = new ImageUrl();
+        imageUrl.withUrl(url);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.classifyImageUrl(projectId, publishedName, application, this.client.apiKey(), this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
+                @Override
+                public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ImagePrediction> clientResponse = classifyImageUrlDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ImagePrediction> classifyImageUrlDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ImagePrediction>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public PredictionsClassifyImageUrlParameters classifyImageUrl() {
+        return new PredictionsClassifyImageUrlParameters(this);
+    }
+
+    /**
+     * Internal class implementing PredictionsClassifyImageUrlDefinition.
+     */
+    class PredictionsClassifyImageUrlParameters implements PredictionsClassifyImageUrlDefinition {
+        private PredictionsImpl parent;
+        private UUID projectId;
+        private String publishedName;
+        private String url;
+        private String application;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PredictionsClassifyImageUrlParameters(PredictionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PredictionsClassifyImageUrlParameters withProjectId(UUID projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageUrlParameters withPublishedName(String publishedName) {
+            this.publishedName = publishedName;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageUrlParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public PredictionsClassifyImageUrlParameters withApplication(String application) {
+            this.application = application;
+            return this;
+        }
+
+        @Override
+        public ImagePrediction execute() {
+        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url, application).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImagePrediction> executeAsync() {
+            return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
                 @Override
                 public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                     return response.body();

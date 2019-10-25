@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
@@ -39,12 +39,12 @@ public class PartitionContext {
      */
     public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
         String ownerId, String eTag, PartitionManager partitionManager) {
-        this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null");
-        this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null");
-        this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null");
-        this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null");
+        this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");
+        this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null.");
+        this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
+        this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null.");
         this.eTag = new AtomicReference<>(eTag);
-        this.partitionManager = Objects.requireNonNull(partitionManager, "partitionManager cannot be null");
+        this.partitionManager = Objects.requireNonNull(partitionManager, "partitionManager cannot be null.");
     }
 
     /**
