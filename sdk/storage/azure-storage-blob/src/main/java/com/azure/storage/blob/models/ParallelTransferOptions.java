@@ -76,21 +76,4 @@ public final class ParallelTransferOptions {
     public ProgressReceiver getProgressReceiver() {
         return this.progressReceiver;
     }
-
-    /**
-     * RESERVED FOR INTERNAL USE.
-     *
-     * @param other The customer provided transfer options. If it has non-null values, they will be used, otherwise
-     * defaults will be set.
-     */
-    public void populateAndApplyDefaults(ParallelTransferOptions other) {
-        if (other == null) {
-            other = new ParallelTransferOptions(null, null, null);
-        }
-        this.blockSize = other.getBlockSize() == null
-            ? Integer.valueOf(BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) : other.getBlockSize();
-        this.numBuffers = other.getNumBuffers() == null
-            ? Integer.valueOf(BLOB_DEFAULT_NUMBER_OF_BUFFERS) : other.getNumBuffers();
-        this.progressReceiver = other.getProgressReceiver();
-    }
 }
