@@ -1,15 +1,15 @@
 # Change Log azure-data-appconfiguration
 ## Version 1.0.0-preview.6 (2019-10-25)
 For details on the Azure SDK for Java (October 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview6-java).
-- renaming addSetting, getSetting, deleteSetting, setSetting, listSettings, listSettingRevisions to
+- Renamed addSetting, getSetting, deleteSetting, setSetting, listSettings, listSettingRevisions to
   getConfigurationSetting, deleteConfigurationSetting, setConfigurationSetting, listConfigurationSettings,
   listRevisions for consistency naming across languages.
-- Ensure exceptions are consistent for certain operations (c.f. other languages).
-- Renaming asOfDayTime to acceptDateTime, and lock to isReadOnly
-- Not explore ConfigurationCredentialsPolicy to public and move to implementation folder.
+- Ensured exceptions are consistent for certain operations (c.f. other languages).
+- Renamed asOfDayTime to acceptDateTime, and lock to isReadOnly.
+- ConfigurationCredentialsPolicy no longer explored to public and moved to implementation folder.
 - Fixed AzConfig Revisions Range Returns 416 Status Code
-- Add ConfigurationServiceVersion class for version
-- Add more samples including conditional request, setReadOnly, clearReadOnly, listRevisions, etc.
+- Added ConfigurationServiceVersion class for version
+- Added more samples including conditional request, setReadOnly, clearReadOnly, listRevisions, etc.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/README.md) 

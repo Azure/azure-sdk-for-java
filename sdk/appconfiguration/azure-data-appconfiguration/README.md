@@ -134,9 +134,9 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
 
 ### Configuration Setting
 
-A configuration setting is the fundamental resource within a Configuration Store. In its simplest form it is a key and a value. However, there are additional properties such as the modifiable content type and tags fields that allow the value to be interpreted or associated in different ways.
+A configuration setting is the fundamental resource within a configuration store. In its simplest form it is a key and a value. However, there are additional properties such as the modifiable content type and tags fields that allow the value to be interpreted or associated in different ways.
 
-The Label property of a Configuration Setting provides a way to separate Configuration Settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions. For example, MaxRequests may be 100 in "NorthAmerica", and 200 in "WestEurope". By creating a Configuration Setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, in the "WestEurope" label, a solution can be achieved that allows the application to seamlessly retrieve Configuration Settings as it runs in these two dimensions.
+The Label property of a configuration setting provides a way to separate configuration settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions. For example, MaxRequests may be 100 in "NorthAmerica", and 200 in "WestEurope". By creating a configuration setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, in the "WestEurope" label, a solution can be achieved that allows the application to seamlessly retrieve Configuration Settings as it runs in these two dimensions.
 
 ### Configuration Client
 
@@ -173,18 +173,19 @@ client.listConfigurationSettings(new SettingSelection().label(periodicUpdateLabe
 
 ## Examples
 
-The following sections provide several code snippets covering some of the most common Configuration Service tasks, including:
-- [Create a Configuration Setting][sample_hello_world]
-- [Retrieve a Configuration Setting][sample_hello_world]
-- [Update an existing Configuration Setting][sample_hello_world]
-- [Delete a Configuration Setting][sample_hello_world]
-- [List Configuration Settings with Multiple Keys][sample_list_configuration_settings]
-- [List Revisions of Multiple Configuration Settings][sample_read_revision_history]
-- [Set a Configuration Setting to Read Only][sample_read_only]
-- [Clear Read Only from a Configuration Setting][sample_read_only]
-- [Conditional Request][sample_conditional_request]
+The following sections provide several code snippets covering some of the most common configuration service tasks, including:
+- [Create a configuration setting][sample_hello_world]
+- [Retrieve a configuration setting][sample_hello_world]
+- [Update an existing configuration setting][sample_hello_world]
+- [Delete a configuration setting][sample_hello_world]
+- [List configuration settings with multiple keys][sample_list_configuration_settings]
+- [List revisions of multiple configuration settings][sample_read_revision_history]
+- [Set a configuration setting to read only][sample_read_only]
+- [Clear read only from a configuration setting][sample_read_only]
+- [Conditional request a configuration setting][sample_conditional_request]
+
 ### Create a Configuration Client
-Create a configuration client by using ConfigurationClientBuilder by passing connection string.
+Create a configuration client by using `ConfigurationClientBuilder` by passing connection string.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
         .connectionString(connectionString)
@@ -193,9 +194,9 @@ ConfigurationClient client = new ConfigurationClientBuilder()
 
 ### Create a Configuration Setting
 
-Create a Configuration Setting to be stored in the Configuration Store. There are two ways to store a Configuration Setting:
-- addConfigurationSetting creates a setting only if the setting does not already exist in the store.
-- setConfigurationSetting creates a setting if it doesn't exist or overrides an existing setting.
+Create a configuration setting to be stored in the configuration store. There are two ways to store a configuration setting:
+- `addConfigurationSetting` creates a setting only if the setting does not already exist in the store.
+- `setConfigurationSetting` creates a setting if it doesn't exist or overrides an existing setting.
 
 ```Java
 ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
@@ -203,44 +204,44 @@ ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_
 
 ### Retrieve a Configuration Setting
 
-Retrieve a previously stored Configuration Setting by calling getConfigurationSetting.
+Retrieve a previously stored configuration setting by calling `getConfigurationSetting`.
 ```Java
 ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting retrievedSetting = client.getConfigurationSetting("some_key", "some_label");
 ```
-For coditional request,
+For conditional request,
 ```Java
 Response<ConfigurationSetting> settingResponse = client.getConfigurationSettingWithResponse(setting, null, true, Context.NONE);
 ```
 
 ### Update an existing Configuration Setting
 
-Update an existing Configuration Setting by calling setConfigurationSetting.
+Update an existing configuration setting by calling `setConfigurationSetting`.
 ```Java
 ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting updatedSetting = client.setConfigurationSetting("some_key", "some_label", "new_value");
 ```
-For coditional request,
+For conditional request,
 ```Java
 Response<ConfigurationSetting> settingResponse = client.setConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
 
 ### Delete a Configuration Setting
 
-Delete an existing Configuration Setting by calling deleteConfigurationSetting.
+Delete an existing configuration setting by calling `deleteConfigurationSetting`.
 ```Java
 ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting deletedSetting = client.deleteConfigurationSetting("some_key", "some_label");
 ```
-For coditional request,
+For conditional request,
 ```Java
 Response<ConfigurationSetting> settingResponse = client.deleteConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
 
 ### List Configuration Settings with Multiple Keys
 
-List multiple configuration settings by calling listConfigurationSettings.
-Pass null SettingSelector into the method If you want to fetch all configuration settings.
+List multiple configuration settings by calling `listConfigurationSettings`.
+Pass null `SettingSelector` into the method If you want to fetch all configuration settings.
 ```Java
 String key = "some_key";
 String key2 = "new_key";
@@ -252,7 +253,7 @@ PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
 
 ### List Revisions of Multiple Configuration Settings
 
-List all revision of a configuration settings by calling listRevisions.
+List all revision of a configuration settings by calling `listRevisions`.
 ```Java
 String key = "revisionKey";
 String Key2 = "newRevisionKey";
@@ -282,7 +283,7 @@ ConfigurationSetting setting = client.clearReadOnly("some_key", "some_label");
 
 ### General
 
-When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a Configuration Setting that doesn't exist in your Configuration Store, a `404` error is returned, indicating `Not Found`.
+When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a configuration setting that doesn't exist in your configuration store, a `404` error is returned, indicating `Not Found`.
 
 ## Next steps
 
