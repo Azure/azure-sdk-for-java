@@ -431,7 +431,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         long fileSize = channel.size();
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
-                        if (fileSize > 128 * Constants.MB) {
+                        if (fileSize > 256 * Constants.MB) {
                             return uploadBlocks(fileSize, finalParallelTransferOptions, headers, metadata, tier,
                                 accessConditions, channel);
                         } else {
