@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <RestoreSources>
+      https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-net/index.json;
+      https://api.nuget.org/v3/index.json;
+    </RestoreSources>
   </PropertyGroup>
 
   <ItemGroup>
