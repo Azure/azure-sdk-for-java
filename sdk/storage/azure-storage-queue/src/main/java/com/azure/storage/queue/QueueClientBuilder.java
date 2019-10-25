@@ -25,7 +25,6 @@ import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
 import com.azure.storage.queue.implementation.util.BuilderHelper;
-import com.azure.storage.queue.implementation.util.QueueHeadersAndQueryParameters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
