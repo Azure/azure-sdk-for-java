@@ -30,6 +30,7 @@ public class SetMetadataAndHTTPHeadersExample {
      *
      * @param args Unused. Arguments to the program.
      * @throws IOException If an I/O error occurs
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         String accountName = SampleHelper.getAccountName();

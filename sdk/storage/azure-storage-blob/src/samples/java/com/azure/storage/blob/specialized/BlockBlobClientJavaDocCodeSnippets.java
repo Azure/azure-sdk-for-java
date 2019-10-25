@@ -70,6 +70,8 @@ public class BlockBlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHttpHeaders, Map, AccessTier, byte[], BlobRequestConditions, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void upload2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context
@@ -106,6 +108,8 @@ public class BlockBlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlockBlobClient#stageBlockWithResponse(String, InputStream, long, byte[], String, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void stageBlock2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context

@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 
@@ -82,6 +81,8 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link AppendBlobAsyncClient#appendBlockWithResponse(Flux, long, byte[], AppendBlobRequestConditions)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void appendBlock2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobAccessConditions

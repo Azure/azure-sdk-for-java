@@ -22,7 +22,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 
@@ -102,6 +101,8 @@ public class PageBlobClientJavaDocCodeSnippets {
     /**
      * Code snippets for {@link PageBlobClient#uploadPagesWithResponse(PageRange, InputStream, byte[],
      * PageBlobRequestConditions, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void uploadPagesWithResponseCodeSnippet() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobAccessConditions-Duration-Context

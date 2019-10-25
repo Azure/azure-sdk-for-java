@@ -64,6 +64,8 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHttpHeaders, Map, AccessTier, byte[], BlobRequestConditions)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void upload2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobAccessConditions
@@ -98,6 +100,8 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, byte[], String)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void stageBlock2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String

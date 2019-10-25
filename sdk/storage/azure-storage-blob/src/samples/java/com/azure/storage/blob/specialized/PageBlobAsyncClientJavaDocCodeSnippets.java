@@ -20,7 +20,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 
@@ -98,6 +97,8 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link PageBlobAsyncClient#uploadPagesWithResponse(PageRange, Flux, byte[], PageBlobRequestConditions)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void uploadPagesWithResponseCodeSnippet() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-byte-PageBlobAccessConditions
