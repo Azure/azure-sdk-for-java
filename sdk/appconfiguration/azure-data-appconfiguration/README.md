@@ -28,7 +28,7 @@ Use the client library for App Configuration to create and manage application co
 ```
 [//]: # ({x-version-update-end})
 
-### Default HTTP Client
+### Default HTTP client
 All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
 AppConfiguration to use Netty HTTP client. 
 
@@ -72,7 +72,7 @@ Netty and include OkHTTP client in your pom.xml.
 ```
 [//]: # ({x-version-update-end})
 
-### Configuring HTTP Clients
+### Configuring HTTP clients
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
@@ -84,7 +84,7 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
     .build();
 ```
 
-### Create an App Configuration Store
+### Create an App Configuration store
 
 To create a Configuration Store you can use the Azure Portal or [Azure CLI][azure_cli].
 
@@ -102,7 +102,7 @@ az appconfig create --name <config-store-name> --resource-group <resource-group-
 
 In order to interact with the App Configuration service you'll need to create an instance of the Configuration Client class. To make this possible you'll need the connection string of the Configuration Store.
 
-#### Get Credentials
+#### Get credentials
 
 Use the [Azure CLI][azure_cli] snippet below to get the connection string from the Configuration Store.
 
@@ -112,7 +112,7 @@ az appconfig credential list --name <config-store-name>
 
 Alternatively, get the connection string from the Azure Portal.
 
-#### Create Client
+#### Create a configuration client
 
 Once you have the value of the connection string you can create the configuration client:
 
@@ -132,13 +132,13 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
 
 ## Key concepts
 
-### Configuration Setting
+### Configuration setting
 
 A configuration setting is the fundamental resource within a configuration store. In its simplest form it is a key and a value. However, there are additional properties such as the modifiable content type and tags fields that allow the value to be interpreted or associated in different ways.
 
 The Label property of a configuration setting provides a way to separate configuration settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions. For example, MaxRequests may be 100 in "NorthAmerica", and 200 in "WestEurope". By creating a configuration setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, in the "WestEurope" label, a solution can be achieved that allows the application to seamlessly retrieve Configuration Settings as it runs in these two dimensions.
 
-### Configuration Client
+### Configuration client
 
 The client performs the interactions with the App Configuration service, getting, setting, deleting, and selecting configuration settings. An asynchronous, `ConfigurationAsyncClient`, and synchronous, `ConfigurationClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
 
@@ -184,7 +184,7 @@ The following sections provide several code snippets covering some of the most c
 - [Clear read only from a configuration setting][sample_read_only]
 - [Conditional request a configuration setting][sample_conditional_request]
 
-### Create a Configuration Client
+### Create a configuration client
 Create a configuration client by using `ConfigurationClientBuilder` by passing connection string.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
@@ -192,7 +192,7 @@ ConfigurationClient client = new ConfigurationClientBuilder()
         .buildClient();
 ```
 
-### Create a Configuration Setting
+### Create a configuration setting
 
 Create a configuration setting to be stored in the configuration store. There are two ways to store a configuration setting:
 - `addConfigurationSetting` creates a setting only if the setting does not already exist in the store.
@@ -202,7 +202,7 @@ Create a configuration setting to be stored in the configuration store. There ar
 ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ```
 
-### Retrieve a Configuration Setting
+### Retrieve a configuration setting
 
 Retrieve a previously stored configuration setting by calling `getConfigurationSetting`.
 ```Java
@@ -214,7 +214,7 @@ For conditional request,
 Response<ConfigurationSetting> settingResponse = client.getConfigurationSettingWithResponse(setting, null, true, Context.NONE);
 ```
 
-### Update an existing Configuration Setting
+### Update an existing configuration setting
 
 Update an existing configuration setting by calling `setConfigurationSetting`.
 ```Java
@@ -226,7 +226,7 @@ For conditional request,
 Response<ConfigurationSetting> settingResponse = client.setConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
 
-### Delete a Configuration Setting
+### Delete a configuration setting
 
 Delete an existing configuration setting by calling `deleteConfigurationSetting`.
 ```Java
@@ -238,7 +238,7 @@ For conditional request,
 Response<ConfigurationSetting> settingResponse = client.deleteConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
 
-### List Configuration Settings with Multiple Keys
+### List configuration settings with multiple keys
 
 List multiple configuration settings by calling `listConfigurationSettings`.
 Pass null `SettingSelector` into the method If you want to fetch all configuration settings.
@@ -251,7 +251,7 @@ SettingSelector selector = new SettingSelector().setKeys(key, key2);
 PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(selector);
 ```
 
-### List Revisions of Multiple Configuration Settings
+### List revisions of multiple configuration settings
 
 List all revision of a configuration settings by calling `listRevisions`.
 ```Java
@@ -265,14 +265,14 @@ SettingSelector selector = new SettingSelector().setKeys(key, key2);
 PagedIterable<ConfigurationSetting> settings = client.listRevisions(selector);
 ``` 
 
-### Set a Configuration Setting to Read Only
+### Set a configuration setting to read only
 
 Set a configuration setting to read-only status.
 ```Java
 client.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting setting = client.setReadOnly("some_key", "some_label");
 ```
-### Clear Read Only from a Configuration Setting
+### Clear read only from a configuration setting
 
 Clear read-only from a configuration setting.
 ```Java
