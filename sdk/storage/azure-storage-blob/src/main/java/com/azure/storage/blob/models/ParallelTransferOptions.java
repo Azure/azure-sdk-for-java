@@ -18,9 +18,9 @@ public final class ParallelTransferOptions {
 
     private static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
-    final private Integer blockSize;
-    final private Integer numBuffers;
-    final private ProgressReceiver progressReceiver;
+    private final Integer blockSize;
+    private final Integer numBuffers;
+    private final ProgressReceiver progressReceiver;
 
     /**
      * Creates a new {@link ParallelTransferOptions} with default parameters applied.
