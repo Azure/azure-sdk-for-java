@@ -384,9 +384,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- 2. methodName -->
     <!-- 3. variableName -->
     <!-- 4. longerVariableOrMethodName -->
-    <!--<module name="com.azure.tools.checkstyle.checks.DisallowedWordsCheck">-->
-    <!--<property name="disallowedWords" value="URL, HTTP, XML, JSON, SAS, CPK" />-->
-    <!--</module>-->
+    <module name="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck">
+      <property name="blacklistedWords" value="URL, HTTP, XML, JSON, SAS, CPK, API" />
+    </module>
 
     <!-- CUSTOM CHECKS -->
     <!-- Fluent method checks:
