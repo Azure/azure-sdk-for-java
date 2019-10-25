@@ -90,7 +90,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
                             + " To fix, authenticate through tooling supporting azure developer sign on."));
                     } else {
                         return Mono.error(new RuntimeException(String.format("User account '%s' was not found in the "
-                            + "shared token cache. Discovered Accounts: [ '%s' ]", username,accounts.values().stream()
+                            + "shared token cache. Discovered Accounts: [ '%s' ]", username, accounts.values().stream()
                             .map(IAccount::username).collect(Collectors.joining(", ")))));
                     }
                 } else if (accounts.size() > 1) {
