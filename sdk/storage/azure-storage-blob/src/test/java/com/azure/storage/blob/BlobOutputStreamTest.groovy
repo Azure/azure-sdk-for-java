@@ -1,8 +1,7 @@
 package com.azure.storage.blob
 
-
-import com.azure.storage.common.Constants
-import spock.lang.Ignore
+import com.azure.storage.blob.models.PageRange
+import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
 
 class BlobOutputStreamTest extends APISpec {
@@ -33,7 +32,7 @@ class BlobOutputStreamTest extends APISpec {
 
 
         when:
-        def outputStream = pageBlobClient.getBlobOutputStream(data.length)
+        def outputStream = pageBlobClient.getBlobOutputStream(new PageRange().setStart(0).setEnd(16 * Constants.MB - 1))
         outputStream.write(data)
         outputStream.close()
 
@@ -42,7 +41,7 @@ class BlobOutputStreamTest extends APISpec {
     }
 
     // Test is failing, need to investigate.
-    @Ignore
+    @Requires({ liveMode() })
     def "AppendBlob output stream"() {
         setup:
         def data = getRandomByteArray(4 * FOUR_MB)
@@ -52,7 +51,7 @@ class BlobOutputStreamTest extends APISpec {
         when:
         def outputStream = appendBlobClient.getBlobOutputStream()
         for (int i = 0; i != 4; i++) {
-            outputStream.write(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB) - 1))
+            outputStream.write(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB)))
         }
         outputStream.close()
 

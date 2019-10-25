@@ -5,12 +5,16 @@ package com.azure.storage.file.models;
 
 import java.time.OffsetDateTime;
 
+/**
+ * Response from uploading a range from a URL source.
+ */
 public final class FileUploadRangeFromUrlInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final Boolean isServerEncrypted;
 
-    public FileUploadRangeFromUrlInfo(final String eTag, final OffsetDateTime lastModified, final Boolean isServerEncrypted) {
+    public FileUploadRangeFromUrlInfo(final String eTag, final OffsetDateTime lastModified,
+        final Boolean isServerEncrypted) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
@@ -19,14 +23,14 @@ public final class FileUploadRangeFromUrlInfo {
     /**
      * @return The entity tag that corresponds to the directory.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return The last time the share was modified.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 

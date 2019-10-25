@@ -1,5 +1,60 @@
 # Change Log azure-storage-blob
 
+## Version 12.0.0 (2019-10-31)
+
+- Removed BaseBlobClientBuilder
+- Removed BlobClientBuilder, BlobContainerClientBuilder, BlobServiceClientBuilder, and SpecializedBlobClientBuilder inheritance of BaseBlobClientBuilder
+- Renamed ListBlobContainerOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
+- Renamed ListBlobsOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
+- Reanmed BlobProperties to BlobItemProperties and BlobContainerProperties to BlobContainerItemProperties
+- Removes StorageError and StorageErrorException from public API
+- Renamed StorageErrorCode to BlobErrorCode, SignedIdentifier to BlobSignedIdentifier, StorageServiceProperties to BlobServiceProperties, StorageServiceStats to BlobServiceStatistics, CorRules to BlobCorRules, AccessPolicy to BlobAccessPolicy, Logging to BlobAnalyticsLogging, Metrics to BlobMetrics, and RetentionPolicy to BlobRetentionPolicy
+- Renamed BlobHTTPHeaders to BlobHttpHeaders and removed Blob from getter names
+- Renamed StorageException to BlobStorageException
+- Added BlobServiceVersion and the ability to set it on client builders
+- Replaced URL parameters with String on appendBlockFromUrl, beginCopy, copyFromUrl, stageBlockFromUrl, uploadPagesFromUrl, and copyIncremental
+- Added support for emulator endpoints
+- Added support for additional connection string configurations and support for use development connection
+- Changed constructors for AppendBlobItem, BlockBlobItem, PageBlobItem, 
+- Renamed listBlobsFlat to listBlobs and listBlobHierarchy to listBlobsByHierarchy
+- Replaced startCopyFromUrl with beginCopy and return poller
+- Renamed BlobContainerSasPermission and BlobSasPermission getters to use has prefix
+- Replaced BlobAccessConditions, AppendBlobAccessConditions, and PageBlobAccessConditions with BlobRequestConditions, AppendBlobRequestConditions, and PageBlobRequestConditions. 
+- Removed ModifiedAccessConditions and SourceModifiedAccessConditions in favor of RequestConditions, removed BlobContainerAccessConditions in favor of BlobRequestConditions.
+- Removed AppendPositionAccessConditions, LeaseAccessConditions, and SequenceNumberAccessConditions
+- Renamed LeaseClient, LeaseAsyncClient, and LeaseClientBuilder to BlobLeaseClient, BlobLeaseAsyncClient, and BlobLeaseClientBuilder
+- Added upload overloads which allow passing a flag to indicate if an existing blob should be overwritten
+- Added support for blob names with special characters
+- Changed return type for BlobClient.downloadWithProperties from Response<Void> to BlobDownloadResponse and BlobAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<BlobDownloadAsyncResponse>
+
+## Version 12.0.0-preview.4 (2019-10-8)
+For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.4/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.4/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+
+- Moved the specialized `BlobClient`, `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`, into the `specialized` package within Azure Storage Blobs. Additionally, moved any model classes that are tied to a specific specialized client.
+- Added a `BlobClientBase` which is now the super class for `BlobClient`, `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`.
+- Getters and setters were updated to use Java Bean notation.
+- Added `getBlobContainerName` on `BlobContainerClient` and `BlobContainerAsyncClient` and `getContainerName`, `getBlobName` on `BlobClientBase` and `BlobAsyncClientBase` for fetching the resource names.
+- Updated to be fully compliant with the Java 9 Platform Module System.
+- Changed `VoidResponse` to `Response<Void>` on sync API, and `Mono<VoidResponse>` to `Mono<Response<Void>>` on async API.
+- Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
+- Updated the return type of `downloadToFile` API to `BlobProperties` on sync API and `Mono<BlobProperties>` on async API.
+- `getAccountUrl`, `getBlobContainerUrl`, `getBlobUrl` API now returns URL with scheme, host, resource name and snapshot if any.
+- Added `LeaseClient` and `LeaseAsyncClient` to the specialized package and removed the leasing methods from `BlobClient`, `BlobAsyncClient`, `ContainerClient`, and `ContainerAsyncClient`.
+- Added `blocksize` parameter to sync `blockBlobClient`.
+- Use Primitives for `exist` API return type.
+- Removed a `create` and `appendBlockFromUrl` overload API in `AppendBlob`. 
+- Fixed `create` method name in PageBlob.
+- Renamed `setTier` to `setAccessTier` from `BlobAsyncClientBase` and `BlobClientBase` classes.
+- Added `ParallelTransferOptions` to buffered upload, upload from file and download to file methods.
+- Removed `Metadata` class and uses Map<String, String> for `matadata` field of `BlobProperties` and `ContainerProperties`.
+- Removed SAS token generation APIs from clients, use BlobServiceSasSignatureValues to generate SAS tokens. 
+- Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
+
 ## Version 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
@@ -111,7 +166,7 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 
 ## 2018.09.11 Version 10.1.0
 - Interfaces for helper types updated to be more consistent throughout the library. All types, with the exception of the options for pipeline factories, use a fluent pattern.
-- Removed RetryReader type as it's functionality was moved to be built into the DownloadResponse. RetryReaderOptions are now named ReliableDownloadOptions.
+- Removed RetryReader type as it's functionality was moved to be built into the DownloadResponse. RetryReaderOptions are now named DownloadRetryOptions.
 - Restructured the access conditions to be more logically adhere to their respective functions.
 - Added support for context parameter on each api to allow communication with the pipeline from the application level
 

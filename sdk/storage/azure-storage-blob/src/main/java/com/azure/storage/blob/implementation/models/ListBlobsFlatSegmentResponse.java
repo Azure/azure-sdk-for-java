@@ -46,12 +46,6 @@ public final class ListBlobsFlatSegmentResponse {
     private int maxResults;
 
     /*
-     * The delimiter property.
-     */
-    @JsonProperty(value = "Delimiter", required = true)
-    private String delimiter;
-
-    /*
      * The segment property.
      */
     @JsonProperty(value = "Blobs", required = true)
@@ -160,26 +154,6 @@ public final class ListBlobsFlatSegmentResponse {
      */
     public ListBlobsFlatSegmentResponse setMaxResults(int maxResults) {
         this.maxResults = maxResults;
-        return this;
-    }
-
-    /**
-     * Get the delimiter property: The delimiter property.
-     *
-     * @return the delimiter value.
-     */
-    public String getDelimiter() {
-        return this.delimiter;
-    }
-
-    /**
-     * Set the delimiter property: The delimiter property.
-     *
-     * @param delimiter the delimiter value to set.
-     * @return the ListBlobsFlatSegmentResponse object itself.
-     */
-    public ListBlobsFlatSegmentResponse setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
         return this;
     }
 

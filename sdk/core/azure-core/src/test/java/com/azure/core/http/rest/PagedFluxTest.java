@@ -23,7 +23,9 @@ import reactor.test.StepVerifier;
  * Unit tests for {@link PagedFlux}
  */
 public class PagedFluxTest {
+
     private List<PagedResponse<Integer>> pagedResponses;
+    private List<PagedResponse<String>> pagedStringResponses;
 
     @Rule
     public TestName testName = new TestName();
@@ -50,11 +52,49 @@ public class PagedFluxTest {
     }
 
     @Test
+    public void testPagedFluxConverter() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
+
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf))
+            .expectNext("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14")
+            .verifyComplete();
+    }
+
+    @Test
     public void testPagedFluxSubscribeToPagesFromStart() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.byPage().log())
             .expectNext(pagedResponses.get(0), pagedResponses.get(1), pagedResponses.get(2),
                 pagedResponses.get(3), pagedResponses.get(4))
+            .verifyComplete();
+    }
+
+    @Test
+    public void testPagedFluxSubscribeToPagesFromStartWithConvertedType() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
+            .expectNextCount(5)
+            .verifyComplete();
+
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
+            .expectNextMatches(pagedResponse -> pagedStringResponses.get(0).getValue().equals(pagedResponse.getValue()))
+            .expectNextMatches(pagedResponse -> pagedStringResponses.get(1).getValue().equals(pagedResponse.getValue()))
+            .expectNextMatches(pagedResponse -> pagedStringResponses.get(2).getValue().equals(pagedResponse.getValue()))
+            .expectNextMatches(pagedResponse -> pagedStringResponses.get(3).getValue().equals(pagedResponse.getValue()))
+            .expectNextMatches(pagedResponse -> pagedStringResponses.get(4).getValue().equals(pagedResponse.getValue()))
+            .verifyComplete();
+
+    }
+
+    @Test
+    public void testPagedFluxSinglePageConvertedType() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
+            .expectNextCount(1)
+            .verifyComplete();
+
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
+            .expectNextMatches(pagedResponse -> pagedStringResponses.get(0).getValue().equals(pagedResponse.getValue()))
             .verifyComplete();
     }
 
@@ -84,7 +124,8 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToPagesWithSinglePageResultWithoutNextPageRetriever() throws MalformedURLException {
+    public void testPagedFluxSubscribeToPagesWithSinglePageResultWithoutNextPageRetriever()
+        throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFluxSinglePage();
         StepVerifier.create(pagedFlux.byPage().log())
             .expectNext(pagedResponses.get(0))
@@ -136,6 +177,11 @@ public class PagedFluxTest {
             .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
             .collect(Collectors.toList());
 
+        pagedStringResponses = IntStream.range(0, noOfPages)
+            .boxed()
+            .map(i -> createPagedResponseWithString(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
+            .collect(Collectors.toList());
+
         return new PagedFlux<>(() -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)),
             continuationToken -> getNextPage(continuationToken, pagedResponses));
     }
@@ -151,6 +197,10 @@ public class PagedFluxTest {
             .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, 1))
             .collect(Collectors.toList());
 
+        pagedStringResponses = IntStream.range(0, 1)
+            .boxed()
+            .map(i -> createPagedResponseWithString(httpRequest, httpHeaders, deserializedHeaders, i, 1))
+            .collect(Collectors.toList());
         return new PagedFlux<>(() -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)));
     }
 
@@ -159,6 +209,15 @@ public class PagedFluxTest {
         return new PagedResponseBase<>(httpRequest, 200,
             httpHeaders,
             getItems(i),
+            i < noOfPages - 1 ? String.valueOf(i + 1) : null,
+            deserializedHeaders);
+    }
+
+    private PagedResponseBase<String, String> createPagedResponseWithString(HttpRequest httpRequest,
+        HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
+        return new PagedResponseBase<>(httpRequest, 200,
+            httpHeaders,
+            getStringItems(i),
             i < noOfPages - 1 ? String.valueOf(i + 1) : null,
             deserializedHeaders);
     }
@@ -175,6 +234,10 @@ public class PagedFluxTest {
 
     private List<Integer> getItems(Integer i) {
         return IntStream.range(i * 3, i * 3 + 3).boxed().collect(Collectors.toList());
+    }
+
+    private List<String> getStringItems(Integer i) {
+        return IntStream.range(i * 3, i * 3 + 3).boxed().map(val -> String.valueOf(val)).collect(Collectors.toList());
     }
 
 }

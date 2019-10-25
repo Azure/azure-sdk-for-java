@@ -3,36 +3,42 @@
 
 package com.azure.storage.queue;
 
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.sas.SasIpRange;
+import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.time.OffsetDateTime;
 
 /**
- * QueueServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to queue urls. Note: that both this class and {@link QueueServiceSasQueryParameters}
- * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
- * actual REST requests.
- * <p>
- * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
- * for more conceptual information on SAS.
- * <p>
- * Please see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas>here </a> for
- * more details on each value, including which are required.
+ * Used to generate a Shared Access Signature (SAS) for Azure Storage Queues service. Once all the values here are set,
+ * call {@link
+ * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)}
+ * to obtain a representation of the SAS which can be applied to queue urls.
  *
- * <p>Please see
- * <a href=https://github.com/Azure/azure-storage-java/queue/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
- * for additional samples.</p>
+ * <p><strong>Generating a queue SAS with expiryTime and permissions</strong></p>
+ * <p>The snippet below generates a queue SAS that lasts for two days and gives the user read, add, and update
+ * permissions to the queue.
+ *
+ * {@codesnippet com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
+ *
+ * <p><strong>Generating a queue SAS with stored access policy identifier</strong></p>
+ * <p>The snippet below generates a queue SAS that has the same duration and permissions specified by the
+ * {@link #setIdentifier(String) stored access policy}.
+ *
+ * {@codesnippet com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters.identifier#StorageSharedKeyCredential}
+ *
+ * @see QueueServiceSasQueryParameters
+ * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
+ * SAS</a>
  */
-final class QueueServiceSasSignatureValues {
+public final class QueueServiceSasSignatureValues {
+    private String version;
 
-    private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-    private SASProtocol protocol;
+    private SasProtocol protocol;
 
     private OffsetDateTime startTime;
 
@@ -40,49 +46,16 @@ final class QueueServiceSasSignatureValues {
 
     private String permissions;
 
-    private IpRange ipRange;
+    private SasIpRange sasIpRange;
 
-    private String canonicalName;
+    private String queueName;
 
     private String identifier;
 
     /**
      * Creates an object with empty values for all fields.
      */
-    QueueServiceSasSignatureValues() {
-    }
-
-    /**
-     * Creates an object with the specified expiry time and permissions
-     *
-     * @param expiryTime Time the SAS becomes valid
-     * @param permissions Permissions granted by the SAS
-     */
-    QueueServiceSasSignatureValues(OffsetDateTime expiryTime, String permissions) {
-        this.expiryTime = expiryTime;
-        this.permissions = permissions;
-    }
-
-    /**
-     * Creates an object with the specified identifier
-     *
-     * @param identifier Identifier for the SAS
-     */
-    QueueServiceSasSignatureValues(String identifier) {
-        this.identifier = identifier;
-    }
-
-    QueueServiceSasSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
-                                   OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier) {
-        if (version != null) {
-            this.version = version;
-        }
-        this.protocol = sasProtocol;
-        this.startTime = startTime;
-        this.expiryTime = expiryTime;
-        this.permissions = permission;
-        this.ipRange = ipRange;
-        this.identifier = identifier;
+    public QueueServiceSasSignatureValues() {
     }
 
     /**
@@ -106,19 +79,19 @@ final class QueueServiceSasSignatureValues {
     }
 
     /**
-     * @return the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * @return the {@link SasProtocol} which determines the protocols allowed by the SAS.
      */
-    public SASProtocol getProtocol() {
+    public SasProtocol getProtocol() {
         return protocol;
     }
 
     /**
-     * Sets the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * Sets the {@link SasProtocol} which determines the protocols allowed by the SAS.
      *
      * @param protocol Protocol for the SAS
      * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSasSignatureValues setProtocol(SASProtocol protocol) {
+    public QueueServiceSasSignatureValues setProtocol(SasProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -171,60 +144,51 @@ final class QueueServiceSasSignatureValues {
      * Sets the permissions string allowed by the SAS. Please refer to {@link QueueSasPermission} for help constructing
      * the permissions string.
      *
-     * @param permissions Permissions string for the SAS
+     * @param permissions Permissions for the SAS
      * @return the updated QueueServiceSasSignatureValues object
+     * @throws NullPointerException if {@code permissions} is null.
      */
-    public QueueServiceSasSignatureValues setPermissions(String permissions) {
-        this.permissions = permissions;
+    public QueueServiceSasSignatureValues setPermissions(QueueSasPermission permissions) {
+        StorageImplUtils.assertNotNull("permissions", permissions);
+        this.permissions = permissions.toString();
         return this;
     }
 
     /**
-     * @return the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
+     * @return the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IpRange getIpRange() {
-        return ipRange;
+    public SasIpRange getSasIpRange() {
+        return sasIpRange;
     }
 
     /**
-     * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
+     * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
-     * @param ipRange Allowed IP range to set
+     * @param sasIpRange Allowed IP range to set
      * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSasSignatureValues setIpRange(IpRange ipRange) {
-        this.ipRange = ipRange;
+    public QueueServiceSasSignatureValues setSasIpRange(SasIpRange sasIpRange) {
+        this.sasIpRange = sasIpRange;
         return this;
     }
 
     /**
-     * @return the canonical name of the object the SAS user may access.
+     * Gets the name of the queue this SAS may access.
+     *
+     * @return The name of the queue the SAS user may access.
      */
-    public String getCanonicalName() {
-        return canonicalName;
+    public String getQueueName() {
+        return queueName;
     }
 
     /**
-     * Sets the canonical name of the object the SAS user may access.
+     * Sets the name of the queue this SAS may access.
      *
-     * @param canonicalName Canonical name of the object the SAS grants access
+     * @param queueName Canonical name of the object the SAS grants access
      * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSasSignatureValues setCanonicalName(String canonicalName) {
-        this.canonicalName = canonicalName;
-        return this;
-    }
-
-    /**
-     * Sets the canonical name of the object the SAS user may access. Constructs a canonical name of
-     * "/queue/{accountName}{queueName}".
-     *
-     * @param queueName Name of the queue object
-     * @param accountName Name of the account that contains the object
-     * @return the updated QueueServiceSasSignatureValues object
-     */
-    public QueueServiceSasSignatureValues setCanonicalName(String queueName, String accountName) {
-        this.canonicalName = String.format("/queue/%s/%s", accountName, queueName);
+    public QueueServiceSasSignatureValues setQueueName(String queueName) {
+        this.queueName = queueName;
         return this;
     }
 
@@ -254,52 +218,61 @@ final class QueueServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
-     * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
-     * @return {@link QueueServiceSasQueryParameters}
+     * <p><strong>Notes on SAS generation</strong></p>
+     * <p>
+     * <ul>
+     * <li>If {@link #setVersion(String) version} is not set, the {@link QueueServiceVersion#getLatest() latest service
+     * version} is used.</li>
+     * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
+     * permissions should not be set. These values are inherited from the stored access policy.</li>
+     * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
+     * be set.</li>
+     * </ul>
+     *
+     * <p>For samples, see class level JavaDocs.</p>
+     *
+     * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
+     * @return A new {@link QueueServiceSasQueryParameters} represented by the current builder.
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException If {@code sharedKeyCredential} is null. Or if any of {@code version} or
-     * {@code canonicalName} is null. Or if {@code identifier} is null and any or {@code expiryTime} or
-     * {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} and {@code identifier} is null
+     * @throws NullPointerException If {@code storageSharedKeyCredentials} is null.
      */
-    public QueueServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
-        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
-        assertGenerateOK();
+    public QueueServiceSasQueryParameters generateSasQueryParameters(
+        StorageSharedKeyCredential storageSharedKeyCredentials) {
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+
+        if (ImplUtils.isNullOrEmpty(version)) {
+            version = QueueServiceVersion.getLatest().getVersion();
+        }
 
         // Signature is generated on the un-url-encoded values.
-        String stringToSign = stringToSign();
-        String signature = sharedKeyCredentials.computeHmac256(stringToSign);
+        String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName(), queueName);
+        String stringToSign = stringToSign(canonicalName);
+        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return new QueueServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
-            this.ipRange, this.identifier, this.permissions, signature);
+            this.sasIpRange, this.identifier, this.permissions, signature);
     }
 
     /**
-     * Common assertions for generateSASQueryParameters overloads.
+     * Computes the canonical name for a queue resource for SAS signing.
+     * @param account Account of the storage account.
+     * @param queueName Name of the queue.
+     * @return Canonical name as a string.
      */
-    private void assertGenerateOK() {
-        Utility.assertNotNull("version", this.version);
-        Utility.assertNotNull("canonicalName", this.canonicalName);
-
-        // If a SignedIdentifier is not being used both expiryDate and permissions must be set.
-        if (identifier == null) {
-            Utility.assertNotNull("expiryTime", this.expiryTime);
-            Utility.assertNotNull("permissions", this.permissions);
-        }
-        // Still need to check identifier if expiry time and permissions are not both set
-        if (expiryTime == null || permissions == null) {
-            Utility.assertNotNull("identifier", identifier);
-        }
+    private static String getCanonicalName(String account, String queueName) {
+        // Queue: "/queue/account/queuename"
+        return String.join("", new String[] { "/queue/", account, "/", queueName });
     }
 
-    private String stringToSign() {
+    private String stringToSign(String canonicalName) {
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
-            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.canonicalName == null ? "" : this.canonicalName,
+            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            canonicalName,
             this.identifier == null ? "" : this.identifier,
-            this.ipRange == null ? "" : this.ipRange.toString(),
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(),
             this.version == null ? "" : this.version
         );

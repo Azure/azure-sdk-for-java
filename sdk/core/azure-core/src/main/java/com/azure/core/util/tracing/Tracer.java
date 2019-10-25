@@ -6,55 +6,58 @@ package com.azure.core.util.tracing;
 import com.azure.core.util.Context;
 
 /**
- * Contract that all tracers must implement to be plug-able into the SDK.
+ * Contract that all tracers must implement to be pluggable into the SDK.
  *
+ * @see TracerProxy
  */
 public interface Tracer {
     /**
-     * Key for {@link Context} which indicates that the context contains OpenCensus span data. This span will be used
+     * Key for {@link Context} which indicates that the context contains parent span data. This span will be used
      * as the parent span for all spans the SDK creates.
      * <p>
      * If no span data is listed when the SDK creates its first span, this span key will be used as the parent span.
      */
-    String OPENCENSUS_SPAN_KEY = "opencensus-span";
+    String PARENT_SPAN_KEY = "parent-span";
 
     /**
-     * Key for {@link Context} which indicates that the context contains the name for the OpenCensus spans that are
+     * Key for {@link Context} which indicates that the context contains the name for the user spans that are
      * created.
      * <p>
      * If no span name is listed when the span is created it will default to using the calling method's name.
      */
-    String OPENCENSUS_SPAN_NAME_KEY = "opencensus-span-name";
+    String USER_SPAN_NAME_KEY = "user-span-name";
 
     /**
      * Key for {@link Context} which indicates that the context contains an entity path.
      */
-    String ENTITY_PATH = "entity-path";
+    String ENTITY_PATH_KEY = "entity-path";
 
     /**
      * Key for {@link Context} which indicates that the context contains the hostname.
-     *
      */
-    String HOST_NAME = "hostname";
+    String HOST_NAME_KEY = "hostname";
 
     /**
      * Key for {@link Context} which indicates that the context contains a message span context.
-     *
      */
-    String SPAN_CONTEXT = "span-context";
+    String SPAN_CONTEXT_KEY = "span-context";
 
     /**
      * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
-     *
      */
     String DIAGNOSTIC_ID_KEY = "diagnostic-id";
 
     /**
+     * Key for {@link Context} the scope of code where the given Span is in the current Context.
+     */
+    String SCOPE_KEY = "scope";
+
+    /**
      * Creates a new tracing span.
      * <p>
-     * The {@code context} will be checked for containing information about a parent span. If a parent span is found,
-     * the new span will be added as a child. Otherwise the parent span will be created and added to the {@code context}
-     * and any downstream {@code start()} calls will use the created span as the parent.
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
+     * downstream {@code start()} calls will use the created span as the parent.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -73,8 +76,8 @@ public interface Tracer {
      * Creates a new tracing span for AMQP calls.
      *
      * <p>
-     * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
-     * new span will be added as a child. Otherwise the span will be created and added to the {@code context} and any
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
      * downstream {@code start()} calls will use the created span as the parent.
      *
      * <p>
@@ -83,7 +86,7 @@ public interface Tracer {
      *
      * <p>
      * Returns the diagnostic Id and span context of the returned span when {@code processKind} is
-     * {@link ProcessKind#RECEIVE ProcessKind.RECEIVE}.
+     * {@link ProcessKind#MESSAGE ProcessKind.MESSAGE}.
      *
      * <p>
      * Creates a new tracing span with remote parent and returns that scope when the given when {@code processKind}
@@ -94,8 +97,8 @@ public interface Tracer {
      * <p>Starts a tracing span with provided method name and AMQP operation SEND</p>
      * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-SEND}
      *
-     * <p>Starts a tracing span with provided method name and AMQP operation RECEIVE</p>
-     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-RECEIVE}
+     * <p>Starts a tracing span with provided method name and AMQP operation MESSAGE</p>
+     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-MESSAGE}
      *
      * <p>Starts a tracing span with provided method name and AMQP operation PROCESS</p>
      * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-PROCESS}
@@ -126,14 +129,14 @@ public interface Tracer {
     void end(int responseCode, Throwable error, Context context);
 
     /**
-     * Completes the current tracing span.
+     * Completes the current tracing span for AMQP calls.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Completes the tracing span with the corresponding OpenCensus status for the given status message</p>
      * {@codesnippet com.azure.core.util.tracing.end#string-throwable-context}
      *
-     * @param statusMessage the error or success message that occurred during the call, or {@code null} if no error
+     * @param statusMessage The error or success message that occurred during the call, or {@code null} if no error
      * occurred.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
@@ -142,8 +145,7 @@ public interface Tracer {
     void end(String statusMessage, Throwable error, Context context);
 
     /**
-     * Adds metadata to the current span. The {@code context} is checked for having span information, if no span
-     * information is found in the context no metadata is added.
+     * Adds metadata to the current span. If no span information is found in the context, then no metadata is added.
      *
      * @param key Name of the metadata.
      * @param value Value of the metadata.

@@ -7,17 +7,12 @@ import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.Configuration;
+import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
-
-import com.azure.storage.file.FileClientBuilder
-import com.azure.storage.file.FileServiceAsyncClient
-import com.azure.storage.file.FileServiceClient
-import com.azure.storage.file.FileServiceClientBuilder
-import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
@@ -26,8 +21,8 @@ import java.time.OffsetDateTime
 
 class APISpec extends Specification {
     // Field common used for all APIs.
-    def logger = new ClientLogger(APISpec.class)
-    def AZURE_TEST_MODE = "AZURE_TEST_MODE"
+    static ClientLogger logger = new ClientLogger(APISpec.class)
+    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
     def testFolder = getClass().getClassLoader().getResource("testfiles")
     InterceptorManager interceptorManager
@@ -39,9 +34,10 @@ class APISpec extends Specification {
 
 
     // Test name for test method name.
-    def methodName
-    def testMode = getTestMode()
-    def connectionString
+    String methodName
+
+    static TestMode testMode = getTestMode()
+    String connectionString
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = false
@@ -75,7 +71,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .buildClient()
             cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()),
-            Duration.ofSeconds(30), null).each {
+                Duration.ofSeconds(30), null).each {
                 cleanupFileServiceClient.deleteShare(it.getName())
             }
         }
@@ -90,7 +86,7 @@ class APISpec extends Specification {
      *     <li>Playback: (default if no test mode setup)</li>
      * </ul>
      */
-    def getTestMode() {
+    static def getTestMode() {
         def azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
         if (azureTestMode != null) {
@@ -106,11 +102,15 @@ class APISpec extends Specification {
         return TestMode.PLAYBACK
     }
 
+    static boolean liveMode() {
+        return testMode == TestMode.RECORD
+    }
+
     def fileServiceBuilderHelper(final InterceptorManager interceptorManager) {
         if (testMode == TestMode.RECORD) {
             return new FileServiceClientBuilder()
                 .connectionString(connectionString)
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -125,7 +125,7 @@ class APISpec extends Specification {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -142,7 +142,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(directoryPath)
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -160,7 +160,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(filePath)
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -194,5 +194,9 @@ class APISpec extends Specification {
 
     OffsetDateTime getUTCNow() {
         return testResourceName.now()
+    }
+
+    InputStream getInputStream(byte[] data) {
+        return new ByteArrayInputStream(data)
     }
 }

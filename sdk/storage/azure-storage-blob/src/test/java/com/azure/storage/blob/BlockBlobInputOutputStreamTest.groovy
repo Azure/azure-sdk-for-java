@@ -1,8 +1,8 @@
 package com.azure.storage.blob
 
-
+import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
 
 class BlockBlobInputOutputStreamTest extends APISpec {
@@ -16,11 +16,11 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     @Requires({ liveMode() })
     def "Upload download"() {
         when:
-        def length = 30 * Constants.MB
-        def randomBytes = getRandomByteArray(length)
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
 
-        def outStream = bc.getBlobOutputStream()
-        outStream.write(randomBytes)
+        BlobOutputStream outStream = bc.getBlobOutputStream()
+        outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
         outStream.close()
 
         then:
@@ -34,6 +34,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex)
         }
-        assert outputStream.toByteArray() == randomBytes
+        byte[] randomBytes2 = outputStream.toByteArray()
+        assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
     }
 }

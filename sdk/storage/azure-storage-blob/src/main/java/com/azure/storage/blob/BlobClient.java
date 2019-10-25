@@ -6,18 +6,18 @@ package com.azure.storage.blob;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Map;
@@ -46,11 +46,10 @@ public class BlobClient extends BlobClientBase {
     private final BlobAsyncClient client;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
-     *
+     * Protected constructor for use by {@link BlobClientBuilder}.
      * @param client the async blob client
      */
-    BlobClient(BlobAsyncClient client) {
+    protected BlobClient(BlobAsyncClient client) {
         super(client);
         this.client = client;
     }
@@ -100,16 +99,34 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob.
+     * Creates a new block blob. By default this method will not overwrite an existing blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String}
      *
      * @param filePath Path of the file to upload
-     * @throws IOException If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath) throws IOException {
+    public void uploadFromFile(String filePath) {
+        uploadFromFile(filePath, false);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean}
+     *
+     * @param filePath Path of the file to upload
+     * @param overwrite Whether or not to overwrite, should the blob already exist
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void uploadFromFile(String filePath, boolean overwrite) {
+        if (!overwrite && exists()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+        }
         uploadFromFile(filePath, null, null, null, null, null, null);
     }
 
@@ -118,26 +135,26 @@ public class BlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration}
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the uploaded blob
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions,
         Duration timeout) {
         Mono<Void> upload = this.client.uploadFromFile(
             filePath, parallelTransferOptions, headers, metadata, tier, accessConditions);
 
         try {
-            Utility.blockWithOptionalTimeout(upload, timeout);
+            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }

@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.2.0</version>
+  <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
 
   <name>Microsoft Azure SDK for Java - Data Plane Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.0</version> <!-- {x-version-exempt;com.azure:azure-sdk-parent;all of data needs to be updated in order for this to be at the latest} -->
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -284,6 +284,10 @@
                 <title>Azure Storage</title>
                 <packages>com.microsoft.azure.storage*</packages>
               </group>
+              <group>
+                <title>Azure Cognitive Service Ink Recognizer</title>
+                <packages>com.microsoft.azure.cognitiveservices.inkrecognizer*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -543,11 +547,59 @@
         <module>./sdk/template/azure-sdk-template</module>
       </modules>
     </profile>
+
+    <!-- Skip overview generation unless -Dgenerate-overview is passed as an argument.
+         This is specifically done to prevent requiring python as a pre-requisite since
+         this is only needed by the build system. -->
+    <profile>
+      <id>generate-overview-from-readme</id>
+      <activation>
+        <property>
+          <name>generate-overview</name>
+        </property>      
+      </activation>      
+      <build>
+        <plugins>  
+          <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>exec-maven-plugin</artifactId>
+              <executions>
+                  <execution>
+                      <id>generate-overview-from-readme</id>
+                      <phase>prepare-package</phase>
+                      <goals>
+                          <goal>exec</goal>
+                      </goals>
+                  </execution>
+              </executions>
+              <configuration>
+                <executable>python</executable>
+                <workingDirectory>${project.basedir}</workingDirectory>
+                <arguments>
+                      <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                      <argument>--rf</argument>
+                      <argument>${project.basedir}/README.md</argument>
+                </arguments>    
+              </configuration>
+          </plugin>
+          <!-- Add the overview argument to the javadoc args -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${maven-javadoc.version}</version>
+            <configuration combine.children="append">
+              <overview>${project.basedir}/readme_overview.html</overview>
+            </configuration>
+          </plugin>
+         </plugins>
+      </build>
+    </profile> 
   </profiles>
 
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
     <module>./sdk/applicationinsights/microsoft-azure-applicationinsights-query</module>
+    <module>./sdk/cognitiveservices/ms-azure-cs-inkrecognizer/pom.xml</module>
     <module>./sdk/cosmos</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>

@@ -1,5 +1,51 @@
 # Release History
 
+## Version 12.0.0-preview.5 (2019-10-31)
+
+- Renamed FileReference to StorageFileItem
+- Changed response of ShareClient.listFilesAndDirectories FileReference to StorageFileItem
+- FileUploadRangeFromUrlInfo eTag() changed to getETag() and lastModified() changed to getLastModidified()
+- Changed response of FileAsyncClient.download() from Mono<FileDownloadInfo> to Flux<ByteBuffer>
+- Renamed FileAsyncClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
+- Removed FileAsyncClient.uploadWithResponse(Flux<ByteBuffer>, long, long)
+- Changed response of FileClient.download() from FileDownloadInfo to voif
+- Renamed FileClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
+- Changed FileClient upload methods to take InputStreams instead of ByteBuffers
+- Removed FileClient.uploadWithResponse(ByteBuffer, long, long)
+- Deleted FileDownloadInfo
+- Removed FileProperty from public API
+- Removed BaseFileClientBuilder
+- Removed FileClientBuilder, ShareClientBuilder, and FileServiceClientBuilder inheritance of BaseFileClientBuilder
+- Renamed ListShatesOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
+- Removes StorageError and StorageErrorException from public API
+- Renamed StorageErrorCode to FileErrorCode, SignedIdentifier to FileSignedIdentifier, StorageServiceProperties to FileServiceProperties, CorRules to FileCorRules, AccessPolicy to FileAccessPolicy, and Metrics to FileMetrics
+- Renamed FileHTTPHeaders to FileHttpHeaders and removed File from getter names
+- Replaced forceCloseHandles(String, boolean) with forceCloseHandle(String) and forceCloseHandles(boolean)
+- Renamed StorageException to FileStorageException
+- Added FileServiceVersion and the ability to set it on client builders
+- Replaced URL parameters with String on uploadRangeFromUrl
+- Replaced startCopy with beginCopy and return poller
+- Renamed FileSasPermission getters to use has prefix
+- Changed return type for FileClient.downloadWithProperties from Response<Void> to FileDownloadResponse and FileAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<FileDownloadAsyncResponse>
+
+## Version 12.0.0-preview.4 (2019-10-8)
+For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.4/sdk/storage/azure-storage-file/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.4/sdk/storage/azure-storage-file/src/samples/java/com/azure/storage/file)
+
+- Getters and setters were updated to use Java Bean notation.
+- Added `getShareName`, `getDirectoryPath` and `getFilePath` for fetching the resource names.
+- Updated to be fully compliant with the Java 9 Platform Module System.
+- Changed `VoidResponse` to `Response<Void>` on sync API, and `Mono<VoidResponse>` to `Mono<Response<Void>>` on async API.
+- Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
+- Updated the return type of `downloadToFile` API to `FileProperties` on sync API and `Mono<FileProperties>` on async API.
+- `getFileServiceUrl`, `getShareUrl`, `getDirectoryUrl`, `getFileUrl` API now returns URL with scheme, host, resource name and snapshot if any.
+- Removed SAS token generation APIs from clients, use FileServiceSasSignatureValues to generate SAS tokens. 
+- Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
+
 ## Version 12.0.0-preview.3 (2019-09-10):
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 

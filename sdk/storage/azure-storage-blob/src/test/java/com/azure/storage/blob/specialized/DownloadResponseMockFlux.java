@@ -6,10 +6,11 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.blob.APISpec;
-import com.azure.storage.blob.HTTPGetterInfo;
+import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.StorageErrorException;
+import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,8 +31,9 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
 
     private int scenario;
     private int tryNumber;
-    private HTTPGetterInfo info;
+    private HttpGetterInfo info;
     private ByteBuffer scenarioData;
+    private DownloadRetryOptions options;
 
     DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
         this.scenario = scenario;
@@ -60,6 +62,11 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
 
     int getTryNumber() {
         return this.tryNumber;
+    }
+
+    DownloadResponseMockFlux setOptions(DownloadRetryOptions options) {
+        this.options = options;
+        return this;
     }
 
     @Override
@@ -147,11 +154,11 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
         }
     }
 
-    Mono<DownloadAsyncResponse> getter(HTTPGetterInfo info) {
+    Mono<ReliableDownload> getter(HttpGetterInfo info) {
         this.tryNumber++;
         this.info = info;
         BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this, new BlobDownloadHeaders());
-        DownloadAsyncResponse response = new DownloadAsyncResponse(rawResponse, info, this::getter);
+        ReliableDownload response = new ReliableDownload(rawResponse, options, info, this::getter);
 
         switch (this.scenario) {
             case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
@@ -163,7 +170,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                          This validates that we don't retry in the getter even if it's a retryable error from the
                          service.
                          */
-                        throw new StorageErrorException("Message", new HttpResponse(null) {
+                        throw new BlobStorageException("Message", new HttpResponse(null) {
                             @Override
                             public int getStatusCode() {
                                 return 500;
@@ -198,7 +205,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                             public Mono<String> getBodyAsString(Charset charset) {
                                 return null;
                             }
-                        });
+                        }, null);
                     default:
                         throw new IllegalArgumentException("Retried after error in getter");
                 }

@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
@@ -13,9 +14,8 @@ import com.azure.messaging.eventhubs.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import reactor.core.publisher.Mono;
-
 import java.util.concurrent.TimeUnit;
+import reactor.core.publisher.Mono;
 
 /**
  * Sample for using {@link BlobPartitionManager} with {@link EventProcessor}.
@@ -55,7 +55,7 @@ public class EventProcessorBlobPartitionManagerSample {
             .connectionString(STORAGE_CONNECTION_STRING)
             .containerName("")
             .sasToken(SAS_TOKEN_STRING)
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()

@@ -4,19 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.BlobMetrics;
+import com.azure.storage.blob.models.BlobRetentionPolicy;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
-import com.azure.storage.blob.models.Logging;
-import com.azure.storage.blob.models.Metrics;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.RetentionPolicy;
-import com.azure.storage.blob.models.StorageServiceProperties;
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -28,43 +23,6 @@ import java.util.Map;
 public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
     private BlobServiceAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobServiceAsyncClient();
-
-    /**
-     * Generates a code sample for using {@link BlobServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SASProtocol)}
-     */
-    public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
-        AccountSASService service = new AccountSASService()
-            .setBlob(true)
-            .setFile(true)
-            .setQueue(true)
-            .setTable(true);
-        AccountSASResourceType resourceType = new AccountSASResourceType()
-            .setContainer(true)
-            .setObject(true)
-            .setService(true);
-        AccountSASPermission permission = new AccountSASPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setCreatePermission(true)
-            .setWritePermission(true)
-            .setDeletePermission(true)
-            .setListPermission(true)
-            .setProcessMessages(true)
-            .setUpdatePermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
-            ipRange, sasProtocol);
-        // END: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
-    }
 
     /**
      * Code snippet for {@link BlobServiceAsyncClient#getBlobContainerAsyncClient(String)}
@@ -91,8 +49,9 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void createContainerWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobContainerAsyncClient containerClient =
-            client.createBlobContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
+
+        BlobContainerAsyncClient containerClient = client
+            .createBlobContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
         // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType
     }
 
@@ -161,54 +120,54 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#setProperties(StorageServiceProperties)}
+     * Code snippet for {@link BlobServiceAsyncClient#setProperties(BlobServiceProperties)}
      */
     public void setProperties() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#StorageServiceProperties
-        RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
-        RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#BlobServiceProperties
+        BlobRetentionPolicy loggingRetentionPolicy = new BlobRetentionPolicy().setEnabled(true).setDays(3);
+        BlobRetentionPolicy metricsRetentionPolicy = new BlobRetentionPolicy().setEnabled(true).setDays(1);
 
-        StorageServiceProperties properties = new StorageServiceProperties()
-            .setLogging(new Logging()
+        BlobServiceProperties properties = new BlobServiceProperties()
+            .setLogging(new BlobAnalyticsLogging()
                 .setWrite(true)
                 .setDelete(true)
                 .setRetentionPolicy(loggingRetentionPolicy))
-            .setHourMetrics(new Metrics()
+            .setHourMetrics(new BlobMetrics()
                 .setEnabled(true)
                 .setRetentionPolicy(metricsRetentionPolicy))
-            .setMinuteMetrics(new Metrics()
+            .setMinuteMetrics(new BlobMetrics()
                 .setEnabled(true)
                 .setRetentionPolicy(metricsRetentionPolicy));
 
         client.setProperties(properties).subscribe(
             response -> System.out.printf("Setting properties completed%n"),
             error -> System.out.printf("Setting properties failed: %s%n", error));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#StorageServiceProperties
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#BlobServiceProperties
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#setPropertiesWithResponse(StorageServiceProperties)}
+     * Code snippet for {@link BlobServiceAsyncClient#setPropertiesWithResponse(BlobServiceProperties)}
      */
     public void setPropertiesWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties
-        RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
-        RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties
+        BlobRetentionPolicy loggingRetentionPolicy = new BlobRetentionPolicy().setEnabled(true).setDays(3);
+        BlobRetentionPolicy metricsRetentionPolicy = new BlobRetentionPolicy().setEnabled(true).setDays(1);
 
-        StorageServiceProperties properties = new StorageServiceProperties()
-            .setLogging(new Logging()
+        BlobServiceProperties properties = new BlobServiceProperties()
+            .setLogging(new BlobAnalyticsLogging()
                 .setWrite(true)
                 .setDelete(true)
                 .setRetentionPolicy(loggingRetentionPolicy))
-            .setHourMetrics(new Metrics()
+            .setHourMetrics(new BlobMetrics()
                 .setEnabled(true)
                 .setRetentionPolicy(metricsRetentionPolicy))
-            .setMinuteMetrics(new Metrics()
+            .setMinuteMetrics(new BlobMetrics()
                 .setEnabled(true)
                 .setRetentionPolicy(metricsRetentionPolicy));
 
         client.setPropertiesWithResponse(properties).subscribe(response ->
             System.out.printf("Setting properties completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties
     }
 
     /**

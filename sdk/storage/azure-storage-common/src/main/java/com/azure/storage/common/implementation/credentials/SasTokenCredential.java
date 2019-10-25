@@ -20,7 +20,7 @@ public final class SasTokenCredential {
      *
      * @param sasToken SAS token used to authenticate requests with the service.
      */
-    private SasTokenCredential(String sasToken) {
+    public SasTokenCredential(String sasToken) {
         this.sasToken = sasToken;
     }
 
@@ -59,7 +59,7 @@ public final class SasTokenCredential {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.common.credentials.SASTokenCredential.fromQueryParameters#Map}
+     * {@codesnippet com.azure.storage.common.credentials.SasTokenCredential.fromQueryParameters#Map}
      *
      * @param queryParameters URL query parameters
      * @return a SAS token credential if {@code queryParameters} is not {@code null} and has
