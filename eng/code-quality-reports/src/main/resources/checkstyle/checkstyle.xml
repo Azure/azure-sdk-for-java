@@ -379,6 +379,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
 
     <!-- CUSTOM CHECKS -->
+    <!-- Public API classes should follow Camelcase rules: -->
+    <!-- 1. ClassName -->
+    <!-- 2. methodName -->
+    <!-- 3. variableName -->
+    <!-- 4. longerVariableOrMethodName -->
+    <!--module name="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck">
+      <property name="blacklistedWords" value="URL, HTTP, XML, JSON, SAS, CPK, API" />
+    </module-->
+
+    <!-- CUSTOM CHECKS -->
     <!-- Fluent method checks:
     (1) A method returns an instance of the class, and that have one parameter,
     (2) should not start with the words in the avoidStartWords list.-->

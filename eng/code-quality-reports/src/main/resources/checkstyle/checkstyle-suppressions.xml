@@ -206,4 +206,7 @@
 
   <!-- Allows the SasTokenCredentialPolicy in Implementation -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
+  <!-- Only checks Public Api classes -->
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="[/\\]test[/\\]" />
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="[/\\]implementation[/\\]" />
 </suppressions>
