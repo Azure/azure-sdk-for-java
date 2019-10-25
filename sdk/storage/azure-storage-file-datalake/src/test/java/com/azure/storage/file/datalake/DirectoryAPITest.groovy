@@ -1,120 +1,1370 @@
 package com.azure.storage.file.datalake
 
+
+import com.azure.core.util.Context
+import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
+import com.azure.storage.file.datalake.models.AccessTier
+import com.azure.storage.file.datalake.models.LeaseAccessConditions
+import com.azure.storage.file.datalake.models.LeaseStateType
+import com.azure.storage.file.datalake.models.LeaseStatusType
+import com.azure.storage.file.datalake.models.ModifiedAccessConditions
+import com.azure.storage.file.datalake.models.PathAccessConditions
 import com.azure.storage.file.datalake.models.PathAccessControl
+import com.azure.storage.file.datalake.models.PathHttpHeaders
+import spock.lang.Unroll
 
 class DirectoryAPITest extends APISpec {
     DirectoryClient dc
     String directoryName
 
-
-    // TODO (gapra): Add tests to async create file and subdirectory
     def setup() {
         directoryName = generatePathName()
         dc = fsc.getDirectoryClient(directoryName)
+        dc.create()
     }
 
     def "Create min"() {
         when:
+        dc = fsc.getDirectoryClient(generatePathName())
         dc.create()
+
         then:
         notThrown(StorageErrorException)
     }
 
+    def "Create defaults"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        def createResponse = dc.createWithResponse(null, null, null, null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create error"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        dc.createWithResponse(null, null, new PathAccessConditions()
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+            Context.NONE)
+
+        then:
+        thrown(Exception)
+    }
+
+    @Unroll
+    def "Create headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        dc.createWithResponse(headers, null, null, null, null, null, null)
+        def response = dc.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        dc.createWithResponse(null, metadata, null, null, null, null, Context.NONE)
+        def response = dc.getProperties()
+
+        then:
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            response.getMetadata().containsKey(k)
+            response.getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Create AC"() {
+        setup:
+        match = setupPathMatchCondition(dc, match)
+        leaseID = setupPathLeaseCondition(dc, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+
+        expect:
+        dc.createWithResponse(null, null, pac, null, null, null, null).getStatusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Create AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(dc, noneMatch)
+        setupPathLeaseCondition(dc, leaseID)
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.createWithResponse(null, null, bac, null, null, null, Context.NONE)
+
+        then:
+        thrown(Exception)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Create permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+
+        expect:
+        dc.createWithResponse(null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+    }
+
     def "Delete min"() {
-        setup:
-        dc.create()
-
-        when:
-        def resp = dc.deleteWithResponse(false, null, null, null)
-
-        then:
-        resp.getStatusCode() == 200
+        expect:
+        dc.deleteWithResponse(false, null, null, null).getStatusCode() == 200
     }
 
-    def "Create sub directory"() {
-        setup:
-        dc.create()
-
-        when:
-        def subdc = dc.createSubDirectory(generatePathName())
-
-        then:
-        subdc.delete()
-        notThrown(Exception)
+    def "Delete recursive"() {
+        expect:
+        dc.deleteWithResponse(true, null, null, null).getStatusCode() == 200
     }
 
-    def "Create file"() {
-        setup:
-        dc.create()
-
+    def "Delete dir does not exist anymore"() {
         when:
-
-        def fc = dc.createFile(generatePathName())
+        dc.deleteWithResponse(false, null, null, null)
+        dc.getPropertiesWithResponse(null, null, null)
 
         then:
-        fc.delete()
-        notThrown(Exception)
+        def e = thrown(BlobStorageException)
+        e.getResponse().getStatusCode() == 404
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+//        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 
-    def "Delete file"() {
+    @Unroll
+    def "Delete AC"() {
         setup:
-        dc.create()
-        def pathName = generatePathName()
-        dc.createFile(pathName)
+        match = setupPathMatchCondition(dc, match)
+        leaseID = setupPathLeaseCondition(dc, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
 
-        when:
-        dc.deleteFile(pathName)
+        expect:
+        dc.deleteWithResponse(false, pac, null, null).getStatusCode() == 200
 
-        then:
-        notThrown(Exception)
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Delete sub directory"() {
+    @Unroll
+    def "Delete AC fail"() {
         setup:
-        dc.create()
-        def pathName = generatePathName()
-        dc.createSubDirectory(pathName)
+        noneMatch = setupPathMatchCondition(dc, noneMatch)
+        setupPathLeaseCondition(dc, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
 
         when:
-        dc.deleteSubDirectory(pathName)
+        dc.deleteWithResponse(false, pac, null, null).getStatusCode()
 
         then:
-        notThrown(Exception)
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
     }
 
     def "Set access control min"() {
-        setup:
-        dc.create()
-
         when:
-        dc.setAccessControl(new PathAccessControl().setPermissions("0777"))
+        def resp = dc.setAccessControl(new PathAccessControl().setPermissions("0777"))
 
         then:
-        notThrown(Exception)
+        notThrown(StorageErrorException)
+
+        resp.getETag()
+        resp.getLastModified()
+    }
+
+    def "Set access control bad permission"() {
+        when:
+        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("asdf"), null, null, null)
+
+        then:
+        def e = thrown(StorageErrorException)
+        e.getResponse().getStatusCode() == 400
+        e.getMessage().contains("InvalidPermission")
+        e.getMessage().contains("The permission value is invalid.")
+    }
+
+    @Unroll
+    def "Set access control with response"() {
+        setup:
+        def pac = new PathAccessControl()
+            .setPermissions(permissions)
+            .setGroup(group)
+            .setOwner(owner)
+            .setAcl(acl)
+
+        expect:
+        dc.setAccessControlWithResponse(pac, null, null, Context.NONE).getStatusCode() == 200
+
+        // TODO (gapra) : Add tests to add group and owner, not sure what values can be
+        where:
+        permissions | group   | owner  | acl
+        "0777"      | null    | null   | null
+        null        | null    | null   | "user::rwx"
+    }
+
+    @Unroll
+    def "Set access control AC"() {
+        setup:
+        match = setupPathMatchCondition(dc, match)
+        leaseID = setupPathLeaseCondition(dc, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+
+        expect:
+        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), pac, null, Context.NONE).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Set access control AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(dc, noneMatch)
+        setupPathLeaseCondition(dc, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), pac, null, Context.NONE).getStatusCode() == 200
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Set access control error"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), null, null, null)
+
+        then:
+        thrown(StorageErrorException)
     }
 
     def "Get access control min"() {
-        setup:
-        dc.create()
-
         when:
-        dc.setAccessControl(new PathAccessControl().setPermissions("0777"))
-        dc.getAccessControl()
+        PathAccessControl pac = dc.getAccessControl()
 
         then:
-        notThrown(Exception)
+        notThrown(StorageErrorException)
+        pac.getAcl()
+        pac.getPermissions()
+        pac.getOwner()
+        pac.getGroup()
     }
 
-    def "move async"() {
+    def "Get access control with response"() {
+        expect:
+        dc.getAccessControlWithResponse(false, null, null, null).getStatusCode() == 200
+    }
+
+    def "Get access control return upn"() {
+        expect:
+        dc.getAccessControlWithResponse(true, null, null, null).getStatusCode() == 200
+    }
+
+    @Unroll
+    def "Get access control AC"() {
         setup:
-        def dac = fscAsync.getDirectoryAsyncClient("dir")
-        dac.create().block()
+        match = setupPathMatchCondition(dc, match)
+        leaseID = setupPathLeaseCondition(dc, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        dc.getAccessControlWithResponse(false, pac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Get access control AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(dc, noneMatch)
+        setupPathLeaseCondition(dc, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
 
         when:
-        dac.move("dir2").block()
+        dc.getAccessControlWithResponse(false, pac, null, null).getStatusCode() == 200
 
         then:
-        notThrown(Exception)
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+//        null     | null       | null        | null         | garbageLeaseID
+        // Known issue - uncomment when resolved
     }
+
+    def "Rename min"() {
+        expect:
+        dc.renameWithResponse(generatePathName(), null, null, null, null).getStatusCode() == 201
+    }
+
+    def "Rename with response"() {
+        when:
+        def resp = dc.renameWithResponse(generatePathName(), null, null, null, null)
+
+        def renamedClient = resp.getValue()
+        renamedClient.getProperties()
+
+        then:
+        notThrown(StorageErrorException)
+
+        when:
+        dc.getProperties()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Rename error"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        dc.renameWithResponse(generatePathName(), null, null, null, null)
+
+        then:
+        thrown(StorageErrorException)
+    }
+
+    @Unroll
+    def "Rename source AC"() {
+        setup:
+        match = setupPathMatchCondition(dc, match)
+        leaseID = setupPathLeaseCondition(dc, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        dc.renameWithResponse(generatePathName(), pac, null, null, null).getStatusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Rename source AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(dc, noneMatch)
+        setupPathLeaseCondition(dc, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.renameWithResponse(generatePathName(), pac, null, null, null)
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    @Unroll
+    def "Rename dest AC"() {
+        setup:
+        def pathName = generatePathName()
+        def destDir = fsc.getDirectoryClient(pathName)
+        destDir.create()
+        match = setupPathMatchCondition(destDir, match)
+        leaseID = setupPathLeaseCondition(destDir, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        dc.renameWithResponse(pathName, null, pac, null, null).getStatusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Rename dest AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def destDir = fsc.getDirectoryClient(pathName)
+        destDir.create()
+        noneMatch = setupPathMatchCondition(destDir, noneMatch)
+        setupPathLeaseCondition(destDir, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.renameWithResponse(pathName, null, pac, null, null)
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Get properties default"() {
+        when:
+        def response = dc.getPropertiesWithResponse(null, null, null)
+        def headers = response.getHeaders()
+        def properties = response.getValue()
+
+        then:
+        validateBasicHeaders(headers)
+        headers.getValue("Accept-Ranges") == "bytes"
+        properties.getCreationTime()
+        properties.getLastModified()
+        properties.getETag()
+        properties.getFileSize() >= 0
+        properties.getContentType()
+        !properties.getContentMD5() // tested in "set HTTP headers"
+        !properties.getContentEncoding() // tested in "set HTTP headers"
+        !properties.getContentDisposition() // tested in "set HTTP headers"
+        !properties.getContentLanguage() // tested in "set HTTP headers"
+        !properties.getCacheControl() // tested in "set HTTP headers"
+        properties.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        properties.getLeaseState() == LeaseStateType.AVAILABLE
+        !properties.getLeaseDuration() // tested in "acquire lease"
+        !properties.getCopyId() // tested in "abort copy"
+        !properties.getCopyStatus() // tested in "copy"
+        !properties.getCopySource() // tested in "copy"
+        !properties.getCopyProgress() // tested in "copy"
+        !properties.getCopyCompletionTime() // tested in "copy"
+        !properties.getCopyStatusDescription() // only returned when the service has errors; cannot validate.
+        properties.isServerEncrypted()
+        !properties.isIncrementalCopy() // tested in PageBlob."start incremental copy"
+        properties.getAccessTier() == AccessTier.HOT
+        properties.getArchiveStatus() == null
+        properties.getMetadata()
+        !properties.getAccessTierChangeTime()
+        !properties.getEncryptionKeySha256()
+
+    }
+
+    def "Get properties min"() {
+        expect:
+        dc.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+    }
+
+    @Unroll
+    def "Get properties AC"() {
+        setup:
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID)))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(setupPathMatchCondition(dc, match))
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        dc.getPropertiesWithResponse(pac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Get properties AC fail"() {
+        setup:
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID)))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch)))
+
+        when:
+        dc.getPropertiesWithResponse(bac, null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Get properties error"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        dc.getProperties()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Set HTTP headers null"() {
+        setup:
+        def response = dc.setHttpHeadersWithResponse(null, null, null, null)
+
+        expect:
+        response.getStatusCode() == 200
+        validateBasicHeaders(response.getHeaders())
+    }
+
+    def "Set HTTP headers min"() {
+        setup:
+        def properties = dc.getProperties()
+        def headers = new PathHttpHeaders()
+            .setContentEncoding(properties.getContentEncoding())
+            .setContentDisposition(properties.getContentDisposition())
+            .setContentType("type")
+            .setCacheControl(properties.getCacheControl())
+            .setContentLanguage(properties.getContentLanguage())
+
+        dc.setHttpHeaders(headers)
+
+        expect:
+        dc.getProperties().getContentType() == "type"
+    }
+
+    @Unroll
+    def "Set HTTP headers headers"() {
+        setup:
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setTransactionalContentMD5(contentMD5)
+            .setContentType(contentType)
+
+        dc.setHttpHeaders(putHeaders)
+
+        expect:
+        validatePathProperties(
+            dc.getPropertiesWithResponse(null, null, null),
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | null
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+    }
+
+    @Unroll
+    def "Set HTTP headers AC"() {
+        setup:
+        match = setupPathMatchCondition(dc, match)
+        leaseID = setupPathLeaseCondition(dc, leaseID)
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        dc.setHttpHeadersWithResponse(null, bac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Set HTTP headers AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(dc, noneMatch)
+        setupPathLeaseCondition(dc, leaseID)
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.setHttpHeadersWithResponse(null, bac, null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Set HTTP headers error"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        dc.setHttpHeaders(null)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Set metadata all null"() {
+        when:
+        def response = dc.setMetadataWithResponse(null, null, null, null)
+
+        then:
+        // Directories have an is directory metadata param by default
+        dc.getProperties().getMetadata().size() == 1
+        response.getStatusCode() == 200
+        validateBasicHeaders(response.getHeaders())
+        Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
+    }
+
+    def "Set metadata min"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+
+        when:
+        dc.setMetadata(metadata)
+
+        then:
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            dc.getProperties().getMetadata().containsKey(k)
+            dc.getProperties().getMetadata().get(k) == metadata.get(k)
+        }
+    }
+
+    @Unroll
+    def "Set metadata metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        expect:
+        dc.setMetadataWithResponse(metadata, null, null, null).getStatusCode() == statusCode
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            dc.getProperties().getMetadata().containsKey(k)
+            dc.getProperties().getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 200
+        "foo" | "bar"  | "fizz" | "buzz" || 200
+    }
+
+    @Unroll
+    def "Set metadata AC"() {
+        setup:
+        match = setupPathMatchCondition(dc, match)
+        leaseID = setupPathLeaseCondition(dc, leaseID)
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        dc.setMetadataWithResponse(null, bac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Set metadata AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(dc, noneMatch)
+        setupPathLeaseCondition(dc, leaseID)
+
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.setMetadataWithResponse(null, bac, null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Set metadata error"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        dc.setMetadata(null)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Create file min"() {
+        when:
+        dc.getFileClient(generatePathName()).create()
+
+        then:
+        notThrown(StorageErrorException)
+    }
+
+    def "Create file defaults"() {
+        when:
+        def createResponse = dc.createFileWithResponse(generatePathName(), null, null, null, null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create file error"() {
+        when:
+        dc.createFileWithResponse(generatePathName(), null, null, new PathAccessConditions()
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+            Context.NONE)
+
+        then:
+        thrown(StorageErrorException)
+    }
+
+    @Unroll
+    def "Create file headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+
+        when:
+        def client = dc.createFileWithResponse(generatePathName(), headers, null, null, null, null, null, null).getValue()
+        def response = client.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create file metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        def client = dc.createFileWithResponse(generatePathName(), null, metadata, null, null, null, null, null).getValue()
+        def response = client.getProperties()
+
+        then:
+        response.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Create file AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.getFileClient(pathName)
+        client.create()
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+
+        expect:
+        dc.createFileWithResponse(pathName, null, null, pac, null, null, null, null).getStatusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Create file AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.getFileClient(pathName)
+        client.create()
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.createFileWithResponse(pathName, null, null, bac, null, null, null, Context.NONE)
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Create file permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+
+        expect:
+        dc.createFileWithResponse(generatePathName(), null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+    }
+
+    def "Delete file min"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createFile(pathName)
+        dc.deleteFileWithResponse(pathName, null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete file file does not exist anymore"() {
+        when:
+        def pathName = generatePathName()
+        def client = dc.createFile(pathName)
+        dc.deleteFileWithResponse(pathName, null, null, null)
+        client.getPropertiesWithResponse(null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getResponse().getStatusCode() == 404
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+//        e.getServiceMessage().contains("The specified blob does not exist.")
+    }
+
+    @Unroll
+    def "Delete file AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.createFile(pathName)
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        dc.deleteFileWithResponse(pathName, pac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete file AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.createFile(pathName)
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.deleteFileWithResponse(pathName, pac, null, null).getStatusCode()
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Create sub dir min"() {
+        when:
+        def subdir = dc.getSubDirectoryClient(generatePathName())
+        subdir.create()
+
+        then:
+        notThrown(StorageErrorException)
+    }
+
+    def "Create sub dir defaults"() {
+        when:
+        def createResponse = dc.createSubDirectoryWithResponse(generatePathName(), null, null, null, null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create sub dir error"() {
+        when:
+        dc.createSubDirectoryWithResponse(generatePathName(), null, null, new PathAccessConditions()
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+            Context.NONE)
+
+        then:
+        thrown(Exception)
+    }
+
+    @Unroll
+    def "Create sub dir headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+
+        when:
+        def client = dc.createSubDirectoryWithResponse(generatePathName(), headers, null, null, null, null, null, null).getValue()
+        def response = client.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create sub dir metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        def client = dc.createSubDirectoryWithResponse(generatePathName(), null, metadata, null, null, null, null, null).getValue()
+        def response = client.getProperties()
+
+        then:
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            response.getMetadata().containsKey(k)
+            response.getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Create sub dir AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.getSubDirectoryClient(pathName)
+        client.create()
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+
+        expect:
+        dc.createSubDirectoryWithResponse(pathName, null, null, pac, null, null, null, null).getStatusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Create sub dir AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.getSubDirectoryClient(pathName)
+        client.create()
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.createSubDirectoryWithResponse(pathName, null, null, bac, null, null, null, Context.NONE)
+
+        then:
+        thrown(Exception)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Create sub dir permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+
+        expect:
+        dc.createSubDirectoryWithResponse(generatePathName(), null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+    }
+
+    def "Delete sub dir min"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createSubDirectory(pathName)
+        dc.deleteSubDirectoryWithResponse(pathName, false, null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete sub dir recursive"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createSubDirectory(pathName)
+        dc.deleteSubDirectoryWithResponse(pathName, true, null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete sub dir dir does not exist anymore"() {
+        when:
+        def pathName = generatePathName()
+        def client = dc.createSubDirectory(pathName)
+        dc.deleteSubDirectoryWithResponse(pathName, false, null, null, null)
+        client.getPropertiesWithResponse(null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getResponse().getStatusCode() == 404
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+//        e.getServiceMessage().contains("The specified blob does not exist.")
+    }
+
+    @Unroll
+    def "Delete sub dir AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.createSubDirectory(pathName)
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        dc.deleteSubDirectoryWithResponse(pathName, false, pac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete sub dir AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.createSubDirectory(pathName)
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        dc.deleteSubDirectoryWithResponse(pathName, false, pac, null, null).getStatusCode()
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+
 }

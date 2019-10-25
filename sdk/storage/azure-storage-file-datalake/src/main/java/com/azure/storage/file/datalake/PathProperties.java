@@ -55,21 +55,25 @@ public class PathProperties {
         this.contentDisposition = properties.getContentDisposition();
         this.contentLanguage = properties.getContentLanguage();
         this.cacheControl = properties.getCacheControl();
-        this.leaseStatus = LeaseStatusType.fromString(properties.getLeaseStatus().toString());
-        this.leaseState = LeaseStateType.fromString(properties.getLeaseState().toString());
-        this.leaseDuration = LeaseDurationType.fromString(properties.getLeaseDuration().toString());
+        this.leaseStatus = properties.getLeaseStatus() == null ? null :
+            LeaseStatusType.fromString(properties.getLeaseStatus().toString());
+        this.leaseState = properties.getLeaseState() == null ? null :
+            LeaseStateType.fromString(properties.getLeaseState().toString());
+        this.leaseDuration = properties.getLeaseDuration() == null ? null :
+            LeaseDurationType.fromString(properties.getLeaseDuration().toString());
         this.copyId = properties.getCopyId();
-        this.copyStatus = CopyStatusType.fromString(properties.getCopyStatus().toString());
+        this.copyStatus = properties.getCopyStatus() == null ? null :
+            CopyStatusType.fromString(properties.getCopyStatus().toString());
         this.copySource = properties.getCopySource();
         this.copyProgress = properties.getCopyProgress();
         this.copyCompletionTime = properties.getCopyCompletionTime();
         this.copyStatusDescription = properties.getCopyStatusDescription();
         this.isServerEncrypted = properties.isServerEncrypted();
         this.isIncrementalCopy = properties.isIncrementalCopy();
-        /* TODO (gapra) : Make sure the toString for these two return what we want since they dont have an override
-          toString */
-        this.accessTier = AccessTier.fromString(properties.getAccessTier().toString());
-        this.archiveStatus = ArchiveStatus.fromString(properties.getArchiveStatus().toString());
+        this.accessTier = properties.getAccessTier() == null ? null :
+            AccessTier.fromString(properties.getAccessTier().toString());
+        this.archiveStatus = properties.getArchiveStatus() == null ? null :
+            ArchiveStatus.fromString(properties.getArchiveStatus().toString());
         this.encryptionKeySha256 = properties.getEncryptionKeySha256();
         this.accessTierChangeTime = properties.getAccessTierChangeTime();
         this.metadata = properties.getMetadata();

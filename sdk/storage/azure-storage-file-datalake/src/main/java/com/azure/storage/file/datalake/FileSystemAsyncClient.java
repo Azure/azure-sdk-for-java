@@ -20,6 +20,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
+import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.Path;
@@ -67,9 +68,9 @@ public class FileSystemAsyncClient {
 
     public static final String ROOT_FILESYSTEM_NAME = "$root";
 
-    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = "$web";
+//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = "$web";
 
-    public static final String LOG_FILESYSTEM_NAME = "$logs";
+//    public static final String LOG_FILESYSTEM_NAME = "$logs";
 
     private final ClientLogger logger = new ClientLogger(BlobContainerAsyncClient.class);
     private final DataLakeStorageClientImpl azureDataLakeStorage;
@@ -101,7 +102,6 @@ public class FileSystemAsyncClient {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.blobContainerAsyncClient = blobContainerAsyncClient;
-
     }
 
     /**
@@ -369,7 +369,6 @@ public class FileSystemAsyncClient {
         }
     }
 
-    // TODO (gapra): Must return PathItem instead of Path
     /**
      * Returns a reactive Publisher emitting all the files/directories in this account lazily as needed. For more
      * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
@@ -424,7 +423,7 @@ public class FileSystemAsyncClient {
 
         return StorageImplUtils.applyOptionalTimeout(
             this.azureDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                options.isRecursive(), marker, options.getPath(), options.getMaxResults(), options.isUpn(), null,
+                options.isRecursive(), marker, options.getPath(), options.getMaxResults(), options.isReturnUpn(), null,
                 null, Context.NONE), timeout);
     }
 

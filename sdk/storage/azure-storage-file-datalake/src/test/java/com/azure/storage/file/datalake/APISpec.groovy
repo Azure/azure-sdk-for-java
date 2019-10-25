@@ -2,11 +2,15 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
@@ -24,6 +28,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -311,6 +316,23 @@ class APISpec extends Specification {
             .buildClient()
     }
 
+    FileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        PathClientBuilder builder = new PathClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildFileClient()
+    }
+
     def generateFileSystemName() {
         generateResourceName(fileSystemPrefix, entityNo++)
     }
@@ -369,11 +391,159 @@ class APISpec extends Specification {
             headers.getValue("date") != null
     }
 
+    def validatePathProperties(Response<PathProperties> response, String cacheControl, String contentDisposition,
+                               String contentEncoding, String contentLanguage, byte[] contentMD5, String contentType) {
+        return response.getValue().getCacheControl() == cacheControl &&
+            response.getValue().getContentDisposition() == contentDisposition &&
+            response.getValue().getContentEncoding() == contentEncoding &&
+            response.getValue().getContentLanguage() == contentLanguage &&
+            response.getValue().getContentMD5() == contentMD5 &&
+            response.getHeaders().getValue("Content-Type") == contentType
+    }
+
     def setupFileSystemLeaseCondition(FileSystemClient fsc, String leaseID) {
         if (leaseID == receivedLeaseID) {
             return createLeaseClient(fsc).acquireLease(-1)
         } else {
             return leaseID
+        }
+    }
+
+    /**
+     * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
+     * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
+     *
+     * @param bc
+     *      The URL to the path to get the etag on.
+     * @param match
+     *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
+     *      the path's actual etag for this test, so it is retrieved.
+     * @return
+     * The appropriate etag value to run the current test.
+     */
+    def setupPathMatchCondition(PathClient pc, String match) {
+        if (match == receivedEtag) {
+            return pc.getProperties().getETag()
+        } else {
+            return match
+        }
+    }
+
+    def setupPathMatchCondition(PathAsyncClient pac, String match) {
+        if (match == receivedEtag) {
+            return pac.getProperties().block().getETag()
+        } else {
+            return match
+        }
+    }
+
+    /**
+     * This helper method will acquire a lease on a path to prepare for testing leaseAccessConditions. We want to test
+     * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
+     * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
+     * with other AC tests.
+     *
+     * @param bc
+     *      The path on which to acquire a lease.
+     * @param leaseID
+     *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
+     * @return
+     * The actual leaseAccessConditions of the path if recievedLeaseID is passed, otherwise whatever was passed will be
+     * returned.
+     */
+    def setupPathLeaseCondition(PathClient pc, String leaseID) {
+        String responseLeaseId = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            responseLeaseId = createLeaseClient(pc).acquireLease(-1)
+        }
+        if (leaseID == receivedLeaseID) {
+            return responseLeaseId
+        } else {
+            return leaseID
+        }
+    }
+
+    def setupPathLeaseCondition(PathAsyncClient pac, String leaseID) {
+        String responseLeaseId = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            responseLeaseId = new DataLakeLeaseClientBuilder()
+                .pathAsyncClient(pac)
+                .buildAsyncClient()
+                .acquireLease(-1)
+                .block()
+        }
+        if (leaseID == receivedLeaseID) {
+            return responseLeaseId
+        } else {
+            return leaseID
+        }
+    }
+
+    class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return next.process().flatMap { HttpResponse response ->
+                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
+                    return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
+                } else {
+                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                    return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())))
+                }
+            }
+        }
+    }
+
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
+     */
+
+    class MockDownloadHttpResponse extends HttpResponse {
+        private final int statusCode
+        private final HttpHeaders headers
+        private final Flux<ByteBuffer> body
+
+        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
+            super(response.getRequest())
+            this.statusCode = statusCode
+            this.headers = response.getHeaders()
+            this.body = body
+        }
+
+        @Override
+        int getStatusCode() {
+            return statusCode
+        }
+
+        @Override
+        String getHeaderValue(String s) {
+            return headers.getValue(s)
+        }
+
+        @Override
+        HttpHeaders getHeaders() {
+            return headers
+        }
+
+        @Override
+        Flux<ByteBuffer> getBody() {
+            return body
+        }
+
+        @Override
+        Mono<byte[]> getBodyAsByteArray() {
+            return Mono.error(new IOException())
+        }
+
+        @Override
+        Mono<String> getBodyAsString() {
+            return Mono.error(new IOException())
+        }
+
+        @Override
+        Mono<String> getBodyAsString(Charset charset) {
+            return Mono.error(new IOException())
         }
     }
 

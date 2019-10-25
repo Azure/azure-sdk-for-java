@@ -1,14 +1,18 @@
 package com.azure.storage.file.datalake
 
+import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.file.datalake.implementation.models.FileSystem
+import com.azure.storage.file.datalake.models.GetPathsOptions
 import com.azure.storage.file.datalake.models.LeaseAccessConditions
 import com.azure.storage.file.datalake.models.ModifiedAccessConditions
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
+import com.azure.storage.file.datalake.models.PathAccessConditions
+import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathItem
 import com.azure.storage.file.datalake.models.PublicAccessType
 import spock.lang.Unroll
@@ -358,6 +362,462 @@ class FileSystemAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Create file min"() {
+        when:
+        fsc.createFile(generatePathName())
+
+        then:
+        notThrown(StorageErrorException)
+    }
+
+    def "Create file defaults"() {
+        when:
+        def createResponse = fsc.createFileWithResponse(generatePathName(), null, null, null, null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create file error"() {
+        when:
+        fsc.createFileWithResponse(generatePathName(), null, null, new PathAccessConditions()
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+            Context.NONE)
+
+        then:
+        thrown(StorageErrorException)
+    }
+
+    @Unroll
+    def "Create file headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+
+        when:
+        def client = fsc.createFileWithResponse(generatePathName(), headers, null, null, null, null, null, null).getValue()
+        def response = client.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create file metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        def client = fsc.createFileWithResponse(generatePathName(), null, metadata, null, null, null, null, null).getValue()
+        def response = client.getProperties()
+
+        then:
+        response.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Create file AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = fsc.getFileClient(pathName)
+        client.create()
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+
+        expect:
+        fsc.createFileWithResponse(pathName, null, null, pac, null, null, null, null).getStatusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Create file AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = fsc.getFileClient(pathName)
+        client.create()
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        fsc.createFileWithResponse(pathName, null, null, bac, null, null, null, Context.NONE)
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Create file permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+
+        expect:
+        fsc.createFileWithResponse(generatePathName(), null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+    }
+
+    def "Delete file min"() {
+        expect:
+        def pathName = generatePathName()
+        fsc.createFile(pathName)
+        fsc.deleteFileWithResponse(pathName, null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete file file does not exist anymore"() {
+        when:
+        def pathName = generatePathName()
+        def client = fsc.createFile(pathName)
+        fsc.deleteFileWithResponse(pathName, null, null, null)
+        client.getPropertiesWithResponse(null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getResponse().getStatusCode() == 404
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+//        e.getServiceMessage().contains("The specified blob does not exist.")
+    }
+
+    @Unroll
+    def "Delete file AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = fsc.createFile(pathName)
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        fsc.deleteFileWithResponse(pathName, pac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete file AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = fsc.createFile(pathName)
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        fsc.deleteFileWithResponse(pathName, pac, null, null).getStatusCode()
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Create dir min"() {
+        when:
+        def dir = fsc.getDirectoryClient(generatePathName())
+        dir.create()
+
+        then:
+        notThrown(StorageErrorException)
+    }
+
+    def "Create dir defaults"() {
+        when:
+        def createResponse = fsc.createDirectoryWithResponse(generatePathName(), null, null, null, null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create dir error"() {
+        when:
+        fsc.createDirectoryWithResponse(generatePathName(), null, null, new PathAccessConditions()
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+            Context.NONE)
+
+        then:
+        thrown(Exception)
+    }
+
+    @Unroll
+    def "Create dir headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+
+        when:
+        def client = fsc.createDirectoryWithResponse(generatePathName(), headers, null, null, null, null, null, null).getValue()
+        def response = client.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create dir metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        def client = fsc.createDirectoryWithResponse(generatePathName(), null, metadata, null, null, null, null, null).getValue()
+        def response = client.getProperties()
+
+        then:
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            response.getMetadata().containsKey(k)
+            response.getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Create dir AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = fsc.getDirectoryClient(pathName)
+        client.create()
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+
+        expect:
+        fsc.createDirectoryWithResponse(pathName, null, null, pac, null, null, null, null).getStatusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Create dir AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = fsc.getDirectoryClient(pathName)
+        client.create()
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def bac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        fsc.createDirectoryWithResponse(pathName, null, null, bac, null, null, null, Context.NONE)
+
+        then:
+        thrown(Exception)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Create dir permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+
+        expect:
+        fsc.createDirectoryWithResponse(generatePathName(), null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+    }
+
+    def "Delete dir min"() {
+        expect:
+        def pathName = generatePathName()
+        fsc.createDirectory(pathName)
+        fsc.deleteDirectoryWithResponse(pathName, false, null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete dir recursive"() {
+        expect:
+        def pathName = generatePathName()
+        fsc.createDirectory(pathName)
+        fsc.deleteDirectoryWithResponse(pathName, true, null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete dir dir does not exist anymore"() {
+        when:
+        def pathName = generatePathName()
+        def client = fsc.createDirectory(pathName)
+        fsc.deleteDirectoryWithResponse(pathName, false, null, null, null)
+        client.getPropertiesWithResponse(null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getResponse().getStatusCode() == 404
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+//        e.getServiceMessage().contains("The specified blob does not exist.")
+    }
+
+    @Unroll
+    def "Delete dir AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = fsc.createDirectory(pathName)
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        expect:
+        fsc.deleteDirectoryWithResponse(pathName, false, pac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete dir AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = fsc.createDirectory(pathName)
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def pac = new PathAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setIfMatch(match)
+                .setIfNoneMatch(noneMatch))
+
+        when:
+        fsc.deleteDirectoryWithResponse(pathName, false, pac, null, null).getStatusCode()
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
     def "List paths"() {
         setup:
         def dirName = generatePathName()
@@ -372,7 +832,7 @@ class FileSystemAPITest extends APISpec {
         then:
         def dirPath = response.next()
         dirPath.getName() == dirName
-//        dirPath.getETag()
+        dirPath.getETag()
         dirPath.getGroup()
         dirPath.getLastModifiedTime()
         dirPath.getOwner()
@@ -392,6 +852,80 @@ class FileSystemAPITest extends APISpec {
         !filePath.isDirectory()
 
         !response.hasNext()
-
     }
+
+    def "List paths recursive"() {
+        setup:
+        def dirName = generatePathName()
+        fsc.getDirectoryClient(dirName).create()
+
+        def fileName = generatePathName()
+        fsc.getFileClient(fileName).create()
+
+        when:
+        def response = fsc.getPaths(new GetPathsOptions().setRecursive(true), null).iterator()
+
+        then:
+        def dirPath = response.next()
+        response.hasNext()
+        def filePath = response.next()
+        !response.hasNext()
+    }
+
+    def "List paths return upn"() {
+        setup:
+        def dirName = generatePathName()
+        fsc.getDirectoryClient(dirName).create()
+
+        def fileName = generatePathName()
+        fsc.getFileClient(fileName).create()
+
+        when:
+        def response = fsc.getPaths(new GetPathsOptions().setReturnUpn(true), null).iterator()
+
+        then:
+        def dirPath = response.next()
+        response.hasNext()
+        def filePath = response.next()
+        !response.hasNext()
+    }
+
+    def "List paths max results"() {
+        setup:
+        def dirName = generatePathName()
+        fsc.getDirectoryClient(dirName).create()
+
+        def fileName = generatePathName()
+        fsc.getFileClient(fileName).create()
+
+        when:
+        def response = fsc.getPaths(new GetPathsOptions().setMaxResults(1), null).iterator()
+
+        then:
+        def dirPath = response.next()
+        response.hasNext()
+        def filePath = response.next()
+        !response.hasNext()
+    }
+
+    def "List paths path"() {
+        setup:
+        def dirName = generatePathName()
+        fsc.getDirectoryClient("foo").create()
+
+        def fileName = generatePathName()
+        fsc.getFileClient(fileName).create()
+
+        when:
+        def response = fsc.getPaths(new GetPathsOptions().setPath("foo"), null).iterator()
+
+        then:
+        def dirPath = response.next()
+//        response.hasNext()
+//        def filePath = response.next()
+        !response.hasNext()
+    }
+
+//    setupFileSystemForGetPaths() {}
+
 }

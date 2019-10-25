@@ -34,7 +34,23 @@
 
   <properties>
     <project.automatic.module.name>com.azure.storage.file.datalake</project.automatic.module.name>
+    <src.dir>src/main/java</src.dir>
+    <test.dir>src/test/java</test.dir>
   </properties>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>bintray</id>
+      <name>Groovy Bintray</name>
+      <url>https://dl.bintray.com/groovy/maven</url>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
   <dependencies>
     <dependency>
@@ -99,6 +115,16 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+      </testResource>
+    </testResources>
+  </build>
+
   <profiles>
     <profile>
       <id>java8</id>
@@ -111,10 +137,23 @@
             <!-- Skip maven compiler and use gmavenplus plugin instead -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven-compiler-plugin.version}</version>
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
+              <showWarnings>true</showWarnings>
+              <failOnWarning>true</failOnWarning>
+              <compilerArgs>
+                <arg>-Xlint:all</arg>
+                <arg>-Xlint:-serial</arg>
+                <arg>-Xlint:-deprecation</arg>
+                <arg>-Xlint:-processing</arg>
+              </compilerArgs>
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
             </configuration>
+
             <executions>
               <execution>
                 <id>test-compile</id>

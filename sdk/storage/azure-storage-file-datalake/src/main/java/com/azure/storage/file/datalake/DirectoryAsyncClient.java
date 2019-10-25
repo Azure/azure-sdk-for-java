@@ -13,6 +13,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
+import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
 
@@ -21,6 +22,20 @@ import java.util.Map;
 import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
+/**
+ * This class provides a client that contains directory operations for Azure Storage Data Lake. Operations provided by
+ * this client include creating a directory, deleting a directory, renaming a directory, setting metadata and
+ * http headers, setting and retrieving access control, getting properties and creating and deleting files and
+ * subdirectories.
+ *
+ * <p>
+ * This client is instantiated through {@link PathClientBuilder} or retrieved via
+ * {@link FileSystemAsyncClient#getDirectoryAsyncClient(String) getDirectoryAsyncClient}.
+ *
+ * <p>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Docs</a> for more information.
+ */
 public final class DirectoryAsyncClient extends PathAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DirectoryAsyncClient.class);
@@ -41,7 +56,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, directoryName, blockBlobAsyncClient);
     }
 
-    private DirectoryAsyncClient(PathAsyncClient pathAsyncClient) {
+    DirectoryAsyncClient(PathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.getObjectPath(),
             pathAsyncClient.getBlockBlobAsyncClient());
@@ -60,7 +75,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * @return A reactive response containing information about the created directory.
      */
-    public Mono<PathItem> create() {
+    public Mono<PathInfo> create() {
         try {
             return createWithResponse(null, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -87,7 +102,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
-    public Mono<Response<PathItem>> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
+    public Mono<Response<PathInfo>> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
         PathAccessConditions accessConditions, String permissions, String umask) {
         try {
             return withContext(context -> createWithResponse(PathResourceType.DIRECTORY, headers, metadata,
@@ -258,26 +273,27 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
     }
 
     /**
-     * Creates a new DirectoryAsyncClient object by concatenating directoryName to the end of DirectoryAsyncClient's
+     * Creates a new DirectoryAsyncClient object by concatenating subDirectoryName to the end of DirectoryAsyncClient's
      * URL. The new DirectoryAsyncClient uses the same request policy pipeline as the DirectoryAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.getDirectoryAsyncClient#String}
      *
-     * @param directoryName A {@code String} representing the name of the sub-directory.
+     * @param subDirectoryName A {@code String} representing the name of the sub-directory.
      * @return A new {@link DirectoryAsyncClient} object which references the directory with the specified name in this
      * file system.
      */
-    public DirectoryAsyncClient getSubDirectoryAsyncClient(String directoryName) {
-        if (ImplUtils.isNullOrEmpty(directoryName)) {
+    public DirectoryAsyncClient getSubDirectoryAsyncClient(String subDirectoryName) {
+        if (ImplUtils.isNullOrEmpty(subDirectoryName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'directoryName' can not be set to null"));
         }
-        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(directoryName).buildBlockBlobAsyncClient();
+        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(subDirectoryName)
+            .buildBlockBlobAsyncClient();
 
         return new DirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), directoryName).toString(), getServiceVersion(),
-            getAccountName(), getFileSystemName(), getObjectPath() + "/"+ directoryName, blockBlobAsyncClient);
+            StorageImplUtils.appendToUrlPath(getPathUrl(), subDirectoryName).toString(), getServiceVersion(),
+            getAccountName(), getFileSystemName(), getObjectPath() + "/"+ subDirectoryName, blockBlobAsyncClient);
     }
 
     /**
@@ -289,12 +305,12 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createSubDirectory#String}
      *
-     * @param directoryName Name of the sub-directory to create.
+     * @param subDirectoryName Name of the sub-directory to create.
      * @return A {@link Mono} containing a {@link DirectoryAsyncClient} used to interact with the directory created.
      */
-    public Mono<DirectoryAsyncClient> createSubDirectory(String directoryName) {
+    public Mono<DirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
         try {
-            return createSubDirectoryWithResponse(directoryName, null, null, null, null, null)
+            return createSubDirectoryWithResponse(subDirectoryName, null, null, null, null, null)
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -310,7 +326,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-PathAccessConditions-String-String}
      *
-     * @param directoryName Name of the sub-directory to create.
+     * @param subDirectoryName Name of the sub-directory to create.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the sub-directory.
      * @param accessConditions {@link PathAccessConditions}
@@ -320,11 +336,11 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DirectoryAsyncClient} used to interact with the sub-directory created.
      */
-    public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String directoryName,
+    public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
         PathHttpHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
         String permissions, String umask) {
         try {
-            DirectoryAsyncClient directoryAsyncClient = getSubDirectoryAsyncClient(directoryName);
+            DirectoryAsyncClient directoryAsyncClient = getSubDirectoryAsyncClient(subDirectoryName);
 
             return directoryAsyncClient.createWithResponse(headers, metadata, accessConditions, permissions, umask)
                 .map(response -> new SimpleResponse<>(response, directoryAsyncClient));
@@ -342,12 +358,12 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.deleteSubDirectory#String}
      *
-     * @param directoryName Name of the sub-directory to delete.
+     * @param subDirectoryName Name of the sub-directory to delete.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> deleteSubDirectory(String directoryName) {
+    public Mono<Void> deleteSubDirectory(String subDirectoryName) {
         try {
-            return deleteSubDirectoryWithResponse(directoryName, false, null).flatMap(FluxUtil::toMono);
+            return deleteSubDirectoryWithResponse(subDirectoryName, false, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -384,14 +400,14 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.move#String}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.rename#String}
      *
-     * @param destinationPath Relative path from the file system to move the directory to.
+     * @param destinationPath Relative path from the file system to rename the directory to.
      * @return A {@link Mono} containing a {@link DirectoryAsyncClient} used to interact with the new directory created.
      */
-    public Mono<DirectoryAsyncClient> move(String destinationPath) {
+    public Mono<DirectoryAsyncClient> rename(String destinationPath) {
         try {
-            return moveWithResponse(destinationPath, null, null, null, null, null, null).flatMap(FluxUtil::toMono);
+            return renameWithResponse(destinationPath, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -404,25 +420,19 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.moveWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.renameWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
      *
-     * @param destinationPath Relative path from the file system to move the directory to.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the directory.
-     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
-     * @param umask Restricts permissions of the sdirectory to be created.
+     * @param destinationPath Relative path from the file system to rename the directory to.
      * @param sourceAccessConditions {@link PathAccessConditions} against the source.
      * @param destAccessConditions {@link PathAccessConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DirectoryAsyncClient} used to interact with the directory created.
      */
-    public Mono<Response<DirectoryAsyncClient>> moveWithResponse(String destinationPath,
-        PathHttpHeaders headers, Map<String, String> metadata, String permissions, String umask,
+    public Mono<Response<DirectoryAsyncClient>> renameWithResponse(String destinationPath,
         PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions) {
         try {
-            return withContext(context -> moveWithResponse(destinationPath, headers,
-                metadata, permissions, umask, sourceAccessConditions, destAccessConditions, context))
-                .map(response -> new SimpleResponse<>(response,
+            return withContext(context -> renameWithResponse(destinationPath, sourceAccessConditions,
+                destAccessConditions, context)).map(response -> new SimpleResponse<>(response,
                     new DirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

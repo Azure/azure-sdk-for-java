@@ -27,6 +27,20 @@ import java.util.Map;
 
 import static com.azure.core.implementation.util.FluxUtil.*;
 
+/**
+ * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
+ * this client include creating a file, deleting a file, renaming a file, setting metadata and
+ * http headers, setting and retrieving access control, getting properties, reading a file, and appending and flushing
+ * data to write to a file.
+ *
+ * <p>
+ * This client is instantiated through {@link PathClientBuilder} or retrieved via
+ * {@link FileSystemAsyncClient#getFileAsyncClient(String)}.
+ *
+ * <p>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Docs</a> for more information.
+ */
 public class FileAsyncClient extends PathAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(FileAsyncClient.class);
@@ -47,10 +61,37 @@ public class FileAsyncClient extends PathAsyncClient {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, blockBlobAsyncClient);
     }
 
-    public FileAsyncClient(PathAsyncClient pathAsyncClient) {
+    FileAsyncClient(PathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.getObjectPath(),
             pathAsyncClient.getBlockBlobAsyncClient());
+    }
+
+    /**
+     * Gets the URL of the file represented by this client on the Data Lake service.
+     *
+     * @return the URL.
+     */
+    public String getFileUrl() {
+        return getPathUrl();
+    }
+
+    /**
+     * Gets the path of this file, not including the name of the resource itself.
+     *
+     * @return The path of the file.
+     */
+    public String getFilePath() {
+        return getObjectPath();
+    }
+
+    /**
+     * Gets the name of this file, not including its full path.
+     *
+     * @return The name of the file.
+     */
+    public String getFileName() {
+        return getObjectName();
     }
 
     /**
@@ -66,7 +107,7 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * @return A reactive response containing information about the created file.
      */
-    public Mono<PathItem> create() {
+    public Mono<PathInfo> create() {
         try {
             return createWithResponse(null, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -93,7 +134,7 @@ public class FileAsyncClient extends PathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
-    public Mono<Response<PathItem>> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
+    public Mono<Response<PathInfo>> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
         PathAccessConditions accessConditions, String permissions, String umask) {
         try {
             return withContext(context -> createWithResponse(PathResourceType.FILE, headers, metadata,
@@ -150,11 +191,11 @@ public class FileAsyncClient extends PathAsyncClient {
     }
 
     /**
-     * Appends data to the specified resource to later be flushed (written) by a call to flushData
+     * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.appendData#Flux-long-long}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.append#Flux-long-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -176,11 +217,11 @@ public class FileAsyncClient extends PathAsyncClient {
     }
 
     /**
-     * Appends data to the specified resource to later be flushed (written) by a call to flushData
+     * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.appendDataWithResponse#Flux-long-long-byte-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.appendWithResponse#Flux-long-long-byte-LeaseAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -219,12 +260,12 @@ public class FileAsyncClient extends PathAsyncClient {
     }
 
     /**
-     * Flushes (writes) data previously appended to the file through a call to appendData.
+     * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.flushData#Long}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.flush#Long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -243,12 +284,12 @@ public class FileAsyncClient extends PathAsyncClient {
     }
 
     /**
-     * Flushes (writes) data previously appended to the file through a call to appendData.
+     * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.flushDataWithResponse#Long-boolean-boolean-PathHttpHeaders-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.flushWithResponse#Long-boolean-boolean-PathHttpHeaders-PathAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -339,14 +380,14 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.move#String}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.rename#String}
      *
-     * @param destinationPath Relative path from the file system to move the file to.
+     * @param destinationPath Relative path from the file system to rename the file to.
      * @return A {@link Mono} containing a {@link FileAsyncClient} used to interact with the new file created.
      */
-    public Mono<FileAsyncClient> move(String destinationPath) {
+    public Mono<FileAsyncClient> rename(String destinationPath) {
         try {
-            return moveWithResponse(destinationPath, null, null, null, null, null, null).flatMap(FluxUtil::toMono);
+            return renameWithResponse(destinationPath, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -359,25 +400,19 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.moveWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.renameWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
      *
-     * @param destinationPath Relative path from the file system to move the file to.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file.
-     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
-     * @param umask Restricts permissions of the file to be created.
+     * @param destinationPath Relative path from the file system to rename the file to.
      * @param sourceAccessConditions {@link PathAccessConditions} against the source.
      * @param destAccessConditions {@link PathAccessConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * FileAsyncClient} used to interact with the file created.
      */
-    public Mono<Response<FileAsyncClient>> moveWithResponse(String destinationPath,
-        PathHttpHeaders headers, Map<String, String> metadata, String permissions, String umask,
+    public Mono<Response<FileAsyncClient>> renameWithResponse(String destinationPath,
         PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions) {
         try {
-            return withContext(context -> moveWithResponse(destinationPath, headers,
-                metadata, permissions, umask, sourceAccessConditions, destAccessConditions, context))
-                .map(response -> new SimpleResponse<>(response,
+            return withContext(context -> renameWithResponse(destinationPath, sourceAccessConditions,
+                destAccessConditions, context)).map(response -> new SimpleResponse<>(response,
                     new FileAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

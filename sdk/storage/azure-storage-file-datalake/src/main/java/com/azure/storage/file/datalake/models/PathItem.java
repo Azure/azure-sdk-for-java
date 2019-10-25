@@ -24,11 +24,6 @@ public class PathItem {
     private String owner;
     private String permissions;
 
-    public PathItem(PathCreateHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModifiedTime = generatedHeaders.getLastModified();
-    }
-
     public PathItem(Path path) {
         this.eTag = path.getETag();
         this.lastModifiedTime = OffsetDateTime.parse(path.getLastModified(), DateTimeFormatter.RFC_1123_DATE_TIME);

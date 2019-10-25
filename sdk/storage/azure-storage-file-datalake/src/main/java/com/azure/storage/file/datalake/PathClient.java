@@ -25,10 +25,11 @@ import java.util.Map;
  */
 public class PathClient {
     private final ClientLogger logger = new ClientLogger(PathClient.class);
+
     protected final PathAsyncClient pathAsyncClient;
     protected final BlockBlobClient blockBlobClient;
 
-    protected PathClient(PathAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient) {
+    PathClient(PathAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient) {
         this.pathAsyncClient = pathAsyncClient;
         this.blockBlobClient = blockBlobClient;
     }
@@ -38,7 +39,7 @@ public class PathClient {
      *
      * @return the URL.
      */
-    protected String getPathUrl() {
+    String getPathUrl() {
         return pathAsyncClient.getPathUrl();
     }
 
@@ -65,7 +66,7 @@ public class PathClient {
      *
      * @return The path of the object.
      */
-    protected String getObjectPath() {
+    String getObjectPath() {
         return pathAsyncClient.getObjectPath();
     }
 
@@ -74,7 +75,7 @@ public class PathClient {
      *
      * @return The name of the object.
      */
-    public String getObjectName() {
+    String getObjectName() {
         return pathAsyncClient.getObjectName();
     }
 
@@ -212,8 +213,8 @@ public class PathClient {
      */
     public Response<PathInfo> setAccessControlWithResponse(PathAccessControl accessControl,
         PathAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PathInfo>> response = pathAsyncClient.setAccessControlWithResponse(accessControl, accessConditions,
-            context);
+        Mono<Response<PathInfo>> response = pathAsyncClient.setAccessControlWithResponse(accessControl,
+            accessConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -253,15 +254,10 @@ public class PathClient {
      */
     public Response<PathAccessControl> getAccessControlWithResponse(boolean returnUpn,
         PathAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PathAccessControl>> response = pathAsyncClient.getAccessControlWithResponse(returnUpn, accessConditions,
-            context);
+        Mono<Response<PathAccessControl>> response = pathAsyncClient.getAccessControlWithResponse(returnUpn,
+            accessConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-    }
-
-    private PathClient getPathClient(String destinationPath) {
-        return new PathClient(pathAsyncClient.getPathAsyncClient(destinationPath),
-            pathAsyncClient.prepareBuilderReplacePath(destinationPath).buildBlockBlobClient());
     }
 
     /**
@@ -303,22 +299,17 @@ public class PathClient {
     }
 
     /**
-     * Package-private move method for use by {@link FileClient} and {@link DirectoryClient}
+     * Package-private rename method for use by {@link FileClient} and {@link DirectoryClient}
      *
      * @param destinationPath The path of the destination relative to the file system name
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
-     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
-     * @param umask Restricts permissions of the directory to be created.
      * @param sourceAccessConditions {@link PathAccessConditions} against the source.
      * @param destAccessConditions {@link PathAccessConditions} against the destination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathClient} used to interact with the path created.
      */
-    Mono<Response<PathClient>> moveWithResponse(String destinationPath,
-        PathHttpHeaders headers, Map<String, String> metadata, String permissions, String umask,
-        PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions, Context context) {
+    Mono<Response<PathClient>> renameWithResponse(String destinationPath, PathAccessConditions sourceAccessConditions,
+        PathAccessConditions destAccessConditions, Context context) {
 
         destAccessConditions = destAccessConditions == null ? new PathAccessConditions() : destAccessConditions;
         sourceAccessConditions = sourceAccessConditions == null ? new PathAccessConditions()
@@ -337,13 +328,21 @@ public class PathClient {
 
         String renameSource = "/" + pathAsyncClient.getFileSystemName() + "/" + pathAsyncClient.getObjectPath();
 
-        return pathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
-            null /* continuation */, PathRenameMode.LEGACY, renameSource,
-            sourceAccessConditions.getLeaseAccessConditions().getLeaseId(),
-            PathAsyncClient.buildMetadataString(metadata), permissions, umask, null /* request id */,
-            null /* timeout */, headers, destAccessConditions.getLeaseAccessConditions(),
-            destAccessConditions.getModifiedAccessConditions(), sourceConditions, context)
-            .map(response -> new SimpleResponse<>(response, pathClient));
+        return pathClient.pathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(
+            null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, renameSource,
+            sourceAccessConditions.getLeaseAccessConditions().getLeaseId(), null /* properties */,
+            null /* permissions */, null /* umask */, null /* request id */, null /* timeout */, null /* headers */,
+            destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getModifiedAccessConditions(),
+            sourceConditions, context).map(response -> new SimpleResponse<>(response, pathClient));
+    }
+
+    private PathClient getPathClient(String destinationPath) {
+        return new PathClient(pathAsyncClient.getPathAsyncClient(destinationPath),
+            pathAsyncClient.prepareBuilderReplacePath(destinationPath).buildBlockBlobClient());
+    }
+
+    BlockBlobClient getBlockBlobClient() {
+        return blockBlobClient;
     }
 
 }

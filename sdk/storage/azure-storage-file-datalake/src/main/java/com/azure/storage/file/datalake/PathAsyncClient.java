@@ -42,11 +42,11 @@ public class PathAsyncClient {
     private final ClientLogger logger = new ClientLogger(PathAsyncClient.class);
 
     protected final DataLakeStorageClientImpl dataLakeStorage;
-    protected final String accountName;
-    protected final String fileSystemName;
-    protected final String pathName;
+    private final String accountName;
+    private final String fileSystemName;
+    private final String pathName;
     protected final BlockBlobAsyncClient blockBlobAsyncClient;
-    protected final DataLakeServiceVersion serviceVersion;
+    private final DataLakeServiceVersion serviceVersion;
 
     /**
      * Package-private constructor for use by {@link PathClientBuilder}.
@@ -59,7 +59,7 @@ public class PathAsyncClient {
      * @param pathName The path name.
      * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
-    protected PathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
+    PathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, BlockBlobAsyncClient blockBlobAsyncClient) {
         this.dataLakeStorage = new DataLakeStorageClientBuilder()
             .pipeline(pipeline)
@@ -81,7 +81,7 @@ public class PathAsyncClient {
      *
      * @return The metadata represented as a String.
      */
-    protected static String buildMetadataString(Map<String, String> metadata) {
+    static String buildMetadataString(Map<String, String> metadata) {
         StringBuilder sb = new StringBuilder();
         if (!ImplUtils.isNullOrEmpty(metadata)) {
             for (final Map.Entry<String, String> entry : metadata.entrySet()) {
@@ -112,7 +112,7 @@ public class PathAsyncClient {
      *
      * @return the URL.
      */
-    protected String getPathUrl() {
+    String getPathUrl() {
         return dataLakeStorage.getUrl();
     }
 
@@ -139,7 +139,7 @@ public class PathAsyncClient {
      *
      * @return The path of the object.
      */
-    protected String getObjectPath() {
+    String getObjectPath() {
         return pathName;
     }
 
@@ -148,7 +148,7 @@ public class PathAsyncClient {
      *
      * @return The name of the object.
      */
-    public String getObjectName() {
+    String getObjectName() {
         String[] pathParts = pathName.split("/");
         return pathParts[pathParts.length - 1];
     }
@@ -185,7 +185,7 @@ public class PathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
-    Mono<Response<PathItem>> createWithResponse(PathResourceType resourceType, PathHttpHeaders headers,
+    Mono<Response<PathInfo>> createWithResponse(PathResourceType resourceType, PathHttpHeaders headers,
         Map<String, String> metadata, PathAccessConditions accessConditions, String permissions, String umask,
         Context context) {
         accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
@@ -193,7 +193,7 @@ public class PathAsyncClient {
         return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null,
             buildMetadataString(metadata), permissions, umask, null, null, headers,
             accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), null, context)
-            .map(response -> new SimpleResponse<>(response, new PathItem(response.getDeserializedHeaders())));
+            .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders())));
     }
 
     /**
@@ -460,21 +460,16 @@ public class PathAsyncClient {
     }
 
     /**
-     * Package-private move method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
+     * Package-private rename method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
      *
      * @param destinationPath The path of the destination relative to the file system name
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
-     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
-     * @param umask Restricts permissions of the directory to be created.
      * @param sourceAccessConditions {@link PathAccessConditions} against the source.
      * @param destAccessConditions {@link PathAccessConditions} against the destination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathAsyncClient} used to interact with the path created.
      */
-    Mono<Response<PathAsyncClient>> moveWithResponse(String destinationPath,
-        PathHttpHeaders headers, Map<String, String> metadata, String permissions, String umask,
+    Mono<Response<PathAsyncClient>> renameWithResponse(String destinationPath,
         PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions, Context context) {
 
         destAccessConditions = destAccessConditions == null ? new PathAccessConditions() : destAccessConditions;
@@ -496,8 +491,8 @@ public class PathAsyncClient {
 
         return pathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
             null /* continuation */, PathRenameMode.LEGACY, renameSource,
-            sourceAccessConditions.getLeaseAccessConditions().getLeaseId(), buildMetadataString(metadata), permissions,
-            umask, null /* request id */, null /* timeout */, headers,
+            sourceAccessConditions.getLeaseAccessConditions().getLeaseId(), null /* metadata */, null /* permissions */,
+            null /* umask */, null /* request id */, null /* timeout */, null /* pathHttpHeaders */,
             destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getModifiedAccessConditions(),
             sourceConditions, context).map(response -> new SimpleResponse<>(response, pathAsyncClient));
     }
@@ -526,8 +521,7 @@ public class PathAsyncClient {
      */
     SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationPath) {
         // Get current Blob URL and replace current path with user provided path
-        String newBlobEndpoint = BlobUrlParts.parse(
-            Transforms.endpointToDesiredEndpoint(destinationPath, "dfs", "blob"))
+        String newBlobEndpoint = BlobUrlParts.parse(Transforms.endpointToDesiredEndpoint(getPathUrl(), "dfs", "blob"))
             .setBlobName(destinationPath).toUrl().toString();
 
         // TODO (gapra) : Investigate how to convert from datalake service version to blob service version

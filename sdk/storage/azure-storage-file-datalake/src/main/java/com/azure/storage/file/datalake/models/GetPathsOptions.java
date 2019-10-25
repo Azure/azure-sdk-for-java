@@ -15,7 +15,7 @@ public class GetPathsOptions {
 
     private String path;
     private boolean recursive;
-    private boolean upn;
+    private boolean returnUpn;
     private Integer maxResults;
 
 
@@ -44,10 +44,10 @@ public class GetPathsOptions {
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
      *
-     * @return the upn value.
+     * @return the returnUpn value.
      */
-    public boolean isUpn() {
-        return upn;
+    public boolean isReturnUpn() {
+        return returnUpn;
     }
 
     /**
@@ -74,11 +74,11 @@ public class GetPathsOptions {
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
      *
-     * @param upn The upn value
+     * @param returnUpn The returnUpn value
      * @return the updated GetPathsOptions object
      */
-    public GetPathsOptions setUpn(boolean upn) {
-        this.upn = upn;
+    public GetPathsOptions setReturnUpn(boolean returnUpn) {
+        this.returnUpn = returnUpn;
         return this;
     }
 

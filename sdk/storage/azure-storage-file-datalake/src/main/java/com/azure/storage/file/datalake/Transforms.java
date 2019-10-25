@@ -114,7 +114,7 @@ class Transforms {
         return new FileSystemProperties(blobContainerProperties);
     }
 
-    static BlobContainerListDetails toBlobContainerListDetails(FileSystemListDetails fileSystemListDetails) {
+    private static BlobContainerListDetails toBlobContainerListDetails(FileSystemListDetails fileSystemListDetails) {
         return new BlobContainerListDetails()
             .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata());
     }
@@ -197,7 +197,7 @@ class Transforms {
         }
     }
 
-    public static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {
+    static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {
         if (blobContainerItem == null) {
             return null;
         }
@@ -214,16 +214,16 @@ class Transforms {
         }
         return new FileSystemItemProperties()
             .setETag(blobContainerItemProperties.getETag())
-            .setHasImmutabilityPolicy(blobContainerItemProperties.isHasImmutabilityPolicy())
-            .setHasLegalHold(blobContainerItemProperties.isHasLegalHold())
             .setLastModified(blobContainerItemProperties.getLastModified())
-            .setLeaseDuration(Transforms.toDataLakeLeaseDurationType(blobContainerItemProperties.getLeaseDuration()))
-            .setLeaseState(Transforms.toDataLakeLeaseStateType(blobContainerItemProperties.getLeaseState()))
-            .setLeaseStatus(Transforms.toDataLakeLeaseStatusType(blobContainerItemProperties.getLeaseStatus()))
-            .setPublicAccess(Transforms.toDataLakePublicAccessType(blobContainerItemProperties.getPublicAccess()));
+            .setLeaseStatus(toDataLakeLeaseStatusType(blobContainerItemProperties.getLeaseStatus()))
+            .setLeaseState(toDataLakeLeaseStateType(blobContainerItemProperties.getLeaseState()))
+            .setLeaseDuration(toDataLakeLeaseDurationType(blobContainerItemProperties.getLeaseDuration()))
+            .setPublicAccess(toDataLakePublicAccessType(blobContainerItemProperties.getPublicAccess()))
+            .setHasLegalHold(blobContainerItemProperties.isHasLegalHold())
+            .setHasImmutabilityPolicy(blobContainerItemProperties.isHasImmutabilityPolicy());
     }
 
-    public static PathItem toPathItem(Path path) {
+    static PathItem toPathItem(Path path) {
         if (path == null) {
             return null;
         }

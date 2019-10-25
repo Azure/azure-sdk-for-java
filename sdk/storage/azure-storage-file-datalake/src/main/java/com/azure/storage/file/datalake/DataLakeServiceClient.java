@@ -12,7 +12,9 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.core.credential.TokenCredential;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
+import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
@@ -33,6 +35,7 @@ import java.util.Map;
  */
 @ServiceClient(builder = DataLakeServiceClientBuilder.class)
 public class DataLakeServiceClient {
+
     private final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
     private final BlobServiceClient blobServiceClient;
 
@@ -134,7 +137,7 @@ public class DataLakeServiceClient {
      * @param fileSystemName Name of the file system to delete
      */
     public void deleteFileSystem(String fileSystemName) {
-        deleteFileSystemWithResponse(fileSystemName, Context.NONE).getValue();
+        deleteFileSystemWithResponse(fileSystemName, null, Context.NONE).getValue();
     }
 
     /**
@@ -144,14 +147,16 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-FileSystemAccessConditions-Context}
      *
      * @param fileSystemName Name of the file system to delete
+     * @param accessConditions {@link FileSystemAccessConditions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> deleteFileSystemWithResponse(String fileSystemName, Context context) {
-        return blobServiceClient.deleteBlobContainerWithResponse(fileSystemName, context);
+    public Response<Void> deleteFileSystemWithResponse(String fileSystemName,
+        FileSystemAccessConditions accessConditions, Context context) {
+        return getFileSystemClient(fileSystemName).deleteWithResponse(accessConditions, null, context);
     }
 
     /**

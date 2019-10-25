@@ -10,12 +10,26 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
-import com.azure.storage.file.datalake.models.PathItem;
+import com.azure.storage.file.datalake.models.PathInfo;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
 
+/**
+ * This class provides a client that contains directory operations for Azure Storage Data Lake. Operations provided by
+ * this client include creating a directory, deleting a directory, renaming a directory, setting metadata and
+ * http headers, setting and retrieving access control, getting properties and creating and deleting files and
+ * subdirectories.
+ *
+ * <p>
+ * This client is instantiated through {@link PathClientBuilder} or retrieved via
+ * {@link FileSystemClient#getDirectoryClient(String) getDirectoryClient}.
+ *
+ * <p>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Docs</a> for more information.
+ */
 public class DirectoryClient extends PathClient {
     private final ClientLogger logger = new ClientLogger(DirectoryClient.class);
 
@@ -26,9 +40,36 @@ public class DirectoryClient extends PathClient {
         this.directoryAsyncClient = pathAsyncClient;
     }
 
-    DirectoryClient(PathClient pathClient) {
+    private DirectoryClient(PathClient pathClient) {
         super(pathClient.pathAsyncClient, pathClient.blockBlobClient);
-        this.directoryAsyncClient = (DirectoryAsyncClient) pathClient.pathAsyncClient;
+        this.directoryAsyncClient = new DirectoryAsyncClient(pathClient.pathAsyncClient);
+    }
+
+    /**
+     * Gets the URL of the directory represented by this client on the Data Lake service.
+     *
+     * @return the URL.
+     */
+    public String getDirectoryUrl() {
+        return getPathUrl();
+    }
+
+    /**
+     * Gets the path of this directory, not including the name of the resource itself.
+     *
+     * @return The path of the directory.
+     */
+    public String getDirectoryPath() {
+        return getObjectPath();
+    }
+
+    /**
+     * Gets the name of this directory, not including its full path.
+     *
+     * @return The name of the directory.
+     */
+    public String getDirectoryName() {
+        return getObjectName();
     }
 
     /**
@@ -44,7 +85,7 @@ public class DirectoryClient extends PathClient {
      *
      * @return Information about the created directory.
      */
-    public PathItem create() {
+    public PathInfo create() {
         return createWithResponse(null, null, null, null, null, null, Context.NONE).getValue();
     }
 
@@ -66,9 +107,9 @@ public class DirectoryClient extends PathClient {
      * @param umask Restricts permissions of the file to be created.
      * @return A response containing information about the created directory.
      */
-    public Response<PathItem> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
-        String permissions, String umask, PathAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PathItem>> response = pathAsyncClient.createWithResponse(PathResourceType.DIRECTORY, headers,
+    public Response<PathInfo> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
+        PathAccessConditions accessConditions, String permissions, String umask, Duration timeout, Context context) {
+        Mono<Response<PathInfo>> response = pathAsyncClient.createWithResponse(PathResourceType.DIRECTORY, headers,
             metadata, accessConditions, permissions, umask, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -173,10 +214,9 @@ public class DirectoryClient extends PathClient {
         Map<String, String> metadata, PathAccessConditions accessConditions, String permissions, String umask,
         Duration timeout, Context context) {
         FileClient fileClient = getFileClient(fileName);
-        Response<PathItem> response = fileClient.createWithResponse(headers, metadata, accessConditions, permissions,
+        Response<PathInfo> response = fileClient.createWithResponse(headers, metadata, accessConditions, permissions,
             umask, timeout, context);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            fileClient);
+        return new SimpleResponse<>(response, fileClient);
     }
 
     /**
@@ -219,7 +259,7 @@ public class DirectoryClient extends PathClient {
      * Initializes a new DirectoryClient object by concatenating directoryName to the end of DirectoryClient's URL.
      * The new DirectoryClient uses the same request policy pipeline as the DirectoryClient.
      *
-     * @param directoryName A {@code String} representing the name of the sub-directory.
+     * @param subDirectoryName A {@code String} representing the name of the sub-directory.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -228,12 +268,12 @@ public class DirectoryClient extends PathClient {
      * @return A new {@link DirectoryClient} object which references the sub-directory with the specified name in this
      * directory
      */
-    public DirectoryClient getSubDirectoryClient(String directoryName) {
-        if (ImplUtils.isNullOrEmpty(directoryName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'directoryName' can not be set to null"));
+    public DirectoryClient getSubDirectoryClient(String subDirectoryName) {
+        if (ImplUtils.isNullOrEmpty(subDirectoryName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'subDirectoryName' can not be set to null"));
         }
-        return new DirectoryClient(directoryAsyncClient.getSubDirectoryAsyncClient(directoryName),
-            directoryAsyncClient.prepareBuilderAppendPath(directoryName).buildBlockBlobClient());
+        return new DirectoryClient(directoryAsyncClient.getSubDirectoryAsyncClient(subDirectoryName),
+            directoryAsyncClient.prepareBuilderAppendPath(subDirectoryName).buildBlockBlobClient());
     }
 
     /**
@@ -245,11 +285,11 @@ public class DirectoryClient extends PathClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DirectoryClient.createSubDirectory#String}
      *
-     * @param directoryName Name of the sub-directory to create.
+     * @param subDirectoryName Name of the sub-directory to create.
      * @return A {@link DirectoryClient} used to interact with the sub-directory created.
      */
-    public DirectoryClient createSubDirectory(String directoryName) {
-        return createSubDirectoryWithResponse(directoryName, null, null, null, null, null, null, null).getValue();
+    public DirectoryClient createSubDirectory(String subDirectoryName) {
+        return createSubDirectoryWithResponse(subDirectoryName, null, null, null, null, null, null, null).getValue();
     }
 
     /**
@@ -261,7 +301,7 @@ public class DirectoryClient extends PathClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.Directory.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-PathAccessConditions-String-String}
      *
-     * @param directoryName Name of the sub-directory to create.
+     * @param subDirectoryName Name of the sub-directory to create.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the sub-directory.
      * @param accessConditions {@link PathAccessConditions}
@@ -271,14 +311,13 @@ public class DirectoryClient extends PathClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DirectoryClient} used to
      * interact with the sub-directory created.
      */
-    public Response<DirectoryClient> createSubDirectoryWithResponse(String directoryName,
+    public Response<DirectoryClient> createSubDirectoryWithResponse(String subDirectoryName,
         PathHttpHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
         String permissions, String umask, Duration timeout, Context context) {
-        DirectoryClient directoryClient = getSubDirectoryClient(directoryName);
-        Response<PathItem> response = directoryClient.createWithResponse(headers, metadata, permissions, umask,
-            accessConditions, timeout, context);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            directoryClient);
+        DirectoryClient directoryClient = getSubDirectoryClient(subDirectoryName);
+        Response<PathInfo> response = directoryClient.createWithResponse(headers, metadata, accessConditions, permissions, umask,
+            timeout, context);
+        return new SimpleResponse<>(response, directoryClient);
     }
 
     /**
@@ -290,10 +329,10 @@ public class DirectoryClient extends PathClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DirectoryClient.deleteSubDirectory#String}
      *
-     * @param directoryName Name of the sub-directory to delete.
+     * @param subDirectoryName Name of the sub-directory to delete.
      */
-    public void deleteSubDirectory(String directoryName) {
-        deleteSubDirectoryWithResponse(directoryName, false, null, null, null);
+    public void deleteSubDirectory(String subDirectoryName) {
+        deleteSubDirectoryWithResponse(subDirectoryName, false, null, null, null);
     }
 
     /**
@@ -305,16 +344,16 @@ public class DirectoryClient extends PathClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DirectoryClient.deleteSubDirectoryWithResponse#String-boolean-PathAccessConditions-Duration-Context}
      *
-     * @param directoryName Name of the sub-directory to delete.
+     * @param subDirectoryName Name of the sub-directory to delete.
      * @param recursive Whether or not to delete all paths beneath the sub-directory.
      * @param accessConditions {@link PathAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> deleteSubDirectoryWithResponse(String directoryName, boolean recursive,
+    public Response<Void> deleteSubDirectoryWithResponse(String subDirectoryName, boolean recursive,
         PathAccessConditions accessConditions, Duration timeout, Context context) {
-        DirectoryClient directoryClient = getSubDirectoryClient(directoryName);
+        DirectoryClient directoryClient = getSubDirectoryClient(subDirectoryName);
         return directoryClient.deleteWithResponse(recursive, accessConditions, timeout, context);
     }
 
@@ -326,13 +365,13 @@ public class DirectoryClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.move#String}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.rename#String}
      *
-     * @param destinationPath Relative path from the file system to move the directory to.
+     * @param destinationPath Relative path from the file system to rename the directory to.
      * @return A {@link DirectoryClient} used to interact with the new directory created.
      */
-    public DirectoryClient move(String destinationPath) {
-        return moveWithResponse(destinationPath, null, null, null, null, null, null, null, null).getValue();
+    public DirectoryClient rename(String destinationPath) {
+        return renameWithResponse(destinationPath, null, null, null, null).getValue();
     }
 
     /**
@@ -342,24 +381,19 @@ public class DirectoryClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryClient.moveWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryClient.renameWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
      *
-     * @param destinationPath Relative path from the file system to move the directory to.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the directory.
-     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
-     * @param umask Restricts permissions of the sdirectory to be created.
+     * @param destinationPath Relative path from the file system to rename the directory to.
      * @param sourceAccessConditions {@link PathAccessConditions} against the source.
      * @param destAccessConditions {@link PathAccessConditions} against the destination.
      * @return A {@link Response} whose {@link Response#getValue() value} that contains a {@link DirectoryClient} used
      * to interact with the directory created.
      */
-    public Response<DirectoryClient> moveWithResponse(String destinationPath, PathHttpHeaders headers,
-        Map<String, String> metadata, String permissions, String umask, PathAccessConditions sourceAccessConditions,
-        PathAccessConditions destAccessConditions, Duration timeout, Context context) {
+    public Response<DirectoryClient> renameWithResponse(String destinationPath,
+        PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions, Duration timeout,
+        Context context) {
 
-        Mono<Response<PathClient>> response = moveWithResponse(destinationPath, headers,
-            metadata, permissions, umask, sourceAccessConditions,
+        Mono<Response<PathClient>> response = renameWithResponse(destinationPath, sourceAccessConditions,
             destAccessConditions, context);
 
         Response<PathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);

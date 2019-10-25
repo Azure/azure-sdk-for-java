@@ -28,6 +28,20 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
+ * this client include creating a file, deleting a file, renaming a file, setting metadata and
+ * http headers, setting and retrieving access control, getting properties, reading a file, and appending and flushing
+ * data to write to a file.
+ *
+ * <p>
+ * This client is instantiated through {@link PathClientBuilder} or retrieved via
+ * {@link FileSystemClient#getFileClient(String) getFileClient}.
+ *
+ * <p>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Docs</a> for more information.
+ */
 public class FileClient extends PathClient {
 
     private ClientLogger logger = new ClientLogger(FileClient.class);
@@ -39,9 +53,36 @@ public class FileClient extends PathClient {
         this.fileAsyncClient = pathAsyncClient;
     }
 
-    FileClient(PathClient pathClient) {
+    private FileClient(PathClient pathClient) {
         super(pathClient.pathAsyncClient, pathClient.blockBlobClient);
-        this.fileAsyncClient = (FileAsyncClient) pathClient.pathAsyncClient;
+        this.fileAsyncClient = new FileAsyncClient(pathClient.pathAsyncClient);
+    }
+
+    /**
+     * Gets the URL of the file represented by this client on the Data Lake service.
+     *
+     * @return the URL.
+     */
+    public String getFileUrl() {
+        return getPathUrl();
+    }
+
+    /**
+     * Gets the path of this file, not including the name of the resource itself.
+     *
+     * @return The path of the file.
+     */
+    public String getFilePath() {
+        return getObjectPath();
+    }
+
+    /**
+     * Gets the name of this file, not including its full path.
+     *
+     * @return The name of the file.
+     */
+    public String getFileName() {
+        return getObjectName();
     }
 
     /**
@@ -57,7 +98,7 @@ public class FileClient extends PathClient {
      *
      * @return Information about the created file.
      */
-    public PathItem create() {
+    public PathInfo create() {
         return createWithResponse(null, null, null, null, null, null, Context.NONE).getValue();
     }
 
@@ -81,9 +122,9 @@ public class FileClient extends PathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing information about the created file
      */
-    public Response<PathItem> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
+    public Response<PathInfo> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
         PathAccessConditions accessConditions, String permissions, String umask, Duration timeout, Context context) {
-        Mono<Response<PathItem>> response = pathAsyncClient.createWithResponse(PathResourceType.FILE, headers, metadata,
+        Mono<Response<PathInfo>> response = pathAsyncClient.createWithResponse(PathResourceType.FILE, headers, metadata,
             accessConditions, permissions, umask, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -129,11 +170,11 @@ public class FileClient extends PathClient {
     }
 
     /**
-     * Appends data to the specified resource to later be flushed (written) by a call to flushData
+     * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.appendData#InputStream-long-long}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.append#InputStream-long-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -143,16 +184,16 @@ public class FileClient extends PathClient {
      * @param offset The position where the data is to be appended.
      * @param length The exact length of the data.
      */
-    public void appendData(InputStream data, long offset, long length) {
-        appendDataWithResponse(data, offset, length, null, null, null, Context.NONE);
+    public void append(InputStream data, long offset, long length) {
+        appendWithResponse(data, offset, length, null, null, null, Context.NONE);
     }
 
     /**
-     * Appends data to the specified resource to later be flushed (written) by a call to flushData
+     * Appends data to the specified resource to later be flushed (written) by a call to flush
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.appendDataWithResponse#InputStream-long-long-byte-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.appendWithResponse#InputStream-long-long-byte-LeaseAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -170,7 +211,7 @@ public class FileClient extends PathClient {
      *
      * @return A response signalling completion.
      */
-    public Response<Void> appendDataWithResponse(InputStream data, long offset, long length,
+    public Response<Void> appendWithResponse(InputStream data, long offset, long length,
         byte[] contentMd5, LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
 
         Objects.requireNonNull(data);
@@ -187,12 +228,12 @@ public class FileClient extends PathClient {
     }
 
     /**
-     * Flushes (writes) data previously appended to the file through a call to appendData.
+     * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.flushData#long}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.flush#long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -202,17 +243,17 @@ public class FileClient extends PathClient {
      *
      * @return Information about the created resource.
      */
-    public PathInfo flushData(long position) {
-        return flushDataWithResponse(position, false, false, null, null, null, Context.NONE).getValue();
+    public PathInfo flush(long position) {
+        return flushWithResponse(position, false, false, null, null, null, Context.NONE).getValue();
     }
 
     /**
-     * Flushes (writes) data previously appended to the file through a call to appendData.
+     * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.flushDataWithResponse#long-boolean-boolean-PathHttpHeaders-PathAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-PathAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -228,7 +269,7 @@ public class FileClient extends PathClient {
      *
      * @return A response containing the information of the created resource.
      */
-    public Response<PathInfo> flushDataWithResponse(long position, boolean retainUncommittedData, boolean close,
+    public Response<PathInfo> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, PathAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<PathInfo>> response =  fileAsyncClient.flushDataWithResponse(position, retainUncommittedData,
             close, httpHeaders, accessConditions, context);
@@ -290,13 +331,13 @@ public class FileClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.move#String}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.rename#String}
      *
-     * @param destinationPath Relative path from the file system to move the file to.
+     * @param destinationPath Relative path from the file system to rename the file to.
      * @return A {@link FileClient} used to interact with the new file created.
      */
-    public FileClient move(String destinationPath) {
-        return moveWithResponse(destinationPath, null, null, null, null, null, null, null, null).getValue();
+    public FileClient rename(String destinationPath) {
+        return renameWithResponse(destinationPath, null, null, null, null).getValue();
     }
 
     /**
@@ -306,24 +347,18 @@ public class FileClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.moveWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.renameWithResponse#String-PathHttpHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
      *
-     * @param destinationPath Relative path from the file system to move the file to.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file.
-     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
-     * @param umask Restricts permissions of the file to be created.
+     * @param destinationPath Relative path from the file system to rename the file to.
      * @param sourceAccessConditions {@link PathAccessConditions} against the source.
      * @param destAccessConditions {@link PathAccessConditions} against the destination.
      * @return A {@link Response} whose {@link Response#getValue() value} that contains a {@link FileClient} used
      * to interact with the file created.
      */
-    public Response<FileClient> moveWithResponse(String destinationPath, PathHttpHeaders headers,
-        Map<String, String> metadata, String permissions, String umask, PathAccessConditions sourceAccessConditions,
+    public Response<FileClient> renameWithResponse(String destinationPath, PathAccessConditions sourceAccessConditions,
         PathAccessConditions destAccessConditions, Duration timeout, Context context) {
 
-        Mono<Response<PathClient>> response = moveWithResponse(destinationPath, headers,
-            metadata, permissions, umask, sourceAccessConditions,
+        Mono<Response<PathClient>> response = renameWithResponse(destinationPath, sourceAccessConditions,
             destAccessConditions, context);
 
         Response<PathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);

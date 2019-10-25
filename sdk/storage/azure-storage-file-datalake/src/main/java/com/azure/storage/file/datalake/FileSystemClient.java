@@ -48,9 +48,9 @@ public class FileSystemClient {
 
     public static final String ROOT_FILESYSTEM_NAME = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
-    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = FileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
+//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = FileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
 
-    public static final String LOG_FILESYSTEM_NAME = FileSystemAsyncClient.LOG_FILESYSTEM_NAME;
+//    public static final String LOG_FILESYSTEM_NAME = FileSystemAsyncClient.LOG_FILESYSTEM_NAME;
 
     /**
      * Package-private constructor for use by {@link FileSystemClientBuilder}.
@@ -310,7 +310,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getPaths#ListBlobContainersOptions-Duration}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getPaths#GetPathsOptions-Duration}
      *
      * @param options A {@link GetPathsOptions} which specifies what data should be returned by the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -437,8 +437,8 @@ public class FileSystemClient {
         String permissions, String umask, Duration timeout, Context context) {
         DirectoryClient directoryClient = getDirectoryClient(directoryName);
 
-        return new SimpleResponse<>(directoryClient.createWithResponse(headers, metadata, permissions, umask,
-            accessConditions, timeout, context), directoryClient);
+        return new SimpleResponse<>(directoryClient.createWithResponse(headers, metadata, accessConditions, permissions, umask,
+            timeout, context), directoryClient);
     }
 
     /**

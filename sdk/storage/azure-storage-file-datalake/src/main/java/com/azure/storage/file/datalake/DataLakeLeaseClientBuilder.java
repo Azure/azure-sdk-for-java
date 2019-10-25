@@ -58,7 +58,7 @@ public final class DataLakeLeaseClientBuilder {
      * @return a {@link DataLakeLeaseAsyncClient} based on the configurations in this builder.
      */
     public DataLakeLeaseAsyncClient buildAsyncClient() {
-    return new DataLakeLeaseAsyncClient(blobLeaseClientBuilder.buildAsyncClient());
+        return new DataLakeLeaseAsyncClient(blobLeaseClientBuilder.buildAsyncClient());
     }
 
     /**
@@ -70,7 +70,7 @@ public final class DataLakeLeaseClientBuilder {
      * @throws NullPointerException If {@code pathClient} is {@code null}.
      */
     public DataLakeLeaseClientBuilder pathClient(PathClient pathClient) {
-//        blobLeaseClientBuilder.blobClient(pathClient.getBlobClient());
+        blobLeaseClientBuilder.blobClient(pathClient.getBlockBlobClient());
         return this;
     }
 
@@ -83,7 +83,7 @@ public final class DataLakeLeaseClientBuilder {
      * @throws NullPointerException If {@code pathAsyncClient} is {@code null}.
      */
     public DataLakeLeaseClientBuilder pathAsyncClient(PathAsyncClient pathAsyncClient) {
-//        blobLeaseClientBuilder.blobAsyncClient(pathAsyncClient.getBlobAsyncClient());
+        blobLeaseClientBuilder.blobAsyncClient(pathAsyncClient.getBlockBlobAsyncClient());
         return this;
     }
 

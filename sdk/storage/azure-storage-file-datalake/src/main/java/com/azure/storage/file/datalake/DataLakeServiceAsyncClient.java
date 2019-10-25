@@ -16,6 +16,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
+import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -183,7 +184,7 @@ public class DataLakeServiceAsyncClient {
      */
     public Mono<Void> deleteFileSystem(String fileSystemName) {
         try {
-            return deleteFileSystemWithResponse(fileSystemName).flatMap(FluxUtil::toMono);
+            return deleteFileSystemWithResponse(fileSystemName, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -196,14 +197,16 @@ public class DataLakeServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String-FileSystemAccessConditions}
      *
      * @param fileSystemName Name of the file system to delete
+     * @param accessConditions {@link FileSystemAccessConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    public Mono<Response<Void>> deleteFileSystemWithResponse(String fileSystemName) {
+    public Mono<Response<Void>> deleteFileSystemWithResponse(String fileSystemName,
+        FileSystemAccessConditions accessConditions) {
         try {
-            return getFileSystemAsyncClient(fileSystemName).deleteWithResponse(null);
+            return getFileSystemAsyncClient(fileSystemName).deleteWithResponse(accessConditions);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
