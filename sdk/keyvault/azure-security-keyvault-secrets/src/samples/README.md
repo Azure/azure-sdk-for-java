@@ -50,9 +50,6 @@ These sample can be run in your IDE with default JDK.
     * Recover a deleted secret
     * Purge Deleted secret
 
-###  Additional Documentation
-For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
-
 <!-- LINKS -->
 [source_code]:  src
 [sample_helloWorld]: src/samples/java/com/azure/security/keyvault/secrets/HelloWorld.java
