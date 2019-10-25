@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
@@ -67,7 +68,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static com.azure.core.implementation.util.FluxUtil.fluxError;
 import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -724,11 +724,12 @@ public class BlobAsyncClientBase {
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
-        BlobRequestConditions accessConditions, boolean rangeGetContentMd5, Context context) {
+        BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Context context) {
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions()
-            : parallelTransferOptions;
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+            ? new ParallelTransferOptions(null, null, null)
+            : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
+                parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
+
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -737,9 +738,9 @@ public class BlobAsyncClientBase {
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
             channel -> getPropertiesWithResponse(accessConditions)
                 .flatMap(response -> processInRange(channel, response,
-                    range, finalParallelTransferOptions.getBlockSize(), options, accessConditions, rangeGetContentMd5,
-                    context, totalProgress, progressLock, progressReceiver)), this::downloadToFileCleanup);
-
+                range, finalParallelTransferOptions.getBlockSize(), options, accessConditions, rangeGetContentMD5,
+                context, totalProgress, progressLock, finalParallelTransferOptions.getProgressReceiver())),
+            this::downloadToFileCleanup);
     }
 
     private Mono<Response<BlobProperties>> processInRange(AsynchronousFileChannel channel,
