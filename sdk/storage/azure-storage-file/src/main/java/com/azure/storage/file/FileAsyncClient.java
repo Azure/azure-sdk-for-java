@@ -250,7 +250,7 @@ public class FileAsyncClient {
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
         //
         return new PollerFlux<>(interval,
-                () -> {
+                (pollingContext) -> {
                     try {
                         return withContext(context -> azureFileStorageClient.files()
                                 .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
@@ -267,26 +267,26 @@ public class FileAsyncClient {
                         return monoError(logger, ex);
                     }
                 },
-                (firstResponse, latestResponse) -> {
+                (pollingContext) -> {
                     try {
-                        return onPoll(latestResponse);
+                        return onPoll(pollingContext.getLatestResponse());
                     } catch (RuntimeException ex) {
                         return monoError(logger, ex);
                     }
                 },
-                (firstResponse, latestResponse) -> {
-                    if (latestResponse == null || latestResponse.getValue() == null) {
+                (pollingContext, firstResponse) -> {
+                    if (firstResponse == null || firstResponse.getValue() == null) {
                         return Mono.error(logger.logExceptionAsError(
                                 new IllegalArgumentException("Cannot cancel a poll response that never started.")));
                     }
-                    final String copyIdentifier = latestResponse.getValue().getCopyId();
+                    final String copyIdentifier = firstResponse.getValue().getCopyId();
                     if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
                         logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
-                        return abortCopy(copyIdentifier).thenReturn(latestResponse.getValue());
+                        return abortCopy(copyIdentifier).thenReturn(firstResponse.getValue());
                     }
                     return Mono.empty();
                 },
-                (firstResponse, lastResponse) -> Mono.empty());
+                (pollingContext) -> Mono.empty());
     }
 
     private Mono<PollResponse<FileCopyInfo>> onPoll(PollResponse<FileCopyInfo> pollResponse) {

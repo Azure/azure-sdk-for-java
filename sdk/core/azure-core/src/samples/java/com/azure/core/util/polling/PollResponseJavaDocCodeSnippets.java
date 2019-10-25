@@ -4,7 +4,6 @@
 package com.azure.core.util.polling;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -78,16 +77,10 @@ public final class PollResponseJavaDocCodeSnippets<T> {
                            Map<Object, Object> properties) {
         // BEGIN: com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties
 
-        // We can store some properties which we might need to execute poll Operation call.
-
-        Map<Object, Object> prop =  new HashMap<>();
-        prop.put("service.url", "http://azure.service.url");
-        prop.put("customer.id", 2635342);
-
         // Lets say we want to crete poll response with status as IN_PROGRESS
         PollResponse<String> inProgressPollResponse
             = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, "mycustom response",
-            Duration.ofMillis(2000), prop);
+            Duration.ofMillis(2000));
         // END: com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties
     }
 

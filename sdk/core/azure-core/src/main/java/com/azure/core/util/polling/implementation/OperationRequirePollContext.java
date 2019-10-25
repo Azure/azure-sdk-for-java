@@ -7,13 +7,13 @@ package com.azure.core.util.polling.implementation;
  * INTERNAL CLASS.
  *
  * An exception indicating that an operation on long-running operation
- * requires a {@link com.azure.core.util.polling.PollResponse}
+ * requires a {@link com.azure.core.util.polling.PollingContext}
  */
-public class OperationRequirePollResponse extends RuntimeException {
+public class OperationRequirePollContext extends RuntimeException {
     /**
-     * Creates OperationRequirePollResponse.
+     * Creates OperationRequirePollContext.
      */
-    public OperationRequirePollResponse() {
+    public OperationRequirePollContext() {
         super("");
     }
 }

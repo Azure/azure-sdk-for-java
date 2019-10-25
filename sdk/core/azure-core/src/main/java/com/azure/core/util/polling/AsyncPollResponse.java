@@ -6,9 +6,9 @@ package com.azure.core.util.polling;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * AsyncPollResponse represents an event emitted by the {@link PollerFlux} that asynchronously polls
@@ -23,32 +23,29 @@ import java.util.function.BiFunction;
  * @param <U> The type of the final result of long-running operation.
  */
 public final class AsyncPollResponse<T, U> {
-    private final PollResponse<T> activationResponse;
-    private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<T>> cancellationOperation;
-    private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<U>> fetchResultOperation;
+    private final PollingContext<T> pollingContext;
+    private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation;
+    private final Function<PollingContext<T>, Mono<U>> fetchResultOperation;
     private final PollResponse<T> pollResponse;
 
     /**
      * Creates AsyncPollResponse.
      *
-     * @param activationResponse the response from activation operation
-     * @param pollResponse the {@link PollResponse} this type composes
+     * @param pollingContext the polling context
      * @param cancellationOperation the cancellation operation if supported by the service
      * @param fetchResultOperation the operation to fetch final result of long-running operation, if supported
      *                             by the service
      */
-    AsyncPollResponse(PollResponse<T> activationResponse,
-                      PollResponse<T> pollResponse,
-                      BiFunction<PollResponse<T>, PollResponse<T>, Mono<T>> cancellationOperation,
-                      BiFunction<PollResponse<T>, PollResponse<T>, Mono<U>> fetchResultOperation) {
-        this.activationResponse = Objects.requireNonNull(activationResponse,
-                "'activationResponse' cannot be null.");
-        this.pollResponse = Objects.requireNonNull(pollResponse,
-                "'pollResponse' cannot be null.");
+    AsyncPollResponse(PollingContext<T> pollingContext,
+                      BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation,
+                      Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
+        this.pollingContext = Objects.requireNonNull(pollingContext,
+                "'pollingContext' cannot be null.");
         this.cancellationOperation = Objects.requireNonNull(cancellationOperation,
                 "'cancellationOperation' cannot be null.");
         this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
                 "'fetchResultOperation' cannot be null.");
+        this.pollResponse = this.pollingContext.getLatestResponse();
     }
 
     /**
@@ -70,28 +67,6 @@ public final class AsyncPollResponse<T, U> {
     }
 
     /**
-     * Returns the delay the service has requested until the next polling operation is performed. A null or negative
-     * value will be taken to mean that the Poller should determine on its own when the next poll operation is
-     * to occur.
-     * Note: package private
-     *
-     * @return Duration How long to wait before next retry.
-     */
-    Duration getRetryAfter() {
-        return pollResponse.getRetryAfter();
-    }
-
-    /**
-     * A map of properties provided by the service that will be made available into the next poll operation.
-     *
-     * @return Map of properties that were returned from the service, and which will be made available into the next
-     *     poll operation.
-     */
-    public Map<Object, Object> getProperties() {
-        return pollResponse.getProperties();
-    }
-
-    /**
      * @return a Mono, upon subscription it cancels the remote long-running operation if cancellation
      * is supported by the service.
      */
@@ -99,7 +74,7 @@ public final class AsyncPollResponse<T, U> {
         return Mono.defer(() -> {
             try {
                 return this.cancellationOperation
-                        .apply(this.activationResponse, this.pollResponse);
+                        .apply(this.pollingContext, this.pollingContext.getActivationResponse());
             } catch (Throwable throwable) {
                 return Mono.error(throwable);
             }
@@ -118,12 +93,24 @@ public final class AsyncPollResponse<T, U> {
             } else {
                 try {
                     return this.fetchResultOperation
-                            .apply(this.activationResponse, this.pollResponse);
+                            .apply(this.pollingContext);
                 } catch (Throwable throwable) {
                     return Mono.error(throwable);
                 }
             }
         });
+    }
+
+    /**
+     * Returns the delay the service has requested until the next polling operation is performed. A null or negative
+     * value will be taken to mean that the Poller should determine on its own when the next poll operation is
+     * to occur.
+     * Note: package private
+     *
+     * @return Duration How long to wait before next retry.
+     */
+    Duration getRetryAfter() {
+        return pollResponse.getRetryAfter();
     }
 }
 

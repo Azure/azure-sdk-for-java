@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -27,16 +26,16 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("unchecked")
 public class PollerTests {
     @Mock
-    private Supplier<Mono<Response>> activationOperation;
+    private Function<PollingContext<Response>,Mono<Response>> activationOperation;
 
     @Mock
-    private BiFunction<PollResponse<Response>, PollResponse<Response>, Mono<PollResponse<Response>>> pollOperation;
+    private Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation;
 
     @Mock
-    private BiFunction<PollResponse<Response>, PollResponse<Response>, Mono<CertificateOutput>> fetchResultOperation;
+    private Function<PollingContext<Response>, Mono<CertificateOutput>> fetchResultOperation;
 
     @Mock
-    private BiFunction<PollResponse<Response>, PollResponse<Response>, Mono<Response>> cancelOperation;
+    private BiFunction<PollingContext<Response>, PollResponse<Response>, Mono<Response>> cancelOperation;
 
     @Before
     public void beforeTest() {
@@ -140,9 +139,9 @@ public class PollerTests {
         PollResponse<Response> response4 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
             new Response("4"), retryAfter);
 
-        when(activationOperation.get()).thenReturn(Mono.empty());
+        when(activationOperation.apply(any())).thenReturn(Mono.empty());
 
-        when(pollOperation.apply(any(), any())).thenReturn(
+        when(pollOperation.apply(any())).thenReturn(
             Mono.just(response0),
             Mono.just(response1),
             Mono.just(response2),
@@ -184,7 +183,7 @@ public class PollerTests {
 
         int [] activationCallCount = new int[1];
         activationCallCount[0] = 0;
-        when(activationOperation.get()).thenReturn(Mono.defer(() -> {
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> {
             activationCallCount[0]++;
             return Mono.just(new Response("ActivationDone"));
         }));
@@ -196,7 +195,7 @@ public class PollerTests {
             cancelOperation,
             fetchResultOperation);
 
-        when(pollOperation.apply(any(), any())).thenReturn(
+        when(pollOperation.apply(any())).thenReturn(
             Mono.just(response0),
             Mono.just(response1),
             Mono.just(response2));
@@ -208,7 +207,7 @@ public class PollerTests {
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
             .verifyComplete();
 
-        when(pollOperation.apply(any(), any())).thenReturn(
+        when(pollOperation.apply(any())).thenReturn(
             Mono.just(response0),
             Mono.just(response1),
             Mono.just(response2));
@@ -237,7 +236,8 @@ public class PollerTests {
             new Response("2"), retryAfter);
 
         final Response activationResponse = new Response("Foo");
-        when(activationOperation.get()).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+        when(activationOperation.apply(any()))
+                .thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
 
         final List<Object> cancelParameters = new ArrayList<>();
         when(cancelOperation.apply(any(), any())).thenAnswer((Answer) invocation -> {
@@ -254,7 +254,7 @@ public class PollerTests {
             cancelOperation,
             fetchResultOperation);
 
-        when(pollOperation.apply(any(), any())).thenReturn(
+        when(pollOperation.apply(any())).thenReturn(
             Mono.just(response0),
             Mono.just(response1),
             Mono.just(response2));
@@ -294,10 +294,10 @@ public class PollerTests {
             new Response("2"), retryAfter);
 
         final Response activationResponse = new Response("Foo");
-        when(activationOperation.get()).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
 
         final List<Object> fetchResultParameters = new ArrayList<>();
-        when(fetchResultOperation.apply(any(), any())).thenAnswer((Answer) invocation -> {
+        when(fetchResultOperation.apply(any())).thenAnswer((Answer) invocation -> {
             for (Object argument : invocation.getArguments()) {
                 fetchResultParameters.add(argument);
             }
@@ -311,7 +311,7 @@ public class PollerTests {
             cancelOperation,
             fetchResultOperation);
 
-        when(pollOperation.apply(any(), any())).thenReturn(
+        when(pollOperation.apply(any())).thenReturn(
             Mono.just(response0),
             Mono.just(response1),
             Mono.just(response2));
@@ -334,9 +334,11 @@ public class PollerTests {
         Assert.assertTrue(lroResult.getName().equalsIgnoreCase("LROFinalResult"));
         Assert.assertNotNull(terminalAsyncResponse[0]);
         Assert.assertTrue(terminalAsyncResponse[0].getValue().getResponse().equalsIgnoreCase("2"));
-        Assert.assertEquals(2, fetchResultParameters.size());
-        fetchResultParameters.get(0).equals(activationResponse);
-        fetchResultParameters.get(1).equals(response2);
+        Assert.assertEquals(1, fetchResultParameters.size());
+        Assert.assertTrue(fetchResultParameters.get(0) instanceof PollingContext);
+        PollingContext<Response>  pollingContext = (PollingContext<Response>)fetchResultParameters.get(0);
+        pollingContext.getActivationResponse().equals(activationResponse);
+        pollingContext.getLatestResponse().equals(response2);
     }
 
 
@@ -418,7 +420,7 @@ public class PollerTests {
     public void syncPollerShouldCallActivationFromConstructor() {
         Boolean[] activationCalled = new Boolean[1];
         activationCalled[0] = false;
-        when(activationOperation.get()).thenReturn(Mono.defer(() -> {
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> {
             activationCalled[0] = true;
             return Mono.just(new Response("ActivationDone"));
         }));
@@ -435,12 +437,14 @@ public class PollerTests {
 
     @Test
     public void eachPollShouldReceiveLastPollResponse() {
-        when(activationOperation.get()).thenReturn(Mono.defer(() -> Mono.just(new Response("A"))));
-        when(pollOperation.apply(any(), any())).thenAnswer((Answer) invocation -> {
-            Assert.assertEquals(2, invocation.getArguments().length);
-            Assert.assertTrue(invocation.getArguments()[0] instanceof PollResponse);
-            Assert.assertTrue(invocation.getArguments()[1] instanceof PollResponse);
-            PollResponse<Response> latestResponse = (PollResponse<Response>) invocation.getArguments()[1];
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(new Response("A"))));
+        when(pollOperation.apply(any())).thenAnswer((Answer) invocation -> {
+            Assert.assertEquals(1, invocation.getArguments().length);
+            Assert.assertTrue(invocation.getArguments()[0] instanceof PollingContext);
+            PollingContext pollingContext = (PollingContext) invocation.getArguments()[0];
+            Assert.assertTrue(pollingContext.getActivationResponse() instanceof PollResponse);
+            Assert.assertTrue(pollingContext.getLatestResponse() instanceof PollResponse);
+            PollResponse<Response> latestResponse = (PollResponse<Response>) pollingContext.getLatestResponse();
             Assert.assertNotNull(latestResponse);
             PollResponse<Response> nextResponse = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                     new Response(latestResponse.getValue().toString() + "A"), Duration.ofMillis(100));
@@ -488,9 +492,9 @@ public class PollerTests {
                 new Response("2"), Duration.ofMillis(100));
 
         final Response activationResponse = new Response("Activated");
-        when(activationOperation.get()).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
 
-        when(pollOperation.apply(any(), any())).thenReturn(
+        when(pollOperation.apply(any())).thenReturn(
                 Mono.just(response0),
                 Mono.just(response1),
                 Mono.just(response2));
@@ -511,12 +515,12 @@ public class PollerTests {
     @Test
     public void getResultShouldPollUntilCompletionAndFetchResult() {
         final Response activationResponse = new Response("Activated");
-        when(activationOperation.get()).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
         //
-        when(pollOperation.apply(any(), any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
+        when(pollOperation.apply(any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
                 case 0:
@@ -533,7 +537,7 @@ public class PollerTests {
             }
         });
 
-        when(fetchResultOperation.apply(any(), any())).thenReturn(Mono.defer(() -> {
+        when(fetchResultOperation.apply(any())).thenReturn(Mono.defer(() -> {
             return Mono.just(new CertificateOutput("cert1"));
         }));
 
@@ -562,13 +566,13 @@ public class PollerTests {
                 new Response("2"), Duration.ofMillis(100));
 
         final Response activationResponse = new Response("Activated");
-        when(activationOperation.get()).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
 
-        when(fetchResultOperation.apply(any(), any())).thenReturn(Mono.defer(() -> {
+        when(fetchResultOperation.apply(any())).thenReturn(Mono.defer(() -> {
             return Mono.just(new CertificateOutput("cert1"));
         }));
 
-        when(pollOperation.apply(any(), any())).thenReturn(
+        when(pollOperation.apply(any())).thenReturn(
                 Mono.just(response0),
                 Mono.just(response1),
                 Mono.just(response2));
@@ -585,7 +589,7 @@ public class PollerTests {
         Assert.assertEquals(response2.getValue().getResponse(), pollResponse.getValue().getResponse());
         Assert.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
         //
-        when(pollOperation.apply(any(), any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
+        when(pollOperation.apply(any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
             Assert.assertTrue("A Poll after completion should be called", true);
             return Mono.empty();
         });
@@ -597,7 +601,7 @@ public class PollerTests {
     @Test
     public void waitUntilShouldPollAfterMatchingStatus() {
         final Response activationResponse = new Response("Activated");
-        when(activationOperation.get()).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
 
         LongRunningOperationStatus matchStatus
                 = LongRunningOperationStatus.fromString("OTHER_1", false);
@@ -605,7 +609,7 @@ public class PollerTests {
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
         //
-        when(pollOperation.apply(any(), any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
+        when(pollOperation.apply(any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
                 case 0:

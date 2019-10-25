@@ -26,7 +26,6 @@ public final class PollResponse<T> {
     private final LongRunningOperationStatus status;
     private final T value;
     private final Duration retryAfter;
-    private final Map<Object, Object> properties;
 
     /**
      * Creates a new {@link PollResponse} with status, value, retryAfter and properties.
@@ -40,36 +39,14 @@ public final class PollResponse<T> {
      * @param retryAfter Represents the delay the service has requested until the next polling operation is performed. A
      *     {@code null}, zero or negative value will be taken to mean that the poller should determine on its
      *     own when the next poll operation is to occur.
-     * @param properties A map of properties provided by the service that will be made available into the next poll
-     *     operation.
      * @throws NullPointerException If {@code status} is {@code null}.
      */
     public PollResponse(LongRunningOperationStatus status, T value,
-                        Duration retryAfter,
-                        Map<Object, Object> properties) {
+                        Duration retryAfter) {
         Objects.requireNonNull(status, "The status input parameter cannot be null.");
         this.status = status;
         this.value = value;
         this.retryAfter = retryAfter;
-        this.properties = properties;
-    }
-
-    /**
-     * Creates a new {@link PollResponse} with status, value and retryAfter.
-     *
-     * <p><strong>Code Sample Creating PollResponse Object</strong></p>
-     * {@codesnippet com.azure.core.util.polling.pollresponse.status.value.retryAfter}
-     *
-     * @param status Mandatory operation status as defined in {@link LongRunningOperationStatus}.
-     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also
-     *     valid.
-     * @param retryAfter Represents the delay the service has requested until the next polling operation is performed. A
-     *     {@code null}, zero or negative value will be taken to mean that the poller should determine on its
-     *     own when the next poll operation is to occur.
-     * @throws NullPointerException If {@code status} is {@code null}.
-     */
-    public PollResponse(LongRunningOperationStatus status, T value, Duration retryAfter) {
-        this(status, value, retryAfter, null);
     }
 
     /**
@@ -113,15 +90,5 @@ public final class PollResponse<T> {
      */
     public Duration getRetryAfter() {
         return retryAfter;
-    }
-
-    /**
-     * A map of properties provided by the service that will be made available into the next poll operation.
-     *
-     * @return Map of properties that were returned from the service, and which will be made available into the next
-     *     poll operation.
-     */
-    public Map<Object, Object> getProperties() {
-        return properties;
     }
 }

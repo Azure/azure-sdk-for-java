@@ -342,36 +342,36 @@ public class BlobAsyncClientBase {
             .setIfNoneMatch(sourceModifiedCondition.getIfNoneMatch());
 
         return new PollerFlux<>(interval,
-            () -> {
+            (pollingContext) -> {
                 try {
                     return onStart(sourceUrl, metadata, tier, priority, sourceConditions, destinationAccessConditions);
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
                 }
             },
-            (firstResponse, latestResponse) -> {
+            (pollingContext) -> {
                 try {
-                    return onPoll(latestResponse);
+                    return onPoll(pollingContext.getLatestResponse());
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
                 }
             },
-            (firstResponse, latestResponse) -> {
-                if (latestResponse == null || latestResponse.getValue() == null) {
+            (pollingContext, firstResponse) -> {
+                if (firstResponse == null ||  firstResponse.getValue() == null) {
                     return Mono.error(logger.logExceptionAsError(
                             new IllegalArgumentException("Cannot cancel a poll response that never started.")));
                 }
-                final String copyIdentifier = latestResponse.getValue().getCopyId();
+                final String copyIdentifier = firstResponse.getValue().getCopyId();
 
                 if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
                     logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
 
-                    return abortCopyFromUrl(copyIdentifier).thenReturn(latestResponse.getValue());
+                    return abortCopyFromUrl(copyIdentifier).thenReturn(firstResponse.getValue());
                 }
 
                 return Mono.empty();
             },
-            (firstResponse, lastResponse) -> Mono.empty());
+            (pollingContext) -> Mono.empty());
     }
 
     private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, AccessTier tier,

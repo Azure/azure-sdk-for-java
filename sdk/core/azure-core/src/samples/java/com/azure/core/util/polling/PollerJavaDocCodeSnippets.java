@@ -14,11 +14,11 @@ import java.util.function.Predicate;
  */
 public final class PollerJavaDocCodeSnippets {
     private final PollerFlux<String, String> pollerFlux = new PollerFlux<>(Duration.ofMillis(100),
-            () -> Mono.empty(),
-            (activationResponse, latestResponse) -> Mono.just(
+            (context) -> Mono.empty(),
+            (context) -> Mono.just(
                     new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, "Completed")),
-            (activationResponse, latestResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            (activationResponse, latestResponse) -> Mono.just("Final Output"));
+            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            (context) -> Mono.just("Final Output"));
 
     /**
      * Instantiating and subscribing to PollerFlux.
@@ -29,9 +29,9 @@ public final class PollerJavaDocCodeSnippets {
 
         // Create poller instance
         PollerFlux<String, String> poller = new PollerFlux<>(Duration.ofMillis(100),
-                () -> Mono.empty(),
+                (context) -> Mono.empty(),
                 // Define your custom poll operation
-                (activationResponse, latestResponse) ->  {
+                (context) ->  {
                     if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
                         System.out.println("Returning intermediate response.");
                         return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -42,8 +42,8 @@ public final class PollerJavaDocCodeSnippets {
                                 "Operation completed."));
                     }
                 },
-                (activationResponse, latestResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                (activationResponse, latestResponse) -> Mono.just("Final Output"));
+                (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+                (context) -> Mono.just("Final Output"));
 
         // Listen to poll responses
         poller.subscribe(response -> {
@@ -64,8 +64,8 @@ public final class PollerJavaDocCodeSnippets {
 
         // Create poller instance
         PollerFlux<String, String> poller = new PollerFlux<>(Duration.ofMillis(100),
-                () -> Mono.empty(),
-                (activationResponse, latestResponse) ->  {
+                (context) -> Mono.empty(),
+                (context) ->  {
                     if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
                         System.out.println("Returning intermediate response.");
                         return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -76,8 +76,8 @@ public final class PollerJavaDocCodeSnippets {
                                 "Operation completed."));
                     }
                 },
-                (activationResponse, latestResponse) -> Mono.just("FromServer:OperationIsCancelled"),
-                (activationResponse, latestResponse) -> Mono.just("FromServer:FinalOutput"));
+                (activationResponse, context) -> Mono.just("FromServer:OperationIsCancelled"),
+                (context) -> Mono.just("FromServer:FinalOutput"));
 
         poller.take(Duration.ofMinutes(30))
                 .last()
@@ -136,8 +136,8 @@ public final class PollerJavaDocCodeSnippets {
 
         // Create poller instance
         PollerFlux<String, String> poller = new PollerFlux<>(Duration.ofMillis(100),
-                () -> Mono.empty(),
-                (activationResponse, latestResponse) ->  {
+                (context) -> Mono.empty(),
+                (context) ->  {
                     if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
                         System.out.println("Returning intermediate response.");
                         return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -148,8 +148,8 @@ public final class PollerJavaDocCodeSnippets {
                                 "Operation completed."));
                     }
                 },
-                (activationResponse, latestResponse) -> Mono.just("FromServer:OperationIsCancelled"),
-                (activationResponse, latestResponse) -> Mono.just("FromServer:FinalOutput"));
+                (activationResponse, context) -> Mono.just("FromServer:OperationIsCancelled"),
+                (context) -> Mono.just("FromServer:FinalOutput"));
 
         // Asynchronously wait 30 minutes to complete the polling, if not completed
         // within in the time then cancel the server operation.
