@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for the task that migrates MySQL databases to Azure Database for
  * MySQL for online migrations.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = MigrateMySqlAzureDbForMySqlSyncTaskProperties.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("Migrate.MySql.AzureDbForMySql.Sync")
 public class MigrateMySqlAzureDbForMySqlSyncTaskProperties extends ProjectTaskProperties {
     /**

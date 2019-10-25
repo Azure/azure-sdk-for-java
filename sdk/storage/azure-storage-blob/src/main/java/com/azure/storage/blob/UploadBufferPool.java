@@ -5,7 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -48,19 +48,24 @@ final class UploadBufferPool {
 
     private ByteBuffer currentBuf;
 
+    /**
+     * Creates a new instance of UploadBufferPool
+     * @param numBuffs The number of buffers in the buffer pool.
+     * @param buffSize The size of the buffers
+     */
     UploadBufferPool(final int numBuffs, final int buffSize) {
         /*
         We require at least two buffers because it is possible that a given write will spill over into a second buffer.
         We only need one overflow buffer because the max size of a ByteBuffer is assumed to be the size as a buffer in
         the pool.
          */
-        Utility.assertInBounds("numBuffs", numBuffs, 2, Integer.MAX_VALUE);
+        StorageImplUtils.assertInBounds("numBuffs", numBuffs, 2, Integer.MAX_VALUE);
         this.maxBuffs = numBuffs;
         buffers = new LinkedBlockingQueue<>(numBuffs);
 
 
         // These buffers will be used in calls to stageBlock, so they must be no greater than block size.
-        Utility.assertInBounds("buffSize", buffSize, 1, BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
+        StorageImplUtils.assertInBounds("buffSize", buffSize, 1, BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
         this.buffSize = buffSize;
 
         // We prep the queue with two buffers in case there is overflow.
@@ -73,7 +78,13 @@ final class UploadBufferPool {
     Note that the upload method will be calling write sequentially as there is only one worker reading from the source
     and calling write. This means operations like currentBuf.remaining() will not result in race conditions.
      */
-    Flux<ByteBuffer> write(ByteBuffer buf) {
+
+    /**
+     * Writes ByteBuffers to a {@code Flux<ByteBuffer>}
+     * @param buf The buffer to write
+     * @return The {@code Flux<ByteBuffer>}
+     */
+    public Flux<ByteBuffer> write(ByteBuffer buf) {
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
             this.currentBuf = this.getBuffer();
@@ -149,6 +160,10 @@ final class UploadBufferPool {
         return result;
     }
 
+    /**
+     * Flushes the current buffer
+     * @return the flushed buffer
+     */
     Flux<ByteBuffer> flush() {
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
@@ -164,6 +179,10 @@ final class UploadBufferPool {
         return Flux.empty();
     }
 
+    /**
+     * Returns the ByteBuffer
+     * @param b The ByteBuffer to reset and return
+     */
     void returnBuffer(ByteBuffer b) {
         // Reset the buffer.
         b.position(0);

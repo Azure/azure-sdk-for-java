@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ConnectionError;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
@@ -23,8 +24,10 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -36,6 +39,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
     private final ClientLogger logger = new ClientLogger(WebSocketsProxyConnectionHandler.class);
     private final String amqpHostname;
+    private final String remoteHost;
     private final ProxyConfiguration proxyConfiguration;
 
     /**
@@ -51,6 +55,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         super(connectionId, amqpHostname);
         this.amqpHostname = Objects.requireNonNull(amqpHostname, "'amqpHostname' cannot be null.");
         this.proxyConfiguration = Objects.requireNonNull(proxyConfiguration, "'proxyConfiguration' cannot be null.");
+        this.remoteHost = amqpHostname + ":" + HTTPS_PORT;
     }
 
     /**
@@ -71,6 +76,21 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         final List<Proxy> proxies = proxySelector.select(uri);
         return isProxyAddressLegal(proxies);
+    }
+
+    @Override
+    public void onConnectionInit(Event event) {
+        final Connection connection = event.getConnection();
+        logger.info("onConnectionInit host[{}], connectionId[{}]", remoteHost, getConnectionId());
+
+        connection.setHostname(remoteHost);
+        connection.setContainer(getConnectionId());
+
+        final Map<Symbol, Object> properties = new HashMap<>();
+        getConnectionProperties().forEach((key, value) -> properties.put(Symbol.getSymbol(key), value));
+
+        connection.setProperties(properties);
+        connection.open();
     }
 
     @Override
@@ -128,11 +148,11 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         // it swallows the IOException and translates it to proton-io errorCode
         // we reconstruct the IOException in this case - but, callstack is lost
         final IOException ioException = new IOException(errorCondition.getDescription());
-        final URI url = createURI(amqpHostname, getProtocolPort());
+        final URI url = createURI(amqpHostname, HTTPS_PORT);
         final InetSocketAddress address = new InetSocketAddress(hostNameParts[0], port);
 
         logger.error(String.format("Failed to connect to url: '%s', proxy host: '%s'",
-            url.toString(), address.getHostString()), ioException);
+            url, address.getHostString()), ioException);
 
         if (proxySelector != null) {
             proxySelector.connectFailed(url, address, ioException);

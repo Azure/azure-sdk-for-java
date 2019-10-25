@@ -1,5 +1,46 @@
 # Change Log azure-data-appconfiguration
 
+## Version 1.0.0-preview.6 (2019-10-31)
+For details on the Azure SDK for Java (October 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview6-java).
+- renaming addSetting, getSetting, deleteSetting, setSetting, listSettings, listSettingRevisions to
+  getConfigurationSetting, deleteConfigurationSetting, setConfigurationSetting, listConfigurationSettings,
+  listRevisions for consistency across languages.
+- Ensure exceptions are consistent for certain operations (c.f. other languages).
+- Renaming asOfDayTime to acceptDateTime, and lock to isReadOnly
+- Not explore ConfigurationCredentialsPolicy to public and move to implementation folder.gu
+- Fixed AzConfig Revisions Range Returns 416 Status Code
+- Add more samples including conditional request, setReadOnly, clearReadOnly, listRevisions, etc.
+This package's 
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
+and 
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration)
+
+## Version 1.0.0-preview.5 (2019-10-11)
+For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
+
+- Fixed a explored bug that ConfigurationClientCredential is already pacakge-private. Using connection String instead.
+
+This package's 
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
+and 
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
+demonstrate the new API.
+
+## Version 1.0.0-preview.4 (2019-10-8)
+For details on the Azure SDK for Java (October 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4java).
+
+- Updated addSetting, getSetting, deleteSetting, setSetting to support conditional request.
+- Removed UpdateSetting.
+- Allowed user to define custom equality of configuration setting.
+- No public ConfigurationClientCredential.
+- Removed credential and CredentialPolicy package.
+
+This package's 
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
+and 
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
+demonstrate the new API.
+
 ## Version 1.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 

@@ -1,6 +1,8 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.specialized.AppendBlobClient
@@ -8,7 +10,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 
 import java.time.OffsetDateTime
 
@@ -27,10 +29,12 @@ class CPKTest extends APISpec {
             .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
             .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(primaryCredential)
 
-        addOptionalRecording(builder)
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         cpkContainer = builder.buildClient()
         cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -60,7 +64,7 @@ class CPKTest extends APISpec {
         then:
         response.getStatusCode() == 201
         response.getValue().isServerEncrypted()
-        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().getEncryptionKeySha256() == key.getKeySha256()
     }
 
     def "Get blob with CPK"() {
@@ -88,18 +92,20 @@ class CPKTest extends APISpec {
 
     def "Put block from URL with CPK"() {
         setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def blobName = generateBlobName()
+        def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
-        def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(), new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
+        def response = cpkBlockBlob.stageBlockFromUrlWithResponse(getBlockID(), sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)
 
         then:
@@ -120,7 +126,7 @@ class CPKTest extends APISpec {
         then:
         response.getStatusCode() == 201
         response.getValue().isServerEncrypted()
-        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().getEncryptionKeySha256() == key.getKeySha256()
     }
 
     def "Put page with CPK"() {
@@ -134,12 +140,13 @@ class CPKTest extends APISpec {
         then:
         response.getStatusCode() == 201
         response.getValue().isServerEncrypted()
-        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().getEncryptionKeySha256() == key.getKeySha256()
     }
 
     def "Put page from URL wih CPK"() {
         setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+        def blobName = generateBlobName()
+        def sourceBlob = cc.getBlobClient(blobName).getPageBlobClient()
         sourceBlob.create(PageBlobClient.PAGE_BYTES)
         sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
@@ -150,12 +157,13 @@ class CPKTest extends APISpec {
         def sas = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
-        def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sas), null, null, null, null, null, null)
+        def response = cpkPageBlob.uploadPagesFromUrlWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            sourceBlob.getBlobUrl().toString() + "?" + sas, null, null, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -175,7 +183,7 @@ class CPKTest extends APISpec {
         then:
         response.getStatusCode() == 201
         response.getValue().isServerEncrypted()
-        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().getEncryptionKeySha256() == key.getKeySha256()
     }
 
     def "Append block with CPK"() {
@@ -188,30 +196,32 @@ class CPKTest extends APISpec {
         then:
         response.getStatusCode() == 201
         response.getValue().isServerEncrypted()
-        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().getEncryptionKeySha256() == key.getKeySha256()
     }
 
     def "Append block from URL with CPK"() {
         setup:
         cpkAppendBlob.create()
-        def sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def blobName = generateBlobName()
+        def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
             .generateSasQueryParameters(primaryCredential)
             .encode()
-        def response = cpkAppendBlob.appendBlockFromUrlWithResponse(new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
+        def response = cpkAppendBlob.appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
         //TODO uncomment when swagger is fixed so AppendBlobAppendBLockFromURLHeaders contains isrequestserverencrypted
         //response.getValue().isServerEncrypted()
-        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().getEncryptionKeySha256() == key.getKeySha256()
     }
 
     def "Set blob metadata with CPK"() {
@@ -225,7 +235,7 @@ class CPKTest extends APISpec {
         then:
         response.getStatusCode() == 200
         Boolean.parseBoolean(response.getHeaders().getValue(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
-        response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySHA256()
+        response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySha256()
     }
 
     def "Get blob properties and metadata with CPK"() {
@@ -235,7 +245,7 @@ class CPKTest extends APISpec {
         then:
         response.getStatusCode() == 200
         Boolean.parseBoolean(response.getHeaders().getValue(Constants.HeaderConstants.SERVER_ENCRYPTED))
-        response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySHA256()
+        response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySha256()
     }
 
 //    TODO unignore when swagger is resolved with service team

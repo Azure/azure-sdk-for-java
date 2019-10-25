@@ -22,13 +22,15 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 
 ### Adding the package to your product
 
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.0.0-preview.2</version>
+    <version>1.0.0-preview.3</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Authenticate the storage container client
 In order to create an instance of `BlobPartitionManager`, a `ContainerAsyncClient` should first be created with 

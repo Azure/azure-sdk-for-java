@@ -60,7 +60,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.core.util.Base64Url"/>
+    <Class name="com.azure.core.implementation.Base64Url"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -69,9 +69,6 @@
   <Match>
     <Or>
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
-      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
-      <Class name="com.azure.storage.file.implementation.AzureFileStorageBuilder"/>
-      <Class name="com.azure.storage.queue.implementation.AzureQueueStorageBuilder"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
@@ -257,7 +254,6 @@
   <Match>
     <Or>
       <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
-      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
@@ -381,8 +377,6 @@
   <!-- Exclude the confusing name bugs as it is designed to name the same as autorest. -->
   <Match>
     <Or>
-      <Package name="com.microsoft.azure.storage.blob"/>
-      <Package name="com.azure.storage.file.models"/>
       <Class name="com.azure.storage.blob.HttpGetterInfo"/>
       <Class name="com.azure.storage.blob.BlobProperties"/>
       <Class name="com.azure.storage.blob.BlobContainerProperties"/>
@@ -480,13 +474,14 @@
   <Match>
     <Or>
       <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.SecretBase"/>
+      <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
+      <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.models.Key"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyBase"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateBase"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.IssuerBase"/>
       <Class name="com.azure.security.keyvault.certificates.models.Issuer"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
@@ -514,11 +509,11 @@
   <Match>
     <Or>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
+        <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
         <Method name="deserialize"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.ByteExtensions"/>
+        <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
         <Method name="clone"/>
       </And>
     </Or>
@@ -542,7 +537,10 @@
   </Match>
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
-    <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+    <Or>
+      <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+      <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
+    </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,
                   URF_UNREAD_FIELD,
                   SIC_INNER_SHOULD_BE_STATIC_ANON,
@@ -581,15 +579,6 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
-  <Match>
-    <Or>
-      <Class name="com.azure.storage.blob.models.StorageException"/>
-      <Class name="com.azure.storage.file.models.StorageException"/>
-      <Class name="com.azure.storage.queue.models.StorageException"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
   <!-- Retry thus does not throw -->
   <Match>
     <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
@@ -626,9 +615,31 @@
   </Match>
 
 
-  <!-- The field is read by parent class StorageOutputStrem methods. -->
+  <!-- The field is read by parent class StorageOutputStream methods. -->
   <Match>
     <Class name="com.azure.storage.file.StorageFileOutputStream"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Initial implementation of Storage Blob Batch is using an inline class -->
+  <Match>
+    <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Initial implementation of JacksonDeserializer is using an inline class in registerCustomDeserializer-->
+  <Match>
+    <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Implementation name confusing with public API name and non-public API -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.implementation.http.UrlBuilder"/>
+      <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
+      <Class name="com.azure.storage.file.implementation.models.FileGetPropertiesHeaders"/>
+    </Or>
+    <Bug pattern="NM_CONFUSING"/>
   </Match>
 </FindBugsFilter>

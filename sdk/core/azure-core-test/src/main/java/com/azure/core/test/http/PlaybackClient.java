@@ -39,7 +39,7 @@ public final class PlaybackClient implements HttpClient {
      * @param textReplacementRules A set of rules to replace text in network call responses.
      */
     public PlaybackClient(RecordedData recordedData, Map<String, String> textReplacementRules) {
-        Objects.requireNonNull(recordedData);
+        Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
 
         this.recordedData = recordedData;
         this.textReplacementRules = textReplacementRules == null ? new HashMap<>() : textReplacementRules;

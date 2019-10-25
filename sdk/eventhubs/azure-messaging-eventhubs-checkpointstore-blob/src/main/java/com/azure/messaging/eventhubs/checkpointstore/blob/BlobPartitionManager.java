@@ -12,12 +12,11 @@ import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
-import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -75,7 +74,7 @@ public class BlobPartitionManager implements PartitionManager {
         String prefix = getBlobPrefix(eventHubName, consumerGroupName);
         BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
-        return blobContainerAsyncClient.listBlobsFlat(options)
+        return blobContainerAsyncClient.listBlobs(options)
             // Blob names should be of the pattern eventhub/consumergroup/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
             .filter(blobItem -> blobItem.getName().split(BLOB_PATH_SEPARATOR).length == 3)
@@ -109,21 +108,20 @@ public class BlobPartitionManager implements PartitionManager {
             metadata.put(OFFSET, offset == null ? null : String.valueOf(offset));
             Long sequenceNumber = partitionOwnership.getSequenceNumber();
             metadata.put(SEQUENCE_NUMBER, sequenceNumber == null ? null : String.valueOf(sequenceNumber));
-            BlobAccessConditions blobAccessConditions = new BlobAccessConditions();
+            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
             if (ImplUtils.isNullOrEmpty(partitionOwnership.getETag())) {
                 // New blob should be created
-                blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions().setIfNoneMatch("*"));
+                blobRequestConditions.setIfNoneMatch("*");
                 return blobAsyncClient.getBlockBlobAsyncClient()
-                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, blobAccessConditions)
+                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, blobRequestConditions)
                     .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                         logger.info(CLAIM_ERROR, partitionId, error.getMessage());
                         return Mono.empty();
                     }, Mono::empty);
             } else {
                 // update existing blob
-                blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions()
-                    .setIfMatch(partitionOwnership.getETag()));
-                return blobAsyncClient.setMetadataWithResponse(metadata, blobAccessConditions)
+                blobRequestConditions.setIfMatch(partitionOwnership.getETag());
+                return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
                     .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                         logger.info(CLAIM_ERROR, partitionId, error.getMessage());
                         return Mono.empty();
@@ -165,10 +163,9 @@ public class BlobPartitionManager implements PartitionManager {
         metadata.put(OFFSET, offset);
         metadata.put(OWNER_ID, checkpoint.getOwnerId());
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch(checkpoint.getETag()));
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setIfMatch(checkpoint.getETag());
 
-        return blobAsyncClient.setMetadataWithResponse(metadata, blobAccessConditions)
+        return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
             .map(response -> response.getHeaders().get(ETAG).getValue());
     }
 
@@ -210,9 +207,9 @@ public class BlobPartitionManager implements PartitionManager {
                     break;
             }
         });
-        BlobProperties blobProperties = blobItem.getProperties();
+        BlobItemProperties blobProperties = blobItem.getProperties();
         partitionOwnership.setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli());
-        partitionOwnership.setETag(blobProperties.getEtag());
+        partitionOwnership.setETag(blobProperties.getETag());
         return partitionOwnership;
     }
 

@@ -65,7 +65,7 @@ public class InterceptorManager implements AutoCloseable {
      * @throws NullPointerException If {@code testName} is {@code null}.
      */
     public InterceptorManager(String testName, TestMode testMode) throws IOException {
-        Objects.requireNonNull(testName);
+        Objects.requireNonNull(testName, "'testName' cannot be null.");
 
         this.testName = testName;
         this.testMode = testMode;
@@ -91,8 +91,8 @@ public class InterceptorManager implements AutoCloseable {
      * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
      */
     public InterceptorManager(String testName, Map<String, String> textReplacementRules) throws IOException {
-        Objects.requireNonNull(testName);
-        Objects.requireNonNull(textReplacementRules);
+        Objects.requireNonNull(testName, "'testName' cannot be null.");
+        Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
 
         this.testName = testName;
         this.testMode = TestMode.PLAYBACK;

@@ -7,8 +7,8 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlobServiceSasQueryParameters;
-import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,18 +17,25 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 /**
  * This class represents the components that make up an Azure Storage Container/Blob URL. You may parse an
  * existing URL into its parts with the {@link #parse(URL)} class. You may construct a URL from parts by calling {@link
- * #toURL()}.
+ * #toUrl()}.
  */
 public final class BlobUrlParts {
+    private static final Pattern IP_V4_URL_PATTERN = Pattern
+        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
+
+    private final ClientLogger logger = new ClientLogger(BlobUrlParts.class);
+
     private String scheme;
     private String host;
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String accountName;
     private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -37,6 +44,26 @@ public final class BlobUrlParts {
      */
     public BlobUrlParts() {
         unparsedParameters = new HashMap<>();
+    }
+
+    /**
+     * Gets the accountname, ex. "myaccountname".
+     *
+     * @return the account name.
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Sets the account name.
+     *
+     * @param accountName The account name.
+     * @return the updated BlobURLParts object.
+     */
+    public BlobUrlParts setAccountName(String accountName) {
+        this.accountName = accountName;
+        return this;
     }
 
     /**
@@ -100,12 +127,12 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the blob name that will be used as part of the URL path.
+     * Decodes and gets the blob name that will be used as part of the URL path.
      *
-     * @return the blob name.
+     * @return the decoded blob name.
      */
     public String getBlobName() {
-        return blobName;
+        return (blobName == null) ? null : Utility.urlDecode(blobName);
     }
 
     /**
@@ -115,7 +142,7 @@ public final class BlobUrlParts {
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setBlobName(String blobName) {
-        this.blobName = blobName;
+        this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         return this;
     }
 
@@ -185,13 +212,18 @@ public final class BlobUrlParts {
      * Converts the blob URL parts to a {@link URL}.
      *
      * @return A {@code URL} to the blob resource composed of all the elements in this object.
-     * @throws MalformedURLException The fields present on the BlobUrlParts object were insufficient to construct a
+     * @throws IllegalStateException The fields present on the BlobUrlParts object were insufficient to construct a
      * valid URL or were ill-formatted.
      */
-    public URL toURL() throws MalformedURLException {
+    public URL toUrl() {
         UrlBuilder url = new UrlBuilder().setScheme(this.scheme).setHost(this.host);
 
         StringBuilder path = new StringBuilder();
+
+        if ((this.containerName == null || this.containerName.isEmpty()) && this.blobName != null) {
+            this.containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+        }
+
         if (this.containerName != null) {
             path.append(this.containerName);
             if (this.blobName != null) {
@@ -202,7 +234,7 @@ public final class BlobUrlParts {
         url.setPath(path.toString());
 
         if (this.snapshot != null) {
-            url.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
+            url.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
         }
         if (this.blobServiceSasQueryParameters != null) {
             String encodedSAS = this.blobServiceSasQueryParameters.encode();
@@ -217,25 +249,33 @@ public final class BlobUrlParts {
                 Utility.urlEncode(String.join(",", entry.getValue())));
         }
 
-        return url.toURL();
+        try {
+            return url.toURL();
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalStateException("The URL parts created a malformed URL.", ex));
+        }
     }
 
     /**
-     * URLParser parses a string URL initializing BlobUrlParts' fields including any SAS-related and snapshot query
-     * parameters. Any other query parameters remain in the UnparsedParams field. This method overwrites all fields
-     * in the BlobUrlParts object.
+     * Parses a string into a BlobUrlParts.
      *
-     * @param url The string URL to be parsed.
-     * @param logger Logger associated to the calling class to log a {@link MalformedURLException}.
+     * <p>Query parameters will be parsed into two properties, {@link BlobServiceSasQueryParameters} which contains
+     * all SAS token related values and {@link #getUnparsedParameters() unparsedParameters} which is all other query
+     * parameters.</p>
+     *
+     * <p>If a URL points to a blob in the root container, and the root container is referenced implicitly, i.e. there
+     * is no path element for the container, the name of this blob in the root container will be set as the
+     * containerName field in the resulting {@code BlobURLParts}.</p>
+     *
+     * @param url The {@code URL} to be parsed.
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.
-     * @throws IllegalArgumentException If the {@code url} is malformed.
+     * @throws IllegalArgumentException If {@code url} is a malformed {@link URL}.
      */
-    public static BlobUrlParts parse(String url, ClientLogger logger) {
+    public static BlobUrlParts parse(String url) {
         try {
             return parse(new URL(url));
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
-                + url));
+            throw new IllegalArgumentException("Invalid URL format. URL: " + url);
         }
     }
 
@@ -246,16 +286,77 @@ public final class BlobUrlParts {
      * all SAS token related values and {@link #getUnparsedParameters() unparsedParameters} which is all other query
      * parameters.</p>
      *
+     * <p>If a URL points to a blob in the root container, and the root container is referenced implicitly, i.e. there
+     * is no path element for the container, the name of this blob in the root container will be set as the
+     * containerName field in the resulting {@code BlobURLParts}.</p>
+     *
      * @param url The {@code URL} to be parsed.
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.
      */
     public static BlobUrlParts parse(URL url) {
+        BlobUrlParts parts = new BlobUrlParts().setScheme(url.getProtocol());
 
-        final String scheme = url.getProtocol();
-        final String host = url.getHost();
+        if (IP_V4_URL_PATTERN.matcher(url.getHost()).find()) {
+            parseIpUrl(url, parts);
+        } else {
+            parseNonIpUrl(url, parts);
+        }
 
-        String containerName = null;
-        String blobName = null;
+        Map<String, String[]> queryParamsMap = parseQueryString(url.getQuery());
+
+        String[] snapshotArray = queryParamsMap.remove("snapshot");
+        if (snapshotArray != null) {
+            parts.setSnapshot(snapshotArray[0]);
+        }
+
+        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
+            new BlobServiceSasQueryParameters(queryParamsMap, true);
+
+        return parts.setSasQueryParameters(blobServiceSasQueryParameters)
+            .setUnparsedParameters(queryParamsMap);
+    }
+
+    /*
+     * Parse the IP url into its host, account name, container name, and blob name.
+     */
+    private static void parseIpUrl(URL url, BlobUrlParts parts) {
+        parts.setHost(url.getAuthority());
+
+        String path = url.getPath();
+        if (path.charAt(0) == '/') {
+            path = path.substring(1);
+        }
+
+        String[] pathPieces = path.split("/", 3);
+        parts.setAccountName(pathPieces[0]);
+
+        if (pathPieces.length >= 3) {
+            parts.setContainerName(pathPieces[1]);
+            parts.setBlobName(pathPieces[2]);
+        } else if (pathPieces.length == 2) {
+            parts.setContainerName(pathPieces[1]);
+        }
+    }
+
+    /*
+     * Parse the non-IP url into its host, account name, container name, and blob name.
+     */
+    private static void parseNonIpUrl(URL url, BlobUrlParts parts) {
+        String host = url.getHost();
+        parts.setHost(host);
+
+        //Parse host to get account name
+        // host will look like this : <accountname>.blob.core.windows.net
+        if (!ImplUtils.isNullOrEmpty(host)) {
+            int accountNameIndex = host.indexOf('.');
+            if (accountNameIndex == -1) {
+                // host only contains account name
+                parts.setAccountName(host);
+            } else {
+                // if host is separated by .
+                parts.setAccountName(host.substring(0, accountNameIndex));
+            }
+        }
 
         // find the container & blob names (if any)
         String path = url.getPath();
@@ -268,33 +369,15 @@ public final class BlobUrlParts {
             int containerEndIndex = path.indexOf('/');
             if (containerEndIndex == -1) {
                 // path contains only a container name and no blob name
-                containerName = path;
+                parts.setContainerName(path);
             } else {
                 // path contains the container name up until the slash and blob name is everything after the slash
-                containerName = path.substring(0, containerEndIndex);
-                blobName = path.substring(containerEndIndex + 1);
+                parts.setContainerName(path.substring(0, containerEndIndex));
+                parts.setBlobName(path.substring(containerEndIndex + 1));
             }
         }
-        Map<String, String[]> queryParamsMap = parseQueryString(url.getQuery());
 
-        String snapshot = null;
-        String[] snapshotArray = queryParamsMap.get("snapshot");
-        if (snapshotArray != null) {
-            snapshot = snapshotArray[0];
-            queryParamsMap.remove("snapshot");
-        }
 
-        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
-            new BlobServiceSasQueryParameters(queryParamsMap, true);
-
-        return new BlobUrlParts()
-            .setScheme(scheme)
-            .setHost(host)
-            .setContainerName(containerName)
-            .setBlobName(blobName)
-            .setSnapshot(snapshot)
-            .setSasQueryParameters(blobServiceSasQueryParameters)
-            .setUnparsedParameters(queryParamsMap);
     }
 
     /**

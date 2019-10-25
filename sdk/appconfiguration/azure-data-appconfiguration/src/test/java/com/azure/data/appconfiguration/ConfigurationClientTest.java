@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
@@ -23,7 +25,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertArrayEquals;
 
 public class ConfigurationClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTest.class);
@@ -36,15 +37,15 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                .credential(credentials)
+                .connectionString(connectionString)
                 .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient());
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                .credential(credentials)
+                .connectionString(connectionString)
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
                 .buildClient());
@@ -55,7 +56,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
-            logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
+            logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
+            if (configurationSetting.isReadOnly()) {
+                client.clearReadOnlyWithResponse(configurationSetting, Context.NONE);
+            }
             client.deleteSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
         });
 
@@ -101,13 +105,13 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         addExistingSettingRunner((expected) -> {
             client.addSettingWithResponse(expected, Context.NONE).getValue();
             assertRestException(() -> client.addSettingWithResponse(expected, Context.NONE).getValue(),
-                ResourceModifiedException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+                ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED);
         });
     }
 
     /**
      * Tests that a configuration is able to be added or updated with set.
-     * When the configuration is locked updates cannot happen, this will result in a 409.
+     * When the configuration is read-only updates cannot happen, this will result in a 409.
      */
     public void setSetting() {
         setSettingRunner((expected, update) -> assertConfigurationEquals(expected, client.setSettingWithResponse(expected, false, Context.NONE).getValue()));
@@ -121,12 +125,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void setSettingIfEtag() {
         setSettingIfEtagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
-            assertRestException(() -> client.setSettingWithResponse(initial.setETag("badEtag"), true, Context.NONE).getValue(), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.setSettingWithResponse(initial.setETag("badEtag"), true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
 
             final String etag = client.addSettingWithResponse(initial, Context.NONE).getValue().getETag();
 
             assertConfigurationEquals(update, client.setSettingWithResponse(update.setETag(etag), true, Context.NONE));
-            assertRestException(() -> client.setSettingWithResponse(initial, true, Context.NONE).getValue(), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.setSettingWithResponse(initial, true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.getSetting(update.getKey(), update.getLabel()));
         });
     }
@@ -158,7 +162,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that a configuration is able to be retrieved when it exists, whether or not it is locked.
+     * Tests that a configuration is able to be retrieved when it exists, whether or not it is read-only.
      */
     public void getSetting() {
         getSettingRunner((expected) -> {
@@ -222,7 +226,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting updatedConfig = client.setSettingWithResponse(update, false, Context.NONE).getValue();
 
             assertConfigurationEquals(update, client.getSetting(initial.getKey(), initial.getLabel()));
-            assertRestException(() -> client.deleteSettingWithResponse(initiallyAddedConfig, true, Context.NONE).getValue(), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.deleteSettingWithResponse(initiallyAddedConfig, true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.deleteSettingWithResponse(updatedConfig, true, Context.NONE).getValue());
             assertRestException(() -> client.getSetting(initial.getKey(), initial.getLabel()), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
@@ -234,6 +238,86 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void deleteSettingNullKey() {
         assertRunnableThrowsException(() -> client.deleteSetting(null, null), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.deleteSettingWithResponse(null, false, Context.NONE).getValue(), NullPointerException.class);
+    }
+
+    /**
+     * Tests assert that the setting can not be deleted after set the setting to read-only.
+     */
+    public void setReadOnly() {
+
+        lockUnlockRunner((expected) -> {
+            // read-only setting
+            client.addSettingWithResponse(expected, Context.NONE);
+            client.setReadOnly(expected.getKey(), expected.getLabel());
+
+            // unsuccessfully delete
+            assertRestException(() ->
+                client.deleteSettingWithResponse(expected, false, Context.NONE),
+                HttpResponseException.class, 409);
+        });
+    }
+
+    /**
+     * Tests assert that the setting can be deleted after clear read-only of the setting.
+     */
+    public void clearReadOnly() {
+        lockUnlockRunner((expected) -> {
+            // read-only setting
+            client.addSettingWithResponse(expected, Context.NONE);
+            client.setReadOnlyWithResponse(expected, Context.NONE).getValue();
+
+            // unsuccessfully delete
+            assertRestException(() ->
+                client.deleteSettingWithResponse(expected, false, Context.NONE),
+                HttpResponseException.class, 409);
+
+            // clear read-only setting and delete
+            client.clearReadOnly(expected.getKey(), expected.getLabel());
+
+            // successfully deleted
+            assertConfigurationEquals(expected,
+                client.deleteSettingWithResponse(expected, false, Context.NONE).getValue());
+        });
+    }
+
+    /**
+     * Tests assert that the setting can not be deleted after lock the setting.
+     */
+    public void setReadOnlyWithConfigurationSetting() {
+        lockUnlockRunner((expected) -> {
+            // lock setting
+            client.addSettingWithResponse(expected, Context.NONE);
+            client.setReadOnlyWithResponse(expected, Context.NONE);
+
+            // unsuccessfully delete
+            assertRestException(() ->
+                client.deleteSettingWithResponse(expected, false, Context.NONE),
+                HttpResponseException.class, 409);
+        });
+    }
+
+    /**
+     * Tests assert that the setting can be deleted after unlock the setting.
+     */
+    public void clearReadOnlyWithConfigurationSetting() {
+        lockUnlockRunner((expected) -> {
+
+            // lock setting
+            client.addSettingWithResponse(expected, Context.NONE);
+            client.setReadOnlyWithResponse(expected, Context.NONE);
+
+            // unsuccessfully deleted
+            assertRestException(() ->
+                client.deleteSettingWithResponse(expected, false, Context.NONE),
+                HttpResponseException.class, 409);
+
+            // unlock setting and delete
+            client.clearReadOnlyWithResponse(expected, Context.NONE);
+
+            // successfully deleted
+            assertConfigurationEquals(expected,
+                client.deleteSettingWithResponse(expected, false, Context.NONE).getValue());
+        });
     }
 
     /**
@@ -507,7 +591,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         configurationSettingPagedIterable.iterator().forEachRemaining(configurationSetting -> configurationSettingList2.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList2.size());
 
-        assertArrayEquals(configurationSettingList1.toArray(), configurationSettingList2.toArray());
+        equalsArray(configurationSettingList1, configurationSettingList2);
     }
 
     /**
@@ -536,13 +620,17 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertNotNull(block);
         assertConfigurationEquals(expected, block);
+        // conditional get, now the setting has not be updated yet, resulting 304 and null value
+        assertConfigurationEquals(null, client.getSettingWithResponse(block, null, true, Context.NONE), 304);
         assertConfigurationEquals(newExpected, client.setSettingWithResponse(newExpected, false, Context.NONE).getValue());
+        // conditional get, now the setting is updated and we are able to get a new setting with 200 code
+        assertConfigurationEquals(newExpected, client.getSettingWithResponse(newExpected, null, true, Context.NONE).getValue());
     }
 
     public void deleteAllSettings() {
 
         client.listSettings(new SettingSelector().setKeys("*")).forEach(configurationSetting -> {
-            logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
+            logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
             client.deleteSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
         });
     }

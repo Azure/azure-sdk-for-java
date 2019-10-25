@@ -4,8 +4,8 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpResponse;
-import com.azure.storage.blob.models.StorageErrorCode;
-import com.azure.storage.blob.models.StorageException;
+import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.models.BlobStorageException;
 
 /**
  * This example shows how to handle errors thrown by various XxxURL methods. Any client-side error will be
@@ -30,12 +30,12 @@ public class StorageErrorHandlingExample {
              * An error occurred while creating the container.
              */
             blobContainerClient.create();
-        } catch (StorageException e) {
+        } catch (BlobStorageException e) {
 
             /*
              * StorageErrorCode defines constants corresponding to all error codes returned by the service.
              */
-            if (e.getErrorCode() == StorageErrorCode.RESOURCE_NOT_FOUND) {
+            if (e.getErrorCode() == BlobErrorCode.RESOURCE_NOT_FOUND) {
 
                 /*
                  * Log more detailed information.
@@ -47,14 +47,14 @@ public class StorageErrorHandlingExample {
                  */
                 HttpResponse response = e.getResponse();
                 System.out.println("Error creating the container with status code: " + response.getStatusCode());
-            } else if (e.getErrorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
+            } else if (e.getErrorCode() == BlobErrorCode.CONTAINER_BEING_DELETED) {
 
                 /*
                  * Log more detailed information.
                  */
                 System.out.println("Extended details: " + e.getServiceMessage());
 
-            } else if (e.getErrorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+            } else if (e.getErrorCode() == BlobErrorCode.CONTAINER_ALREADY_EXISTS) {
 
                 /*
                  * Process the error.

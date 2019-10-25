@@ -3,7 +3,9 @@
 
 package com.azure.core.http.rest;
 
+import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
@@ -20,47 +22,40 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
     public void classDocSnippet() {
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.items
-        // Subscribe to process one item at a time
         pagedFluxBase
             .log()
-            .doOnSubscribe(
-                ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
-            .doOnNext(item -> System.out.println("Processing item " + item))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .subscribe(item -> System.out.println("Processing item " + item),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedfluxbase.items
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.pages
-        // Subscribe to process one page at a time from the beginning
         pagedFluxBase
             .byPage()
             .log()
-            .doOnSubscribe(ignoredVal -> System.out
-                .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedfluxbase.pages
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
-        // Subscribe to process one page at a time starting from a page associated with
-        // a continuation token
         String continuationToken = getContinuationToken();
         pagedFluxBase
             .byPage(continuationToken)
             .log()
-            .doOnSubscribe(ignoredVal -> System.out
-                .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .doOnSubscribe(ignored -> System.out.println(
+                "Subscribed to paged flux processing pages starting from: " + continuationToken))
+            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
     }
+
     /**
      * Code snippets for creating an instance of {@link PagedFluxBase}
      * @return An instance of {@link PagedFluxBase}
      */
-    public PagedFluxBase<Integer, PagedResponse<Integer>> createAnInstance() {
+    private PagedFluxBase<Integer, PagedResponse<Integer>> createAnInstance() {
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.instantiation
         // A supplier that fetches the first page of data from source/service
@@ -94,11 +89,11 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
         // Start processing the results from first page
         pagedFluxBase.byPage()
             .log()
-            .doOnSubscribe(ignoredVal -> System.out
-                .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .doOnSubscribe(ignoredVal -> System.out.println(
+                "Subscribed to paged flux processing pages starting from first page"))
+            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedfluxbase.bypage
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.bypage#String
@@ -108,9 +103,9 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println(
                 "Subscribed to paged flux processing page starting from " + continuationToken))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedfluxbase.bypage#String
     }
 
@@ -121,11 +116,23 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.subscribe
-        pagedFluxBase.log()
-            .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
-            .doOnNext(item -> System.out.println("Processing item " + item))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+        pagedFluxBase.subscribe(new BaseSubscriber<Integer>() {
+                @Override
+                protected void hookOnSubscribe(Subscription subscription) {
+                    System.out.println("Subscribed to paged flux processing items");
+                    super.hookOnSubscribe(subscription);
+                }
+
+                @Override
+                protected void hookOnNext(Integer value) {
+                    System.out.println("Processing item " + value);
+                }
+
+                @Override
+                protected void hookOnComplete() {
+                    System.out.println("Completed processing");
+                }
+            });
         // END: com.azure.core.http.rest.pagedfluxbase.subscribe
     }
 
