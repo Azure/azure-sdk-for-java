@@ -41,6 +41,8 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
+     * Creates a new {@link ClientCertificateCredential} with the current configurations.
+     *
      * @return a {@link ClientCertificateCredential} with the current configurations.
      */
     public ClientCertificateCredential build() {

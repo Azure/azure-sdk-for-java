@@ -22,6 +22,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
 
     /**
      * Specifies the max number of retries when an authentication request fails.
+     *
      * @param maxRetry the number of retries
      * @return itself
      */
@@ -33,6 +34,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
 
     /**
      * Specifies a Function to calculate seconds of timeout on every retried request.
+     *
      * @param retryTimeout the Function that returns a timeout in seconds given the number of retry
      * @return itself
      */
@@ -44,6 +46,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
 
     /**
      * Specifies he options for proxy configuration.
+     *
      * @param proxyOptions the options for proxy configuration
      * @return itself
      */

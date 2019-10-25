@@ -709,7 +709,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges diff"() {
         setup:
-        bc.create(PageBlobClient.PAGE_BYTES * 2)
+        bc.create(PageBlobClient.PAGE_BYTES * 2, true)
 
         bc.uploadPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))

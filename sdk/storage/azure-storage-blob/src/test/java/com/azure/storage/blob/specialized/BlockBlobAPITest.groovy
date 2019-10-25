@@ -622,7 +622,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        blobClient.uploadFromFile(file.getAbsolutePath())
+        blobClient.uploadFromFile(file.getAbsolutePath(), true)
 
         then:
         bc.download(outStream)
@@ -647,7 +647,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload min"() {
         when:
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(defaultInputStream.get(), defaultDataSize, true)
 
         then:
         def outStream = new ByteArrayOutputStream()
@@ -975,7 +975,7 @@ class BlockBlobAPITest extends APISpec {
             .setBlockSize(bufferSize).setNumBuffers(numBuffers)
         def dataList = [] as List
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        blobac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
+        blobac.upload(Flux.fromIterable(dataList), parallelTransferOptions, true).block()
 
         expect:
         compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
@@ -1024,7 +1024,8 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(10)
-        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders().setCacheControl(cacheControl)
+        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders()
+            .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)

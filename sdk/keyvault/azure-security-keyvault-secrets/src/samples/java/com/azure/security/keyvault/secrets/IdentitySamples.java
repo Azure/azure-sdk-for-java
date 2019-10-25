@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.ClientSecretCredential;
@@ -15,7 +16,6 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
-import com.azure.security.keyvault.secrets.models.Secret;
 
 /**
  * Samples for azure-identity readme.
@@ -30,11 +30,11 @@ public class IdentitySamples {
         // Azure SDK client builders accept the credential as a parameter
 
         SecretClient client = new SecretClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(defaultCredential)
             .buildClient();
 
-        Secret secret = client.getSecret("{SECRET_NAME}");
+        KeyVaultSecret secret = client.getSecret("{SECRET_NAME}");
         System.out.println(secret.getValue());
     }
 
@@ -50,11 +50,11 @@ public class IdentitySamples {
             .build();
 
         SecretClient client = new SecretClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(clientSecretCredential)
             .buildClient();
 
-        Secret secret = client.getSecret("{SECRET_NAME}");
+        KeyVaultSecret secret = client.getSecret("{SECRET_NAME}");
         System.out.println(secret.getValue());
     }
 
@@ -71,11 +71,11 @@ public class IdentitySamples {
                 .build();
 
         SecretClient client = new SecretClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(deviceCodeCredential)
-                .buildClient();
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .credential(deviceCodeCredential)
+            .buildClient();
 
-        Secret secret = client.getSecret("{SECRET_NAME}");
+        KeyVaultSecret secret = client.getSecret("{SECRET_NAME}");
         System.out.println(secret.getValue());
     }
 
@@ -91,11 +91,11 @@ public class IdentitySamples {
                 .build();
 
         SecretClient client = new SecretClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(usernamePasswordCredential)
                 .buildClient();
 
-        Secret secret = client.getSecret("{SECRET_NAME}");
+        KeyVaultSecret secret = client.getSecret("{SECRET_NAME}");
         System.out.println(secret.getValue());
     }
 
@@ -123,11 +123,11 @@ public class IdentitySamples {
 
         // the chain can be used anywhere a credential is required
         SecretClient client = new SecretClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(credentialChain)
             .buildClient();
 
-        Secret secret = client.getSecret("{SECRET_NAME}");
+        KeyVaultSecret secret = client.getSecret("{SECRET_NAME}");
         System.out.println(secret.getValue());
     }
 
