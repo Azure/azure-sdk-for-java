@@ -262,6 +262,7 @@ public final class SecretClientJavaDocCodeSnippets {
     public void restoreSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.restoreSecret#byte
+        // Pass the secret backup byte array of the secret to be restored.
         byte[] secretBackupByteArray = {};
         KeyVaultSecret restoredSecret = secretClient.restoreSecretBackup(secretBackupByteArray);
         System.out
@@ -275,6 +276,7 @@ public final class SecretClientJavaDocCodeSnippets {
     public void restoreSecretWithResponseCodeSnippets() {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.restoreSecretWithResponse#byte-Context
+        // Pass the secret backup byte array of the secret to be restored.
         byte[] secretBackupByteArray = {};
         KeyVaultSecret restoredSecret = secretClient.restoreSecretBackupWithResponse(secretBackupByteArray,
             new Context(key2, value2)).getValue();
@@ -400,10 +402,8 @@ public final class SecretClientJavaDocCodeSnippets {
 
     /**
      * Implementation not provided for this method
-     *
-     * @return {@code null}
      */
     private SecretClient getSecretClient() {
-        return null;
+        return new SecretClient(null);
     }
 }
