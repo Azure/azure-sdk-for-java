@@ -319,34 +319,8 @@ try {
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-### Hello World Samples
-* [HelloWorld.java][sample_helloWorld] - and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples for following scenarios:
-    * Create a Secret
-    * Retrieve a Secret
-    * Update a Secret
-    * Delete a Secret
-
-### List Operations Samples
-* [ListOperations.java][sample_list] and [ListOperationsAsync.java][sample_listAsync] - Contains samples for following scenarios:
-    * Create a Secret
-    * List Secrets
-    * Create new version of existing secret.
-    * List versions of an existing secret.
-
-### Backup And Restore Operations Samples
-* [BackupAndRestoreOperations.java][sample_BackupRestore] and [BackupAndRestoreOperationsAsync.java][sample_BackupRestoreAsync] - Contains samples for following scenarios:
-    * Create a Secret
-    * Backup a Secret -- Write it to a file.
-    * Delete a secret
-    * Restore a secret
-
-### Managing Deleted Secrets Samples:
-* [ManagingDeletedSecrets.java][sample_ManageDeleted] and [ManagingDeletedSecretsAsync.java][sample_ManageDeletedAsync] - Contains samples for following scenarios:
-    * Create a Secret
-    * Delete a secret
-    * List deleted secrets
-    * Recover a deleted secret
-    * Purge Deleted secret
+## Next Steps Samples
+Samples are explained in detail [here][samples].
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
@@ -381,5 +355,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_BackupRestoreAsync]: src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperationsAsync.java
 [sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
 [sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
+[samples]: src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-secrets/README.png)
