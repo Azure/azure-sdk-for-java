@@ -182,7 +182,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return the updated DataSource.
      */
-    public Mono<DataSource> replaceDataSource() {
+    public Mono<DataSource> createOrUpdateDataSource() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -190,7 +190,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a response containing the updated DataSource.
      */
-    public Mono<Response<DataSource>> replaceDataSourceWithResponse() {
+    public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -262,7 +262,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return the updated Indexer.
      */
-    public Mono<Indexer> replaceIndexer() {
+    public Mono<Indexer> createOrUpdateIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -270,7 +270,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a response containing the updated Indexer.
      */
-    public Mono<Response<Indexer>> replaceIndexerWithResponse() {
+    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -549,8 +549,8 @@ public class SearchServiceAsyncClient {
      * @param index the definition of the index to create or update
      * @return the index that was created or updated
      */
-    public Mono<Index> upsertIndex(Index index) {
-        return this.upsertIndexWithResponse(index, null, null, null)
+    public Mono<Index> createOrUpdateIndex(Index index) {
+        return this.createOrUpdateIndexWithResponse(index, null, null, null)
             .map(Response::getValue);
     }
 
@@ -564,10 +564,10 @@ public class SearchServiceAsyncClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
-    public Mono<Index> upsertIndex(Index index,
-                                   AccessCondition accessCondition,
-                                   RequestOptions requestOptions) {
-        return this.upsertIndexWithResponse(index, null, accessCondition, requestOptions)
+    public Mono<Index> createOrUpdateIndex(Index index,
+                                           AccessCondition accessCondition,
+                                           RequestOptions requestOptions) {
+        return this.createOrUpdateIndexWithResponse(index, null, accessCondition, requestOptions)
             .map(Response::getValue);
     }
 
@@ -582,8 +582,8 @@ public class SearchServiceAsyncClient {
      *                           large indexes
      * @return the index that was created or updated
      */
-    public Mono<Index> upsertIndex(Index index, Boolean allowIndexDowntime) {
-        return this.upsertIndexWithResponse(index, allowIndexDowntime, null, null)
+    public Mono<Index> createOrUpdateIndex(Index index, Boolean allowIndexDowntime) {
+        return this.createOrUpdateIndexWithResponse(index, allowIndexDowntime, null, null)
             .map(Response::getValue);
     }
 
@@ -602,11 +602,11 @@ public class SearchServiceAsyncClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
-    public Mono<Index> upsertIndex(Index index,
-                                   Boolean allowIndexDowntime,
-                                   AccessCondition accessCondition,
-                                   RequestOptions requestOptions) {
-        return this.upsertIndexWithResponse(index,
+    public Mono<Index> createOrUpdateIndex(Index index,
+                                           Boolean allowIndexDowntime,
+                                           AccessCondition accessCondition,
+                                           RequestOptions requestOptions) {
+        return this.createOrUpdateIndexWithResponse(index,
             allowIndexDowntime,
             accessCondition,
             requestOptions).map(Response::getValue);
@@ -618,8 +618,8 @@ public class SearchServiceAsyncClient {
      * @param index the definition of the index to create or update
      * @return a response containing the index that was created or updated
      */
-    public Mono<Response<Index>> upsertIndexWithResponse(Index index) {
-        return withContext(context -> upsertIndexWithResponse(index,
+    public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index) {
+        return withContext(context -> createOrUpdateIndexWithResponse(index,
             null,
             null,
             null,
@@ -641,22 +641,22 @@ public class SearchServiceAsyncClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index that was created or updated
      */
-    public Mono<Response<Index>> upsertIndexWithResponse(Index index,
-                                                         Boolean allowIndexDowntime,
-                                                         AccessCondition accessCondition,
-                                                         RequestOptions requestOptions) {
-        return withContext(context -> upsertIndexWithResponse(index,
+    public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
+                                                                 Boolean allowIndexDowntime,
+                                                                 AccessCondition accessCondition,
+                                                                 RequestOptions requestOptions) {
+        return withContext(context -> createOrUpdateIndexWithResponse(index,
             allowIndexDowntime,
             accessCondition,
             requestOptions,
             context));
     }
 
-    Mono<Response<Index>> upsertIndexWithResponse(Index index,
-                                                  Boolean allowIndexDowntime,
-                                                  AccessCondition accessCondition,
-                                                  RequestOptions requestOptions,
-                                                  Context context) {
+    Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
+                                                          Boolean allowIndexDowntime,
+                                                          AccessCondition accessCondition,
+                                                          RequestOptions requestOptions,
+                                                          Context context) {
         return restClient
             .indexes()
             .createOrUpdateWithRestResponseAsync(index.getName(),
@@ -796,7 +796,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return the updated Skillset.
      */
-    public Mono<Skillset> replaceSkillset() {
+    public Mono<Skillset> createOrUpdateSkillset() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -804,7 +804,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a response containing the updated Skillset.
      */
-    public Mono<Response<Skillset>> replaceSkillsetWithResponse() {
+    public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -906,7 +906,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return the updated SynonymMap.
      */
-    public Mono<SynonymMap> replaceSynonymMap() {
+    public Mono<SynonymMap> createOrUpdateSynonymMap() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -914,7 +914,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a response containing the updated SynonymMap.
      */
-    public Mono<Response<SynonymMap>> replaceSynonymMapWithResponse() {
+    public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 

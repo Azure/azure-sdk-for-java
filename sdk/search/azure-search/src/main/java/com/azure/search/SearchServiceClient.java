@@ -87,7 +87,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return the updated DataSource.
      */
-    public DataSource replaceDataSource() {
+    public DataSource createOrUpdateDataSource() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -95,7 +95,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response containing the updated DataSource.
      */
-    public Response<DataSource> replaceDataSourceWithResponse() {
+    public Response<DataSource> createOrUpdateDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -166,7 +166,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return the updated Indexer.
      */
-    public Indexer replaceIndexer() {
+    public Indexer createOrUpdateIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -174,7 +174,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response containing the updated Indexer.
      */
-    public Response<Indexer> replaceIndexerWithResponse() {
+    public Response<Indexer> createOrUpdateIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -414,8 +414,8 @@ public class SearchServiceClient {
      * @param index the definition of the index to create or update
      * @return the index that was created or updated
      */
-    public Index upsertIndex(Index index) {
-        return this.upsertIndexWithResponse(index, null, null, null, Context.NONE).getValue();
+    public Index createOrUpdateIndex(Index index) {
+        return this.createOrUpdateIndexWithResponse(index, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -427,10 +427,10 @@ public class SearchServiceClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
-    public Index upsertIndex(Index index,
-                             AccessCondition accessCondition,
-                             RequestOptions requestOptions) {
-        return this.upsertIndexWithResponse(index,
+    public Index createOrUpdateIndex(Index index,
+                                     AccessCondition accessCondition,
+                                     RequestOptions requestOptions) {
+        return this.createOrUpdateIndexWithResponse(index,
             null,
             accessCondition,
             requestOptions,
@@ -447,8 +447,8 @@ public class SearchServiceClient {
      *                           large indexes.
      * @return the index that was created or updated
      */
-    public Index upsertIndex(Index index, Boolean allowIndexDowntime) {
-        return this.upsertIndexWithResponse(index,
+    public Index createOrUpdateIndex(Index index, Boolean allowIndexDowntime) {
+        return this.createOrUpdateIndexWithResponse(index,
             allowIndexDowntime,
             null,
             null,
@@ -469,11 +469,11 @@ public class SearchServiceClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
-    public Index upsertIndex(Index index,
-                             Boolean allowIndexDowntime,
-                             AccessCondition accessCondition,
-                             RequestOptions requestOptions) {
-        return this.upsertIndexWithResponse(index,
+    public Index createOrUpdateIndex(Index index,
+                                     Boolean allowIndexDowntime,
+                                     AccessCondition accessCondition,
+                                     RequestOptions requestOptions) {
+        return this.createOrUpdateIndexWithResponse(index,
             allowIndexDowntime,
             accessCondition,
             requestOptions,
@@ -485,8 +485,8 @@ public class SearchServiceClient {
      * @param index the definition of the index to create or update
      * @return a response containing the Index that was created or updated.
      */
-    public Response<Index> upsertIndexWithResponse(Index index) {
-        return asyncClient.upsertIndexWithResponse(index,
+    public Response<Index> createOrUpdateIndexWithResponse(Index index) {
+        return asyncClient.createOrUpdateIndexWithResponse(index,
             null,
             null,
             null,
@@ -508,12 +508,12 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the Index that was created or updated.
      */
-    public Response<Index> upsertIndexWithResponse(Index index,
-                                                   Boolean allowIndexDowntime,
-                                                   AccessCondition accessCondition,
-                                                   RequestOptions requestOptions,
-                                                   Context context) {
-        return asyncClient.upsertIndexWithResponse(index,
+    public Response<Index> createOrUpdateIndexWithResponse(Index index,
+                                                           Boolean allowIndexDowntime,
+                                                           AccessCondition accessCondition,
+                                                           RequestOptions requestOptions,
+                                                           Context context) {
+        return asyncClient.createOrUpdateIndexWithResponse(index,
             allowIndexDowntime,
             accessCondition,
             requestOptions,
@@ -633,7 +633,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return the updated Skillset.
      */
-    public Skillset replaceSkillset() {
+    public Skillset createOrUpdateSkillset() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -641,7 +641,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response containing the updated Skillset.
      */
-    public Response<Skillset> replaceSkillsetWithResponse() {
+    public Response<Skillset> createOrUpdateSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -736,7 +736,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return the updated SynonymMap.
      */
-    public SynonymMap replaceSynonymMap() {
+    public SynonymMap createOrUpdateSynonymMap() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -744,7 +744,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response containing the updated SynonymMap.
      */
-    public Response<SynonymMap> replaceSynonymMapWithResponse() {
+    public Response<SynonymMap> createOrUpdateSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 

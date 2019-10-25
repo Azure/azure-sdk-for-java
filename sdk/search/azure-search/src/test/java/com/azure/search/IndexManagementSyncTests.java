@@ -138,8 +138,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client = getSearchServiceClientBuilder().buildClient();
 
         Index index = createTestIndex();
-        Index staleResource = client.upsertIndex(index);
-        Index currentResource = client.upsertIndex(mutateCorsOptionsInIndex(staleResource));
+        Index staleResource = client.createOrUpdateIndex(index);
+        Index currentResource = client.createOrUpdateIndex(mutateCorsOptionsInIndex(staleResource));
 
         try {
             client.deleteIndex(index.getName(), generateIfMatchAccessCondition(staleResource.getETag()), null);
@@ -303,7 +303,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         hotelNameField = getFieldByName(existingIndex, "HotelName");
         hotelNameField.setSynonymMaps(Collections.<String>emptyList());
 
-        Index updatedIndex = client.upsertIndex(existingIndex, true);
+        Index updatedIndex = client.createOrUpdateIndex(existingIndex, true);
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
@@ -327,7 +327,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         index.setCorsOptions(index.getCorsOptions()
             .setAllowedOrigins(fullFeaturedIndex.getCorsOptions().getAllowedOrigins()));
 
-        Index updatedIndex = client.upsertIndex(index);
+        Index updatedIndex = client.createOrUpdateIndex(index);
 
         assertIndexesEqual(fullFeaturedIndex, updatedIndex);
 
@@ -344,7 +344,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             .setSearchAnalyzer(AnalyzerName.WHITESPACE)
             .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
 
-        updatedIndex = client.upsertIndex(existingIndex, true);
+        updatedIndex = client.createOrUpdateIndex(existingIndex, true);
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
@@ -369,13 +369,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             .setSourceFields(Arrays.asList("HotelAmenities", "HotelRewards"))
         ));
 
-        Index updatedIndex = client.upsertIndex(existingIndex, true);
+        Index updatedIndex = client.createOrUpdateIndex(existingIndex, true);
 
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
     @Override
-    public void upsertIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
+    public void createOrUpdateIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
         client = getSearchServiceClientBuilder().buildClient();
 
         Index index = createTestIndex();
@@ -389,8 +389,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         ));
 
         try {
-            client.upsertIndex(existingIndex, true);
-            Assert.fail("upsertIndex did not throw an expected Exception");
+            client.createOrUpdateIndex(existingIndex, true);
+            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex)
@@ -402,12 +402,12 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     @Override
-    public void upsertIndexCreatesWhenIndexDoesNotExist() {
+    public void createOrUpdateIndexCreatesWhenIndexDoesNotExist() {
         client = getSearchServiceClientBuilder().buildClient();
 
         Index index = createTestIndex();
 
-        Response<Index> createOrUpdateResponse = client.upsertIndexWithResponse(index,
+        Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(index,
             null,
             null,
             null, Context.NONE);
@@ -416,16 +416,16 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     @Override
-    public void upsertIndexIfNotExistsFailsOnExistingResource() {
+    public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
         client = getSearchServiceClientBuilder().buildClient();
 
         Index index = createTestIndex();
-        Index createdResource = client.upsertIndex(index, generateEmptyAccessCondition(), null);
+        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
 
         try {
-            client.upsertIndex(mutatedResource, generateIfNotExistsAccessCondition(), null);
-            Assert.fail("upsertIndex did not throw an expected Exception");
+            client.createOrUpdateIndex(mutatedResource, generateIfNotExistsAccessCondition(), null);
+            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
@@ -433,37 +433,37 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     @Override
-    public void upsertIndexIfNotExistsSucceedsOnNoResource() {
+    public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
         client = getSearchServiceClientBuilder().buildClient();
 
         Index resource = createTestIndex();
-        Index updatedResource = client.upsertIndex(resource, generateIfNotExistsAccessCondition(), null);
+        Index updatedResource = client.createOrUpdateIndex(resource, generateIfNotExistsAccessCondition(), null);
 
         Assert.assertFalse(updatedResource.getETag().isEmpty());
     }
 
     @Override
-    public void upsertIndexIfExistsSucceedsOnExistingResource() {
+    public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         client = getSearchServiceClientBuilder().buildClient();
 
         Index index = createTestIndex();
-        Index createdResource = client.upsertIndex(index, generateEmptyAccessCondition(), null);
+        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.upsertIndex(mutatedResource, generateIfExistsAccessCondition(), null);
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfExistsAccessCondition(), null);
 
         Assert.assertFalse(updatedResource.getETag().isEmpty());
         Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
     }
 
     @Override
-    public void upsertIndexIfExistsFailsOnNoResource() {
+    public void createOrUpdateIndexIfExistsFailsOnNoResource() {
         client = getSearchServiceClientBuilder().buildClient();
 
         Index resource = createTestIndex();
 
         try {
-            client.upsertIndex(resource, generateIfExistsAccessCondition(), null);
-            Assert.fail("upsertIndex did not throw an expected Exception");
+            client.createOrUpdateIndex(resource, generateIfExistsAccessCondition(), null);
+            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
@@ -473,13 +473,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     @Override
-    public void upsertIndexIfNotChangedSucceedsWhenResourceUnchanged() {
+    public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
         client = getSearchServiceClientBuilder().buildClient();
 
         Index index = createTestIndex();
-        Index createdResource = client.upsertIndex(index, generateEmptyAccessCondition(), null);
+        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.upsertIndex(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()), null);
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()), null);
 
         Assert.assertFalse(createdResource.getETag().isEmpty());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
@@ -487,17 +487,17 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     @Override
-    public void upsertIndexIfNotChangedFailsWhenResourceChanged() {
+    public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
         client = getSearchServiceClientBuilder().buildClient();
 
         Index index = createTestIndex();
-        Index createdResource = client.upsertIndex(index, generateEmptyAccessCondition(), null);
+        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.upsertIndex(mutatedResource, generateEmptyAccessCondition(), null);
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateEmptyAccessCondition(), null);
 
         try {
-            client.upsertIndex(updatedResource, generateIfMatchAccessCondition(createdResource.getETag()), null);
-            Assert.fail("upsertIndex did not throw an expected Exception");
+            client.createOrUpdateIndex(updatedResource, generateIfMatchAccessCondition(createdResource.getETag()), null);
+            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());

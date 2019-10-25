@@ -92,28 +92,28 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void canUpdateSuggesterWithNewIndexFields();
 
     @Test
-    public abstract void upsertIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields();
+    public abstract void createOrUpdateIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields();
 
     @Test
-    public abstract void upsertIndexCreatesWhenIndexDoesNotExist();
+    public abstract void createOrUpdateIndexCreatesWhenIndexDoesNotExist();
 
     @Test
-    public abstract void upsertIndexIfNotExistsFailsOnExistingResource();
+    public abstract void createOrUpdateIndexIfNotExistsFailsOnExistingResource();
 
     @Test
-    public abstract void upsertIndexIfNotExistsSucceedsOnNoResource();
+    public abstract void createOrUpdateIndexIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void upsertIndexIfExistsSucceedsOnExistingResource();
+    public abstract void createOrUpdateIndexIfExistsSucceedsOnExistingResource();
 
     @Test
-    public abstract void upsertIndexIfExistsFailsOnNoResource();
+    public abstract void createOrUpdateIndexIfExistsFailsOnNoResource();
 
     @Test
-    public abstract void upsertIndexIfNotChangedSucceedsWhenResourceUnchanged();
+    public abstract void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged();
 
     @Test
-    public abstract void upsertIndexIfNotChangedFailsWhenResourceChanged();
+    public abstract void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged();
 
     protected void assertFieldsEqual(Field expected, Field actual) {
         Assert.assertEquals(expected.getName(), actual.getName());
