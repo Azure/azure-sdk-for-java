@@ -3,7 +3,7 @@
 ### Breaking changes
 
 - Secret has been renamed to KeyVaultSecret to avoid ambiquity with other libraries and to yield better search results.
-- endpoint method on SecretClientBuilder has been renamed to vaultEndpoint.
+- endpoint method on SecretClientBuilder has been renamed to vaultUrl.
 - On SecretProperties, expires, created, and updated have been renamed to expiresOn, createdOn, and updatedOn respectively.
 - On DeletedSecret, deletedDate has been renamed to deletedOn.
 - SecretClient.listSecrets and SecretClient.listSecretVersions have been renamed to SecretClient.listPropertiesOfSecrets and SecretClient.listPropertiesOfSecretVersions respectively.
@@ -12,7 +12,7 @@
 - SecretClient.recoverDeletedSecret has been renamed to SecretClient.beginRecoverDeletedSecret and now returns a Poller to track this long-running operation.
 
 ### Major changes
-- SecretClient.vaultEndpoint has been added with the original value pass to SecretClient.
+- SecretClient.vaultUrl has been added with the original value pass to SecretClient.
 
 ## 4.0.0-preview.4 (2019-09-08)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).

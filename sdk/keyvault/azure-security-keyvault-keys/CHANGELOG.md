@@ -7,7 +7,7 @@
 - The setters of JsonWebKey properties have been removed.
 - JsonWebKey methods fromRsa, fromEc and fromAes now take an optional collection of key operations.
 - JsonWebKey.keyOps is now read-only. You must pass a list of key operations at construction time.
-- endpoint method on KeyClientBuilder has been renamed to vaultEndpoint.
+- endpoint method on KeyClientBuilder has been renamed to vaultUrl.
 - hsm properties and parameters have been renamed to hardwareProtected.
 - On KeyProperties, expires, created, and updated have been renamed to expiresOn, createdOn, and updatedOn respectively.
 - On DeletedKey, deletedDate has been renamed to DeletedOn.
@@ -23,7 +23,7 @@
 
 ### Major changes
 - JsonWebKey.keyType and JsonWebKey.keyOps have been exposed as KeyVaultKey.keyType and KeyVaultKey.keyOperations respectively.
-- KeyClient.vaultEndpoint has been added with the original value pass to KeyClient.
+- KeyClient.vaultUrl has been added with the original value pass to KeyClient.
 
 ## 4.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
