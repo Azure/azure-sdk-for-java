@@ -136,7 +136,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * {@codesnippet com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions}
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @return the updated {@link OkHttpAsyncHttpClientBuilder} object
      */
     public OkHttpAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         // proxyOptions can be null
