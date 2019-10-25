@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue;
+package com.azure.storage.queue.implementation.util;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -23,6 +23,8 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 
+import com.azure.storage.queue.QueueServiceSasQueryParameters;
+import com.azure.storage.queue.QueueServiceVersion;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ import java.util.regex.Pattern;
 /**
  * This class provides helper methods for common builder patterns.
  */
-final class BuilderHelper {
+public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
     // {x-version-update-start;com.azure:azure-storage-queue;current}
     private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
@@ -50,7 +52,7 @@ final class BuilderHelper {
      * @param logger {@link ClientLogger} used to log any exception.
      * @return The parsed endpoint as a {@link QueueUrlParts}.
      */
-    static QueueUrlParts parseEndpoint(String endpoint, ClientLogger logger) {
+    public static QueueUrlParts parseEndpoint(String endpoint, ClientLogger logger) {
         Objects.requireNonNull(endpoint);
         try {
             URL url = new URL(endpoint);
@@ -120,9 +122,10 @@ final class BuilderHelper {
      * @param serviceVersion {@link QueueServiceVersion} of the service to be used when making requests.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
+    public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, QueueServiceVersion serviceVersion) {
+
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -154,6 +157,18 @@ final class BuilderHelper {
             .build();
     }
 
+    /**
+     * Gets the default http log option for Storage Queue.
+     *
+     * @return the default http log options.
+     */
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        HttpLogOptions defaultOptions = new HttpLogOptions();
+        QueueHeadersAndQueryParameters.getQueueHeaders().forEach(defaultOptions::addAllowedHeaderName);
+        QueueHeadersAndQueryParameters.getQueueQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
+        return defaultOptions;
+    }
+
     /*
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
@@ -179,31 +194,31 @@ final class BuilderHelper {
             .build();
     }
 
-    static class QueueUrlParts {
+    public static class QueueUrlParts {
         private String endpoint;
         private String accountName;
         private String queueName;
         private String sasToken;
 
-        String getEndpoint() {
+        public String getEndpoint() {
             return endpoint;
         }
 
-        QueueUrlParts setEndpoint(String endpoint) {
+        public QueueUrlParts setEndpoint(String endpoint) {
             this.endpoint = endpoint;
             return this;
         }
 
-        String getAccountName() {
+        public String getAccountName() {
             return accountName;
         }
 
-        QueueUrlParts setAccountName(String accountName) {
+        public QueueUrlParts setAccountName(String accountName) {
             this.accountName = accountName;
             return this;
         }
 
-        String getQueueName() {
+        public String getQueueName() {
             return queueName;
         }
 
@@ -212,11 +227,11 @@ final class BuilderHelper {
             return this;
         }
 
-        String getSasToken() {
+        public String getSasToken() {
             return sasToken;
         }
 
-        QueueUrlParts setSasToken(String sasToken) {
+        public QueueUrlParts setSasToken(String sasToken) {
             this.sasToken = sasToken;
             return this;
         }
