@@ -10,6 +10,7 @@ import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -32,6 +33,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
     private int tryNumber;
     private HttpGetterInfo info;
     private ByteBuffer scenarioData;
+    private DownloadRetryOptions options;
 
     DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
         this.scenario = scenario;
@@ -60,6 +62,11 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
 
     int getTryNumber() {
         return this.tryNumber;
+    }
+
+    DownloadResponseMockFlux setOptions(DownloadRetryOptions options) {
+        this.options = options;
+        return this;
     }
 
     @Override
@@ -147,11 +154,11 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
         }
     }
 
-    Mono<DownloadAsyncResponse> getter(HttpGetterInfo info) {
+    Mono<ReliableDownload> getter(HttpGetterInfo info) {
         this.tryNumber++;
         this.info = info;
         BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this, new BlobDownloadHeaders());
-        DownloadAsyncResponse response = new DownloadAsyncResponse(rawResponse, info, this::getter);
+        ReliableDownload response = new ReliableDownload(rawResponse, options, info, this::getter);
 
         switch (this.scenario) {
             case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:

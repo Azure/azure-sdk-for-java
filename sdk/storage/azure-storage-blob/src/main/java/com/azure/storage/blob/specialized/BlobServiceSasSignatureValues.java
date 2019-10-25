@@ -9,6 +9,7 @@ import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -280,10 +281,10 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Gets the name of the blob the SAS user may access. {@code null} or an empty string is returned when a
+     * Decodes and gets the name of the blob the SAS user may access. {@code null} or an empty string is returned when a
      * creating a container SAS.
      *
-     * @return The name of the blob the SAS user may access. {@code null} or an empty string is returned when a
+     * @return The decoded name of the blob the SAS user may access. {@code null} or an empty string is returned when a
      * creating a container SAS.
      */
     public String getBlobName() {
@@ -297,7 +298,7 @@ public final class BlobServiceSasSignatureValues {
      * @return The updated BlobServiceSASSignatureValues object.
      */
     public BlobServiceSasSignatureValues setBlobName(String blobName) {
-        this.blobName = blobName;
+        this.blobName = (blobName == null) ? null : Utility.urlDecode(blobName);
         return this;
     }
 
@@ -620,8 +621,8 @@ public final class BlobServiceSasSignatureValues {
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             canonicalName,
-            key.getSignedOid() == null ? "" : key.getSignedOid(),
-            key.getSignedTid() == null ? "" : key.getSignedTid(),
+            key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
+            key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
             key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),

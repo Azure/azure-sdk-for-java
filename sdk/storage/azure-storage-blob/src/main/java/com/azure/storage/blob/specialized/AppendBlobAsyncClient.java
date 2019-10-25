@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
@@ -17,13 +18,12 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
-import com.azure.storage.blob.models.AppendBlobAccessConditions;
+import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -89,7 +89,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     * Creates a 0-length append blob. Call appendBlock to append data to an append blob. By default this method will
+     * not overwrite an existing blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -99,7 +100,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<AppendBlobItem> create() {
         try {
-            return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+            return create(false);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -110,16 +111,39 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.create#boolean}
+     *
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     *
+     * @return A {@link Mono} containing the information of the created appended blob.
+     */
+    public Mono<AppendBlobItem> create(boolean overwrite) {
+        try {
+            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+            if (!overwrite) {
+                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return createWithResponse(null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions}
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
      * appended blob.
      */
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        BlobAccessConditions accessConditions) {
+        BlobRequestConditions accessConditions) {
         try {
             return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));
         } catch (RuntimeException ex) {
@@ -128,12 +152,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        BlobAccessConditions accessConditions, Context context) {
-        accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
+        BlobRequestConditions accessConditions, Context context) {
+        accessConditions = (accessConditions == null) ? new BlobRequestConditions() : accessConditions;
 
-        return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
-            null, 0, null, metadata, null, headers, accessConditions.getLeaseAccessConditions(),
-            getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context)
+        return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
+            accessConditions.getLeaseId(), accessConditions.getIfModifiedSince(),
+            accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
+            null, headers, getCustomerProvidedKey(), context)
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -180,29 +205,30 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
-     * @param appendBlobAccessConditions {@link AppendBlobAccessConditions}
+     * @param appendBlobRequestConditions {@link AppendBlobRequestConditions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
      * blob operation.
      */
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
-        AppendBlobAccessConditions appendBlobAccessConditions) {
+        AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
-            return withContext(context -> appendBlockWithResponse(data, length, appendBlobAccessConditions, context));
+            return withContext(context -> appendBlockWithResponse(data, length, appendBlobRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
-        AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
-        appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions()
-            : appendBlobAccessConditions;
+        AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
+        appendBlobRequestConditions = appendBlobRequestConditions == null ? new AppendBlobRequestConditions()
+            : appendBlobRequestConditions;
 
         return this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
-            null, null, data, length, null, null, null, null,
-            appendBlobAccessConditions.getLeaseAccessConditions(),
-            appendBlobAccessConditions.getAppendPositionAccessConditions(), getCustomerProvidedKey(),
-            appendBlobAccessConditions.getModifiedAccessConditions(), context)
+            null, null, data, length, null, null, null, appendBlobRequestConditions.getLeaseId(),
+            appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
+            appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
+            appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(), null,
+            getCustomerProvidedKey(), context)
             .map(rb -> {
                 AppendBlobAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -239,7 +265,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions}
      *
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -248,14 +274,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @param sourceRange {@link BlobRange}
      * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will
      * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
-     * @param destAccessConditions {@link AppendBlobAccessConditions}
-     * @param sourceAccessConditions {@link SourceModifiedAccessConditions}
+     * @param destAccessConditions {@link AppendBlobRequestConditions}
+     * @param sourceAccessConditions {@link BlobRequestConditions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
      * blob operation.
      */
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
-        byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
-        SourceModifiedAccessConditions sourceAccessConditions) {
+        byte[] sourceContentMD5, AppendBlobRequestConditions destAccessConditions,
+        BlobRequestConditions sourceAccessConditions) {
         try {
             return withContext(context -> appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
                 destAccessConditions, sourceAccessConditions, context));
@@ -265,11 +291,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
-        byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
-        SourceModifiedAccessConditions sourceAccessConditions, Context context) {
-        sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
-        destAccessConditions = destAccessConditions == null
-            ? new AppendBlobAccessConditions() : destAccessConditions;
+        byte[] sourceContentMD5, AppendBlobRequestConditions destAccessConditions,
+        RequestConditions sourceAccessConditions, Context context) {
+        sourceRange = (sourceRange == null) ? new BlobRange(0) : sourceRange;
+        destAccessConditions = (destAccessConditions == null)
+            ? new AppendBlobRequestConditions() : destAccessConditions;
+        sourceAccessConditions = (sourceAccessConditions == null)
+            ? new RequestConditions() : sourceAccessConditions;
 
         URL url;
         try {
@@ -279,10 +307,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         }
 
         return this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null, url, 0,
-                sourceRange.toString(), sourceContentMD5, null, null, null, null, getCustomerProvidedKey(),
-                destAccessConditions.getLeaseAccessConditions(),
-                destAccessConditions.getAppendPositionAccessConditions(),
-                destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context)
+            sourceRange.toString(), sourceContentMD5, null, null, null, destAccessConditions.getLeaseId(),
+            destAccessConditions.getMaxSize(), destAccessConditions.getAppendPosition(),
+            destAccessConditions.getIfModifiedSince(), destAccessConditions.getIfUnmodifiedSince(),
+            destAccessConditions.getIfMatch(), destAccessConditions.getIfNoneMatch(),
+            sourceAccessConditions.getIfModifiedSince(), sourceAccessConditions.getIfUnmodifiedSince(),
+            sourceAccessConditions.getIfMatch(), sourceAccessConditions.getIfNoneMatch(), null,
+            getCustomerProvidedKey(), context)
             .map(rb -> {
                 AppendBlobAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

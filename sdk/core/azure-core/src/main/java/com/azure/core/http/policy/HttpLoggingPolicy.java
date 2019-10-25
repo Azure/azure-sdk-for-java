@@ -25,7 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * The Pipeline policy that handles logging of HTTP requests and responses.
+ * The pipeline policy that handles logging of HTTP requests and responses.
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
@@ -95,7 +95,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             } else {
                 boolean isHumanReadableContentType =
                     !"application/octet-stream".equalsIgnoreCase(request.getHeaders().getValue("Content-Type"));
-                final long contentLength = getContentLength(request.getHeaders());
+                final long contentLength = getContentLength(logger, request.getHeaders());
 
                 if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                     try {
@@ -191,7 +191,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             if (httpLogLevel.shouldLogBody()) {
-                long contentLength = getContentLength(response.getHeaders());
+                long contentLength = getContentLength(logger, response.getHeaders());
                 final String contentTypeHeader = response.getHeaderValue("Content-Type");
                 if (!"application/octet-stream".equalsIgnoreCase(contentTypeHeader)
                     && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
@@ -227,11 +227,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return result;
     }
 
-    private long getContentLength(HttpHeaders headers) {
+    private long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
         try {
             contentLength = Long.parseLong(headers.getValue("content-length"));
-        } catch (NumberFormatException | NullPointerException ignored) {
+        } catch (NumberFormatException | NullPointerException e) {
+            logger.warning("Could not parse the HTTP header content-length: '{}'.",
+                headers.getValue("content-length"), e);
         }
 
         return contentLength;

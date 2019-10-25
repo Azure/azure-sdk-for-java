@@ -35,7 +35,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,FileHttpHeaders,ShareItem,FileServiceProperties,FileCorsRule,ShareProperties,Range,CopyStatusType,FileSignedIdentifier,SourceModifiedAccessConditions,FileErrorCode,StorageServiceProperties,FileMetrics,FileAccessPolicy
+custom-types: HandleItem,FileHttpHeaders,ShareItem,FileServiceProperties,FileCorsRule,ShareProperties,Range,CopyStatusType,FileSignedIdentifier,SourceModifiedAccessConditions,FileErrorCode,StorageServiceProperties,FileMetrics,FileAccessPolicy,FileDownloadHeaders
 ```
 
 ### Query Parameters
@@ -294,6 +294,8 @@ directive:
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.get.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        op.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+        op.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         op.head.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.head.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete op.head.responses.default.schema;
@@ -463,6 +465,7 @@ directive:
         const path = $.ShareItem.properties.Metadata.$ref;
         $.ShareProperties.properties.Metadata = { "$ref": path };
     }
+    $.ShareProperties.properties.Etag["x-ms-client-name"] = "eTag";
 ```
 
 ### ShareUsageBytes
@@ -547,6 +550,9 @@ directive:
       $.FileMetrics = $.Metrics;
       delete $.Metrics;
       $.FileMetrics.xml = {"name": "Metrics"};
+      $.FileMetrics.properties.IncludeApis = $.FileMetrics.properties.IncludeAPIs;
+      delete $.FileMetrics.properties.IncludeAPIs;
+      $.FileMetrics.properties.IncludeApis.xml = {"name": "IncludeAPIs"};
       $.FileServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/FileMetrics";
       $.FileServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/FileMetrics";
     }
@@ -644,7 +650,7 @@ directive:
     $.FileContentLanguage["x-ms-parameter-grouping"].name = "file-http-headers";
     $.FileContentLanguage["x-ms-client-name"] = "contentLanguage";
     $.FileContentMD5["x-ms-parameter-grouping"].name = "file-http-headers";
-    $.FileContentMD5["x-ms-client-name"] = "contentMD5";
+    $.FileContentMD5["x-ms-client-name"] = "contentMd5";
     $.FileContentType["x-ms-parameter-grouping"].name = "file-http-headers";
     $.FileContentType["x-ms-client-name"] = "contentType";
 ```

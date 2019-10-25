@@ -5,15 +5,14 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessPolicy;
-import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
+import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobListDetails;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 
@@ -113,19 +112,18 @@ public class BlobContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#deleteWithResponse(BlobContainerAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlobContainerClient#deleteWithResponse(BlobRequestConditions, Duration, Context)}
      */
     public void delete2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobContainerAccessConditions-Duration-Context
-        BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobRequestConditions-Duration-Context
+        BlobRequestConditions accessConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Delete completed with status %d%n", client.deleteWithResponse(
             accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobContainerAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -142,20 +140,19 @@ public class BlobContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#getPropertiesWithResponse(LeaseAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlobContainerClient#getPropertiesWithResponse(String, Duration, Context)}
      */
     public void getProperties2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getPropertiesWithResponse#String-Duration-Context
         Context context = new Context("Key", "Value");
 
-        BlobContainerProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context)
+        BlobContainerProperties properties = client.getPropertiesWithResponse(leaseId, timeout, context)
             .getValue();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
             properties.getBlobPublicAccess(),
             properties.hasLegalHold(),
             properties.hasImmutabilityPolicy());
-        // END: com.azure.storage.blob.BlobContainerClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.getPropertiesWithResponse#String-Duration-Context
     }
 
     /**
@@ -174,21 +171,20 @@ public class BlobContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#setMetadataWithResponse(Map, BlobContainerAccessConditions, Duration,
+     * Code snippet for {@link BlobContainerClient#setMetadataWithResponse(Map, BlobRequestConditions, Duration,
      * Context)}
      */
     public void setMetadata2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobContainerAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        BlobRequestConditions accessConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Set metadata completed with status %d%n",
             client.setMetadataWithResponse(metadata, accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobContainerAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -208,13 +204,12 @@ public class BlobContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerClient#getAccessPolicyWithResponse(LeaseAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlobContainerClient#getAccessPolicyWithResponse(String, Duration, Context)}
      */
     public void getAccessPolicy2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#String-Duration-Context
         Context context = new Context("Key", "Value");
-        BlobContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(accessConditions, timeout, context)
+        BlobContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(leaseId, timeout, context)
             .getValue();
         System.out.printf("Blob Access Type: %s%n", accessPolicies.getBlobAccessType());
 
@@ -223,7 +218,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
                 identifier.getId(),
                 identifier.getAccessPolicy().getPermissions());
         }
-        // END: com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#String-Duration-Context
     }
 
     /**
@@ -249,10 +244,10 @@ public class BlobContainerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlobContainerClient#setAccessPolicyWithResponse(PublicAccessType, List,
-     * BlobContainerAccessConditions, Duration, Context)}
+     * BlobRequestConditions, Duration, Context)}
      */
     public void setAccessPolicy2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobContainerAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobRequestConditions-Duration-Context
         BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("name")
             .setAccessPolicy(new BlobAccessPolicy()
@@ -260,10 +255,9 @@ public class BlobContainerClientJavaDocCodeSnippets {
                 .setExpiresOn(OffsetDateTime.now().plusDays(7))
                 .setPermissions("permissionString"));
 
-        BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        BlobRequestConditions accessConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         Context context = new Context("Key", "Value");
 
@@ -273,7 +267,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
                 accessConditions,
                 timeout,
                 context).getStatusCode());
-        // END: com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobContainerAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobRequestConditions-Duration-Context
     }
 
     /**

@@ -12,7 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -105,7 +105,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob.
+     * Creates a new block blob. By default this method will not overwrite an existing blob.
      * <p>
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
      * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
@@ -138,8 +138,59 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
-            return this.uploadWithResponse(data, parallelTransferOptions, null, null, null, null)
-                .flatMap(FluxUtil::toMono);
+            return this.upload(data, parallelTransferOptions, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
+     * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
+     * update of block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
+     * BlockBlobAsyncClient#commitBlockList(List)} on a regular blob client. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
+     * <p>
+     * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
+     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
+     * support uploading any arbitrary data source, including network streams. This behavior is possible because this
+     * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
+     * this method may offer additional convenience, it will not be as performant as other options, which should be
+     * preferred when possible.
+     * <p>
+     * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
+     * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
+     * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
+     * for a given scenario.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean}
+     *
+     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
+     * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
+     * to produce the same values across subscriptions.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
+        boolean overwrite) {
+        try {
+            Mono<BlockBlobItem> uploadTask = this.uploadWithResponse(data, parallelTransferOptions, null, null, null,
+                null).flatMap(FluxUtil::toMono);
+
+            if (overwrite) {
+                return uploadTask;
+            } else {
+                return exists()
+                    .flatMap(exists -> exists
+                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                        : uploadTask);
+            }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -178,12 +229,12 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
-        AccessTier tier, BlobAccessConditions accessConditions) {
+        AccessTier tier, BlobRequestConditions accessConditions) {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
             Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
@@ -195,8 +246,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified
-     * file.
+     * Creates a new block blob with the content of the specified file. By default this method will not overwrite
+     * existing data
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -207,7 +258,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Void> uploadFromFile(String filePath) {
         try {
-            return uploadFromFile(filePath, null, null, null, null, null);
+            return uploadFromFile(filePath, false);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -219,20 +270,50 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-boolean}
+     *
+     * @param filePath Path to the upload file
+     * @param overwrite Whether or not to overwrite should data exist on the blob.
+     * @return An empty response
+     */
+    public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
+        try {
+            Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
+
+            if (overwrite) {
+                return uploadTask;
+            } else {
+                return exists()
+                    .flatMap(exists -> exists
+                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                        : uploadTask);
+            }
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified
+     * file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return An empty response
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobRequestConditions accessConditions) {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null

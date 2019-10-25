@@ -322,7 +322,13 @@ class FileSASTests extends APISpec {
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
-        def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(credential)
+            .encode()
 
         then:
         sas != null

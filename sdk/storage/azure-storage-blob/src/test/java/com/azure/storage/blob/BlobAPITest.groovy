@@ -3,10 +3,12 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.RequestConditions
 import com.azure.core.implementation.util.ImplUtils
+import com.azure.core.util.polling.PollResponse
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -14,13 +16,13 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
-import com.azure.storage.blob.models.LeaseAccessConditions
+import com.azure.storage.blob.models.DownloadRetryOptions
+
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
-import com.azure.storage.blob.models.ModifiedAccessConditions
+
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
-import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
@@ -31,6 +33,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.file.FileAlreadyExistsException
 import java.security.MessageDigest
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class BlobAPITest extends APISpec {
@@ -48,34 +51,34 @@ class BlobAPITest extends APISpec {
         def stream = new ByteArrayOutputStream()
         def response = bc.downloadWithResponse(stream, null, null, null, false, null, null)
         def body = ByteBuffer.wrap(stream.toByteArray())
-        def headers = response.getHeaders()
+        def headers = response.getDeserializedHeaders()
 
         then:
         body == defaultData
-        headers.toMap().keySet().stream().noneMatch({ it.startsWith("x-ms-meta-") })
-        headers.getValue("Content-Length") != null
-        headers.getValue("Content-Type") != null
-        headers.getValue("Content-Range") == null
-        headers.getValue("Content-MD5") != null
-        headers.getValue("Content-Encoding") == null
-        headers.getValue("Cache-Control") == null
-        headers.getValue("Content-Disposition") == null
-        headers.getValue("Content-Language") == null
-        headers.getValue("x-ms-blob-sequence-number") == null
-        headers.getValue("x-ms-blob-type") == BlobType.BLOCK_BLOB.toString()
-        headers.getValue("x-ms-copy-completion-time") == null
-        headers.getValue("x-ms-copy-status-description") == null
-        headers.getValue("x-ms-copy-id") == null
-        headers.getValue("x-ms-copy-progress") == null
-        headers.getValue("x-ms-copy-source") == null
-        headers.getValue("x-ms-copy-status") == null
-        headers.getValue("x-ms-lease-duration") == null
-        headers.getValue("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
-        headers.getValue("x-ms-lease-status") == LeaseStatusType.UNLOCKED.toString()
-        headers.getValue("Accept-Ranges") == "bytes"
-        headers.getValue("x-ms-blob-committed-block-count") == null
-        headers.getValue("x-ms-server-encrypted") != null
-        headers.getValue("x-ms-blob-content-md5") == null
+        ImplUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getContentLength() != null
+        headers.getContentType() != null
+        headers.getContentRange() == null
+        headers.getContentMd5() != null
+        headers.getContentEncoding() == null
+        headers.getCacheControl() == null
+        headers.getContentDisposition() == null
+        headers.getContentLanguage() == null
+        headers.getBlobSequenceNumber() == null
+        headers.getBlobType() == BlobType.BLOCK_BLOB
+        headers.getCopyCompletionTime() == null
+        headers.getCopyStatusDescription() == null
+        headers.getCopyId() == null
+        headers.getCopyProgress() == null
+        headers.getCopySource() == null
+        headers.getCopyStatus() == null
+        headers.getLeaseDuration() == null
+        headers.getLeaseState() == LeaseStateType.AVAILABLE
+        headers.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        headers.getAcceptRanges() == "bytes"
+        headers.getBlobCommittedBlockCount() == null
+        headers.isServerEncrypted() != null
+        headers.getBlobContentMD5() == null
     }
 
     def "Download empty file"() {
@@ -101,7 +104,7 @@ class BlobAPITest extends APISpec {
     def "Download with retry range"() {
         /*
         We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
-        a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
+        a retry per the DownloadRetryOptions. The next request should have the same range header, which was generated
         from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
         don't need to check the data here, but we want to ensure that the correct range is set each time. This will
         test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it was
@@ -112,7 +115,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def range = new BlobRange(2, 5L)
-        def options = new ReliableDownloadOptions().maxRetryRequests(3)
+        def options = new DownloadRetryOptions().setMaxRetryRequests(3)
         bu2.downloadWithResponse(new ByteArrayOutputStream(), range, options, null, false, null, null)
 
         then:
@@ -159,12 +162,12 @@ class BlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
         def response = bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null)
@@ -186,13 +189,12 @@ class BlobAPITest extends APISpec {
     def "Download AC fail"() {
         setup:
         setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
         bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).getStatusCode()
@@ -212,10 +214,10 @@ class BlobAPITest extends APISpec {
     def "Download md5"() {
         when:
         def response = bc.downloadWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
-        def contentMD5 = response.getHeaders().getValue("content-md5").getBytes()
+        def contentMD5 = response.getDeserializedHeaders().getContentMd5()
 
         then:
-        contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes()))
+        contentMD5 == MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
     }
 
     def "Download error"() {
@@ -238,7 +240,7 @@ class BlobAPITest extends APISpec {
         new SpecializedBlobClientBuilder()
             .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream("ABC".getBytes()), 3)
+            .upload(new ByteArrayInputStream("ABC".getBytes()), 3, true)
 
         then:
         def snapshotStream = new ByteArrayOutputStream()
@@ -304,7 +306,7 @@ class BlobAPITest extends APISpec {
         properties.getLeaseStatus() == LeaseStatusType.UNLOCKED
         properties.getBlobSize() >= 0
         properties.getContentType() != null
-        properties.getContentMD5() != null
+        properties.getContentMd5() != null
         properties.getContentEncoding() == null // tested in "set HTTP headers"
         properties.getContentDisposition() == null // tested in "set HTTP headers"
         properties.getContentLanguage() == null // tested in "set HTTP headers"
@@ -327,13 +329,12 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Get properties AC"() {
         setup:
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID)))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(setupBlobMatchCondition(bc, match))
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(setupBlobMatchCondition(bc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
         bc.getPropertiesWithResponse(bac, null, null).getStatusCode() == 200
@@ -351,13 +352,12 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Get properties AC fail"() {
         setup:
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID)))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
         bc.getPropertiesWithResponse(bac, null, null)
@@ -398,12 +398,12 @@ class BlobAPITest extends APISpec {
         setup:
         def properties = bc.getProperties()
         def headers = new BlobHttpHeaders()
-            .setBlobContentEncoding(properties.getContentEncoding())
-            .setBlobContentDisposition(properties.getContentDisposition())
-            .setBlobContentType("type")
-            .setBlobCacheControl(properties.getCacheControl())
-            .setBlobContentLanguage(properties.getContentLanguage())
-            .setBlobContentMD5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
+            .setContentEncoding(properties.getContentEncoding())
+            .setContentDisposition(properties.getContentDisposition())
+            .setContentType("type")
+            .setCacheControl(properties.getCacheControl())
+            .setContentLanguage(properties.getContentLanguage())
+            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
 
         bc.setHttpHeaders(headers)
 
@@ -414,12 +414,12 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set HTTP headers headers"() {
         setup:
-        def putHeaders = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType)
+        def putHeaders = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
 
         bc.setHttpHeaders(putHeaders)
 
@@ -440,13 +440,12 @@ class BlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
         bc.setHttpHeadersWithResponse(null, bac, null, null).getStatusCode() == 200
@@ -466,13 +465,12 @@ class BlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
         bc.setHttpHeadersWithResponse(null, bac, null, null)
@@ -549,13 +547,12 @@ class BlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
         bc.setMetadataWithResponse(null, bac, null, null).getStatusCode() == 200
@@ -576,13 +573,12 @@ class BlobAPITest extends APISpec {
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, leaseID)
 
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
         bc.setMetadataWithResponse(null, bac, null, null)
@@ -652,13 +648,12 @@ class BlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
         bc.createSnapshotWithResponse(null, bac, null, null).getStatusCode() == 201
@@ -678,13 +673,12 @@ class BlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
 
         when:
@@ -716,33 +710,48 @@ class BlobAPITest extends APISpec {
     def "Copy"() {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def headers =
-            copyDestBlob.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getHeaders()
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
 
         when:
-        while (copyDestBlob.getProperties().getCopyStatus() == CopyStatusType.PENDING) {
-            sleepIfRecord(1000)
-        }
+        poller.block()
         def properties = copyDestBlob.getProperties()
+        def response = poller.getLastPollResponse()
 
         then:
         properties.getCopyStatus() == CopyStatusType.SUCCESS
         properties.getCopyCompletionTime() != null
         properties.getCopyProgress() != null
         properties.getCopySource() != null
-        validateBasicHeaders(headers)
-        headers.getValue("x-ms-copy-id") != null
+
+        response != null
+        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+
+        def blobInfo = response.getValue()
+        blobInfo != null
+        blobInfo.getCopyId() == properties.getCopyId()
     }
 
     def "Copy min"() {
-        expect:
-        bc.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 202
+        setup:
+        def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
+        def verifier = StepVerifier.create(poller.getObserver().take(1))
+
+        then:
+        verifier.assertNext({
+            assert it.getValue() != null
+            assert it.getValue().getCopyId() != null
+            assert it.getValue().getCopySourceUrl() == bc.getBlobUrl()
+            assert it.getStatus() == PollResponse.OperationStatus.IN_PROGRESS || it.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+        }).verifyComplete()
     }
 
     def "Copy poller"() {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null);
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null)
 
         when:
         def verifier = StepVerifier.create(poller.getObserver())
@@ -781,20 +790,11 @@ class BlobAPITest extends APISpec {
             metadata.put(key2, value2)
         }
 
-        def status = bu2.copyFromURLWithResponse(bc.getBlobUrl(), metadata, null, null, null, null, null)
-            .getHeaders().getValue("x-ms-copy-status")
+        when:
+        def poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, Duration.ofSeconds(1))
+        poller.block()
 
-        def start = OffsetDateTime.now()
-        while (status != CopyStatusType.SUCCESS.toString()) {
-            sleepIfRecord(1000)
-            status = bu2.getPropertiesWithResponse(null, null, null).getHeaders().getValue("x-ms-copy-status")
-            def currentTime = OffsetDateTime.now()
-            if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
-                throw new Exception("Copy failed or took too long")
-            }
-        }
-
-        expect:
+        then:
         bu2.getProperties().getMetadata() == metadata
 
         where:
@@ -808,14 +808,19 @@ class BlobAPITest extends APISpec {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         match = setupBlobMatchCondition(bc, match)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
 
-        expect:
-        copyDestBlob.copyFromURLWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null).getStatusCode() == 202
+        when:
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, mac, null, null)
+        poller.block()
+
+        then:
+        def response = poller.getLastPollResponse()
+        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
         modified | unmodified | match        | noneMatch
@@ -831,14 +836,14 @@ class BlobAPITest extends APISpec {
         setup:
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
 
         when:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null)
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -858,17 +863,20 @@ class BlobAPITest extends APISpec {
         bu2.upload(defaultInputStream.get(), defaultDataSize)
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
+        when:
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, Duration.ofSeconds(1))
+        poller.block()
 
-        expect:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null).getStatusCode() == 202
+        then:
+        def response = poller.getLastPollResponse()
+        response.getStatus() == PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -887,16 +895,15 @@ class BlobAPITest extends APISpec {
         bu2.upload(defaultInputStream.get(), defaultDataSize)
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
         setupBlobLeaseCondition(bu2, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null)
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -916,7 +923,7 @@ class BlobAPITest extends APISpec {
         new SpecializedBlobClientBuilder()
             .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -924,12 +931,18 @@ class BlobAPITest extends APISpec {
         cu2.create()
         def bu2 = cu2.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu2.upload(defaultInputStream.get(), defaultDataSize)
-        def leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
+
+        def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        def blobAccessConditions = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def copyID = bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null,
-            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID)), null, null).getValue()
-        bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().setLeaseId(garbageLeaseID), null, null)
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccessConditions, Duration.ofMillis(500))
+        def response = poller.getObserver().blockFirst()
+
+        assert response.getStatus() != PollResponse.OperationStatus.FAILED
+
+        def blobCopyInfo = response.getValue()
+        bu2.abortCopyFromUrlWithResponse(blobCopyInfo.getCopyId(), garbageLeaseID, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -942,9 +955,10 @@ class BlobAPITest extends APISpec {
     def "Abort copy"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
-        new SpecializedBlobClientBuilder().blobClient(bc)
+        new SpecializedBlobClientBuilder()
+            .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -953,8 +967,13 @@ class BlobAPITest extends APISpec {
         def bu2 = cu2.getBlobClient(generateBlobName())
 
         when:
-        def copyID = bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getValue()
-        def response = bu2.abortCopyFromURLWithResponse(copyID, null, null, null)
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, Duration.ofSeconds(1))
+        def lastResponse = poller.getObserver().blockFirst()
+
+        assert lastResponse != null
+        assert lastResponse.getValue() != null
+
+        def response = bu2.abortCopyFromUrlWithResponse(lastResponse.getValue().getCopyId(), null, null, null)
         def headers = response.getHeaders()
 
         then:
@@ -962,28 +981,10 @@ class BlobAPITest extends APISpec {
         headers.getValue("x-ms-request-id") != null
         headers.getValue("x-ms-version") != null
         headers.getValue("Date") != null
+
+        cleanup:
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.deleteWithResponse(null, null, null).getStatusCode() == 202
-    }
-
-    def "Abort copy min"() {
-        setup:
-        // Data has to be large enough and copied between accounts to give us enough time to abort
-        new SpecializedBlobClientBuilder().blobClient(bc)
-            .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
-        // So we don't have to create a SAS.
-        cc.setAccessPolicy(PublicAccessType.BLOB, null)
-
-        def cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName())
-        cu2.create()
-        def bu2 = cu2.getBlobClient(generateBlobName())
-
-        when:
-        def copyID = bu2.copyFromURL(bc.getBlobUrl())
-
-        then:
-        bu2.abortCopyFromURLWithResponse(copyID, null, null, null).getStatusCode() == 204
     }
 
     def "Abort copy lease"() {
@@ -991,7 +992,7 @@ class BlobAPITest extends APISpec {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -999,15 +1000,21 @@ class BlobAPITest extends APISpec {
         cu2.create()
         def bu2 = cu2.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu2.upload(defaultInputStream.get(), defaultDataSize)
-        def leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        def blobAccess = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def copyID =
-            bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null,
-                new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID)), null, null).getValue()
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, Duration.ofSeconds(1))
+        def lastResponse = poller.getObserver().blockFirst()
 
         then:
-        bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().setLeaseId(leaseID), null, null).getStatusCode() == 204
+        lastResponse != null
+        lastResponse.getValue() != null
+
+        def copyId = lastResponse.getValue().getCopyId()
+        bu2.abortCopyFromUrlWithResponse(copyId, leaseId, null, null).getStatusCode() == 204
+
+        cleanup:
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.delete()
     }
@@ -1017,7 +1024,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.copyFromURL("http://www.error.com")
+        bc.copyFromUrl("http://www.error.com")
 
         then:
         thrown(BlobStorageException)
@@ -1028,7 +1035,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.abortCopyFromURL("id")
+        bc.abortCopyFromUrl("id")
 
         then:
         thrown(BlobStorageException)
@@ -1041,7 +1048,7 @@ class BlobAPITest extends APISpec {
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        def headers = bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getHeaders()
+        def headers = bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getHeaders()
 
         then:
         headers.getValue("x-ms-copy-status") == SyncCopyStatusType.SUCCESS.toString()
@@ -1055,7 +1062,7 @@ class BlobAPITest extends APISpec {
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         expect:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 202
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 202
     }
 
     @Unroll
@@ -1072,7 +1079,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), metadata, null, null, null, null, null)
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), metadata, null, null, null, null, null)
 
         then:
         bu2.getProperties().getMetadata() == metadata
@@ -1089,14 +1096,14 @@ class BlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         match = setupBlobMatchCondition(bc, match)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
 
         expect:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null).getStatusCode() == 202
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch
@@ -1113,14 +1120,14 @@ class BlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        def mac = new ModifiedAccessConditions()
+        def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
 
         when:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null)
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -1141,16 +1148,15 @@ class BlobAPITest extends APISpec {
         bu2.upload(defaultInputStream.get(), defaultDataSize)
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null).getStatusCode() == 202
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1170,16 +1176,15 @@ class BlobAPITest extends APISpec {
         bu2.upload(defaultInputStream.get(), defaultDataSize)
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
         setupBlobLeaseCondition(bu2, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null)
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -1198,7 +1203,7 @@ class BlobAPITest extends APISpec {
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bu2.copyFromURL(bc.getBlobUrl())
+        bu2.copyFromUrl(bc.getBlobUrl())
 
         then:
         thrown(BlobStorageException)
@@ -1246,13 +1251,12 @@ class BlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
         bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null).getStatusCode() == 202
@@ -1272,13 +1276,12 @@ class BlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
         bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null)
@@ -1457,7 +1460,7 @@ class BlobAPITest extends APISpec {
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         when:
-        bc.setAccessTierWithResponse(AccessTier.HOT, null, new LeaseAccessConditions().setLeaseId(leaseID), null, null)
+        bc.setAccessTierWithResponse(AccessTier.HOT, null, leaseID, null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -1473,7 +1476,7 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        bc.setAccessTierWithResponse(AccessTier.HOT, null, new LeaseAccessConditions().setLeaseId("garbage"), null, null)
+        bc.setAccessTierWithResponse(AccessTier.HOT, null, "garbage", null, null)
 
         then:
         thrown(BlobStorageException)
@@ -1495,7 +1498,7 @@ class BlobAPITest extends APISpec {
             .setBlobName(blobName)
             .generateSasQueryParameters(primaryCredential)
             .encode()
-        bcCopy.copyFromURLWithResponse(bc.getBlobUrl().toString() + "?" + sas, null, tier2, null, null, null, null)
+        bcCopy.copyFromUrlWithResponse(bc.getBlobUrl().toString() + "?" + sas, null, tier2, null, null, null, null)
 
         then:
         bcCopy.getProperties().getAccessTier() == tier2
@@ -1578,5 +1581,22 @@ class BlobAPITest extends APISpec {
     def "Get Blob Name"() {
         expect:
         blobName == bc.getBlobName()
+    }
+
+    def "Get Blob Name and Build Client"() {
+        when:
+        BlobClient client = cc.getBlobClient(originalBlobName)
+        BlobClientBase baseClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient()
+
+        then:
+        baseClient.getBlobName() == finalBlobName
+
+        where:
+        originalBlobName       | finalBlobName
+        "blob"                 | "blob"
+        "path/to]a blob"       | "path/to]a blob"
+        "path%2Fto%5Da%20blob" | "path/to]a blob"
+        "斑點"                 | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 }

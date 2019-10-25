@@ -179,13 +179,13 @@ class ServiceAPITest extends APISpec {
             received.getDefaultServiceVersion() == sent.getDefaultServiceVersion() &&
 
             received.getHourMetrics().isEnabled() == sent.getHourMetrics().isEnabled() &&
-            received.getHourMetrics().isIncludeAPIs() == sent.getHourMetrics().isIncludeAPIs() &&
+            received.getHourMetrics().isIncludeApis() == sent.getHourMetrics().isIncludeApis() &&
             received.getHourMetrics().getRetentionPolicy().isEnabled() == sent.getHourMetrics().getRetentionPolicy().isEnabled() &&
             received.getHourMetrics().getRetentionPolicy().getDays() == sent.getHourMetrics().getRetentionPolicy().getDays() &&
             received.getHourMetrics().getVersion() == sent.getHourMetrics().getVersion() &&
 
             received.getMinuteMetrics().isEnabled() == sent.getMinuteMetrics().isEnabled() &&
-            received.getMinuteMetrics().isIncludeAPIs() == sent.getMinuteMetrics().isIncludeAPIs() &&
+            received.getMinuteMetrics().isIncludeApis() == sent.getMinuteMetrics().isIncludeApis() &&
             received.getMinuteMetrics().getRetentionPolicy().isEnabled() == sent.getMinuteMetrics().getRetentionPolicy().isEnabled() &&
             received.getMinuteMetrics().getRetentionPolicy().getDays() == sent.getMinuteMetrics().getRetentionPolicy().getDays() &&
             received.getMinuteMetrics().getVersion() == sent.getMinuteMetrics().getVersion() &&
@@ -211,9 +211,9 @@ class ServiceAPITest extends APISpec {
             .setMaxAgeInSeconds(10))
         def defaultServiceVersion = "2016-05-31"
         def hourMetrics = new BlobMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+            .setRetentionPolicy(retentionPolicy).setIncludeApis(true)
         def minuteMetrics = new BlobMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+            .setRetentionPolicy(retentionPolicy).setIncludeApis(true)
         def website = new StaticWebsite().setEnabled(true)
             .setIndexDocument("myIndex.html")
             .setErrorDocument404Path("custom/error/path.html")
@@ -252,9 +252,9 @@ class ServiceAPITest extends APISpec {
             .setMaxAgeInSeconds(10))
         def defaultServiceVersion = "2016-05-31"
         def hourMetrics = new BlobMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+            .setRetentionPolicy(retentionPolicy).setIncludeApis(true)
         def minuteMetrics = new BlobMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+            .setRetentionPolicy(retentionPolicy).setIncludeApis(true)
         def website = new StaticWebsite().setEnabled(true)
             .setIndexDocument("myIndex.html")
             .setErrorDocument404Path("custom/error/path.html")
@@ -302,8 +302,8 @@ class ServiceAPITest extends APISpec {
         expect:
         response.getStatusCode() == 200
         response.getValue() != null
-        response.getValue().getSignedOid() != null
-        response.getValue().getSignedTid() != null
+        response.getValue().getSignedObjectId() != null
+        response.getValue().getSignedTenantId() != null
         response.getValue().getSignedStart() != null
         response.getValue().getSignedExpiry() != null
         response.getValue().getSignedService() != null

@@ -196,7 +196,7 @@ class FileServiceAsyncAPITests extends APISpec {
         given:
         def originalProperties = primaryFileServiceAsyncClient.getProperties().block()
         def retentionPolicy = new FileRetentionPolicy().setEnabled(true).setDays(3)
-        def metrics = new FileMetrics().setEnabled(true).setIncludeAPIs(false)
+        def metrics = new FileMetrics().setEnabled(true).setIncludeApis(false)
             .setRetentionPolicy(retentionPolicy).setVersion("1.0")
         def updatedProperties = new FileServiceProperties().setHourMetrics(metrics)
             .setMinuteMetrics(metrics).setCors(new ArrayList<>())
@@ -225,7 +225,7 @@ class FileServiceAsyncAPITests extends APISpec {
     def "Set and get properties with invalid args"() {
         given:
         def retentionPolicy = new FileRetentionPolicy().setEnabled(true).setDays(3)
-        def metrics = new FileMetrics().setEnabled(true).setIncludeAPIs(false)
+        def metrics = new FileMetrics().setEnabled(true).setIncludeApis(false)
             .setRetentionPolicy(retentionPolicy).setVersion("1.0")
 
         when:

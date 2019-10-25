@@ -3,12 +3,11 @@ package com.azure.storage.blob.specialized.cryptography
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.LeaseAccessConditions
-import com.azure.storage.blob.models.ModifiedAccessConditions
+
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
@@ -226,12 +225,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Encryption HTTP headers"() {
         setup:
-        BlobHttpHeaders headers = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
-            .setBlobContentDisposition(contentDisposition)
-            .setBlobContentEncoding(contentEncoding)
-            .setBlobContentLanguage(contentLanguage)
-            .setBlobContentMD5(contentMD5)
-            .setBlobContentType(contentType)
+        BlobHttpHeaders headers = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
 
         when:
         // Buffered upload
@@ -296,17 +295,19 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac.upload(defaultFlux, null).block()
         def etag = setupBlobMatchCondition(beac, match)
         leaseID = setupBlobLeaseCondition(beac, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions().setModifiedAccessConditions(
-            new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-                .setIfMatch(etag).setIfNoneMatch(noneMatch))
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(etag)
+            .setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
 
         then:
         beac.uploadWithResponse(defaultFlux, null, null, null, null, bac).block().getStatusCode() == 201
 
         when:
         etag = setupBlobMatchCondition(beac, match)
-        bac.getModifiedAccessConditions().setIfMatch(etag)
+        bac.setIfMatch(etag)
 
         then:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
@@ -332,10 +333,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac.upload(defaultFlux, null).block()
         noneMatch = setupBlobMatchCondition(beac, noneMatch)
         setupBlobLeaseCondition(beac, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions().setModifiedAccessConditions(
-            new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match).setIfNoneMatch(noneMatch))
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
 
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
@@ -542,6 +545,61 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         stream.toByteArray() == defaultData.array()
+    }
+
+    @Requires({liveMode()})
+    def "encrypted client file upload overwrite false"() {
+        setup:
+        def file = getRandomFile(KB)
+
+        when:
+        beac.uploadFromFile(file.toPath().toString()).block()
+
+        beac.uploadFromFile(file.toPath().toString()).block()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Requires({liveMode()})
+    def "encrypted client file upload overwrite true"() {
+        setup:
+        def file = getRandomFile(KB)
+
+        when:
+        beac.uploadFromFile(file.toPath().toString()).block()
+        beac.uploadFromFile(file.toPath().toString(), true).block()
+
+        then:
+        notThrown(Throwable)
+    }
+
+    @Requires({ liveMode() })
+    def "encrypted client upload overwrite false"() {
+        setup:
+        ByteBuffer byteBuffer = getRandomData(Constants.KB)
+
+        when:
+        beac.upload(Flux.just(byteBuffer), null).block()
+
+        beac.upload(Flux.just(byteBuffer), null).block()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Requires({ liveMode() })
+    def "encrypted client upload overwrite true"() {
+        setup:
+        ByteBuffer byteBuffer = getRandomData(Constants.KB)
+
+        when:
+        beac.upload(Flux.just(byteBuffer), null).block()
+
+        beac.upload(Flux.just(byteBuffer), null, true).block()
+
+        then:
+        notThrown(Throwable)
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {

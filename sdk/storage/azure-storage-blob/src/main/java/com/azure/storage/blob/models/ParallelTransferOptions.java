@@ -3,10 +3,15 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+/**
+ * This class contains configuration used to parallelize data transfer operations.
+ */
+@Fluent
 public class ParallelTransferOptions {
 
     private static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;

@@ -95,7 +95,7 @@ public final class BlobBatchClient {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType}
      *
-     * @param blobUrls Urls of the blobs to delete.
+     * @param blobUrls Urls of the blobs to delete. Blob names must be encoded to UTF-8.
      * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
      * @throws BlobStorageException If the batch request is malformed.
@@ -113,7 +113,7 @@ public final class BlobBatchClient {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType-Duration-Context}
      *
-     * @param blobUrls Urls of the blobs to delete.
+     * @param blobUrls Urls of the blobs to delete. Blob names must be encoded to UTF-8.
      * @param deleteOptions The deletion option for all blobs.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -135,7 +135,7 @@ public final class BlobBatchClient {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier}
      *
-     * @param blobUrls Urls of the blobs to set their access tier.
+     * @param blobUrls Urls of the blobs to set their access tier. Blob names must be encoded to UTF-8.
      * @param accessTier {@link AccessTier} to set on each blob.
      * @return The status of each set tier operation.
      * @throws BlobStorageException If the batch request is malformed.
@@ -153,7 +153,7 @@ public final class BlobBatchClient {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier-Duration-Context}
      *
-     * @param blobUrls Urls of the blobs to set their access tier.
+     * @param blobUrls Urls of the blobs to set their access tier. Blob names must be encoded to UTF-8.
      * @param accessTier {@link AccessTier} to set on each blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.

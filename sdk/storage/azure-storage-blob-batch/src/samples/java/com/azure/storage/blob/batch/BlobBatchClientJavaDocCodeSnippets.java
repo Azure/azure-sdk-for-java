@@ -9,9 +9,8 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 
 import java.time.Duration;
@@ -35,7 +34,7 @@ public class BlobBatchClientJavaDocCodeSnippets {
 
         Response<Void> deleteResponse1 = batch.deleteBlob("container", "blob1");
         Response<Void> deleteResponse2 = batch.deleteBlob("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
-            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+            new BlobRequestConditions().setLeaseId("leaseId"));
 
         try {
             batchClient.submitBatch(batch);
@@ -57,7 +56,7 @@ public class BlobBatchClientJavaDocCodeSnippets {
 
         Response<Void> deleteResponse1 = batch.deleteBlob("container", "blob1");
         Response<Void> deleteResponse2 = batch.deleteBlob("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
-            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+            new BlobRequestConditions().setLeaseId("leaseId"));
 
         try {
             System.out.printf("Batch submission completed with status code: %d%n",

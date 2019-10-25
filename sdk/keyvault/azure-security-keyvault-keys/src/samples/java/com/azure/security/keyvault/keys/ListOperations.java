@@ -3,11 +3,11 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
-import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
 import java.time.OffsetDateTime;
 
@@ -27,36 +27,36 @@ public class ListOperations {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyClient keyClient = new KeyClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .setExpires(OffsetDateTime.now().plusYears(1))
+        keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048));
 
-        keyClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-                .setExpires(OffsetDateTime.now().plusYears(1)));
+        keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1)));
 
         // You need to check te type of keys already exist in your key vault. Let's list the keys and print their types.
         // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
-        for (KeyProperties key : keyClient.listKeys()) {
-            Key keyWithMaterial = keyClient.getKey(key);
-            System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(), keyWithMaterial.getKeyMaterial().getKty());
+        for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
+            KeyVaultKey keyWithMaterial = keyClient.getKey(key.getName(), key.getVersion());
+            System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(), keyWithMaterial.getKeyType());
         }
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
         // Calling createRsaKey on an existing key creates a new version of the key in the key vault with the new specified size.
-        keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .setExpires(OffsetDateTime.now().plusYears(1))
+        keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(4096));
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
-        for (KeyProperties key : keyClient.listKeyVersions("CloudRsaKey")) {
-            Key keyWithMaterial  = keyClient.getKey(key);
-            System.out.printf("Received key's version with name %s, type %s and verison %s", keyWithMaterial.getName(), keyWithMaterial.getKeyMaterial().getKty(), keyWithMaterial.getProperties().getVersion());
+        for (KeyProperties key : keyClient.listPropertiesOfKeyVersions("CloudRsaKey")) {
+            KeyVaultKey keyWithMaterial  = keyClient.getKey(key.getName(), key.getVersion());
+            System.out.printf("Received key's version with name %s, type %s and verison %s", keyWithMaterial.getName(), keyWithMaterial.getKeyType(), keyWithMaterial.getProperties().getVersion());
         }
     }
 }

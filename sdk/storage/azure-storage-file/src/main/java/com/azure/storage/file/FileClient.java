@@ -6,7 +6,6 @@ package com.azure.storage.file;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,6 +14,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.models.FileCopyInfo;
+import com.azure.storage.file.models.FileDownloadResponse;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
@@ -343,11 +343,11 @@ public class FileClient {
      * @throws NullPointerException If {@code stream} is {@code null}.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<Void> downloadWithResponse(OutputStream stream, FileRange range, Boolean rangeGetContentMD5,
+    public FileDownloadResponse downloadWithResponse(OutputStream stream, FileRange range, Boolean rangeGetContentMD5,
         Duration timeout, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
-        Mono<Response<Void>> download = fileAsyncClient.downloadWithResponse(range, rangeGetContentMD5, context)
+        Mono<FileDownloadResponse> download = fileAsyncClient.downloadWithResponse(range, rangeGetContentMD5, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -355,7 +355,7 @@ public class FileClient {
                 } catch (IOException ex) {
                     throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
                 }
-            }).thenReturn(new SimpleResponse<>(response, null)));
+            }).thenReturn(new FileDownloadResponse(response)));
 
         return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
     }
