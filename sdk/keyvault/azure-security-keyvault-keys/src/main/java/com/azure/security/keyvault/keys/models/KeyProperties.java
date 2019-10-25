@@ -3,10 +3,7 @@
 
 package com.azure.security.keyvault.keys.models;
 
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.codec.binary.Base64;
 
@@ -19,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Fluent
 public class KeyProperties {
 
     /**
@@ -39,17 +37,17 @@ public class KeyProperties {
     /**
      * Expiry date in UTC.
      */
-    private OffsetDateTime expires;
+    private OffsetDateTime expiresOn;
 
     /**
      * Creation time in UTC.
      */
-    private OffsetDateTime created;
+    private OffsetDateTime createdOn;
 
     /**
      * Last updated time in UTC.
      */
-    private OffsetDateTime updated;
+    private OffsetDateTime updatedOn;
 
     /**
      * Reflects the deletion recovery level currently in effect for keys in
@@ -149,21 +147,18 @@ public class KeyProperties {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime getExpires() {
-        if (this.expires == null) {
-            return null;
-        }
-        return this.expires;
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
      * Set the {@link OffsetDateTime expires} UTC time.
      *
-     * @param expires The expiry time to set for the key.
+     * @param expiresOn The expiry time to set for the key.
      * @return the updated KeyProperties object itself.
      */
-    public KeyProperties setExpires(OffsetDateTime expires) {
-        this.expires = expires;
+    public KeyProperties setExpiresOn(OffsetDateTime expiresOn) {
+        this.expiresOn = expiresOn;
         return this;
     }
 
@@ -172,8 +167,8 @@ public class KeyProperties {
      *
      * @return the created UTC time.
      */
-    public OffsetDateTime getCreated() {
-        return created;
+    public OffsetDateTime getCreatedOn() {
+        return createdOn;
     }
 
     /**
@@ -181,8 +176,8 @@ public class KeyProperties {
      *
      * @return the last updated UTC time.
      */
-    public OffsetDateTime getUpdated() {
-        return updated;
+    public OffsetDateTime getUpdatedOn() {
+        return updatedOn;
     }
 
     /**
@@ -244,9 +239,9 @@ public class KeyProperties {
     void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
-        this.expires =  epochToOffsetDateTime(attributes.get("exp"));
-        this.created = epochToOffsetDateTime(attributes.get("created"));
-        this.updated = epochToOffsetDateTime(attributes.get("updated"));
+        this.expiresOn =  epochToOffsetDateTime(attributes.get("exp"));
+        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
+        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
@@ -297,7 +292,7 @@ public class KeyProperties {
         JsonWebKey outputKey = new JsonWebKey()
                 .setY(base64.decode((String) key.get("y")))
                 .setX(base64.decode((String) key.get("x")))
-                .setCrv(KeyCurveName.fromString((String) key.get("crv")))
+                .setCurveName(KeyCurveName.fromString((String) key.get("crv")))
                 .setKeyOps(getKeyOperations((List<String>) key.get("key_ops")))
                 .setT(base64.decode((String) key.get("key_hsm")))
                 .setK(base64.decode((String) key.get("k")))
@@ -309,8 +304,8 @@ public class KeyProperties {
                 .setD(base64.decode((String) key.get("d")))
                 .setE(base64.decode((String) key.get("e")))
                 .setN(base64.decode((String) key.get("n")))
-                .setKty(KeyType.fromString((String) key.get("kty")))
-                .setKid((String) key.get("kid"));
+                .setKeyType(KeyType.fromString((String) key.get("kty")))
+                .setId((String) key.get("kid"));
         unpackId((String) key.get("kid"));
         return outputKey;
     }

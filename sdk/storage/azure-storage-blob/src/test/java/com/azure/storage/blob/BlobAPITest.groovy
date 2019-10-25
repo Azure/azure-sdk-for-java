@@ -240,7 +240,7 @@ class BlobAPITest extends APISpec {
         new SpecializedBlobClientBuilder()
             .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream("ABC".getBytes()), 3)
+            .upload(new ByteArrayInputStream("ABC".getBytes()), 3, true)
 
         then:
         def snapshotStream = new ByteArrayOutputStream()
@@ -923,7 +923,7 @@ class BlobAPITest extends APISpec {
         new SpecializedBlobClientBuilder()
             .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -958,7 +958,7 @@ class BlobAPITest extends APISpec {
         new SpecializedBlobClientBuilder()
             .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -992,7 +992,7 @@ class BlobAPITest extends APISpec {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true)
         // So we don't have to create a SAS.
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
 
