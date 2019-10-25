@@ -3,7 +3,6 @@
 
 package com.azure.core.util.polling;
 
-import com.azure.core.util.polling.implementation.DefaultSyncPoller;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

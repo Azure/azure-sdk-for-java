@@ -73,9 +73,11 @@ public final class AsyncPollResponse<T, U> {
      * Returns the delay the service has requested until the next polling operation is performed. A null or negative
      * value will be taken to mean that the Poller should determine on its own when the next poll operation is
      * to occur.
+     * Note: package private
+     *
      * @return Duration How long to wait before next retry.
      */
-    public Duration getRetryAfter() {
+    Duration getRetryAfter() {
         return pollResponse.getRetryAfter();
     }
 

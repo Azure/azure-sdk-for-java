@@ -1,14 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util.polling.implementation;
+package com.azure.core.util.polling;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.polling.implementation.OperationRequirePollResponse;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -18,14 +14,14 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
- * INTERNAL CLASS.
+ * INTERNAL PACKAGE PRIVATE CLASS
  *
  * Default implementation of {@link SyncPoller} that uses {@link PollerFlux} underneath.
  *
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of long-running operation
  */
-public class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
+final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     private final ClientLogger logger = new ClientLogger(DefaultSyncPoller.class);
     //
     private final BiFunction<PollResponse<T>, PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
