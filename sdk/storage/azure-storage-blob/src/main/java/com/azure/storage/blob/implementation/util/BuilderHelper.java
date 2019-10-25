@@ -31,6 +31,9 @@ import java.util.function.Supplier;
  * RESERVED FOR INTERNAL USE.
  */
 public final class BuilderHelper {
+    // Default log options for Storage Blob
+    public static final HttpLogOptions DEFAULT_LOG_OPTIONS = getDefaultBlobLogOptions();
+
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-blob";
     // {x-version-update-start;com.azure:azure-storage-blob;current}
     private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";

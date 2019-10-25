@@ -72,6 +72,11 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {ShareClient.class, ShareAsyncClient.class})
 public class ShareClientBuilder {
+    /**
+     * The default Storage File log options, including whitelist header names and query parameter names.
+     */
+    public static final HttpLogOptions DEFAULT_FILE_LOG_OPTIONS = BuilderHelper.DEFAULT_LOG_OPTIONS;
+
     private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
 
     private String endpoint;
@@ -96,7 +101,7 @@ public class ShareClientBuilder {
      * ShareAsyncClient ShareAsyncClients}.
      */
     public ShareClientBuilder() {
-        logOptions = BuilderHelper.getDefaultFileLogOptions();
+        logOptions = DEFAULT_FILE_LOG_OPTIONS;
     }
 
     /**

@@ -50,6 +50,11 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {BlobContainerClient.class, BlobContainerAsyncClient.class})
 public final class BlobContainerClientBuilder {
+    /**
+     * The default Storage Blob log options, including whitelist header names and query parameter names.
+     */
+    public static final HttpLogOptions DEFAULT_BLOB_LOG_OPTIONS = BuilderHelper.DEFAULT_LOG_OPTIONS;
+
     private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String endpoint;
@@ -75,7 +80,7 @@ public final class BlobContainerClientBuilder {
      * and {@link BlobContainerAsyncClient ContainerAsyncClients}.
      */
     public BlobContainerClientBuilder() {
-        logOptions = BuilderHelper.getDefaultBlobLogOptions();
+        logOptions = DEFAULT_BLOB_LOG_OPTIONS;
     }
 
     /**

@@ -58,6 +58,11 @@ import java.util.Objects;
     PageBlobClient.class, PageBlobAsyncClient.class
 })
 public final class SpecializedBlobClientBuilder {
+    /**
+     * The default Storage Blob log options, including whitelist header names and query parameter names.
+     */
+    public static final HttpLogOptions DEFAULT_BLOB_LOG_OPTIONS = BuilderHelper.DEFAULT_LOG_OPTIONS;
+
     private final ClientLogger logger = new ClientLogger(SpecializedBlobClientBuilder.class);
 
     private String endpoint;
@@ -73,7 +78,7 @@ public final class SpecializedBlobClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private com.azure.core.http.policy.HttpLogOptions logOptions = BuilderHelper.getDefaultBlobLogOptions();
+    private com.azure.core.http.policy.HttpLogOptions logOptions = DEFAULT_BLOB_LOG_OPTIONS;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 

@@ -72,6 +72,11 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {QueueServiceClient.class, QueueServiceAsyncClient.class})
 public final class QueueServiceClientBuilder {
+    /**
+     * The default Storage Queue log options, including whitelist header names and query parameter names.
+     */
+    public static final HttpLogOptions DEFAULT_QUEUE_LOG_OPTIONS = BuilderHelper.DEFAULT_LOG_OPTIONS;
+
     private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
 
     private String endpoint;
@@ -95,7 +100,7 @@ public final class QueueServiceClientBuilder {
      * and {@link QueueServiceAsyncClient QueueServiceAsyncClients}.
      */
     public QueueServiceClientBuilder() {
-        logOptions = BuilderHelper.getDefaultQueueLogOptions();
+        logOptions = DEFAULT_QUEUE_LOG_OPTIONS;
     }
 
     /**

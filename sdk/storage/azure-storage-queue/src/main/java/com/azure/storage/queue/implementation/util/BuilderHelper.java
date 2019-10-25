@@ -37,6 +37,9 @@ import java.util.regex.Pattern;
  * This class provides helper methods for common builder patterns.
  */
 public final class BuilderHelper {
+    // Default log options for Storage Queue
+    public static final HttpLogOptions DEFAULT_LOG_OPTIONS = getDefaultQueueLogOptions();
+
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
     // {x-version-update-start;com.azure:azure-storage-queue;current}
     private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";

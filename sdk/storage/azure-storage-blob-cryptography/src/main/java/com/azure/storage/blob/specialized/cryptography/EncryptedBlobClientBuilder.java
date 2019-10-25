@@ -72,6 +72,11 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
 public final class EncryptedBlobClientBuilder {
+    /**
+     * The default Storage Blob log options, including whitelist header names and query parameter names.
+     */
+    public static final HttpLogOptions DEFAULT_BLOB_LOG_OPTIONS = BuilderHelper.DEFAULT_LOG_OPTIONS;
+
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
 
     private String endpoint;
@@ -101,7 +106,7 @@ public final class EncryptedBlobClientBuilder {
      * Creates a new instance of the EncryptedBlobClientBuilder
      */
     public EncryptedBlobClientBuilder() {
-        logOptions = BuilderHelper.getDefaultBlobLogOptions();
+        logOptions = DEFAULT_BLOB_LOG_OPTIONS;
     }
 
     /**

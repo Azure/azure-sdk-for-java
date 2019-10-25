@@ -80,6 +80,11 @@ import java.util.Objects;
     DirectoryClient.class, DirectoryAsyncClient.class
 })
 public class FileClientBuilder {
+    /**
+     * The default Storage File log options, including whitelist header names and query parameter names.
+     */
+    public static final HttpLogOptions DEFAULT_FILE_LOG_OPTIONS = BuilderHelper.DEFAULT_LOG_OPTIONS;
+
     private final ClientLogger logger = new ClientLogger(FileClientBuilder.class);
 
     private String endpoint;
@@ -105,7 +110,7 @@ public class FileClientBuilder {
      * FileAsyncClient FileAsyncClients}.
      */
     public FileClientBuilder() {
-        logOptions = BuilderHelper.getDefaultFileLogOptions();
+        logOptions = DEFAULT_FILE_LOG_OPTIONS;
     }
 
     private FileServiceVersion getServiceVersion() {

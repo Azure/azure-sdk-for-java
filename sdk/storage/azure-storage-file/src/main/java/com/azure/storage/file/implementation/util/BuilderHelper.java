@@ -25,6 +25,7 @@ import com.azure.storage.file.FileServiceVersion;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -32,6 +33,9 @@ import java.util.regex.Pattern;
  * This class provides helper methods for common builder patterns.
  */
 public final class BuilderHelper {
+    // Default log options for Storage File
+    public static final HttpLogOptions DEFAULT_LOG_OPTIONS = getDefaultFileLogOptions();
+
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-file";
     // {x-version-update-start;com.azure:azure-storage-file;current}
     private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
