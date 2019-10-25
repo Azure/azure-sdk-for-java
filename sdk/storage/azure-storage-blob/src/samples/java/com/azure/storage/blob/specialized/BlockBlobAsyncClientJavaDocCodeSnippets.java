@@ -36,6 +36,11 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     private long count = length;
     private byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes());
 
+    /**
+     * Constructor for snippets.
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
     public BlockBlobAsyncClientJavaDocCodeSnippets() throws NoSuchAlgorithmException {
     }
 
