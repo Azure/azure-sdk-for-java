@@ -239,10 +239,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
      * overwrites any existing metadata on the blob. Partial updates are not supported with this method; the content of
      * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
-     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link BlockBlobAsyncClient#commitBlockList(List)},
-     * which this method uses internally. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure
-     * Docs for Put Block</a> and the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure
-     * Docs for Put Block List</a>.
+     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
+     * BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
      * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
@@ -429,10 +429,13 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 channel -> {
                     try {
                         long fileSize = channel.size();
-                        if (fileSize > 200 * Constants.MB) {
+
+                        // If the file is larger than 256MB chunk it and stage it as blocks.
+                        if (fileSize > 128 * Constants.MB) {
                             return uploadBlocks(fileSize, finalParallelTransferOptions, headers, metadata, tier,
                                 accessConditions, channel);
                         } else {
+                            // Otherwise we know it can be sent in a single request reducing network overhead.
                             return uploadFullBlob(headers, metadata, tier, accessConditions, channel, fileSize);
                         }
                     } catch (IOException ex) {
