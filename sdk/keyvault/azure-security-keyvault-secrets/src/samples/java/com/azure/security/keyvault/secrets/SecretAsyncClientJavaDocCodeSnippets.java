@@ -245,7 +245,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string
         secretAsyncClient.purgeDeletedSecret("deletedSecretName")
-            .doOnSuccess(purgeResponse ->
+            .subscribe(purgeResponse ->
                 System.out.println("Successfully Purged deleted Secret"));
         // END: com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string
     }
@@ -288,7 +288,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         secretAsyncClient.backupSecret("secretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(secretBackupResponse ->
-                System.out.printf("Secret's Backup Byte array's length %s %n", secretBackupResponse.length));
+                System.out.printf("Secret's Backup Byte array's length %s%n", secretBackupResponse.length));
         // END: com.azure.keyvault.secrets.secretclient.backupSecret#string
     }
 
@@ -301,7 +301,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         secretAsyncClient.backupSecretWithResponse("secretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(secretBackupResponse ->
-                System.out.printf("Secret's Backup Byte array's length %s %n", secretBackupResponse.getValue().length));
+                System.out.printf("Secret's Backup Byte array's length %s%n", secretBackupResponse.getValue().length));
         // END: com.azure.keyvault.secrets.secretclient.backupSecretWithResponse#string
     }
 
@@ -340,11 +340,15 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.listSecrets
         secretAsyncClient.listPropertiesOfSecrets()
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient
-                .getSecret(secretProperties.getName(), secretProperties.getVersion())
-                .subscribe(secretResponse -> System.out.printf("Received secret with name %s and type %s",
-                    secretResponse.getName(), secretResponse.getValue())));
+            .flatMap(secretProperties -> {
+                String name = secretProperties.getName();
+                String version = secretProperties.getVersion();
+
+                System.out.printf("Getting secret name: '%s', version: %s%n", name, version);
+                return secretAsyncClient.getSecret(name, version);
+            })
+            .subscribe(secretResponse -> System.out.printf("Received secret with name %s and type %s",
+                secretResponse.getName(), secretResponse.getValue()));
         // END: com.azure.keyvault.secrets.secretclient.listSecrets
     }
 
@@ -355,7 +359,6 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.listDeletedSecrets
         secretAsyncClient.listDeletedSecrets()
-            .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(deletedSecretResponse ->  System.out.printf("Deleted Secret's Recovery Id %s %n",
                 deletedSecretResponse.getRecoveryId()));
         // END: com.azure.keyvault.secrets.secretclient.listDeletedSecrets
@@ -368,11 +371,12 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.listSecretVersions#string
         secretAsyncClient.listPropertiesOfSecretVersions("secretName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretProperties -> secretAsyncClient
-                .getSecret(secretProperties.getName(), secretProperties.getVersion())
-                .subscribe(secretResponse -> System.out.printf("Received secret with name %s and type %s",
-                    secretResponse.getName(), secretResponse.getValue())));
+            .flatMap(secretProperties -> {
+                System.out.println("Get secret value for version: " + secretProperties.getVersion());
+                return secretAsyncClient.getSecret(secretProperties.getName(), secretProperties.getVersion());
+            })
+            .subscribe(secret -> System.out.printf("Received secret with name %s and type %s%n",
+                secret.getName(), secret.getValue()));
         // END: com.azure.keyvault.secrets.secretclient.listSecretVersions#string
     }
 }
