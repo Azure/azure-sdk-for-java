@@ -317,8 +317,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-                ? new ParallelTransferOptions(null, null, null) :
-                new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
+                ? new ParallelTransferOptions(null, null, null)
+                : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
                     parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
 
             return Mono.using(() -> super.uploadFileResourceSupplier(filePath),

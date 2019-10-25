@@ -295,8 +295,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             BlobRequestConditions accessConditionsFinal = accessConditions == null
                 ? new BlobRequestConditions() : accessConditions;
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-                ? new ParallelTransferOptions(null, null, null) :
-                new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
+                ? new ParallelTransferOptions(null, null, null)
+                : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
                     parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
 
             // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
@@ -437,8 +437,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions accessConditions) {
         try {
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-                ? new ParallelTransferOptions(null, null, null) :
-                new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
+                ? new ParallelTransferOptions(null, null, null)
+                : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
                     parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
 
 

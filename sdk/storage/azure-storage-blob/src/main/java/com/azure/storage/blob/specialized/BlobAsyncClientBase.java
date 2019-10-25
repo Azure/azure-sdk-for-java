@@ -726,8 +726,8 @@ public class BlobAsyncClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Context context) {
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions(null, null, null) :
-            new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
+            ? new ParallelTransferOptions(null, null, null)
+            : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
                 parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
 
 
