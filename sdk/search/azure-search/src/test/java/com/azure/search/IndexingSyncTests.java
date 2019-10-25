@@ -535,7 +535,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             .TAGS(Arrays.asList("pool", "air conditioning", "concierge"))
             .PARKINGINCLUDED(false)
             .SMOKINGALLOWED(false)
-            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T-05:00:00Z"))
+            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
             .RATING(4)
             .LOCATION(GeoPoint.create(40.760586, -73.975403))
             .ADDRESS(new HotelAddress()
@@ -571,7 +571,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             .CATEGORY(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
             .TAGS(Arrays.asList("pool", "air conditioning"))
             .PARKINGINCLUDED(true)
-            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T-05:00:00Z"))
+            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
             .RATING(3)
             .LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
             .ADDRESS(new HotelAddress())
@@ -593,7 +593,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             .TAGS(Arrays.asList("pool", "air conditioning"))
             .PARKINGINCLUDED(true)
             .SMOKINGALLOWED(false)
-            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T-05:00:00Z"))
+            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
             .RATING(3)
             .LOCATION(null)
             .ADDRESS(new HotelAddress()
