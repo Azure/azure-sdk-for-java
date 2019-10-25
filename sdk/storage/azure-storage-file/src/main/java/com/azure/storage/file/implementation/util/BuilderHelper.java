@@ -100,6 +100,18 @@ public final class BuilderHelper {
         return new UserAgentPolicy(DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration, version);
     }
 
+    /**
+     * Gets the default http log option for Storage File.
+     *
+     * @return the default http log options.
+     */
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        HttpLogOptions defaultOptions = new HttpLogOptions();
+        FileHeadersAndQueryParameters.getFileHeaders().forEach(defaultOptions::addAllowedHeaderName);
+        FileHeadersAndQueryParameters.getFileQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
+        return defaultOptions;
+    }
+
     /*
      * Creates a {@link ResponseValidationPolicyBuilder.ResponseValidationPolicy} used to validate response data from
      * the service.

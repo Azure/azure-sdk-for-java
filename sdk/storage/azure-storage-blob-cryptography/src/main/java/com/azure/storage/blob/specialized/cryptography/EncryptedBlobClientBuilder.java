@@ -24,7 +24,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.util.BlobHeadersAndQueryParameters;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -102,7 +101,7 @@ public final class EncryptedBlobClientBuilder {
      * Creates a new instance of the EncryptedBlobClientBuilder
      */
     public EncryptedBlobClientBuilder() {
-        logOptions = getBlobDefaultLogOptions();
+        logOptions = getDefaultHttpLogOptions();
     }
 
     /**
@@ -431,12 +430,11 @@ public final class EncryptedBlobClientBuilder {
 
     /**
      * Gets the default Storage whitelist log headers and query parameters.
+     *
+     * @return the default http log options.
      */
-    public static HttpLogOptions getBlobDefaultLogOptions(){
-        HttpLogOptions defaultOptions = new HttpLogOptions();
-        BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
-        BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        return defaultOptions;
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        return BuilderHelper.getDefaultHttpLogOptions();
     }
 
     /**

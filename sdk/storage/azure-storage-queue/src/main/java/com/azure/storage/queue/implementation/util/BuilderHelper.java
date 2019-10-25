@@ -157,6 +157,18 @@ public final class BuilderHelper {
             .build();
     }
 
+    /**
+     * Gets the default http log option for Storage Queue.
+     *
+     * @return the default http log options.
+     */
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        HttpLogOptions defaultOptions = new HttpLogOptions();
+        QueueHeadersAndQueryParameters.getQueueHeaders().forEach(defaultOptions::addAllowedHeaderName);
+        QueueHeadersAndQueryParameters.getQueueQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
+        return defaultOptions;
+    }
+
     /*
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *

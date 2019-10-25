@@ -13,7 +13,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.util.BlobHeadersAndQueryParameters;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -66,7 +65,7 @@ public final class BlobClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new HttpLogOptions();
+    private HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -78,7 +77,7 @@ public final class BlobClientBuilder {
      * BlobAsyncClient BlobAsyncClients}.
      */
     public BlobClientBuilder() {
-        logOptions = getBlobDefaultLogOptions();
+        logOptions = getDefaultHttpLogOptions();
     }
 
     /**
@@ -357,12 +356,11 @@ public final class BlobClientBuilder {
 
     /**
      * Gets the default Storage whitelist log headers and query parameters.
+     *
+     * @return the default http log options.
      */
-    public static HttpLogOptions getBlobDefaultLogOptions(){
-        HttpLogOptions defaultOptions = new HttpLogOptions();
-        BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
-        BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        return defaultOptions;
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        return BuilderHelper.getDefaultHttpLogOptions();
     }
 
     /**

@@ -24,7 +24,6 @@ import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
 import com.azure.storage.queue.implementation.util.BuilderHelper;
-import com.azure.storage.queue.implementation.util.QueueHeadersAndQueryParameters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -95,7 +94,7 @@ public final class QueueServiceClientBuilder {
      * and {@link QueueServiceAsyncClient QueueServiceAsyncClients}.
      */
     public QueueServiceClientBuilder() {
-        logOptions = getQueueDefaultLogOptions();
+        logOptions = getDefaultHttpLogOptions();
     }
 
     /**
@@ -293,12 +292,11 @@ public final class QueueServiceClientBuilder {
 
     /**
      * Gets the default Storage whitelist log headers and query parameters.
+     *
+     * @return the default http log options.
      */
-    public static HttpLogOptions getQueueDefaultLogOptions(){
-        HttpLogOptions defaultOptions = new HttpLogOptions();
-        QueueHeadersAndQueryParameters.getQueueHeaders().forEach(defaultOptions::addAllowedHeaderName);
-        QueueHeadersAndQueryParameters.getQueueQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        return defaultOptions;
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        return BuilderHelper.getDefaultHttpLogOptions();
     }
 
     /**

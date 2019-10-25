@@ -24,7 +24,6 @@ import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 
 import com.azure.storage.file.implementation.util.BuilderHelper;
-import com.azure.storage.file.implementation.util.FileHeadersAndQueryParameters;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -97,7 +96,7 @@ public class ShareClientBuilder {
      * ShareAsyncClient ShareAsyncClients}.
      */
     public ShareClientBuilder() {
-        logOptions = getFileDefaultLogOptions();
+        logOptions = getDefaultHttpLogOptions();
     }
 
     /**
@@ -326,13 +325,11 @@ public class ShareClientBuilder {
 
     /**
      * Gets the default log options with Storage headers and query parameters.
+     *
      * @return the default log options.
      */
-    public static HttpLogOptions getFileDefaultLogOptions() {
-        HttpLogOptions defaultOptions = new HttpLogOptions();
-        FileHeadersAndQueryParameters.getFileHeaders().forEach(defaultOptions::addAllowedHeaderName);
-        FileHeadersAndQueryParameters.getFileQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        return defaultOptions;
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        return BuilderHelper.getDefaultHttpLogOptions();
     }
 
     /**
