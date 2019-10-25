@@ -40,11 +40,15 @@ public class Hotel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Hotel)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Hotel)) {
+            return false;
+        }
         Hotel hotel = (Hotel) o;
-        return Objects.equals(hotelId, hotel.hotelId) &&
-            ModelComparer.collectionEquals(tags, hotel.tags);
+        return Objects.equals(hotelId, hotel.hotelId)
+            && ModelComparer.collectionEquals(tags, hotel.tags);
     }
 
     @Override

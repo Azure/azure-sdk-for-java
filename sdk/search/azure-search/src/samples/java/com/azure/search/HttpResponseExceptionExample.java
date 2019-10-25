@@ -14,9 +14,10 @@ import com.azure.search.models.SearchResult;
 /**
  * This example shows how to handle errors when the Azure Cognitive Search service
  * returns a non-successful response
- *
+ * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
+ * </p>
  */
 public class HttpResponseExceptionExample {
 
@@ -53,8 +54,7 @@ public class HttpResponseExceptionExample {
                 // normal results processing
                 System.out.printf("Found hotel: %s%n", result.getDocument().get("HotelName"));
             }
-        }
-        catch (HttpResponseException ex) {
+        } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message
             // returned from the search service
             HttpResponse response = ex.getResponse();
@@ -79,26 +79,26 @@ public class HttpResponseExceptionExample {
         PagedFluxBase<SearchResult, SearchPagedResponse> results = client.search("hotel", searchOptions, null);
         results
             .subscribe(
-            foo -> {
-                // normal results processing
-                System.out.printf("Found hotel: %s%n", foo.getDocument().get("HotelName"));
-            },
-            err -> {
-                if (err instanceof HttpResponseException) {
-                    // The exception contains the HTTP status code and the detailed message
-                    // returned from the search service
-                    HttpResponse response = ((HttpResponseException) err).getResponse();
-                    response.getBodyAsString()
-                        .subscribe(body -> {
-                            System.out.println("Status Code: " + response.getStatusCode());
-                            System.out.println("Message: " + body);
-                        });
-                } else {
-                    // Allow other types of errors to throw
-                    throw new RuntimeException(err);
-                }
-            },
-            () -> System.out.println("completed"));
+                foo -> {
+                    // normal results processing
+                    System.out.printf("Found hotel: %s%n", foo.getDocument().get("HotelName"));
+                },
+                err -> {
+                    if (err instanceof HttpResponseException) {
+                        // The exception contains the HTTP status code and the detailed message
+                        // returned from the search service
+                        HttpResponse response = ((HttpResponseException) err).getResponse();
+                        response.getBodyAsString()
+                            .subscribe(body -> {
+                                System.out.println("Status Code: " + response.getStatusCode());
+                                System.out.println("Message: " + body);
+                            });
+                    } else {
+                        // Allow other types of errors to throw
+                        throw new RuntimeException(err);
+                    }
+                },
+                () -> System.out.println("completed"));
 
         /*
         This will block until the above query has completed. This is strongly discouraged for use in production as

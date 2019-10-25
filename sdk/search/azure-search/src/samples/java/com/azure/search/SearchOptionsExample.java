@@ -6,8 +6,8 @@ package com.azure.search;
 import com.azure.core.util.Configuration;
 import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.FacetResult;
-import com.azure.search.models.SearchOptions;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import reactor.core.publisher.Flux;
 
@@ -17,9 +17,10 @@ import java.util.stream.Stream;
 
 /**
  * This example shows how to work with {@link SearchOptions} while performing searches
- *
+ * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
+ * </p>
  */
 public class SearchOptionsExample {
 
@@ -55,7 +56,7 @@ public class SearchOptionsExample {
             new SearchOptions().setIncludeTotalResultCount(true),
             new RequestOptions())
             .byPage()
-            .map( page -> ((SearchPagedResponse) page).count())
+            .map(page -> ((SearchPagedResponse) page).count())
             .toStream();
 
         //Getting just the count property
@@ -72,7 +73,7 @@ public class SearchOptionsExample {
             new SearchOptions().setMinimumCoverage(73.5),
             new RequestOptions())
             .byPage()
-            .map( page -> ((SearchPagedResponse) page).coverage())
+            .map(page -> ((SearchPagedResponse) page).coverage())
             .toStream();
 
         //Getting just the Coverage property
@@ -89,11 +90,11 @@ public class SearchOptionsExample {
                 "LastRenovationDate,values:2000-01-01T00:00:00Z"),
             new RequestOptions())
             .byPage()
-            .map( page -> ((SearchPagedResponse) page).facets())
+            .map(page -> ((SearchPagedResponse) page).facets())
             .toStream();
 
         //Getting just the Facets property
-        Flux<Map<String, List<FacetResult>>>  facets = searchClient.search("search text",
+        Flux<Map<String, List<FacetResult>>> facets = searchClient.search("search text",
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10",
                 "LastRenovationDate,values:2000-01-01T00:00:00Z"),
             new RequestOptions())

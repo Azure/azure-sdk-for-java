@@ -34,11 +34,11 @@ public class SearchSuggestionExample {
             .indexName("hotels")
             .buildClient();
 
-        SearchSuggestionHighlight(client);
-        SearchSuggestionFuzzy(client);
+        suggestWithHighlights(client);
+        suggestWithFuzzySearch(client);
     }
 
-    private static void SearchSuggestionHighlight(SearchIndexClient searchClient) {
+    private static void suggestWithHighlights(SearchIndexClient searchClient) {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>")
@@ -61,7 +61,7 @@ public class SearchSuggestionExample {
          */
     }
 
-    private static void SearchSuggestionFuzzy(SearchIndexClient searchClient) {
+    private static void suggestWithFuzzySearch(SearchIndexClient searchClient) {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
 
