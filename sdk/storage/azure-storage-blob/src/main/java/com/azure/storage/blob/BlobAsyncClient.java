@@ -360,6 +360,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param filePath Path to the upload file
      * @return An empty response
+     * @throws UncheckedIOException If an I/O error occurs
      */
     public Mono<Void> uploadFromFile(String filePath) {
         try {
@@ -380,6 +381,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param filePath Path to the upload file
      * @param overwrite Whether or not to overwrite, should the blob already exist.
      * @return An empty response
+     * @throws UncheckedIOException If an I/O error occurs
      */
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
@@ -414,7 +416,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobRequestConditions}
      * @return An empty response
-     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
@@ -442,7 +443,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                                 .then();
                         }
                     } catch (IOException ex) {
-                        return Mono.error(new UncheckedIOException(ex));
+                        return Mono.error(ex);
                     }
                 }, this::uploadFileCleanup);
         } catch (RuntimeException ex) {
