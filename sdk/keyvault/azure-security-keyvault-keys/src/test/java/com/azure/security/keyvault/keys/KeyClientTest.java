@@ -156,14 +156,7 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     public void deleteKeyNotFound() {
-        SyncPoller<DeletedKey, Void> deletedKeyPoller = client.beginDeleteKey("non-existing");
-        PollResponse<DeletedKey> pollResponse = deletedKeyPoller.poll();
-        while (!pollResponse.getStatus().isComplete()) {
-            sleepInRecordMode(1000);
-            pollResponse = deletedKeyPoller.poll();
-        }
-
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.FAILED);
+        assertRestException(() -> client.beginDeleteKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -209,13 +202,7 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedKeyNotFound() {
-        SyncPoller<KeyVaultKey, Void> poller = client.beginRecoverDeletedKey("non-existing");
-        PollResponse<KeyVaultKey> pollResponse = poller.poll();
-        while (!pollResponse.getStatus().isComplete()) {
-            sleepInRecordMode(1000);
-            pollResponse = poller.poll();
-        }
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.FAILED);
+        assertRestException(() -> client.beginRecoverDeletedKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**

@@ -384,10 +384,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name) {
         return new PollerFlux<>(Duration.ofSeconds(1),
-            activationOperation(name),
-            createPollOperation(name),
-            (pollingContext, firstResponse) -> Mono.empty(),
-            (pollingContext) -> Mono.empty());
+                activationOperation(name),
+                createPollOperation(name),
+                (pollingContext, firstResponse) -> Mono.empty(),
+                (pollingContext) -> Mono.empty());
     }
 
     private Function<PollingContext<DeletedSecret>, Mono<DeletedSecret>> activationOperation(String name) {
@@ -553,10 +553,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
         return new PollerFlux<>(Duration.ofSeconds(1),
-            recoverActivationOperation(name),
-            createRecoverPollOperation(name),
-            (pollerContext, firstResponse) -> Mono.empty(),
-            null);
+                recoverActivationOperation(name),
+                createRecoverPollOperation(name),
+                (pollerContext, firstResponse) -> Mono.empty(),
+                (pollingContext) -> Mono.empty());
     }
 
     private Function<PollingContext<KeyVaultSecret>, Mono<KeyVaultSecret>> recoverActivationOperation(String name) {
