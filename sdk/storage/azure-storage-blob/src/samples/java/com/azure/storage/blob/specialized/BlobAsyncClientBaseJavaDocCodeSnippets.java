@@ -262,8 +262,8 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
                     if (!asyncPollResponse.getStatus().isComplete()) {
                         return asyncPollResponse
                                 .cancelOperation()
-                                .then(Mono.error(new RuntimeException("Blob copy taking long time, " +
-                                        "operation is cancelled!")));
+                                .then(Mono.error(new RuntimeException("Blob copy taking long time, "
+                                        + "operation is cancelled!")));
                     }
                     return Mono.just(asyncPollResponse);
                 }).block();
