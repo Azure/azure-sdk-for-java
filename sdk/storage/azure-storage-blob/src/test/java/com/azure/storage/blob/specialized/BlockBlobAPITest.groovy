@@ -621,12 +621,12 @@ class BlockBlobAPITest extends APISpec {
 
         where:
         fileSize                                       | blockSize       || commitedBlockCount
-        0                                              | null            || 0
-        10                                             | null            || 1
-        10 * 1024                                      | null            || 1
-        50 * 1024 * 1024                               | null            || Math.ceil((50 * 1024 * 1024) / BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+        0                                              | null            || 0  // Size it too small to trigger stage block uploading
+        10                                             | null            || 0  // Size it too small to trigger stage block uploading
+        10 * 1024                                      | null            || 0  // Size it too small to trigger stage block uploading
+        50 * 1024 * 1024                               | null            || 0  // Size it too small to trigger stage block uploading
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null            || Math.ceil((BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1) / BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // HTBB optimizations should trigger when file size is >100MB and defaults are used.
-        101 * 1024 * 1024                              | 4 * 1024 * 1024 || 26 // Making the block size explicit should cancel the optimization
+        101 * 1024 * 1024                              | 4 * 1024 * 1024 || 0 // Size it too small to trigger stage block uploading
     }
 
     def compareFiles(File file1, File file2) {
