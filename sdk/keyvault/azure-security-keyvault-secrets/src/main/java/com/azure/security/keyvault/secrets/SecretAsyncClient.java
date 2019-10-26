@@ -699,7 +699,7 @@ public final class SecretAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p>The sample below fetches the all the secret properties in the vault. For each secret retrieved, makes a call
-     * to {@link #getSecret(String, String) getSecret()} to get its value, and then prints it out.</p>
+     * to {@link #getSecret(String, String) getSecret(String, String)} to get its value, and then prints it out.</p>
      *
      * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecrets}
      *
@@ -834,7 +834,7 @@ public final class SecretAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p>The sample below fetches the all the versions of the given secret. For each version retrieved, makes a call
-     * to {@link #getSecret(String, String) getSecret()} to get the version's value, and then prints it out.</p>
+     * to {@link #getSecret(String, String) getSecret(String, String)} to get the version's value, and then prints it out.</p>
      *
      * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecretVersions#string}
      *

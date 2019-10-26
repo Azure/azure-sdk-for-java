@@ -496,7 +496,7 @@ public final class SecretClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p>The sample below fetches all versions of the given secret. For each secret version retrieved, makes a call
-     * to {@link #getSecret(String, String) getSecret()} to get the version's value, and then prints it out.</p>
+     * to {@link #getSecret(String, String) getSecret(String, String)} to get the version's value, and then prints it out.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string}
      *
      * @param name The name of the secret.
@@ -516,7 +516,7 @@ public final class SecretClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p>The sample below fetches all versions of the given secret. For each secret version retrieved, makes a call
-     * to {@link #getSecret(String, String) getSecret()} to get the version's value, and then prints it out.</p>
+     * to {@link #getSecret(String, String) getSecret(String, String)} to get the version's value, and then prints it out.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context}
      *
      * <p><strong>Iterate over secret versions by page</strong></p>
