@@ -642,4 +642,40 @@
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
+
+    <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="getFinalResult"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="poll"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="waitForCompletion"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="waitUntil"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+    <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.PollingContext"/>
+    <Method name="clone"/>
+    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+  </Match>
+
 </FindBugsFilter>
