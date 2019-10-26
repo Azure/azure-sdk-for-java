@@ -24,7 +24,6 @@ import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
@@ -433,11 +432,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions accessConditions) {
         try {
-            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-                ? new ParallelTransferOptions(null, null, null)
-                : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
-                    parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
-
             return Mono.using(() -> uploadFileResourceSupplier(filePath),
                 channel -> {
                     try {
@@ -446,7 +440,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
                         if (fileSize > 256 * Constants.MB) {
-                            return uploadBlocks(fileSize, finalParallelTransferOptions, headers, metadata, tier,
+                            return uploadBlocks(fileSize, parallelTransferOptions, headers, metadata, tier,
                                 accessConditions, channel, blockBlobAsyncClient);
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
@@ -466,14 +460,21 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private Mono<Void> uploadBlocks(long fileSize, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions accessConditions, AsynchronousFileChannel channel, BlockBlobAsyncClient client) {
-        ProgressReceiver progressReceiver = parallelTransferOptions.getProgressReceiver();
+        final ParallelTransferOptions finalParallelTransferOptions = (parallelTransferOptions == null)
+            ? new ParallelTransferOptions(null, null, null)
+            : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
+            parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
+        final BlobRequestConditions finalRequestConditions = (accessConditions == null)
+            ? new BlobRequestConditions()
+            : accessConditions;
+        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
         Lock progressLock = new ReentrantLock();
 
         final SortedMap<Long, String> blockIds = new TreeMap<>();
-        return Flux.fromIterable(sliceFile(fileSize, parallelTransferOptions.getBlockSize()))
+        return Flux.fromIterable(sliceFile(fileSize, finalParallelTransferOptions.getBlockSize()))
             .flatMap(chunk -> {
                 String blockId = getBlockID();
                 blockIds.put(chunk.getOffset(), blockId);
@@ -483,10 +484,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     progressReceiver, progressLock, totalProgress);
 
                 return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(),
-                    accessConditions.getLeaseId());
+                    finalRequestConditions.getLeaseId());
             })
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
-                new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
+                new ArrayList<>(blockIds.values()), headers, metadata, tier, finalRequestConditions)))
             .then();
     }
 
@@ -521,6 +522,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
     private List<BlobRange> sliceFile(long fileSize, int blockSize) {
         List<BlobRange> ranges = new ArrayList<>();
+        if (fileSize > 100 * Constants.MB) {
+            blockSize = BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
+        }
         for (long pos = 0; pos < fileSize; pos += blockSize) {
             long count = blockSize;
             if (pos + count > fileSize) {
