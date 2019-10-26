@@ -15,7 +15,6 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.ReliableDownloadOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
