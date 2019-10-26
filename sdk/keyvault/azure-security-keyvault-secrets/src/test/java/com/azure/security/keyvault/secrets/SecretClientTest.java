@@ -11,6 +11,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -148,13 +149,7 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     public void deleteSecretNotFound() {
-        SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret("non-existing");
-        PollResponse<DeletedSecret> pollResponse = poller.poll();
-        while (!pollResponse.getStatus().isComplete()) {
-            sleepInRecordMode(1000);
-            pollResponse = poller.poll();
-        }
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.FAILED);
+        assertRestException(() -> client.beginDeleteSecret("non-existing"), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
     }
 
     /**
@@ -169,7 +164,6 @@ public class SecretClientTest extends SecretClientTestBase {
                 sleepInRecordMode(1000);
                 pollResponse = poller.poll();
             }
-            sleepInRecordMode(30000);
             DeletedSecret deletedSecret = client.getDeletedSecret(secretToDeleteAndGet.getName());
             assertNotNull(deletedSecret.getDeletedOn());
             assertNotNull(deletedSecret.getRecoveryId());
@@ -218,13 +212,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that an attempt to recover a non existing deleted secret throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedSecretNotFound() {
-        SyncPoller<KeyVaultSecret, Void> poller = client.beginRecoverDeletedSecret("non-existing");
-        PollResponse<KeyVaultSecret> pollResponse = poller.poll();
-        while (!pollResponse.getStatus().isComplete()) {
-            sleepInRecordMode(1000);
-            pollResponse = poller.poll();
-        }
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.FAILED);
+        assertRestException(() -> client.beginRecoverDeletedSecret("non-existing"), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
     }
 
     /**
@@ -243,7 +231,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that an attempt to backup a non existing secret throws an error.
      */
     public void backupSecretNotFound() {
-        assertRestException(() -> client.backupSecret("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.backupSecret("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**

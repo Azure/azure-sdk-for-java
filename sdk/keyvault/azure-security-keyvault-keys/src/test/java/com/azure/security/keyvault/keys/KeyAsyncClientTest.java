@@ -19,8 +19,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class KeyAsyncClientTest extends KeyClientTestBase {
 
@@ -191,9 +190,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     public void deleteKeyNotFound() {
-        PollerFlux<DeletedKey, Void> deletedKeyPoller = client.beginDeleteKey("non-existing");
-        AsyncPollResponse<DeletedKey, Void> deletedKeyResponse = deletedKeyPoller.blockLast();
-        assertEquals(deletedKeyResponse.getStatus(), LongRunningOperationStatus.FAILED);
+        StepVerifier.create(client.beginDeleteKey("non-existing"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -236,18 +234,24 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedKeyNotFound() {
-        PollerFlux<KeyVaultKey, Void> poller = client.beginRecoverDeletedKey("non-existing");
-        AsyncPollResponse<KeyVaultKey, Void> pollResponse = poller.blockLast();
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.FAILED);
+        StepVerifier.create(client.beginRecoverDeletedKey("non-existing"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
      * Tests that a key can be backed up in the key vault.
      */
     public void backupKey() {
-        PollerFlux<KeyVaultKey, Void> poller = client.beginRecoverDeletedKey("non-existing");
-        AsyncPollResponse<KeyVaultKey, Void> pollResponse = poller.blockLast();
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.FAILED);
+        backupKeyRunner((keyToBackup) -> {
+            StepVerifier.create(client.createKey(keyToBackup))
+                .assertNext(keyResponse -> assertKeyEquals(keyToBackup, keyResponse)).verifyComplete();
+
+            StepVerifier.create(client.backupKey(keyToBackup.getName()))
+                .assertNext(response -> {
+                    assertNotNull(response);
+                    assertTrue(response.length > 0);
+                }).verifyComplete();
+        });
     }
 
     /**

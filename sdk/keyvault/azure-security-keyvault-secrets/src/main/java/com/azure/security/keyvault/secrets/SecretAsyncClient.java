@@ -556,7 +556,7 @@ public final class SecretAsyncClient {
                 recoverActivationOperation(name),
                 createRecoverPollOperation(name),
                 (pollerContext, firstResponse) -> Mono.empty(),
-                null);
+                (pollingContext) -> Mono.empty());
     }
 
     private Function<PollingContext<KeyVaultSecret>, Mono<KeyVaultSecret>> recoverActivationOperation(String name) {

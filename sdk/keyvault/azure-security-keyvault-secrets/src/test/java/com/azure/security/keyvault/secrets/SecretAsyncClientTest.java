@@ -194,10 +194,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     }
 
     public void deleteSecretNotFound() {
-        PollerFlux<DeletedSecret, Void> poller = client.beginDeleteSecret("non-existing");
-        AsyncPollResponse<DeletedSecret, Void> lastResponse = poller.blockLast();
-
-        assertEquals(lastResponse.getStatus(), LongRunningOperationStatus.FAILED);
+        StepVerifier.create(client.beginDeleteSecret("non-existing"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -270,16 +268,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      * Tests that an attempt to recover a non existing deleted secret throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedSecretNotFound() {
-        PollerFlux<KeyVaultSecret, Void> pollerFlux = client.beginRecoverDeletedSecret("non-existing");
-        SyncPoller<KeyVaultSecret, Void> poller = pollerFlux.getBlockingPoller();
-
-        PollResponse<KeyVaultSecret> pollResponse = poller.poll();
-        while (!pollResponse.getStatus().isComplete()) {
-            sleepInRecordMode(1000);
-            pollResponse = poller.poll();
-        }
-
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.FAILED);
+        StepVerifier.create(client.beginRecoverDeletedSecret("non-existing"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
