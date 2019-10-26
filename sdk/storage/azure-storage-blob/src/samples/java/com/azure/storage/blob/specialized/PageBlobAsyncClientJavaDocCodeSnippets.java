@@ -106,7 +106,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .setStart(0)
             .setEnd(511);
 
-        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes());
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
         PageBlobRequestConditions pageBlobRequestConditions = new PageBlobRequestConditions().setLeaseId(leaseId);
 
         client.uploadPagesWithResponse(pageRange, body, md5, pageBlobRequestConditions)

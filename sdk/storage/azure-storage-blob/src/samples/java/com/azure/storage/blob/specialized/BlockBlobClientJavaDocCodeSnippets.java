@@ -38,11 +38,11 @@ public class BlockBlobClientJavaDocCodeSnippets {
     private String sourceUrl = "https://example.com";
     private long offset = 1024L;
     private long count = length;
-    private byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes());
+    private byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
 
     /**
      * Constructor for code snippets.
-     * 
+     *
      * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public BlockBlobClientJavaDocCodeSnippets() throws NoSuchAlgorithmException {
@@ -87,7 +87,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
 
-        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes());
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
 
         BlobRequestConditions accessConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)

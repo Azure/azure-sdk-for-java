@@ -106,7 +106,7 @@ public class PageBlobClientJavaDocCodeSnippets {
      */
     public void uploadPagesWithResponseCodeSnippet() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobAccessConditions-Duration-Context
-        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes());
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);

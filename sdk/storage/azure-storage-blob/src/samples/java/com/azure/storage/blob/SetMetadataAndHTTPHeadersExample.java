@@ -85,7 +85,8 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Send an MD5 hash of the content to be validated by the service.
          */
-        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.getBytes()));
+        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5")
+            .digest(data.getBytes(StandardCharsets.UTF_8)));
 
         /*
          * Data which will upload to block blob.

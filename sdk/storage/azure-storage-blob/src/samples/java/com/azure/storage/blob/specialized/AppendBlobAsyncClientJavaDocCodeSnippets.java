@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import reactor.core.publisher.Flux;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -86,7 +87,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
      */
     public void appendBlock2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobAccessConditions
-        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes());
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
         AppendBlobRequestConditions accessConditions = new AppendBlobRequestConditions()
             .setAppendPosition(POSITION)
             .setMaxSize(maxSize);
