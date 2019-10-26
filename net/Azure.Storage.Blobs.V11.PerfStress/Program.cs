@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Azure.Test.PerfStress;
+using System;
+using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.V11.PerfStress
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            await PerfStressProgram.Main(typeof(Program).Assembly, args);
         }
     }
 }
