@@ -137,7 +137,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
         keyAsyncClient.beginDeleteKey("keyName")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
@@ -338,7 +337,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string
         keyAsyncClient.beginRecoverDeletedKey("deletedKeyName")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recover Key Name: " + pollResponse.getValue().getName());

@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -452,12 +452,12 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#string}
      *
      * @param name The name of the key to be deleted.
-     * @return A {@link Poller} to poll on and retrieve {@link DeletedKey deleted key}
+     * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedKey deleted key}
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public Poller<DeletedKey, Void> beginDeleteKey(String name) {
-        return client.beginDeleteKey(name);
+    public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
+        return client.beginDeleteKey(name).getBlockingPoller();
     }
 
     /**
@@ -548,12 +548,12 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#string}
      *
      * @param name The name of the deleted key to be recovered.
-     * @return A {@link Poller} to poll on and retrieve {@link KeyVaultKey recovered key}.
+     * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultKey recovered key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return client.beginRecoverDeletedKey(name);
+    public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
+        return client.beginRecoverDeletedKey(name).getBlockingPoller();
     }
 
     /**

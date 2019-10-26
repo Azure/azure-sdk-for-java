@@ -5,8 +5,9 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -128,9 +129,15 @@ public class SecretClientTest extends SecretClientTestBase {
     public void deleteSecret() {
         deleteSecretRunner((secretToDelete) -> {
             assertSecretEquals(secretToDelete,  client.setSecret(secretToDelete));
-            Poller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretToDelete.getName());
-            while (!poller.isComplete()) { sleepInRecordMode(1000); }
-            DeletedSecret deletedSecret = poller.getLastPollResponse().getValue();
+            SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretToDelete.getName());
+
+            PollResponse<DeletedSecret> pollResponse = poller.poll();
+            while (!pollResponse.getStatus().isComplete()) {
+                sleepInRecordMode(1000);
+                pollResponse = poller.poll();
+            }
+
+            DeletedSecret deletedSecret = pollResponse.getValue();
             assertNotNull(deletedSecret.getDeletedOn());
             assertNotNull(deletedSecret.getRecoveryId());
             assertNotNull(deletedSecret.getScheduledPurgeDate());
@@ -141,9 +148,13 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     public void deleteSecretNotFound() {
-        Poller<DeletedSecret, Void> poller = client.beginDeleteSecret("non-existing");
-        while (!poller.isComplete()) { sleepInRecordMode(1000); }
-        assertEquals(poller.getStatus(), PollResponse.OperationStatus.FAILED);
+        SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret("non-existing");
+        PollResponse<DeletedSecret> pollResponse = poller.poll();
+        while (!pollResponse.getStatus().isComplete()) {
+            sleepInRecordMode(1000);
+            pollResponse = poller.poll();
+        }
+        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.FAILED);
     }
 
     /**
@@ -152,8 +163,12 @@ public class SecretClientTest extends SecretClientTestBase {
     public void getDeletedSecret() {
         getDeletedSecretRunner((secretToDeleteAndGet) -> {
             assertSecretEquals(secretToDeleteAndGet, client.setSecret(secretToDeleteAndGet));
-            Poller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretToDeleteAndGet.getName());
-            while (!poller.isComplete()) { sleepInRecordMode(1000); }
+            SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretToDeleteAndGet.getName());
+            PollResponse<DeletedSecret> pollResponse = poller.poll();
+            while (!pollResponse.getStatus().isComplete()) {
+                sleepInRecordMode(1000);
+                pollResponse = poller.poll();
+            }
             sleepInRecordMode(30000);
             DeletedSecret deletedSecret = client.getDeletedSecret(secretToDeleteAndGet.getName());
             assertNotNull(deletedSecret.getDeletedOn());
@@ -180,11 +195,19 @@ public class SecretClientTest extends SecretClientTestBase {
     public void recoverDeletedSecret() {
         recoverDeletedSecretRunner((secretToDeleteAndRecover) -> {
             assertSecretEquals(secretToDeleteAndRecover, client.setSecret(secretToDeleteAndRecover));
-            Poller<DeletedSecret, Void> delPoller = client.beginDeleteSecret(secretToDeleteAndRecover.getName());
-            while (!delPoller.isComplete()) { sleepInRecordMode(1000); }
-            Poller<KeyVaultSecret, Void> poller = client.beginRecoverDeletedSecret(secretToDeleteAndRecover.getName());
-            while (!poller.isComplete()) { sleepInRecordMode(1000); }
-            KeyVaultSecret recoveredSecret = poller.getLastPollResponse().getValue();
+            SyncPoller<DeletedSecret, Void> delPoller = client.beginDeleteSecret(secretToDeleteAndRecover.getName());
+            PollResponse<DeletedSecret> pollResponse = delPoller.poll();
+            while (!pollResponse.getStatus().isComplete()) {
+                sleepInRecordMode(1000);
+                pollResponse = delPoller.poll();
+            }
+            SyncPoller<KeyVaultSecret, Void> poller = client.beginRecoverDeletedSecret(secretToDeleteAndRecover.getName());
+            PollResponse<KeyVaultSecret> response = poller.poll();
+            while (!response.getStatus().isComplete()) {
+                sleepInRecordMode(1000);
+                response = poller.poll();
+            }
+            KeyVaultSecret recoveredSecret = response.getValue();
             assertEquals(secretToDeleteAndRecover.getName(), recoveredSecret.getName());
             assertEquals(secretToDeleteAndRecover.getProperties().getNotBefore(), recoveredSecret.getProperties().getNotBefore());
             assertEquals(secretToDeleteAndRecover.getProperties().getExpiresOn(), recoveredSecret.getProperties().getExpiresOn());
@@ -195,9 +218,13 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that an attempt to recover a non existing deleted secret throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedSecretNotFound() {
-        Poller<KeyVaultSecret, Void> poller = client.beginRecoverDeletedSecret("non-existing");
-        while (!poller.isComplete()) { sleepInRecordMode(1000); }
-        assertEquals(poller.getStatus(), PollResponse.OperationStatus.FAILED);
+        SyncPoller<KeyVaultSecret, Void> poller = client.beginRecoverDeletedSecret("non-existing");
+        PollResponse<KeyVaultSecret> pollResponse = poller.poll();
+        while (!pollResponse.getStatus().isComplete()) {
+            sleepInRecordMode(1000);
+            pollResponse = poller.poll();
+        }
+        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.FAILED);
     }
 
     /**
@@ -228,8 +255,12 @@ public class SecretClientTest extends SecretClientTestBase {
             byte[] backupBytes = (client.backupSecret(secretToBackupAndRestore.getName()));
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
-            Poller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretToBackupAndRestore.getName());
-            while (!poller.isComplete()) { sleepInRecordMode(1000); }
+            SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretToBackupAndRestore.getName());
+            PollResponse<DeletedSecret> pollResponse = poller.poll();
+            while (!pollResponse.getStatus().isComplete()) {
+                sleepInRecordMode(1000);
+                pollResponse = poller.poll();
+            }
             client.purgeDeletedSecret(secretToBackupAndRestore.getName());
             pollOnSecretPurge(secretToBackupAndRestore.getName());
             sleepInRecordMode(60000);
@@ -280,8 +311,12 @@ public class SecretClientTest extends SecretClientTestBase {
             }
 
             for (KeyVaultSecret secret : secrets.values()) {
-                Poller<DeletedSecret, Void> poller = client.beginDeleteSecret(secret.getName());
-                while (!poller.isComplete()) { sleepInRecordMode(1000); }
+                SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secret.getName());
+                PollResponse<DeletedSecret> pollResponse = poller.poll();
+                while (!pollResponse.getStatus().isComplete()) {
+                    sleepInRecordMode(1000);
+                    pollResponse = poller.poll();
+                }
             }
 
             sleepInRecordMode(60000);
@@ -322,8 +357,12 @@ public class SecretClientTest extends SecretClientTestBase {
             secretVersionsOutput.forEach(secretVersionsList::add);
             assertEquals(secretVersions.size(), secretVersionsList.size());
 
-            Poller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretName);
-            while (!poller.isComplete()) { sleepInRecordMode(1000); }
+            SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretName);
+            PollResponse<DeletedSecret> pollResponse = poller.poll();
+            while (!pollResponse.getStatus().isComplete()) {
+                sleepInRecordMode(1000);
+                pollResponse = poller.poll();
+            }
 
             client.purgeDeletedSecret(secretName);
             pollOnSecretPurge(secretName);

@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -238,12 +238,12 @@ public final class SecretClient {
      * {@codesnippet com.azure.security.keyvault.secretclient.deleteSecret#string}
      *
      * @param name The name of the secret to be deleted.
-     * @return A {@link Poller} to poll on and retrieve the {@link DeletedSecret deleted secret}.
+     * @return A {@link SyncPoller} to poll on and retrieve the {@link DeletedSecret deleted secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
-    public Poller<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return client.beginDeleteSecret(name);
+    public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name) {
+        return client.beginDeleteSecret(name).getBlockingPoller();
     }
 
     /**
@@ -338,12 +338,12 @@ public final class SecretClient {
      * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecret#string}
      *
      * @param name The name of the deleted secret to be recovered.
-     * @return A {@link Poller} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
+     * @return A {@link SyncPoller} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
-    public Poller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return client.beginRecoverDeletedSecret(name);
+    public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
+        return client.beginRecoverDeletedSecret(name).getBlockingPoller();
     }
 
     /**

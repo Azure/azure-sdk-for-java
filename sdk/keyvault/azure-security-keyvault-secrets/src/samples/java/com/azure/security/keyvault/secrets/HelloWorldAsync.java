@@ -69,7 +69,6 @@ public class HelloWorldAsync {
 
         // The bank account was closed, need to delete its credentials from the key vault.
         secretAsyncClient.beginDeleteSecret("BankAccountPassword")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
