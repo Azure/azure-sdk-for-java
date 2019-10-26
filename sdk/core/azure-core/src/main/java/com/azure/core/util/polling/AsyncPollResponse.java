@@ -3,6 +3,8 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -23,6 +25,7 @@ import java.util.function.Function;
  * @param <U> The type of the final result of long-running operation.
  */
 public final class AsyncPollResponse<T, U> {
+    private final ClientLogger logger = new ClientLogger(AsyncPollResponse.class);
     private final PollingContext<T> pollingContext;
     private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation;
     private final Function<PollingContext<T>, Mono<U>> fetchResultOperation;
@@ -75,8 +78,8 @@ public final class AsyncPollResponse<T, U> {
             try {
                 return this.cancellationOperation
                         .apply(this.pollingContext, this.pollingContext.getActivationResponse());
-            } catch (Throwable throwable) {
-                return Mono.error(throwable);
+            } catch (RuntimeException re) {
+                return FluxUtil.monoError(logger, re);
             }
         });
     }
@@ -94,8 +97,8 @@ public final class AsyncPollResponse<T, U> {
                 try {
                     return this.fetchResultOperation
                             .apply(this.pollingContext);
-                } catch (Throwable throwable) {
-                    return Mono.error(throwable);
+                } catch (RuntimeException re) {
+                    return FluxUtil.monoError(logger, re);
                 }
             }
         });
@@ -105,7 +108,6 @@ public final class AsyncPollResponse<T, U> {
      * Returns the delay the service has requested until the next polling operation is performed. A null or negative
      * value will be taken to mean that the Poller should determine on its own when the next poll operation is
      * to occur.
-     * Note: package private
      *
      * @return Duration How long to wait before next retry.
      */

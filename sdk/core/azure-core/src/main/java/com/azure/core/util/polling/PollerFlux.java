@@ -60,17 +60,18 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * @param defaultPollInterval the default polling interval
      * @param activationOperation the activation operation to be invoked at most once across all subscriptions,
      *                            this parameter is required, if there is no specific activation work to be
-     *                            done then invocation should return Mono.empty().
+     *                            done then invocation should return Mono.empty(), this operation will be called
+     *                            with a new {@link PollingContext}.
      * @param pollOperation the operation to poll the current state of long running operation, this parameter
-     *                      is required and the operation will be called with the {@link PollingContext}.
-     * @param cancelOperation a {@link BiFunction} that represents the operation to cancel the long-running operation
+     *                      is required and the operation will be called with current {@link PollingContext}.
+     * @param cancelOperation a {@link Function} that represents the operation to cancel the long-running operation
      *                        if service supports cancellation, this parameter is required and if service does not
      *                        support cancellation then the implementer should return Mono.error with an error message
-     *                        indicating absence of cancellation support, the operation will be called with
-     *                        {@link PollingContext} and activation response.
+     *                        indicating absence of cancellation support, the operation will be called with current
+     *                        {@link PollingContext}.
      * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of
      *                             the long-running operation if service support it, this parameter is required and
-     *                             operation will be called with {@link PollingContext}, if service does not have an
+     *                             operation will be called current {@link PollingContext}, if service does not have an
      *                             api to fetch final result and if final result is same as final poll response value
      *                             then implementer can choose to simply return value from provided final poll response.
      */
@@ -168,7 +169,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     private Flux<AsyncPollResponse<T, U>> pollingLoop() {
         return Flux.using(
             // Create a Polling Context per subscription
-            () -> this.rootContext.clone(),
+            () -> this.rootContext.copy(),
             // Do polling
             // set|read in state as needed, reactor guarantee thread-safety of state object.
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))

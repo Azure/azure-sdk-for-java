@@ -9,11 +9,11 @@ package com.azure.core.util.polling.implementation;
  * An exception indicating that an operation on long-running operation
  * requires a {@link com.azure.core.util.polling.PollingContext}
  */
-public class OperationRequirePollContext extends RuntimeException {
+public class PollContextRequiredException extends RuntimeException {
     /**
-     * Creates OperationRequirePollContext.
+     * Creates PollContextRequiredException.
      */
-    public OperationRequirePollContext() {
+    public PollContextRequiredException() {
         super("");
     }
 }

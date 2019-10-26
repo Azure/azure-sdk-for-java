@@ -87,8 +87,7 @@ public final class PollingContext<T> {
         }
     }
 
-    @Override
-    public PollingContext<T> clone() {
+    PollingContext<T> copy() {
         return new PollingContext<>(this.activationResponse,
                 this.latestResponse,
                 new HashMap<>(this.map));

@@ -60,14 +60,14 @@ public interface SyncPoller<T, U> {
     /**
      * Wait for the given {@link LongRunningOperationStatus}.
      *
-     * @param statusToWaitFor the desired {@link LongRunningOperationStatus} to block for.
      * @param timeout the duration to waits for the polling.
+     * @param statusToWaitFor the desired {@link LongRunningOperationStatus} to block for.
      * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToWaitFor}.
      * @throws IllegalArgumentException if {@code statusToWaitFor} is or {@code timeout} {@code null}.
      * @throws java.util.concurrent.TimeoutException TimeoutException will be thrown if polling
      *         does not find the matching status within the given {@link Duration}.
      */
-    PollResponse<T> waitUntil(LongRunningOperationStatus statusToWaitFor, Duration timeout);
+    PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor);
 
     /**
      * Retrieve the final result of the long running operation.
