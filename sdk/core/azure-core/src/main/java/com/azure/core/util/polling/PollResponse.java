@@ -4,7 +4,6 @@
 package com.azure.core.util.polling;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.Objects;
 
 /**

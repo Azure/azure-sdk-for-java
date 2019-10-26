@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("unchecked")
 public class PollerTests {
     @Mock
-    private Function<PollingContext<Response>,Mono<Response>> activationOperation;
+    private Function<PollingContext<Response>, Mono<Response>> activationOperation;
 
     @Mock
     private Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation;
@@ -129,7 +129,7 @@ public class PollerTests {
             new Response("1"), retryAfter);
 
         PollResponse<Response> response2 = new PollResponse<>(
-            LongRunningOperationStatus.fromString("OTHER_1",false),
+            LongRunningOperationStatus.fromString("OTHER_1", false),
             new Response("2"), retryAfter);
 
         PollResponse<Response> response3 = new PollResponse<>(
@@ -181,7 +181,7 @@ public class PollerTests {
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
             new Response("2"), retryAfter);
 
-        int [] activationCallCount = new int[1];
+        int[] activationCallCount = new int[1];
         activationCallCount[0] = 0;
         when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> {
             activationCallCount[0]++;
@@ -336,7 +336,7 @@ public class PollerTests {
         Assert.assertTrue(terminalAsyncResponse[0].getValue().getResponse().equalsIgnoreCase("2"));
         Assert.assertEquals(1, fetchResultParameters.size());
         Assert.assertTrue(fetchResultParameters.get(0) instanceof PollingContext);
-        PollingContext<Response>  pollingContext = (PollingContext<Response>)fetchResultParameters.get(0);
+        PollingContext<Response>  pollingContext = (PollingContext<Response>) fetchResultParameters.get(0);
         pollingContext.getActivationResponse().equals(activationResponse);
         pollingContext.getLatestResponse().equals(response2);
     }
@@ -441,10 +441,10 @@ public class PollerTests {
         when(pollOperation.apply(any())).thenAnswer((Answer) invocation -> {
             Assert.assertEquals(1, invocation.getArguments().length);
             Assert.assertTrue(invocation.getArguments()[0] instanceof PollingContext);
-            PollingContext pollingContext = (PollingContext) invocation.getArguments()[0];
+            PollingContext<Response> pollingContext = (PollingContext<Response>) invocation.getArguments()[0];
             Assert.assertTrue(pollingContext.getActivationResponse() instanceof PollResponse);
             Assert.assertTrue(pollingContext.getLatestResponse() instanceof PollResponse);
-            PollResponse<Response> latestResponse = (PollResponse<Response>) pollingContext.getLatestResponse();
+            PollResponse<Response> latestResponse = pollingContext.getLatestResponse();
             Assert.assertNotNull(latestResponse);
             PollResponse<Response> nextResponse = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                     new Response(latestResponse.getValue().toString() + "A"), Duration.ofMillis(100));

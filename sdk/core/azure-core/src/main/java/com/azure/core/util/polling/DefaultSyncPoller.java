@@ -52,7 +52,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
      *                             api to fetch final result and if final result is same as final poll response value
      *                             then implementer can choose to simply return value from provided final poll response.
      */
-    public DefaultSyncPoller(Duration defaultPollInterval,
+    DefaultSyncPoller(Duration defaultPollInterval,
                              Function<PollingContext<T>, Mono<T>> activationOperation,
                              Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
                              BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
@@ -234,26 +234,27 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
 
     private Flux<AsyncPollResponse<T, U>> pollingLoop(PollingContext<T> pollingContext) {
         return Flux.using(
-                // Create a Polling Context per subscription
-                () -> pollingContext,
-                // Do polling
-                // set|read in state as needed, reactor guarantee thread-safety of state object.
-                cxt -> Mono.defer(() -> pollOperation.apply(cxt))
-                        .delaySubscription(getDelay(cxt.getLatestResponse()))
-                        .repeat()
-                        .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
-                        .onErrorResume(throwable -> {
-                            logger.warning("Received an error from pollOperation. Any error from pollOperation " +
-                                    "will be ignored and polling will be continued. Error:" + throwable.getMessage());
-                            return Mono.empty();
-                        })
-                        .concatMap(currentPollResponse -> {
-                            cxt.setLatestResponse(currentPollResponse);
-                            return Mono.just(new AsyncPollResponse<>(cxt,
-                                    this.cancelOperation,
-                                    this.fetchResultOperation));
-                        }),
-                cxt -> {});
+            // Create a Polling Context per subscription
+            () -> pollingContext,
+            // Do polling
+            // set|read in state as needed, reactor guarantee thread-safety of state object.
+            cxt -> Mono.defer(() -> pollOperation.apply(cxt))
+                    .delaySubscription(getDelay(cxt.getLatestResponse()))
+                    .switchIfEmpty(Mono.error(new IllegalStateException("PollOperation returned Mono.empty().")))
+                    .repeat()
+                    .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
+                    .onErrorResume(throwable -> {
+                        logger.warning("Received an error from pollOperation. Any error from pollOperation "
+                               + "will be ignored and polling will be continued. Error:" + throwable.getMessage());
+                        return Mono.empty();
+                    })
+                    .concatMap(currentPollResponse -> {
+                        cxt.setLatestResponse(currentPollResponse);
+                        return Mono.just(new AsyncPollResponse<>(cxt,
+                                this.cancelOperation,
+                                this.fetchResultOperation));
+                    }),
+            cxt -> { });
     }
 
     /**

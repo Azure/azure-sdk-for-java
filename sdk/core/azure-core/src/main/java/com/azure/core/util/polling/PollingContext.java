@@ -3,6 +3,8 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -14,7 +16,8 @@ import java.util.Objects;
  * @param <T> the type of the poll response.
  */
 public final class PollingContext<T> {
-    private Map<String, String> map = new HashMap<>();
+    private final ClientLogger logger = new ClientLogger(PollingContext.class);
+    private final Map<String, String> map;
     private PollResponse<T> activationResponse;
     private PollResponse<T> latestResponse;
 
@@ -48,7 +51,7 @@ public final class PollingContext<T> {
     }
 
     /**
-     * @return the latest {@link PollResponse} from pollOperation
+     * @return the latest {@link PollResponse} from pollOperation.
      */
     public PollResponse<T> getLatestResponse() {
         return this.latestResponse;
@@ -75,7 +78,9 @@ public final class PollingContext<T> {
      */
     void setOnetimeActivationResponse(PollResponse<T> activationResponse) {
         if (this.activationResponse != null) {
-            throw new IllegalStateException("setOnetimeActivationResponse can be called only once.");
+            throw logger
+                    .logExceptionAsError(new IllegalStateException(
+                            "setOnetimeActivationResponse can be called only once."));
         } else {
             this.activationResponse = activationResponse;
             this.latestResponse = this.activationResponse;
@@ -95,13 +100,14 @@ public final class PollingContext<T> {
      * Package internal default constructor.
      */
     PollingContext() {
+        this.map = new HashMap<>();
     }
 
     /**
      * Creates PollingContext.
      *
-     * @param activationResponse activation {@link PollResponse} holding result of activation operation call.
-     * @param latestResponse latest {@link PollResponse} from pollOperation.
+     * @param activationResponse activation poll response holding result of activation operation call.
+     * @param latestResponse latest poll response from pollOperation.
      * @param map the map to store context
      */
     private PollingContext(PollResponse<T> activationResponse,

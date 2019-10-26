@@ -173,11 +173,12 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             // set|read in state as needed, reactor guarantee thread-safety of state object.
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))
                 .delaySubscription(getDelay(cxt.getLatestResponse()))
+                .switchIfEmpty(Mono.error(new IllegalStateException("PollOperation returned Mono.empty().")))
                 .repeat()
                 .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .onErrorResume(throwable -> {
-                    logger.warning("Received an error from pollOperation. Any error from pollOperation " +
-                        "will be ignored and polling will be continued. Error:" + throwable.getMessage());
+                    logger.warning("Received an error from pollOperation. Any error from pollOperation "
+                        + "will be ignored and polling will be continued. Error:" + throwable.getMessage());
                     return Mono.empty();
                 })
                 .concatMap(currentPollResponse -> {
@@ -188,7 +189,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                 }),
             //
             // No cleaning needed, Polling Context will be GC-ed
-            cxt -> {});
+            cxt -> { });
     }
 
     /**
