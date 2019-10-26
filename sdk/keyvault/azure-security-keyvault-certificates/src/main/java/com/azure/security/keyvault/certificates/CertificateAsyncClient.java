@@ -120,9 +120,8 @@ public class CertificateAsyncClient {
     private BiFunction<PollingContext<CertificateOperation>,
             PollResponse<CertificateOperation>,
             Mono<CertificateOperation>> cancelOperation(String name) {
-        return (pollingContext, firstResponse)
-                -> withContext(context
-                    -> cancelCertificateOperationWithResponse(name, context)).flatMap(FluxUtil::toMono);
+        return (pollingContext, firstResponse) -> withContext(context
+            -> cancelCertificateOperationWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
 
     private Function<PollingContext<CertificateOperation>, Mono<CertificateOperation>> activationOperation(String name,
@@ -139,9 +138,8 @@ public class CertificateAsyncClient {
 
     private Function<PollingContext<CertificateOperation>,
             Mono<Certificate>> fetchResultOperation(String name) {
-        return (pollingContext)
-                -> withContext(context
-                    -> getCertificateWithResponse(name, "", context)
+        return (pollingContext) -> withContext(context
+            -> getCertificateWithResponse(name, "", context)
                         .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue())));
     }
 
@@ -205,7 +203,7 @@ public class CertificateAsyncClient {
                     .flatMap(this::processCertificateOperationResponse));
             } catch (HttpRequestException e) {
                 logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED,null));
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
             }
         };
     }

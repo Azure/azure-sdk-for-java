@@ -245,48 +245,50 @@ public class FileAsyncClient {
      * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public PollerFlux<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, Duration pollInterval) {
+    public PollerFlux<FileCopyInfo, Void> beginCopy(String sourceUrl,
+                                                    Map<String, String> metadata,
+                                                    Duration pollInterval) {
         final AtomicReference<String> copyId = new AtomicReference<>();
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
         //
         return new PollerFlux<>(interval,
-                (pollingContext) -> {
-                    try {
-                        return withContext(context -> azureFileStorageClient.files()
-                                .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
-                                        metadata,
-                                        context))
-                                .map(response -> {
-                                    final FileStartCopyHeaders headers = response.getDeserializedHeaders();
-                                    copyId.set(headers.getCopyId());
+            (pollingContext) -> {
+                try {
+                    return withContext(context -> azureFileStorageClient.files()
+                            .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
+                                    metadata,
+                                    context))
+                            .map(response -> {
+                                final FileStartCopyHeaders headers = response.getDeserializedHeaders();
+                                copyId.set(headers.getCopyId());
 
-                                    return new FileCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
-                                            headers.getETag(), headers.getLastModified(), headers.getErrorCode());
-                                });
-                    } catch (RuntimeException ex) {
-                        return monoError(logger, ex);
-                    }
-                },
-                (pollingContext) -> {
-                    try {
-                        return onPoll(pollingContext.getLatestResponse());
-                    } catch (RuntimeException ex) {
-                        return monoError(logger, ex);
-                    }
-                },
-                (pollingContext, firstResponse) -> {
-                    if (firstResponse == null || firstResponse.getValue() == null) {
-                        return Mono.error(logger.logExceptionAsError(
-                                new IllegalArgumentException("Cannot cancel a poll response that never started.")));
-                    }
-                    final String copyIdentifier = firstResponse.getValue().getCopyId();
-                    if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
-                        logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
-                        return abortCopy(copyIdentifier).thenReturn(firstResponse.getValue());
-                    }
-                    return Mono.empty();
-                },
-                (pollingContext) -> Mono.empty());
+                                return new FileCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
+                                        headers.getETag(), headers.getLastModified(), headers.getErrorCode());
+                            });
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            },
+            (pollingContext) -> {
+                try {
+                    return onPoll(pollingContext.getLatestResponse());
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            },
+            (pollingContext, firstResponse) -> {
+                if (firstResponse == null || firstResponse.getValue() == null) {
+                    return Mono.error(logger.logExceptionAsError(
+                            new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                }
+                final String copyIdentifier = firstResponse.getValue().getCopyId();
+                if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
+                    logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
+                    return abortCopy(copyIdentifier).thenReturn(firstResponse.getValue());
+                }
+                return Mono.empty();
+            },
+            (pollingContext) -> Mono.empty());
     }
 
     private Mono<PollResponse<FileCopyInfo>> onPoll(PollResponse<FileCopyInfo> pollResponse) {

@@ -690,10 +690,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
         return new PollerFlux<>(Duration.ofSeconds(1),
-                activationOperation(name),
-                createPollOperation(name),
-                (context, firstResponse) -> Mono.empty(),
-                (context) -> Mono.empty());
+            activationOperation(name),
+            createPollOperation(name),
+            (context, firstResponse) -> Mono.empty(),
+            (context) -> Mono.empty());
     }
 
     private Function<PollingContext<DeletedKey>, Mono<DeletedKey>> activationOperation(String name) {
@@ -860,10 +860,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         return new PollerFlux<>(Duration.ofSeconds(1),
-                recoverActivationOperation(name),
-                createRecoverPollOperation(name),
-                (context, firstResponse) -> Mono.empty(),
-                context -> Mono.empty());
+            recoverActivationOperation(name),
+            createRecoverPollOperation(name),
+            (context, firstResponse) -> Mono.empty(),
+            context -> Mono.empty());
     }
 
     private Function<PollingContext<KeyVaultKey>, Mono<KeyVaultKey>> recoverActivationOperation(String name) {
