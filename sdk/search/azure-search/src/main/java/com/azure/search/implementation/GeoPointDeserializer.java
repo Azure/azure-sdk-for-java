@@ -54,15 +54,16 @@ final class GeoPointDeserializer extends UntypedObjectDeserializer {
     @SuppressWarnings("unchecked")
     private Object parseGeoPoint(Object obj) {
         if (isGeoJsonPoint(obj)) {
+            // We already know the class is a Map<String, Object> - validated in isGeoJsonPoint.
             Map<String, Object> map = (Map<String, Object>) obj;
             List<?> coordinates = (List) map.get("coordinates");
 
             Double latitude = coordinates.get(1).getClass() == Double.class
                 ? (Double) coordinates.get(1)
-                : new Double((Integer) coordinates.get(1));
+                : Double.valueOf((Integer) coordinates.get(1));
             Double longitude = coordinates.get(0).getClass() == Double.class
                 ? (Double) coordinates.get(0)
-                : new Double((Integer) coordinates.get(0));
+                : Double.valueOf((Integer) coordinates.get(0));
 
             return GeoPoint.create(latitude, longitude);
         } else {
