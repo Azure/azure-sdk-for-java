@@ -32,7 +32,7 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         Document result = client.getDocument(expected.hotelId());
-        Hotel actual = result.as(Hotel.class);
+        Hotel actual = convertToType(result, Hotel.class);
         Assert.assertEquals(expected, actual);
     }
 
@@ -45,7 +45,7 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         Document result = client.getDocument(expected.hotelId());
-        Hotel actual = result.as(Hotel.class);
+        Hotel actual = convertToType(result, Hotel.class);
         Assert.assertEquals(expected, actual);
     }
 
@@ -58,7 +58,7 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         Document result = client.getDocument(expected.hotelId());
-        Hotel actual = result.as(Hotel.class);
+        Hotel actual = convertToType(result, Hotel.class);
         Assert.assertEquals(expected, actual);
     }
 
@@ -71,7 +71,7 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         Document result = client.getDocument(expected.key());
-        ModelWithPrimitiveCollections actual = result.as(ModelWithPrimitiveCollections.class);
+        ModelWithPrimitiveCollections actual = convertToType(result, ModelWithPrimitiveCollections.class);
         Assert.assertEquals(expected, actual);
     }
 
@@ -91,7 +91,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
         Document result = client.getDocument(indexedDoc.hotelId(), selectedFields, new RequestOptions());
-        Hotel actual = result.as(Hotel.class);
+        Hotel actual = convertToType(result, Hotel.class);
         Assert.assertEquals(expected, actual);
     }
 

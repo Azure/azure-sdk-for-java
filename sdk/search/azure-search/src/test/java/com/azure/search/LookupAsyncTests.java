@@ -36,7 +36,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(expected.hotelId());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, res.as(Hotel.class)))
+            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, Hotel.class)))
             .verifyComplete();
     }
 
@@ -50,7 +50,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(expected.hotelId());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, res.as(Hotel.class)))
+            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, Hotel.class)))
             .verifyComplete();
     }
 
@@ -64,7 +64,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(expected.hotelId());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, res.as(Hotel.class)))
+            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, Hotel.class)))
             .verifyComplete();
     }
 
@@ -78,7 +78,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(expected.key());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, res.as(ModelWithPrimitiveCollections.class)))
+            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, ModelWithPrimitiveCollections.class)))
             .verifyComplete();
     }
 
@@ -102,7 +102,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(indexedDoc.hotelId(), selectedFields, new RequestOptions());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, res.as(Hotel.class)))
+            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, Hotel.class)))
             .verifyComplete();
     }
 

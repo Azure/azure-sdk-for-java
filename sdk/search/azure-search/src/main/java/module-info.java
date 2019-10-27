@@ -13,9 +13,4 @@ module com.azure.search {
     exports com.azure.search;
     exports com.azure.search.common;
     exports com.azure.search.models;
-
-    exports com.azure.search.common.jsonwrapper;
-    exports com.azure.search.common.jsonwrapper.api;
-    exports com.azure.search.common.jsonwrapper.jacksonwrapper;
-    exports com.azure.search.common.jsonwrapper.spi;
 }

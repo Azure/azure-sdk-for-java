@@ -655,11 +655,6 @@
     </Or>
   </Match>
 
-  <!-- TODO: Package is moving to azure-core -->
-  <Match>
-    <Package name="~com\.azure\.search\.common\.jsonwrapper(.*)"/>
-  </Match>
-
   <!-- Initial implementation of JacksonDeserializer is using an inline class in registerCustomDeserializer-->
   <Match>
     <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>

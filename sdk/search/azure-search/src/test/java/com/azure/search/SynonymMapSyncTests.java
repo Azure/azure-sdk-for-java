@@ -7,6 +7,7 @@ import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 
+
 public class SynonymMapSyncTests extends SynonymMapTestBase {
     private SearchServiceClient client;
 

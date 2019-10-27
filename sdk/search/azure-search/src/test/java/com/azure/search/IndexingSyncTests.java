@@ -202,13 +202,13 @@ public class IndexingSyncTests extends IndexingTestBase {
             Assert.fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
         }
 
-        Hotel actualHotel1 = client.getDocument(hotel1.hotelId()).as(Hotel.class);
+        Hotel actualHotel1 = convertToType(client.getDocument(hotel1.hotelId()), Hotel.class);
         Assert.assertEquals(hotel1, actualHotel1);
 
-        Hotel actualHotel2 = client.getDocument(hotel2.hotelId()).as(Hotel.class);
+        Hotel actualHotel2 = convertToType(client.getDocument(hotel2.hotelId()), Hotel.class);
         Assert.assertEquals(hotel2, actualHotel2);
 
-        Hotel actualHotel3 = client.getDocument(hotel3.hotelId()).as(Hotel.class);
+        Hotel actualHotel3 = convertToType(client.getDocument(hotel3.hotelId()), Hotel.class);
         Assert.assertEquals(hotel3, actualHotel3);
     }
 
@@ -312,7 +312,7 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         for (Hotel expected : boundaryConditionDocs) {
             Document doc = client.getDocument(expected.hotelId());
-            Hotel actual = doc.as(Hotel.class);
+            Hotel actual = convertToType(doc, Hotel.class);
             Assert.assertEquals(expected, actual);
         }
 
@@ -379,11 +379,11 @@ public class IndexingSyncTests extends IndexingTestBase {
         client.uploadDocuments(books);
 
         Document actualBook1 = client.getDocument("1");
-        Assert.assertEquals(books.get(0).publishDate(), actualBook1.as(Book.class).publishDate());
+        Assert.assertEquals(books.get(0).publishDate(), convertToType(actualBook1, Book.class).publishDate());
 
         // Azure Search normalizes to UTC, so we compare instants
         Document actualBook2 = client.getDocument("2");
-        Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), actualBook2.as(Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC));
+        Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(actualBook2, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC));
     }
 
     @Override
@@ -492,10 +492,10 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<Hotel> updatedDocs = new ArrayList<>();
         updatedDocs.add(updatedDoc);
         client.mergeDocuments(updatedDocs);
-        Assert.assertEquals(expectedDoc, client.getDocument("1").as(Hotel.class));
+        Assert.assertEquals(expectedDoc, convertToType(client.getDocument("1"), Hotel.class));
 
         client.mergeDocuments(originalDocs);
-        Assert.assertEquals(originalDoc, client.getDocument("1").as(Hotel.class));
+        Assert.assertEquals(originalDoc, convertToType(client.getDocument("1"), Hotel.class));
     }
 
     @Override
@@ -628,14 +628,14 @@ public class IndexingSyncTests extends IndexingTestBase {
         waitForIndexing();
 
         Document result = client.getDocument("1");
-        LoudHotel actualDoc = result.as(LoudHotel.class);
+        LoudHotel actualDoc = convertToType(result, LoudHotel.class);
         Assert.assertEquals(expectedDoc, actualDoc);
 
         client.uploadDocuments(originalDocs);
         waitForIndexing();
 
         result = client.getDocument("1");
-        actualDoc = result.as(LoudHotel.class);
+        actualDoc = convertToType(result, LoudHotel.class);
         Assert.assertEquals(originalDoc, actualDoc);
     }
 

@@ -124,6 +124,12 @@ module com.azure.core {
         com.azure.storage.blob.cryptography,    // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;
+    exports com.azure.core.implementation.serializer.jsonwrapper to
+        com.azure.search;                       // FIXME this should not be a long-term solution
+    exports com.azure.core.implementation.serializer.jsonwrapper.api to
+        com.azure.search;                       // FIXME this should not be a long-term solution
+    exports com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper to
+        com.azure.search;                       // FIXME this should not be a long-term solution
 
     // service provider interfaces
     uses com.azure.core.util.tracing.Tracer;

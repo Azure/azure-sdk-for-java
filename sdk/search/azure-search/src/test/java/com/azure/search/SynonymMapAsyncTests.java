@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
 
+
 public class SynonymMapAsyncTests extends SynonymMapTestBase {
     private SearchServiceAsyncClient client;
 

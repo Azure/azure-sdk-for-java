@@ -8,14 +8,17 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.search.common.jsonwrapper.JsonWrapper;
-import com.azure.search.common.jsonwrapper.api.JsonApi;
-import com.azure.search.common.jsonwrapper.api.Type;
-import com.azure.search.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
+import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.test.environment.setup.SearchIndexService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +29,6 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
 
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    private JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
 
     protected <T> void uploadDocuments(SearchIndexClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc);
@@ -57,9 +59,9 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
     }
 
     protected List<Map<String, Object>> uploadDocumentsJson(
-        SearchIndexAsyncClient client, String dataJson) {
+        SearchIndexAsyncClient client, String dataJson) throws IOException {
         List<Map<String, Object>> documents =
-            jsonApi.readJsonFileToList(dataJson, new Type<List<Map<String, Object>>>() {
+            readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() {
             });
 
         uploadDocuments(client, documents);
@@ -67,14 +69,25 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
     }
 
     protected List<Map<String, Object>> uploadDocumentsJson(
-        SearchIndexClient client, String dataJson) {
+        SearchIndexClient client, String dataJson) throws IOException {
         List<Map<String, Object>> documents =
-            jsonApi.readJsonFileToList(dataJson, new Type<List<Map<String, Object>>>() {
+            readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() {
             });
 
         uploadDocuments(client, documents);
 
         return documents;
+    }
+
+    private List<Map<String, Object>> readJsonFileToList(String filename, TypeReference<List<Map<String, Object>>> listTypeReference) throws IOException {
+        Reader reader = new InputStreamReader(
+            getClass().getClassLoader().getResourceAsStream(filename));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        SerializationUtil.configureMapper(objectMapper);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper.readValue(reader, listTypeReference);
     }
 
     protected SearchIndexClientBuilder getClientBuilder(String indexName) {

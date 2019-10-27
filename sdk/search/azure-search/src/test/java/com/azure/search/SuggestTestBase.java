@@ -3,16 +3,17 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
+import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.common.SuggestPagedResponse;
-import com.azure.search.common.jsonwrapper.JsonWrapper;
-import com.azure.search.common.jsonwrapper.api.JsonApi;
-import com.azure.search.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Hotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -55,7 +56,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     protected void verifyDynamicDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
         Assert.assertEquals(2, suggestResultPagedResponse.getValue().size());
-        Hotel hotel = suggestResultPagedResponse.getValue().get(0).getDocument().as(Hotel.class);
+        Hotel hotel = convertToType(suggestResultPagedResponse.getValue().get(0).getDocument(), Hotel.class);
         Assert.assertEquals("10", hotel.hotelId());
     }
 
@@ -111,7 +112,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         List<String> resultIds = suggestResultPagedResponse
             .getValue()
             .stream()
-            .map(hotel -> hotel.getDocument().as(Hotel.class).hotelId())
+            .map(hotel -> convertToType(hotel.getDocument(), Hotel.class).hotelId())
             .collect(Collectors.toList());
 
         Assert.assertEquals(Arrays.asList("1", "10", "2"), resultIds);
@@ -141,13 +142,13 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     public abstract void canGetFuzzySuggestions() throws Exception;
 
     @Test
-    public abstract void canSuggestStaticallyTypedDocuments();
+    public abstract void canSuggestStaticallyTypedDocuments() throws IOException;
 
     @Test
     public abstract void canSuggestWithDateTimeInStaticModel() throws Exception;
 
     @Test
-    public abstract void fuzzyIsOffByDefault();
+    public abstract void fuzzyIsOffByDefault() throws IOException;
 
     @Test
     public abstract void suggestThrowsWhenGivenBadSuggesterName() throws Exception;
@@ -159,11 +160,11 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     public abstract void testCanSuggestWithMinimumCoverage() throws Exception;
 
     @Test
-    public abstract void testTopTrimsResults();
+    public abstract void testTopTrimsResults() throws IOException;
 
     @Test
-    public abstract void testCanFilter();
+    public abstract void testCanFilter() throws IOException;
 
     @Test
-    public abstract void testOrderByProgressivelyBreaksTies();
+    public abstract void testOrderByProgressivelyBreaksTies() throws IOException;
 }

@@ -11,6 +11,7 @@ import com.azure.search.test.environment.models.Book;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +26,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     private SearchIndexAsyncClient client;
 
     @Override
-    public void canSuggestDynamicDocuments() {
+    public void canSuggestDynamicDocuments() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -41,7 +42,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void searchFieldsExcludesFieldsFromSuggest() {
+    public void searchFieldsExcludesFieldsFromSuggest() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -58,7 +59,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canUseSuggestHitHighlighting() {
+    public void canUseSuggestHitHighlighting() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -78,7 +79,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canGetFuzzySuggestions() {
+    public void canGetFuzzySuggestions() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -95,7 +96,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canSuggestStaticallyTypedDocuments() {
+    public void canSuggestStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -142,7 +143,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void fuzzyIsOffByDefault() {
+    public void fuzzyIsOffByDefault() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -169,7 +170,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void suggestThrowsWhenRequestIsMalformed() {
+    public void suggestThrowsWhenRequestIsMalformed() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -185,7 +186,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void testCanSuggestWithMinimumCoverage() {
+    public void testCanSuggestWithMinimumCoverage() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -206,7 +207,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void testTopTrimsResults() {
+    public void testTopTrimsResults() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -227,7 +228,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void testCanFilter() {
+    public void testCanFilter() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
@@ -248,7 +249,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void testOrderByProgressivelyBreaksTies() {
+    public void testOrderByProgressivelyBreaksTies() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 

@@ -7,6 +7,9 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
+import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
+import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.search.test.environment.setup.AzureSearchResources;
@@ -34,6 +37,8 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     private static String testEnvironment;
     private static AzureSearchResources azureSearchResources;
+
+    private JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
 
     @Override
     public String getTestName() {
@@ -64,6 +69,8 @@ public abstract class SearchServiceTestBase extends TestBase {
             searchServiceName = azureSearchResources.getSearchServiceName();
             apiKeyCredentials = new ApiKeyCredentials(azureSearchResources.getSearchAdminKey());
         }
+
+        jsonApi.configureTimezone();
     }
 
     @Override
@@ -123,5 +130,15 @@ public abstract class SearchServiceTestBase extends TestBase {
         configuration.put("activeDirectoryGraphResourceId", "https://graph.ppe.windows.net/");
         configuration.put("activeDirectoryGraphApiVersion", "2013-04-05");
         return new AzureEnvironment(configuration);
+    }
+
+    /**
+     * If the document schema is known, user can convert the properties to a specific object type
+     * @param cls Class type of the document object to convert to
+     * @param <T> type
+     * @return an object of the request type
+     */
+    protected  <T> T convertToType(Object document, Class<T> cls) {
+        return jsonApi.convertObjectToType(document, cls);
     }
 }

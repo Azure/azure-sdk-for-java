@@ -11,6 +11,7 @@ import com.azure.search.models.AutocompleteOptions;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +24,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     private SearchIndexClient client;
 
     @Override
-    protected void initializeClient() {
+    protected void initializeClient() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
         uploadDocumentsJson(client, HOTELS_DATA_JSON);

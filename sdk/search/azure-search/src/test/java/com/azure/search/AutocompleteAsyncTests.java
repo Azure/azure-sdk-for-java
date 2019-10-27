@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     private SearchIndexAsyncClient client;
 
     @Override
-    protected void initializeClient() {
+    protected void initializeClient() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
         uploadDocumentsJson(client, HOTELS_DATA_JSON);

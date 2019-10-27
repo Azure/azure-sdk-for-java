@@ -144,21 +144,21 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(client.getDocument(hotel1.hotelId()))
             .assertNext(result -> {
-                Hotel actual = result.as(Hotel.class);
+                Hotel actual = convertToType(result, Hotel.class);
                 Assert.assertEquals(hotel1, actual);
             })
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel2.hotelId()))
             .assertNext(result -> {
-                Hotel actual = result.as(Hotel.class);
+                Hotel actual = convertToType(result, Hotel.class);
                 Assert.assertEquals(hotel2, actual);
             })
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel3.hotelId()))
             .assertNext(result -> {
-                Hotel actual = result.as(Hotel.class);
+                Hotel actual = convertToType(result, Hotel.class);
                 Assert.assertEquals(hotel3, actual);
             })
             .verifyComplete();
@@ -275,7 +275,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         for (Hotel expected : boundaryConditionDocs) {
             StepVerifier.create(client.getDocument(expected.hotelId()))
                 .assertNext(d -> {
-                    Hotel actual = d.as(Hotel.class);
+                    Hotel actual = convertToType(d, Hotel.class);
                     Assert.assertEquals(expected, actual);
                 })
                 .verifyComplete();
@@ -374,14 +374,14 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<Document> actualBook1 = client.getDocument("1");
         StepVerifier
             .create(actualBook1)
-            .assertNext(res -> Assert.assertEquals(books.get(0).publishDate(), res.as(Book.class).publishDate()))
+            .assertNext(res -> Assert.assertEquals(books.get(0).publishDate(), convertToType(res, Book.class).publishDate()))
             .verifyComplete();
 
         // Azure Search normalizes to UTC, so we compare instants
         Mono<Document> actualBook2 = client.getDocument("2");
         StepVerifier
             .create(actualBook2)
-            .assertNext(res -> Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), res.as(Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC)))
+            .assertNext(res -> Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(res, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC)))
             .verifyComplete();
     }
 
@@ -491,14 +491,14 @@ public class IndexingAsyncTests extends IndexingTestBase {
         client.mergeDocuments(updatedDocs).block();
 
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> Assert.assertEquals(expectedDoc, result.as(Hotel.class)))
+            .assertNext(result -> Assert.assertEquals(expectedDoc, convertToType(result, Hotel.class)))
             .verifyComplete();
 
         client.mergeDocuments(originalDocs).block();
 
         // Verify
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> Assert.assertEquals(originalDoc, result.as(Hotel.class)))
+            .assertNext(result -> Assert.assertEquals(originalDoc, convertToType(result, Hotel.class)))
             .verifyComplete();
     }
 
@@ -715,7 +715,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(mono)
             .expectNextMatches(result -> {
-                LoudHotel actual = result.as(LoudHotel.class);
+                LoudHotel actual = convertToType(result, LoudHotel.class);
                 return actual.equals(expectedDoc);
             })
             .verifyComplete();
@@ -726,7 +726,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         mono = client.getDocument("1");
         StepVerifier.create(mono)
             .expectNextMatches(result -> {
-                LoudHotel actual = result.as(LoudHotel.class);
+                LoudHotel actual = convertToType(result, LoudHotel.class);
                 return actual.equals(originalDoc);
             })
             .verifyComplete();

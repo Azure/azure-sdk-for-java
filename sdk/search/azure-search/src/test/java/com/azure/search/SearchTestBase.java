@@ -14,6 +14,7 @@ import com.azure.search.models.SynonymMap;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -231,7 +232,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     @Test
-    public abstract void canSearchDynamicDocuments();
+    public abstract void canSearchDynamicDocuments() throws IOException;
 
     @Test
     public abstract void canContinueSearch();
@@ -240,67 +241,67 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     public abstract void canContinueSearchWithTop();
 
     @Test
-    public abstract void canSearchWithSelectedFields();
+    public abstract void canSearchWithSelectedFields() throws IOException;
 
     @Test
-    public abstract void canUseTopAndSkipForClientSidePaging();
+    public abstract void canUseTopAndSkipForClientSidePaging() throws IOException;
 
     @Test
     public abstract void canFilterNonNullableType() throws Exception;
 
     @Test
-    public abstract void searchWithoutOrderBySortsByScore();
+    public abstract void searchWithoutOrderBySortsByScore() throws IOException;
 
     @Test
-    public abstract void orderByProgressivelyBreaksTies();
+    public abstract void orderByProgressivelyBreaksTies() throws IOException;
 
     @Test
-    public abstract void canFilter();
+    public abstract void canFilter() throws IOException;
 
     @Test
-    public abstract void canSearchWithRangeFacets();
+    public abstract void canSearchWithRangeFacets() throws IOException;
 
     @Test
-    public abstract void canSearchWithLuceneSyntax();
+    public abstract void canSearchWithLuceneSyntax() throws IOException;
 
     @Test
-    public abstract void canSearchWithValueFacets();
+    public abstract void canSearchWithValueFacets() throws IOException;
 
     @Test
-    public abstract void canSearchWithSearchModeAll();
+    public abstract void canSearchWithSearchModeAll() throws IOException;
 
     @Test
-    public abstract void defaultSearchModeIsAny();
+    public abstract void defaultSearchModeIsAny() throws IOException;
 
     @Test
-    public abstract void canGetResultCountInSearch();
+    public abstract void canGetResultCountInSearch() throws IOException;
 
     @Test
-    public abstract void canSearchWithRegex();
+    public abstract void canSearchWithRegex() throws IOException;
 
     @Test
-    public abstract void canSearchWithEscapedSpecialCharsInRegex();
+    public abstract void canSearchWithEscapedSpecialCharsInRegex() throws IOException;
 
     @Test
-    public abstract void canSearchWithMinimumCoverage();
+    public abstract void canSearchWithMinimumCoverage() throws IOException;
 
     @Test
-    public abstract void searchWithScoringProfileBoostsScore();
+    public abstract void searchWithScoringProfileBoostsScore() throws IOException;
 
     @Test
-    public abstract void canUseHitHighlighting();
+    public abstract void canUseHitHighlighting() throws IOException;
 
     @Test
-    public abstract void canSearchStaticallyTypedDocuments();
+    public abstract void canSearchStaticallyTypedDocuments() throws IOException;
 
     @Test
     public abstract void canRoundTripNonNullableValueTypes() throws Exception;
 
     @Test
-    public abstract void canSearchWithDateInStaticModel() throws ParseException;
+    public abstract void canSearchWithDateInStaticModel() throws ParseException, IOException;
 
     @Test
-    public abstract void canSearchWithSynonyms();
+    public abstract void canSearchWithSynonyms() throws IOException;
 
     abstract void search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions);
 }
