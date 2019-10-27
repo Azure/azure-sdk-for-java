@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +18,8 @@ import java.util.Objects;
  *  @see SecretClient
  *  @see SecretAsyncClient
  */
-public class Secret {
+@Fluent
+public class KeyVaultSecret {
 
     /**
      * The value of the secret.
@@ -33,7 +35,7 @@ public class Secret {
     /**
      * Creates an empty instance of the Secret.
      */
-    Secret() {
+    KeyVaultSecret() {
         properties = new SecretProperties();
     }
 
@@ -43,7 +45,7 @@ public class Secret {
      * @param name The name of the secret.
      * @param value the value of the secret.
      */
-    public Secret(String name, String value) {
+    public KeyVaultSecret(String name, String value) {
         properties = new SecretProperties(name);
         this.value = value;
     }
@@ -89,7 +91,7 @@ public class Secret {
      * @throws NullPointerException if {@code properties} is null.
      * @return the updated secret object
      */
-    public Secret setProperties(SecretProperties properties) {
+    public KeyVaultSecret setProperties(SecretProperties properties) {
         Objects.requireNonNull(properties);
         properties.name = this.properties.name;
         this.properties = properties;

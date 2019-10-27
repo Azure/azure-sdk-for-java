@@ -61,14 +61,25 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
+      - script: |
+          pip install markdown2
+        displayName: 'pip install markdown2'
+
       - template: ../steps/cache-maven-repository.yml
+
+      - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
+        parameters:
+          TargetFolder: $(Build.SourcesDirectory)
+          RootFolder: $(Build.SourcesDirectory)
+          BuildSHA: $(Build.SourceVersion)
+          RepoId: 'Azure/azure-sdk-for-java'      
 
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
