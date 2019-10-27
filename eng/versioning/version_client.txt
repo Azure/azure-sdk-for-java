@@ -3,12 +3,12 @@
 
 com.azure:azure-sdk-parent;1.5.0;1.5.0
 com.azure:azure-client-sdk-parent;1.6.0;1.6.0
-com.azure:azure-core;1.0.0-preview.7;1.0.0-preview.7
-com.azure:azure-core-amqp;1.0.0-preview.7;1.0.0-preview.7
-com.azure:azure-core-http-netty;1.0.0-preview.7;1.0.0-preview.7
-com.azure:azure-core-http-okhttp;1.0.0-preview.7;1.0.0-preview.7
-com.azure:azure-core-management;1.0.0-preview.7;1.0.0-preview.7
-com.azure:azure-core-test;1.0.0-preview.7;1.0.0-preview.7
+com.azure:azure-core;1.0.0;1.0.0
+com.azure:azure-core-amqp;1.0.0;1.0.0
+com.azure:azure-core-http-netty;1.0.0;1.0.0
+com.azure:azure-core-http-okhttp;1.0.0;1.0.0
+com.azure:azure-core-management;1.0.0-preview.5;1.0.0-preview.5
+com.azure:azure-core-test;1.0.0;1.0.0
 com.azure:azure-data-appconfiguration;1.0.0-preview.6;1.0.0-preview.6
 com.azure:azure-identity;1.0.0-preview.6;1.0.0-preview.6
 com.azure:azure-security-keyvault-certificates;4.0.0-preview.5;4.0.0-preview.5
