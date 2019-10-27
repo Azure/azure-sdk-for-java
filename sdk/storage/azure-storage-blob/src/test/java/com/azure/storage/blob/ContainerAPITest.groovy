@@ -1295,7 +1295,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         def bc = cc.getBlobClient("rootblob").getAppendBlobClient()
-        bc.create()
+        bc.create(true)
 
         then:
         bc.exists()

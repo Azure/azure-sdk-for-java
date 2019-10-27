@@ -4,6 +4,9 @@
 dist/
 .publish/
 
+#javadoc overview files generated from README.md
+readme_overview.html
+
 #External libs
 extlib/
 

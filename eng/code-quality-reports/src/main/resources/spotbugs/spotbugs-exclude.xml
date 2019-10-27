@@ -474,14 +474,14 @@
   <Match>
     <Or>
       <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.Secret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.SecretBase"/>
+      <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
+      <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.models.Key"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyBase"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateBase"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.IssuerBase"/>
       <Class name="com.azure.security.keyvault.certificates.models.Issuer"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
@@ -509,11 +509,11 @@
   <Match>
     <Or>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
+        <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
         <Method name="deserialize"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.ByteExtensions"/>
+        <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
         <Method name="clone"/>
       </And>
     </Or>

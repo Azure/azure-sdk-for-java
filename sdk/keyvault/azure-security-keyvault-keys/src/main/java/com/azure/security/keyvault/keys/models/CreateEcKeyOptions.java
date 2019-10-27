@@ -3,31 +3,30 @@
 
 package com.azure.security.keyvault.keys.models;
 
-import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Map;
 
-public class EcKeyCreateOptions extends KeyCreateOptions {
+@Fluent
+public class CreateEcKeyOptions extends CreateKeyOptions {
 
     /**
      * The Ec key curve.
      */
-    private KeyCurveName curve;
+    private KeyCurveName curveName;
 
     /**
-     * The hsm indicator for the key.
+     * The hardware protected indicator for the key.
      */
-    private boolean hsm;
+    private boolean hardwareProtected;
 
     /**
      * Creates a EcKeyCreateOptions with {@code name} as name of the Ec key.
      * @param name The name of the Ec key.
      */
-    public EcKeyCreateOptions(String name) {
+    public CreateEcKeyOptions(String name) {
         super.name = name;
         this.keyType = KeyType.EC;
     }
@@ -37,18 +36,18 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      *
      * @return the curve.
      */
-    public KeyCurveName getCurve() {
-        return this.curve;
+    public KeyCurveName getCurveName() {
+        return this.curveName;
     }
 
     /**
      * Set the curve.
      *
-     * @param curve The curve to set
+     * @param curveName The curve to set
      * @return the EcKeyCreateOptions object itself.
      */
-    public EcKeyCreateOptions setCurve(KeyCurveName curve) {
-        this.curve = curve;
+    public CreateEcKeyOptions setCurveName(KeyCurveName curveName) {
+        this.curveName = curveName;
         return this;
     }
 
@@ -59,7 +58,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions setKeyOperations(KeyOperation... keyOperations) {
+    public CreateEcKeyOptions setKeyOperations(KeyOperation... keyOperations) {
         this.keyOperations = Arrays.asList(keyOperations);
         return this;
     }
@@ -71,7 +70,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions setNotBefore(OffsetDateTime notBefore) {
+    public CreateEcKeyOptions setNotBefore(OffsetDateTime notBefore) {
         super.setNotBefore(notBefore);
         return this;
     }
@@ -79,12 +78,12 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     /**
      * Set the {@link OffsetDateTime expires} UTC time.
      *
-     * @param expires The expiry time to set for the key.
+     * @param expiresOn The expiry time to set for the key.
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions setExpires(OffsetDateTime expires) {
-        super.setExpires(expires);
+    public CreateEcKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
+        super.setExpiresOn(expiresOn);
         return this;
     }
 
@@ -95,7 +94,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions setTags(Map<String, String> tags) {
+    public CreateEcKeyOptions setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
@@ -106,19 +105,20 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @param enabled The enabled value to set
      * @return the EcKeyCreateOptions object itself.
      */
-    public KeyCreateOptions setEnabled(Boolean enabled) {
+    @Override
+    public CreateEcKeyOptions setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
         return this;
     }
 
     /**
      * Set whether the key being created is of hsm type or not.
-     * @param hsm The hsm value to set.
+     * @param hardwareProtected The hsm value to set.
      * @return the EcKeyCreateOptions object itself.
      */
-    public EcKeyCreateOptions setHsm(Boolean hsm) {
-        this.hsm = hsm;
-        this.keyType = hsm ? KeyType.EC_HSM : KeyType.EC;
+    public CreateEcKeyOptions setHardwareProtected(Boolean hardwareProtected) {
+        this.hardwareProtected = hardwareProtected;
+        this.keyType = hardwareProtected ? KeyType.EC_HSM : KeyType.EC;
         return this;
     }
 
@@ -126,7 +126,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * Get the hsm value of the key being created.
      * @return the hsm value.
      */
-    public Boolean isHsm() {
-        return this.hsm;
+    public Boolean isHardwareProtected() {
+        return this.hardwareProtected;
     }
 }

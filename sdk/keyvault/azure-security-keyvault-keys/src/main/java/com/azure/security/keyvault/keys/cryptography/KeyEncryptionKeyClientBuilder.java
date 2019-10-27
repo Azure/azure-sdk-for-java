@@ -45,18 +45,31 @@ import reactor.core.publisher.Mono;
  * @see KeyEncryptionKeyClient
  */
 @ServiceClientBuilder(serviceClients = {KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class})
-public final class KeyEncryptionKeyClientBuilder extends CryptographyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver {
+public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver {
     private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
+    private final CryptographyClientBuilder builder;
 
     /**
      * The constructor with defaults.
      */
     public KeyEncryptionKeyClientBuilder() {
-        super();
+        builder = new CryptographyClientBuilder();
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a {@link KeyEncryptionKey} based on options set in the builder.
+     * Every time {@code buildKeyEncryptionKey(String)} is called, a new instance of {@link KeyEncryptionKey}
+     * is created.
+     *
+     * <p>If {@link KeyEncryptionKeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline}
+     * and {@code keyId} are used to create the {@link KeyEncryptionKeyClient client}.
+     *  All other builder settings are ignored. If {@code pipeline} is not set, then
+     * {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential) vault credential} and {@code keyId}
+     * are required to build the {@link KeyEncryptionKeyClient client}.</p>
+     *
+     * @return A {@link KeyEncryptionKeyClient} with the options set from the builder.
+     * @throws IllegalStateException If {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential)} or
+     * {@code keyId} have not been set.
      */
     @Override
     public KeyEncryptionKey buildKeyEncryptionKey(String keyId) {
@@ -64,89 +77,133 @@ public final class KeyEncryptionKeyClientBuilder extends CryptographyClientBuild
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a {@link KeyEncryptionKeyAsyncClient} based on options set in the builder.
+     * Every time {@code buildAsyncKeyEncryptionKey(String)} is called, a new instance of
+     * {@link KeyEncryptionKeyAsyncClient} is created.
+     *
+     * <p>If {@link KeyEncryptionKeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline}
+     * and {@code keyId} are used to create the {@link KeyEncryptionKeyAsyncClient async client}.
+     * All other builder settings are ignored. If {@code pipeline} is not set, then
+     * ({@link KeyEncryptionKeyClientBuilder#credential(TokenCredential) jsonWebKey vault credential} and
+     * {@code keyId} are required to build the {@link KeyEncryptionKeyAsyncClient async client}.</p>
+     *
+     * @return A {@link KeyEncryptionKeyAsyncClient} with the options set from the builder.
+     * @throws IllegalStateException If {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential)} or
+     * {@code keyId} have not been set.
      */
     @Override
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
-        this.keyIdentifier(keyId);
+        builder.keyIdentifier(keyId);
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create key encryption key async client"));
         }
-        CryptographyServiceVersion serviceVersion = this.getServiceVersion() != null ? this.getServiceVersion() : CryptographyServiceVersion.getLatest();
+        CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
 
-        if (this.getPipeline() != null) {
-            return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, this.getPipeline(), serviceVersion)));
+        if (builder.getPipeline() != null) {
+            return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, builder.getPipeline(), serviceVersion)));
         }
 
-        if (this.getCredential() == null) {
+        if (builder.getCredential() == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Key Vault credentials are required to build the key encryption key async client"));
         }
 
-        HttpPipeline pipeline = setupPipeline(serviceVersion);
+        HttpPipeline pipeline = builder.setupPipeline(serviceVersion);
 
         return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion)));
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the credential to use when authenticating HTTP requests.
+     *
+     * @param credential The credential to use for authenticating HTTP requests.
+     * @return the updated builder object.
+     * @throws NullPointerException if {@code credential} is {@code null}.
      */
-    @Override
     public KeyEncryptionKeyClientBuilder credential(TokenCredential credential) {
-        super.credential(credential);
+        builder.credential(credential);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the logging configuration for HTTP requests and responses.
+     *
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @return the updated builder object.
      */
-    @Override
     public KeyEncryptionKeyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        super.httpLogOptions(logOptions);
+        builder.httpLogOptions(logOptions);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Adds a policy to the set of existing policies that are executed after the client required policies.
+     *
+     * @param policy The {@link HttpPipelinePolicy policy} to be added.
+     * @return the updated builder object.
+     * @throws NullPointerException if {@code policy} is {@code null}.
      */
-    @Override
     public KeyEncryptionKeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        super.addPolicy(policy);
+        builder.addPolicy(policy);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     *
+     * @param client The HTTP client to use for requests.
+     * @return the updated builder object.
+     * @throws NullPointerException If {@code client} is {@code null}.
      */
     public KeyEncryptionKeyClientBuilder httpClient(HttpClient client) {
-        super.httpClient(client);
+        builder.httpClient(client);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the HTTP pipeline to use for the service client.
+     *
+     * If {@code pipeline} is set, all other settings are ignored, aside from jsonWebKey identifier
+     * or jsonWebKey to build the clients.
+     *
+     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @return the updated builder object.
      */
     public KeyEncryptionKeyClientBuilder pipeline(HttpPipeline pipeline) {
-        super.pipeline(pipeline);
+        builder.pipeline(pipeline);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return the updated builder object.
      */
-    @Override
     public KeyEncryptionKeyClientBuilder configuration(Configuration configuration) {
-        super.configuration(configuration);
+        builder.configuration(configuration);
         return this;
     }
 
+
     /**
-     * {@inheritDoc}
+     * Sets the {@link CryptographyServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
+     * @return The updated builder object.
      */
-    @Override
     public KeyEncryptionKeyClientBuilder serviceVersion(CryptographyServiceVersion version) {
-        super.serviceVersion(version);
+        builder.serviceVersion(version);
         return this;
     }
 }

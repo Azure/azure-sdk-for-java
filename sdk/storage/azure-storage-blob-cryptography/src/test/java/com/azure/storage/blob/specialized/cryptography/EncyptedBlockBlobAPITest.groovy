@@ -184,7 +184,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Encryption"() {
         when:
-        def byteBufferList = [];
+        def byteBufferList = []
 
         /*
         Sending a sequence of buffers allows us to test encryption behavior in different cases when the buffers do
@@ -197,8 +197,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
 
         // Test buffered upload.
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(size).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(size, 2, null)
         beac.upload(flux, parallelTransferOptions).block()
         ByteBuffer outputByteBuffer = collectBytesInBuffer(beac.download()).block()
 
@@ -234,8 +233,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Buffered upload
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-        .setBlockSize(defaultDataSize).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(defaultDataSize, 2, null)
         beac.uploadWithResponse(defaultFlux, parallelTransferOptions, headers, null, null, null).block()
         def response = beac.getPropertiesWithResponse(null).block()
 
@@ -273,8 +271,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Buffered upload
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(defaultDataSize as int).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(defaultDataSize as int, 2, null)
         beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, metadata, null, null).block()
         properties = beac.getProperties().block()
 
@@ -310,8 +307,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         bac.setIfMatch(etag)
 
         then:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-        .setBlockSize(defaultDataSize as int).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(defaultDataSize as int, 2, null)
         beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, null, null, bac)
             .block().getStatusCode() == 201
 
@@ -341,8 +337,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .setLeaseId(leaseID)
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-        .setNumBuffers(2).setBlockSize(defaultDataSize)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(defaultDataSize, 2, null)
         beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, null, null, bac).block()
 
         then:
@@ -455,8 +450,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         Flux<ByteBuffer> flux = Flux.fromIterable(byteBufferList)
 
         // Test buffered upload.
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(size).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(size, 2, null)
         encryptClient.upload(flux, parallelTransferOptions).block()
         ByteBuffer outputByteBuffer = collectBytesInBuffer(decryptResolverClient.download()).block()
 
