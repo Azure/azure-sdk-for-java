@@ -457,7 +457,7 @@ public final class KeyClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
-        return client.beginDeleteKey(name).getBlockingPoller();
+        return client.beginDeleteKey(name).getSyncPoller();
     }
 
     /**
@@ -553,7 +553,7 @@ public final class KeyClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return client.beginRecoverDeletedKey(name).getBlockingPoller();
+        return client.beginRecoverDeletedKey(name).getSyncPoller();
     }
 
     /**

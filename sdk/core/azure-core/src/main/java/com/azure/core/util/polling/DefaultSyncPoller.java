@@ -232,7 +232,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             // Create a Polling Context per subscription
             () -> pollingContext,
             // Do polling
-            // set|read in state as needed, reactor guarantee thread-safety of state object.
+            // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))
                     .delaySubscription(getDelay(cxt.getLatestResponse()))
                     .switchIfEmpty(Mono.error(new IllegalStateException("PollOperation returned Mono.empty().")))

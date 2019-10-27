@@ -268,7 +268,7 @@ public class BlobClientBase {
             BlobRequestConditions destAccessConditions, Duration pollInterval) {
 
         return client.beginCopy(sourceUrl, metadata, tier, priority, sourceModifiedAccessConditions,
-                destAccessConditions, pollInterval).getBlockingPoller();
+                destAccessConditions, pollInterval).getSyncPoller();
     }
 
     /**

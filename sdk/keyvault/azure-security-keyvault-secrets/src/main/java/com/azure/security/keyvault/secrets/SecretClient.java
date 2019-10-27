@@ -239,7 +239,7 @@ public final class SecretClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
     public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return client.beginDeleteSecret(name).getBlockingPoller();
+        return client.beginDeleteSecret(name).getSyncPoller();
     }
 
     /**
@@ -332,7 +332,7 @@ public final class SecretClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
     public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return client.beginRecoverDeletedSecret(name).getBlockingPoller();
+        return client.beginRecoverDeletedSecret(name).getSyncPoller();
     }
 
     /**

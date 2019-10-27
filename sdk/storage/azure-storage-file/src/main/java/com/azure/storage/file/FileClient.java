@@ -208,7 +208,7 @@ public class FileClient {
                                                     Map<String, String> metadata,
                                                     Duration pollInterval) {
         return fileAsyncClient.beginCopy(sourceUrl, metadata, pollInterval)
-                .getBlockingPoller();
+                .getSyncPoller();
     }
 
     /**

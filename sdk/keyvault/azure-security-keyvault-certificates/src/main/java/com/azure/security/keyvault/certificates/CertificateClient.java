@@ -80,7 +80,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, Map<String, String> tags) {
-        return  client.beginCreateCertificate(name, policy, true, tags).getBlockingPoller();
+        return  client.beginCreateCertificate(name, policy, true, tags).getSyncPoller();
     }
 
     /**
@@ -100,7 +100,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy) {
-        return client.beginCreateCertificate(name, policy).getBlockingPoller();
+        return client.beginCreateCertificate(name, policy).getSyncPoller();
     }
 
     /**
@@ -119,7 +119,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<CertificateOperation, Certificate> beginCreateCertificate(String name) {
-        return client.beginCreateCertificate(name).getBlockingPoller();
+        return client.beginCreateCertificate(name).getSyncPoller();
     }
 
     /**
