@@ -856,7 +856,7 @@ class BlobAPITest extends APISpec {
     def "Copy dest AC"() {
         setup:
         def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
-        bu2.upload(defaultFlux, defaultDataSize)
+        bu2.upload(defaultFlux, defaultDataSize).block()
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
         def bac = new BlobRequestConditions()
