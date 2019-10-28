@@ -288,8 +288,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         AccessTier tier, BlobRequestConditions accessConditions) {
         return determineUploadFullOrChunked(data, (stream) ->
                 uploadInChunks(stream, parallelTransferOptions, headers, metadata, tier, accessConditions),
-            (stream, length) ->
-                getBlockBlobAsyncClient().uploadWithResponse(stream, length, headers, metadata, tier,accessConditions));
+            (stream, length) -> getBlockBlobAsyncClient()
+                .uploadWithResponse(stream, length, headers, metadata, tier, accessConditions));
     }
 
     private Mono<Response<BlockBlobItem>> uploadInChunks(Flux<ByteBuffer> data,
@@ -369,24 +369,25 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     private Mono<Response<BlockBlobItem>> determineUploadFullOrChunked(final Flux<ByteBuffer> data,
-        final Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> path1,
-        final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> path2) {
-        final int[] predicateCount = { 4 * Constants.MB };
-        final boolean[] usePath1 = { true };
+        final Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunks,
+        final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlob) {
+        final long chunkedUploadRequirement = 4 * Constants.MB;
+        final long[] bufferedDataSize = new long[1];
+        final boolean[] useChunkedUpload = { true };
 
-        return data
+        Flux<ByteBuffer> cachedData = data.cache();
+
+        return cachedData
             .filter(ByteBuffer::hasRemaining)
-            .doOnEach(signal -> usePath1[0] = !signal.isOnComplete())
+            .doOnEach(signal -> useChunkedUpload[0] = !signal.isOnComplete())
             .bufferUntil(buffer -> {
-                predicateCount[0] -= buffer.remaining();
-                return predicateCount[0] < 0;
-            }, true)
+                bufferedDataSize[0] += buffer.remaining();
+                return bufferedDataSize[0] > chunkedUploadRequirement;
+            })
             .next()
-            .flatMap(bufferedData -> usePath1[0]
-                ? path1.apply(data)
-                : path2.apply(Flux.fromIterable(bufferedData), bufferedData.stream()
-                .map(buffer -> (long) buffer.remaining())
-                .reduce(0L, Long::sum)));
+            .flatMap(bufferedData -> useChunkedUpload[0]
+                ? uploadInChunks.apply(cachedData)
+                : uploadFullBlob.apply(Flux.fromIterable(bufferedData), bufferedDataSize[0]));
     }
 
     /**

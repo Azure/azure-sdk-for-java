@@ -622,12 +622,12 @@ class BlockBlobAPITest extends APISpec {
 
         where:
         fileSize                                       | blockSize       || commitedBlockCount
-        0                                              | null            || 0  // Size it too small to trigger stage block uploading
-        10                                             | null            || 0  // Size it too small to trigger stage block uploading
-        10 * 1024                                      | null            || 0  // Size it too small to trigger stage block uploading
-        50 * 1024 * 1024                               | null            || 0  // Size it too small to trigger stage block uploading
+        0                                              | null            || 0  // Size is too small to trigger stage block uploading
+        10                                             | null            || 0  // Size is too small to trigger stage block uploading
+        10 * 1024                                      | null            || 0  // Size is too small to trigger stage block uploading
+        50 * 1024 * 1024                               | null            || 0  // Size is too small to trigger stage block uploading
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null            || Math.ceil((BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1) / BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // HTBB optimizations should trigger when file size is >100MB and defaults are used.
-        101 * 1024 * 1024                              | 4 * 1024 * 1024 || 0 // Size it too small to trigger stage block uploading
+        101 * 1024 * 1024                              | 4 * 1024 * 1024 || 0  // Size is too small to trigger stage block uploading
     }
 
     def compareFiles(File file1, File file2) {
@@ -888,15 +888,15 @@ class BlockBlobAPITest extends APISpec {
         bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
 
         where:
-        dataSize          | bufferSize        | numBuffs || blockCount
-        350               | 50                | 2        || 7 // Requires cycling through the same buffers multiple times.
-        350               | 50                | 5        || 7 // Most buffers may only be used once.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 2        || 10 // Larger data set.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10 // Larger number of Buffs.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10 // Exactly enough buffer space to hold all the data.
-        500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5 // Larger data.
-        100 * 1024 * 1024 | 20 * 1024 * 1024  | 4        || 5
-        10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7 // Data does not squarely fit in buffers.
+        dataSize           | bufferSize         | numBuffs || blockCount
+        35 * Constants.MB  | 5 * Constants.MB   | 2        || 7 // Requires cycling through the same buffers multiple times.
+        35 * Constants.MB  | 5 * Constants.MB   | 5        || 7 // Most buffers may only be used once.
+        100 * Constants.MB | 10 * Constants.MB  | 2        || 10 // Larger data set.
+        100 * Constants.MB | 10 * Constants.MB  | 5        || 10 // Larger number of Buffs.
+        10 * Constants.MB  | 1 * Constants.MB   | 10       || 10 // Exactly enough buffer space to hold all the data.
+        50 * Constants.MB  | 10 * Constants.MB  | 2        || 5 // Larger data.
+        10 * Constants.MB  | 2 * Constants.MB   | 4        || 5
+        10 * Constants.MB  | 1.5 * Constants.MB | 3        || 7 // Data does not squarely fit in buffers.
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -952,11 +952,11 @@ class BlockBlobAPITest extends APISpec {
         uploadReporter.getReportingCount() == (long) (size / blockSize)
 
         where:
-        size        | blockSize | bufferCount
-        10          | 10        | 8
-        20          | 1         | 5
-        100         | 50        | 2
-        1024 * 1024 | 1024      | 100
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -968,9 +968,9 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffers, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize * Constants.MB, numBuffers, null)
         def dataList = [] as List
-        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
         blobac.upload(Flux.fromIterable(dataList), parallelTransferOptions, true).block()
 
         expect:
@@ -990,9 +990,29 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload handle pathing"() {
         setup:
-        def dataList = [] as List
+        def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
         blobac.upload(Flux.fromIterable(dataList), null, true).block()
+
+        expect:
+        compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
+        bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSizeList                         | blockCount
+        [4 * Constants.MB + 1, 10]           | 2
+        [4 * Constants.MB]                   | 0
+        [10, 100, 1000, 10000]               | 0
+        [4 * Constants.MB, 4 * Constants.MB] | 2
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload handle pathing hot flux"() {
+        setup:
+        def dataList = [] as List<ByteBuffer>
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        blobac.upload(Flux.fromIterable(dataList).publish().autoConnect(), null, true).block()
 
         expect:
         compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
