@@ -371,9 +371,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateIndex(index))
-            .assertNext(res -> {
-                assertIndexesEqual(fullFeaturedIndex, res);
-            })
+            .assertNext(res -> assertIndexesEqual(fullFeaturedIndex, res))
             .verifyComplete();
 
         // Modify the fields on an existing index
@@ -389,13 +387,20 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .setSearchAnalyzer(AnalyzerName.WHITESPACE)
             .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
 
+        Field hotelWebSiteField = new Field()
+            .setName("HotelWebsite")
+            .setType(DataType.EDM_STRING)
+            .setSearchable(Boolean.TRUE)
+            .setFilterable(Boolean.TRUE);
+        addFieldToIndex(existingIndex, hotelWebSiteField);
+
+        Field hotelNameField = getFieldByName(existingIndex, "HotelName");
+        hotelNameField.setRetrievable(false);
+
         StepVerifier
             .create(client.createOrUpdateIndex(existingIndex, true))
-            .assertNext(res -> {
-                assertIndexesEqual(existingIndex, res);
-            })
+            .assertNext(res -> assertIndexesEqual(existingIndex, res))
             .verifyComplete();
-
     }
 
     @Override

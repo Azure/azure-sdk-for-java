@@ -291,7 +291,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     public void canUpdateIndexDefinition() {
         Index fullFeaturedIndex = createTestIndex();
 
-// Start out with no scoring profiles and different CORS options.
+        // Start out with no scoring profiles and different CORS options.
         Index initialIndex = createTestIndex();
         initialIndex.setName(fullFeaturedIndex.getName())
             .setScoringProfiles(new ArrayList<>())
@@ -324,6 +324,16 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         tagsField.setRetrievable(false)
             .setSearchAnalyzer(AnalyzerName.WHITESPACE)
             .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
+
+        Field hotelWebSiteField = new Field()
+            .setName("HotelWebsite")
+            .setType(DataType.EDM_STRING)
+            .setSearchable(Boolean.TRUE)
+            .setFilterable(Boolean.TRUE);
+        addFieldToIndex(existingIndex, hotelWebSiteField);
+
+        Field hotelNameField = getFieldByName(existingIndex, "HotelName");
+        hotelNameField.setRetrievable(false);
 
         updatedIndex = client.createOrUpdateIndex(existingIndex, true);
         assertIndexesEqual(existingIndex, updatedIndex);

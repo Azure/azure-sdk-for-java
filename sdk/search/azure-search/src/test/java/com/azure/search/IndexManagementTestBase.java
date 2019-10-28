@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -583,5 +584,13 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
             .stream()
             .filter(f -> f.getName().equals(name))
             .findFirst().get();
+    }
+
+    protected void addFieldToIndex(Index index, Field field) {
+        List<Field> fields = new ArrayList<>();
+        fields.addAll(index.getFields());
+        fields.add(field);
+
+        index.setFields(fields);
     }
 }
