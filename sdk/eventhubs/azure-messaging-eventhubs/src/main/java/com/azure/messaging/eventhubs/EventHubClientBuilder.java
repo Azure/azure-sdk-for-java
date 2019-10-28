@@ -357,8 +357,10 @@ public class EventHubClientBuilder {
             return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
                 tokenManagerProvider, messageSerializer);
         });
+        final EventHubLinkProvider linkProvider = new EventHubLinkProvider(connectionMono,
+            connectionOptions.getHostname(), connectionOptions.getRetry());
 
-        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, connectionMono);
+        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, linkProvider);
     }
 
     private ConnectionOptions getConnectionOptions() {
