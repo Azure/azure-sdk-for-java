@@ -375,10 +375,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final long[] bufferedDataSize = new long[1];
         final boolean[] useChunkedUpload = { true };
 
+        // Cache the flux in case it is a hot publisher, we need to be able to replay what has been emitted.
         Flux<ByteBuffer> cachedData = data.cache();
 
+        /*
+         * Buffer until the reactive stream either ends or the emitted buffers contained in it are greater than the
+         * cutoff for running Put Blob. Once buffering has completed, based on the outcomes of the buffering, trigger
+         * either Put Blob or Stage Block and Put Block List as the mechanism to upload the data.
+         */
         return cachedData
-            .filter(ByteBuffer::hasRemaining)
             .doOnEach(signal -> useChunkedUpload[0] = !signal.isOnComplete())
             .bufferUntil(buffer -> {
                 bufferedDataSize[0] += buffer.remaining();
