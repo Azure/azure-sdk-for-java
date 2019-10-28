@@ -23,6 +23,7 @@ public class IndexBatchException extends AzureException {
 
     /**
      * Constructs an {@code IndexBatchException} from the given {@link DocumentIndexResult}.
+     *
      * @param result The DocumentIndexResult returned from the service.
      */
     IndexBatchException(DocumentIndexResult result) {

@@ -38,6 +38,7 @@ public class SearchServiceClient {
 
     /**
      * Gets the {@link HttpPipeline} powering this client.
+     *
      * @return the pipeline.
      */
     HttpPipeline getHttpPipeline() {
@@ -47,6 +48,7 @@ public class SearchServiceClient {
     /**
      * Initializes a new {@link SearchIndexClient} using the given Index name and the
      * same configuration as the SearchServiceClient.
+     *
      * @param indexName the name of the Index for the client
      * @return a {@link SearchIndexClient} created from the service client configuration
      */
@@ -82,64 +84,64 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the created DataSource.
+     * @throws NotImplementedException not implemented
      */
     public DataSource createDataSource() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the created DataSource.
+     * @throws NotImplementedException not implemented
      */
     public Response<DataSource> createDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the DataSource.
+     * @throws NotImplementedException not implemented
      */
     public DataSource getDataSource() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the DataSource.
+     * @throws NotImplementedException not implemented
      */
     public Response<DataSource> getDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return all DataSources from the Search service.
+     * @throws NotImplementedException not implemented
      */
     public DataSourceListResult listDataSources() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing all DataSources from the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Response<DataSourceListResult> listDataSourcesWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the updated DataSource.
+     * @throws NotImplementedException not implemented
      */
     public DataSource createOrUpdateDataSource() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the updated DataSource.
+     * @throws NotImplementedException not implemented
      */
     public Response<DataSource> createOrUpdateDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -153,72 +155,72 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response signalling completion
+     * @throws NotImplementedException not implemented
      */
     public Response<Response<Void>> deleteDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the created Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Indexer createIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the created Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Response<Indexer> createIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Indexer getIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Response<Indexer> getIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return all Indexers from the Search service.
+     * @throws NotImplementedException not implemented
      */
     public IndexerListResult listIndexers() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing all Indexers from the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Response<IndexerListResult> listIndexersWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the updated Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Indexer createOrUpdateIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the updated Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Response<Indexer> createOrUpdateIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -232,8 +234,8 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response signalling completion
+     * @throws NotImplementedException not implemented
      */
     public Response<Response<Void>> deleteIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -247,8 +249,8 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response signalling completion
+     * @throws NotImplementedException not implemented
      */
     public Response<Response<Void>> resetIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -262,24 +264,24 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response signalling completion
+     * @throws NotImplementedException not implemented
      */
     public Response<Response<Void>> runIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Indexer execution information.
+     * @throws NotImplementedException not implemented
      */
     public IndexerExecutionInfo deleteIndexerStatus() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Indexer execution information.
+     * @throws NotImplementedException not implemented
      */
     public Response<IndexerExecutionInfo> deleteIndexerStatusWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -287,6 +289,7 @@ public class SearchServiceClient {
 
     /**
      * Creates a new Azure Cognitive Search index
+     *
      * @param index definition of the index to create
      * @return the created Index.
      */
@@ -296,9 +299,10 @@ public class SearchServiceClient {
 
     /**
      * Creates a new Azure Cognitive Search index
+     *
      * @param index definition of the index to create
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the created Index.
      */
     public Index createIndex(Index index, RequestOptions requestOptions) {
@@ -307,9 +311,10 @@ public class SearchServiceClient {
 
     /**
      * Creates a new Azure Cognitive Search index
+     *
      * @param index definition of the index to create
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the created Index.
      */
@@ -321,6 +326,7 @@ public class SearchServiceClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
+     *
      * @param indexName the name of the index to retrieve
      * @return the Index.
      */
@@ -330,9 +336,10 @@ public class SearchServiceClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
+     *
      * @param indexName the name of the index to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the Index.
      */
     public Index getIndex(String indexName,
@@ -342,9 +349,10 @@ public class SearchServiceClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
+     *
      * @param indexName the name of the index to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the Index.
      */
@@ -356,6 +364,7 @@ public class SearchServiceClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
+     *
      * @param indexName the name of the index
      * @return true if the index exists; false otherwise.
      */
@@ -365,9 +374,10 @@ public class SearchServiceClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
+     *
      * @param indexName the name of the index
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
     public Boolean indexExists(String indexName,
@@ -377,9 +387,10 @@ public class SearchServiceClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
+     *
      * @param indexName the name of the index
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return true if the index exists; false otherwise.
      */
@@ -390,16 +401,16 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Index statistics.
+     * @throws NotImplementedException not implemented
      */
     public IndexGetStatisticsResult getIndexStatistics() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Index statistics.
+     * @throws NotImplementedException not implemented
      */
     public Response<IndexGetStatisticsResult> getIndexStatisticsWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -418,8 +429,8 @@ public class SearchServiceClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-                     Specified as a comma-separated list of JSON property names, or '*' for all properties.
-                     The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @return the list of indexes.
      */
     public PagedIterable<Index> listIndexes(String select) {
@@ -430,10 +441,10 @@ public class SearchServiceClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-                     Specified as a comma-separated list of JSON property names, or '*' for all properties.
-                     The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the list of indexes.
      */
     public PagedIterable<Index> listIndexes(String select, RequestOptions requestOptions) {
@@ -444,10 +455,10 @@ public class SearchServiceClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-                     Specified as a comma-separated list of JSON property names, or '*' for all properties.
-                     The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
      */
@@ -457,6 +468,7 @@ public class SearchServiceClient {
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
      * @param index the definition of the index to create or update
      * @return the index that was created or updated
      */
@@ -466,11 +478,12 @@ public class SearchServiceClient {
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
      * @param index the definition of the index to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
     public Index createOrUpdateIndex(Index index,
@@ -481,12 +494,13 @@ public class SearchServiceClient {
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
      * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     *                           index by taking the index offline for at least a few seconds. This temporarily causes
-     *                           indexing and query requests to fail. Performance and write availability of the index
-     *                           can be impaired for several minutes after the index is updated, or longer for very
-     *                           large indexes.
+     * index by taking the index offline for at least a few seconds. This temporarily causes
+     * indexing and query requests to fail. Performance and write availability of the index
+     * can be impaired for several minutes after the index is updated, or longer for very
+     * large indexes.
      * @return the index that was created or updated
      */
     public Index createOrUpdateIndex(Index index, Boolean allowIndexDowntime) {
@@ -495,16 +509,17 @@ public class SearchServiceClient {
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
      * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     *                           index by taking the index offline for at least a few seconds. This temporarily causes
-     *                           indexing and query requests to fail. Performance and write availability of the index
-     *                           can be impaired for several minutes after the index is updated, or longer for very
-     *                           large indexes.
+     * index by taking the index offline for at least a few seconds. This temporarily causes
+     * indexing and query requests to fail. Performance and write availability of the index
+     * can be impaired for several minutes after the index is updated, or longer for very
+     * large indexes.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
     public Index createOrUpdateIndex(Index index,
@@ -519,6 +534,7 @@ public class SearchServiceClient {
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
      * @param index the definition of the index to create or update
      * @return a response containing the Index that was created or updated.
      */
@@ -528,16 +544,17 @@ public class SearchServiceClient {
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
      * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     *                           index by taking the index offline for at least a few seconds. This temporarily causes
-     *                           indexing and query requests to fail. Performance and write availability of the index
-     *                           can be impaired for several minutes after the index is updated, or longer for very
-     *                           large indexes.
+     * index by taking the index offline for at least a few seconds. This temporarily causes
+     * indexing and query requests to fail. Performance and write availability of the index
+     * can be impaired for several minutes after the index is updated, or longer for very
+     * large indexes.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the Index that was created or updated.
      */
@@ -567,9 +584,9 @@ public class SearchServiceClient {
      *
      * @param indexName the name of the index to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      */
     public void deleteIndex(String indexName,
                             AccessCondition accessCondition,
@@ -582,9 +599,9 @@ public class SearchServiceClient {
      *
      * @param indexName the name of the index to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
@@ -599,80 +616,80 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Index analysis results.
+     * @throws NotImplementedException not implemented
      */
     public Response<AnalyzeResult> analyzeIndex() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Index analysis results.
+     * @throws NotImplementedException not implemented
      */
     public Response<AnalyzeResult> analyzeIndexWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the created Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Skillset createSkillset() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the created Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Response<Skillset> createSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Skillset getSkillset() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Response<Skillset> getSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return all Skillsets in the Search service.
+     * @throws NotImplementedException not implemented
      */
     public SkillsetListResult listSkillsets() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing all Skillsets in the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Response<SkillsetListResult> listSkillsetsWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the updated Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Skillset createOrUpdateSkillset() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the updated Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Response<Skillset> createOrUpdateSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -686,8 +703,8 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response signalling completion
+     * @throws NotImplementedException not implemented
      */
     public Response<Response<Void>> deleteSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -708,7 +725,7 @@ public class SearchServiceClient {
      *
      * @param synonymMap the definition of the synonym map to create
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the created {@link SynonymMap}.
      */
     public SynonymMap createSynonymMap(SynonymMap synonymMap,
@@ -721,7 +738,7 @@ public class SearchServiceClient {
      *
      * @param synonymMap the definition of the synonym map to create
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created SynonymMap.
      */
@@ -729,53 +746,53 @@ public class SearchServiceClient {
                                                              RequestOptions requestOptions,
                                                              Context context) {
         return asyncClient.createSynonymMapWithResponse(synonymMap,
-                requestOptions,
-                context).block();
+            requestOptions,
+            context).block();
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the SynonymMap.
+     * @throws NotImplementedException not implemented
      */
     public SynonymMap getSynonymMap() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the SynonymMap.
+     * @throws NotImplementedException not implemented
      */
     public Response<SynonymMap> getSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return all SynonymMaps in the Search service.
+     * @throws NotImplementedException not implemented
      */
     public SynonymMapListResult listSynonymMaps() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing all SynonymMaps in the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Response<SynonymMapListResult> listSynonymMapsWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the updated SynonymMap.
+     * @throws NotImplementedException not implemented
      */
     public SynonymMap createOrUpdateSynonymMap() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the updated SynonymMap.
+     * @throws NotImplementedException not implemented
      */
     public Response<SynonymMap> createOrUpdateSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -789,8 +806,8 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response signalling completion
+     * @throws NotImplementedException not implemented
      */
     public Response<Response<Void>> deleteSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));

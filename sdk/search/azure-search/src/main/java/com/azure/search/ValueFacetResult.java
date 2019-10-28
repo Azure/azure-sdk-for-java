@@ -11,6 +11,7 @@ public class ValueFacetResult {
 
     /**
      * Constructor
+     *
      * @param facetResult facet result object
      */
     public ValueFacetResult(FacetResult facetResult) {
@@ -20,6 +21,7 @@ public class ValueFacetResult {
 
     /**
      * Constructor
+     *
      * @param count count
      * @param value value
      */
@@ -30,6 +32,7 @@ public class ValueFacetResult {
 
     /**
      * Get count
+     *
      * @return count
      */
     public Long count() {
@@ -38,6 +41,7 @@ public class ValueFacetResult {
 
     /**
      * Get value
+     *
      * @return value
      */
     public Object value() {

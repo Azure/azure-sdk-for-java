@@ -34,6 +34,7 @@ public class SearchIndexClient {
 
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
+     *
      * @param searchIndexAsyncClient Async SearchIndex Client
      */
     SearchIndexClient(SearchIndexAsyncClient searchIndexAsyncClient) {
@@ -51,6 +52,7 @@ public class SearchIndexClient {
 
     /**
      * Gets the {@link HttpPipeline} powering this client.
+     *
      * @return the pipeline.
      */
     HttpPipeline getHttpPipeline() {
@@ -185,6 +187,7 @@ public class SearchIndexClient {
 
     /**
      * Gets the number of documents
+     *
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the number of documents.
      */
@@ -198,7 +201,7 @@ public class SearchIndexClient {
      *
      * @return A {@link PagedIterable} of SearchResults
      */
-    public PagedIterableBase<SearchResult, SearchPagedResponse > search() {
+    public PagedIterableBase<SearchResult, SearchPagedResponse> search() {
         return this.search(null,
             null,
             null,
@@ -211,12 +214,12 @@ public class SearchIndexClient {
      * @param searchText search text
      * @param searchOptions search options
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return A {@link PagedIterable} of SearchResults
      */
-    public PagedIterableBase<SearchResult, SearchPagedResponse > search(String searchText,
-                                              SearchOptions searchOptions,
-                                              RequestOptions requestOptions) {
+    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText,
+                                                                       SearchOptions searchOptions,
+                                                                       RequestOptions requestOptions) {
         return this.search(searchText,
             searchOptions,
             requestOptions,
@@ -229,14 +232,14 @@ public class SearchIndexClient {
      * @param searchText search text
      * @param searchOptions search options
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return A {@link PagedIterable} of SearchResults
      */
-    public PagedIterableBase<SearchResult, SearchPagedResponse > search(String searchText,
-                                              SearchOptions searchOptions,
-                                              RequestOptions requestOptions,
-                                              Context context) {
+    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText,
+                                                                       SearchOptions searchOptions,
+                                                                       RequestOptions requestOptions,
+                                                                       Context context) {
         PagedFluxBase<SearchResult, SearchPagedResponse> result = asyncClient.search(searchText,
             searchOptions,
             requestOptions,
@@ -262,7 +265,7 @@ public class SearchIndexClient {
      * @param key document key
      * @param selectedFields selected fields to return
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return document object
      */
     public Document getDocument(String key,
@@ -280,7 +283,7 @@ public class SearchIndexClient {
      * @param key document key
      * @param selectedFields selected fields to return
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document object
      */
@@ -302,7 +305,7 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @return suggests result
      */
-    public PagedIterableBase<SuggestResult, SuggestPagedResponse > suggest(String searchText, String suggesterName) {
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
         return this.suggest(searchText,
             suggesterName,
             null,
@@ -317,13 +320,13 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @param suggestOptions suggest options
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return suggests results
      */
-    public PagedIterableBase<SuggestResult, SuggestPagedResponse > suggest(String searchText,
-                                                String suggesterName,
-                                                SuggestOptions suggestOptions,
-                                                RequestOptions requestOptions) {
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
+                                                                          String suggesterName,
+                                                                          SuggestOptions suggestOptions,
+                                                                          RequestOptions requestOptions) {
         return this.suggest(searchText,
             suggesterName,
             suggestOptions,
@@ -338,15 +341,15 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @param suggestOptions suggest options
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return suggests results
      */
-    public PagedIterableBase<SuggestResult, SuggestPagedResponse > suggest(String searchText,
-                                                String suggesterName,
-                                                SuggestOptions suggestOptions,
-                                                RequestOptions requestOptions,
-                                                Context context) {
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
+                                                                          String suggesterName,
+                                                                          SuggestOptions suggestOptions,
+                                                                          RequestOptions requestOptions,
+                                                                          Context context) {
         PagedFluxBase<SuggestResult, SuggestPagedResponse> result = asyncClient.suggest(searchText,
             suggesterName,
             suggestOptions,
@@ -399,7 +402,7 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @param autocompleteOptions autocomplete options
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return auto complete result
      */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText,
@@ -420,7 +423,7 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @param autocompleteOptions autocomplete options
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return auto complete result
      */

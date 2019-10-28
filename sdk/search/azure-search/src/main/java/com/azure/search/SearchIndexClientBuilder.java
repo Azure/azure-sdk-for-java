@@ -22,7 +22,7 @@ import java.util.List;
  * an instance of the desired client.
  *
  * <p>
- *     The following information must be provided on this builder:
+ * The following information must be provided on this builder:
  *     <ul>
  *         <li>the search service endpoint through {@code .endpoint()}
  *         <li>the index name through {@code .indexName()}
@@ -30,7 +30,7 @@ import java.util.List;
  *     </ul>
  * </p>
  */
-@ServiceClientBuilder(serviceClients = { SearchIndexClient.class, SearchIndexAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
 public class SearchIndexClientBuilder {
 
     private ApiKeyCredentials apiKeyCredentials;
@@ -101,9 +101,10 @@ public class SearchIndexClientBuilder {
 
     /**
      * Sets the api key to use for request authentication.
+     *
      * @param apiKeyCredentials api key for request authentication
-     * @throws IllegalArgumentException when the api key is empty
      * @return the updated SearchIndexClientBuilder object
+     * @throws IllegalArgumentException when the api key is empty
      * @throws IllegalArgumentException when the api key is empty
      */
     public SearchIndexClientBuilder credential(ApiKeyCredentials apiKeyCredentials) {

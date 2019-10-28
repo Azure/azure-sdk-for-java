@@ -21,14 +21,14 @@ import java.util.List;
  * an instance of the desired client.
  *
  * <p>
- *     The following information must be provided on this builder:
+ * The following information must be provided on this builder:
  *     <ul>
  *         <li>the search service endpoint through {@code .endpoint()}
  *         <li>the API key through {@code .credential()}</li>
  *     </ul>
  * </p>
  */
-@ServiceClientBuilder(serviceClients = { SearchServiceClient.class, SearchServiceAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {SearchServiceClient.class, SearchServiceAsyncClient.class})
 public class SearchServiceClientBuilder {
     private ApiKeyCredentials apiKeyCredentials;
     private String apiVersion;
@@ -87,9 +87,10 @@ public class SearchServiceClientBuilder {
 
     /**
      * Sets the api key to use for request authentication.
+     *
      * @param apiKeyCredentials api key for request authentication
-     * @throws IllegalArgumentException when the api key is empty
      * @return the updated SearchServiceClientBuilder object
+     * @throws IllegalArgumentException when the api key is empty
      */
     public SearchServiceClientBuilder credential(ApiKeyCredentials apiKeyCredentials) {
         if (apiKeyCredentials == null || StringUtils.isBlank(apiKeyCredentials.getApiKey())) {

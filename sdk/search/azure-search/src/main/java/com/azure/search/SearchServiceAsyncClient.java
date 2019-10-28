@@ -103,6 +103,7 @@ public class SearchServiceAsyncClient {
 
     /**
      * Gets the {@link HttpPipeline} powering this client.
+     *
      * @return the pipeline.
      */
     HttpPipeline getHttpPipeline() {
@@ -112,6 +113,7 @@ public class SearchServiceAsyncClient {
     /**
      * Initializes a new {@link SearchIndexAsyncClient} using the given Index name and the
      * same configuration as the SearchServiceAsyncClient.
+     *
      * @param indexName the name of the Index for the client
      * @return a {@link SearchIndexAsyncClient} created from the service client configuration
      */
@@ -152,208 +154,208 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the created DataSource.
+     * @throws NotImplementedException not implemented
      */
     public Mono<DataSource> createDataSource() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the created DataSource.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<DataSource>> createDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the DataSource.
+     * @throws NotImplementedException not implemented
      */
     public Mono<DataSource> getDataSource() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the DataSource.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<DataSource>> getDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return all DataSources from the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Mono<DataSourceListResult> listDataSources() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing all DataSources from the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<DataSourceListResult>> listDataSourcesWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the updated DataSource.
+     * @throws NotImplementedException not implemented
      */
     public Mono<DataSource> createOrUpdateDataSource() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the updated DataSource.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Void> deleteDataSource() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Response<Void>>> deleteDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the created Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Indexer> createIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the created Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Indexer>> createIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Indexer> getIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Indexer>> getIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return all Indexers from the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Mono<IndexerListResult> listIndexers() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing all Indexers from the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<IndexerListResult>> listIndexersWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the updated Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Indexer> createOrUpdateIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the updated Indexer.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Void> deleteIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Response<Void>>> deleteIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Void> resetIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Response<Void>>> resetIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Void> runIndexer() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Response<Void>>> runIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Indexer execution information.
+     * @throws NotImplementedException not implemented
      */
     public Mono<IndexerExecutionInfo> deleteIndexerStatus() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Indexer execution information.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<IndexerExecutionInfo>> deleteIndexerStatusWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -361,6 +363,7 @@ public class SearchServiceAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search index.
+     *
      * @param index definition of the index to create
      * @return the created Index.
      */
@@ -371,9 +374,10 @@ public class SearchServiceAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search index.
+     *
      * @param index definition of the index to create
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the created Index.
      */
     public Mono<Index> createIndex(Index index, RequestOptions requestOptions) {
@@ -383,9 +387,10 @@ public class SearchServiceAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search index.
+     *
      * @param index definition of the index to create
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Index.
      */
     public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
@@ -403,6 +408,7 @@ public class SearchServiceAsyncClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
+     *
      * @param indexName the name of the index to retrieve
      * @return the Index.
      */
@@ -413,9 +419,10 @@ public class SearchServiceAsyncClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
+     *
      * @param indexName the name of the index to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the Index.
      */
     public Mono<Index> getIndex(String indexName, RequestOptions requestOptions) {
@@ -425,9 +432,10 @@ public class SearchServiceAsyncClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
+     *
      * @param indexName the name of the index to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the Index.
      */
     public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
@@ -445,6 +453,7 @@ public class SearchServiceAsyncClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
+     *
      * @param indexName the name of the index
      * @return true if the index exists; false otherwise.
      */
@@ -454,9 +463,10 @@ public class SearchServiceAsyncClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
+     *
      * @param indexName the name of the index
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
     public Mono<Boolean> indexExists(String indexName, RequestOptions requestOptions) {
@@ -465,9 +475,10 @@ public class SearchServiceAsyncClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
+     *
      * @param indexName the name of the index
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
     public Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
@@ -491,16 +502,16 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Index statistics.
+     * @throws NotImplementedException not implemented
      */
     public Mono<IndexGetStatisticsResult> getIndexStatistics() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Index statistics.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<IndexGetStatisticsResult>> getIndexStatisticsWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -519,8 +530,8 @@ public class SearchServiceAsyncClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-                     Specified as a comma-separated list of JSON property names, or '*' for all properties.
-                     The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @return a reactive response emitting the list of indexes.
      */
     public PagedFlux<Index> listIndexes(String select) {
@@ -531,10 +542,10 @@ public class SearchServiceAsyncClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-                     Specified as a comma-separated list of JSON property names, or '*' for all properties.
-                     The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of indexes.
      */
     public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
@@ -550,8 +561,8 @@ public class SearchServiceAsyncClient {
     }
 
     private Mono<PagedResponse<Index>> listIndexesWithResponse(String select,
-                                                           RequestOptions requestOptions,
-                                                           Context context) {
+                                                               RequestOptions requestOptions,
+                                                               Context context) {
         return restClient.indexes()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -580,9 +591,9 @@ public class SearchServiceAsyncClient {
      *
      * @param index the definition of the index to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
     public Mono<Index> createOrUpdateIndex(Index index,
@@ -597,10 +608,10 @@ public class SearchServiceAsyncClient {
      *
      * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     *                           index by taking the index offline for at least a few seconds. This temporarily causes
-     *                           indexing and query requests to fail. Performance and write availability of the index
-     *                           can be impaired for several minutes after the index is updated, or longer for very
-     *                           large indexes
+     * index by taking the index offline for at least a few seconds. This temporarily causes
+     * indexing and query requests to fail. Performance and write availability of the index
+     * can be impaired for several minutes after the index is updated, or longer for very
+     * large indexes
      * @return the index that was created or updated
      */
     public Mono<Index> createOrUpdateIndex(Index index, Boolean allowIndexDowntime) {
@@ -613,14 +624,14 @@ public class SearchServiceAsyncClient {
      *
      * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     *                           index by taking the index offline for at least a few seconds. This temporarily causes
-     *                           indexing and query requests to fail. Performance and write availability of the index
-     *                           can be impaired for several minutes after the index is updated, or longer for very
-     *                           large indexes
+     * index by taking the index offline for at least a few seconds. This temporarily causes
+     * indexing and query requests to fail. Performance and write availability of the index
+     * can be impaired for several minutes after the index is updated, or longer for very
+     * large indexes
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated
      */
     public Mono<Index> createOrUpdateIndex(Index index,
@@ -652,14 +663,14 @@ public class SearchServiceAsyncClient {
      *
      * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     *                           index by taking the index offline for at least a few seconds. This temporarily causes
-     *                           indexing and query requests to fail. Performance and write availability of the index
-     *                           can be impaired for several minutes after the index is updated, or longer for very
-     *                           large indexes
+     * index by taking the index offline for at least a few seconds. This temporarily causes
+     * indexing and query requests to fail. Performance and write availability of the index
+     * can be impaired for several minutes after the index is updated, or longer for very
+     * large indexes
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the index that was created or updated
      */
     public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
@@ -706,7 +717,7 @@ public class SearchServiceAsyncClient {
      * @param indexName the name of the index to delete
      * @param accessCondition the access condition
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndex(String indexName,
@@ -724,7 +735,7 @@ public class SearchServiceAsyncClient {
      * @param indexName the name of the index to delete
      * @param accessCondition the access condition
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
@@ -750,96 +761,96 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Index analysis results.
+     * @throws NotImplementedException not implemented
      */
     public Mono<AnalyzeResult> analyzeIndex() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Index analysis results.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<AnalyzeResult>> analyzeIndexWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the created Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Skillset> createSkillset() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the created Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Skillset>> createSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Skillset> getSkillset() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Skillset>> getSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return all Skillsets in the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Mono<SkillsetListResult> listSkillsets() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing all Skillsets in the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<SkillsetListResult>> listSkillsetsWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the updated Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Skillset> createOrUpdateSkillset() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the updated Skillset.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Void> deleteSkillset() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Response<Void>>> deleteSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -860,7 +871,7 @@ public class SearchServiceAsyncClient {
      *
      * @param synonymMap the definition of the synonym map to create
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the created {@link SynonymMap}.
      */
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap, RequestOptions requestOptions) {
@@ -872,84 +883,84 @@ public class SearchServiceAsyncClient {
      *
      * @param synonymMap the definition of the synonym map to create
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created SynonymMap.
      */
     public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
                                                                    RequestOptions requestOptions) {
         return withContext(context -> createSynonymMapWithResponse(synonymMap,
-                requestOptions,
-                context));
+            requestOptions,
+            context));
     }
 
     Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
                                                             RequestOptions requestOptions,
                                                             Context context) {
         return restClient
-                .synonymMaps()
-                .createWithRestResponseAsync(synonymMap, requestOptions, context)
-                .map(Function.identity());
+            .synonymMaps()
+            .createWithRestResponseAsync(synonymMap, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the SynonymMap.
+     * @throws NotImplementedException not implemented
      */
     public Mono<SynonymMap> getSynonymMap() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the SynonymMap.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<SynonymMap>> getSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return all SynonymMaps in the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Mono<SynonymMapListResult> listSynonymMaps() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing all SynonymMaps in the Search service.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<SynonymMapListResult>> listSynonymMapsWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return the updated SynonymMap.
+     * @throws NotImplementedException not implemented
      */
     public Mono<SynonymMap> createOrUpdateSynonymMap() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a response containing the updated SynonymMap.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Void> deleteSynonymMap() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
+     * @throws NotImplementedException not implemented
      */
     public Mono<Response<Response<Void>>> deleteSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
@@ -957,7 +968,7 @@ public class SearchServiceAsyncClient {
 
     private static String deserializeHeaders(HttpHeaders headers) {
         return headers.toMap().entrySet().stream().map((entry) ->
-                entry.getKey() + "," + entry.getValue()
+            entry.getKey() + "," + entry.getValue()
         ).collect(Collectors.joining(","));
     }
 }

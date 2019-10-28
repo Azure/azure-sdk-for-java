@@ -53,6 +53,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
 
     /**
      * Get facets
+     *
      * @return {@link Map}{@code <}{@link String}{@code ,}{@link List}{@code <}{@link FacetResult}{@code >}{@code >}
      */
     public Map<String, List<FacetResult>> facets() {
@@ -61,6 +62,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
 
     /**
      * Get documents count
+     *
      * @return long
      */
     public Long count() {

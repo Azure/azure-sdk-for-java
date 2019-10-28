@@ -20,9 +20,9 @@ public class AutoCompletePagedResponse extends PagedResponseBase<String, Autocom
      */
     public AutoCompletePagedResponse(SimpleResponse<AutocompleteResult> autoCompleteResponse) {
         super(autoCompleteResponse.getRequest(),
-                autoCompleteResponse.getStatusCode(),
-                autoCompleteResponse.getHeaders(),
-                autoCompleteResponse.getValue().getResults(),
+            autoCompleteResponse.getStatusCode(),
+            autoCompleteResponse.getHeaders(),
+            autoCompleteResponse.getValue().getResults(),
             null,
             deserializeHeaders(autoCompleteResponse.getHeaders()));
     }

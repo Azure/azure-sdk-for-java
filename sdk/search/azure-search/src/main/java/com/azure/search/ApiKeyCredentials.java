@@ -24,6 +24,7 @@ public class ApiKeyCredentials {
 
     /**
      * Gets the API key
+     *
      * @return the API key
      */
     public String getApiKey() {

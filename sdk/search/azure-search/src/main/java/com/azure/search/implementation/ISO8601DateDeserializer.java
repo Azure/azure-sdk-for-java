@@ -22,6 +22,7 @@ final class ISO8601DateDeserializer extends UntypedObjectDeserializer {
 
     /**
      * Constructor
+     *
      * @param defaultDeserializer the deserializer to use when an OffsetDateTime match is not found
      */
     ISO8601DateDeserializer(UntypedObjectDeserializer defaultDeserializer) {
@@ -46,6 +47,7 @@ final class ISO8601DateDeserializer extends UntypedObjectDeserializer {
 
     /**
      * Converts an object to an OffsetDateTime if it matches the ISO8601 format.
+     *
      * @param obj the object to parse
      * @return an instance of {@link OffsetDateTime} if valid ISO8601, otherwise obj.
      */

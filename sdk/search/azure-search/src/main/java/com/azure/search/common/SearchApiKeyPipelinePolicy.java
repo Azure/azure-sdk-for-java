@@ -18,6 +18,7 @@ public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
 
     /**
      * Constrcutor
+     *
      * @param apiKey Search Service api admin or query key
      * @throws IllegalArgumentException when the api key is an empty string
      */

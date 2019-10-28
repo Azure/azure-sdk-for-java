@@ -12,6 +12,7 @@ public class RangeFacetResult {
 
     /**
      * Constructor
+     *
      * @param facetResult facet result object
      */
     public RangeFacetResult(FacetResult facetResult) {
@@ -22,6 +23,7 @@ public class RangeFacetResult {
 
     /**
      * Get count
+     *
      * @return count
      */
     public Long count() {
@@ -30,6 +32,7 @@ public class RangeFacetResult {
 
     /**
      * Get from
+     *
      * @return from
      */
     public Object from() {
@@ -38,6 +41,7 @@ public class RangeFacetResult {
 
     /**
      * Get to
+     *
      * @return to
      */
     public Object to() {
