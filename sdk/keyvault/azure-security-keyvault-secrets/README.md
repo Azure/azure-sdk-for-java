@@ -347,14 +347,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_keyvault_cli]:https://docs.microsoft.com/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [secrets_samples]: src/samples/java/com/azure/security/keyvault/secrets
-[sample_helloWorld]: src/samples/java/com/azure/security/keyvault/secrets/HelloWorld.java
-[sample_helloWorldAsync]: src/samples/java/com/azure/security/keyvault/secrets/HelloWorldAsync.java
-[sample_list]: src/samples/java/com/azure/security/keyvault/secrets/ListOperations.java
-[sample_listAsync]: src/samples/java/com/azure/security/keyvault/secrets/ListOperationsAsync.java
-[sample_BackupRestore]: src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]: src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
-[sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
 [samples]: src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-secrets/README.png)

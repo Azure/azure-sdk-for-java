@@ -1,4 +1,7 @@
 
+## Azure Key Vault Secret Samples client library for Java
+This document explains samples and how to use them.
+
 ## Key concepts
 ### Key
   Azure Key Vault supports multiple key types(`RSA` & `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
