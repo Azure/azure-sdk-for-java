@@ -6,9 +6,9 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -41,11 +41,13 @@ public final class EventDataBatch {
     private final ErrorContextProvider contextProvider;
     private final List<EventData> events;
     private final byte[] eventBytes;
+    private final String partitionId;
     private int sizeInBytes;
 
-    EventDataBatch(int maxMessageSize, String partitionKey, ErrorContextProvider contextProvider) {
+    EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
+        this.partitionId = partitionId;
         this.contextProvider = contextProvider;
         this.events = new LinkedList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
@@ -112,8 +114,10 @@ public final class EventDataBatch {
     }
 
     String getPartitionKey() {
-        return this.partitionKey;
+        return partitionKey;
     }
+
+    String getPartitionId() { return partitionId; }
 
     private int getSize(final EventData eventData, final boolean isFirst) {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
