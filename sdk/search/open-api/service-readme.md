@@ -30,6 +30,9 @@ license-header: |-
 
 require: ./autorest-custom-directives.md
 
+vararg-properties: >-
+  CorsOptions.allowedOrigins
+
 directive:
 
 - rename-custom-property:

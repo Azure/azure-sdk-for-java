@@ -530,7 +530,7 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
             ))
             .setDefaultScoringProfile("MyProfile")
             .setCorsOptions(new CorsOptions()
-                .setAllowedOrigins(Arrays.asList("http://tempuri.org", "http://localhost:80"))
+                .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
                 .setMaxAgeInSeconds(60L))
             .setSuggesters(Arrays.asList(new Suggester()
                 .setName("FancySuggester")
@@ -538,7 +538,7 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     }
 
     protected Index mutateCorsOptionsInIndex(Index index) {
-        index.setCorsOptions(index.getCorsOptions().setAllowedOrigins(Arrays.asList("*")));
+        index.setCorsOptions(index.getCorsOptions().setAllowedOrigins("*"));
         return index;
     }
 

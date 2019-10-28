@@ -8,6 +8,7 @@ package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -55,8 +56,8 @@ public final class CorsOptions {
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsOptions object itself.
      */
-    public CorsOptions setAllowedOrigins(List<String> allowedOrigins) {
-        this.allowedOrigins = allowedOrigins;
+    public CorsOptions setAllowedOrigins(String... allowedOrigins) {
+        this.allowedOrigins = Arrays.asList(allowedOrigins);
         return this;
     }
 

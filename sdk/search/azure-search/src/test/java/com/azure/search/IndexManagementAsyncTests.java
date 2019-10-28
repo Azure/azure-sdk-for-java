@@ -49,18 +49,18 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createIndexReturnsCorrectDefaultValues() {
-        Index index = createTestIndex();
-        index.setCorsOptions(new CorsOptions().setAllowedOrigins(Collections.singletonList("*")));
-        index.setScoringProfiles(Collections.singletonList(new ScoringProfile()
-            .setName("MyProfile")
-            .setFunctions(Collections.singletonList(new MagnitudeScoringFunction()
-                .setParameters(new MagnitudeScoringParameters()
-                    .setBoostingRangeStart(1)
-                    .setBoostingRangeEnd(4))
-                .setFieldName("Rating")
-                .setBoost(2.0))
-            )
-        ));
+        Index index = createTestIndex()
+            .setCorsOptions(new CorsOptions().setAllowedOrigins("*"))
+            .setScoringProfiles(Collections.singletonList(new ScoringProfile()
+                .setName("MyProfile")
+                .setFunctions(Collections.singletonList(new MagnitudeScoringFunction()
+                    .setParameters(new MagnitudeScoringParameters()
+                        .setBoostingRangeStart(1)
+                        .setBoostingRangeEnd(4))
+                    .setFieldName("Rating")
+                    .setBoost(2.0))
+                )
+            ));
 
         StepVerifier
             .create(client.createIndex(index))
@@ -351,20 +351,23 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     public void canUpdateIndexDefinition() {
         Index fullFeaturedIndex = createTestIndex();
-        Index initialIndex = createTestIndex();
 
         // Start out with no scoring profiles and different CORS options.
-        initialIndex.setName(fullFeaturedIndex.getName());
-        initialIndex.setScoringProfiles(new ArrayList<>());
-        initialIndex.setDefaultScoringProfile(null);
-        initialIndex.setCorsOptions(initialIndex.getCorsOptions().setAllowedOrigins(Arrays.asList("*")));
+        Index initialIndex = createTestIndex();
+        initialIndex.setName(fullFeaturedIndex.getName())
+            .setScoringProfiles(new ArrayList<>())
+            .setDefaultScoringProfile(null)
+            .setCorsOptions(initialIndex.getCorsOptions().setAllowedOrigins("*"));
 
         Index index = client.createIndex(initialIndex).block();
 
         // Now update the index.
-        index.setScoringProfiles(fullFeaturedIndex.getScoringProfiles());
-        index.setDefaultScoringProfile(fullFeaturedIndex.getDefaultScoringProfile());
-        index.setCorsOptions(index.getCorsOptions().setAllowedOrigins(fullFeaturedIndex.getCorsOptions().getAllowedOrigins()));
+        String[] allowedOrigins = fullFeaturedIndex.getCorsOptions()
+            .getAllowedOrigins()
+            .toArray(new String[0]);
+        index.setScoringProfiles(fullFeaturedIndex.getScoringProfiles())
+            .setDefaultScoringProfile(fullFeaturedIndex.getDefaultScoringProfile())
+            .setCorsOptions(index.getCorsOptions().setAllowedOrigins(allowedOrigins));
 
         StepVerifier
             .create(client.createOrUpdateIndex(index))
