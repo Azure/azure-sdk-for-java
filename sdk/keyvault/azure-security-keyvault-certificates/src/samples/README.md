@@ -95,13 +95,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [source_code]:  src
 [CERT_SDK_README]: ../../README.md
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
-[sample_helloWorld]: src/samples/java/com/azure/security/keyvault/certificates/HelloWorld.java
-[sample_helloWorldAsync]: src/samples/java/com/azure/security/keyvault/certificates/HelloWorldAsync.java
-[sample_list]: src/samples/java/com/azure/security/keyvault/certificates/ListOperations.java
-[sample_listAsync]: src/samples/java/com/azure/security/keyvault/certificates/ListOperationsAsync.java
-[sample_BackupRestore]: src/samples/java/com/azure/security/keyvault/certificates/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]: src/samples/java/com/azure/security/keyvault/certificates/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/certificates/ManagingDeletedCertificates.java
-[sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/certificates/ManagingDeletedCertificatesAsync.java
+[sample_helloWorld]: java/com/azure/security/keyvault/certificates/HelloWorld.java
+[sample_helloWorldAsync]: java/com/azure/security/keyvault/certificates/HelloWorldAsync.java
+[sample_list]: java/com/azure/security/keyvault/certificates/ListOperations.java
+[sample_listAsync]: java/com/azure/security/keyvault/certificates/ListOperationsAsync.java
+[sample_BackupRestore]: java/com/azure/security/keyvault/certificates/BackupAndRestoreOperations.java
+[sample_BackupRestoreAsync]: java/com/azure/security/keyvault/certificates/BackupAndRestoreOperationsAsync.java
+[sample_ManageDeleted]: java/com/azure/security/keyvault/certificates/ManagingDeletedCertificates.java
+[sample_ManageDeletedAsync]: java/com/azure/security/keyvault/certificates/ManagingDeletedCertificatesAsync.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-certificates/README.png)
