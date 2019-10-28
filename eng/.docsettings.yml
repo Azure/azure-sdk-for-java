@@ -66,6 +66,7 @@ known_content_issues:
   - ['sdk/servicebus/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-common/README.md', '#3113']
   - ['sdk/core/README.md', '#3113']
   - ['cosmosdb/data-plane/README.md', '#3113']
   - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
