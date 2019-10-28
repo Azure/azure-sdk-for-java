@@ -422,55 +422,8 @@ try {
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-### Hello World Samples
-* [HelloWorld.java][sample_helloWorld] - and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples for following scenarios:
-    * Create a Key
-    * Retrieve a Key
-    * Update a Key
-    * Delete a Key
-
-### List Operations Samples
-* [ListOperations.java][sample_list] and [ListOperationsAsync.java][sample_listAsync] - Contains samples for following scenarios:
-    * Create a Key
-    * List Keys
-    * Create new version of existing key.
-    * List versions of an existing key.
-
-### Backup And Restore Operations Samples
-* [BackupAndRestoreOperations.java][sample_BackupRestore] and [BackupAndRestoreOperationsAsync.java][sample_BackupRestoreAsync] - Contains samples for following scenarios:
-    * Create a Key
-    * Backup a Key -- Write it to a file.
-    * Delete a key
-    * Restore a key
-
-### Managing Deleted Keys Samples:
-* [ManagingDeletedKeys.java][sample_ManageDeleted] and [ManagingDeletedKeysAsync.java][sample_ManageDeletedAsync] - Contains samples for following scenarios:
-    * Create a Key
-    * Delete a key
-    * List deleted keys
-    * Recover a deleted key
-    * Purge Deleted key
-    
-### Encrypt And Decrypt Operations Samples:
-* [EncryptAndDecryptOperations.java][sample_encryptDecrypt] and [EncryptAndDecryptOperationsAsync.java][sample_encryptDecryptAsync] - Contains samples for following scenarios:
-    * Encrypting plain text with asymmetric key
-    * Decrypting plain text with asymmetric key
-    * Encrypting plain text with symmetric key
-    * Decrypting plain text with symmetric key
-    
-### Sign And Verify Operations Samples:
-* [SignAndVerifyOperations.java][sample_signVerify] and [SignAndVerifyOperationsAsync.java][sample_signVerifyAsync] - Contains samples for following scenarios:
-    * Signing a digest
-    * Verifying signature against a digest
-    * Signing raw data content
-    * Verifyng signature against raw data content
-    
-### Key Wrap And Unwrap Operations Samples:
-* [KeyWrapUnwrapOperations.java][sample_wrapUnwrap] and [KeyWrapUnwrapOperationsAsync.java][sample_wrapUnwrapAsync] - Contains samples for following scenarios:
-    * Wrapping a key with asymmetric key
-    * Unwrapping a key with asymmetric key
-    * Wrapping a key with symmetric key
-    * Unwrapping a key with symmetric key
+## Next steps Samples
+Samples are explained in detail [here][samples_readme].
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
@@ -511,5 +464,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_signVerifyAsync]: src/samples/java/com/azure/security/keyvault/keys/cryptography/SignVerifyOperationsAsync.java
 [sample_wrapUnwrap]: src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperations.java
 [sample_wrapUnwrapAsync]: src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperationsAsync.java
+[samples_readme]: src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-keys/README.png)
