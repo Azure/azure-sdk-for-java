@@ -93,8 +93,8 @@ class Transforms {
         }
         return new UserDelegationKey()
             .setSignedExpiry(blobUserDelegationKey.getSignedExpiry())
-            .setSignedOid(blobUserDelegationKey.getSignedObjectId())
-            .setSignedTid(blobUserDelegationKey.getSignedTenantId())
+            .setSignedObjectId(blobUserDelegationKey.getSignedObjectId())
+            .setSignedTenantId(blobUserDelegationKey.getSignedTenantId())
             .setSignedService(blobUserDelegationKey.getSignedService())
             .setSignedStart(blobUserDelegationKey.getSignedStart())
             .setSignedVersion(blobUserDelegationKey.getSignedVersion())
