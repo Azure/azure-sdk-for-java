@@ -1,37 +1,4 @@
 # Instructions for CODEOWNERS file format and automatic build failure notifications:
 # https://github.com/Azure/azure-sdk/blob/master/docs/policies/opensource.md#codeowners
 
-###########
-# SDK
-###########
-
-# Catch all
-/sdk/ @joshfree @jonathangiles
-
-# Service teams
-/sdk/appconfiguration/                            	@mssfang @alzimmermsft @conniey @sima-zhu
-/sdk/batch/                                      	@xingwu1 @bgklein @matthchr
-/sdk/cognitiveservices/ms-azure-cs-inkrecognizer	@minaltolpadi @olduroja @MAtifSaeed
-/sdk/core/                                        	@alzimmermsft @jianghaolu @srnagar @hemanttanwar
-/sdk/cosmos/                                      	@moderakh @christopheranderson @kushagraThapar
-/sdk/eventhubs/                                   	@conniey @srnagar @mssfang
-/sdk/identity/                                    	@jianghaolu @g2vinay @hemanttanwar
-/sdk/keyvault/                                    	@g2vinay @samvaity
-/sdk/servicebus/                                  	@yvgopal @nemakam
-/sdk/tracing/                                    	@samvaity @alzimmermsft
-
-/sdk/storage/                				@rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
-
-# Management Plane
-/**/resource-manager/        				@yaohaizh
-
-###########
-# Eng Sys
-###########
-/eng/                               @JimSuplizio @mitchdenny @weshaggard @danieljurek
-/eng/code-quality-reports/          @mssfang @JonathanGiles
-/eng/jacoco-test-coverage/          @srnagar @JonathanGiles
-/eng/spotbugs-aggregate-report/     @srnagar @JonathanGiles
-
-/**/tests.yml   @danieljurek
-/**/ci.yml      @mitchdenny
+* @navalev
