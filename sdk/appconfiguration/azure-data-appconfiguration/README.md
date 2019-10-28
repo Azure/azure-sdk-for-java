@@ -260,7 +260,7 @@ PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
 
 ### List revisions of multiple configuration settings
 
-List all revision of a configuration settings by calling `listRevisions`.
+List all revisions of a configuration setting by calling `listRevisions`.
 ```Java
 String key = "revisionKey";
 String Key2 = "newRevisionKey";
