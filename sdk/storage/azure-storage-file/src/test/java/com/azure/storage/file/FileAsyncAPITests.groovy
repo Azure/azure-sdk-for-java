@@ -6,7 +6,7 @@ package com.azure.storage.file
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
-import com.azure.core.util.polling.Poller
+import com.azure.core.util.polling.PollerFlux
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileErrorCode
@@ -442,8 +442,8 @@ class FileAsyncAPITests extends APISpec {
         def sourceURL = primaryFileAsyncClient.getFileUrl()
 
         when:
-        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, Duration.ofSeconds(1))
-        def copyInfoVerifier = StepVerifier.create(poller.getObserver())
+        PollerFlux<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, Duration.ofSeconds(1))
+        def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
         copyInfoVerifier.assertNext {
@@ -457,8 +457,8 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata, Duration.ofSeconds(1))
-        def startCopyErrorVerifier = StepVerifier.create(poller.getObserver())
+        PollerFlux<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata, Duration.ofSeconds(1))
+        def startCopyErrorVerifier = StepVerifier.create(poller)
 
         then:
         startCopyErrorVerifier.expectErrorSatisfies({

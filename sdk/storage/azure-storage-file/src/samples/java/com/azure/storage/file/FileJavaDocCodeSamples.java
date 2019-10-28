@@ -4,7 +4,8 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileHttpHeaders;
@@ -146,14 +147,14 @@ public class FileJavaDocCodeSamples {
     public void beginCopy() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.beginCopy#string-map-duration
-        Poller<FileCopyInfo, Void> poller = fileClient.beginCopy(
+        SyncPoller<FileCopyInfo, Void> poller = fileClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
 
-        poller.getObserver().subscribe(response -> {
-            final FileCopyInfo value = response.getValue();
-            System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
-        });
+        final PollResponse<FileCopyInfo> pollResponse = poller.poll();
+        final FileCopyInfo value = pollResponse.getValue();
+        System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+
         // END: com.azure.storage.file.fileClient.beginCopy#string-map-duration
     }
 

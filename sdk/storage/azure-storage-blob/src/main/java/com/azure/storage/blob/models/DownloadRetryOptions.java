@@ -9,13 +9,14 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 
 /**
- * This class contains the configuration options used to reliably download from the blob service.
+ * This class contains the configuration options used to download from the blob service using smart retries, starting
+ * from a checkpoint, rather than starting over from the beginning.
  */
 @Fluent
-public final class ReliableDownloadOptions {
+public final class DownloadRetryOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 
-    private final ClientLogger logger = new ClientLogger(ReliableDownloadOptions.class);
+    private final ClientLogger logger = new ClientLogger(DownloadRetryOptions.class);
 
     /*
     We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
@@ -30,7 +31,7 @@ public final class ReliableDownloadOptions {
      *
      * @return the maximum number of retries to attempt before the request finally fails
      */
-    public int maxRetryRequests() {
+    public int getMaxRetryRequests() {
         return maxRetryRequests;
     }
 
@@ -39,10 +40,10 @@ public final class ReliableDownloadOptions {
      * response body.
      *
      * @param maxRetryRequests The number of retries to attempt before the request finally fails
-     * @return the updated ReliableDownloadOptions object
+     * @return the updated DownloadRetryOptions object
      * @throws IllegalArgumentException If {@code maxRetryRequests} is less than 0
      */
-    public ReliableDownloadOptions maxRetryRequests(int maxRetryRequests) {
+    public DownloadRetryOptions setMaxRetryRequests(int maxRetryRequests) {
         if (maxRetryRequests < 0) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,

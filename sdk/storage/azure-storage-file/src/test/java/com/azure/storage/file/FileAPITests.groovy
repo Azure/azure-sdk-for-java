@@ -6,7 +6,7 @@ package com.azure.storage.file
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
-import com.azure.core.util.polling.Poller
+import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.models.FileCopyInfo
@@ -16,14 +16,12 @@ import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.FileStorageException
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.ShareSnapshotInfo
-import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
-import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -414,13 +412,14 @@ class FileAPITests extends APISpec {
         def sourceURL = primaryFileClient.getFileUrl()
 
         when:
-        Poller<FileCopyInfo, Void> copyInfoResponse = primaryFileClient.beginCopy(sourceURL, null, null)
-        def verifier = StepVerifier.create(copyInfoResponse.getObserver())
+        SyncPoller<FileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL,
+                null,
+                null)
+
+        def pollResponse = poller.poll()
 
         then:
-        verifier.assertNext({
-                assert it.getValue().getCopyId() != null
-            }).thenCancel().verify(Duration.ofMinutes(1))
+        assert pollResponse.getValue().getCopyId() != null
     }
 
     @Ignore("There is a race condition in Poller where it misses the first observed event if there is a gap between the time subscribed and the time we start observing events.")
@@ -429,14 +428,14 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        Poller<FileCopyInfo, Void> copyInfoPoller = primaryFileClient.beginCopy("some url", testMetadata, null)
-        def verifier = StepVerifier.create(copyInfoPoller.getObserver())
+        SyncPoller<FileCopyInfo, Void> poller = primaryFileClient.beginCopy("some url",
+                testMetadata,
+                null)
+        poller.waitForCompletion()
 
         then:
-        verifier.expectErrorSatisfies({
-                assert it instanceof FileStorageException
-                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
-            }).verify(Duration.ofSeconds(30))
+        def e = thrown(FileStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, FileErrorCode.INVALID_HEADER_VALUE)
     }
 
     @Ignore
