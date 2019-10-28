@@ -180,8 +180,7 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 
 ## Next steps
 
-Get started with our [Blob Batch samples][samples]:
-
+Get started with our [Blob Batch samples][blob_samples]:
 
 ## Contributing
 
@@ -200,7 +199,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
-[samples]: src/samples
+[blob_samples]: src/samples/README.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
