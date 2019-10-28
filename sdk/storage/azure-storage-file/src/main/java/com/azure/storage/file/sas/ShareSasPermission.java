@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.file.sas;
 
 
 import com.azure.storage.common.implementation.Constants;
@@ -9,15 +9,14 @@ import com.azure.storage.common.implementation.Constants;
 import java.util.Locale;
 
 /**
- * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a container.
- * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
- * It is possible to construct the permissions string without this class, but the order of the permissions is
- * particular and this class guarantees correctness.
+ * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a share. Setting
+ * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
+ * the values are set, this should be serialized with toString and set as the permissions field on a {@link
+ * FileServiceSasSignatureValues} object. It is possible to construct the permissions string without this class, but the
+ * order of the permissions is particular and this class guarantees correctness.
  */
-public final class BlobContainerSasPermission {
+public final class ShareSasPermission {
     private boolean readPermission;
-
-    private boolean addPermission;
 
     private boolean createPermission;
 
@@ -28,30 +27,27 @@ public final class BlobContainerSasPermission {
     private boolean listPermission;
 
     /**
-     * Initializes an {@code BlobContainerSasPermission} object with all fields set to false.
+     * Initializes an {@code ShareSasPermission} object with all fields set to false.
      */
-    public BlobContainerSasPermission() {
+    public ShareSasPermission() {
     }
 
     /**
-     * Creates an {@code BlobContainerSasPermission} from the specified permissions string. This method will throw an
+     * Creates an {@code ShareSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code BlobContainerSasPermission}.
-     * @return A {@code BlobContainerSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, or l.
+     * @param permissionString A {@code String} which represents the {@code ShareSasPermission}.
+     * @return A {@code ShareSasPermission} generated from the given {@code String}.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, c, w, d, or l.
      */
-    public static BlobContainerSasPermission parse(String permString) {
-        BlobContainerSasPermission permissions = new BlobContainerSasPermission();
+    public static ShareSasPermission parse(String permissionString) {
+        ShareSasPermission permissions = new ShareSasPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.readPermission = true;
-                    break;
-                case 'a':
-                    permissions.addPermission = true;
                     break;
                 case 'c':
                     permissions.createPermission = true;
@@ -68,7 +64,7 @@ public final class BlobContainerSasPermission {
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                            "Permissions", permissionString, c));
             }
         }
         return permissions;
@@ -85,28 +81,10 @@ public final class BlobContainerSasPermission {
      * Sets the read permission status.
      *
      * @param hasReadPermission Permission status to set
-     * @return the updated BlobContainerSasPermission object
+     * @return the updated ShareSasPermission object
      */
-    public BlobContainerSasPermission setReadPermission(boolean hasReadPermission) {
+    public ShareSasPermission setReadPermission(boolean hasReadPermission) {
         this.readPermission = hasReadPermission;
-        return this;
-    }
-
-    /**
-     * @return the add permission status
-     */
-    public boolean hasAddPermission() {
-        return addPermission;
-    }
-
-    /**
-     * Sets the add permission status.
-     *
-     * @param hasAddPermission Permission status to set
-     * @return the updated BlobContainerSasPermission object
-     */
-    public BlobContainerSasPermission setAddPermission(boolean hasAddPermission) {
-        this.addPermission = hasAddPermission;
         return this;
     }
 
@@ -121,9 +99,9 @@ public final class BlobContainerSasPermission {
      * Sets the create permission status.
      *
      * @param hasCreatePermission Permission status to set
-     * @return the updated BlobContainerSasPermission object
+     * @return the updated ShareSasPermission object
      */
-    public BlobContainerSasPermission setCreatePermission(boolean hasCreatePermission) {
+    public ShareSasPermission setCreatePermission(boolean hasCreatePermission) {
         this.createPermission = hasCreatePermission;
         return this;
     }
@@ -139,9 +117,9 @@ public final class BlobContainerSasPermission {
      * Sets the write permission status.
      *
      * @param hasWritePermission Permission status to set
-     * @return the updated BlobContainerSasPermission object
+     * @return the updated ShareSasPermission object
      */
-    public BlobContainerSasPermission setWritePermission(boolean hasWritePermission) {
+    public ShareSasPermission setWritePermission(boolean hasWritePermission) {
         this.writePermission = hasWritePermission;
         return this;
     }
@@ -157,9 +135,9 @@ public final class BlobContainerSasPermission {
      * Sets the delete permission status.
      *
      * @param hasDeletePermission Permission status to set
-     * @return the updated BlobContainerSasPermission object
+     * @return the updated ShareSasPermission object
      */
-    public BlobContainerSasPermission setDeletePermission(boolean hasDeletePermission) {
+    public ShareSasPermission setDeletePermission(boolean hasDeletePermission) {
         this.deletePermission = hasDeletePermission;
         return this;
     }
@@ -175,9 +153,9 @@ public final class BlobContainerSasPermission {
      * Sets the list permission status.
      *
      * @param hasListPermission Permission status to set
-     * @return the updated BlobContainerSasPermission object
+     * @return the updated ShareSasPermission object
      */
-    public BlobContainerSasPermission setListPermission(boolean hasListPermission) {
+    public ShareSasPermission setListPermission(boolean hasListPermission) {
         this.listPermission = hasListPermission;
         return this;
     }
@@ -186,7 +164,7 @@ public final class BlobContainerSasPermission {
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@code String} which represents the {@code BlobContainerSasPermission}.
+     * @return A {@code String} which represents the {@code ShareSasPermission}.
      */
     @Override
     public String toString() {
@@ -196,10 +174,6 @@ public final class BlobContainerSasPermission {
 
         if (this.readPermission) {
             builder.append('r');
-        }
-
-        if (this.addPermission) {
-            builder.append('a');
         }
 
         if (this.createPermission) {

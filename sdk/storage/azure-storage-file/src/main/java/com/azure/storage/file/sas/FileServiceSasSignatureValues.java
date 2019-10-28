@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file;
+package com.azure.storage.file.sas;
 
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -9,6 +9,7 @@ import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.FileServiceVersion;
 
 import java.time.OffsetDateTime;
 

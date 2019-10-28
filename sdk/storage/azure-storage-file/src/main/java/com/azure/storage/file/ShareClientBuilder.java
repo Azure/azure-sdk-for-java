@@ -24,6 +24,8 @@ import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 
 import com.azure.storage.file.implementation.util.BuilderHelper;
+import com.azure.storage.file.sas.FileServiceSasQueryParameters;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;

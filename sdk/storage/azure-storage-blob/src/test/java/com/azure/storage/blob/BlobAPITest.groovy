@@ -24,8 +24,9 @@ import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import reactor.test.StepVerifier
 import spock.lang.Unroll

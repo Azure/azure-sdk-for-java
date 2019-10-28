@@ -3,6 +3,9 @@
 package com.azure.storage.file;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.sas.FileServiceSasQueryParameters;
+import com.azure.storage.file.sas.FileServiceSasSignatureValues;
+import com.azure.storage.file.sas.ShareSasPermission;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;

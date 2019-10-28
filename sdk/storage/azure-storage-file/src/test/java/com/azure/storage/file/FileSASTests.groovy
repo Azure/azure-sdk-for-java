@@ -11,6 +11,9 @@ import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.file.models.FileAccessPolicy
 import com.azure.storage.file.models.FileSignedIdentifier
 import com.azure.storage.file.models.FileStorageException
+import com.azure.storage.file.sas.FileSasPermission
+import com.azure.storage.file.sas.FileServiceSasSignatureValues
+import com.azure.storage.file.sas.ShareSasPermission
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets

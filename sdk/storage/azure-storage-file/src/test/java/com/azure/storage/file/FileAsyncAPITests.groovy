@@ -14,6 +14,8 @@ import com.azure.storage.file.models.FileHttpHeaders
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.FileStorageException
 import com.azure.storage.file.models.NtfsFileAttributes
+import com.azure.storage.file.sas.FileSasPermission
+import com.azure.storage.file.sas.FileServiceSasSignatureValues
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Ignore
