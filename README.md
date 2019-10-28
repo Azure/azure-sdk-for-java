@@ -19,7 +19,7 @@ Java 8 or later is required to use the November 2019 client libraries, otherwise
 ## Packages available
 Each service might have a number of libraries available from each of the following categories:
 
-* [Client - November 2019 Release](#November 2019 Release)
+* [Client - November 2019 Release](#Client-November-2019-Release)
 * [Client - Stable](#Client-Stable)
 * [Management](#Management)
 
