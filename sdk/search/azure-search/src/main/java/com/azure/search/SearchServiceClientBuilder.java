@@ -32,8 +32,7 @@ import java.util.List;
 public class SearchServiceClientBuilder {
     private ApiKeyCredentials apiKeyCredentials;
     private String apiVersion;
-    private String serviceName;
-    private String searchDnsSuffix;
+    private String endpoint;
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> policies;
 
@@ -43,7 +42,6 @@ public class SearchServiceClientBuilder {
      * Default Constructor
      */
     public SearchServiceClientBuilder() {
-        searchDnsSuffix = "search.windows.net";
         apiVersion = "2019-05-06";
         policies = new ArrayList<>();
         httpClient = HttpClient.createDefault();
@@ -65,12 +63,9 @@ public class SearchServiceClientBuilder {
      *
      * @param endpoint the endpoint URL to the search service
      * @return the updated SearchIndexClientBuilder object
-     * @throws IllegalArgumentException on invalid service endpoint
      */
-    public SearchServiceClientBuilder endpoint(String endpoint) throws IllegalArgumentException {
-        SearchServiceUrlParser.SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
-        this.serviceName = parts.serviceName;
-        this.searchDnsSuffix = parts.dnsSuffix;
+    public SearchServiceClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -131,9 +126,6 @@ public class SearchServiceClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new SearchServiceAsyncClient(serviceName,
-            searchDnsSuffix,
-            apiVersion,
-            pipeline);
+        return new SearchServiceAsyncClient(endpoint, apiVersion, pipeline);
     }
 }

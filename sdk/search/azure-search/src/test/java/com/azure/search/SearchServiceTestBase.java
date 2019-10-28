@@ -30,8 +30,9 @@ public abstract class SearchServiceTestBase extends TestBase {
     private static final String DEFAULT_DNS_SUFFIX = "search.windows.net";
     private static final String DOGFOOD_DNS_SUFFIX = "search-dogfood.windows-int.net";
 
-    protected String searchServiceName;
-    protected String searchDnsSuffix;
+    private String searchServiceName;
+    private String searchDnsSuffix;
+    protected String endpoint;
     protected ApiKeyCredentials apiKeyCredentials;
     protected SearchIndexService searchServiceHotelsIndex;
 
@@ -69,7 +70,7 @@ public abstract class SearchServiceTestBase extends TestBase {
             searchServiceName = azureSearchResources.getSearchServiceName();
             apiKeyCredentials = new ApiKeyCredentials(azureSearchResources.getSearchAdminKey());
         }
-
+        endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
         jsonApi.configureTimezone();
     }
 
@@ -82,7 +83,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     protected SearchServiceClientBuilder getSearchServiceClientBuilder() {
         if (!interceptorManager.isPlaybackMode()) {
             return new SearchServiceClientBuilder()
-                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
+                .endpoint(endpoint)
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                 .credential(apiKeyCredentials)
                 .addPolicy(interceptorManager.getRecordPolicy())
@@ -91,7 +92,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
         } else {
             return new SearchServiceClientBuilder()
-                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
+                .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient());
         }
     }

@@ -8,8 +8,6 @@ import org.junit.Test;
 public class SearchServiceClientBuilderTests {
     private final ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
-    private final String expectedSearchServiceName = "test";
-    private final String expectedDnsSuffix = "search.windows.net";
     private final String indexName = "myindex";
     private final String apiVersion = "2019-05-06";
 
@@ -104,8 +102,7 @@ public class SearchServiceClientBuilderTests {
             .credential(apiKeyCredentials)
             .buildClient();
 
-        Assert.assertEquals(expectedSearchServiceName, client.getSearchServiceName());
-        Assert.assertEquals(expectedDnsSuffix, client.getSearchDnsSuffix());
+        Assert.assertEquals(searchEndpoint, client.getEndpoint());
         Assert.assertEquals(apiVersion, client.getApiVersion());
 
         SearchServiceAsyncClient asyncClient = new SearchServiceClientBuilder()
@@ -114,8 +111,7 @@ public class SearchServiceClientBuilderTests {
             .apiVersion(apiVersion)
             .buildAsyncClient();
 
-        Assert.assertEquals(expectedSearchServiceName, asyncClient.getSearchServiceName());
-        Assert.assertEquals(expectedDnsSuffix, asyncClient.getSearchDnsSuffix());
+        Assert.assertEquals(searchEndpoint, asyncClient.getEndpoint());
         Assert.assertEquals(apiVersion, asyncClient.getApiVersion());
     }
 
@@ -207,20 +203,6 @@ public class SearchServiceClientBuilderTests {
             .credential(apiKeyCredentials)
             .apiVersion("")
             .buildClient());
-    }
-
-    @Test
-    public void verifyDefaultDnsSuffixIsCorrectTest() {
-        SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
-        SearchIndexAsyncClient client = clientBuilder
-            .endpoint(searchEndpoint)
-            .indexName(indexName)
-            .credential(apiKeyCredentials)
-            .apiVersion(apiVersion)
-            .buildAsyncClient();
-
-        Assert.assertNotNull(client);
-        Assert.assertEquals("search.windows.net", client.getSearchDnsSuffix());
     }
 
     private void expectThrowsWithMessage(String expectedMessage, Runnable runnable) {

@@ -35,9 +35,8 @@ public class SearchIndexClientBuilder {
 
     private ApiKeyCredentials apiKeyCredentials;
     private String apiVersion;
-    private String serviceName;
+    private String endpoint;
     private String indexName;
-    private String searchDnsSuffix;
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> policies;
 
@@ -70,10 +69,8 @@ public class SearchIndexClientBuilder {
      * @return the updated SearchIndexClientBuilder object
      * @throws IllegalArgumentException on invalid service endpoint
      */
-    public SearchIndexClientBuilder endpoint(String endpoint) throws IllegalArgumentException {
-        SearchServiceUrlParser.SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
-        this.serviceName = parts.serviceName;
-        this.searchDnsSuffix = parts.dnsSuffix;
+    public SearchIndexClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -146,10 +143,6 @@ public class SearchIndexClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new SearchIndexAsyncClient(serviceName,
-            searchDnsSuffix,
-            indexName,
-            apiVersion,
-            pipeline);
+        return new SearchIndexAsyncClient(endpoint, indexName, apiVersion, pipeline);
     }
 }

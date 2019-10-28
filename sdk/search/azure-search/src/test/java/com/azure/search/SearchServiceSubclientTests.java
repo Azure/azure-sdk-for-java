@@ -21,8 +21,7 @@ public class SearchServiceSubclientTests {
         Assert.assertNotNull(indexClient);
 
         // Validate the client points to the same instance
-        Assert.assertEquals(serviceClient.getSearchServiceName(), indexClient.getSearchServiceName());
-        Assert.assertEquals(serviceClient.getSearchDnsSuffix(), indexClient.getSearchDnsSuffix());
+        Assert.assertEquals(serviceClient.getEndpoint(), indexClient.getEndpoint());
         Assert.assertEquals(serviceClient.getApiVersion(), indexClient.getApiVersion());
 
         // Validate that the client uses the same HTTP pipeline for authentication, retries, etc
@@ -47,8 +46,7 @@ public class SearchServiceSubclientTests {
         Assert.assertNotNull(indexClient);
 
         // Validate the client points to the same instance
-        Assert.assertEquals(serviceClient.getSearchServiceName(), indexClient.getSearchServiceName());
-        Assert.assertEquals(serviceClient.getSearchDnsSuffix(), indexClient.getSearchDnsSuffix());
+        Assert.assertEquals(serviceClient.getEndpoint(), indexClient.getEndpoint());
         Assert.assertEquals(serviceClient.getApiVersion(), indexClient.getApiVersion());
 
         // Validate that the client uses the same HTTP pipeline for authentication, retries, etc

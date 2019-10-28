@@ -93,7 +93,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
     protected SearchIndexClientBuilder getClientBuilder(String indexName) {
         if (!interceptorManager.isPlaybackMode()) {
             return new SearchIndexClientBuilder()
-                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
+                .endpoint(endpoint)
                 .indexName(indexName)
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                 .credential(apiKeyCredentials)
@@ -103,7 +103,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
                     new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
         } else {
             return new SearchIndexClientBuilder()
-                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
+                .endpoint(endpoint)
                 .indexName(indexName)
                 .httpClient(interceptorManager.getPlaybackClient());
         }
@@ -115,8 +115,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
                 //Creating Index:
                 searchServiceHotelsIndex = new SearchIndexService(
                     HOTELS_TESTS_INDEX_DATA_JSON,
-                    searchServiceName,
-                    searchDnsSuffix,
+                    endpoint,
                     apiKeyCredentials.getApiKey());
                 searchServiceHotelsIndex.initialize();
 
@@ -131,8 +130,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
                 jsonFile,
-                searchServiceName,
-                searchDnsSuffix,
+                endpoint,
                 apiKeyCredentials.getApiKey());
             try {
                 searchIndexService.initialize();

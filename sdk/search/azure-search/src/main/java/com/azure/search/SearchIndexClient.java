@@ -159,21 +159,12 @@ public class SearchIndexClient {
     }
 
     /**
-     * Gets The DNS suffix of the Azure Search service. The default is search.windows.net.
+     * Gets the endpoint for the Azure Cognitive Search service.
      *
-     * @return the searchDnsSuffix value.
+     * @return the endpoint value.
      */
-    public String getSearchDnsSuffix() {
-        return asyncClient.getSearchDnsSuffix();
-    }
-
-    /**
-     * Gets The name of the Azure Search service.
-     *
-     * @return the searchServiceName value.
-     */
-    public String getSearchServiceName() {
-        return asyncClient.getSearchServiceName();
+    public String getEndpoint() {
+        return this.asyncClient.getEndpoint();
     }
 
     /**

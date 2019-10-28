@@ -8,7 +8,6 @@ import com.azure.search.SearchServiceClient;
 import com.azure.search.SearchServiceClientBuilder;
 import com.azure.search.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,8 +15,7 @@ import java.io.Reader;
 
 public class SearchIndexService {
 
-    private String searchServiceName;
-    private String searchDnsSuffix;
+    private String endpoint;
     private String apiAdminKey;
     private String indexName;
     private String indexDataFileName;
@@ -29,14 +27,12 @@ public class SearchIndexService {
      * to be used in tests.
      *
      * @param indexDataFileName the name of a file that contains a JSON index definition.
-     * @param searchServiceName the name of Search Service in Azure.
-     * @param searchDnsSuffix the DNS suffix for the Search Service.
+     * @param endpoint the endpoint of an Azure Cognitive Search instance.
      * @param apiAdminKey       the Admin Key of Search Service
      */
-    public SearchIndexService(String indexDataFileName, String searchServiceName, String searchDnsSuffix, String apiAdminKey) {
+    public SearchIndexService(String indexDataFileName, String endpoint, String apiAdminKey) {
         this.indexDataFileName = indexDataFileName;
-        this.searchServiceName = searchServiceName;
-        this.searchDnsSuffix = searchDnsSuffix;
+        this.endpoint = endpoint;
         this.apiAdminKey = apiAdminKey;
     }
 
@@ -46,24 +42,13 @@ public class SearchIndexService {
      * @throws IOException thrown when indexDataFileName does not exist or has invalid contents.
      */
     public void initialize() throws IOException {
-        validate();
-
         if (searchServiceClient == null) {
             searchServiceClient = new SearchServiceClientBuilder()
-                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
+                .endpoint(endpoint)
                 .credential(new ApiKeyCredentials(apiAdminKey))
                 .buildClient();
         }
         addIndexes();
-    }
-
-    private void validate() {
-        if (StringUtils.isBlank(this.searchServiceName)) {
-            throw new IllegalArgumentException("searchServiceName cannot be blank");
-        }
-        if (StringUtils.isBlank(this.apiAdminKey)) {
-            throw new IllegalArgumentException("apiAdminKey cannot be blank");
-        }
     }
 
     private void addIndexes() throws IOException {

@@ -15,6 +15,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.SearchServiceUrlParser.SearchServiceUrlParts;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.models.AccessCondition;
@@ -44,19 +45,14 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
 public class SearchServiceAsyncClient {
 
     /**
-     * Search Service dns suffix
-     */
-    private final String searchDnsSuffix;
-
-    /**
      * Search REST API Version
      */
     private final String apiVersion;
 
     /**
-     * The name of the Azure Cognitive Search service.
+     * The endpoint for the Azure Cognitive Search service.
      */
-    private final String searchServiceName;
+    private final String endpoint;
 
     /**
      * The logger to be used
@@ -73,15 +69,10 @@ public class SearchServiceAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    SearchServiceAsyncClient(
-        String searchServiceName, String searchDnsSuffix, String apiVersion,
-        HttpPipeline httpPipeline) {
-        if (StringUtils.isBlank(searchServiceName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid searchServiceName"));
-        }
-        if (StringUtils.isBlank(searchDnsSuffix)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid searchDnsSuffix"));
-        }
+    SearchServiceAsyncClient(String endpoint, String apiVersion, HttpPipeline httpPipeline) {
+
+        SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
+
         if (StringUtils.isBlank(apiVersion)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
         }
@@ -89,13 +80,13 @@ public class SearchServiceAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid httpPipeline"));
         }
 
-        this.searchServiceName = searchServiceName;
-        this.searchDnsSuffix = searchDnsSuffix;
+        this.endpoint = endpoint;
         this.apiVersion = apiVersion;
         this.httpPipeline = httpPipeline;
+
         this.restClient = new SearchServiceRestClientBuilder()
-            .searchServiceName(searchServiceName)
-            .searchDnsSuffix(searchDnsSuffix)
+            .searchServiceName(parts.serviceName)
+            .searchDnsSuffix(parts.dnsSuffix)
             .apiVersion(apiVersion)
             .pipeline(httpPipeline)
             .build();
@@ -119,8 +110,7 @@ public class SearchServiceAsyncClient {
      */
     public SearchIndexAsyncClient getIndexClient(String indexName) {
         return new SearchIndexAsyncClient(
-            searchServiceName,
-            searchDnsSuffix,
+            endpoint,
             indexName,
             apiVersion,
             httpPipeline);
@@ -136,21 +126,12 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * Gets The DNS suffix of the Azure Cognitive Search service. The default is search.windows.net.
+     * Gets the endpoint for the Azure Cognitive Search service.
      *
-     * @return the searchDnsSuffix value.
+     * @return the endpoint value.
      */
-    public String getSearchDnsSuffix() {
-        return this.searchDnsSuffix;
-    }
-
-    /**
-     * Gets The name of the Azure Cognitive Search service.
-     *
-     * @return the searchServiceName value.
-     */
-    public String getSearchServiceName() {
-        return this.searchServiceName;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /**
