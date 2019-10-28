@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -159,7 +158,7 @@ public class EventHubAsyncProducer implements Closeable {
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
         if (options == null) {
-            return Mono.error(new NullPointerException("'options' cannot be null."));
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'options' cannot be null.")));
         }
 
         final BatchOptions clone = options.clone();
@@ -214,7 +213,9 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event) {
-        Objects.requireNonNull(event, "'event' cannot be null.");
+        if (event == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'event' cannot be null.")));
+        }
 
         return send(Flux.just(event));
     }
@@ -235,8 +236,11 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     public Mono<Void> send(EventData event, SendOptions options) {
-        Objects.requireNonNull(event, "'event' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
+        if (event == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'event' cannot be null.")));
+        } else if (options == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'options' cannot be null.")));
+        }
 
         return send(Flux.just(event), options);
     }
@@ -251,7 +255,9 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events) {
-        Objects.requireNonNull(events, "'events' cannot be null.");
+        if (events == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'events' cannot be null.")));
+        }
 
         return send(Flux.fromIterable(events));
     }
@@ -267,7 +273,11 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events, "'options' cannot be null.");
+        if (events == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'events' cannot be null.")));
+        } else if (options == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'options' cannot be null.")));
+        }
 
         return send(Flux.fromIterable(events), options);
     }
@@ -282,7 +292,9 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events) {
-        Objects.requireNonNull(events, "'events' cannot be null.");
+        if (events == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'events' cannot be null.")));
+        }
 
         return send(events, DEFAULT_SEND_OPTIONS);
     }
@@ -298,8 +310,11 @@ public class EventHubAsyncProducer implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events, SendOptions options) {
-        Objects.requireNonNull(events, "'events' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
+        if (events == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'events' cannot be null.")));
+        } else if (options == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("'options' cannot be null.")));
+        }
 
         return sendInternal(events, options);
     }
