@@ -45,9 +45,6 @@ These sample can be run in your IDE with default JDK.
 ## Examples
    Following section document various examples.
    
-## Next steps
-Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
-
 ### Hello World Samples
 * [HelloWorld.java][sample_helloWorld] - and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples for following scenarios:
     * Create a Key
@@ -98,6 +95,20 @@ Several KeyVault Java SDK samples are available to you in the SDK's GitHub repos
     * Wrapping a key with symmetric key
     * Unwrapping a key with symmetric key
 
+## Troubleshooting
+### General
+Key Vault clients raise exceptions. For example, if you try to retrieve a key after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+```java
+try {
+    keyClient.getKey("deletedKey")
+} catch (ResourceNotFoundException e) {
+    System.out.println(e.getMessage());
+}
+```
+
+## Next steps
+Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README] [KEYS_SDK_README]. 
+
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
@@ -110,6 +121,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]:  src
+[KEYS_SDK_README]: ../../README.md
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
 [sample_helloWorld]: java/com/azure/security/keyvault/keys/HelloWorld.java
 [sample_helloWorldAsync]: java/com/azure/security/keyvault/keys/HelloWorldAsync.java

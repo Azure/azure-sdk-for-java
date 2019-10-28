@@ -81,9 +81,8 @@ try {
 }
 ```
 
-
 ## Next steps
-Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
+Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README] [SECRETS_SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
@@ -98,6 +97,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]:  src
+[SECRETS_SDK_README]: ../../README.md
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
 [sample_helloWorld]: java/com/azure/security/keyvault/secrets/HelloWorld.java
 [sample_helloWorldAsync]: java/com/azure/security/keyvault/secrets/HelloWorldAsync.java

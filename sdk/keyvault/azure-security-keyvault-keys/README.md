@@ -450,20 +450,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_keyvault_cli]:https://docs.microsoft.com/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [keys_samples]: src/samples/java/com/azure/security/keyvault/keys
-[sample_helloWorld]: src/samples/java/com/azure/security/keyvault/keys/HelloWorld.java
-[sample_helloWorldAsync]: src/samples/java/com/azure/security/keyvault/keys/HelloWorldAsync.java
-[sample_list]: src/samples/java/com/azure/security/keyvault/keys/ListOperations.java
-[sample_listAsync]: src/samples/java/com/azure/security/keyvault/keys/ListOperationsAsync.java
-[sample_BackupRestore]: src/samples/java/com/azure/security/keyvault/keys/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]: src/samples/java/com/azure/security/keyvault/keys/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeys.java
-[sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeysAsync.java
-[sample_encryptDecrypt]: src/samples/java/com/azure/security/keyvault/keys/cryptography/EncryptDecryptOperations.java
-[sample_encryptDecryptAsync]: src/samples/java/com/azure/security/keyvault/keys/cryptography/EncryptDecryptOperationsAsync.java
-[sample_signVerify]: src/samples/java/com/azure/security/keyvault/keys/cryptography/SignVerifyOperations.java
-[sample_signVerifyAsync]: src/samples/java/com/azure/security/keyvault/keys/cryptography/SignVerifyOperationsAsync.java
-[sample_wrapUnwrap]: src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperations.java
-[sample_wrapUnwrapAsync]: src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperationsAsync.java
 [samples_readme]: src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-keys/README.png)
