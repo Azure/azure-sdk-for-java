@@ -106,7 +106,6 @@ class Program {
 }
 
 class SimplePartitionProcessor extends PartitionProcessor {
-    @Override
     Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
         System.out.printf("Event received. Sequence number: %s%n.", eventData.sequenceNumber());
         return partitionContext.updateCheckpoint(eventData);

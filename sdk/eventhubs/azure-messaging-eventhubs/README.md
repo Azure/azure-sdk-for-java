@@ -313,7 +313,6 @@ class SimplePartitionProcessor extends PartitionProcessor {
     /**
      * Processes the event data.
      */
-    @Override
     public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
         System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
         return partitionContext.updateCheckpoint(eventData);
