@@ -4,8 +4,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 
-import java.io.IOException;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -53,12 +51,7 @@ public class PublishEvent {
                 }
             }, () -> {
                 // Disposing of our producer and client.
-                try {
-                    producer.close();
-                } catch (IOException e) {
-                    System.err.println("Error encountered while closing producer: " + e.toString());
-                }
-
+                producer.close();
                 client.close();
             });
     }

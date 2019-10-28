@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.messaging.eventhubs.models.BatchOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.io.IOException;
@@ -42,19 +41,18 @@ public class EventHubProducerJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet demonstrating how to create an {@link EventHubProducer} that routes events to a single partition.
+     * Code snippet demonstrating how to send events to a single partition.
      *
      * @throws IOException if the producer cannot be disposed.
      */
     public void instantiatePartitionProducer() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
-        RetryOptions retryOptions = new RetryOptions()
-            .setTryTimeout(Duration.ofSeconds(45));
-        EventHubProducerOptions options = new EventHubProducerOptions()
-            .setPartitionId("foo")
-            .setRetry(retryOptions);
+        EventData eventData = new EventData("data-to-partition-foo");
+        SendOptions options = new SendOptions()
+            .setPartitionId("foo");
 
-        EventHubProducer producer = client.createProducer(options);
+        EventHubProducer producer = client.createProducer();
+        producer.send(eventData, options);
         // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
 
         producer.close();

@@ -3,14 +3,11 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
 import com.azure.messaging.eventhubs.models.BatchOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -25,9 +22,8 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
      * Code snippet demonstrating how to create an {@link EventHubAsyncProducer} that automatically routes events to any
      * partition.
      *
-     * @throws IOException if the producer cannot be disposed.
      */
-    public void instantiate() throws IOException {
+    public void instantiate() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation
         EventHubAsyncClient client = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
@@ -46,15 +42,14 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
      * @throws IOException if the producer cannot be disposed.
      */
     public void instantiatePartitionProducer() throws IOException {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId
-        RetryOptions retryOptions = new RetryOptions()
-            .setTryTimeout(Duration.ofSeconds(45));
-        EventHubProducerOptions options = new EventHubProducerOptions()
-            .setPartitionId("foo")
-            .setRetry(retryOptions);
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
+        EventData eventData = new EventData("data-to-partition-foo");
+        SendOptions options = new SendOptions()
+            .setPartitionId("foo");
 
-        EventHubAsyncProducer producer = client.createProducer(options);
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId
+        EventHubAsyncProducer producer = client.createProducer();
+        producer.send(eventData, options);
+        // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
 
         producer.close();
     }

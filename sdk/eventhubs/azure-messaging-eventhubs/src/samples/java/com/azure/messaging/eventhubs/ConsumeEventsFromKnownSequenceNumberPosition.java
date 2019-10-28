@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.Disposable;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class ConsumeEventsFromKnownSequenceNumberPosition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     private static long lastEnqueuedSequenceNumber = -1;
-    private static String lastEnqueuedSequencePartitionID = null;
+    private static String lastEnqueuedSequencePartitionId = null;
 
     /**
      * Main method to invoke this demo about how to receive event from a known sequence number position in an Azure Event Hub instance.
@@ -49,7 +49,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
                 properties -> {
                     if (!properties.isEmpty()) {
                         lastEnqueuedSequenceNumber = properties.getLastEnqueuedSequenceNumber();
-                        lastEnqueuedSequencePartitionID = properties.getId();
+                        lastEnqueuedSequencePartitionId = properties.getId();
                     }
                 },
                 error -> System.err.println("Error occurred while fetching partition properties: " + error.toString()),
@@ -65,7 +65,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
 
         // Make sure to have at least one non-empty event hub in order to continue the sample execution
         // if you don't have an non-empty event hub, try with another example 'SendEvent' in the same directory.
-        if (lastEnqueuedSequenceNumber == -1 || lastEnqueuedSequencePartitionID == null) {
+        if (lastEnqueuedSequenceNumber == -1 || lastEnqueuedSequencePartitionId == null) {
             System.err.println("All event hubs are empty");
             System.exit(0);
         }
@@ -75,7 +75,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
         // service we only want events that are sent to the partition after we begin listening.
         EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
-            lastEnqueuedSequencePartitionID, EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false));
+            lastEnqueuedSequencePartitionId, EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false));
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
@@ -90,12 +90,13 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
             semaphore.release();
         });
 
-        // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
-        // This creates a producer that only sends events to `lastEnqueuedSequencePartitionID`.
-        EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(lastEnqueuedSequencePartitionID);
-        EventHubAsyncProducer producer = client.createProducer(producerOptions);
+        EventHubAsyncProducer producer = client.createProducer();
 
-        producer.send(new EventData("Hello world!".getBytes(UTF_8))).block(OPERATION_TIMEOUT);
+        // Because the consumer is only listening to new events, we need to send some events to that partition.
+        // This sends the events to `lastEnqueuedSequencePartitionId`.
+        SendOptions sendOptions = new SendOptions().setPartitionId(lastEnqueuedSequencePartitionId);
+
+        producer.send(new EventData("Hello world!".getBytes(UTF_8)), sendOptions).block(OPERATION_TIMEOUT);
         // Acquiring the semaphore so that this sample does not end before all events are fetched.
         semaphore.acquire();
 

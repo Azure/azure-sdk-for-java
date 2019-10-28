@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
@@ -73,15 +73,16 @@ public class ConsumeEvent {
             countDownLatch.countDown();
         });
 
+        EventHubAsyncProducer producer = client.createProducer();
+
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
-        // This creates a producer that only sends events to `firstPartition`.
-        EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(firstPartition);
-        EventHubAsyncProducer producer = client.createProducer(producerOptions);
+        // We set the send options to send the events to `firstPartition`.
+        SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
 
         // We create 10 events to send to the service and block until the send has completed.
         Flux.range(0, NUMBER_OF_EVENTS).flatMap(number -> {
             String body = String.format("Hello world! Number: %s", number);
-            return producer.send(new EventData(body.getBytes(UTF_8)));
+            return producer.send(new EventData(body.getBytes(UTF_8)), sendOptions);
         }).blockLast(OPERATION_TIMEOUT);
 
         try {

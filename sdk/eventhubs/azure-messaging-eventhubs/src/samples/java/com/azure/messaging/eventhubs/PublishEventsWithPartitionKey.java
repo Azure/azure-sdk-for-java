@@ -62,7 +62,7 @@ public class PublishEventsWithPartitionKey {
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
         producer.send(data, sendOptions).subscribe(
-            (ignored) -> System.out.println("Sending a list of events to a partition that the partition key maps to..."),
+            ignored -> { },
             error -> {
                 System.err.println("There was an error sending the event batch: " + error.toString());
 
@@ -74,12 +74,7 @@ public class PublishEventsWithPartitionKey {
                 }
             }, () -> {
                 // Disposing of our producer and client.
-                try {
-                    producer.close();
-                } catch (IOException e) {
-                    System.err.println("Error encountered while closing producer: " + e.toString());
-                }
-
+                producer.close();
                 client.close();
             });
     }
