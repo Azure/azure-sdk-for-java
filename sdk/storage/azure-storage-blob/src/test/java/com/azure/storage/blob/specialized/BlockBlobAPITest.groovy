@@ -27,6 +27,7 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -985,6 +986,26 @@ class BlockBlobAPITest extends APISpec {
         // The case of one large buffer needing to be broken up is tested in the previous test.
     }
 
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload handle pathing"() {
+        setup:
+        def dataList = [] as List
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        blobac.upload(Flux.fromIterable(dataList), null, true).block()
+
+        expect:
+        compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
+        bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSizeList                         | blockCount
+        [4 * Constants.MB + 1, 10]           | 2
+        [4 * Constants.MB]                   | 0
+        [10, 100, 1000, 10000]               | 0
+        [4 * Constants.MB, 4 * Constants.MB] | 2
+    }
+
     def "Buffered upload illegal arguments null"() {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(4, 4, null)
@@ -1261,11 +1282,11 @@ class BlockBlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                 | "斑點"
+        "斑點"                   | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "BlobClient overwrite false"() {
         setup:
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
@@ -1277,7 +1298,7 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "BlobClient overwrite true"() {
         setup:
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
