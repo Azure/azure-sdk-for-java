@@ -105,6 +105,7 @@ public class BatchOptions implements Cloneable {
         }
 
         return clone.setPartitionKey(partitionKey)
+            .setPartitionId(partitionId)
             .setMaximumSizeInBytes(maximumSizeInBytes);
     }
 }

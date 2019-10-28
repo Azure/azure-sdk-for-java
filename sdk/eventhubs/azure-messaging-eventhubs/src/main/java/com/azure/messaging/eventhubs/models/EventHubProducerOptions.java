@@ -53,8 +53,6 @@ public class EventHubProducerOptions implements Cloneable {
             clone = new EventHubProducerOptions();
         }
 
-        clone.setPartitionId(partitionId);
-
         if (retryOptions != null) {
             clone.setRetry(retryOptions.clone());
         }
