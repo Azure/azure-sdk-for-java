@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing sas classes used by Azure Storage Files.
+ * Package containing SAS (shared access signature) classes used by Azure Storage Files.
  */
 package com.azure.storage.file.sas;
