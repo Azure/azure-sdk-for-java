@@ -3,11 +3,22 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.security.keyvault.keys.KeyAsyncClient;
+import com.azure.security.keyvault.keys.KeyClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}.
+ *  It is managed by Secret Service.
+ *
+ *  @see KeyClient
+ *  @see KeyAsyncClient
+ */
+@Fluent
 public class KeyVaultKey {
 
     /**

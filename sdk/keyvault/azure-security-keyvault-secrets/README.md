@@ -185,7 +185,7 @@ System.out.printf("Secret is returned with name %s and value %s \n", secret.getN
 
 ### Update an existing Secret
 
-Update an existing Secret by calling `updateSecret`.
+Update an existing Secret by calling `updateSecretProperties`.
 ```Java
 // Get the secret to update.
 KeyVaultSecret secret = secretClient.getSecret("secret_name");
@@ -212,7 +212,7 @@ deletedSecretPoller.waitForCompletion();
 
 ### List Secrets
 
-List the secrets in the key vault by calling `listSecrets`.
+List the secrets in the key vault by calling `listPropertiesOfSecrets`.
 ```Java
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
 for (SecretProperties secretProperties : client.listPropertiesOfSecrets()) {
@@ -260,7 +260,7 @@ secretAsyncClient.getSecret("secretName").subscribe(secret ->
 
 ### Update an existing Secret Asynchronously
 
-Update an existing Secret by calling `updateSecret`.
+Update an existing Secret by calling `updateSecretProperties`.
 ```Java
 secretAsyncClient.getSecret("secretName").subscribe(secret -> {
      // Update the expiry time of the secret.
@@ -284,7 +284,7 @@ secretAsyncClient.beginDeleteSecret("secretName")
 
 ### List Secrets Asynchronously
 
-List the secrets in the key vault by calling `listSecrets`.
+List the secrets in the key vault by calling `listPropertiesOfSecrets`.
 ```Java
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretAsyncClient.listPropertiesOfSecrets()

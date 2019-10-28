@@ -455,7 +455,7 @@ public final class KeyAsyncClient {
      * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.importKey#options-response}
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.importKeyWithResponse#options-response}
      *
      * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.

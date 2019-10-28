@@ -5,6 +5,11 @@ package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.time.OffsetDateTime;
+
+/**
+ * Represents the configurable options to import a key.
+ */
 @Fluent
 public class ImportKeyOptions extends KeyProperties {
 
@@ -47,6 +52,18 @@ public class ImportKeyOptions extends KeyProperties {
     }
 
     /**
+     * Set the enabled value.
+     *
+     * @param enabled The enabled value to set
+     * @return the updated ImportKeyOptions object itself.
+     */
+    public ImportKeyOptions setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+
+    /**
      * Get the key material of the key being imported.
      * @return the key material.
      */
@@ -54,4 +71,25 @@ public class ImportKeyOptions extends KeyProperties {
         return key;
     }
 
+    /**
+     * Set the {@link OffsetDateTime expires} UTC time.
+     *
+     * @param expiresOn The expiry time to set for the key.
+     * @return the updated ImportKeyOptions object itself.
+     */
+    public ImportKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
+        this.expiresOn = expiresOn;
+        return this;
+    }
+
+    /**
+     * Set the {@link OffsetDateTime notBefore} UTC time.
+     *
+     * @param notBefore The notBefore UTC time to set
+     * @return the updated ImportKeyOptions object itself.
+     */
+    public ImportKeyOptions setNotBefore(OffsetDateTime notBefore) {
+        this.notBefore = notBefore;
+        return this;
+    }
 }

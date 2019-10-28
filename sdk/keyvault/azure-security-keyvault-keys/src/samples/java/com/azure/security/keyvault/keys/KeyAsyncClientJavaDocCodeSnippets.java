@@ -165,12 +165,12 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
             System.out.printf("Key is imported with name %s and id %s \n", keyResponse.getName(), keyResponse.getId()));
         // END: com.azure.security.keyvault.keys.keyasyncclient.importKey#options
 
-        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.importKey#options-response
+        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.importKeyWithResponse#options-response
         ImportKeyOptions importKeyOptions = new ImportKeyOptions("keyName", jsonWebKeyToImport)
             .setHardwareProtected(false);
         keyAsyncClient.importKey(importKeyOptions).subscribe(keyResponse ->
             System.out.printf("Key is imported with name %s and id %s \n", keyResponse.getName(), keyResponse.getId()));
-        // END: com.azure.security.keyvault.keys.keyasyncclient.importKey#options-response
+        // END: com.azure.security.keyvault.keys.keyasyncclient.importKeyWithResponse#options-response
     }
 
     /**

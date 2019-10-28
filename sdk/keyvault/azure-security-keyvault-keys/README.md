@@ -212,7 +212,7 @@ System.out.printf("Key is returned with name %s and id %s \n", key.getName(), ke
 
 ### Update an existing Key
 
-Update an existing Key by calling `updateKey`.
+Update an existing Key by calling `updateKeyProperties`.
 ```Java
 // Get the key to update.
 KeyVaultKey key = keyClient.getKey("key_name");
@@ -240,7 +240,7 @@ deletedKeyPoller.waitForCompletion();
 
 ### List Keys
 
-List the keys in the key vault by calling `listKeys`.
+List the keys in the key vault by calling `listPropertiesOfKeys`.
 ```java
 // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
 for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
@@ -328,7 +328,7 @@ keyAsyncClient.getKey("keyName").subscribe(key ->
 
 ### Update an existing Key Asynchronously
 
-Update an existing Key by calling `updateKey`.
+Update an existing Key by calling `updateKeyProperties`.
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
      // Get the Key
@@ -354,7 +354,7 @@ keyAsyncClient.beginDeleteKey("keyName")
 
 ### List Keys Asynchronously
 
-List the keys in the key vault by calling `listKeys`.
+List the keys in the key vault by calling `listPropertiesOfKeys`.
 ```Java
 // The List Keys operation returns keys without their value, so for each key returned we call `getKey` to get its // value as well.
 keyAsyncClient.listPropertiesOfKeys()

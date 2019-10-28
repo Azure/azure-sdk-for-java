@@ -304,7 +304,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.importKey#options-response}
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.importKeyWithResponse#options-response}
      *
      * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.
