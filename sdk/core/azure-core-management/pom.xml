@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-management</artifactId>
-  <version>1.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+  <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Management Java Core Library</name>
