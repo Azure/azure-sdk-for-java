@@ -49,7 +49,7 @@ public class TestCommons {
         }
 
         sender.send(message);
-        
+
         IMessage receivedMessage = receiver.receive();
         Assert.assertNotNull("Message not received", receivedMessage);
         Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
@@ -80,7 +80,7 @@ public class TestCommons {
         }
 
         sender.send(message);
-        
+
         IMessage receivedMessage = receiver.receive();
         Assert.assertNotNull("Message not received", receivedMessage);
         Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
@@ -102,7 +102,7 @@ public class TestCommons {
             message.setSessionId(sessionId);
         }
         sender.send(message);
-                
+
         IMessage receivedMessage = receiver.receive();
         Assert.assertNotNull("Message not received", receivedMessage);
         Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
@@ -485,7 +485,7 @@ public class TestCommons {
         String secondDeferredPhase = "deferred first time and second time";
 
         Message sentMessage = new Message("AMQP message");
-        HashMap customProperties = new HashMap();
+        HashMap<String, Object> customProperties = new HashMap<>();
         customProperties.put(phaseKey, initialPhase);
         sentMessage.setProperties(customProperties);
         if (sessionId != null) {

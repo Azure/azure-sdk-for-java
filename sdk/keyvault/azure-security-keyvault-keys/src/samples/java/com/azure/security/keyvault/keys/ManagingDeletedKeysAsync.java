@@ -52,7 +52,6 @@ public class ManagingDeletedKeysAsync {
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
         keyAsyncClient.beginDeleteKey("CloudEcKey")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
@@ -65,7 +64,6 @@ public class ManagingDeletedKeysAsync {
         // We accidentally deleted Cloud Ec key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
         keyAsyncClient.beginRecoverDeletedKey("CloudEcKey")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recover Key Name: " + pollResponse.getValue().getName());
@@ -77,7 +75,6 @@ public class ManagingDeletedKeysAsync {
 
         // The Cloud Ec and Rsa keys are no longer needed, need to delete them from the key vault.
         keyAsyncClient.beginDeleteKey("CloudEcKey")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
@@ -85,7 +82,6 @@ public class ManagingDeletedKeysAsync {
             });
 
         keyAsyncClient.beginDeleteKey("CloudRsaKey")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Key Name: " + pollResponse.getValue().getName());

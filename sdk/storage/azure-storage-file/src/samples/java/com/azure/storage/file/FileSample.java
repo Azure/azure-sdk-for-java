@@ -3,8 +3,7 @@
 package com.azure.storage.file;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.polling.Poller;
-import com.azure.storage.file.models.CopyStatusType;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileStorageException;
@@ -17,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Sample demonstrates how to create, copy and delete a file and how to get and set properties.
@@ -73,20 +73,19 @@ public class FileSample {
 
         String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
         Duration pollInterval = Duration.ofSeconds(2);
-        Poller<FileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null, pollInterval);
+        SyncPoller<FileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null, pollInterval);
 
-        poller.getObserver().subscribe(pollResponse -> {
-            final FileCopyInfo copyInfo = pollResponse.getValue();
-
-            // Abort the copy if the status is pending.
-            if (copyInfo.getCopyStatus() == CopyStatusType.PENDING) {
+        try {
+            poller.waitForCompletion(Duration.ofMinutes(15));
+        } catch (RuntimeException re) {
+            if (re.getCause() != null && re.getCause() instanceof TimeoutException) {
                 try {
-                    destFileClient.abortCopy(copyInfo.getCopyId());
+                    poller.cancelOperation();
                 } catch (FileStorageException e) {
                     System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
                 }
             }
-        });
+        }
 
         // Upload a local file to the storage.
         String filePath = "C:/resourcePath/";

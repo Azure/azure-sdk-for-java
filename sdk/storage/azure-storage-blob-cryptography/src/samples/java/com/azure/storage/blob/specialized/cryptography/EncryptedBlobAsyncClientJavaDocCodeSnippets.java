@@ -49,9 +49,7 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
      */
     public void upload() {
         // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize)
-            .setNumBuffers(numBuffers);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, numBuffers, null);
         client.upload(data, parallelTransferOptions).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getContentMd5())));
@@ -63,9 +61,7 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
      */
     public void uploadWithOverwrite() {
         // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize)
-            .setNumBuffers(numBuffers);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, numBuffers, null);
         boolean overwrite = false; // Default behavior
         client.upload(data, parallelTransferOptions, overwrite).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
@@ -87,9 +83,7 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
         BlobRequestConditions accessConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize)
-            .setNumBuffers(numBuffers);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, numBuffers, null);
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
@@ -135,8 +129,7 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null);
 
         client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))

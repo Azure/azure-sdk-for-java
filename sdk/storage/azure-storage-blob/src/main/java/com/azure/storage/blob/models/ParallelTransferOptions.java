@@ -5,40 +5,63 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.ProgressReceiver;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+
 /**
- * This class contains configuration used to parallelize data transfer operations.
+ * This class contains configuration used to parallelize data transfer operations. Note that not all values are used
+ * by every method which accepts this type. Please refer to the javadoc on specific methods for these cases.
  */
 @Fluent
-public class ParallelTransferOptions {
+public final class ParallelTransferOptions {
+    private static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
-    private static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private static final int BLOB_MAX_BLOCK_SIZE = 100 * Constants.MB;
-
-    private static final int BLOB_DEFAULT_NUMBER_OF_PARALLEL_TRANSFERS = 8;
-
-    private int blockSize;
-    private int numBuffers;
-    private ProgressReceiver progressReceiver;
+    private final Integer blockSize;
+    private final Integer numBuffers;
+    private final ProgressReceiver progressReceiver;
 
     /**
      * Creates a new {@link ParallelTransferOptions} with default parameters applied.
-     * blockSize = 4MB
-     * numBuffers = 8
+     *
+     * @param blockSize The block size.
+     * For upload, The block size is the size of each block that will be staged. This value also determines the number
+     * of requests that need to be made. If block size is large, upload will make fewer network calls, but each
+     * individual call will send more data and will therefore take longer. This parameter also determines the size
+     * that each buffer uses when buffering is required and consequently amount of memory consumed by such methods may
+     * be up to blockSize * numBuffers.
+     * @param numBuffers For buffered upload only, the number of buffers is the maximum number of buffers this method
+     * should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger the
+     * number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
+     * The amount of memory consumed by methods using this value may be up to blockSize * numBuffers.
+     * @param progressReceiver {@link ProgressReceiver}
      */
-    public ParallelTransferOptions() {
-        this.blockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
-        this.numBuffers = BLOB_DEFAULT_NUMBER_OF_PARALLEL_TRANSFERS;
-        this.progressReceiver = null;
+    public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver) {
+        if (blockSize != null) {
+            StorageImplUtils.assertInBounds("blockSize", blockSize, 0, BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES);
+            this.blockSize = blockSize;
+        } else {
+            this.blockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        }
+
+        if (numBuffers != null) {
+            StorageImplUtils.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
+            this.numBuffers = numBuffers;
+        } else {
+            this.numBuffers = BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+        }
+
+        this.progressReceiver = progressReceiver;
     }
 
     /**
      * Gets the block size (chunk size) to transfer at a time.
      * @return The block size.
      */
-    public int getBlockSize() {
+    public Integer getBlockSize() {
         return this.blockSize;
     }
 
@@ -46,7 +69,7 @@ public class ParallelTransferOptions {
      * Gets the number of buffers being used for a transfer operation.
      * @return The number of buffers.
      */
-    public int getNumBuffers() {
+    public Integer getNumBuffers() {
         return this.numBuffers;
     }
 
@@ -56,42 +79,5 @@ public class ParallelTransferOptions {
      */
     public ProgressReceiver getProgressReceiver() {
         return this.progressReceiver;
-    }
-
-    /**
-     * Sets the block size or the size of a chunk to transfer at a time.
-     * @param blockSize The block size.
-     * For upload, The block size is the size of each block that will be staged. This value also determines the size
-     * that each buffer used by this method will be and determines the number of requests that need to be made. The
-     * amount of memory consumed by this method may be up to blockSize * numBuffers. If block size is large, upload
-     * will make fewer network calls, but each individual call will send more data and will therefore take longer.
-     * @return The updated ParallelTransferOptions object.
-     * @throws IllegalArgumentException when block size is less than 0 or greater than max blob block size (10MB).
-     */
-    public ParallelTransferOptions setBlockSize(int blockSize) {
-        StorageImplUtils.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_BLOCK_SIZE);
-        this.blockSize = blockSize;
-        return this;
-    }
-
-    /**
-     * Sets the number of buffers being used for an upload/download operation.
-     * @param numBuffers The number of buffers.
-     * For upload, The number of buffers is the maximum number of buffers this method should allocate.
-     * Must be at least two. Typically, the larger the number of buffers, the more parallel, and thus faster, the
-     * upload portion  of this operation will be. The amount of memory consumed by this method may be up to
-     * blockSize * numBuffers.
-     * @return The updated ParallelTransferOptions object.
-     * @throws IllegalArgumentException when numBuffers is less than 2.
-     */
-    public ParallelTransferOptions setNumBuffers(int numBuffers) {
-        StorageImplUtils.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
-        this.numBuffers = numBuffers;
-        return this;
-    }
-
-    public ParallelTransferOptions setProgressReceiver(ProgressReceiver progressReceiver) {
-        this.progressReceiver = progressReceiver;
-        return this;
     }
 }
