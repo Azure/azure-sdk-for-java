@@ -12,13 +12,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileDownloadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileRange;
-import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
-import com.azure.storage.file.datalake.models.ReliableDownloadOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -120,7 +122,7 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.createWithResponse#PathHTTPHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.createWithResponse#PathHTTPHeaders-Map-DataLakeRequestConditions-String-String}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
@@ -128,14 +130,14 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
     public Mono<Response<PathInfo>> createWithResponse(PathHTTPHeaders headers, Map<String, String> metadata,
-        PathAccessConditions accessConditions, String permissions, String umask) {
+        DataLakeRequestConditions accessConditions, String permissions, String umask) {
         try {
             return withContext(context -> createWithResponse(PathResourceType.FILE, headers, metadata,
                 accessConditions, permissions, umask, context));
@@ -170,17 +172,17 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.deleteWithResponse#PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.deleteWithResponse#DataLakeRequestConditions}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> deleteWithResponse(PathAccessConditions accessConditions) {
+    public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions accessConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
             return withContext(context -> deleteWithResponse(null /* recursive */, accessConditions, context));
@@ -289,7 +291,7 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.flushWithResponse#Long-boolean-boolean-PathHTTPHeaders-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.flushWithResponse#Long-boolean-boolean-PathHTTPHeaders-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -299,12 +301,12 @@ public class FileAsyncClient extends PathAsyncClient {
      * @param retainUncommittedData Whether or not uncommitted data is to be retained after the operation.
      * @param close Whether or not a file changed event raised indicates completion (true) or modification (false).
      * @param httpHeaders {@link PathHTTPHeaders httpHeaders}
-     * @param accessConditions {@link PathAccessConditions accessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions accessConditions}
      *
      * @return A reactive response containing the information of the created resource.
      */
     public Mono<Response<PathInfo>> flushDataWithResponse(long position, boolean retainUncommittedData, boolean close,
-        PathHTTPHeaders httpHeaders, PathAccessConditions accessConditions) {
+        PathHTTPHeaders httpHeaders, DataLakeRequestConditions accessConditions) {
         try {
             return withContext(context -> flushDataWithResponse(position, retainUncommittedData, close, httpHeaders,
                 accessConditions, context));
@@ -314,14 +316,20 @@ public class FileAsyncClient extends PathAsyncClient {
     }
 
     Mono<Response<PathInfo>> flushDataWithResponse(long position, boolean retainUncommittedData, boolean close,
-        PathHTTPHeaders httpHeaders, PathAccessConditions accessConditions, Context context) {
+        PathHTTPHeaders httpHeaders, DataLakeRequestConditions accessConditions, Context context) {
 
         httpHeaders = httpHeaders == null ? new PathHTTPHeaders() : httpHeaders;
-        accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
+        accessConditions = accessConditions == null ? new DataLakeRequestConditions() : accessConditions;
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(accessConditions.getLeaseId());
+        ModifiedAccessConditions mac = new ModifiedAccessConditions()
+            .setIfMatch(accessConditions.getIfMatch())
+            .setIfNoneMatch(accessConditions.getIfNoneMatch())
+            .setIfModifiedSince(accessConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince());
 
         return this.dataLakeStorage.paths().flushDataWithRestResponseAsync(null, position, retainUncommittedData, close,
-            (long) 0, null, httpHeaders, accessConditions.getLeaseAccessConditions(),
-            accessConditions.getModifiedAccessConditions(), context)
+            (long) 0, null, httpHeaders, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders())));
     }
 
@@ -339,7 +347,8 @@ public class FileAsyncClient extends PathAsyncClient {
      */
     public Flux<ByteBuffer> read() {
         try {
-            return readWithResponse(null, null, null, false).flatMapMany(Response::getValue);
+            return readWithResponse(null, null, null, false)
+                .flatMapMany(FileDownloadAsyncResponse::getValue);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
         }
@@ -350,23 +359,25 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.readWithResponse#FileRange-ReliableDownloadOptions-PathAccessConditions-boolean}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.readWithResponse#FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param range {@link FileRange}
-     * @param options {@link ReliableDownloadOptions}
-     * @param accessConditions {@link PathAccessConditions}
+     * @param options {@link DownloadRetryOptions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified file range should be returned.
      * @return A reactive response containing the file data.
      */
-    public Mono<Response<Flux<ByteBuffer>>> readWithResponse(FileRange range, ReliableDownloadOptions options,
-        PathAccessConditions accessConditions, boolean rangeGetContentMD5) {
+    public Mono<FileDownloadAsyncResponse> readWithResponse(FileRange range, DownloadRetryOptions options,
+        DataLakeRequestConditions accessConditions, boolean rangeGetContentMD5) {
         try {
             return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
-                Transforms.toBlobReliableDownloadOptions(options), Transforms.toBlobAccessConditions(accessConditions),
-                rangeGetContentMD5);
+                Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(accessConditions),
+                rangeGetContentMD5).map(response -> new FileDownloadAsyncResponse(response.getRequest(),
+                response.getStatusCode(), response.getHeaders(), response.getValue(),
+                response.getDeserializedHeaders()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -400,16 +411,16 @@ public class FileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.renameWithResponse#String-PathHTTPHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileAsyncClient.renameWithResponse#String-PathHTTPHeaders-Map-String-String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
      * @param destinationPath Relative path from the file system to rename the file to.
-     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
-     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
+     * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * FileAsyncClient} used to interact with the file created.
      */
     public Mono<Response<FileAsyncClient>> renameWithResponse(String destinationPath,
-        PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions) {
+        DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions) {
         try {
             return withContext(context -> renameWithResponse(destinationPath, sourceAccessConditions,
                 destAccessConditions, context)).map(response -> new SimpleResponse<>(response,

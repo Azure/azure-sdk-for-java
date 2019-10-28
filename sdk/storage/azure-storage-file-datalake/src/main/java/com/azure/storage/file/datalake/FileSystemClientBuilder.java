@@ -44,6 +44,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {FileSystemClient.class, FileSystemAsyncClient.class})
 public class FileSystemClientBuilder {
     private final ClientLogger logger = new ClientLogger(FileSystemClientBuilder.class);
+
     private BlobContainerClientBuilder blobContainerClientBuilder;
 
     private String endpoint;
@@ -56,7 +57,7 @@ public class FileSystemClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new HttpLogOptions();
+    private HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -68,6 +69,7 @@ public class FileSystemClientBuilder {
      * and {@link FileSystemAsyncClient FileSystemAsyncClients}.
      */
     public FileSystemClientBuilder() {
+        logOptions = getDefaultHttpLogOptions();
         blobContainerClientBuilder = new BlobContainerClientBuilder();
     }
 
@@ -235,6 +237,15 @@ public class FileSystemClientBuilder {
 
         this.httpClient = httpClient;
         return this;
+    }
+
+    /**
+     * Gets the default Storage whitelist log headers and query parameters.
+     *
+     * @return the default http log options.
+     */
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        return com.azure.storage.blob.implementation.util.BuilderHelper.getDefaultHttpLogOptions();
     }
 
     /**

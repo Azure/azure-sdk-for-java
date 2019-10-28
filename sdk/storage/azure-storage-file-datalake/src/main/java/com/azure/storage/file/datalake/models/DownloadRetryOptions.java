@@ -4,18 +4,17 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.specialized.DownloadAsyncResponse;
 
 import java.util.Locale;
 
 /**
- * {@code ReliableDownloadOptions} contains properties which help the {@code Flux} returned from {@link
- * DownloadAsyncResponse#body(ReliableDownloadOptions)} determine when to retry.
+ * {@code DownloadRetryOptions} contains properties which help the {@code Flux} returned from {@link
+ * DownloadAsyncResponse#body(DownloadRetryOptions)} determine when to retry.
  */
-public final class ReliableDownloadOptions {
+public final class DownloadRetryOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 
-    private final ClientLogger logger = new ClientLogger(ReliableDownloadOptions.class);
+    private final ClientLogger logger = new ClientLogger(DownloadRetryOptions.class);
 
     /*
     We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
@@ -39,10 +38,10 @@ public final class ReliableDownloadOptions {
      * response body.
      *
      * @param maxRetryRequests The number of retries to attempt before the request finally fails
-     * @return the updated ReliableDownloadOptions object
+     * @return the updated DownloadRetryOptions object
      * @throws IllegalArgumentException If {@code maxRetryRequests} is less than 0
      */
-    public ReliableDownloadOptions maxRetryRequests(int maxRetryRequests) {
+    public DownloadRetryOptions maxRetryRequests(int maxRetryRequests) {
         if (maxRetryRequests < 0) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,

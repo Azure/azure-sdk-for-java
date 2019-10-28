@@ -16,7 +16,7 @@ import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
-import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -49,7 +49,6 @@ import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
  */
 @ServiceClient(builder = DataLakeServiceClientBuilder.class, isAsync = true)
 public class DataLakeServiceAsyncClient {
-
     private final ClientLogger logger = new ClientLogger(DataLakeServiceAsyncClient.class);
 
     private final DataLakeStorageClientImpl azureDataLakeStorage;
@@ -198,14 +197,14 @@ public class DataLakeServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String-FileSystemAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String-DataLakeRequestConditions}
      *
      * @param fileSystemName Name of the file system to delete
-     * @param accessConditions {@link FileSystemAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Response<Void>> deleteFileSystemWithResponse(String fileSystemName,
-        FileSystemAccessConditions accessConditions) {
+        DataLakeRequestConditions accessConditions) {
         try {
             return getFileSystemAsyncClient(fileSystemName).deleteWithResponse(accessConditions);
         } catch (RuntimeException ex) {

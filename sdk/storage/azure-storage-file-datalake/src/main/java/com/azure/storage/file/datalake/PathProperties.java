@@ -4,7 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
@@ -50,7 +50,7 @@ public class PathProperties {
         this.eTag = properties.getETag();
         this.fileSize = properties.getBlobSize();
         this.contentType = properties.getContentType();
-        this.contentMD5 = properties.getContentMD5();
+        this.contentMD5 = properties.getContentMd5();
         this.contentEncoding = properties.getContentEncoding();
         this.contentDisposition = properties.getContentDisposition();
         this.contentLanguage = properties.getContentLanguage();

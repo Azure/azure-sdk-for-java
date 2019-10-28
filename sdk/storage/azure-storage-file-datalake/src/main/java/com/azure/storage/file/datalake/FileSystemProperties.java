@@ -3,8 +3,8 @@
 
 package com.azure.storage.file.datalake;
 
-import com.azure.storage.blob.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobContainerItemProperties;
+import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;

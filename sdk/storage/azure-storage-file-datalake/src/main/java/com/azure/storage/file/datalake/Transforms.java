@@ -1,22 +1,18 @@
 package com.azure.storage.file.datalake;
 
-import com.azure.storage.blob.BlobContainerProperties;
-import com.azure.storage.blob.BlobProperties;
-import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
-import com.azure.storage.blob.models.ReliableDownloadOptions;
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
-import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.FileSystemItemProperties;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
@@ -24,48 +20,12 @@ import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
-import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 class Transforms {
-
-    static BlobContainerAccessConditions toBlobContainerAccessConditions(FileSystemAccessConditions
-        fileSystemAccessConditions) {
-        if (fileSystemAccessConditions == null) {
-            return null;
-        } else {
-            return new BlobContainerAccessConditions()
-                .setModifiedAccessConditions(toBlobModifiedAccessConditions(fileSystemAccessConditions
-                    .getModifiedAccessConditions()))
-                .setLeaseAccessConditions(toBlobLeaseAccessConditions(fileSystemAccessConditions
-                    .getLeaseAccessConditions()));
-        }
-    }
-
-    static com.azure.storage.blob.models.ModifiedAccessConditions toBlobModifiedAccessConditions(
-        ModifiedAccessConditions fileSystemModifiedAccessConditions) {
-        if (fileSystemModifiedAccessConditions == null) {
-            return null;
-        } else {
-            return new com.azure.storage.blob.models.ModifiedAccessConditions()
-                .setIfMatch(fileSystemModifiedAccessConditions.getIfMatch())
-                .setIfModifiedSince(fileSystemModifiedAccessConditions.getIfModifiedSince())
-                .setIfNoneMatch(fileSystemModifiedAccessConditions.getIfNoneMatch())
-                .setIfUnmodifiedSince(fileSystemModifiedAccessConditions.getIfUnmodifiedSince());
-        }
-    }
-
-    static com.azure.storage.blob.models.LeaseAccessConditions toBlobLeaseAccessConditions(LeaseAccessConditions
-        fileSystemLeaseAccessConditions) {
-        if (fileSystemLeaseAccessConditions == null) {
-            return null;
-        } else {
-            return new com.azure.storage.blob.models.LeaseAccessConditions()
-                .setLeaseId(fileSystemLeaseAccessConditions.getLeaseId());
-        }
-    }
 
     static com.azure.storage.blob.models.PublicAccessType toBlobPublicAccessType(PublicAccessType
         fileSystemPublicAccessType) {
@@ -126,28 +86,19 @@ class Transforms {
             .setPrefix(listFileSystemsOptions.getPrefix());
     }
 
-    static UserDelegationKey toDataLakeUserDelegationKey(com.azure.storage.blob.models.UserDelegationKey blobUserDelegationKey) {
+    static UserDelegationKey toDataLakeUserDelegationKey(com.azure.storage.blob.models.UserDelegationKey
+        blobUserDelegationKey) {
+        if (blobUserDelegationKey == null) {
+            return null;
+        }
         return new UserDelegationKey()
             .setSignedExpiry(blobUserDelegationKey.getSignedExpiry())
-            .setSignedOid(blobUserDelegationKey.getSignedOid())
-            .setSignedTid(blobUserDelegationKey.getSignedTid())
+            .setSignedOid(blobUserDelegationKey.getSignedObjectId())
+            .setSignedTid(blobUserDelegationKey.getSignedTenantId())
             .setSignedService(blobUserDelegationKey.getSignedService())
             .setSignedStart(blobUserDelegationKey.getSignedStart())
             .setSignedVersion(blobUserDelegationKey.getSignedVersion())
             .setValue(blobUserDelegationKey.getValue());
-    }
-
-    static BlobAccessConditions toBlobAccessConditions(PathAccessConditions
-        pathAccessConditions) {
-        if (pathAccessConditions == null) {
-            return null;
-        } else {
-            return new BlobAccessConditions()
-                .setModifiedAccessConditions(toBlobModifiedAccessConditions(pathAccessConditions
-                    .getModifiedAccessConditions()))
-                .setLeaseAccessConditions(toBlobLeaseAccessConditions(pathAccessConditions
-                    .getLeaseAccessConditions()));
-        }
     }
 
     static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
@@ -165,12 +116,12 @@ class Transforms {
             return null;
         }
         return new BlobHttpHeaders()
-            .setBlobCacheControl(pathHTTPHeaders.getCacheControl())
-            .setBlobContentDisposition(pathHTTPHeaders.getContentDisposition())
-            .setBlobContentEncoding(pathHTTPHeaders.getContentEncoding())
-            .setBlobContentLanguage(pathHTTPHeaders.getContentLanguage())
-            .setBlobContentType(pathHTTPHeaders.getContentType())
-            .setBlobContentMD5(pathHTTPHeaders.getContentMD5());
+            .setCacheControl(pathHTTPHeaders.getCacheControl())
+            .setContentDisposition(pathHTTPHeaders.getContentDisposition())
+            .setContentEncoding(pathHTTPHeaders.getContentEncoding())
+            .setContentLanguage(pathHTTPHeaders.getContentLanguage())
+            .setContentType(pathHTTPHeaders.getContentType())
+            .setContentMd5(pathHTTPHeaders.getContentMD5());
     }
 
     static BlobRange toBlobRange(FileRange fileRange) {
@@ -180,13 +131,13 @@ class Transforms {
         return new BlobRange(fileRange.getOffset(), fileRange.getCount());
     }
 
-    static ReliableDownloadOptions toBlobReliableDownloadOptions(
-        com.azure.storage.file.datalake.models.ReliableDownloadOptions dataLakeOptions) {
+    static com.azure.storage.blob.models.DownloadRetryOptions toBlobDownloadRetryOptions(
+        DownloadRetryOptions dataLakeOptions) {
         if (dataLakeOptions == null) {
             return null;
         }
-        return new ReliableDownloadOptions()
-            .maxRetryRequests(dataLakeOptions.maxRetryRequests());
+        return new com.azure.storage.blob.models.DownloadRetryOptions()
+            .setMaxRetryRequests(dataLakeOptions.maxRetryRequests());
     }
 
     static PathProperties toPathProperties(BlobProperties blobProperties) {
@@ -228,5 +179,18 @@ class Transforms {
             return null;
         }
         return new PathItem(path);
+    }
+
+    static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions accessConditions) {
+        if (accessConditions == null) {
+            return null;
+        }
+        return new BlobRequestConditions()
+            .setLeaseId(accessConditions.getLeaseId())
+            .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince())
+            .setIfNoneMatch(accessConditions.getIfNoneMatch())
+            .setIfMatch(accessConditions.getIfMatch())
+            .setIfModifiedSince(accessConditions.getIfModifiedSince());
+
     }
 }

@@ -6,24 +6,27 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
 
 
 /**
- * This class provides a client that contains all the leasing operations for {@link FileSystemAsyncClient file systems}
- * and {@link PathAsyncClient files and directoies}. This client acts as a supplement to those clients and only handles
- * leasing operations.
+ * This class provides a client that contains all the leasing operations for {@link FileSystemAsyncClient file systems},
+ * {@link FileAsyncClient files} and {@link DirectoryAsyncClient directories}. This client acts as a supplement to those
+ * clients and only handles leasing operations.
  *
  * <p><strong>Instantiating a DataLakeLeaseAsyncClient</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithBlob}
+ * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithFile}
  *
- * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithContainer}
+ * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithDirectory}
+ *
+ * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithFileSystem}
  *
  * <p>View {@link DataLakeLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -36,9 +39,9 @@ import java.net.URL;
 @ServiceClient(builder = DataLakeLeaseClientBuilder.class, isAsync = true)
 public final class DataLakeLeaseAsyncClient {
 
-    private final com.azure.storage.blob.specialized.LeaseAsyncClient blobLeaseAsyncClient;
+    private final BlobLeaseAsyncClient blobLeaseAsyncClient;
 
-    DataLakeLeaseAsyncClient(com.azure.storage.blob.specialized.LeaseAsyncClient blobLeaseAsyncClient) {
+    DataLakeLeaseAsyncClient(BlobLeaseAsyncClient blobLeaseAsyncClient) {
         this.blobLeaseAsyncClient = blobLeaseAsyncClient;
     }
 
@@ -68,7 +71,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.acquireLease#int}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.acquireLease#int}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @return A reactive response containing the lease ID.
@@ -84,7 +87,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.acquireLeaseWithResponse#int-ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -94,9 +97,8 @@ public final class DataLakeLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse(int duration,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return this.blobLeaseAsyncClient.acquireLeaseWithResponse(duration,
-            Transforms.toBlobModifiedAccessConditions(modifiedAccessConditions));
+        RequestConditions modifiedAccessConditions) {
+        return this.blobLeaseAsyncClient.acquireLeaseWithResponse(duration, modifiedAccessConditions);
     }
 
     /**
@@ -104,7 +106,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.renewLease}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.renewLease}
      *
      * @return A reactive response containing the renewed lease ID.
      */
@@ -118,7 +120,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.renewLeaseWithResponse#ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.renewLeaseWithResponse#RequestConditions}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -126,9 +128,8 @@ public final class DataLakeLeaseAsyncClient {
      * @return A reactive response containing the renewed lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> renewLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions) {
-        return blobLeaseAsyncClient.renewLeaseWithResponse(
-            Transforms.toBlobModifiedAccessConditions(modifiedAccessConditions));
+    public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedAccessConditions) {
+        return blobLeaseAsyncClient.renewLeaseWithResponse(modifiedAccessConditions);
     }
 
     /**
@@ -136,7 +137,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.releaseLease}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.releaseLease}
      *
      * @return A reactive response signalling completion.
      */
@@ -150,7 +151,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.releaseLeaseWithResponse#ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.releaseLeaseWithResponse#RequestConditions}
      *
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -158,9 +159,8 @@ public final class DataLakeLeaseAsyncClient {
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions) {
-        return blobLeaseAsyncClient.releaseLeaseWithResponse(
-            Transforms.toBlobModifiedAccessConditions(modifiedAccessConditions));
+    public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedAccessConditions) {
+        return blobLeaseAsyncClient.releaseLeaseWithResponse(modifiedAccessConditions);
     }
 
     /**
@@ -168,7 +168,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.breakLease}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.breakLease}
      *
      * @return A reactive response containing the remaining time in the broken lease in seconds.
      */
@@ -185,7 +185,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.breakLeaseWithResponse#Integer-RequestConditions}
      *
      * @param breakPeriodInSeconds An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
@@ -198,9 +198,8 @@ public final class DataLakeLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return blobLeaseAsyncClient.breakLeaseWithResponse(breakPeriodInSeconds,
-            Transforms.toBlobModifiedAccessConditions(modifiedAccessConditions));
+        RequestConditions modifiedAccessConditions) {
+        return blobLeaseAsyncClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions);
     }
 
     /**
@@ -208,7 +207,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.changeLease#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.changeLease#String}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @return A reactive response containing the new lease ID.
@@ -223,7 +222,7 @@ public final class DataLakeLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseAsyncClient.changeLeaseWithResponse#String-ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.changeLeaseWithResponse#String-RequestConditions}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -233,9 +232,8 @@ public final class DataLakeLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return blobLeaseAsyncClient.changeLeaseWithResponse(proposedId,
-            Transforms.toBlobModifiedAccessConditions(modifiedAccessConditions));
+        RequestConditions modifiedAccessConditions) {
+        return blobLeaseAsyncClient.changeLeaseWithResponse(proposedId, modifiedAccessConditions);
     }
 
     /**

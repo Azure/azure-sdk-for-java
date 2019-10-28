@@ -53,8 +53,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
 
         when:
-        fc.createWithResponse(null, null, new PathAccessConditions()
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+        fc.createWithResponse(null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null, null, null,
             Context.NONE)
 
         then:
@@ -117,16 +116,16 @@ class FileAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
 
         expect:
-        fc.createWithResponse(null, null, pac, null, null, null, null).getStatusCode() == 201
+        fc.createWithResponse(null, null, drc, null, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -143,15 +142,15 @@ class FileAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.createWithResponse(null, null, bac, null, null, null, Context.NONE)
+        fc.createWithResponse(null, null, drc, null, null, null, Context.NONE)
 
         then:
         thrown(StorageErrorException)
@@ -196,15 +195,15 @@ class FileAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.deleteWithResponse(pac, null, null).getStatusCode() == 200
+        fc.deleteWithResponse(drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -221,15 +220,15 @@ class FileAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.deleteWithResponse(pac, null, null).getStatusCode()
+        fc.deleteWithResponse(drc, null, null).getStatusCode()
 
         then:
         thrown(StorageErrorException)
@@ -275,15 +274,15 @@ class FileAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), pac, null, Context.NONE).getStatusCode() == 200
+        fc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), drc, null, Context.NONE).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -300,15 +299,15 @@ class FileAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), pac, null, Context.NONE).getStatusCode() == 200
+        fc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), drc, null, Context.NONE).getStatusCode() == 200
 
         then:
         thrown(StorageErrorException)
@@ -360,16 +359,16 @@ class FileAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
 
         expect:
-        fc.getAccessControlWithResponse(false, pac, null, null).getStatusCode() == 200
+        fc.getAccessControlWithResponse(false, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -386,15 +385,15 @@ class FileAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.getAccessControlWithResponse(false, pac, null, null).getStatusCode() == 200
+        fc.getAccessControlWithResponse(false, drc, null, null).getStatusCode() == 200
 
         then:
         thrown(StorageErrorException)
@@ -455,16 +454,15 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Get properties AC"() {
         setup:
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID)))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(setupPathMatchCondition(fc, match))
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.getPropertiesWithResponse(pac, null, null).getStatusCode() == 200
+        fc.getPropertiesWithResponse(drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -479,16 +477,15 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Get properties AC fail"() {
         setup:
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID)))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch)))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.getPropertiesWithResponse(bac, null, null)
+        fc.getPropertiesWithResponse(drc, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -570,16 +567,15 @@ class FileAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.setHttpHeadersWithResponse(null, bac, null, null).getStatusCode() == 200
+        fc.setHttpHeadersWithResponse(null, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -596,16 +592,15 @@ class FileAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.setHttpHeadersWithResponse(null, bac, null, null)
+        fc.setHttpHeadersWithResponse(null, drc, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -668,16 +663,15 @@ class FileAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.setMetadataWithResponse(null, bac, null, null).getStatusCode() == 200
+        fc.setMetadataWithResponse(null, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -695,16 +689,15 @@ class FileAPITest extends APISpec {
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
 
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.setMetadataWithResponse(null, bac, null, null)
+        fc.setMetadataWithResponse(null, drc, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -785,7 +778,7 @@ class FileAPITest extends APISpec {
     def "Read with retry range"() {
         /*
         We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
-        a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
+        a retry per the DownloadRetryOptions. The next request should have the same range header, which was generated
         from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
         don't need to check the data here, but we want to ensure that the correct range is set each time. This will
         test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it was
@@ -796,7 +789,7 @@ class FileAPITest extends APISpec {
 
         when:
         def range = new FileRange(2, 5L)
-        def options = new ReliableDownloadOptions().maxRetryRequests(3)
+        def options = new DownloadRetryOptions().maxRetryRequests(3)
         fileClient.readWithResponse(new ByteArrayOutputStream(), range, options, null, false, null, null)
 
         then:
@@ -843,15 +836,15 @@ class FileAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        def response = fc.readWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null)
+        def response = fc.readWithResponse(new ByteArrayOutputStream(), null, null, drc, false, null, null)
 
         then:
         response.getStatusCode() == 200
@@ -870,16 +863,15 @@ class FileAPITest extends APISpec {
     def "Read AC fail"() {
         setup:
         setupPathLeaseCondition(fc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch)))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.readWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).getStatusCode()
+        fc.readWithResponse(new ByteArrayOutputStream(), null, null, drc, false, null, null).getStatusCode()
 
         then:
         thrown(BlobStorageException)
@@ -951,15 +943,15 @@ class FileAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.renameWithResponse(generatePathName(), pac, null, null, null).getStatusCode() == 201
+        fc.renameWithResponse(generatePathName(), drc, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -979,15 +971,15 @@ class FileAPITest extends APISpec {
 
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.renameWithResponse(generatePathName(), pac, null, null, null)
+        fc.renameWithResponse(generatePathName(), drc, null, null, null)
 
         then:
         thrown(StorageErrorException)
@@ -1009,15 +1001,15 @@ class FileAPITest extends APISpec {
         destFile.create()
         match = setupPathMatchCondition(destFile, match)
         leaseID = setupPathLeaseCondition(destFile, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.renameWithResponse(pathName, null, pac, null, null).getStatusCode() == 201
+        fc.renameWithResponse(pathName, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1037,15 +1029,15 @@ class FileAPITest extends APISpec {
         destFile.create()
         noneMatch = setupPathMatchCondition(destFile, noneMatch)
         setupPathLeaseCondition(destFile, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.renameWithResponse(pathName, null, pac, null, null)
+        fc.renameWithResponse(pathName, null, drc, null, null)
 
         then:
         thrown(StorageErrorException)
@@ -1245,17 +1237,16 @@ class FileAPITest extends APISpec {
 
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
 
         expect:
-        fc.flushWithResponse(defaultDataSize, false, false, null, pac, null, null).getStatusCode() == 200
+        fc.flushWithResponse(defaultDataSize, false, false, null, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1275,16 +1266,15 @@ class FileAPITest extends APISpec {
         fc.append(defaultInputStream.get(), 0, defaultDataSize)
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.flushWithResponse(defaultDataSize, false, false, null, pac, null, null)
+        fc.flushWithResponse(defaultDataSize, false, false, null, drc, null, null)
         then:
         thrown(StorageErrorException)
 

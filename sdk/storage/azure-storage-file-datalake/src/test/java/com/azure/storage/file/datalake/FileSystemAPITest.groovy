@@ -116,12 +116,12 @@ class FileSystemAPITest extends APISpec {
         def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
 
         expect:
-        fsc.getPropertiesWithResponse(new LeaseAccessConditions().setLeaseId(leaseID), null, null).getStatusCode() == 200
+        fsc.getPropertiesWithResponse(leaseID, null, null).getStatusCode() == 200
     }
 
     def "Get properties lease fail"() {
         when:
-        fsc.getPropertiesWithResponse(new LeaseAccessConditions().setLeaseId("garbage"), null, null)
+        fsc.getPropertiesWithResponse("garbage", null, null)
 
         then:
         thrown(BlobStorageException)
@@ -191,13 +191,12 @@ class FileSystemAPITest extends APISpec {
     def "Set metadata AC"() {
         setup:
         leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
-        def fsac = new FileSystemAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
 
         expect:
-        fsc.setMetadataWithResponse(null, fsac, null, null).getStatusCode() == 200
+        fsc.setMetadataWithResponse(null, drc, null, null).getStatusCode() == 200
 
         where:
         modified | leaseID
@@ -209,13 +208,12 @@ class FileSystemAPITest extends APISpec {
     @Unroll
     def "Set metadata AC fail"() {
         setup:
-        def fsac = new FileSystemAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
 
         when:
-        fsc.setMetadataWithResponse(null, fsac, null, null)
+        fsc.setMetadataWithResponse(null, drc, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -229,13 +227,13 @@ class FileSystemAPITest extends APISpec {
     @Unroll
     def "Set metadata AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions()
-            .setIfUnmodifiedSince(unmodified)
+        def drc = new DataLakeRequestConditions()
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fsc.setMetadataWithResponse(null, new FileSystemAccessConditions().setModifiedAccessConditions(mac), null, null)
+        fsc.setMetadataWithResponse(null, drc, null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -287,14 +285,13 @@ class FileSystemAPITest extends APISpec {
     def "Delete AC"() {
         setup:
         leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
-        def fsac = new FileSystemAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fsc.deleteWithResponse(fsac, null, null).getStatusCode() == 202
+        fsc.deleteWithResponse(drc, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | leaseID
@@ -307,14 +304,13 @@ class FileSystemAPITest extends APISpec {
     @Unroll
     def "Delete AC fail"() {
         setup:
-        def fsac = new FileSystemAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fsc.deleteWithResponse(fsac, null, null)
+        fsc.deleteWithResponse(drc, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -329,10 +325,12 @@ class FileSystemAPITest extends APISpec {
     @Unroll
     def "Delete AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+        def drc = new DataLakeRequestConditions()
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
 
         when:
-        fsc.deleteWithResponse(new FileSystemAccessConditions().setModifiedAccessConditions(mac), null, null)
+        fsc.deleteWithResponse(drc, null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -373,8 +371,8 @@ class FileSystemAPITest extends APISpec {
 
     def "Create file error"() {
         when:
-        fsc.createFileWithResponse(generatePathName(), null, null, new PathAccessConditions()
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+        fsc.createFileWithResponse(generatePathName(), null, null,
+            new DataLakeRequestConditions().setIfMatch("garbage"), null, null, null,
             Context.NONE)
 
         then:
@@ -439,16 +437,16 @@ class FileSystemAPITest extends APISpec {
         client.create()
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
 
         expect:
-        fsc.createFileWithResponse(pathName, null, null, pac, null, null, null, null).getStatusCode() == 201
+        fsc.createFileWithResponse(pathName, null, null, drc, null, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -468,15 +466,15 @@ class FileSystemAPITest extends APISpec {
         client.create()
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fsc.createFileWithResponse(pathName, null, null, bac, null, null, null, Context.NONE)
+        fsc.createFileWithResponse(pathName, null, null, drc, null, null, null, Context.NONE)
 
         then:
         thrown(StorageErrorException)
@@ -527,15 +525,15 @@ class FileSystemAPITest extends APISpec {
         def client = fsc.createFile(pathName)
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fsc.deleteFileWithResponse(pathName, pac, null, null).getStatusCode() == 200
+        fsc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -554,15 +552,15 @@ class FileSystemAPITest extends APISpec {
         def client = fsc.createFile(pathName)
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fsc.deleteFileWithResponse(pathName, pac, null, null).getStatusCode()
+        fsc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode()
 
         then:
         thrown(StorageErrorException)
@@ -596,8 +594,8 @@ class FileSystemAPITest extends APISpec {
 
     def "Create dir error"() {
         when:
-        fsc.createDirectoryWithResponse(generatePathName(), null, null, new PathAccessConditions()
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+        fsc.createDirectoryWithResponse(generatePathName(), null, null,
+            new DataLakeRequestConditions().setIfMatch("garbage"), null, null, null,
             Context.NONE)
 
         then:
@@ -608,7 +606,7 @@ class FileSystemAPITest extends APISpec {
     def "Create dir headers"() {
         // Create does not set md5
         setup:
-        def headers = new com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders().setCacheControl(cacheControl)
+        def headers = new PathHTTPHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -666,16 +664,16 @@ class FileSystemAPITest extends APISpec {
         client.create()
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
 
         expect:
-        fsc.createDirectoryWithResponse(pathName, null, null, pac, null, null, null, null).getStatusCode() == 201
+        fsc.createDirectoryWithResponse(pathName, null, null, drc, null, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -695,15 +693,15 @@ class FileSystemAPITest extends APISpec {
         client.create()
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fsc.createDirectoryWithResponse(pathName, null, null, bac, null, null, null, Context.NONE)
+        fsc.createDirectoryWithResponse(pathName, null, null, drc, null, null, null, Context.NONE)
 
         then:
         thrown(Exception)
@@ -761,15 +759,15 @@ class FileSystemAPITest extends APISpec {
         def client = fsc.createDirectory(pathName)
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fsc.deleteDirectoryWithResponse(pathName, false, pac, null, null).getStatusCode() == 200
+        fsc.deleteDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -788,15 +786,15 @@ class FileSystemAPITest extends APISpec {
         def client = fsc.createDirectory(pathName)
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        fsc.deleteDirectoryWithResponse(pathName, false, pac, null, null).getStatusCode()
+        fsc.deleteDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
 
         then:
         thrown(StorageErrorException)
@@ -819,7 +817,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getFileClient(fileName).create()
 
         when:
-        def response = fsc.getPaths().iterator()
+        def response = fsc.listPaths().iterator()
 
         then:
         def dirPath = response.next()
@@ -855,7 +853,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getFileClient(fileName).create()
 
         when:
-        def response = fsc.getPaths(new GetPathsOptions().setRecursive(true), null).iterator()
+        def response = fsc.listPaths(new GetPathsOptions().setRecursive(true), null).iterator()
 
         then:
         def dirPath = response.next()
@@ -873,7 +871,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getFileClient(fileName).create()
 
         when:
-        def response = fsc.getPaths(new GetPathsOptions().setReturnUpn(true), null).iterator()
+        def response = fsc.listPaths(new GetPathsOptions().setReturnUpn(true), null).iterator()
 
         then:
         def dirPath = response.next()
@@ -891,7 +889,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getFileClient(fileName).create()
 
         when:
-        def response = fsc.getPaths(new GetPathsOptions().setMaxResults(1), null).iterator()
+        def response = fsc.listPaths(new GetPathsOptions().setMaxResults(1), null).iterator()
 
         then:
         def dirPath = response.next()
@@ -900,23 +898,23 @@ class FileSystemAPITest extends APISpec {
         !response.hasNext()
     }
 
-    def "List paths path"() {
-        setup:
-        def dirName = generatePathName()
-        fsc.getDirectoryClient("foo").create()
-
-        def fileName = generatePathName()
-        fsc.getFileClient(fileName).create()
-
-        when:
-        def response = fsc.getPaths(new GetPathsOptions().setPath("foo"), null).iterator()
-
-        then:
-        def dirPath = response.next()
-//        response.hasNext()
-//        def filePath = response.next()
-        !response.hasNext()
-    }
+//    def "List paths path"() {
+//        setup:
+//        def dirName = generatePathName()
+//        fsc.getDirectoryClient("foo").create()
+//
+//        def fileName = generatePathName()
+//        fsc.getFileClient(fileName).create()
+//
+//        when:
+//        def response = fsc.listPaths(new GetPathsOptions().setPath("foo"), null).iterator()
+//
+//        then:
+//        def dirPath = response.next()
+////        response.hasNext()
+////        def filePath = response.next()
+//        !response.hasNext()
+//    }
 
 //    setupFileSystemForGetPaths() {}
 

@@ -14,12 +14,14 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
 import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.models.PathAccessConditions;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -177,7 +179,7 @@ public class PathAsyncClient {
      * @param resourceType {@link PathResourceType}
      * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -185,13 +187,19 @@ public class PathAsyncClient {
      * PathItem}.
      */
     Mono<Response<PathInfo>> createWithResponse(PathResourceType resourceType, PathHTTPHeaders headers,
-        Map<String, String> metadata, PathAccessConditions accessConditions, String permissions, String umask,
+        Map<String, String> metadata, DataLakeRequestConditions accessConditions, String permissions, String umask,
         Context context) {
-        accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
+        accessConditions = accessConditions == null ? new DataLakeRequestConditions() : accessConditions;
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(accessConditions.getLeaseId());
+        ModifiedAccessConditions mac = new ModifiedAccessConditions()
+            .setIfMatch(accessConditions.getIfMatch())
+            .setIfNoneMatch(accessConditions.getIfNoneMatch())
+            .setIfModifiedSince(accessConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince());
 
         return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, null, null, headers,
-            accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), null, context)
+            buildMetadataString(metadata), permissions, umask, null, null, headers, lac, mac, null, context)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders())));
     }
 
@@ -199,15 +207,22 @@ public class PathAsyncClient {
      * Package-private delete method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
      *
      * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    Mono<Response<Void>> deleteWithResponse(Boolean recursive, PathAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
+    Mono<Response<Void>> deleteWithResponse(Boolean recursive, DataLakeRequestConditions accessConditions,
+        Context context) {
+        accessConditions = accessConditions == null ? new DataLakeRequestConditions() : accessConditions;
 
-        return this.dataLakeStorage.paths().deleteWithRestResponseAsync(recursive, null, null, null,
-            accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context)
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(accessConditions.getLeaseId());
+        ModifiedAccessConditions mac = new ModifiedAccessConditions()
+            .setIfMatch(accessConditions.getIfMatch())
+            .setIfNoneMatch(accessConditions.getIfNoneMatch())
+            .setIfModifiedSince(accessConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince());
+
+        return this.dataLakeStorage.paths().deleteWithRestResponseAsync(recursive, null, null, null, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -239,20 +254,20 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setMetadata#Map-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setMetadata#Map-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      */
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
-        PathAccessConditions accessConditions) {
+        DataLakeRequestConditions accessConditions) {
         try {
             return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobAccessConditions(accessConditions));
+                Transforms.toBlobRequestConditions(accessConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -287,19 +302,19 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHTTPHeaders-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHTTPHeaders-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link PathHTTPHeaders}
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setHttpHeaders(PathHTTPHeaders headers, PathAccessConditions accessConditions) {
+    public Mono<Response<Void>> setHttpHeaders(PathHTTPHeaders headers, DataLakeRequestConditions accessConditions) {
         try {
             return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-                Transforms.toBlobAccessConditions(accessConditions));
+                Transforms.toBlobRequestConditions(accessConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -330,17 +345,17 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getPropertiesWithResponse#PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource's properties and metadata.
      */
-    public Mono<Response<PathProperties>> getPropertiesWithResponse(PathAccessConditions accessConditions) {
+    public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions accessConditions) {
         try {
-            return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobAccessConditions(accessConditions))
+            return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(accessConditions))
                 .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -374,17 +389,17 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setAccessControlWithResponse#PathAccessControl-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setAccessControlWithResponse#PathAccessControl-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControl {@link PathAccessControl}
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource info.
      */
     public Mono<Response<PathInfo>> setAccessControlWithResponse(PathAccessControl accessControl,
-        PathAccessConditions accessConditions) {
+        DataLakeRequestConditions accessConditions) {
         try {
             return withContext(context -> setAccessControlWithResponse(accessControl, accessConditions, context));
         } catch (RuntimeException ex) {
@@ -393,14 +408,20 @@ public class PathAsyncClient {
     }
 
     Mono<Response<PathInfo>> setAccessControlWithResponse(PathAccessControl accessControl,
-        PathAccessConditions accessConditions, Context context) {
+        DataLakeRequestConditions accessConditions, Context context) {
 
         Objects.requireNonNull(accessControl, "accessControl can not be null");
-        accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
+        accessConditions = accessConditions == null ? new DataLakeRequestConditions() : accessConditions;
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(accessConditions.getLeaseId());
+        ModifiedAccessConditions mac = new ModifiedAccessConditions()
+            .setIfMatch(accessConditions.getIfMatch())
+            .setIfNoneMatch(accessConditions.getIfNoneMatch())
+            .setIfModifiedSince(accessConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince());
 
         return this.dataLakeStorage.paths().setAccessControlWithRestResponseAsync(null, accessControl.getOwner(),
-            accessControl.getGroup(), accessControl.getPermissions(), accessControl.getAcl(), null,
-            accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context)
+            accessControl.getGroup(), accessControl.getPermissions(), accessControl.getAcl(), null, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders())));
     }
 
@@ -429,18 +450,18 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getAccessControl#boolean-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getAccessControl#boolean-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
      * @param returnUpn When true, user identity values returned as User Principal Names. When false, user identity
      * values returned as Azure Active Directory Object IDs. Default value is false.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource access control.
      */
     public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean returnUpn,
-        PathAccessConditions accessConditions) {
+        DataLakeRequestConditions accessConditions) {
         try {
             return withContext(context -> getAccessControlWithResponse(returnUpn, accessConditions, context));
         } catch (RuntimeException ex) {
@@ -449,51 +470,62 @@ public class PathAsyncClient {
     }
 
     Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean returnUpn,
-        PathAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new PathAccessConditions() : accessConditions;
+        DataLakeRequestConditions accessConditions, Context context) {
+        accessConditions = accessConditions == null ? new DataLakeRequestConditions() : accessConditions;
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(accessConditions.getLeaseId());
+        ModifiedAccessConditions mac = new ModifiedAccessConditions()
+            .setIfMatch(accessConditions.getIfMatch())
+            .setIfNoneMatch(accessConditions.getIfNoneMatch())
+            .setIfModifiedSince(accessConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince());
 
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
-            PathGetPropertiesAction.GET_ACCESS_CONTROL, returnUpn, null, null, accessConditions.getLeaseAccessConditions(),
-            accessConditions.getModifiedAccessConditions(), context).map(response ->
-            new SimpleResponse<>(response, new PathAccessControl(response.getDeserializedHeaders())));
+            PathGetPropertiesAction.GET_ACCESS_CONTROL, returnUpn, null, null, lac, mac, context)
+            .map(response -> new SimpleResponse<>(response, new PathAccessControl(response.getDeserializedHeaders())));
     }
 
     /**
      * Package-private rename method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
      *
      * @param destinationPath The path of the destination relative to the file system name
-     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
-     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
+     * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathAsyncClient} used to interact with the path created.
      */
     Mono<Response<PathAsyncClient>> renameWithResponse(String destinationPath,
-        PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions, Context context) {
+        DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions,
+        Context context) {
 
-        destAccessConditions = destAccessConditions == null ? new PathAccessConditions() : destAccessConditions;
-        sourceAccessConditions = sourceAccessConditions == null ? new PathAccessConditions()
+        destAccessConditions = destAccessConditions == null ? new DataLakeRequestConditions() : destAccessConditions;
+        sourceAccessConditions = sourceAccessConditions == null ? new DataLakeRequestConditions()
             : sourceAccessConditions;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
-        SourceModifiedAccessConditions sourceConditions = sourceAccessConditions.getModifiedAccessConditions() == null
-            ? new SourceModifiedAccessConditions()
-            : new SourceModifiedAccessConditions()
-            .setSourceIfModifiedSince(sourceAccessConditions.getModifiedAccessConditions().getIfModifiedSince())
-            .setSourceIfUnmodifiedSince(sourceAccessConditions.getModifiedAccessConditions().getIfUnmodifiedSince())
-            .setSourceIfMatch(sourceAccessConditions.getModifiedAccessConditions().getIfMatch())
-            .setSourceIfNoneMatch(sourceAccessConditions.getModifiedAccessConditions().getIfNoneMatch());
+        SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
+            .setSourceIfModifiedSince(sourceAccessConditions.getIfModifiedSince())
+            .setSourceIfUnmodifiedSince(sourceAccessConditions.getIfUnmodifiedSince())
+            .setSourceIfMatch(sourceAccessConditions.getIfMatch())
+            .setSourceIfNoneMatch(sourceAccessConditions.getIfNoneMatch());
+
+        LeaseAccessConditions destLac = new LeaseAccessConditions().setLeaseId(destAccessConditions.getLeaseId());
+        ModifiedAccessConditions destMac = new ModifiedAccessConditions()
+            .setIfMatch(destAccessConditions.getIfMatch())
+            .setIfNoneMatch(destAccessConditions.getIfNoneMatch())
+            .setIfModifiedSince(destAccessConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(destAccessConditions.getIfUnmodifiedSince());
 
         PathAsyncClient pathAsyncClient = getPathAsyncClient(destinationPath);
 
         String renameSource = "/" + fileSystemName + "/" + pathName;
 
         return pathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
-            null /* continuation */, PathRenameMode.LEGACY, renameSource,
-            sourceAccessConditions.getLeaseAccessConditions().getLeaseId(), null /* metadata */, null /* permissions */,
-            null /* umask */, null /* request id */, null /* timeout */, null /* pathHttpHeaders */,
-            destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getModifiedAccessConditions(),
-            sourceConditions, context).map(response -> new SimpleResponse<>(response, pathAsyncClient));
+            null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceAccessConditions.getLeaseId(),
+            null /* metadata */, null /* permissions */, null /* umask */, null /* request id */, null /* timeout */,
+            null /* pathHttpHeaders */, destLac, destMac, sourceConditions, context)
+            .map(response -> new SimpleResponse<>(response, pathAsyncClient));
     }
 
     /**

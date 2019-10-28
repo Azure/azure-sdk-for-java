@@ -11,8 +11,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.models.BlobContainerItem;
-import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
@@ -146,15 +146,15 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-FileSystemAccessConditions-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-DataLakeRequestConditions-Context}
      *
      * @param fileSystemName Name of the file system to delete
-     * @param accessConditions {@link FileSystemAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> deleteFileSystemWithResponse(String fileSystemName,
-        FileSystemAccessConditions accessConditions, Context context) {
+        DataLakeRequestConditions accessConditions, Context context) {
         return getFileSystemClient(fileSystemName).deleteWithResponse(accessConditions, null, context);
     }
 
@@ -179,7 +179,7 @@ public class DataLakeServiceClient {
      *
      * @return The list of file systems.
      */
-    public PagedIterable<BlobContainerItem> listFileSystems() {
+    public PagedIterable<FileSystemItem> listFileSystems() {
         return this.listFileSystems(new ListFileSystemsOptions(), null);
     }
 
@@ -196,8 +196,9 @@ public class DataLakeServiceClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of file systems.
      */
-    public PagedIterable<BlobContainerItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
-        return blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout);
+    public PagedIterable<FileSystemItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
+        return blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout)
+            .mapPage(Transforms::toFileSystemItem);
     }
 
     /**

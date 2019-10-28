@@ -12,7 +12,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
-import com.azure.storage.file.datalake.models.PathAccessConditions;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
@@ -88,7 +88,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createWithResponse#PathHTTPHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createWithResponse#PathHTTPHeaders-Map-DataLakeRequestConditions-String-String}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
@@ -96,14 +96,14 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
     public Mono<Response<PathInfo>> createWithResponse(PathHTTPHeaders headers, Map<String, String> metadata,
-        PathAccessConditions accessConditions, String permissions, String umask) {
+        DataLakeRequestConditions accessConditions, String permissions, String umask) {
         try {
             return withContext(context -> createWithResponse(PathResourceType.DIRECTORY, headers, metadata,
                 accessConditions, permissions, umask, context));
@@ -138,18 +138,18 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.deleteWithResponse#boolean-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
      * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> deleteWithResponse(boolean recursive, PathAccessConditions accessConditions) {
+    public Mono<Response<Void>> deleteWithResponse(boolean recursive, DataLakeRequestConditions accessConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
             return withContext(context -> deleteWithResponse(recursive, accessConditions, context));
@@ -208,19 +208,19 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createFileWithResponse#String-PathHTTPHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createFileWithResponse#String-PathHTTPHeaders-Map-DataLakeRequestConditions-String-String}
      *
      * @param fileName Name of the file to create.
      * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the file.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * FileAsyncClient} used to interact with the file created.
      */
     public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, PathHTTPHeaders headers,
-        Map<String, String> metadata, PathAccessConditions accessConditions, String permissions, String umask) {
+        Map<String, String> metadata, DataLakeRequestConditions accessConditions, String permissions, String umask) {
         try {
             FileAsyncClient fileAsyncClient = getFileAsyncClient(fileName);
 
@@ -258,13 +258,13 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.deleteFileWithResponse#String-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.deleteFileWithResponse#String-DataLakeRequestConditions}
      *
      * @param fileName Name of the file to delete.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    public Mono<Response<Void>> deleteFileWithResponse(String fileName, PathAccessConditions accessConditions) {
+    public Mono<Response<Void>> deleteFileWithResponse(String fileName, DataLakeRequestConditions accessConditions) {
         try {
             return getFileAsyncClient(fileName).deleteWithResponse(accessConditions);
         } catch (RuntimeException ex) {
@@ -324,12 +324,12 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHTTPHeaders-Map-PathAccessConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHTTPHeaders-Map-DataLakeRequestConditions-String-String}
      *
      * @param subDirectoryName Name of the sub-directory to create.
      * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the sub-directory.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the sub-directory owner, the sub-directory owning group, and
      * others.
      * @param umask Restricts permissions of the sub-directory to be created.
@@ -337,7 +337,7 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      * DirectoryAsyncClient} used to interact with the sub-directory created.
      */
     public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
-        PathHTTPHeaders headers, Map<String, String> metadata, PathAccessConditions accessConditions,
+        PathHTTPHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
         String permissions, String umask) {
         try {
             DirectoryAsyncClient directoryAsyncClient = getSubDirectoryAsyncClient(subDirectoryName);
@@ -376,15 +376,15 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.deleteSubDirectoryWithResponse#String-boolean-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.deleteSubDirectoryWithResponse#String-boolean-DataLakeRequestConditions}
      *
      * @param directoryName Name of the sub-directory to delete.
      * @param recursive Whether or not to delete all paths beneath the sub-directory.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Response<Void>> deleteSubDirectoryWithResponse(String directoryName, boolean recursive,
-        PathAccessConditions accessConditions) {
+        DataLakeRequestConditions accessConditions) {
         try {
             return getSubDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, accessConditions);
         } catch (RuntimeException ex) {
@@ -420,16 +420,16 @@ public final class DirectoryAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.renameWithResponse#String-PathHTTPHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DirectoryAsyncClient.renameWithResponse#String-PathHTTPHeaders-Map-String-String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
      * @param destinationPath Relative path from the file system to rename the directory to.
-     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
-     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
+     * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DirectoryAsyncClient} used to interact with the directory created.
      */
     public Mono<Response<DirectoryAsyncClient>> renameWithResponse(String destinationPath,
-        PathAccessConditions sourceAccessConditions, PathAccessConditions destAccessConditions) {
+        DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions) {
         try {
             return withContext(context -> renameWithResponse(destinationPath, sourceAccessConditions,
                 destAccessConditions, context)).map(response -> new SimpleResponse<>(response,

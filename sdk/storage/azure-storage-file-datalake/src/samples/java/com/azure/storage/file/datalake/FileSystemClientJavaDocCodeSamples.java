@@ -8,7 +8,7 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 
 import java.time.Duration;
@@ -104,19 +104,18 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet for {@link FileSystemClient#deleteWithResponse(FileSystemAccessConditions, Duration, Context)}
+     * Code snippet for {@link FileSystemClient#deleteWithResponse(DataLakeRequestConditions, Duration, Context)}
      */
     public void delete2() {
-        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.deleteWithResponse#FileSystemAccessConditions-Duration-Context
-        FileSystemAccessConditions accessConditions = new FileSystemAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
+        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Delete completed with status %d%n", client.deleteWithResponse(
             accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.file.datalake.FileSystemClient.deleteWithResponse#FileSystemAccessConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.FileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
     }
 
     /**
@@ -133,20 +132,19 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet for {@link FileSystemClient#getPropertiesWithResponse(LeaseAccessConditions, Duration, Context)}
+     * Code snippet for {@link FileSystemClient#getPropertiesWithResponse(String, Duration, Context)}
      */
     public void getProperties2() {
-        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.getPropertiesWithResponse#String-Duration-Context
         Context context = new Context("Key", "Value");
 
-        FileSystemProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context)
+        FileSystemProperties properties = client.getPropertiesWithResponse(leaseId, timeout, context)
             .getValue();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
             properties.getPublicAccess(),
             properties.hasLegalHold(),
             properties.hasImmutabilityPolicy());
-        // END: com.azure.storage.file.datalake.FileSystemClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.FileSystemClient.getPropertiesWithResponse#String-Duration-Context
     }
 
     /**
@@ -165,21 +163,20 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet for {@link FileSystemClient#setMetadataWithResponse(Map, FileSystemAccessConditions, Duration,
+     * Code snippet for {@link FileSystemClient#setMetadataWithResponse(Map, DataLakeRequestConditions, Duration,
      * Context)}
      */
     public void setMetadata2() {
-        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.setMetadataWithResponse#Map-FileSystemAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        FileSystemAccessConditions accessConditions = new FileSystemAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Set metadata completed with status %d%n",
             client.setMetadataWithResponse(metadata, accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.file.datalake.FileSystemClient.setMetadataWithResponse#Map-FileSystemAccessConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.FileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context
     }
 
 }

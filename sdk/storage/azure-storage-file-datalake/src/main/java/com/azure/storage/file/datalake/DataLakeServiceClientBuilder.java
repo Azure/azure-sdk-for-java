@@ -57,7 +57,7 @@ public class DataLakeServiceClientBuilder {
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = new HttpLogOptions();
+    private HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
@@ -69,6 +69,7 @@ public class DataLakeServiceClientBuilder {
      * DataLakeServiceClients} and {@link DataLakeServiceAsyncClient DataLakeServiceAsyncClients}.
      */
     public DataLakeServiceClientBuilder() {
+        logOptions = getDefaultHttpLogOptions();
         blobServiceClientBuilder = new BlobServiceClientBuilder();
     }
 
@@ -216,6 +217,15 @@ public class DataLakeServiceClientBuilder {
         blobServiceClientBuilder.httpLogOptions(logOptions);
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
+    }
+
+    /**
+     * Gets the default Storage whitelist log headers and query parameters.
+     *
+     * @return the default http log options.
+     */
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        return BuilderHelper.getDefaultHttpLogOptions();
     }
 
     /**

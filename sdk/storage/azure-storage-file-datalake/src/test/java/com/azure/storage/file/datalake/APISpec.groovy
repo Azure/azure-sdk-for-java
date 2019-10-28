@@ -13,8 +13,9 @@ import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
-import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.file.datalake.models.FileSystemItem
+import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -143,10 +144,10 @@ class APISpec extends Specification {
 
     def cleanup() {
         def options = new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName)
-        for (BlobContainerItem container : primaryDataLakeServiceClient.listFileSystems(options, Duration.ofSeconds(120))) {
-            FileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(container.getName())
+        for (FileSystemItem fileSystem : primaryDataLakeServiceClient.listFileSystems(options, Duration.ofSeconds(120))) {
+            FileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(fileSystem.getName())
 
-            if (container.getProperties().getLeaseState() == com.azure.storage.blob.models.LeaseStateType.LEASED) {
+            if (fileSystem.getProperties().getLeaseState() == LeaseStateType.LEASED) {
                 createLeaseClient(fileSystemClient).breakLeaseWithResponse(0, null, null, null)
             }
 

@@ -11,10 +11,10 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
-import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PathInfo;
-import com.azure.storage.file.datalake.models.ReliableDownloadOptions;
+import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -106,7 +106,7 @@ public class FileClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.createWithResponse#PathHTTPHeaders-Map-PathAccessConditions-String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.createWithResponse#PathHTTPHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
@@ -114,7 +114,7 @@ public class FileClient extends PathClient {
      *
      * @param headers {@link PathHTTPHeaders}
      * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -122,7 +122,7 @@ public class FileClient extends PathClient {
      * @return A response containing information about the created file
      */
     public Response<PathInfo> createWithResponse(PathHTTPHeaders headers, Map<String, String> metadata,
-        PathAccessConditions accessConditions, String permissions, String umask, Duration timeout, Context context) {
+        DataLakeRequestConditions accessConditions, String permissions, String umask, Duration timeout, Context context) {
         Mono<Response<PathInfo>> response = pathAsyncClient.createWithResponse(PathResourceType.FILE, headers, metadata,
             accessConditions, permissions, umask, context);
 
@@ -149,19 +149,19 @@ public class FileClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.deleteWithResponse#PathAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
-     * @param accessConditions {@link PathAccessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> deleteWithResponse(PathAccessConditions accessConditions, Duration timeout, Context context) {
+    public Response<Void> deleteWithResponse(DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         Mono<Response<Void>> response = pathAsyncClient.deleteWithResponse(null, accessConditions, context);
 
@@ -252,7 +252,7 @@ public class FileClient extends PathClient {
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.flushWithResponse#long-boolean-boolean-PathHTTPHeaders-PathAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.flushWithResponse#long-boolean-boolean-PathHTTPHeaders-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -262,14 +262,14 @@ public class FileClient extends PathClient {
      * @param retainUncommittedData Whether or not uncommitted data is to be retained after the operation.
      * @param close Whether or not a file changed event raised indicates completion (true) or modification (false).
      * @param httpHeaders {@link PathHTTPHeaders httpHeaders}
-     * @param accessConditions {@link PathAccessConditions accessConditions}
+     * @param accessConditions {@link DataLakeRequestConditions accessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing the information of the created resource.
      */
     public Response<PathInfo> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
-        PathHTTPHeaders httpHeaders, PathAccessConditions accessConditions, Duration timeout, Context context) {
+        PathHTTPHeaders httpHeaders, DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<PathInfo>> response =  fileAsyncClient.flushDataWithResponse(position, retainUncommittedData,
             close, httpHeaders, accessConditions, context);
 
@@ -299,15 +299,15 @@ public class FileClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.readWithResponse#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.readWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link FileRange}
-     * @param options {@link ReliableDownloadOptions}
-     * @param accessConditions {@link PathAccessConditions}
+     * @param options {@link DownloadRetryOptions}
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified file range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -315,10 +315,10 @@ public class FileClient extends PathClient {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
      */
-    public Response<Void> readWithResponse(OutputStream stream, FileRange range, ReliableDownloadOptions options,
-        PathAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
+    public Response<Void> readWithResponse(OutputStream stream, FileRange range, DownloadRetryOptions options,
+        DataLakeRequestConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
         return blockBlobClient.downloadWithResponse(stream, Transforms.toBlobRange(range),
-            Transforms.toBlobReliableDownloadOptions(options), Transforms.toBlobAccessConditions(accessConditions),
+            Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(accessConditions),
             rangeGetContentMD5, timeout, context);
     }
 
@@ -346,16 +346,16 @@ public class FileClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileClient.renameWithResponse#String-PathHTTPHeaders-Map-String-String-PathAccessConditions-PathAccessConditions}
+     * {@codesnippet com.azure.storage.file.datalake.FileClient.renameWithResponse#String-PathHTTPHeaders-Map-String-String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
      * @param destinationPath Relative path from the file system to rename the file to.
-     * @param sourceAccessConditions {@link PathAccessConditions} against the source.
-     * @param destAccessConditions {@link PathAccessConditions} against the destination.
+     * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
+     * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Response} whose {@link Response#getValue() value} that contains a {@link FileClient} used
      * to interact with the file created.
      */
-    public Response<FileClient> renameWithResponse(String destinationPath, PathAccessConditions sourceAccessConditions,
-        PathAccessConditions destAccessConditions, Duration timeout, Context context) {
+    public Response<FileClient> renameWithResponse(String destinationPath, DataLakeRequestConditions sourceAccessConditions,
+        DataLakeRequestConditions destAccessConditions, Duration timeout, Context context) {
 
         Mono<Response<PathClient>> response = renameWithResponse(destinationPath, sourceAccessConditions,
             destAccessConditions, context);

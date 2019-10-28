@@ -4,8 +4,8 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.http.rest.Response
-import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.FileSystemListDetails
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.UserDelegationKey
@@ -21,7 +21,7 @@ class ServiceAPITest extends APISpec {
             primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName), null)
 
         then:
-        for (BlobContainerItem c : response) {
+        for (FileSystemItem c : response) {
             assert c.getName().startsWith(fileSystemPrefix)
             assert c.getProperties().getLastModified() != null
             assert c.getProperties().getETag() != null

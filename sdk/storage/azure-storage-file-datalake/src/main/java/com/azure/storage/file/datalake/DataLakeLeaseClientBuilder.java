@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 
 import java.net.URL;
 import java.util.UUID;
@@ -21,15 +22,19 @@ import java.util.UUID;
  *
  * <p><strong>Instantiating LeaseClients</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithBlobAndLeaseId}
+ * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFileAndLeaseId}
  *
- * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithContainerAndLeaseId}
+ * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithDirectoryAndLeaseId}
+ *
+ * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystemAndLeaseId}
  *
  * <p><strong>Instantiating LeaseAsyncClients</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId}
+ * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithFileAndLeaseId}
  *
- * {@codesnippet com.azure.storage.blob.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId}
+ * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithDirectoryAndLeaseId}
+ *
+ * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithFileSystemAndLeaseId}
  *
  * @see DataLakeLeaseClient
  * @see DataLakeLeaseAsyncClient
@@ -37,10 +42,10 @@ import java.util.UUID;
 @ServiceClientBuilder(serviceClients = { DataLakeLeaseClient.class, DataLakeLeaseAsyncClient.class })
 public final class DataLakeLeaseClientBuilder {
 
-    com.azure.storage.blob.specialized.LeaseClientBuilder blobLeaseClientBuilder;
+    BlobLeaseClientBuilder blobLeaseClientBuilder;
 
     public DataLakeLeaseClientBuilder() {
-        blobLeaseClientBuilder = new com.azure.storage.blob.specialized.LeaseClientBuilder();
+        blobLeaseClientBuilder = new BlobLeaseClientBuilder();
     }
 
     /**

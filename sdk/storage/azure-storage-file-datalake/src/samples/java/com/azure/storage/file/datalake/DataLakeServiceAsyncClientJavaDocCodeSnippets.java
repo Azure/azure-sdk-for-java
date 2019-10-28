@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.datalake;
 
-import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -62,13 +62,13 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DataLakeServiceAsyncClient#deleteFileSystemWithResponse(String, com.azure.storage.file.datalake.models.FileSystemAccessConditions)}
+     * Code snippet for {@link DataLakeServiceAsyncClient#deleteFileSystemWithResponse(String, DataLakeRequestConditions)}
      */
     public void deleteFileSystemWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String-FileSystemAccessConditions
-        client.deleteFileSystemWithResponse("fileSystemName", new FileSystemAccessConditions()).subscribe(response ->
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String-DataLakeRequestConditions
+        client.deleteFileSystemWithResponse("fileSystemName", new DataLakeRequestConditions()).subscribe(response ->
             System.out.printf("Delete file system completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String-FileSystemAccessConditions
+        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String-DataLakeRequestConditions
     }
 
     /**

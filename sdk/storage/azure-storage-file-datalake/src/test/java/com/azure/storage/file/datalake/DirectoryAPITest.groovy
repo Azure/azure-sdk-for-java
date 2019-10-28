@@ -6,6 +6,7 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions
 import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders
+import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
@@ -45,8 +46,7 @@ class DirectoryAPITest extends APISpec {
         dc = fsc.getDirectoryClient(generatePathName())
 
         when:
-        dc.createWithResponse(null, null, new PathAccessConditions()
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+        dc.createWithResponse(null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null, null, null,
             Context.NONE)
 
         then:
@@ -113,16 +113,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(dc, match)
         leaseID = setupPathLeaseCondition(dc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
-
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.createWithResponse(null, null, pac, null, null, null, null).getStatusCode() == 201
+        dc.createWithResponse(null, null, drc, null, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -139,15 +138,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(dc, noneMatch)
         setupPathLeaseCondition(dc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.createWithResponse(null, null, bac, null, null, null, Context.NONE)
+        dc.createWithResponse(null, null, drc, null, null, null, Context.NONE)
 
         then:
         thrown(Exception)
@@ -197,15 +196,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(dc, match)
         leaseID = setupPathLeaseCondition(dc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.deleteWithResponse(false, pac, null, null).getStatusCode() == 200
+        dc.deleteWithResponse(false, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -222,15 +221,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(dc, noneMatch)
         setupPathLeaseCondition(dc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.deleteWithResponse(false, pac, null, null).getStatusCode()
+        dc.deleteWithResponse(false, drc, null, null).getStatusCode()
 
         then:
         thrown(StorageErrorException)
@@ -290,16 +289,16 @@ class DirectoryAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(dc, match)
         leaseID = setupPathLeaseCondition(dc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
 
         expect:
-        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), pac, null, Context.NONE).getStatusCode() == 200
+        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), drc, null, Context.NONE).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -316,15 +315,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(dc, noneMatch)
         setupPathLeaseCondition(dc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), pac, null, Context.NONE).getStatusCode() == 200
+        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), drc, null, Context.NONE).getStatusCode() == 200
 
         then:
         thrown(StorageErrorException)
@@ -376,15 +375,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(dc, match)
         leaseID = setupPathLeaseCondition(dc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.getAccessControlWithResponse(false, pac, null, null).getStatusCode() == 200
+        dc.getAccessControlWithResponse(false, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -401,15 +400,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(dc, noneMatch)
         setupPathLeaseCondition(dc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.getAccessControlWithResponse(false, pac, null, null).getStatusCode() == 200
+        dc.getAccessControlWithResponse(false, drc, null, null).getStatusCode() == 200
 
         then:
         thrown(StorageErrorException)
@@ -462,15 +461,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(dc, match)
         leaseID = setupPathLeaseCondition(dc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.renameWithResponse(generatePathName(), pac, null, null, null).getStatusCode() == 201
+        dc.renameWithResponse(generatePathName(), drc, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -487,15 +486,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(dc, noneMatch)
         setupPathLeaseCondition(dc, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.renameWithResponse(generatePathName(), pac, null, null, null)
+        dc.renameWithResponse(generatePathName(), drc, null, null, null)
 
         then:
         thrown(StorageErrorException)
@@ -517,15 +516,15 @@ class DirectoryAPITest extends APISpec {
         destDir.create()
         match = setupPathMatchCondition(destDir, match)
         leaseID = setupPathLeaseCondition(destDir, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.renameWithResponse(pathName, null, pac, null, null).getStatusCode() == 201
+        dc.renameWithResponse(pathName, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -545,15 +544,15 @@ class DirectoryAPITest extends APISpec {
         destDir.create()
         noneMatch = setupPathMatchCondition(destDir, noneMatch)
         setupPathLeaseCondition(destDir, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.renameWithResponse(pathName, null, pac, null, null)
+        dc.renameWithResponse(pathName, null, drc, null, null)
 
         then:
         thrown(StorageErrorException)
@@ -613,16 +612,15 @@ class DirectoryAPITest extends APISpec {
     @Unroll
     def "Get properties AC"() {
         setup:
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID)))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(setupPathMatchCondition(dc, match))
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.getPropertiesWithResponse(pac, null, null).getStatusCode() == 200
+        dc.getPropertiesWithResponse(drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -637,16 +635,15 @@ class DirectoryAPITest extends APISpec {
     @Unroll
     def "Get properties AC fail"() {
         setup:
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID)))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch)))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.getPropertiesWithResponse(bac, null, null)
+        dc.getPropertiesWithResponse(drc, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -725,16 +722,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(dc, match)
         leaseID = setupPathLeaseCondition(dc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.setHttpHeadersWithResponse(null, bac, null, null).getStatusCode() == 200
+        dc.setHttpHeadersWithResponse(null, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -751,16 +747,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         noneMatch = setupPathMatchCondition(dc, noneMatch)
         setupPathLeaseCondition(dc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.setHttpHeadersWithResponse(null, bac, null, null)
+        dc.setHttpHeadersWithResponse(null, drc, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -843,16 +838,15 @@ class DirectoryAPITest extends APISpec {
         setup:
         match = setupPathMatchCondition(dc, match)
         leaseID = setupPathLeaseCondition(dc, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.setMetadataWithResponse(null, bac, null, null).getStatusCode() == 200
+        dc.setMetadataWithResponse(null, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -870,16 +864,15 @@ class DirectoryAPITest extends APISpec {
         noneMatch = setupPathMatchCondition(dc, noneMatch)
         setupPathLeaseCondition(dc, leaseID)
 
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.setMetadataWithResponse(null, bac, null, null)
+        dc.setMetadataWithResponse(null, drc, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -923,8 +916,8 @@ class DirectoryAPITest extends APISpec {
 
     def "Create file error"() {
         when:
-        dc.createFileWithResponse(generatePathName(), null, null, new PathAccessConditions()
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+        dc.createFileWithResponse(generatePathName(), null, null, new DataLakeRequestConditions().setIfMatch("garbage"),
+            null, null, null,
             Context.NONE)
 
         then:
@@ -989,16 +982,16 @@ class DirectoryAPITest extends APISpec {
         client.create()
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
 
         expect:
-        dc.createFileWithResponse(pathName, null, null, pac, null, null, null, null).getStatusCode() == 201
+        dc.createFileWithResponse(pathName, null, null, drc, null, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1018,15 +1011,15 @@ class DirectoryAPITest extends APISpec {
         client.create()
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.createFileWithResponse(pathName, null, null, bac, null, null, null, Context.NONE)
+        dc.createFileWithResponse(pathName, null, null, drc, null, null, null, Context.NONE)
 
         then:
         thrown(StorageErrorException)
@@ -1077,15 +1070,15 @@ class DirectoryAPITest extends APISpec {
         def client = dc.createFile(pathName)
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.deleteFileWithResponse(pathName, pac, null, null).getStatusCode() == 200
+        dc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1104,15 +1097,15 @@ class DirectoryAPITest extends APISpec {
         def client = dc.createFile(pathName)
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.deleteFileWithResponse(pathName, pac, null, null).getStatusCode()
+        dc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode()
 
         then:
         thrown(StorageErrorException)
@@ -1146,8 +1139,8 @@ class DirectoryAPITest extends APISpec {
 
     def "Create sub dir error"() {
         when:
-        dc.createSubDirectoryWithResponse(generatePathName(), null, null, new PathAccessConditions()
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, null, null,
+        dc.createSubDirectoryWithResponse(generatePathName(), null, null,
+            new DataLakeRequestConditions().setIfMatch("garbage"), null, null, null,
             Context.NONE)
 
         then:
@@ -1216,16 +1209,16 @@ class DirectoryAPITest extends APISpec {
         client.create()
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
 
         expect:
-        dc.createSubDirectoryWithResponse(pathName, null, null, pac, null, null, null, null).getStatusCode() == 201
+        dc.createSubDirectoryWithResponse(pathName, null, null, drc, null, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1245,15 +1238,15 @@ class DirectoryAPITest extends APISpec {
         client.create()
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
-        def bac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.createSubDirectoryWithResponse(pathName, null, null, bac, null, null, null, Context.NONE)
+        dc.createSubDirectoryWithResponse(pathName, null, null, drc, null, null, null, Context.NONE)
 
         then:
         thrown(Exception)
@@ -1311,15 +1304,15 @@ class DirectoryAPITest extends APISpec {
         def client = dc.createSubDirectory(pathName)
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.deleteSubDirectoryWithResponse(pathName, false, pac, null, null).getStatusCode() == 200
+        dc.deleteSubDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1338,15 +1331,15 @@ class DirectoryAPITest extends APISpec {
         def client = dc.createSubDirectory(pathName)
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
-        def pac = new PathAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfModifiedSince(modified)
-                .setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match)
-                .setIfNoneMatch(noneMatch))
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.deleteSubDirectoryWithResponse(pathName, false, pac, null, null).getStatusCode()
+        dc.deleteSubDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
 
         then:
         thrown(StorageErrorException)
