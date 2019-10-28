@@ -16,6 +16,7 @@ import com.azure.messaging.eventhubs.EventHubProducer;
 public class BatchOptions implements Cloneable {
     private int maximumSizeInBytes;
     private String partitionKey;
+    private String partitionId;
 
     /**
      * Sets the maximum size for the {@link EventDataBatch batch of events}, in bytes.
@@ -57,6 +58,36 @@ public class BatchOptions implements Cloneable {
      */
     public String getPartitionKey() {
         return partitionKey;
+    }
+
+    /**
+     * Gets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to, limiting
+     * it to sending events to only that partition.
+     *
+     * If the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent
+     * to an available partition.
+     *
+     * @return the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to.
+     */
+    public String getPartitionId() {
+        return partitionId;
+    }
+
+    /**
+     * Sets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to,
+     * limiting it to sending events to only that partition.
+     *
+     * If the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent
+     * to an available partition.
+     *
+     * @param partitionId The identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be
+     *         bound to. If the producer wishes the events to be automatically to partitions, {@code null}; otherwise,
+     *         the identifier of the desired partition.
+     * @return The updated {@link EventHubProducerOptions} object.
+     */
+    public BatchOptions setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
+        return this;
     }
 
     /**

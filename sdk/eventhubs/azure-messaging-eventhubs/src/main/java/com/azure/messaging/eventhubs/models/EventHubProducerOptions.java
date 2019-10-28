@@ -16,25 +16,7 @@ import com.azure.messaging.eventhubs.EventHubAsyncProducer;
  */
 @Fluent
 public class EventHubProducerOptions implements Cloneable {
-    private String partitionId;
     private RetryOptions retryOptions;
-
-    /**
-     * Sets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to,
-     * limiting it to sending events to only that partition.
-     *
-     * If the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent
-     * to an available partition.
-     *
-     * @param partitionId The identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be
-     *         bound to. If the producer wishes the events to be automatically to partitions, {@code null}; otherwise,
-     *         the identifier of the desired partition.
-     * @return The updated {@link EventHubProducerOptions} object.
-     */
-    public EventHubProducerOptions setPartitionId(String partitionId) {
-        this.partitionId = partitionId;
-        return this;
-    }
 
     /**
      * Sets the retry options used to govern retry attempts when an issue is encountered while sending.
@@ -55,19 +37,6 @@ public class EventHubProducerOptions implements Cloneable {
      */
     public RetryOptions getRetry() {
         return retryOptions;
-    }
-
-    /**
-     * Gets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to, limiting
-     * it to sending events to only that partition.
-     *
-     * If the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent
-     * to an available partition.
-     *
-     * @return the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to.
-     */
-    public String getPartitionId() {
-        return partitionId;
     }
 
     /**
