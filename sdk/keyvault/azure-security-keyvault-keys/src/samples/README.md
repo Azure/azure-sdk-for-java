@@ -126,4 +126,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_wrapUnwrap]: java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperations.java
 [sample_wrapUnwrapAsync]: java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperationsAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-secrets/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-keys/README.png)

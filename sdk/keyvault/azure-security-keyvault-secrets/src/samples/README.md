@@ -3,20 +3,16 @@
 This document explains samples and how to use them.
 
 ## Key concepts
-### Key
-  Azure Key Vault supports multiple key types(`RSA` & `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
-* enabled: Specifies whether the key is enabled and useable for cryptographic operations.
-* not_before: Identifies the time before which the key must not be used for cryptographic operations.
-* expires: Identifies the expiration time on or after which the key MUST NOT be used for cryptographic operation.
-* created: Indicates when this version of the key was created.
-* updated: Indicates when this version of the key was updated.
+### Secret
+  A secret is the fundamental resource within Azure KeyVault. From a developer's perspective, Key Vault APIs accept and return secret values as strings. In addition to the secret data, the following attributes may be specified:
+* expires: Identifies the expiration time on or after which the secret data should not be retrieved.
+* notBefore: Identifies the time after which the secret will be active.
+* enabled: Specifies whether the secret data can be retrieved.
+* created: Indicates when this version of the secret was created.
+* updated: Indicates when this version of the secret was updated.
 
-### Key Client:
-The Key client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing keys and its versions. An asynchronous and synchronous, KeyClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a Key, you can interact with the primary resource types in Key Vault.
-
-### Cryptography Client:
-The Cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key unwrapping and retrieving the configured key. An asynchronous and synchronous, CryptographyClient, client exists in the SDK allowing for selection of a client based on an application's use case.
-
+### Secret Client:
+The Secret client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing secrets and its versions. An asynchronous and synchronous, SecretClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a SecretClient, you can interact with the primary resource types in Key Vault.
 
 # Samples Azure Key Vault secrets APIs
 This document describes how to use samples and what is done in each sample.
