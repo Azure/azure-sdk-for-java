@@ -29,7 +29,7 @@ public class EventDataBatchTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void nullEventData() {
-        final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY, null);
+        final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, null);
         batch.tryAdd(null);
     }
 
@@ -40,7 +40,7 @@ public class EventDataBatchTest {
     public void payloadExceededException() {
         when(errorContextProvider.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
 
-        final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY, errorContextProvider);
+        final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider);
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
         try {
             batch.tryAdd(tooBig);
@@ -56,10 +56,28 @@ public class EventDataBatchTest {
      */
     @Test
     public void withinPayloadSize() {
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, null);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, null);
         final EventData within = new EventData(new byte[1024]);
 
         Assert.assertTrue(batch.tryAdd(within));
         Assert.assertEquals(1, batch.getSize());
+    }
+
+
+    /**
+     * Verify that we can create a batch with partition id and key.
+     */
+    @Test
+    public void setsPartitionId() {
+        final String partitionId = "My-partitionId";
+
+        // Act
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, partitionId,
+            PARTITION_KEY, null);
+
+        // Assert
+        Assert.assertEquals(PARTITION_KEY, batch.getPartitionKey());
+        Assert.assertEquals(partitionId, batch.getPartitionId());
+        Assert.assertEquals(0, batch.getEvents().size());
     }
 }
