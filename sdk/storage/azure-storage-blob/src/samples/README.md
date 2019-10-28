@@ -58,15 +58,12 @@ Start using Storage blob Java SDK in your solutions. Our SDK details could be fo
 For more extensive documentation on Azure Storage blob, see the [API reference documentation][storageblob_rest].
 
 ## Contributing
-This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+This project welcomes contributions and suggestions. Find [more conributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
 [source_code]:  src
 [BLOB_SDK_README]: ../../README.md
+[SDK_README_CONTRIBUTING]:../../README.md#contributing
 [samples_basic]: java/com/azure/storage/blob/BasicExample.java
 [samples_file_transfer]: java/com/azure/storage/blob/FileTransferExample.java
 [samples_storage_error]: java/com/azure/storage/blob/StorageErrorHandlingExample.java
