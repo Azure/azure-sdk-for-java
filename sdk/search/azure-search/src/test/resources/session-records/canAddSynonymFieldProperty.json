@@ -1,52 +1,52 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk12d78572d029.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk6c0648922970.search.windows.net/synonymmaps?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c1712f50-6291-47a5-8b2b-fc535c2359d3",
+      "request-id" : "e0c04360-42b7-4306-91fe-4dc545c6f5c1",
       "StatusCode" : "201",
-      "Date" : "Wed, 23 Oct 2019 15:48:05 GMT",
+      "Date" : "Mon, 28 Oct 2019 20:23:47 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D757D065449E39\"",
-      "elapsed-time" : "80",
+      "ETag" : "W/\"0x8D75BE4BD4140FD\"",
+      "elapsed-time" : "39",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "191",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk12d78572d029.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D757D065449E39\\\"\",\"name\":\"names\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\"}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk6c0648922970.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D75BE4BD4140FD\\\"\",\"name\":\"names\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\"}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk12d78572d029.search.windows.net/synonymmaps('names')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk6c0648922970.search.windows.net/synonymmaps('names')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk12d78572d029.search.windows.net/indexes?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk6c0648922970.search.windows.net/indexes?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "71a29b7c-4dcd-4bf6-aa35-5d4bac7d2e5b",
+      "request-id" : "759ad9d3-1d09-42bf-a1e8-d34f31b41bc1",
       "StatusCode" : "201",
-      "Date" : "Wed, 23 Oct 2019 15:48:06 GMT",
+      "Date" : "Mon, 28 Oct 2019 20:23:49 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D757D065B2690D\"",
-      "elapsed-time" : "516",
+      "ETag" : "W/\"0x8D75BE4BDB80D6F\"",
+      "elapsed-time" : "729",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "747",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk12d78572d029.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D757D065B2690D\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[\"names\"]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk6c0648922970.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D75BE4BDB80D6F\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[\"names\"]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk12d78572d029.search.windows.net/indexes('hotels')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk6c0648922970.search.windows.net/indexes('hotels')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

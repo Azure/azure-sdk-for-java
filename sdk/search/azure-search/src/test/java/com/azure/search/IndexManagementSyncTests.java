@@ -132,7 +132,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index currentResource = client.createOrUpdateIndex(mutateCorsOptionsInIndex(staleResource));
 
         try {
-            client.deleteIndex(index.getName(), generateIfMatchAccessCondition(staleResource.getETag()), null);
+            client.deleteIndex(index.getName(), generateIfMatchAccessCondition(staleResource.getETag()));
             Assert.fail("deleteIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -151,9 +151,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index);
 
-        client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), null);
+        client.deleteIndex(index.getName(), generateIfExistsAccessCondition());
         try {
-            client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), null);
+            client.deleteIndex(index.getName(), generateIfExistsAccessCondition());
             Assert.fail("deleteIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -254,7 +254,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
                 new Field()
                     .setName("HotelName")
                     .setType(DataType.EDM_STRING)
-                    .setSynonymMaps(Arrays.asList(synonymMapName))
+                    .setSynonymMaps(Collections.singletonList(synonymMapName))
             ));
 
         Index createdIndex = client.createIndex(index);
@@ -393,9 +393,10 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
 
         Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(index,
+            false,
             null,
             null,
-            null, Context.NONE);
+            Context.NONE);
 
         Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
@@ -403,11 +404,11 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
+        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition());
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
 
         try {
-            client.createOrUpdateIndex(mutatedResource, generateIfNotExistsAccessCondition(), null);
+            client.createOrUpdateIndex(mutatedResource, generateIfNotExistsAccessCondition());
             Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -418,7 +419,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
         Index resource = createTestIndex();
-        Index updatedResource = client.createOrUpdateIndex(resource, generateIfNotExistsAccessCondition(), null);
+        Index updatedResource = client.createOrUpdateIndex(resource, generateIfNotExistsAccessCondition());
 
         Assert.assertFalse(updatedResource.getETag().isEmpty());
     }
@@ -426,9 +427,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
+        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition());
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfExistsAccessCondition(), null);
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfExistsAccessCondition());
 
         Assert.assertFalse(updatedResource.getETag().isEmpty());
         Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
@@ -439,7 +440,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index resource = createTestIndex();
 
         try {
-            client.createOrUpdateIndex(resource, generateIfExistsAccessCondition(), null);
+            client.createOrUpdateIndex(resource, generateIfExistsAccessCondition());
             Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -452,9 +453,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
+        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition());
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()), null);
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
 
         Assert.assertFalse(createdResource.getETag().isEmpty());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
@@ -464,12 +465,12 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition(), null);
+        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition());
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateEmptyAccessCondition(), null);
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateEmptyAccessCondition());
 
         try {
-            client.createOrUpdateIndex(updatedResource, generateIfMatchAccessCondition(createdResource.getETag()), null);
+            client.createOrUpdateIndex(updatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
             Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());

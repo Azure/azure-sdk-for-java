@@ -423,9 +423,7 @@ public class SearchServiceAsyncClient {
         return withContext(context -> getIndexWithResponse(indexName, requestOptions, context));
     }
 
-    Mono<Response<Index>> getIndexWithResponse(String indexName,
-                                               RequestOptions requestOptions,
-                                               Context context) {
+    Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
         return restClient
             .indexes()
             .getWithRestResponseAsync(indexName, requestOptions, context)
@@ -462,8 +460,7 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
-    public Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
-                                                           RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> indexExistsWithResponse(String indexName, RequestOptions requestOptions) {
         return withContext(context -> indexExistsWithResponse(indexName, requestOptions, context));
     }
 
@@ -560,27 +557,10 @@ public class SearchServiceAsyncClient {
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      *
      * @param index the definition of the index to create or update
-     * @return the index that was created or updated
+     * @return the index that was created or updated.
      */
     public Mono<Index> createOrUpdateIndex(Index index) {
-        return this.createOrUpdateIndexWithResponse(index, null, null, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the index that was created or updated
-     */
-    public Mono<Index> createOrUpdateIndex(Index index,
-                                           AccessCondition accessCondition,
-                                           RequestOptions requestOptions) {
-        return this.createOrUpdateIndexWithResponse(index, null, accessCondition, requestOptions)
+        return this.createOrUpdateIndexWithResponse(index, false, null, null)
             .map(Response::getValue);
     }
 
@@ -595,9 +575,41 @@ public class SearchServiceAsyncClient {
      * large indexes
      * @return the index that was created or updated
      */
-    public Mono<Index> createOrUpdateIndex(Index index, Boolean allowIndexDowntime) {
+    public Mono<Index> createOrUpdateIndex(Index index, boolean allowIndexDowntime) {
         return this.createOrUpdateIndexWithResponse(index, allowIndexDowntime, null, null)
+                .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
+     * @param index the definition of the index to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @return the index that was created or updated
+     */
+    public Mono<Index> createOrUpdateIndex(Index index,
+                                           AccessCondition accessCondition) {
+        return this.createOrUpdateIndexWithResponse(index, false, accessCondition, null)
             .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
+     * @param index the definition of the index to create or update
+     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
+     * index by taking the index offline for at least a few seconds. This temporarily causes
+     * indexing and query requests to fail. Performance and write availability of the index
+     * can be impaired for several minutes after the index is updated, or longer for very
+     * large indexes
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @return the index that was created or updated
+     */
+    public Mono<Index> createOrUpdateIndex(Index index, boolean allowIndexDowntime, AccessCondition accessCondition) {
+        return this.createOrUpdateIndexWithResponse(index, allowIndexDowntime, accessCondition, null)
+                .map(Response::getValue);
     }
 
     /**
@@ -616,27 +628,13 @@ public class SearchServiceAsyncClient {
      * @return the index that was created or updated
      */
     public Mono<Index> createOrUpdateIndex(Index index,
-                                           Boolean allowIndexDowntime,
+                                           boolean allowIndexDowntime,
                                            AccessCondition accessCondition,
                                            RequestOptions requestOptions) {
         return this.createOrUpdateIndexWithResponse(index,
             allowIndexDowntime,
             accessCondition,
             requestOptions).map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @return a response containing the index that was created or updated
-     */
-    public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index) {
-        return withContext(context -> createOrUpdateIndexWithResponse(index,
-            null,
-            null,
-            null,
-            context));
     }
 
     /**
@@ -655,7 +653,7 @@ public class SearchServiceAsyncClient {
      * @return a response containing the index that was created or updated
      */
     public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
-                                                                 Boolean allowIndexDowntime,
+                                                                 boolean allowIndexDowntime,
                                                                  AccessCondition accessCondition,
                                                                  RequestOptions requestOptions) {
         return withContext(context -> createOrUpdateIndexWithResponse(index,
@@ -666,7 +664,7 @@ public class SearchServiceAsyncClient {
     }
 
     Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
-                                                          Boolean allowIndexDowntime,
+                                                          boolean allowIndexDowntime,
                                                           AccessCondition accessCondition,
                                                           RequestOptions requestOptions,
                                                           Context context) {
@@ -696,14 +694,28 @@ public class SearchServiceAsyncClient {
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
      * @param indexName the name of the index to delete
-     * @param accessCondition the access condition
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @return a response signalling completion.
+     */
+    public Mono<Void> deleteIndex(String indexName, AccessCondition accessCondition) {
+        return this.deleteIndexWithResponse(indexName,
+                accessCondition,
+                null)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName the name of the index to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Void> deleteIndex(String indexName,
-                                  AccessCondition accessCondition,
-                                  RequestOptions requestOptions) {
+    public Mono<Void> deleteIndex(String indexName, AccessCondition accessCondition, RequestOptions requestOptions) {
         return this.deleteIndexWithResponse(indexName,
             accessCondition,
             requestOptions)
@@ -714,7 +726,8 @@ public class SearchServiceAsyncClient {
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
      * @param indexName the name of the index to delete
-     * @param accessCondition the access condition
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.

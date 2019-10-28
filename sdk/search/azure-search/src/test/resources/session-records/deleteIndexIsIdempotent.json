@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk46295994625b.search.windows.net/indexes('hotels')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkfbf52825adac.search.windows.net/indexes('hotels')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "30507671-84fb-4f60-9fa2-656ef5328279",
+      "request-id" : "237b73cc-9d49-4360-bfbd-86b81630f903",
       "StatusCode" : "404",
-      "Date" : "Fri, 18 Oct 2019 17:36:03 GMT",
+      "Date" : "Mon, 28 Oct 2019 20:26:00 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "41",
+      "elapsed-time" : "33",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "117",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdk46295994625b'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdkfbf52825adac'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,62 +23,62 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk46295994625b.search.windows.net/indexes?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkfbf52825adac.search.windows.net/indexes?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "263f4930-0370-471a-88ff-da11e491419d",
+      "request-id" : "1b7f7a29-58bb-4ce7-982b-604b90d4b3c0",
       "StatusCode" : "201",
-      "Date" : "Fri, 18 Oct 2019 17:36:04 GMT",
+      "Date" : "Mon, 28 Oct 2019 20:26:00 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D753F1A71A68DB\"",
-      "elapsed-time" : "721",
+      "ETag" : "W/\"0x8D75BE50CA3B8AF\"",
+      "elapsed-time" : "795",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "523",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk46295994625b.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D753F1A71A68DB\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkfbf52825adac.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D75BE50CA3B8AF\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk46295994625b.search.windows.net/indexes('hotels')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkfbf52825adac.search.windows.net/indexes('hotels')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk46295994625b.search.windows.net/indexes('hotels')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkfbf52825adac.search.windows.net/indexes('hotels')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "425",
+      "elapsed-time" : "144",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c5070bf3-df7f-48d7-95ca-03b9c8363d06",
+      "request-id" : "b9153d04-4230-46ab-a2df-557a0ab40088",
       "StatusCode" : "204",
-      "Date" : "Fri, 18 Oct 2019 17:36:05 GMT"
+      "Date" : "Mon, 28 Oct 2019 20:26:01 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk46295994625b.search.windows.net/indexes('hotels')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkfbf52825adac.search.windows.net/indexes('hotels')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "13cd45e4-3fe0-4f7e-bb04-579a89d6dff7",
+      "request-id" : "7e43d9ba-bae4-48ca-9af1-b50a9ac36955",
       "StatusCode" : "404",
-      "Date" : "Fri, 18 Oct 2019 17:36:05 GMT",
+      "Date" : "Mon, 28 Oct 2019 20:26:01 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "18",
+      "elapsed-time" : "15",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "117",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdk46295994625b'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdkfbf52825adac'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

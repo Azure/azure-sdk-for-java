@@ -49,10 +49,11 @@ public abstract class SynonymMapTestBase extends SearchServiceTestBase {
     protected void assertSynonymMapsEqual(SynonymMap actual, SynonymMap expected) {
         Assert.assertEquals(actual.getName(), expected.getName());
         Assert.assertEquals(actual.getSynonyms(), expected.getSynonyms());
-        Assert.assertEquals(actual.getFormat(), expected.getFormat());
     }
 
     protected SynonymMap createTestSynonymMap() {
-        return new SynonymMap().setName("test-synonym").setSynonyms("word1,word2");
+        return new SynonymMap()
+            .setName("test-synonym")
+            .setSynonyms("word1,word2");
     }
 }
