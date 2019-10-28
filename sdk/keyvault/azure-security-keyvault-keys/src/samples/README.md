@@ -25,7 +25,7 @@ This document describes how to use samples and what is done in each sample.
 
 ### Adding the package to your project
 
-Maven dependency for Azure Secret Client library. Add it to your project's pom file.
+Maven dependency for Azure Keys Client library. Add it to your project's pom file.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-keys;current})
 ```xml

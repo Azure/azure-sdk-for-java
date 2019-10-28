@@ -19,7 +19,8 @@ This document describes how to use samples and what is done in each sample.
 
 ### Adding the package to your project
 
-Maven dependency for Azure Key Client library. Add it to your project's pom file.
+Maven dependency for Azure certificates Client library. Add it to your project's pom file.
+
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-certificates;current})
 ```xml
 <dependency>
