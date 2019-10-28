@@ -13,9 +13,9 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollResponse.OperationStatus;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.ProgressReceiver;
@@ -286,10 +286,10 @@ public class BlobAsyncClientBase {
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
-     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     * @return A {@link PollerFlux} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
-    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
+    public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
         return beginCopy(sourceUrl, null, null, null, null, null, pollInterval);
     }
 
@@ -319,12 +319,12 @@ public class BlobAsyncClientBase {
      * @param destAccessConditions {@link BlobRequestConditions} against the destination.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
-     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     * @return A {@link PollerFlux} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
-    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-            RehydratePriority priority, RequestConditions sourceModifiedAccessConditions,
-            BlobRequestConditions destAccessConditions, Duration pollInterval) {
+    public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
+                                        RehydratePriority priority, RequestConditions sourceModifiedAccessConditions,
+                                        BlobRequestConditions destAccessConditions, Duration pollInterval) {
 
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
         final RequestConditions sourceModifiedCondition = sourceModifiedAccessConditions == null
@@ -341,40 +341,37 @@ public class BlobAsyncClientBase {
             .setIfMatch(sourceModifiedCondition.getIfMatch())
             .setIfNoneMatch(sourceModifiedCondition.getIfNoneMatch());
 
-        return new Poller<>(interval,
-            response -> {
-                try {
-                    return onPoll(response);
-                } catch (RuntimeException ex) {
-                    return monoError(logger, ex);
-                }
-            },
-            Mono::empty,
-            () -> {
+        return new PollerFlux<>(interval,
+            (pollingContext) -> {
                 try {
                     return onStart(sourceUrl, metadata, tier, priority, sourceConditions, destinationAccessConditions);
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
                 }
             },
-            poller -> {
-                final PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
-
-                if (response == null || response.getValue() == null) {
-                    return Mono.error(logger.logExceptionAsError(
-                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+            (pollingContext) -> {
+                try {
+                    return onPoll(pollingContext.getLatestResponse());
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
                 }
-
-                final String copyIdentifier = response.getValue().getCopyId();
+            },
+            (pollingContext, firstResponse) -> {
+                if (firstResponse == null ||  firstResponse.getValue() == null) {
+                    return Mono.error(logger.logExceptionAsError(
+                            new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                }
+                final String copyIdentifier = firstResponse.getValue().getCopyId();
 
                 if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
                     logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
 
-                    return abortCopyFromUrl(copyIdentifier).thenReturn(response.getValue());
+                    return abortCopyFromUrl(copyIdentifier).thenReturn(firstResponse.getValue());
                 }
 
                 return Mono.empty();
-            });
+            },
+            (pollingContext) -> Mono.empty());
     }
 
     private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, AccessTier tier,
@@ -403,8 +400,8 @@ public class BlobAsyncClientBase {
     }
 
     private Mono<PollResponse<BlobCopyInfo>> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
-        if (pollResponse.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED
-            || pollResponse.getStatus() == OperationStatus.FAILED) {
+        if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+            || pollResponse.getStatus() == LongRunningOperationStatus.FAILED) {
             return Mono.just(pollResponse);
         }
 
@@ -412,7 +409,7 @@ public class BlobAsyncClientBase {
         if (lastInfo == null) {
             logger.warning("BlobCopyInfo does not exist. Activation operation failed.");
             return Mono.just(new PollResponse<>(
-                OperationStatus.fromString("COPY_START_FAILED", true), null));
+                    LongRunningOperationStatus.fromString("COPY_START_FAILED", true), null));
         }
 
         return getProperties().map(response -> {
@@ -420,19 +417,19 @@ public class BlobAsyncClientBase {
             final BlobCopyInfo result = new BlobCopyInfo(response.getCopySource(), response.getCopyId(), status,
                 response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
 
-            OperationStatus operationStatus;
+            LongRunningOperationStatus operationStatus;
             switch (status) {
                 case SUCCESS:
-                    operationStatus = OperationStatus.SUCCESSFULLY_COMPLETED;
+                    operationStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                     break;
                 case FAILED:
-                    operationStatus = OperationStatus.FAILED;
+                    operationStatus = LongRunningOperationStatus.FAILED;
                     break;
                 case ABORTED:
-                    operationStatus = OperationStatus.USER_CANCELLED;
+                    operationStatus = LongRunningOperationStatus.USER_CANCELLED;
                     break;
                 case PENDING:
-                    operationStatus = OperationStatus.IN_PROGRESS;
+                    operationStatus = LongRunningOperationStatus.IN_PROGRESS;
                     break;
                 default:
                     throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -441,7 +438,7 @@ public class BlobAsyncClientBase {
 
             return new PollResponse<>(operationStatus, result);
         }).onErrorReturn(
-            new PollResponse<>(OperationStatus.fromString("POLLING_FAILED", true), lastInfo));
+            new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED", true), lastInfo));
     }
 
     /**

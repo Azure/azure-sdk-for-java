@@ -668,7 +668,7 @@ class ContainerAPITest extends APISpec {
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
 
         def poller = copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(1))
-        poller.block()
+        poller.waitForCompletion()
 
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()

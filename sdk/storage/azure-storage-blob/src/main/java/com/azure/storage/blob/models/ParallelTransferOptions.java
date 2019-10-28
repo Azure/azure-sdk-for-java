@@ -9,13 +9,15 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+
 /**
  * This class contains configuration used to parallelize data transfer operations. Note that not all values are used
  * by every method which accepts this type. Please refer to the javadoc on specific methods for these cases.
  */
 @Fluent
 public final class ParallelTransferOptions {
-
     private static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
     private final Integer blockSize;
@@ -40,13 +42,18 @@ public final class ParallelTransferOptions {
     public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver) {
         if (blockSize != null) {
             StorageImplUtils.assertInBounds("blockSize", blockSize, 0, BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES);
+            this.blockSize = blockSize;
+        } else {
+            this.blockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         }
-        this.blockSize = blockSize;
 
         if (numBuffers != null) {
             StorageImplUtils.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
+            this.numBuffers = numBuffers;
+        } else {
+            this.numBuffers = BLOB_DEFAULT_NUMBER_OF_BUFFERS;
         }
-        this.numBuffers = numBuffers;
+
         this.progressReceiver = progressReceiver;
     }
 
