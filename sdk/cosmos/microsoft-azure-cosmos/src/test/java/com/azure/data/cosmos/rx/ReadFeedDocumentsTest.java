@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//FIXME: beforeClass times out inconsistently
-@Ignore
 public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     private CosmosDatabase createdDatabase;

@@ -9,15 +9,20 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
+import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
+import com.azure.data.cosmos.internal.routing.Range;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,37 +65,76 @@ public class DocumentQueryExecutionContextFactory {
             collectionObs = resolveCollection(client, query, resourceTypeEnum, resourceLink).flux();
         }
 
-        // We create a ProxyDocumentQueryExecutionContext that will be initialized with DefaultDocumentQueryExecutionContext
-        // which will be used to send the query to GATEWAY and on getting 400(bad request) with 1004(cross parition query not servable), we initialize it with
-        // PipelinedDocumentQueryExecutionContext by providing the partition query execution info that's needed(which we get from the exception returned from GATEWAY).
+        DefaultDocumentQueryExecutionContext<T> queryExecutionContext = new DefaultDocumentQueryExecutionContext<T>(
+            client,
+            resourceTypeEnum,
+            resourceType,
+            query,
+            feedOptions,
+            resourceLink,
+            correlatedActivityId,
+            isContinuationExpected);
 
-        Flux<ProxyDocumentQueryExecutionContext<T>> proxyQueryExecutionContext =
-                collectionObs.flatMap(collection -> {
-                    if (feedOptions != null && feedOptions.partitionKey() != null && feedOptions.partitionKey().equals(PartitionKey.None)) {
-                        feedOptions.partitionKey(BridgeInternal.getPartitionKey(BridgeInternal.getNonePartitionKey(collection.getPartitionKey())));
-                    }
-                    return ProxyDocumentQueryExecutionContext.createAsync(
-                            client,
-                            resourceTypeEnum,
-                            resourceType,
-                            query,
-                            feedOptions,
-                            resourceLink,
-                            collection,
-                            isContinuationExpected,
-                            correlatedActivityId);
-                    }).switchIfEmpty(ProxyDocumentQueryExecutionContext.createAsync(
-                            client,
-                            resourceTypeEnum,
-                            resourceType,
-                            query,
-                            feedOptions,
-                            resourceLink,
-                            null,
-                            isContinuationExpected,
-                            correlatedActivityId));
+        if (ResourceType.Document != resourceTypeEnum) {
+            return Flux.just(queryExecutionContext);
+        }
 
-        return proxyQueryExecutionContext;
+        Mono<PartitionedQueryExecutionInfo> queryExecutionInfoMono =
+            com.azure.data.cosmos.internal.query.QueryPlanRetriever.getQueryPlanThroughGatewayAsync(client, query, resourceLink);
+
+        return collectionObs.single().flatMap(collection ->
+                          queryExecutionInfoMono.flatMap(partitionedQueryExecutionInfo -> {
+                              QueryInfo queryInfo =
+                                  partitionedQueryExecutionInfo.getQueryInfo();
+                              // Non value aggregates must go through
+                              // DefaultDocumentQueryExecutionContext
+                              // Single partition query can serve queries like SELECT AVG(c
+                              // .age) FROM c
+                              // SELECT MIN(c.age) + 5 FROM c
+                              // SELECT MIN(c.age), MAX(c.age) FROM c
+                              // while pipelined queries can only serve
+                              // SELECT VALUE <AGGREGATE>. So we send the query down the old
+                              // pipeline to avoid a breaking change.
+                              // We will skip this in V3 SDK
+                              if (queryInfo.hasAggregates() && !queryInfo.hasSelectValue()) {
+                                  if (feedOptions != null && feedOptions.enableCrossPartitionQuery()) {
+                                      return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                                          "Cross partition query only supports 'VALUE " +
+                                              "<AggreateFunc>' for aggregates"));
+                                  }
+                                  return Mono.just(queryExecutionContext);
+                              }
+
+                              Mono<List<PartitionKeyRange>> partitionKeyRanges;
+
+                              List<Range<String>> queryRanges =
+                                  partitionedQueryExecutionInfo.getQueryRanges();
+
+                              if (feedOptions != null && feedOptions.partitionKey() != null) {
+                                  PartitionKeyInternal internalPartitionKey =
+                                      feedOptions.partitionKey()
+                                          .getInternalPartitionKey();
+                                  Range<String> range = Range.getPointRange(internalPartitionKey
+                                                                                .getEffectivePartitionKeyString(internalPartitionKey,
+                                                                                    collection.getPartitionKey()));
+                                  queryRanges = Collections.singletonList(range);
+                              }
+                              partitionKeyRanges = queryExecutionContext
+                                                       .getTargetPartitionKeyRanges(collection.resourceId(), queryRanges);
+                              return partitionKeyRanges
+                                         .flatMap(pkranges -> createSpecializedDocumentQueryExecutionContextAsync(client,
+                                             resourceTypeEnum,
+                                             resourceType,
+                                             query,
+                                             feedOptions,
+                                             resourceLink,
+                                             isContinuationExpected,
+                                             partitionedQueryExecutionInfo,
+                                             pkranges,
+                                             collection.resourceId(),
+                                             correlatedActivityId).single());
+
+                          })).flux();
     }
 
 	public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(
@@ -106,7 +150,12 @@ public class DocumentQueryExecutionContextFactory {
             String collectionRid,
             UUID correlatedActivityId) {
 
-        int initialPageSize = Utils.getValueOrDefault(feedOptions.maxItemCount(), ParallelQueryConfig.ClientInternalPageSize);
+        if (feedOptions == null) {
+            feedOptions = new FeedOptions();
+        }
+
+        int initialPageSize = Utils.getValueOrDefault(feedOptions.maxItemCount(),
+            ParallelQueryConfig.ClientInternalPageSize);
 
         BadRequestException validationError = Utils.checkRequestOrReturnException(
             initialPageSize > 0 || initialPageSize == -1, "MaxItemCount", "Invalid MaxItemCount %s", initialPageSize);
@@ -115,6 +164,10 @@ public class DocumentQueryExecutionContextFactory {
         }
 
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
+
+        if (!Strings.isNullOrEmpty(queryInfo.getRewrittenQuery())) {
+            query = new SqlQuerySpec(queryInfo.getRewrittenQuery(), query.parameters());
+        }
 
         boolean getLazyFeedResponse = queryInfo.hasTop();
 

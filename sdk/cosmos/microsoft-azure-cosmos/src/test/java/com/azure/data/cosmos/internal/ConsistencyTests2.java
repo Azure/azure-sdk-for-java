@@ -70,14 +70,14 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
     public void validateEventualConsistencyOnAsyncReplicationDirect() {
-        //TODO this need to complete once we implement emulator container in java, and the we can do operation 
+        //TODO this need to complete once we implement emulator container in java, and the we can do operation
         // like pause, resume, stop, recycle on it needed for this test.
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
     public void validateEventualConsistencyOnAsyncReplicationGateway() {
-        //TODO this need to complete once we implement emulator container in java, and the we can do operation 
+        //TODO this need to complete once we implement emulator container in java, and the we can do operation
         // like pause, resume, stop, recycle on it needed for this test.
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
@@ -238,6 +238,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 try {
                     FeedOptions feedOptions = new FeedOptions();
                     feedOptions.enableCrossPartitionQuery(true);
+                    feedOptions.allowEmptyPages(true);
                     FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.selfLink(),
                                                                                  "SELECT * FROM c WHERE c.Id = " +
                                                                                          "'foo'", feedOptions)

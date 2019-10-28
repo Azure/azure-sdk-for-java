@@ -50,8 +50,6 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(boolean queryMetricsEnabled) throws Exception {
 
@@ -85,7 +83,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from c where c.prop IN (@param1, @param2)";
         SqlParameterList params = new SqlParameterList(new SqlParameter("@param1", 3), new SqlParameter("@param2", 4));
         SqlQuerySpec sqs = new SqlQuerySpec(query, params);
-        
+
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
         options.enableCrossPartitionQuery(true);
@@ -208,20 +206,20 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         options.enableCrossPartitionQuery(true);
         options.maxItemCount(3);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
-        
+
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>();
         queryObservable.take(1).subscribe(subscriber);
-        
+
         subscriber.awaitTerminalEvent();
         subscriber.assertComplete();
         subscriber.assertNoErrors();
         assertThat(subscriber.valueCount()).isEqualTo(1);
         FeedResponse<CosmosItemProperties> page = ((FeedResponse<CosmosItemProperties>) subscriber.getEvents().get(0).get(0));
         assertThat(page.results()).hasSize(3);
-        
+
         assertThat(page.continuationToken()).isNotEmpty();
-        
-        
+
+
         options.requestContinuation(page.continuationToken());
         queryObservable = createdCollection.queryItems(query, options);
 
@@ -229,7 +227,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
         assertThat(expectedDocs).hasSize(createdDocuments.size() -3);
-        
+
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .containsExactly(expectedDocs.stream()
                         .sorted((e1, e2) -> Integer.compare(e1.getInt("prop"), e2.getInt("prop")))
@@ -240,7 +238,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryObservable, validator);
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
