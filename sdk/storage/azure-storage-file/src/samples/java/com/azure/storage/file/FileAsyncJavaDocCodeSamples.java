@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileHttpHeaders;
@@ -133,11 +133,11 @@ public class FileAsyncJavaDocCodeSamples {
     public void beginCopy() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.beginCopy#string-map-duration
-        Poller<FileCopyInfo, Void> poller = fileAsyncClient.beginCopy(
+        PollerFlux<FileCopyInfo, Void> poller = fileAsyncClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
 
-        poller.getObserver().subscribe(response -> {
+        poller.subscribe(response -> {
             final FileCopyInfo value = response.getValue();
             System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
         }, error -> System.err.println("Error: " + error),
