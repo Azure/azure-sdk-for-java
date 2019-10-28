@@ -197,27 +197,17 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.
 
 ### Delete a Secret
 
-Delete an existing Secret by calling `deleteSecret`.
+Delete an existing Secret by calling `beginDeleteSecret`.
 ```Java
-Poller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
-
-while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
-    && !deletedSecretPoller.isComplete()) {
-    System.out.println(deletedSecretPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
+SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
 
 // Deleted Secret is accessible as soon as polling begins
-DeletedSecret deletedSecret = deletedSecretPoller.getLastPollResponse().getValue();
-System.out.println("Deleted Date  %s" + deletedSecret.getDeletedOn().toString());
-System.out.printf("Deleted Secret's deletion date %s", deletedSecret.getDeletedOn().toString());
+PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
-// Ensure Secret gets completely deleted on the server.
-while (!deletedSecretPoller.isComplete()) {
-    System.out.println("Delete Status" + deletedSecretPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
-System.out.println("Delete Status " + deletedSecretPoller.getStatus().toString());
+System.out.println("Deleted Date  %s" + deletedSecretPollResponse.getValue().getDeletedOn().toString());
+
+// Secret is being deleted on server.
+deletedSecretPoller.waitForCompletion();
 ```
 
 ### List Secrets
@@ -282,15 +272,14 @@ secretAsyncClient.getSecret("secretName").subscribe(secret -> {
 
 ### Delete a Secret Asynchronously
 
-Delete an existing Secret by calling `deleteSecret`.
+Delete an existing Secret by calling `beginDeleteSecret`.
 ```Java
 secretAsyncClient.beginDeleteSecret("secretName")
-           .getObserver()
-           .subscribe(pollResponse -> {
-               System.out.println("Delete Status: " + pollResponse.getStatus().toString());
-               System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
-               System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
-           });
+    .subscribe(pollResponse -> {
+        System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+        System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
+        System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
+    });
 ```
 
 ### List Secrets Asynchronously

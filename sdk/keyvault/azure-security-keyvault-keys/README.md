@@ -224,25 +224,18 @@ System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().
 
 ### Delete a Key
 
-Delete an existing Key by calling `deleteKey`.
+Delete an existing Key by calling `beginDeleteKey`.
 ```Java
-Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
+SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
 
-while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-    System.out.println(deletedKeyPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
+PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
-DeletedKey deletedKey = deletedKeyPoller.getLastPollResponse().getValue();
+// Deleted key is accessible as soon as polling begins
+DeletedKey deletedKey = deletedKeyPollResponse.getValue();
 System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
-System.out.printf("Deleted Key's deletion date %s", deletedKey.getDeletedOn().toString());
 
 // Key is being deleted on server.
-while (!deletedKeyPoller.isComplete()) {
-    System.out.println(deletedKeyPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
-System.out.println(deletedKeyPoller.getStatus().toString());
+deletedKeyPoller.waitForCompletion();
 ```
 
 ### List Keys
@@ -349,10 +342,9 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
 
 ### Delete a Key Asynchronously
 
-Delete an existing Key by calling `deleteKey`.
+Delete an existing Key by calling `beginDeleteKey`.
 ```java
 keyAsyncClient.beginDeleteKey("keyName")
-    .getObserver()
     .subscribe(pollResponse -> {
         System.out.println("Delete Status: " + pollResponse.getStatus().toString());
         System.out.println("Delete Key Name: " + pollResponse.getValue().getName());

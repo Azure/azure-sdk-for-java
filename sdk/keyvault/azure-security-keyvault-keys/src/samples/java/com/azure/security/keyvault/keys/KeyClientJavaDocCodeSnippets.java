@@ -17,6 +17,8 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.ImportKeyOptions;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
@@ -80,8 +82,36 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyVaultKey ecKey = keyClient.createEcKey(createEcKeyOptions);
         System.out.printf("Key is created with name %s and id %s %n", ecKey.getName(), ecKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createEcKey#keyOptions
+    }
 
+    /**
+     * Generates a code sample for using {@link KeyClient#importKey(String, JsonWebKey)}
+     */
+    public void importKeySnippets() {
+        KeyClient keyClient = createClient();
+        JsonWebKey jsonWebKeyToImport = new JsonWebKey();
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.importKey#string-jsonwebkey
+        KeyVaultKey importedKey = keyClient.importKey("keyName", jsonWebKeyToImport);
+        System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
+        // END: com.azure.security.keyvault.keys.keyclient.importKey#string-jsonwebkey
 
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.importKey#options
+        ImportKeyOptions options = new ImportKeyOptions("keyName", jsonWebKeyToImport)
+            .setHardwareProtected(false);
+
+        KeyVaultKey importedKeyResponse = keyClient.importKey(options);
+        System.out.printf("Key is imported with name %s and id %s \n", importedKeyResponse.getName(),
+            importedKeyResponse.getId());
+        // END: com.azure.security.keyvault.keys.keyclient.importKey#options
+
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.importKey#options-response
+        ImportKeyOptions importKeyOptions = new ImportKeyOptions("keyName", jsonWebKeyToImport)
+            .setHardwareProtected(false);
+
+        KeyVaultKey keyToImport = keyClient.importKeyWithResponse(importKeyOptions, new Context(key1, value1))
+            .getValue();
+        System.out.printf("Key is imported with name %s and id %s \n", keyToImport.getName(), keyToImport.getId());
+        // END: com.azure.security.keyvault.keys.keyclient.importKey#options-response
     }
 
     /**

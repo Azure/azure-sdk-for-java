@@ -252,10 +252,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * <pre>
-     * Key importedKey = keyClient.importKey("keyName", jsonWebKeyToImport);
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.importKey#string-jsonwebkey}
      *
      * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
@@ -279,14 +277,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * <pre>
-     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-     *   .hsm(true)
-     *   .setExpires(OffsetDateTime.now().plusDays(60));
      *
-     * Key importedKey = keyClient.importKey(keyImportOptions);
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.importKey#options}
      *
      * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.
@@ -311,14 +303,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * <pre>
-     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-     *   .hsm(true)
-     *   .setExpires(OffsetDateTime.now().plusDays(60));
      *
-     * Key importedKey = keyClient.importKey(keyImportOptions, new Context(key1, value1)).value();
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.importKey#options-response}
      *
      * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.
