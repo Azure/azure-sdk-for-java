@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -12,11 +11,9 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -55,7 +52,6 @@ public class EventHubAsyncClient implements Closeable {
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
-    private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
     private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
@@ -63,7 +59,6 @@ public class EventHubAsyncClient implements Closeable {
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionOptions connectionOptions;
     private final String eventHubName;
-    private final EventHubProducerOptions defaultProducerOptions;
     private final EventHubConsumerOptions defaultConsumerOptions;
     private final TracerProvider tracerProvider;
 
@@ -76,8 +71,6 @@ public class EventHubAsyncClient implements Closeable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.linkProvider = Objects.requireNonNull(linkProvider, "'linkProvider' cannot be null.");
 
-        this.defaultProducerOptions = new EventHubProducerOptions()
-            .setRetry(connectionOptions.getRetry());
         this.defaultConsumerOptions = new EventHubConsumerOptions()
             .setRetry(connectionOptions.getRetry())
             .setScheduler(connectionOptions.getScheduler());
@@ -126,49 +119,13 @@ public class EventHubAsyncClient implements Closeable {
 
     /**
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
-     * in batches. Event data is automatically routed to an available partition.
+     * in batches.
      *
      * @return A new {@link EventHubAsyncProducer}.
      */
     public EventHubAsyncProducer createProducer() {
-        return createProducer(defaultProducerOptions);
-    }
-
-    /**
-     * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
-     * in batches. If {@link EventHubProducerOptions#getPartitionId() options.partitionId()} is not {@code null}, the
-     * events are routed to that specific partition. Otherwise, events are automatically routed to an available
-     * partition.
-     *
-     * @param options The set of options to apply when creating the producer.
-     * @return A new {@link EventHubAsyncProducer}.
-     * @throws NullPointerException if {@code options} is {@code null}.
-     */
-    public EventHubAsyncProducer createProducer(EventHubProducerOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-
-        final EventHubProducerOptions clonedOptions = options.clone();
-
-        if (clonedOptions.getRetry() == null) {
-            clonedOptions.setRetry(connectionOptions.getRetry());
-        }
-
-        final String entityPath;
-        final String linkName;
-
-        if (ImplUtils.isNullOrEmpty(options.getPartitionId())) {
-            entityPath = eventHubName;
-            linkName = StringUtil.getRandomString("EC");
-        } else {
-            entityPath = String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, options.getPartitionId());
-            linkName = StringUtil.getRandomString("PS");
-        }
-
-        final Mono<AmqpSendLink> amqpLinkMono =
-            linkProvider.createSendLink(linkName, entityPath, clonedOptions.getRetry())
-                .doOnNext(next -> logger.verbose("Creating producer for {}", next.getEntityPath()));
-
-        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider, messageSerializer);
+        return new EventHubAsyncProducer(getEventHubName(), linkProvider, connectionOptions.getRetry(), tracerProvider,
+            messageSerializer);
     }
 
     /**
