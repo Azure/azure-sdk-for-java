@@ -10,19 +10,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * The context type whose instance is used to share context across calls on
- * various polling related operations for a specific long-running operation.
+ * A key/value store that is propagated between various poll related operations associated with
+ * {@link PollerFlux} and {@link SyncPoller} poller. The context also expose activation and
+ * latest {@link PollResponse}.
  *
  * @param <T> the type of the poll response.
  */
 public final class PollingContext<T> {
     private final ClientLogger logger = new ClientLogger(PollingContext.class);
     private final Map<String, String> map;
-    private PollResponse<T> activationResponse;
-    private PollResponse<T> latestResponse;
+    private volatile PollResponse<T> activationResponse;
+    private volatile PollResponse<T> latestResponse;
 
     /**
-     * Get a data from the context with the specific key.
+     * Get a value from the context with the provided key.
      *
      * @param name the key to look for
      * @return the value of the key if exists, else null
@@ -32,10 +33,10 @@ public final class PollingContext<T> {
     }
 
     /**
-     * Set data in the context.
+     * Set a key-value pair in the context.
      *
-     * @param name the key for data
-     * @param value the value of data
+     * @param name the key
+     * @param value the value
      * @return an updated PollingContext
      */
     public PollingContext<T> setData(String name, String value) {
@@ -116,6 +117,7 @@ public final class PollingContext<T> {
                 "'activationResponse' cannot be null.");
         this.latestResponse = Objects.requireNonNull(latestResponse,
                 "'latestResponse' cannot be null.");
-        this.map = map;
+        this.map = Objects.requireNonNull(map,
+                "'map' cannot be null.");
     }
 }

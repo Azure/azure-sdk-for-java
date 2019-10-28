@@ -3,6 +3,7 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
@@ -140,9 +141,10 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             if (this.guardActivationCall.compareAndSet(this, 0, 1)) {
                 final Mono<T> activationMono;
                 try {
-                    activationMono = activationOperation.apply(this.rootContext);
-                } catch (Throwable throwable) {
-                    return Mono.error(throwable);
+                    activationMono = this.activationOperation.apply(this.rootContext);
+                } catch (RuntimeException e) {
+                    this.guardActivationCall.compareAndSet(this, 1, 0);
+                    return FluxUtil.monoError(logger, e);
                 }
                 //
                 return activationMono.map((T result) ->
@@ -154,7 +156,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                     this.activated = true;
                     return true;
                 })
-                .doOnError(throwable -> guardActivationCall.compareAndSet(this, 1, 0));
+                .doOnError(throwable -> this.guardActivationCall.compareAndSet(this, 1, 0));
             } else {
                 return Mono.empty();
             }
@@ -171,8 +173,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             // Create a Polling Context per subscription
             () -> this.rootContext.copy(),
             // Do polling
-            // set|read in state as needed, reactor guarantee thread-safety of state object.
-            cxt -> Mono.defer(() -> pollOperation.apply(cxt))
+            // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
+            cxt -> Mono.defer(() -> this.pollOperation.apply(cxt))
                 .delaySubscription(getDelay(cxt.getLatestResponse()))
                 .switchIfEmpty(Mono.error(new IllegalStateException("PollOperation returned Mono.empty().")))
                 .repeat()
