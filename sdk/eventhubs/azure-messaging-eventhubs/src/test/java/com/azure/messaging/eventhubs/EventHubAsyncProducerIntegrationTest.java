@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.BatchOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,17 +56,17 @@ public class EventHubAsyncProducerIntegrationTest extends IntegrationTestBase {
      * Verifies that we can create and send a message to an Event Hub partition.
      */
     @Test
-    public void sendMessageToPartition() throws IOException {
+    public void sendMessageToPartition() {
         // Arrange
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+        final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubAsyncProducer producer = client.createProducer(producerOptions)) {
-            StepVerifier.create(producer.send(events))
+        try (EventHubAsyncProducer producer = client.createProducer()) {
+            StepVerifier.create(producer.send(events, sendOptions))
                 .verifyComplete();
         }
     }
@@ -76,7 +76,7 @@ public class EventHubAsyncProducerIntegrationTest extends IntegrationTestBase {
      * distribute the events.
      */
     @Test
-    public void sendMessage() throws IOException {
+    public void sendMessage() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),

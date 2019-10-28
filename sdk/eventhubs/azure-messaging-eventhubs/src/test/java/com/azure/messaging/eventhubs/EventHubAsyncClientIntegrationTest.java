@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -76,7 +76,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
-            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+            final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
             testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
         }
     }
@@ -128,7 +128,8 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             clients[i] = builder.buildAsyncClient();
         }
 
-        final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().setPartitionId(PARTITION_ID));
+        final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubAsyncProducer producer = clients[0].createProducer();
         final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
 
@@ -154,7 +155,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             }
 
             // Act
-            producer.send(events).block(TIMEOUT);
+            producer.send(events, sendOptions).block(TIMEOUT);
 
             // Assert
             // Wait for all the events we sent to be received by each of the consumers.

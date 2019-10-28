@@ -7,9 +7,9 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -110,19 +110,24 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
                 subscriptions.add(subscription);
 
-                producers[i] = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
+                producers[i] = client.createProducer();
             }
 
             // Act
-            Flux.fromArray(producers).flatMap(producer -> producer.send(TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID)))
-                .blockLast(TIMEOUT);
+            for (int i = 0; i < partitionIds.size(); i ++) {
+                final String partitionId = partitionIds.get(i);
+                final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
+                final EventHubAsyncProducer producer = producers[i];
+
+                producer.send(TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID), sendOptions).block(TIMEOUT);
+            }
 
             // Assert
             // Wait for all the events we sent to be received.
             countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
             Assert.assertEquals(0, countDownLatch.getCount());
         } catch (InterruptedException e) {
-            Assert.fail("Countdown latch was interrupted:" + e.toString());
+            Assert.fail("Countdown latch was interrupted:" + e);
         } finally {
             logger.info("Disposing of subscriptions, consumers, producers.");
 
@@ -178,11 +183,13 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String secondPartitionId = "1";
         final AtomicBoolean isActive = new AtomicBoolean(true);
-        final EventHubAsyncProducer producer = client.createProducer(
-            new EventHubProducerOptions().setPartitionId(secondPartitionId));
-        final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
-            sent -> logger.info("Event sent."),
-            error -> logger.error("Error sending event", error));
+        final EventHubAsyncProducer producer = client.createProducer();
+        final Disposable producerEvents = getEvents(isActive)
+            .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(secondPartitionId)))
+            .subscribe(
+                sent -> {},
+                error -> logger.error("Error sending event", error),
+                () -> logger.info("Event sent."));
 
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(1)
