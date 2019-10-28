@@ -108,9 +108,10 @@ public final class KeyClientJavaDocCodeSnippets {
         ImportKeyOptions importKeyOptions = new ImportKeyOptions("keyName", jsonWebKeyToImport)
             .setHardwareProtected(false);
 
-        KeyVaultKey keyToImport = keyClient.importKeyWithResponse(importKeyOptions, new Context(key1, value1))
+        KeyVaultKey importedKeyResp = keyClient.importKeyWithResponse(importKeyOptions, new Context(key1, value1))
             .getValue();
-        System.out.printf("Key is imported with name %s and id %s \n", keyToImport.getName(), keyToImport.getId());
+        System.out.printf("Key is imported with name %s and id %s \n", importedKeyResp.getName(),
+            importedKeyResp.getId());
         // END: com.azure.security.keyvault.keys.keyclient.importKey#options-response
     }
 
