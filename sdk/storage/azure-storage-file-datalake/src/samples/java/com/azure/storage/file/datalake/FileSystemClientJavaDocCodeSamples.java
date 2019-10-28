@@ -6,8 +6,6 @@ package com.azure.storage.file.datalake;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 
@@ -35,7 +33,7 @@ public class FileSystemClientJavaDocCodeSamples {
      */
     public void getFileClient() {
         // BEGIN: com.azure.storage.file.datalake.FileSystemClient.getFileClient#String
-        FileClient fileClient = client.getFileClient(fileName);
+        DataLakeFileClient dataLakeFileClient = client.getFileClient(fileName);
         // END: com.azure.storage.file.datalake.FileSystemClient.getFileClient#String
     }
 
@@ -44,7 +42,7 @@ public class FileSystemClientJavaDocCodeSamples {
      */
     public void getDirectoryClient() {
         // BEGIN: com.azure.storage.file.datalake.FileSystemClient.getDirectoryClient#String
-        DirectoryClient directoryClient = client.getDirectoryClient(directoryName);
+        DataLakeDirectoryClient dataLakeDirectoryClient = client.getDirectoryClient(directoryName);
         // END: com.azure.storage.file.datalake.FileSystemClient.getDirectoryClient#String
     }
 

@@ -22,7 +22,7 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuild
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.GetPathsOptions;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -44,8 +44,8 @@ import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
  * It may also be used to construct clients for files/directories.
  *
  * <p>
- * This client contains operations on a file system. Operations on a path are available on {@link FileAsyncClient} and
- * {@link DirectoryAsyncClient} through {@link #getFileAsyncClient(String)} and
+ * This client contains operations on a file system. Operations on a path are available on {@link DataLakeFileAsyncClient} and
+ * {@link DataLakeDirectoryAsyncClient} through {@link #getFileAsyncClient(String)} and
  * {@link #getDirectoryAsyncClient(String)} respectively, and operations on the service are available on
  * {@link DataLakeServiceAsyncClient}.
  *
@@ -101,49 +101,49 @@ public class FileSystemAsyncClient {
     }
 
     /**
-     * Creates a new FileAsyncClient object by concatenating fileName to the end of FileSystemAsyncClient's URL. The new
-     * FileAsyncClient uses the same request policy pipeline as the FileSystemAsyncClient.
+     * Creates a new DataLakeFileAsyncClient object by concatenating fileName to the end of FileSystemAsyncClient's URL. The new
+     * DataLakeFileAsyncClient uses the same request policy pipeline as the FileSystemAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.getFileAsyncClient#String}
      *
      * @param fileName A {@code String} representing the name of the file.
-     * @return A new {@link FileAsyncClient} object which references the file with the specified name in this file
+     * @return A new {@link DataLakeFileAsyncClient} object which references the file with the specified name in this file
      * system.
      */
-    public FileAsyncClient getFileAsyncClient(String fileName) {
+    public DataLakeFileAsyncClient getFileAsyncClient(String fileName) {
         if (ImplUtils.isNullOrEmpty(fileName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
         }
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(fileName,
             null).getBlockBlobAsyncClient();
 
-        return new FileAsyncClient(getHttpPipeline(),
+        return new DataLakeFileAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(fileName)))
                 .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), fileName,
             blockBlobAsyncClient);
     }
 
     /**
-     * Creates a new DirectoryAsyncClient object by concatenating directoryName to the end of FileSystemAsyncClient's
-     * URL. The new DirectoryAsyncClient uses the same request policy pipeline as the FileSystemAsyncClient.
+     * Creates a new DataLakeDirectoryAsyncClient object by concatenating directoryName to the end of FileSystemAsyncClient's
+     * URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline as the FileSystemAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.getDirectoryAsyncClient#String}
      *
      * @param directoryName A {@code String} representing the name of the directory.
-     * @return A new {@link DirectoryAsyncClient} object which references the directory with the specified name in this
+     * @return A new {@link DataLakeDirectoryAsyncClient} object which references the directory with the specified name in this
      * file system.
      */
-    public DirectoryAsyncClient getDirectoryAsyncClient(String directoryName) {
+    public DataLakeDirectoryAsyncClient getDirectoryAsyncClient(String directoryName) {
         if (ImplUtils.isNullOrEmpty(directoryName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'directoryName' can not be set to null"));
         }
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
             null).getBlockBlobAsyncClient();
-        return new DirectoryAsyncClient(getHttpPipeline(),
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(directoryName)))
                 .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), directoryName,
             blockBlobAsyncClient);
@@ -434,9 +434,9 @@ public class FileSystemAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createFile#String}
      *
      * @param fileName Name of the file to create.
-     * @return A {@link Mono} containing a {@link FileAsyncClient} used to interact with the file created.
+     * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
      */
-    public Mono<FileAsyncClient> createFile(String fileName) {
+    public Mono<DataLakeFileAsyncClient> createFile(String fileName) {
         try {
             return createFileWithResponse(fileName, null, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -451,25 +451,25 @@ public class FileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createFileWithResponse#String-PathHTTPHeaders-Map-DataLakeRequestConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String}
      *
      * @param fileName Name of the file to create.
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the file.
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
-     * FileAsyncClient} used to interact with the file created.
+     * DataLakeFileAsyncClient} used to interact with the file created.
      */
-    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName,
-        PathHTTPHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
+    public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName,
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
         String permissions, String umask) {
         try {
-            FileAsyncClient fileAsyncClient = getFileAsyncClient(fileName);
+            DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
 
-            return fileAsyncClient.createWithResponse(headers, metadata, accessConditions, permissions, umask)
-                .map(response -> new SimpleResponse<>(response, fileAsyncClient));
+            return dataLakeFileAsyncClient.createWithResponse(headers, metadata, accessConditions, permissions, umask)
+                .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -526,9 +526,9 @@ public class FileSystemAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createDirectory#String}
      *
      * @param directoryName Name of the directory to create.
-     * @return A {@link Mono} containing a {@link DirectoryAsyncClient} used to interact with the directory created.
+     * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory created.
      */
-    public Mono<DirectoryAsyncClient> createDirectory(String directoryName) {
+    public Mono<DataLakeDirectoryAsyncClient> createDirectory(String directoryName) {
         try {
             return createDirectoryWithResponse(directoryName, null, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -543,25 +543,25 @@ public class FileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createDirectoryWithResponse#String-PathHTTPHeaders-Map-DataLakeRequestConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String}
      *
      * @param directoryName Name of the directory to create.
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the directory.
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
-     * DirectoryAsyncClient} used to interact with the directory created.
+     * DataLakeDirectoryAsyncClient} used to interact with the directory created.
      */
-    public Mono<Response<DirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
-        PathHTTPHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
+    public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
         String permissions, String umask) {
         try {
-            DirectoryAsyncClient directoryAsyncClient = getDirectoryAsyncClient(directoryName);
+            DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getDirectoryAsyncClient(directoryName);
 
-            return directoryAsyncClient.createWithResponse(headers, metadata, accessConditions, permissions, umask)
-                .map(response -> new SimpleResponse<>(response, directoryAsyncClient));
+            return dataLakeDirectoryAsyncClient.createWithResponse(headers, metadata, accessConditions, permissions, umask)
+                .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

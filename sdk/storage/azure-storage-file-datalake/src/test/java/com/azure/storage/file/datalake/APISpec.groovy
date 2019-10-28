@@ -311,7 +311,7 @@ class APISpec extends Specification {
             .buildClient()
     }
 
-    FileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+    DataLakeFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         PathClientBuilder builder = new PathClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())

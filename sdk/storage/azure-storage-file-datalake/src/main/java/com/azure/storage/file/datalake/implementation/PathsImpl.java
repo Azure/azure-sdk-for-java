@@ -28,7 +28,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathLeaseAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
@@ -178,7 +178,7 @@ public final class PathsImpl {
      * @param umask Optional and only valid if Hierarchical Namespace is enabled for the account. When creating a file or directory and the parent folder does not have a default ACL, the umask restricts the permissions of the file or directory to be created.  The resulting permission is given by p bitwise and not u, where p is the permission and u is the umask.  For example, if p is 0777 and u is 0057, then the resulting permission is 0720.  The default permission is 0777 for a directory and 0666 for a file.  The default umask is 0027.  The umask must be specified in 4-digit octal notation (e.g. 0766).
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param pathHTTPHeaders Additional parameters for the operation.
+     * @param pathHttpHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param sourceModifiedAccessConditions Additional parameters for the operation.
@@ -187,26 +187,26 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         String cacheControl = null;
-        if (pathHTTPHeaders != null) {
-            cacheControl = pathHTTPHeaders.getCacheControl();
+        if (pathHttpHeaders != null) {
+            cacheControl = pathHttpHeaders.getCacheControl();
         }
         String contentEncoding = null;
-        if (pathHTTPHeaders != null) {
-            contentEncoding = pathHTTPHeaders.getContentEncoding();
+        if (pathHttpHeaders != null) {
+            contentEncoding = pathHttpHeaders.getContentEncoding();
         }
         String contentLanguage = null;
-        if (pathHTTPHeaders != null) {
-            contentLanguage = pathHTTPHeaders.getContentLanguage();
+        if (pathHttpHeaders != null) {
+            contentLanguage = pathHttpHeaders.getContentLanguage();
         }
         String contentDisposition = null;
-        if (pathHTTPHeaders != null) {
-            contentDisposition = pathHTTPHeaders.getContentDisposition();
+        if (pathHttpHeaders != null) {
+            contentDisposition = pathHttpHeaders.getContentDisposition();
         }
         String contentType = null;
-        if (pathHTTPHeaders != null) {
-            contentType = pathHTTPHeaders.getContentType();
+        if (pathHttpHeaders != null) {
+            contentType = pathHttpHeaders.getContentType();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -305,7 +305,7 @@ public final class PathsImpl {
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the format "[scope:][type]:[id]:[permissions]".
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param pathHTTPHeaders Additional parameters for the operation.
+     * @param pathHttpHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
@@ -313,30 +313,30 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group, String permissions, String acl, String requestId, Integer timeout, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group, String permissions, String acl, String requestId, Integer timeout, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         byte[] contentMD5 = null;
-        if (pathHTTPHeaders != null) {
-            contentMD5 = pathHTTPHeaders.getContentMD5();
+        if (pathHttpHeaders != null) {
+            contentMD5 = pathHttpHeaders.getContentMD5();
         }
         String cacheControl = null;
-        if (pathHTTPHeaders != null) {
-            cacheControl = pathHTTPHeaders.getCacheControl();
+        if (pathHttpHeaders != null) {
+            cacheControl = pathHttpHeaders.getCacheControl();
         }
         String contentType = null;
-        if (pathHTTPHeaders != null) {
-            contentType = pathHTTPHeaders.getContentType();
+        if (pathHttpHeaders != null) {
+            contentType = pathHttpHeaders.getContentType();
         }
         String contentDisposition = null;
-        if (pathHTTPHeaders != null) {
-            contentDisposition = pathHTTPHeaders.getContentDisposition();
+        if (pathHttpHeaders != null) {
+            contentDisposition = pathHttpHeaders.getContentDisposition();
         }
         String contentEncoding = null;
-        if (pathHTTPHeaders != null) {
-            contentEncoding = pathHTTPHeaders.getContentEncoding();
+        if (pathHttpHeaders != null) {
+            contentEncoding = pathHttpHeaders.getContentEncoding();
         }
         String contentLanguage = null;
-        if (pathHTTPHeaders != null) {
-            contentLanguage = pathHTTPHeaders.getContentLanguage();
+        if (pathHttpHeaders != null) {
+            contentLanguage = pathHttpHeaders.getContentLanguage();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -726,7 +726,7 @@ public final class PathsImpl {
      * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is the final change to distinguish the difference between an intermediate flush to a file stream and the final close of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a file change notification with a property indicating that this is the final update (the file stream has been closed). If "false" a change notification is raised indicating the file has changed. The default is false. This query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
      * @param contentLength Required for "Append Data" and "Flush Data".  Must be 0 for "Flush Data".  Must be the length of the request content in bytes for "Append Data".
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param pathHTTPHeaders Additional parameters for the operation.
+     * @param pathHttpHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
@@ -734,31 +734,31 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Integer timeout, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String requestId, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Integer timeout, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String requestId, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String action = "flush";
         byte[] contentMD5 = null;
-        if (pathHTTPHeaders != null) {
-            contentMD5 = pathHTTPHeaders.getContentMD5();
+        if (pathHttpHeaders != null) {
+            contentMD5 = pathHttpHeaders.getContentMD5();
         }
         String cacheControl = null;
-        if (pathHTTPHeaders != null) {
-            cacheControl = pathHTTPHeaders.getCacheControl();
+        if (pathHttpHeaders != null) {
+            cacheControl = pathHttpHeaders.getCacheControl();
         }
         String contentType = null;
-        if (pathHTTPHeaders != null) {
-            contentType = pathHTTPHeaders.getContentType();
+        if (pathHttpHeaders != null) {
+            contentType = pathHttpHeaders.getContentType();
         }
         String contentDisposition = null;
-        if (pathHTTPHeaders != null) {
-            contentDisposition = pathHTTPHeaders.getContentDisposition();
+        if (pathHttpHeaders != null) {
+            contentDisposition = pathHttpHeaders.getContentDisposition();
         }
         String contentEncoding = null;
-        if (pathHTTPHeaders != null) {
-            contentEncoding = pathHTTPHeaders.getContentEncoding();
+        if (pathHttpHeaders != null) {
+            contentEncoding = pathHttpHeaders.getContentEncoding();
         }
         String contentLanguage = null;
-        if (pathHTTPHeaders != null) {
-            contentLanguage = pathHTTPHeaders.getContentLanguage();
+        if (pathHttpHeaders != null) {
+            contentLanguage = pathHttpHeaders.getContentLanguage();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -814,18 +814,18 @@ public final class PathsImpl {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data".  Must be 0 for "Flush Data".  Must be the length of the request content in bytes for "Append Data".
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param pathHTTPHeaders Additional parameters for the operation.
+     * @param pathHttpHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsAppendDataResponse> appendDataWithRestResponseAsync(Flux<ByteBuffer> body, Long position, Integer timeout, Long contentLength, String requestId, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Mono<PathsAppendDataResponse> appendDataWithRestResponseAsync(Flux<ByteBuffer> body, Long position, Integer timeout, Long contentLength, String requestId, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String action = "append";
         byte[] transactionalContentHash = null;
-        if (pathHTTPHeaders != null) {
-            transactionalContentHash = pathHTTPHeaders.getTransactionalContentHash();
+        if (pathHttpHeaders != null) {
+            transactionalContentHash = pathHttpHeaders.getTransactionalContentHash();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {

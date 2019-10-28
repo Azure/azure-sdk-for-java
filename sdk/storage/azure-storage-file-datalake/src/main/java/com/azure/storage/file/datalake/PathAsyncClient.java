@@ -17,7 +17,7 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
@@ -174,10 +174,10 @@ public class PathAsyncClient {
 
 
     /**
-     * Package-private create method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
+     * Package-private create method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
      * @param resourceType {@link PathResourceType}
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the resource.
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
@@ -186,7 +186,7 @@ public class PathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
-    Mono<Response<PathInfo>> createWithResponse(PathResourceType resourceType, PathHTTPHeaders headers,
+    Mono<Response<PathInfo>> createWithResponse(PathResourceType resourceType, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions accessConditions, String permissions, String umask,
         Context context) {
         accessConditions = accessConditions == null ? new DataLakeRequestConditions() : accessConditions;
@@ -204,7 +204,7 @@ public class PathAsyncClient {
     }
 
     /**
-     * Package-private delete method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
+     * Package-private delete method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
      * @param recursive Whether or not to delete all paths beneath the directory.
      * @param accessConditions {@link DataLakeRequestConditions}
@@ -280,15 +280,15 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHTTPHeaders}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setHttpHeaders(PathHTTPHeaders headers) {
+    public Mono<Void> setHttpHeaders(PathHttpHeaders headers) {
         try {
             return setHttpHeaders(headers, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -302,16 +302,16 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHTTPHeaders-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHttpHeaders-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param accessConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setHttpHeaders(PathHTTPHeaders headers, DataLakeRequestConditions accessConditions) {
+    public Mono<Response<Void>> setHttpHeaders(PathHttpHeaders headers, DataLakeRequestConditions accessConditions) {
         try {
             return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
                 Transforms.toBlobRequestConditions(accessConditions));
@@ -486,7 +486,7 @@ public class PathAsyncClient {
     }
 
     /**
-     * Package-private rename method for use by {@link FileAsyncClient} and {@link DirectoryAsyncClient}
+     * Package-private rename method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
      * @param destinationPath The path of the destination relative to the file system name
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.

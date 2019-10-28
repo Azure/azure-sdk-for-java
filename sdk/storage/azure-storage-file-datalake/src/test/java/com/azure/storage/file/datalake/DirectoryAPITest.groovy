@@ -3,15 +3,13 @@ package com.azure.storage.file.datalake
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders
+import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
 class DirectoryAPITest extends APISpec {
-    DirectoryClient dc
+    DataLakeDirectoryClient dc
     String directoryName
 
     def setup() {
@@ -57,7 +55,7 @@ class DirectoryAPITest extends APISpec {
     def "Create headers"() {
         // Create does not set md5
         setup:
-        def headers = new PathHTTPHeaders().setCacheControl(cacheControl)
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -680,7 +678,7 @@ class DirectoryAPITest extends APISpec {
     def "Set HTTP headers min"() {
         setup:
         def properties = dc.getProperties()
-        def headers = new PathHTTPHeaders()
+        def headers = new PathHttpHeaders()
             .setContentEncoding(properties.getContentEncoding())
             .setContentDisposition(properties.getContentDisposition())
             .setContentType("type")
@@ -696,7 +694,7 @@ class DirectoryAPITest extends APISpec {
     @Unroll
     def "Set HTTP headers headers"() {
         setup:
-        def putHeaders = new PathHTTPHeaders()
+        def putHeaders = new PathHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -928,7 +926,7 @@ class DirectoryAPITest extends APISpec {
     def "Create file headers"() {
         // Create does not set md5
         setup:
-        def headers = new PathHTTPHeaders().setCacheControl(cacheControl)
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -1151,7 +1149,7 @@ class DirectoryAPITest extends APISpec {
     def "Create sub dir headers"() {
         // Create does not set md5
         setup:
-        def headers = new PathHTTPHeaders().setCacheControl(cacheControl)
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)

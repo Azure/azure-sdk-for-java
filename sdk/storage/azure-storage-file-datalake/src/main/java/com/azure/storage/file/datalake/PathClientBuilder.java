@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of {@link FileClient
- * FileClients}, {@link FileAsyncClient FileAsyncClients}, {@link DirectoryClient DirectoryClients} and
- * {@link DirectoryAsyncClient DirectoryAsyncClients}, call {@link #buildFileClient() buildFileClient},
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link DataLakeFileClient
+ * FileClients}, {@link DataLakeFileAsyncClient FileAsyncClients}, {@link DataLakeDirectoryClient DirectoryClients} and
+ * {@link DataLakeDirectoryAsyncClient DirectoryAsyncClients}, call {@link #buildFileClient() buildFileClient},
  * {@link #buildFileAsyncClient() buildFileAsyncClient}, {@link #buildDirectoryClient() buildDirectoryClient} and {@link
  * #buildDirectoryAsyncClient() buildDirectoryAsyncClient} respectively to construct an instance of the desired client.
  *
@@ -46,8 +46,8 @@ import java.util.Objects;
  * accessible.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {FileClient.class, FileAsyncClient.class, DirectoryClient.class,
-    DirectoryAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {DataLakeFileClient.class, DataLakeFileAsyncClient.class, DataLakeDirectoryClient.class,
+    DataLakeDirectoryAsyncClient.class})
 public final class PathClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(PathClientBuilder.class);
@@ -72,39 +72,39 @@ public final class PathClientBuilder {
     private DataLakeServiceVersion version;
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link FileClient FileClients}, {@link
-     * FileAsyncClient FileAsyncClients}, {@link DirectoryClient DirectoryClients} and
-     * {@link DirectoryAsyncClient DirectoryAsyncClients}.
+     * Creates a builder instance that is able to configure and construct {@link DataLakeFileClient FileClients}, {@link
+     * DataLakeFileAsyncClient FileAsyncClients}, {@link DataLakeDirectoryClient DirectoryClients} and
+     * {@link DataLakeDirectoryAsyncClient DirectoryAsyncClients}.
      */
     public PathClientBuilder() {
         blobClientBuilder = new BlobClientBuilder();
     }
 
     /**
-     * Creates a {@link FileClient} based on options set in the builder.
+     * Creates a {@link DataLakeFileClient} based on options set in the builder.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.PathClientBuilder.buildFileClient}
      *
-     * @return a {@link FileClient} created from the configurations in this builder.
+     * @return a {@link DataLakeFileClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      */
-    public FileClient buildFileClient() {
-        return new FileClient(buildFileAsyncClient(), blobClientBuilder.buildClient().getBlockBlobClient());
+    public DataLakeFileClient buildFileClient() {
+        return new DataLakeFileClient(buildFileAsyncClient(), blobClientBuilder.buildClient().getBlockBlobClient());
     }
 
     /**
-     * Creates a {@link FileAsyncClient} based on options set in the builder. 
+     * Creates a {@link DataLakeFileAsyncClient} based on options set in the builder.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.PathClientBuilder.buildFileAsyncClient}
      *
-     * @return a {@link FileAsyncClient} created from the configurations in this builder.
+     * @return a {@link DataLakeFileAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      */
-    public FileAsyncClient buildFileAsyncClient() {
+    public DataLakeFileAsyncClient buildFileAsyncClient() {
         Objects.requireNonNull(pathName, "'pathName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
@@ -130,36 +130,36 @@ public final class PathClientBuilder {
                 }
             }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new FileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
+        return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
             serviceVersion, accountName, dataLakeFileSystemName, pathName,
             blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
     /**
-     * Creates a {@link DirectoryClient} based on options set in the builder.
+     * Creates a {@link DataLakeDirectoryClient} based on options set in the builder.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.PathClientBuilder.buildDirectoryClient}
      *
-     * @return a {@link DirectoryClient} created from the configurations in this builder.
+     * @return a {@link DataLakeDirectoryClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      */
-    public DirectoryClient buildDirectoryClient() {
-        return new DirectoryClient(buildDirectoryAsyncClient(), blobClientBuilder.buildClient().getBlockBlobClient());
+    public DataLakeDirectoryClient buildDirectoryClient() {
+        return new DataLakeDirectoryClient(buildDirectoryAsyncClient(), blobClientBuilder.buildClient().getBlockBlobClient());
     }
 
     /**
-     * Creates a {@link DirectoryAsyncClient} based on options set in the builder.
+     * Creates a {@link DataLakeDirectoryAsyncClient} based on options set in the builder.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.PathClientBuilder.buildDirectoryAsyncClient}
      *
-     * @return a {@link DirectoryAsyncClient} created from the configurations in this builder.
+     * @return a {@link DataLakeDirectoryAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      */
-    public DirectoryAsyncClient buildDirectoryAsyncClient() {
+    public DataLakeDirectoryAsyncClient buildDirectoryAsyncClient() {
         Objects.requireNonNull(pathName, "'pathName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
@@ -185,7 +185,7 @@ public final class PathClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new DirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
+        return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
             serviceVersion, accountName, dataLakeFileSystemName, pathName,
             blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }

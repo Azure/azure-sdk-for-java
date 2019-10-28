@@ -39,7 +39,7 @@ import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
  * <p>
  * This client contains operations on the main data lake service account. Operations on a file system are available on
  * {@link FileSystemAsyncClient} through {@link #getFileSystemAsyncClient(String)}, and operations on a file or
- * directory are available on {@link FileAsyncClient} or {@link DirectoryAsyncClient}.
+ * directory are available on {@link DataLakeFileAsyncClient} or {@link DataLakeDirectoryAsyncClient}.
  *
  * <p>
  * Note this client is an async client that returns reactive responses from Spring Reactor Core project

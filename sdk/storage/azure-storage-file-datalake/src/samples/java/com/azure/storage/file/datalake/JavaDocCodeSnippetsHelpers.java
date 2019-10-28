@@ -15,19 +15,19 @@ final class JavaDocCodeSnippetsHelpers {
         return new FileSystemClientBuilder().buildClient();
     }
 
-    static FileAsyncClient getFileAsyncClient(String fileName) {
+    static DataLakeFileAsyncClient getFileAsyncClient(String fileName) {
         return getFileSystemAsyncClient().getFileAsyncClient(fileName);
     }
 
-    static FileClient getFileClient(String fileName) {
+    static DataLakeFileClient getFileClient(String fileName) {
         return getFileSystemClient().getFileClient(fileName);
     }
 
-    static DirectoryAsyncClient getDirectoryAsyncClient(String directoryName) {
+    static DataLakeDirectoryAsyncClient getDirectoryAsyncClient(String directoryName) {
         return getFileSystemAsyncClient().getDirectoryAsyncClient(directoryName);
     }
 
-    static DirectoryClient getDirectoryClient(String directoryName) {
+    static DataLakeDirectoryClient getDirectoryClient(String directoryName) {
         return getFileSystemClient().getDirectoryClient(directoryName);
     }
 

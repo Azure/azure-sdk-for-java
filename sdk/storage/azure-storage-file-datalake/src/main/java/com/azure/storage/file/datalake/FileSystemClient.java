@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerProperties;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.GetPathsOptions;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -29,8 +29,8 @@ import java.util.Map;
  * may also be used to construct URLs to files/directories.
  *
  * <p>
- * This client contains operations on a file system. Operations on a path are available on {@link FileClient} and
- * {@link DirectoryClient} through {@link #getFileClient(String)} and {@link #getDirectoryClient(String)} respectively,
+ * This client contains operations on a file system. Operations on a path are available on {@link DataLakeFileClient} and
+ * {@link DataLakeDirectoryClient} through {@link #getFileClient(String)} and {@link #getDirectoryClient(String)} respectively,
  * and operations on the service are available on {@link DataLakeServiceClient}.
  *
  * <p>
@@ -62,8 +62,8 @@ public class FileSystemClient {
     }
 
     /**
-     * Initializes a new FileClient object by concatenating fileName to the end of FileSystemClient's URL. The new
-     * FileClient uses the same request policy pipeline as the FileSystemClient.
+     * Initializes a new DataLakeFileClient object by concatenating fileName to the end of FileSystemClient's URL. The new
+     * DataLakeFileClient uses the same request policy pipeline as the FileSystemClient.
      *
      * @param fileName A {@code String} representing the name of the file.
      *
@@ -71,19 +71,19 @@ public class FileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getFileClient#String}
      *
-     * @return A new {@link FileClient} object which references the file with the specified name in this file system.
+     * @return A new {@link DataLakeFileClient} object which references the file with the specified name in this file system.
      */
-    public FileClient getFileClient(String fileName) {
+    public DataLakeFileClient getFileClient(String fileName) {
         if (ImplUtils.isNullOrEmpty(fileName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
         }
-        return new FileClient(fileSystemAsyncClient.getFileAsyncClient(fileName),
+        return new DataLakeFileClient(fileSystemAsyncClient.getFileAsyncClient(fileName),
             blobContainerClient.getBlobClient(fileName).getBlockBlobClient());
     }
 
     /**
-     * Initializes a new DirectoryClient object by concatenating directoryName to the end of FileSystemClient's URL.
-     * The new DirectoryClient uses the same request policy pipeline as the FileSystemClient.
+     * Initializes a new DataLakeDirectoryClient object by concatenating directoryName to the end of FileSystemClient's URL.
+     * The new DataLakeDirectoryClient uses the same request policy pipeline as the FileSystemClient.
      *
      * @param directoryName A {@code String} representing the name of the directory.
      *
@@ -91,11 +91,11 @@ public class FileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getDirectoryClient#String}
      *
-     * @return A new {@link DirectoryClient} object which references the directory with the specified name in this
+     * @return A new {@link DataLakeDirectoryClient} object which references the directory with the specified name in this
      * file system.
      */
-    public DirectoryClient getDirectoryClient(String directoryName) {
-        return new DirectoryClient(fileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
+    public DataLakeDirectoryClient getDirectoryClient(String directoryName) {
+        return new DataLakeDirectoryClient(fileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
             blobContainerClient.getBlobClient(directoryName).getBlockBlobClient());
     }
 
@@ -326,9 +326,9 @@ public class FileSystemClient {
      * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFile#String}
      *
      * @param fileName Name of the file to create.
-     * @return A {@link FileClient} used to interact with the file created.
+     * @return A {@link DataLakeFileClient} used to interact with the file created.
      */
-    public FileClient createFile(String fileName) {
+    public DataLakeFileClient createFile(String fileName) {
         return createFileWithResponse(fileName, null, null, null, null, null, null, Context.NONE).getValue();
     }
 
@@ -339,24 +339,24 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHTTPHeaders-Map-DataLakeRequestConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String}
      *
      * @param fileName Name of the file to create.
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the file.
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link FileClient} used
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
      * to interact with the file created.
      */
-    public Response<FileClient> createFileWithResponse(String fileName,
-        PathHTTPHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
+    public Response<DataLakeFileClient> createFileWithResponse(String fileName,
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
         String permissions, String umask, Duration timeout, Context context) {
-        FileClient fileClient = getFileClient(fileName);
+        DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
 
-        return new SimpleResponse<>(fileClient.createWithResponse(headers, metadata, accessConditions, permissions,
-            umask, timeout, context), fileClient);
+        return new SimpleResponse<>(dataLakeFileClient.createWithResponse(headers, metadata, accessConditions, permissions,
+            umask, timeout, context), dataLakeFileClient);
     }
 
     /**
@@ -404,9 +404,9 @@ public class FileSystemClient {
      * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createDirectory#String}
      *
      * @param directoryName Name of the directory to create.
-     * @return A {@link DirectoryClient} used to interact with the directory created.
+     * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
-    public DirectoryClient createDirectory(String directoryName) {
+    public DataLakeDirectoryClient createDirectory(String directoryName) {
         return createDirectoryWithResponse(directoryName, null, null, null, null, null, null, null).getValue();
     }
 
@@ -417,24 +417,24 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHTTPHeaders-Map-DataLakeRequestConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String}
      *
      * @param directoryName Name of the directory to create.
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the directory.
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DirectoryClient} used to
+     * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient} used to
      * interact with the directory created.
      */
-    public Response<DirectoryClient> createDirectoryWithResponse(String directoryName,
-        PathHTTPHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
+    public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName,
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
         String permissions, String umask, Duration timeout, Context context) {
-        DirectoryClient directoryClient = getDirectoryClient(directoryName);
+        DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
 
-        return new SimpleResponse<>(directoryClient.createWithResponse(headers, metadata, accessConditions, permissions, umask,
-            timeout, context), directoryClient);
+        return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(headers, metadata, accessConditions, permissions, umask,
+            timeout, context), dataLakeDirectoryClient);
     }
 
     /**

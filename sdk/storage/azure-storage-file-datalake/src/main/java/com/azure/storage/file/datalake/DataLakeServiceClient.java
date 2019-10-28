@@ -30,7 +30,7 @@ import java.util.Map;
  * <p>
  * This client contains operations on a data lake service account. Operations on a file system are available on
  * {@link FileSystemClient} through {@link #getFileSystemClient(String)}, and operations on a file or directory are
- * available on {@link FileClient} and {@link DirectoryClient} respectively.
+ * available on {@link DataLakeFileClient} and {@link DataLakeDirectoryClient} respectively.
  */
 @ServiceClient(builder = DataLakeServiceClientBuilder.class)
 public class DataLakeServiceClient {

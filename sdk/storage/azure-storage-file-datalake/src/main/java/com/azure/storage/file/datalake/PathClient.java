@@ -10,7 +10,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -145,14 +145,14 @@ public class PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeaders#PathHTTPHeaders}
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeaders#PathHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      */
-    public void setHttpHeaders(PathHTTPHeaders headers) {
+    public void setHttpHeaders(PathHttpHeaders headers) {
         setHttpHeadersWithResponse(headers, null, null, Context.NONE);
     }
 
@@ -162,18 +162,18 @@ public class PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeadersWithResponse#PathHTTPHeaders-DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.PathClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
      *
-     * @param headers {@link PathHTTPHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setHttpHeadersWithResponse(PathHTTPHeaders headers, DataLakeRequestConditions accessConditions,
+    public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers, DataLakeRequestConditions accessConditions,
         Duration timeout, Context context) {
         return blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
             Transforms.toBlobRequestConditions(accessConditions), timeout, context);
@@ -300,7 +300,7 @@ public class PathClient {
     }
 
     /**
-     * Package-private rename method for use by {@link FileClient} and {@link DirectoryClient}
+     * Package-private rename method for use by {@link DataLakeFileClient} and {@link DataLakeDirectoryClient}
      *
      * @param destinationPath The path of the destination relative to the file system name
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Paths_update, Paths_flushData, Paths_appendData.
  */
 @Fluent
-public final class PathHTTPHeaders {
+public final class PathHttpHeaders {
     /*
      * Optional. Sets the blob's cache control. If specified, this property is
      * stored with the blob and returned with a read request.
@@ -79,9 +79,9 @@ public final class PathHTTPHeaders {
      * read request.
      *
      * @param cacheControl the cacheControl value to set.
-     * @return the PathHTTPHeaders object itself.
+     * @return the PathHttpHeaders object itself.
      */
-    public PathHTTPHeaders setCacheControl(String cacheControl) {
+    public PathHttpHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -103,9 +103,9 @@ public final class PathHTTPHeaders {
      * returned with a read request.
      *
      * @param contentEncoding the contentEncoding value to set.
-     * @return the PathHTTPHeaders object itself.
+     * @return the PathHttpHeaders object itself.
      */
-    public PathHTTPHeaders setContentEncoding(String contentEncoding) {
+    public PathHttpHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -127,9 +127,9 @@ public final class PathHTTPHeaders {
      * returned with a read request.
      *
      * @param contentLanguage the contentLanguage value to set.
-     * @return the PathHTTPHeaders object itself.
+     * @return the PathHttpHeaders object itself.
      */
-    public PathHTTPHeaders setContentLanguage(String contentLanguage) {
+    public PathHttpHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -149,9 +149,9 @@ public final class PathHTTPHeaders {
      * Content-Disposition header.
      *
      * @param contentDisposition the contentDisposition value to set.
-     * @return the PathHTTPHeaders object itself.
+     * @return the PathHttpHeaders object itself.
      */
-    public PathHTTPHeaders setContentDisposition(String contentDisposition) {
+    public PathHttpHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -173,9 +173,9 @@ public final class PathHTTPHeaders {
      * read request.
      *
      * @param contentType the contentType value to set.
-     * @return the PathHTTPHeaders object itself.
+     * @return the PathHttpHeaders object itself.
      */
-    public PathHTTPHeaders setContentType(String contentType) {
+    public PathHttpHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -195,9 +195,9 @@ public final class PathHTTPHeaders {
      * to be validated by the service.
      *
      * @param contentMD5 the contentMD5 value to set.
-     * @return the PathHTTPHeaders object itself.
+     * @return the PathHttpHeaders object itself.
      */
-    public PathHTTPHeaders setContentMD5(byte[] contentMD5) {
+    public PathHttpHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -218,9 +218,9 @@ public final class PathHTTPHeaders {
      *
      * @param transactionalContentHash the transactionalContentHash value to
      * set.
-     * @return the PathHTTPHeaders object itself.
+     * @return the PathHttpHeaders object itself.
      */
-    public PathHTTPHeaders setTransactionalContentHash(byte[] transactionalContentHash) {
+    public PathHttpHeaders setTransactionalContentHash(byte[] transactionalContentHash) {
         this.transactionalContentHash = ImplUtils.clone(transactionalContentHash);
         return this;
     }

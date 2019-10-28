@@ -10,7 +10,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.file.datalake.implementation.models.Path;
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileSystemItem;
@@ -111,7 +111,7 @@ class Transforms {
         }
     }
 
-    static BlobHttpHeaders toBlobHttpHeaders(PathHTTPHeaders pathHTTPHeaders) {
+    static BlobHttpHeaders toBlobHttpHeaders(PathHttpHeaders pathHTTPHeaders) {
         if (pathHTTPHeaders == null) {
             return null;
         }

@@ -17,7 +17,7 @@ import java.net.URL;
 
 /**
  * This class provides a client that contains all the leasing operations for {@link FileSystemAsyncClient file systems},
- * {@link FileAsyncClient files} and {@link DirectoryAsyncClient directories}. This client acts as a supplement to those
+ * {@link DataLakeFileAsyncClient files} and {@link DataLakeDirectoryAsyncClient directories}. This client acts as a supplement to those
  * clients and only handles leasing operations.
  *
  * <p><strong>Instantiating a DataLakeLeaseAsyncClient</strong></p>

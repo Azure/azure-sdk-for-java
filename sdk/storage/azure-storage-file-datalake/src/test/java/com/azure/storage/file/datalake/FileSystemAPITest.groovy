@@ -3,9 +3,7 @@ package com.azure.storage.file.datalake
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions
-import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders
+import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
@@ -383,7 +381,7 @@ class FileSystemAPITest extends APISpec {
     def "Create file headers"() {
         // Create does not set md5
         setup:
-        def headers = new PathHTTPHeaders().setCacheControl(cacheControl)
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -606,7 +604,7 @@ class FileSystemAPITest extends APISpec {
     def "Create dir headers"() {
         // Create does not set md5
         setup:
-        def headers = new PathHTTPHeaders().setCacheControl(cacheControl)
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)

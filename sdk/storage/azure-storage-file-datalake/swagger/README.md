@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: FileSystemInfo, FileSystemItem, FileSystemProperties, PathAccessConditions, PathInfo, PathItem, PathProperties, ListFileSystemsOptions, LeaseAccessConditions
+custom-types: FileSystemInfo, FileSystemItem, FileSystemProperties, PathInfo, PathItem, PathProperties, ListFileSystemsOptions, PathHttpHeaders
 custom-types-subpackage: models
 ```
 
@@ -128,4 +128,19 @@ directive:
   transform: >
       delete $.properties.eTag;
       $.properties.etag = {"type": "string"};
+```
+
+### Rename PathHTTPHeaders to PathHttpHeaders
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.CacheControl["x-ms-parameter-grouping"].name = "path-http-headers";
+    $.ContentDisposition["x-ms-parameter-grouping"].name = "path-http-headers";
+    $.ContentEncoding["x-ms-parameter-grouping"].name = "path-http-headers";
+    $.ContentLanguage["x-ms-parameter-grouping"].name = "path-http-headers";
+    $.ContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
+    $.ContentType["x-ms-parameter-grouping"].name = "path-http-headers";
+    $.TransactionalContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
 ```

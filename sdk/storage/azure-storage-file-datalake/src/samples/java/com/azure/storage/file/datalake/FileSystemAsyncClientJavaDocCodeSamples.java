@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.datalake;
 
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 
@@ -31,7 +29,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
      */
     public void getFileAsyncClient() {
         // BEGIN: com.azure.storage.file.datalake.FileSystemAsyncClient.getFileAsyncClient#String
-        FileAsyncClient fileAsyncClient = client.getFileAsyncClient(fileName);
+        DataLakeFileAsyncClient dataLakeFileAsyncClient = client.getFileAsyncClient(fileName);
         // END: com.azure.storage.file.datalake.FileSystemAsyncClient.getFileAsyncClient#String
     }
 
@@ -40,7 +38,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
      */
     public void getDirectoryAsyncClient() {
         // BEGIN: com.azure.storage.file.datalake.FileSystemAsyncClient.getDirectoryAsyncClient#String
-        DirectoryAsyncClient directoryAsyncClient = client.getDirectoryAsyncClient(directoryName);
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = client.getDirectoryAsyncClient(directoryName);
         // END: com.azure.storage.file.datalake.FileSystemAsyncClient.getDirectoryAsyncClient#String
     }
 
