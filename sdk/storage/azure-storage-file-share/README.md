@@ -131,7 +131,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 ## Key concepts
 
 ### URL format
-File Share are addressable using the following URL format:
+File Shares are addressable using the following URL format:
 ```
 https://<storage account>.file.core.windows.net/<share>
 ```
@@ -167,7 +167,7 @@ The URI to reference a share, directory or file must be unique. Within a given s
 If you attempt to create a share, directory, or file with a name that violates naming rules, the request will fail with status code 400 (Bad Request).
 
 ### Share Names
-The rules for File Share service share names are more restrictive than what is prescribed by the SMB protocol for SMB share names, so that the Blob and File services can share similar naming conventions for containers and shares. The naming restrictions for shares are as follows:
+The rules for File Share service names are more restrictive than what is prescribed by the SMB protocol for SMB share names, so that the Blob and File services can share similar naming conventions for containers and shares. The naming restrictions for shares are as follows:
 
 1. A share name must be a valid DNS name.
 1. Share names must start with a letter or number, and can contain only letters, numbers, and the dash (-) character.
@@ -175,7 +175,7 @@ The rules for File Share service share names are more restrictive than what is p
 1. All letters in a share name must be lowercase.
 1. Share names must be from 3 through 63 characters long.
 
-### Share Directory and File Names
+### Directory and File Names
 The Azure File Share service naming rules for directory and file names are as follows:
 
 1. Share Directory and file names are case-preserving and case-insensitive.
