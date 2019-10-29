@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Represents the configurable options to create a Rsa key.
+ * Represents the configurable options to create an Rsa key.
  */
 @Fluent
 public class CreateRsaKeyOptions extends CreateKeyOptions {

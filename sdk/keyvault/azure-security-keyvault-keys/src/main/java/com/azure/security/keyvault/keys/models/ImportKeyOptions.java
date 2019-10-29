@@ -57,6 +57,7 @@ public class ImportKeyOptions extends KeyProperties {
      * @param enabled The enabled value to set
      * @return the updated ImportKeyOptions object itself.
      */
+    @Override
     public ImportKeyOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -77,6 +78,7 @@ public class ImportKeyOptions extends KeyProperties {
      * @param expiresOn The expiry time to set for the key.
      * @return the updated ImportKeyOptions object itself.
      */
+    @Override
     public ImportKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
         return this;
@@ -88,6 +90,7 @@ public class ImportKeyOptions extends KeyProperties {
      * @param notBefore The notBefore UTC time to set
      * @return the updated ImportKeyOptions object itself.
      */
+    @Override
     public ImportKeyOptions setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
         return this;

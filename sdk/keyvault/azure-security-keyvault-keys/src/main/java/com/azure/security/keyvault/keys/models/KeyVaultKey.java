@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  *  Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}.
- *  It is managed by Secret Service.
+ *  It is managed by Key Service.
  *
  *  @see KeyClient
  *  @see KeyAsyncClient
