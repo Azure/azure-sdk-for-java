@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.proxy;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
@@ -29,6 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 
 public class ProxySelectorTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 8899;
@@ -74,14 +75,14 @@ public class ProxySelectorTest extends IntegrationTestBase {
             }
         });
 
-        final EventHubAsyncClient client = new EventHubClientBuilder()
+        final EventHubAsyncConsumer consumer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .transportType(TransportType.AMQP_WEB_SOCKETS)
             .retry(new RetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildConnection();
-
-        final EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
-            "1", EventPosition.earliest());
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .partitionId("1")
+            .startingPosition(EventPosition.earliest())
+            .buildAsyncConsumer();
 
         StepVerifier.create(consumer.receive().take(1))
             .expectErrorSatisfies(error -> {

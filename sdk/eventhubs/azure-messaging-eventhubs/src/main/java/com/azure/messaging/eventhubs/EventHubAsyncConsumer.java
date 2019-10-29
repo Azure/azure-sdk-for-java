@@ -64,6 +64,7 @@ public class EventHubAsyncConsumer implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumer.class);
+    private final EventHubLinkProvider linkProvider;
     private final MessageSerializer messageSerializer;
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
@@ -71,9 +72,10 @@ public class EventHubAsyncConsumer implements Closeable {
 
     private volatile AmqpReceiveLink receiveLink;
 
-    EventHubAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
-                          EventHubConsumerOptions options) {
-        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+    EventHubAsyncConsumer(EventHubLinkProvider linkProvider, Mono<AmqpReceiveLink> receiveLinkMono,
+            MessageSerializer messageSerializer, EventHubConsumerOptions options) {
+        this.linkProvider = linkProvider;
+        this.messageSerializer = messageSerializer;
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
         this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
 
