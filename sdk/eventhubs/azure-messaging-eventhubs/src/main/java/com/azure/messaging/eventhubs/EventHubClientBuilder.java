@@ -97,6 +97,9 @@ public class EventHubClientBuilder {
     private EventPosition startingPosition;
     private String consumerGroup;
 
+    // TODO(conniey): Remove when we refactor the consumer client.
+    private String partitionId;
+
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
      */
@@ -338,6 +341,18 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Sets the identifier of the Event Hub partition from which events will be received.
+     * TODO (conniey): remove when we refactor the consumer in later PR.
+     *
+     * @param partitionId The identifier of the Event Hub partition from which events will be received.
+     * @return Updated object
+     */
+    public EventHubClientBuilder partitionId(String partitionId) {
+        this.partitionId = partitionId;
+        return this;
+    }
+
+    /**
      * Creates a new {@link EventHubProducerAsyncClient} based on options set on this builder. Every time
      * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubProducerAsyncClient} is created.
      *
@@ -373,10 +388,9 @@ public class EventHubClientBuilder {
      * Creates a new {@link EventHubConsumer} based on the options set on this builder. Every time
      * {@code buildConsumer()} is invoked, a new instance of {@link EventHubConsumer} is created.
      *
-     * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @return A new {@link EventHubConsumer} with the configured options.
      */
-    public EventHubConsumer buildConsumer(String partitionId) {
+    public EventHubConsumer buildConsumer() {
         final EventHubClient connection = buildClient();
         final EventHubConsumerOptions options = consumerOptions != null
             ? consumerOptions
@@ -389,10 +403,9 @@ public class EventHubClientBuilder {
      * Creates a new {@link EventHubAsyncConsumer} based on the options set on this builder. Every time
      * {@code buildAsyncConsumer()} is invoked, a new instance of {@link EventHubAsyncConsumer} is created.
      *
-     * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @return A new {@link EventHubAsyncConsumer} with the configured options.
      */
-    public EventHubAsyncConsumer buildAsyncConsumer(String partitionId) {
+    public EventHubAsyncConsumer buildAsyncConsumer() {
         final EventHubConnection connection = eventHubConnection != null ? eventHubConnection : buildConnection();
         final EventHubConsumerOptions options = consumerOptions != null
             ? consumerOptions

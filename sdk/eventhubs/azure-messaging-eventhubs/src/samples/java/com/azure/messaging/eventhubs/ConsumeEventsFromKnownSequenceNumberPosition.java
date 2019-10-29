@@ -90,7 +90,9 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
             semaphore.release();
         });
 
-        EventHubProducerAsyncClient producer = client.createProducer();
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .connectionString(connectionString)
+            .buildAsyncProducer();
 
         // Because the consumer is only listening to new events, we need to send some events to that partition.
         // This sends the events to `lastEnqueuedSequencePartitionId`.

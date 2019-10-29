@@ -56,7 +56,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         MockitoAnnotations.initMocks(this);
 
         client = createBuilder().buildConnection();
-        producer = client.createProducer();
+        producer = client.createProducer(true);
     }
 
     @Override

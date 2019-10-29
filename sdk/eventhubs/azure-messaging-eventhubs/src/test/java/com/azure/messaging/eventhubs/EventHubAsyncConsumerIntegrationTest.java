@@ -110,7 +110,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
                 subscriptions.add(subscription);
 
-                producers[i] = client.createProducer();
+                producers[i] = client.createProducer(true);
             }
 
             // Act
@@ -154,7 +154,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final int expectedNumber = 5;
-        final EventHubProducerAsyncClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer(true);
         final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
             sent -> logger.info("Event sent."),
             error -> logger.error("Error sending event", error));
@@ -183,7 +183,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String secondPartitionId = "1";
         final AtomicBoolean isActive = new AtomicBoolean(true);
-        final EventHubProducerAsyncClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer(true);
         final Disposable producerEvents = getEvents(isActive)
             .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(secondPartitionId)))
             .subscribe(
@@ -309,7 +309,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final Disposable.Composite subscriptions = Disposables.composite();
 
-        final EventHubProducerAsyncClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer(true);
         subscriptions.add(getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
             sent -> logger.info("Event sent."),
             error -> logger.error("Error sending event", error)));

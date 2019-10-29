@@ -56,7 +56,6 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         builder = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .scheduler(Schedulers.single())
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .retry(RETRY_OPTIONS);
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
@@ -66,8 +65,10 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
             testData = setupEventTestData(builder, NUMBER_OF_EVENTS, options);
         }
 
-        builder.startingPosition(EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
-        consumer = builder.buildConsumer(PARTITION_ID);
+        builder.consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
+            .partitionId(PARTITION_ID);
+        consumer = builder.buildConsumer();
     }
 
     @Override
@@ -139,8 +140,9 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .retry(RETRY_OPTIONS)
             .startingPosition(EventPosition.fromEnqueuedTime(Instant.now()))
+            .partitionId(partitionId)
             .connection(connection);
-        final EventHubConsumer consumer = builder.buildConsumer(partitionId);
+        final EventHubConsumer consumer = builder.buildConsumer();
         final EventHubProducerClient producer = builder.buildProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
 
@@ -180,8 +182,9 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .retry(RETRY_OPTIONS)
             .startingPosition(EventPosition.fromEnqueuedTime(Instant.now()))
+            .partitionId(partitionId)
             .connection(connection);
-        final EventHubConsumer consumer = builder.buildConsumer(partitionId);
+        final EventHubConsumer consumer = builder.buildConsumer();
         final EventHubProducerClient producer = builder.buildProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
 
@@ -221,9 +224,10 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .retry(RETRY_OPTIONS)
             .startingPosition(EventPosition.fromEnqueuedTime(Instant.now()))
+            .partitionId(partitionId)
             .connection(connection);
-        final EventHubConsumer consumer = builder.buildConsumer(partitionId);
-        final EventHubConsumer consumer2 = builder.buildConsumer(partitionId);
+        final EventHubConsumer consumer = builder.buildConsumer();
+        final EventHubConsumer consumer2 = builder.buildConsumer();
 
         final EventHubProducerClient producer = builder.buildProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);

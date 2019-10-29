@@ -30,20 +30,19 @@ public class PublishEventsToSpecificPartition {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // Instantiate a client that will be used to call the service.
-        EventHubConnection client = new EventHubClientBuilder()
+        // Instantiate a producer that will be used to call the service.
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildConnection();
+            .buildAsyncProducer();
+
 
         // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
         // first partition id.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
         // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
         // TimeoutException is thrown.
-        String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+        String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
         SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
-
-        EventHubProducerAsyncClient producer = client.createProducer();
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(
@@ -68,7 +67,6 @@ public class PublishEventsToSpecificPartition {
             }, () -> {
                 // Disposing of our producer and client.
                 producer.close();
-                client.close();
             });
     }
 }

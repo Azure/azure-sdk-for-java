@@ -29,13 +29,9 @@ public class PublishEventsWithCustomMetadata {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // Instantiate a client that will be used to call the service.
-        EventHubConnection client = new EventHubClientBuilder()
-            .connectionString(connectionString)
-            .buildConnection();
-
-        // Create a producer. This overload of `createProducer` does not accept any arguments
-        EventHubProducerAsyncClient producer = client.createProducer();
+        // Create a producer.
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .connectionString(connectionString).buildAsyncProducer();
 
         // Because an event consists mainly of an opaque set of bytes, it may be difficult for consumers of those events
         // to make informed decisions about how to process them.
@@ -67,7 +63,7 @@ public class PublishEventsWithCustomMetadata {
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
         // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
         // TimeoutException is thrown.
-        String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+        String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
         SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
@@ -91,7 +87,6 @@ public class PublishEventsWithCustomMetadata {
             }, () -> {
                 // Disposing of our producer and client.
                 producer.close();
-                client.close();
             });
     }
 }

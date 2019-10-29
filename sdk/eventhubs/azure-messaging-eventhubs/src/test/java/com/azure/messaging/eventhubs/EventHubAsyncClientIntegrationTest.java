@@ -126,18 +126,18 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         });
 
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
-        final EventHubConnection[] clients = new EventHubConnection[numberOfClients];
+        final EventHubConnection[] connections = new EventHubConnection[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
-            clients[i] = builder.buildConnection();
+            connections[i] = builder.buildConnection();
         }
 
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubProducerAsyncClient producer = clients[0].createProducer();
+        final EventHubProducerAsyncClient producer = connections[0].createProducer(true);
         final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
 
         try {
-            for (final EventHubConnection hubClient : clients) {
+            for (final EventHubConnection hubClient : connections) {
                 final EventHubAsyncConsumer consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
                 consumers.add(consumer);
 
@@ -172,7 +172,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
             dispose(producer);
             dispose(consumers.toArray(new EventHubAsyncConsumer[0]));
-            dispose(clients);
+            dispose(connections);
         }
     }
 }

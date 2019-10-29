@@ -24,7 +24,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
 
-    private EventHubConnection client;
+    private EventHubConnection connection;
 
     public EventHubProducerAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerAsyncClientIntegrationTest.class));
@@ -40,7 +40,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
     @Override
     protected void beforeTest() {
-        client = new EventHubClientBuilder()
+        connection = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
             .scheduler(Schedulers.parallel())
@@ -49,7 +49,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
     @Override
     protected void afterTest() {
-        dispose(client);
+        dispose(connection);
     }
 
     /**
@@ -65,7 +65,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducerAsyncClient producer = client.createProducer()) {
+        try (EventHubProducerAsyncClient producer = connection.createProducer(true)) {
             StepVerifier.create(producer.send(events, sendOptions))
                 .verifyComplete();
         }
@@ -84,7 +84,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducerAsyncClient producer = client.createProducer()) {
+        try (EventHubProducerAsyncClient producer = connection.createProducer(true)) {
             StepVerifier.create(producer.send(events))
                 .verifyComplete();
         }
@@ -101,7 +101,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
-        try (EventHubProducerAsyncClient producer = client.createProducer()) {
+        try (EventHubProducerAsyncClient producer = connection.createProducer(true)) {
             final Mono<EventDataBatch> createBatch = producer.createBatch().map(batch -> {
                 events.forEach(event -> {
                     Assert.assertTrue(batch.tryAdd(event));
@@ -127,7 +127,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
-        try (EventHubProducerAsyncClient producer = client.createProducer()) {
+        try (EventHubProducerAsyncClient producer = connection.createProducer(true)) {
             final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
             final Mono<EventDataBatch> createBatch = producer.createBatch(options)
                 .map(batch -> {

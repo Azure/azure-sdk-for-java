@@ -102,7 +102,8 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
 
         final EventHubConsumer receiver = builder.consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .startingPosition(EventPosition.earliest())
-            .buildConsumer(PARTITION_ID);
+            .partitionId(PARTITION_ID)
+            .buildConsumer();
 
         producer.send(TestUtils.getEvents(numberOfEvents, messageId), sendOptions).block();
 

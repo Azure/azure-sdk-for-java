@@ -23,14 +23,9 @@ public class PublishEvent {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // Instantiate a client that will be used to call the service.
-        EventHubConnection client = new EventHubClientBuilder()
-            .connectionString(connectionString)
-            .buildConnection();
-
-        // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
-        // sent from this producer are load balanced between all available partitions in the Event Hub instance.
-        EventHubProducerAsyncClient producer = client.createProducer();
+        // Create a producer.
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .connectionString(connectionString).buildAsyncProducer();
 
         // Create an event to send.
         EventData data = new EventData("Hello world!".getBytes(UTF_8));
@@ -52,7 +47,6 @@ public class PublishEvent {
             }, () -> {
                 // Disposing of our producer and client.
                 producer.close();
-                client.close();
             });
     }
 }

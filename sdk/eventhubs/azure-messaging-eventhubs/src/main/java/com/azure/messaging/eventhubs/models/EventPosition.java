@@ -16,8 +16,8 @@ import java.util.Objects;
  * Defines a position of an {@link EventData} in the Event Hub partition. The position can be an offset, sequence
  * number, or enqueued time.
  *
- * @see EventHubClientBuilder#buildAsyncConsumer(String)
- * @see EventHubClientBuilder#buildConsumer(String)
+ * @see EventHubClientBuilder#buildAsyncConsumer()
+ * @see EventHubClientBuilder#buildConsumer()
  */
 @Immutable
 public final class EventPosition {
