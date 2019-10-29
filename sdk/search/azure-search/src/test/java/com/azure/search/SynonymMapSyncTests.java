@@ -3,9 +3,15 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+
+import java.util.UUID;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class SynonymMapSyncTests extends SynonymMapTestBase {
@@ -109,7 +115,50 @@ public class SynonymMapSyncTests extends SynonymMapTestBase {
 
     @Override
     public void canCreateAndListSynonymMaps() {
+        SynonymMap synonymMap1 = createTestSynonymMap();
+        SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
 
+        client.createSynonymMap(synonymMap1);
+        client.createSynonymMap(synonymMap2);
+
+        PagedIterable<SynonymMap> listResponse = client.listSynonymMaps();
+        List<SynonymMap> result = listResponse.stream().collect(Collectors.toList());
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());
+        Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
+
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        listResponse = client.listSynonymMaps("name", requestOptions);
+        result = listResponse.stream().collect(Collectors.toList());
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());
+        Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
+    }
+
+    @Override
+    public void canListSynonymMapsWithSelectedField() {
+        SynonymMap synonymMap1 = createTestSynonymMap();
+        SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
+
+        client.createSynonymMap(synonymMap1);
+        client.createSynonymMap(synonymMap2);
+
+        PagedIterable<SynonymMap> listResponse = client.listSynonymMaps("name");
+        List<SynonymMap> result = listResponse.stream().collect(Collectors.toList());
+
+        result.forEach(res -> {
+            Assert.assertNotNull(res.getName());
+            Assert.assertNull(res.getSynonyms());
+            Assert.assertNull(res.getETag());
+        });
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());
+        Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
     }
 
     @Override

@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk13f787745398.search.windows.net/indexes('invalidindex')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk04158020f3fe.search.windows.net/indexes('invalidindex')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6064d9ed-ef33-4ca0-8802-68c32710bbcf",
+      "request-id" : "79118fb4-8e8d-4b03-9f55-60c40831c123",
       "StatusCode" : "404",
-      "Date" : "Mon, 28 Oct 2019 20:26:06 GMT",
+      "Date" : "Mon, 28 Oct 2019 22:29:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "46",
+      "elapsed-time" : "48",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "119",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'invalidindex' was found in the service 'azs-sdk13f787745398'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'invalidindex' was found in the service 'azs-sdk04158020f3fe'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

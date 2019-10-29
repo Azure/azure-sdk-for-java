@@ -31,7 +31,6 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
-import com.azure.search.models.SynonymMapListResult;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
@@ -1019,19 +1018,62 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return all SynonymMaps in the Search service.
-     * @throws NotImplementedException not implemented
+     * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * @return a reactive response emitting the list of synonym maps.
      */
-    public Mono<SynonymMapListResult> listSynonymMaps() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<SynonymMap> listSynonymMaps() {
+        return this.listSynonymMaps(null, null);
     }
 
     /**
-     * @return a response containing all SynonymMaps in the Search service.
-     * @throws NotImplementedException not implemented
+     * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the synonym maps to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
+     * @return a reactive response emitting the list of synonym maps.
      */
-    public Mono<Response<SynonymMapListResult>> listSynonymMapsWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<SynonymMap> listSynonymMaps(String select) {
+        return this.listSynonymMaps(select, null);
+    }
+
+    /**
+     * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the synonym maps to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a reactive response emitting the list of synonym maps.
+     */
+    public PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
+        return new PagedFlux<>(
+            () -> withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context)),
+            nextLink -> Mono.empty());
+    }
+
+    PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> this.listSynonymMapsWithResponse(select, requestOptions, context),
+            nextLink -> Mono.empty());
+    }
+
+    private Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select,
+                                                                        RequestOptions requestOptions,
+                                                                        Context context) {
+        return restClient
+            .synonymMaps()
+            .listWithRestResponseAsync(select, requestOptions, context)
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getSynonymMaps(),
+                null,
+                deserializeHeaders(response.getHeaders()))
+            );
     }
 
     /**

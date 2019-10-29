@@ -40,7 +40,11 @@ public abstract class SynonymMapTestBase extends SearchServiceTestBase {
 
     public abstract void deleteSynonymMapIsIdempotent();
 
+    @Test
     public abstract void canCreateAndListSynonymMaps();
+
+    @Test
+    public abstract void canListSynonymMapsWithSelectedField();
 
     public abstract void existsReturnsTrueForExistingSynonymMap();
 

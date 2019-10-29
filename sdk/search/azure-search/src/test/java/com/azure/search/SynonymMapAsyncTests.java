@@ -3,10 +3,14 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
+
+import java.util.UUID;
 
 
 public class SynonymMapAsyncTests extends SynonymMapTestBase {
@@ -114,7 +118,68 @@ public class SynonymMapAsyncTests extends SynonymMapTestBase {
 
     @Override
     public void canCreateAndListSynonymMaps() {
+        SynonymMap synonymMap1 = createTestSynonymMap();
+        SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
 
+        client.createSynonymMap(synonymMap1).block();
+        client.createSynonymMap(synonymMap2).block();
+
+        PagedFlux<SynonymMap> listResponse = client.listSynonymMaps();
+
+        StepVerifier
+            .create(listResponse.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());
+                Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
+            })
+            .verifyComplete();
+
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        listResponse = client.listSynonymMaps("name", requestOptions);
+
+        StepVerifier
+            .create(listResponse.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());
+                Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
+
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canListSynonymMapsWithSelectedField() {
+        SynonymMap synonymMap1 = createTestSynonymMap();
+        SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
+
+        client.createSynonymMap(synonymMap1).block();
+        client.createSynonymMap(synonymMap2).block();
+
+        PagedFlux<SynonymMap> selectedFieldListResponse = client.listSynonymMaps("name");
+
+        StepVerifier
+            .create(selectedFieldListResponse.collectList())
+            .assertNext(result -> {
+                result.forEach(res -> {
+                    Assert.assertNotNull(res.getName());
+                    Assert.assertNull(res.getSynonyms());
+                    Assert.assertNull(res.getETag());
+                });
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(selectedFieldListResponse.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());
+                Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
+            })
+            .verifyComplete();
     }
 
     @Override

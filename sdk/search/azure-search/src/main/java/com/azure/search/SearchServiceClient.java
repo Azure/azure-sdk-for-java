@@ -20,7 +20,6 @@ import com.azure.search.models.IndexerListResult;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
-import com.azure.search.models.SynonymMapListResult;
 import com.azure.search.models.RequestOptions;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -922,19 +921,53 @@ public class SearchServiceClient {
     }
 
     /**
-     * @return all SynonymMaps in the Search service.
-     * @throws NotImplementedException not implemented
+     * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * @return the list of synonym maps.
      */
-    public SynonymMapListResult listSynonymMaps() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedIterable<SynonymMap> listSynonymMaps() {
+        return new PagedIterable<>(asyncClient.listSynonymMaps());
     }
 
     /**
-     * @return a response containing all SynonymMaps in the Search service.
-     * @throws NotImplementedException not implemented
+     * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the index definitions to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
+     * @return the list of synonym maps.
      */
-    public Response<SynonymMapListResult> listSynonymMapsWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedIterable<SynonymMap> listSynonymMaps(String select) {
+        return new PagedIterable<>(asyncClient.listSynonymMaps(select));
+    }
+
+    /**
+     * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the index definitions to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the list of synonym maps.
+     */
+    public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
+        return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions));
+    }
+
+    /**
+     * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the index definitions to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the list of synonym maps.
+     */
+    public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions, context));
     }
 
     /**
