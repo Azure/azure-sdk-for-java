@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
@@ -12,7 +11,6 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.io.Closeable;
-import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -37,16 +35,10 @@ import java.util.Objects;
 class EventHubClient implements Closeable {
     private final EventHubConnection client;
     private final RetryOptions retry;
-    private final EventHubConsumerOptions defaultConsumerOptions;
 
-    EventHubClient(EventHubConnection client, ConnectionOptions connectionOptions) {
-        Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
-
+    EventHubClient(EventHubConnection client, RetryOptions retryOptions) {
         this.client = Objects.requireNonNull(client, "'client' cannot be null.");
-        this.retry = connectionOptions.getRetry();
-        this.defaultConsumerOptions = new EventHubConsumerOptions()
-            .setRetry(connectionOptions.getRetry())
-            .setScheduler(connectionOptions.getScheduler());
+        this.retry = retryOptions;
     }
 
     /**
@@ -121,7 +113,7 @@ class EventHubClient implements Closeable {
      */
     EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition);
-        return new EventHubConsumer(consumer, defaultConsumerOptions.getRetry().getTryTimeout());
+        return new EventHubConsumer(consumer, retry.getTryTimeout());
     }
 
     /**
@@ -158,11 +150,8 @@ class EventHubClient implements Closeable {
             EventHubConsumerOptions options) {
         final EventHubAsyncConsumer consumer =
             client.createConsumer(consumerGroup, partitionId, eventPosition, options);
-        final Duration timeout = options.getRetry() == null || options.getRetry().getTryTimeout() == null
-            ? defaultConsumerOptions.getRetry().getTryTimeout()
-            : options.getRetry().getTryTimeout();
 
-        return new EventHubConsumer(consumer, timeout);
+        return new EventHubConsumer(consumer, retry.getTryTimeout());
     }
 
     /**

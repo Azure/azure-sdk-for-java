@@ -3,15 +3,12 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.amqp.RetryOptions;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
-import com.azure.messaging.eventhubs.EventHubClient;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumer;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -20,8 +17,7 @@ import java.util.Optional;
  * The baseline set of options that can be specified when creating an {@link EventHubConsumer} or an
  * {@link EventHubAsyncConsumer} to configure its behavior.
  *
- * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
- * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
+ * @see EventHubClientBuilder#buildAsyncConsumer()
  */
 @Fluent
 public class EventHubConsumerOptions implements Cloneable {
@@ -46,8 +42,6 @@ public class EventHubConsumerOptions implements Cloneable {
     private boolean trackLastEnqueuedEventProperties;
     private String identifier;
     private Long ownerLevel;
-    private RetryOptions retry;
-    private Scheduler scheduler;
     private int prefetchCount;
 
     /**
@@ -104,18 +98,6 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Sets the retry policy used to govern retry attempts for receiving events. If not specified, the retry policy
-     * configured on the associated {@link EventHubAsyncClient} is used.
-     *
-     * @param retry The retry policy to use when receiving events.
-     * @return The updated {@link EventHubConsumerOptions} object.
-     */
-    public EventHubConsumerOptions setRetry(RetryOptions retry) {
-        this.retry = retry;
-        return this;
-    }
-
-    /**
      * Sets the count used by the receiver to control the number of events this receiver will actively receive and queue
      * locally without regard to whether a receive operation is currently active.
      *
@@ -136,18 +118,6 @@ public class EventHubConsumerOptions implements Cloneable {
         }
 
         this.prefetchCount = prefetchCount;
-        return this;
-    }
-
-    /**
-     * Sets the scheduler for receiving events from Event Hubs. If not specified, the scheduler configured with the
-     * associated {@link EventHubAsyncClient} is used.
-     *
-     * @param scheduler The scheduler for receiving events.
-     * @return The updated {@link EventHubConsumerOptions} object.
-     */
-    public EventHubConsumerOptions setScheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
         return this;
     }
 
@@ -181,16 +151,6 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Gets the retry options when receiving events. If not specified, the retry options configured on the associated
-     * {@link EventHubAsyncClient} is used.
-     *
-     * @return The retry options when receiving events.
-     */
-    public RetryOptions getRetry() {
-        return retry;
-    }
-
-    /**
      * Gets the owner level for this consumer. If {@link Optional#isPresent()} is {@code false}, then this is not an
      * exclusive consumer. Otherwise, it is an exclusive consumer, and there can only be one active consumer for each
      * partition and consumer group combination.
@@ -199,16 +159,6 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public Long getOwnerLevel() {
         return ownerLevel;
-    }
-
-    /**
-     * Gets the scheduler for reading events from Event Hubs. If not specified, the scheduler configured with the
-     * associated {@link EventHubAsyncClient} is used.
-     *
-     * @return The scheduler for reading events.
-     */
-    public Scheduler getScheduler() {
-        return scheduler;
     }
 
     /**
@@ -247,14 +197,9 @@ public class EventHubConsumerOptions implements Cloneable {
             clone = new EventHubConsumerOptions();
         }
 
-        clone.setScheduler(this.getScheduler())
-            .setIdentifier(this.getIdentifier())
+        clone.setIdentifier(this.getIdentifier())
             .setPrefetchCount(this.getPrefetchCount())
             .setOwnerLevel(this.getOwnerLevel());
-
-        if (retry != null) {
-            clone.setRetry(retry.clone());
-        }
 
         return clone;
     }

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -17,6 +18,7 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.util.Locale;
@@ -64,9 +66,7 @@ public class EventHubConnection implements Closeable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.linkProvider = Objects.requireNonNull(linkProvider, "'linkProvider' cannot be null.");
 
-        this.defaultConsumerOptions = new EventHubConsumerOptions()
-            .setRetry(connectionOptions.getRetry())
-            .setScheduler(connectionOptions.getScheduler());
+        this.defaultConsumerOptions = new EventHubConsumerOptions();
     }
 
     /**
@@ -76,6 +76,14 @@ public class EventHubConnection implements Closeable {
      */
     String getEventHubName() {
         return eventHubName;
+    }
+
+    RetryOptions getRetryOptions() {
+        return connectionOptions.getRetry();
+    }
+
+    Scheduler getScheduler() {
+        return connectionOptions.getScheduler();
     }
 
     /**
@@ -189,13 +197,6 @@ public class EventHubConnection implements Closeable {
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
-
-        if (clonedOptions.getScheduler() == null) {
-            clonedOptions.setScheduler(connectionOptions.getScheduler());
-        }
-        if (clonedOptions.getRetry() == null) {
-            clonedOptions.setRetry(connectionOptions.getRetry());
-        }
 
         final String linkName = StringUtil.getRandomString("PR");
         final String entityPath =
