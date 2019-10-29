@@ -25,6 +25,8 @@ import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.DocumentIndexResult;
+import com.azure.search.models.IndexAction;
+import com.azure.search.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
@@ -153,7 +155,8 @@ public class SearchIndexAsyncClient {
 
     @SuppressWarnings("unchecked")
     Mono<Response<DocumentIndexResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return this.indexWithResponse(new IndexBatch().addUploadAction(documents), context);
+        IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.UPLOAD);
+        return this.indexWithResponse(batch, context);
     }
 
     /**
@@ -179,7 +182,8 @@ public class SearchIndexAsyncClient {
 
     @SuppressWarnings("unchecked")
     Mono<Response<DocumentIndexResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return this.indexWithResponse(new IndexBatch().addMergeAction(documents), context);
+        IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE);
+        return this.indexWithResponse(batch, context);
     }
 
     /**
@@ -207,7 +211,8 @@ public class SearchIndexAsyncClient {
 
     @SuppressWarnings("unchecked")
     Mono<Response<DocumentIndexResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return this.indexWithResponse(new IndexBatch().addMergeOrUploadAction(documents), context);
+        IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD);
+        return this.indexWithResponse(batch, context);
     }
 
     /**
@@ -233,7 +238,8 @@ public class SearchIndexAsyncClient {
 
     @SuppressWarnings("unchecked")
     Mono<Response<DocumentIndexResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return this.indexWithResponse(new IndexBatch().addDeleteAction(documents), context);
+        IndexBatch<?> batch = buildIndexBatch(documents, IndexActionType.DELETE);
+        return this.indexWithResponse(batch, context);
     }
 
     /**
@@ -700,5 +706,15 @@ public class SearchIndexAsyncClient {
         SerializationUtil.configureMapper(mapper);
 
         return adapter;
+    }
+
+
+    private <T> IndexBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
+        IndexBatch<T> batch = new IndexBatch<>();
+        List<IndexAction<T>> actions = batch.getActions();
+        documents.forEach(d -> actions.add(new IndexAction<T>()
+            .setActionType(actionType)
+            .setDocument(d)));
+        return batch;
     }
 }

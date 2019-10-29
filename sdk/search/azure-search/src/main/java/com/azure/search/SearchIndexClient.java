@@ -78,7 +78,7 @@ public class SearchIndexClient {
      */
     @SuppressWarnings("unchecked")
     public Response<DocumentIndexResult> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return this.indexWithResponse(new IndexBatch().addUploadAction(documents), context);
+        return asyncClient.uploadDocumentsWithResponse(documents, context).block();
     }
 
     /**
@@ -100,7 +100,7 @@ public class SearchIndexClient {
      */
     @SuppressWarnings("unchecked")
     public Response<DocumentIndexResult> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return this.indexWithResponse(new IndexBatch().addMergeAction(documents), context);
+        return asyncClient.mergeDocumentsWithResponse(documents, context).block();
     }
 
     /**
@@ -124,7 +124,7 @@ public class SearchIndexClient {
      */
     @SuppressWarnings("unchecked")
     public Response<DocumentIndexResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return this.indexWithResponse(new IndexBatch().addMergeOrUploadAction(documents), context);
+        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, context).block();
     }
 
     /**
@@ -146,7 +146,7 @@ public class SearchIndexClient {
      */
     @SuppressWarnings("unchecked")
     public Response<DocumentIndexResult> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return this.indexWithResponse(new IndexBatch().addDeleteAction(documents), context);
+        return asyncClient.deleteDocumentsWithResponse(documents, context).block();
     }
 
     /**
