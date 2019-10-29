@@ -22,7 +22,6 @@ import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -249,8 +248,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
      * overwrites any existing metadata on the blob. Partial updates are not supported with this method; the content of
      * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
-     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link BlockBlobAsyncClient#commitBlockList(List)},
-     * which this method uses internally. For more information, see the
+     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
+     * BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
@@ -290,7 +289,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return determineUploadFullOrChunked(data, (stream) ->
                 uploadInChunks(stream, parallelTransferOptions, headers, metadata, tier, accessConditions),
             (stream, length) -> getBlockBlobAsyncClient()
-                .uploadWithResponse(stream, length, headers, metadata, tier, accessConditions));
+                .uploadWithResponse(stream, length, headers, metadata, tier, null, accessConditions));
     }
 
     private Mono<Response<BlockBlobItem>> uploadInChunks(Flux<ByteBuffer> data,
@@ -376,32 +375,29 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final long[] bufferedDataSize = {0};
 
         /*
-         * Group the reactive stream into two groups, all the buffers before surpassing the chunked upload size and all
-         * buffers after the limit. Then collect the groupings and review their metadata, if there is a single buffer
-         * check if it is under the chunk limit and use Put Blob to upload the data otherwise use chunking, if there
-         * is two buffers there is more data than allowed for Put Blobs so use chunking to upload the data.
+         * Window the reactive stream until either the stream completes or the windowing size is hit. If the window
+         * size is hit the next emission will be the pointer to the rest of the reactive steam.
+         *
+         * Once the windowing has completed buffer the two streams, this should create a maximum overhead of ~4MB plus
+         * the next stream emission if the window size was hit. If there are two streams buffered use Stage Blocks and
+         * Put Block List as the upload mechanism otherwise use Put Blob.
          */
         return data
-            .groupBy(buffer -> {
+            .windowUntil(buffer -> {
                 if (bufferedDataSize[0] > chunkedUploadRequirement) {
-                    return 2;
+                    return false;
+                } else {
+                    bufferedDataSize[0] += buffer.remaining();
+                    return bufferedDataSize[0] > chunkedUploadRequirement;
                 }
-
-                bufferedDataSize[0] += buffer.remaining();
-                return (bufferedDataSize[0] > chunkedUploadRequirement) ? 2 : 1;
-            })
+            }, true)
             .buffer(2)
             .next()
-            .flatMap(groupedFluxes -> {
-                if (groupedFluxes.size() == 1) {
-                    GroupedFlux<Integer, ByteBuffer> groupedFlux = groupedFluxes.get(0);
-                    if (groupedFlux.key() == 1) {
-                        return uploadFullBlob.apply(groupedFlux, bufferedDataSize[0]);
-                    } else {
-                        return uploadInChunks.apply(groupedFlux);
-                    }
+            .flatMap(fluxes -> {
+                if (fluxes.size() == 1) {
+                    return uploadFullBlob.apply(fluxes.get(0), bufferedDataSize[0]);
                 } else {
-                    return uploadInChunks.apply(groupedFluxes.get(0).concatWith(groupedFluxes.get(1)));
+                    return uploadInChunks.apply(fluxes.get(0).concatWith(fluxes.get(1)));
                 }
             });
     }
