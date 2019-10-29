@@ -400,7 +400,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                          * the stream in a way that the Stage Blocks and Put Block List code path does, and this API
                          * explicitly states that it supports non-replayable streams.
                          */
-                        cachedBuffers.add(ByteBuffer.allocate(buffer.remaining()).put(buffer).position(0));
+                        ByteBuffer cachedBuffer = ByteBuffer.allocate(buffer.remaining()).put(buffer);
+                        cachedBuffer.position(0);
+                        cachedBuffers.add(cachedBuffer);
                         return false;
                     }
                 }
