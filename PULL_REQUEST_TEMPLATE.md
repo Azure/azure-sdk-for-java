@@ -3,7 +3,8 @@
 Thank you for your interest in contributing to Azure SDK for Java.
 
 ## Description
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
+Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. 
+List any dependencies that are required for this change.
 
 
 Fixes # (issue)
@@ -27,10 +28,9 @@ Please also list any relevant details for your test configuration
 - [ ] Test B
 
 **Test Configuration**:
-* Firmware version:
 * Hardware:
-* Toolchain:
-* SDK:
+* Operation System(OS): 
+* SDK Version:
 
 ## Checklist:
 
@@ -41,4 +41,3 @@ Please also list any relevant details for your test configuration
 - [ ] My changes generate no new warnings
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
-- [ ] Any dependent changes have been merged and published in downstream modules
