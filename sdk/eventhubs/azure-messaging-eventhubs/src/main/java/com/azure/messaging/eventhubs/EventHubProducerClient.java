@@ -4,6 +4,9 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
@@ -88,6 +91,47 @@ public class EventHubProducerClient implements Closeable {
     EventHubProducerClient(EventHubProducerAsyncClient producer, Duration tryTimeout) {
         this.producer = Objects.requireNonNull(producer, "'producer' cannot be null.");
         this.tryTimeout = Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
+    }
+
+    /**
+     * Gets the Event Hub name this client interacts with.
+     *
+     * @return The Event Hub name this client interacts with.
+     */
+    public String getEventHubName() {
+        return producer.getEventHubName();
+    }
+
+    /**
+     * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
+     *
+     * @return The set of information for the Event Hub that this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventHubProperties getProperties() {
+        return producer.getProperties().block(tryTimeout);
+    }
+
+    /**
+     * Retrieves the identifiers for the partitions of an Event Hub.
+     *
+     * @return A Flux of identifiers for the partitions of an Event Hub.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<String> getPartitionIds() {
+        return new IterableStream<>(producer.getPartitionIds());
+    }
+
+    /**
+     * Retrieves information about a specific partition for an Event Hub, including elements that describe the available
+     * events in the partition event stream.
+     *
+     * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PartitionProperties getPartitionProperties(String partitionId) {
+        return producer.getPartitionProperties(partitionId).block(tryTimeout);
     }
 
     /**
