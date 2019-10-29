@@ -22,6 +22,7 @@ import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -372,27 +373,37 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunks,
         final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlob) {
         final long chunkedUploadRequirement = 4 * Constants.MB;
-        final long[] bufferedDataSize = new long[1];
-        final boolean[] useChunkedUpload = { true };
-
-        // Cache the flux in case it is a hot publisher, we need to be able to replay what has been emitted.
-        Flux<ByteBuffer> cachedData = data.cache();
+        final long[] bufferedDataSize = {0};
 
         /*
-         * Buffer until the reactive stream either ends or the emitted buffers contained in it are greater than the
-         * cutoff for running Put Blob. Once buffering has completed, based on the outcomes of the buffering, trigger
-         * either Put Blob or Stage Block and Put Block List as the mechanism to upload the data.
+         * Group the reactive stream into two groups, all the buffers before surpassing the chunked upload size and all
+         * buffers after the limit. Then collect the groupings and review their metadata, if there is a single buffer
+         * check if it is under the chunk limit and use Put Blob to upload the data otherwise use chunking, if there
+         * is two buffers there is more data than allowed for Put Blobs so use chunking to upload the data.
          */
-        return cachedData
-            .doOnEach(signal -> useChunkedUpload[0] = !signal.isOnComplete())
-            .bufferUntil(buffer -> {
+        return data
+            .groupBy(buffer -> {
+                if (bufferedDataSize[0] > chunkedUploadRequirement) {
+                    return 2;
+                }
+
                 bufferedDataSize[0] += buffer.remaining();
-                return bufferedDataSize[0] > chunkedUploadRequirement;
+                return (bufferedDataSize[0] > chunkedUploadRequirement) ? 2 : 1;
             })
+            .buffer(2)
             .next()
-            .flatMap(bufferedData -> useChunkedUpload[0]
-                ? uploadInChunks.apply(cachedData)
-                : uploadFullBlob.apply(Flux.fromIterable(bufferedData), bufferedDataSize[0]));
+            .flatMap(groupedFluxes -> {
+                if (groupedFluxes.size() == 1) {
+                    GroupedFlux<Integer, ByteBuffer> groupedFlux = groupedFluxes.get(0);
+                    if (groupedFlux.key() == 1) {
+                        return uploadFullBlob.apply(groupedFlux, bufferedDataSize[0]);
+                    } else {
+                        return uploadInChunks.apply(groupedFlux);
+                    }
+                } else {
+                    return uploadInChunks.apply(groupedFluxes.get(0).concatWith(groupedFluxes.get(1)));
+                }
+            });
     }
 
     /**
