@@ -617,10 +617,12 @@ public class EventHubAsyncProducerClientTest {
         });
         when(partition1Session.createProducer(any(), argThat(name -> name.endsWith(partitionId1)), any(), any()))
             .thenReturn(Mono.just(sendLink1));
-        when(partition2Session.createProducer(any(), argThat(name -> name.endsWith(partitionId1)), any(), any()))
+        when(partition2Session.createProducer(any(), argThat(name -> name.endsWith(partitionId2)), any(), any()))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink1.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink1.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
         when(sendLink2.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink2.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
