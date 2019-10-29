@@ -222,9 +222,9 @@
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
                 --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
-                --add-opens com.azure.storage.file/com.azure.storage.file=ALL-UNNAMED
-                --add-opens com.azure.storage.file/com.azure.storage.file.implementation=ALL-UNNAMED
-                --add-opens com.azure.storage.file/com.azure.storage.file.models=ALL-UNNAMED
+                --add-opens com.azure.storage.file.share/com.azure.storage.file=ALL-UNNAMED
+                --add-opens com.azure.storage.file.share/com.azure.storage.file.implementation=ALL-UNNAMED
+                --add-opens com.azure.storage.file.share/com.azure.storage.file.models=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>
