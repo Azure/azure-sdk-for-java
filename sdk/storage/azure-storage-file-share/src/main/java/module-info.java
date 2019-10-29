@@ -8,6 +8,7 @@ module com.azure.storage.file.share {
 
     exports com.azure.storage.file.share;
     exports com.azure.storage.file.share.models;
+    exports com.azure.storage.file.share.sas;
 
     opens com.azure.storage.file.share.models to
         com.fasterxml.jackson.databind,

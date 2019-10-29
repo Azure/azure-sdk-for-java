@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.share;
-
+package com.azure.storage.file.share.sas;
 
 import com.azure.storage.common.implementation.Constants;
 

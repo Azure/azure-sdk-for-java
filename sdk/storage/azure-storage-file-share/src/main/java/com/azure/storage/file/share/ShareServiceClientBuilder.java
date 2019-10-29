@@ -23,6 +23,8 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
+import com.azure.storage.file.share.sas.ShareServiceSasQueryParameters;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;

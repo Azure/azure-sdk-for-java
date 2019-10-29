@@ -1,16 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.storage.file;
+package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.ShareFileSmbProperties;
-import com.azure.storage.file.share.ShareFileClient;
-import com.azure.storage.file.share.ShareFileAsyncClient;
-import com.azure.storage.file.share.ShareFileClientBuilder;
 import com.azure.storage.file.share.models.FileCopyInfo;
 import com.azure.storage.file.share.models.FileHttpHeaders;
 import com.azure.storage.file.share.models.FileInfo;

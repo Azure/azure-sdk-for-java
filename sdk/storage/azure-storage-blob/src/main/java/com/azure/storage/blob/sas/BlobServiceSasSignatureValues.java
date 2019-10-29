@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.specialized;
+package com.azure.storage.blob.sas;
 
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobContainerSasPermission;
-import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Utility;
