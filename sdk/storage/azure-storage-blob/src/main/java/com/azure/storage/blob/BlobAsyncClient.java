@@ -409,7 +409,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .next()
             .flatMap(fluxes -> {
                 if (fluxes.size() == 1) {
-                    return uploadFullBlob.apply(dequeuingFlux(cachedBuffers), bufferedDataSize[0]);
+                    return uploadFullBlob.apply(Flux.fromIterable(cachedBuffers), bufferedDataSize[0]);
                 } else {
                     return uploadInChunks.apply(dequeuingFlux(cachedBuffers).concatWith(fluxes.get(1)));
                 }
