@@ -135,19 +135,60 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return the created DataSource.
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Search datasource or updates a datasource if it already exists
+     *
+     * @param dataSource The definition of the datasource to create or update.
+     * @return The datasource that was created or updated.
      */
-    public Mono<DataSource> createDataSource() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource) {
+        return withContext(context ->
+            createOrUpdateDataSource(dataSource.getName(),
+                dataSource, null, null, context));
     }
 
     /**
-     * @return a response containing the created DataSource.
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Search datasource or updates a datasource if it already exists
+     *
+     * @param dataSourceName The name of the datasource to create or update.
+     * @param dataSource The definition of the datasource to create or update.
+     * @param requestOptions Request options
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param context Context
+     * @return The newly created datasource
      */
-    public Mono<Response<DataSource>> createDataSourceWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    Mono<DataSource> createOrUpdateDataSource(
+        String dataSourceName,
+        DataSource dataSource,
+        RequestOptions requestOptions,
+        AccessCondition accessCondition,
+        Context context) {
+        return createOrUpdateDataSourceWithResponse(dataSourceName,
+            dataSource, requestOptions, accessCondition, context)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Search datasource or updates a datasource if it already exists
+     *
+     * @param dataSourceName The name of the datasource to create or update.
+     * @param dataSource The definition of the datasource to create or update.
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param context Context
+     * @return a datasource response
+     */
+    Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(
+        String dataSourceName,
+        DataSource dataSource,
+        RequestOptions requestOptions,
+        AccessCondition accessCondition,
+        Context context) {
+        return restClient.dataSources().createOrUpdateWithRestResponseAsync(
+            dataSourceName, dataSource, requestOptions, accessCondition, context)
+            .map(Function.identity());
     }
 
     /**
@@ -155,7 +196,8 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<DataSource> getDataSource() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        throw logger.logExceptionAsError(
+            new NotImplementedException("not implemented."));
     }
 
     /**
@@ -163,7 +205,8 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<Response<DataSource>> getDataSourceWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        throw logger.logExceptionAsError(
+            new NotImplementedException("not implemented."));
     }
 
     /**
@@ -171,7 +214,8 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<DataSourceListResult> listDataSources() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return withContext(context -> restClient.dataSources()
+            .listWithRestResponseAsync(context)).map(Response::getValue);
     }
 
     /**
@@ -179,7 +223,8 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<Response<DataSourceListResult>> listDataSourcesWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        throw logger.logExceptionAsError(
+            new NotImplementedException("not implemented."));
     }
 
     /**
@@ -187,7 +232,8 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<DataSource> createOrUpdateDataSource() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        throw logger.logExceptionAsError(
+            new NotImplementedException("not implemented."));
     }
 
     /**
@@ -195,23 +241,79 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        throw logger.logExceptionAsError(
+            new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Delete a DataSource
+     *
+     * @param dataSourceName the name of the data source for deletion
+     * @return a void Mono
      */
-    public Mono<Void> deleteDataSource() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteDataSource(String dataSourceName) {
+        return withContext(context ->
+            deleteDataSourceWithResponse(dataSourceName, null, null, context)
+        ).map(Response::getValue);
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Search datasource.
+     *
+     * @param dataSourceName The name of the datasource to delete.
+     * @param requestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
+     * @return a valid Mono
      */
-    public Mono<Response<Response<Void>>> deleteDataSourceWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteDataSource(String dataSourceName,
+                                       RequestOptions requestOptions,
+                                       AccessCondition accessCondition) {
+        return withContext(context ->
+            restClient.dataSources()
+                .deleteWithRestResponseAsync(
+                    dataSourceName,
+                    requestOptions,
+                    accessCondition,
+                    context)).map(Response::getValue);
+    }
+
+    /**
+     * Deletes an Azure Search datasource.
+     *
+     * @param dataSourceName The name of the datasource to delete.
+     * @param requestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
+     * @return a mono response
+     */
+    public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
+                                       RequestOptions requestOptions,
+                                       AccessCondition accessCondition) {
+        return withContext(context ->
+            deleteDataSourceWithResponse(
+                    dataSourceName,
+                    requestOptions,
+                    accessCondition,
+                    context));
+    }
+
+    /**
+     * Deletes an Azure Search datasource.
+     *
+     * @param dataSourceName The name of the datasource to delete.
+     * @param requestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
+     * @return a mono response
+     */
+    Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
+                                                   RequestOptions requestOptions,
+                                                   AccessCondition accessCondition,
+                                                   Context context) {
+        return restClient.dataSources()
+                .deleteWithRestResponseAsync(
+                    dataSourceName,
+                    requestOptions,
+                    accessCondition,
+                    context).map(Function.identity());
     }
 
     /**
@@ -219,7 +321,8 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<Indexer> createIndexer() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        throw logger.logExceptionAsError(
+            new NotImplementedException("not implemented."));
     }
 
     /**
@@ -227,7 +330,8 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<Response<Indexer>> createIndexerWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        throw logger.logExceptionAsError(
+            new NotImplementedException("not implemented."));
     }
 
     /**
@@ -235,7 +339,8 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<Indexer> getIndexer() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        throw logger.logExceptionAsError(
+            new NotImplementedException("not implemented."));
     }
 
     /**
@@ -243,7 +348,8 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      */
     public Mono<Response<Indexer>> getIndexerWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        throw logger.logExceptionAsError(
+            new NotImplementedException("not implemented."));
     }
 
     /**
@@ -345,7 +451,7 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index.
      *
-     * @param index definition of the index to create
+     * @param index definition of the index to create.
      * @return the created Index.
      */
     public Mono<Index> createIndex(Index index) {
@@ -390,7 +496,7 @@ public class SearchServiceAsyncClient {
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      *
-     * @param indexName the name of the index to retrieve
+     * @param indexName The name of the index to retrieve
      * @return the Index.
      */
     public Mono<Index> getIndex(String indexName) {
@@ -401,7 +507,7 @@ public class SearchServiceAsyncClient {
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      *
-     * @param indexName the name of the index to retrieve
+     * @param indexName The name of the index to retrieve
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return the Index.
@@ -508,8 +614,8 @@ public class SearchServiceAsyncClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties
      * @return a reactive response emitting the list of indexes.
      */
     public PagedFlux<Index> listIndexes(String select) {
@@ -520,8 +626,8 @@ public class SearchServiceAsyncClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of indexes.

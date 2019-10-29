@@ -75,19 +75,58 @@ public class SearchServiceClient {
     }
 
     /**
+     * @param dataSource the name of the datasource to be created
      * @return the created DataSource.
      * @throws NotImplementedException not implemented
      */
-    public DataSource createDataSource() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public DataSource createOrUpdateDataSource(DataSource dataSource) {
+        return asyncClient.createOrUpdateDataSource(dataSource).block();
     }
 
     /**
-     * @return a response containing the created DataSource.
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Search datasource or updates a datasource if it already exists
+     *
+     * @param dataSourceName The name of the datasource to create or update.
+     * @param dataSource The definition of the datasource to create or update.
+     * @param requestOptions Request options
+     * @param accessCondition Access conditions
+     * @param context Context
+     * @return a datasource response
      */
-    public Response<DataSource> createDataSourceWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public DataSource createOrUpdateDataSource(
+        String dataSourceName,
+        DataSource dataSource,
+        RequestOptions requestOptions,
+        AccessCondition accessCondition,
+        Context context) {
+        return asyncClient.createOrUpdateDataSource(dataSourceName,
+            dataSource,
+            requestOptions,
+            accessCondition,
+            context).block();
+    }
+
+    /**
+     * Creates a new Azure Search datasource or updates a datasource if it already exists
+     *
+     * @param dataSourceName The name of the datasource to create or update.
+     * @param dataSource The definition of the datasource to create or update.
+     * @param requestOptions Request options
+     * @param accessCondition Access conditions
+     * @param context Context
+     * @return a datasource response
+     */
+    public Response<DataSource> createOrUpdateDataSourceWithResponse(
+        String dataSourceName,
+        DataSource dataSource,
+        RequestOptions requestOptions,
+        AccessCondition accessCondition,
+        Context context) {
+        return asyncClient.createOrUpdateDataSourceWithResponse(dataSourceName,
+            dataSource,
+            requestOptions,
+            accessCondition,
+            context).block();
     }
 
     /**
@@ -107,11 +146,10 @@ public class SearchServiceClient {
     }
 
     /**
-     * @return all DataSources from the Search service.
-     * @throws NotImplementedException not implemented
+     * @return a list of datasources
      */
     public DataSourceListResult listDataSources() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.listDataSources().block();
     }
 
     /**
@@ -119,7 +157,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      */
     public Response<DataSourceListResult> listDataSourcesWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.listDataSourcesWithResponse().block();
     }
 
     /**
@@ -139,18 +177,38 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Delete a DataSource
+     *
+     * @param dataSourceName the name of the datasource to be deleted
      */
-    public void deleteDataSource() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteDataSource(String dataSourceName) {
+        asyncClient.deleteDataSource(dataSourceName).block();
     }
 
     /**
-     * @return a response signalling completion
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Search datasource.
+     *
+     * @param dataSourceName The name of the datasource to delete.
+     * @param requestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
      */
-    public Response<Response<Void>> deleteDataSourceWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteDataSource(String dataSourceName,
+                                 RequestOptions requestOptions,
+                                 AccessCondition accessCondition) {
+        asyncClient.deleteDataSource(
+            dataSourceName,
+            requestOptions,
+            accessCondition).block();
+    }
+
+    /**
+     * Delete a DataSource with Response
+     *
+     * @param dataSourceName the name of the datasource to be deleted
+     * @return an empty response
+     */
+    public Response<Void> deleteDataSourceWithResponse(String dataSourceName) {
+        return asyncClient.deleteDataSourceWithResponse(dataSourceName, null, null).block();
     }
 
     /**
@@ -457,8 +515,8 @@ public class SearchServiceClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties
      * @return the list of indexes.
      */
     public PagedIterable<Index> listIndexes(String select) {
@@ -469,8 +527,8 @@ public class SearchServiceClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return the list of indexes.
@@ -483,8 +541,8 @@ public class SearchServiceClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -525,7 +583,7 @@ public class SearchServiceClient {
      * @param index the definition of the index to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
-     * @return the index that was created or updated.
+     * @return the index that was created or updated
      */
     public Index createOrUpdateIndex(Index index, AccessCondition accessCondition) {
         return asyncClient.createOrUpdateIndex(index, accessCondition).block();
@@ -558,7 +616,7 @@ public class SearchServiceClient {
      * can be impaired for several minutes after the index is updated, or longer for very
      * large indexes.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     *                           doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return the index that was created or updated.
@@ -610,7 +668,7 @@ public class SearchServiceClient {
      * can be impaired for several minutes after the index is updated, or longer for very
      * large indexes.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
+     *                           doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -655,7 +713,7 @@ public class SearchServiceClient {
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        Contains the tracking ID sent with the request to help with debugging
      */
     public void deleteIndex(String indexName, AccessCondition accessCondition, RequestOptions requestOptions) {
         asyncClient.deleteIndex(indexName, accessCondition, requestOptions).block();
@@ -686,7 +744,7 @@ public class SearchServiceClient {
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     *                        Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */

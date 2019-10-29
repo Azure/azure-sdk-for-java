@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdk58d021534ee5.search-dogfood.windows-int.net/datasources('azs-java-test-sql')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "391b8275-95be-49c7-8bd1-4e4fb1584cc9",
+      "StatusCode" : "400",
+      "Date" : "Sun, 27 Oct 2019 19:00:34 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "25",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "70",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Data source type '' is not supported\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
