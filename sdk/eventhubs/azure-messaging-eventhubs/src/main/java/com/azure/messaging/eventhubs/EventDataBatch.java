@@ -117,7 +117,9 @@ public final class EventDataBatch {
         return partitionKey;
     }
 
-    String getPartitionId() { return partitionId; }
+    String getPartitionId() {
+        return partitionId;
+    }
 
     private int getSize(final EventData eventData, final boolean isFirst) {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");

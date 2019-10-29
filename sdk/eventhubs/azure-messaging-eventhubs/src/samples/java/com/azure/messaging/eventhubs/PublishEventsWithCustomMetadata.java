@@ -76,7 +76,9 @@ public class PublishEventsWithCustomMetadata {
         // .subscribe() is a non-blocking call. The program will immediately move to the next line after setting up
         // the callbacks for each event in the observable.
         producer.send(data, sendOptions).subscribe(
-            ignored -> {},
+            ignored -> {
+                System.out.println("Sent.");
+            },
             error -> {
                 System.err.println("There was an error sending the event batch: " + error.toString());
 
