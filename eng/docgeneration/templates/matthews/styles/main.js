@@ -80,9 +80,6 @@ function httpGetAsync(targetUrl, callback) {
 function populateIndexList(selector, packageName) {
     url = "https://azuresdkdocs.blob.core.windows.net/$web?restype=container&comp=list&prefix=" + SELECTED_LANGUAGE + "/" + packageName + "/versions/"
 
-    console.log(url)
-    console.log(selector)
-
     httpGetAsync(url, function (responseText) {
 
         var publishedversions = document.createElement("ul")

@@ -891,7 +891,9 @@
                       <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
                       <argument>--rf</argument>
                       <argument>${project.basedir}/README.md</argument>
-                </arguments>
+                      <argument>--v</argument>
+                      <argument>${project.version}</argument>
+                </arguments>    
               </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->

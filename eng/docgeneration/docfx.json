@@ -59,6 +59,14 @@
     "noLangKeyword": false,
     "keepFileLink": false,
     "cleanupCacheHistory": false,
-    "disableGitFeatures": false
+    "disableGitFeatures": false,
+    "globalMetadata": {
+      "_appTitle": "Azure SDK for Java",
+      "_appFooter": "Azure SDK for Java",
+      "_enableSearch": false,
+      "_enableNewTab": true,
+      "_appFaviconPath": "https://c.s-microsoft.com/favicon.ico?v2",
+      "_disableContribution": true
+    }    
   }
 }

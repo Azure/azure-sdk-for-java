@@ -1,3 +1,11 @@
+resources:
+  repositories:
+    - repository: azure-sdk-tools
+      type: github
+      name: azure/azure-sdk-tools
+      ref: refs/heads/master
+      endpoint: azure
+
 jobs:
   - job: CreateDocIndex
     variables:
@@ -43,9 +51,7 @@ jobs:
           foreach ($Dir in $ServiceListData)
           {   
               New-Item -Path $YmlPath -Name "$($Dir.Name).md" -Force
-              #Write-Host "$($Dir.Name) to Toc.yml"
               Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($Dir.Name.ToUpper())`r`n  href: $($Dir.Name).md"
-              #Write-Host "Write Client Header"
               Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# CLIENT"
               $PkgList = Get-ChildItem $Dir.FullName -Directory -Exclude changelog, faq, .github, build
               if (($PkgList | Measure-Object).count -eq 0)
@@ -80,6 +86,13 @@ jobs:
       - pwsh: |
           Copy-Item "$(Build.SourcesDirectory)/eng/docgeneration/assets/*" -Destination "$(Build.SourcesDirectory)/docfx_project/_site/" -Force
         displayName: Replace site assets
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+      - template: eng/pipelines/templates/scripts/mashup-doc-index.yml@azure-sdk-tools
+        parameters:
+          SourceDirectory: $(Build.SourcesDirectory)        
       - task: CopyFiles@2
         displayName: Copy HTML to Artifacts Directory
         inputs:
