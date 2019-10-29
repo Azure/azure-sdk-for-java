@@ -5,10 +5,13 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;
@@ -54,6 +57,9 @@ public class EventHubAsyncConsumerTest {
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
+    private static final String HOSTNAME = "hostname-foo";
+    private static final String EVENT_HUB_NAME = "event-hub-name";
+    private static final String CONSUMER_GROUP = "consumer-group-test";
 
     private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumerTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
@@ -64,10 +70,13 @@ public class EventHubAsyncConsumerTest {
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
+    @Mock
+    private EventHubAmqpConnection connection;
 
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
+    private EventHubLinkProvider linkProvider;
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubAsyncConsumer consumer;
 
@@ -81,10 +90,12 @@ public class EventHubAsyncConsumerTest {
         when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
+        linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, new RetryOptions().setTryTimeout(TIMEOUT));
         EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setIdentifier("an-identifier")
             .setPrefetchCount(PREFETCH);
-        consumer = new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, options);
+        consumer = new EventHubAsyncConsumer(linkProvider, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP,
+            EventPosition.earliest(), receiveLinkMono, messageSerializer, options);
     }
 
     @After
@@ -110,6 +121,7 @@ public class EventHubAsyncConsumerTest {
     public void lastEnqueuedEventInformationCreated() {
         // Arrange
         final EventHubAsyncConsumer runtimeConsumer = new EventHubAsyncConsumer(
+            linkProvider, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, EventPosition.earliest(),
             Mono.just(amqpReceiveLink),
             messageSerializer,
             new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));
