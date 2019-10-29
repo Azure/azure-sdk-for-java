@@ -9,7 +9,7 @@ public class CosmosItemResponse extends CosmosResponse<CosmosItemProperties> {
 
 
     CosmosItemResponse(CosmosAsyncItemResponse response, PartitionKey partitionKey, CosmosContainer container) {
-        super(response.getProperties());
+        super(response.resourceResponseWrapper, response.getProperties());
         this.responseWrapper = response;
         if (responseWrapper.getItem() != null) {
             this.item = new CosmosItem(responseWrapper.getItem().getId(), partitionKey, container, responseWrapper.getItem());

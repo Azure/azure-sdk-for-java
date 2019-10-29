@@ -15,8 +15,13 @@ public class CosmosResponse<T extends Resource> {
     CosmosResponse(ResourceResponse resourceResponse){
         this.resourceResponseWrapper = resourceResponse;
     }
-  
+
     CosmosResponse(T properties){
+        this.properties = properties;
+    }
+
+    CosmosResponse(ResourceResponse resourceResponse, T properties) {
+        this.resourceResponseWrapper = resourceResponse;
         this.properties = properties;
     }
 
@@ -27,7 +32,7 @@ public class CosmosResponse<T extends Resource> {
     public T getProperties() {
         return properties;
     }
-    
+
     CosmosResponse<T> setProperties(T resourceSettings){
         this.properties = resourceSettings;
         return this;
@@ -96,7 +101,7 @@ public class CosmosResponse<T extends Resource> {
     public Map<String, String> getResponseHeaders() {
         return resourceResponseWrapper.getResponseHeaders();
     }
-    
+
     /**
      * Gets the diagnostics information for the current request to Azure Cosmos DB service.
      *
@@ -113,5 +118,5 @@ public class CosmosResponse<T extends Resource> {
      */
     public Duration getRequestLatency() {
         return resourceResponseWrapper.getRequestLatency();
-    }    
+    }
 }

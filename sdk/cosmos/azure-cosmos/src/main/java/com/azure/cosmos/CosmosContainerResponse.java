@@ -12,7 +12,7 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
     private final CosmosContainer container;
 
     CosmosContainerResponse(CosmosAsyncContainerResponse response, CosmosDatabase database, CosmosClient client) {
-        super(response.getProperties());
+        super(response.resourceResponseWrapper, response.getProperties());
         this.responseWrapper = response;
         if (responseWrapper.getContainer() != null) {
             this.container = new CosmosContainer(responseWrapper.getContainer().getId(), database, responseWrapper.getContainer());
