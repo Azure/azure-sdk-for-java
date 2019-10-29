@@ -15,7 +15,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Contains code snippets when generating javadocs through doclets for {@link EventHubAsyncProducerClient}.
  */
-public class EventHubAsyncProducerJavaDocCodeSamples {
+public class EventHubAsyncProducerClientJavaDocCodeSamples {
     private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
 
     /**
@@ -24,32 +24,32 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
      *
      */
     public void instantiate() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
         EventHubAsyncClient client = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
             .buildAsyncClient();
 
         EventHubAsyncProducerClient producer = client.createProducer();
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
 
         producer.close();
     }
 
     /**
-     * Code snippet demonstrating how to create an {@link EventHubAsyncProducerClient}  that routes events to a single
+     * Code snippet demonstrating how to create an {@link EventHubAsyncProducerClient} that routes events to a single
      * partition.
      *
      * @throws IOException if the producer cannot be disposed.
      */
     public void instantiatePartitionProducer() throws IOException {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation#partitionId
         EventData eventData = new EventData("data-to-partition-foo");
         SendOptions options = new SendOptions()
             .setPartitionId("foo");
 
         EventHubAsyncProducerClient producer = client.createProducer();
         producer.send(eventData, options);
-        // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation#partitionId
 
         producer.close();
     }
@@ -58,7 +58,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
      * Code snippet demonstrating how to send events with a partition key.
      */
     public void sendEventsFluxSendOptions() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducer.send#publisher-sendOptions
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#publisher-sendOptions
         Flux<EventData> events = Flux.just(
             new EventData("sourdough".getBytes(UTF_8)),
             new EventData("rye".getBytes(UTF_8)),
@@ -72,7 +72,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
         producer.send(events, options).subscribe(ignored -> System.out.println("sent"),
             error -> System.err.println("Error received:" + error),
             () -> System.out.println("Send complete."));
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducer.send#publisher-sendOptions
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#publisher-sendOptions
     }
 
     /**
@@ -81,7 +81,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
     public void sendEventDataBatch() {
         final EventHubAsyncProducerClient producer = client.createProducer();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducer.send#eventDataBatch
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch
         final Flux<EventData> telemetryEvents = Flux.just(
             new EventData("92".getBytes(UTF_8)).addProperty("telemetry", "latency"),
             new EventData("98".getBytes(UTF_8)).addProperty("telemetry", "cpu-temperature"),
@@ -110,6 +110,6 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
                     producer.send(batch).block();
                 }
             });
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducer.send#eventDataBatch
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch
     }
 }
