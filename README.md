@@ -43,7 +43,7 @@ The libraries released in the November GA November 2019 preview:
 
 - [Event Hubs](sdk/eventhubs/azure-messaging-eventhubs/README.md)
 - [Event Hubs Checkpoint Store](sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
-- [Storage Files](sdk/storage/azure-storage-file/README.md)
+- [Storage File Shares](sdk/storage/azure-storage-file-share/README.md)
 - [Key Vault Certificates](sdk/keyvault/azure-security-keyvault-certificates/README.md)
 - [azure-core-tracing-opencensus](sdk/core/azure-core-tracing-opencensus/README.md)
 
