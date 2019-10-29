@@ -72,7 +72,7 @@ import java.util.ServiceLoader;
  * @see EventHubClient
  * @see EventHubAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventHubClient.class})
+@ServiceClientBuilder(serviceClients = {EventHubAsyncProducerClient.class, EventHubProducerClient.class})
 public class EventHubClientBuilder {
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
@@ -278,6 +278,34 @@ public class EventHubClientBuilder {
     public EventHubClientBuilder retry(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
+    }
+
+    /**
+     * Creates a new {@link EventHubAsyncProducerClient} based on options set on this builder. Every time
+     * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubAsyncProducerClient} is created.
+     *
+     * @return A new {@link EventHubAsyncProducerClient} instance with all the configured options.
+     *
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
+     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubAsyncProducerClient buildAsyncProducer() {
+        return buildAsyncClient().createProducer();
+    }
+
+    /**
+     * Creates a new {@link EventHubProducerClient} based on options set on this builder. Every time
+     * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubProducerClient} is created.
+     *
+     * @return A new {@link EventHubProducerClient} instance with all the configured options.
+     *
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
+     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubProducerClient buildProducer() {
+        return buildClient().createProducer();
     }
 
     /**
