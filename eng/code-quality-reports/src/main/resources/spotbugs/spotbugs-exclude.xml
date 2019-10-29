@@ -380,7 +380,7 @@
       <Class name="com.azure.storage.blob.HttpGetterInfo"/>
       <Class name="com.azure.storage.blob.BlobProperties"/>
       <Class name="com.azure.storage.blob.BlobContainerProperties"/>
-      <Class name="com.azure.storage.file.implementation.models.DirectoryCreateHeaders"/>
+      <Class name="com.azure.storage.file.share.implementation.models.DirectoryCreateHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -450,7 +450,7 @@
   <Match>
     <Or>
       <Class name="com.azure.storage.blob.specialized.BlobInputStream"/>
-      <Class name="com.azure.storage.file.StorageFileInputStream"/>
+      <Class name="com.azure.storage.file.share.StorageFileInputStream"/>
       <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
     </Or>
@@ -617,7 +617,7 @@
 
   <!-- The field is read by parent class StorageOutputStream methods. -->
   <Match>
-    <Class name="com.azure.storage.file.StorageFileOutputStream"/>
+    <Class name="com.azure.storage.file.share.StorageFileOutputStream"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -638,7 +638,7 @@
     <Or>
       <Class name="com.azure.core.implementation.http.UrlBuilder"/>
       <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
-      <Class name="com.azure.storage.file.implementation.models.FileGetPropertiesHeaders"/>
+      <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>

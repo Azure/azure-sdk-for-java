@@ -1,7 +1,7 @@
 # Azure Identity client library for Java
 The Azure Identity library provides Azure Active Directory token authentication support across the Azure SDK. It provides a set of TokenCredential implementations which can be used to construct Azure SDK clients which support AAD token authentication.
 
- This library is in preview and currently supports:
+ This library currently supports:
   - [Service principal authentication](https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals)
   - [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
   - [Device code authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code)
@@ -157,7 +157,7 @@ DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().b
 // Azure SDK client builders accept the credential as a parameter
 
 SecretClient client = new SecretClientBuilder()
-    .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+    .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
     .credential(credential)
     .buildClient();
 ```
@@ -178,7 +178,7 @@ ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilde
         .build();
 
 KeyClient client = new KeyClientBuilder()
-    .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+    .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
     .credential(clientSecretCredential)
     .buildClient();
 ```
@@ -200,7 +200,7 @@ DeviceCodeCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
         .build();
 
 KeyClient client = new KeyClientBuilder()
-    .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+    .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
     .credential(deviceCodeCredential)
     .buildClient();
 ```
@@ -221,7 +221,7 @@ UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCred
         .build();
 
 KeyClient client = new KeyClientBuilder()
-    .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+    .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
     .credential(usernamePasswordCredential)
     .buildClient();
 ```
@@ -245,7 +245,7 @@ AuthorizationCodeCredential authCodeCredential = new AuthorizationCodeCredential
         .build();
 
 KeyClient client = new KeyClientBuilder()
-    .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+    .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
     .credential(authCodeCredential)
     .buildClient();
 ```
@@ -278,7 +278,7 @@ ChainedTokenCredential credentialChain = new ChainedTokenCredentialBuilder()
 // {your-namespace}.servicebus.windows.net
 String host = "<< EVENT HUBS HOST >>"
 String eventHubPath = "<< NAME OF THE EVENT HUB >>";
-EventHubClient client = new EventHubClientBuilder()
+EventHubAsyncClient client = new EventHubClientBuilder()
     .credential(host, eventHubPath, credentialChain)
     .buildAsyncClient();
 ```

@@ -16,7 +16,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.0-preview.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -35,7 +35,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.0-preview.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -185,7 +185,7 @@ System.out.printf("Secret is returned with name %s and value %s \n", secret.getN
 
 ### Update an existing Secret
 
-Update an existing Secret by calling `updateSecret`.
+Update an existing Secret by calling `updateSecretProperties`.
 ```Java
 // Get the secret to update.
 KeyVaultSecret secret = secretClient.getSecret("secret_name");
@@ -197,32 +197,22 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.
 
 ### Delete a Secret
 
-Delete an existing Secret by calling `deleteSecret`.
+Delete an existing Secret by calling `beginDeleteSecret`.
 ```Java
-Poller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
-
-while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
-    && !deletedSecretPoller.isComplete()) {
-    System.out.println(deletedSecretPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
+SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
 
 // Deleted Secret is accessible as soon as polling begins
-DeletedSecret deletedSecret = deletedSecretPoller.getLastPollResponse().getValue();
-System.out.println("Deleted Date  %s" + deletedSecret.getDeletedOn().toString());
-System.out.printf("Deleted Secret's deletion date %s", deletedSecret.getDeletedOn().toString());
+PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
-// Ensure Secret gets completely deleted on the server.
-while (!deletedSecretPoller.isComplete()) {
-    System.out.println("Delete Status" + deletedSecretPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
-System.out.println("Delete Status " + deletedSecretPoller.getStatus().toString());
+System.out.println("Deleted Date  %s" + deletedSecretPollResponse.getValue().getDeletedOn().toString());
+
+// Secret is being deleted on server.
+deletedSecretPoller.waitForCompletion();
 ```
 
 ### List Secrets
 
-List the secrets in the key vault by calling `listSecrets`.
+List the secrets in the key vault by calling `listPropertiesOfSecrets`.
 ```Java
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
 for (SecretProperties secretProperties : client.listPropertiesOfSecrets()) {
@@ -270,7 +260,7 @@ secretAsyncClient.getSecret("secretName").subscribe(secret ->
 
 ### Update an existing Secret Asynchronously
 
-Update an existing Secret by calling `updateSecret`.
+Update an existing Secret by calling `updateSecretProperties`.
 ```Java
 secretAsyncClient.getSecret("secretName").subscribe(secret -> {
      // Update the expiry time of the secret.
@@ -282,20 +272,19 @@ secretAsyncClient.getSecret("secretName").subscribe(secret -> {
 
 ### Delete a Secret Asynchronously
 
-Delete an existing Secret by calling `deleteSecret`.
+Delete an existing Secret by calling `beginDeleteSecret`.
 ```Java
 secretAsyncClient.beginDeleteSecret("secretName")
-           .getObserver()
-           .subscribe(pollResponse -> {
-               System.out.println("Delete Status: " + pollResponse.getStatus().toString());
-               System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
-               System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
-           });
+    .subscribe(pollResponse -> {
+        System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+        System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
+        System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
+    });
 ```
 
 ### List Secrets Asynchronously
 
-List the secrets in the key vault by calling `listSecrets`.
+List the secrets in the key vault by calling `listPropertiesOfSecrets`.
 ```Java
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretAsyncClient.listPropertiesOfSecrets()
@@ -319,34 +308,8 @@ try {
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-### Hello World Samples
-* [HelloWorld.java][sample_helloWorld] - and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples for following scenarios:
-    * Create a Secret
-    * Retrieve a Secret
-    * Update a Secret
-    * Delete a Secret
-
-### List Operations Samples
-* [ListOperations.java][sample_list] and [ListOperationsAsync.java][sample_listAsync] - Contains samples for following scenarios:
-    * Create a Secret
-    * List Secrets
-    * Create new version of existing secret.
-    * List versions of an existing secret.
-
-### Backup And Restore Operations Samples
-* [BackupAndRestoreOperations.java][sample_BackupRestore] and [BackupAndRestoreOperationsAsync.java][sample_BackupRestoreAsync] - Contains samples for following scenarios:
-    * Create a Secret
-    * Backup a Secret -- Write it to a file.
-    * Delete a secret
-    * Restore a secret
-
-### Managing Deleted Secrets Samples:
-* [ManagingDeletedSecrets.java][sample_ManageDeleted] and [ManagingDeletedSecretsAsync.java][sample_ManageDeletedAsync] - Contains samples for following scenarios:
-    * Create a Secret
-    * Delete a secret
-    * List deleted secrets
-    * Recover a deleted secret
-    * Purge Deleted secret
+## Next Steps Samples
+Samples are explained in detail [here][samples].
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
@@ -373,13 +336,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_keyvault_cli]:https://docs.microsoft.com/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [secrets_samples]: src/samples/java/com/azure/security/keyvault/secrets
-[sample_helloWorld]: src/samples/java/com/azure/security/keyvault/secrets/HelloWorld.java
-[sample_helloWorldAsync]: src/samples/java/com/azure/security/keyvault/secrets/HelloWorldAsync.java
-[sample_list]: src/samples/java/com/azure/security/keyvault/secrets/ListOperations.java
-[sample_listAsync]: src/samples/java/com/azure/security/keyvault/secrets/ListOperationsAsync.java
-[sample_BackupRestore]: src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]: src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
-[sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
+[samples]: src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-secrets/README.png)
