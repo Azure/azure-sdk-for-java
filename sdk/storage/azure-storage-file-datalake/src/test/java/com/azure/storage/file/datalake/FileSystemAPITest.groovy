@@ -820,9 +820,9 @@ class FileSystemAPITest extends APISpec {
         then:
         def dirPath = response.next()
         dirPath.getName() == dirName
-        dirPath.getETag()
+//        dirPath.getETag()
         dirPath.getGroup()
-        dirPath.getLastModifiedTime()
+        dirPath.getLastModified()
         dirPath.getOwner()
         dirPath.getPermissions()
 //        dirPath.getContentLength()
@@ -831,9 +831,9 @@ class FileSystemAPITest extends APISpec {
         response.hasNext()
         def filePath = response.next()
         filePath.getName() == fileName
-        filePath.getETag()
+//        filePath.getETag()
         filePath.getGroup()
-        filePath.getLastModifiedTime()
+        filePath.getLastModified()
         filePath.getOwner()
         filePath.getPermissions()
 //        filePath.getContentLength()

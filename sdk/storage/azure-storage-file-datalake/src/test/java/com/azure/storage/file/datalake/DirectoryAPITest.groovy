@@ -699,7 +699,7 @@ class DirectoryAPITest extends APISpec {
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
-            .setContentMD5(contentMD5)
+            .setContentMd5(contentMD5)
             .setContentType(contentType)
 
         dc.setHttpHeaders(putHeaders)

@@ -526,7 +526,7 @@ class FileAPITest extends APISpec {
             .setContentType("type")
             .setCacheControl(properties.getCacheControl())
             .setContentLanguage(properties.getContentLanguage())
-            .setContentMD5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
+            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
 
         fc.setHttpHeaders(headers)
 
@@ -544,7 +544,7 @@ class FileAPITest extends APISpec {
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
-            .setContentMD5(contentMD5)
+            .setContentMd5(contentMD5)
             .setContentType(contentType)
 
         fc.setHttpHeaders(putHeaders)

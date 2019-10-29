@@ -329,6 +329,47 @@ class APISpec extends Specification {
         return builder.credential(credential).buildFileClient()
     }
 
+    DataLakeFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, String pathName) {
+        PathClientBuilder builder = new PathClientBuilder()
+            .endpoint(endpoint)
+            .pathName(pathName)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildFileClient()
+    }
+
+    DataLakeFileClient getFileClient(String sasToken, String endpoint, String pathName) {
+        PathClientBuilder builder = new PathClientBuilder()
+            .endpoint(endpoint)
+            .pathName(pathName)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.sasToken(sasToken).buildFileClient()
+    }
+
+    FileSystemClient getFileSystemClient(String sasToken, String endpoint) {
+        FileSystemClientBuilder builder = new FileSystemClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        builder.sasToken(sasToken).buildClient()
+    }
+
     def generateFileSystemName() {
         generateResourceName(fileSystemPrefix, entityNo++)
     }
@@ -343,6 +384,10 @@ class APISpec extends Specification {
 
     String getRandomUUID() {
         return resourceNamer.randomUuid()
+    }
+
+    String getConfigValue(String value) {
+        return resourceNamer.recordValueFromConfig(value)
     }
 
     String getBlockID() {
@@ -540,6 +585,13 @@ class APISpec extends Specification {
         @Override
         Mono<String> getBodyAsString(Charset charset) {
             return Mono.error(new IOException())
+        }
+    }
+
+    // Only sleep if test is running in live mode
+    def sleepIfRecord(long milliseconds) {
+        if (testMode == TestMode.RECORD) {
+            sleep(milliseconds)
         }
     }
 
