@@ -155,7 +155,7 @@ The following sections provide several code snippets covering some of the most c
 ### Create a Certificate
 
 Create a Certificate to be stored in the Azure Key Vault.
-- `createCertificate` creates a new certificate in the key vault. if the certificate with name already exists then a new version of the certificate is created.
+- `beginCreateCertificate` creates a new certificate in the key vault. if the certificate with name already exists then a new version of the certificate is created.
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
@@ -168,13 +168,11 @@ CertificateClient certificateClient = new CertificateClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
-
-Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName",
-    certPolicy);
-Certificate certificate = certificatePoller.block();
-System.out.printf("Certificate is returned with name %s and secret id %s \n", certificate.getProperties().getName(),
-    certificate.getSecretId());
+CertificatePolicy certificatePolicyPkcsSelf = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+SyncPoller<CertificateOperation, Certificate> certPoller = certificateClient.beginCreateCertificate("certificateName", certificatePolicyPkcsSelf);
+certPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+Certificate cert = certPoller.getFinalResult();
+System.out.printf("Certificate created with name %s", cert.getName());
 ```
 
 ### Retrieve a Certificate
@@ -188,7 +186,7 @@ System.out.printf("Recevied certificate with name %s and version %s and secret i
 
 ### Update an existing Certificate
 
-Update an existing Certificate by calling `updateCertificate`.
+Update an existing Certificate by calling `updateCertificateProperties`.
 ```Java
 // Get the certificate to update.
 Certificate certificate = certificateClient.getCertificateWithPolicy("certificateName");
@@ -235,7 +233,7 @@ The following sections provide several code snippets covering some of the most c
 ### Create a Certificate Asynchronously
 
 Create a Certificate to be stored in the Azure Key Vault.
-- `createCertificate` creates a new key in the key vault. if the certificate with name already exists then a new version of the certificate is created.
+- `beginCreateCertificate` creates a new certificate in the key vault. if the certificate with name already exists then a new version of the certificate is created.
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
@@ -247,8 +245,8 @@ CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs1
 Map<String, String> tags = new HashMap<>();
 tags.put("foo", "bar");
 //Creates a certificate and polls on its progress.
-certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
-    .getObserver()
+CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+certificateAsyncClient.beginCreateCertificate("myCertificate", policy)
     .subscribe(pollResponse -> {
         System.out.println("---------------------------------------------------------------------------------");
         System.out.println(pollResponse.getStatus());
@@ -269,7 +267,7 @@ certificateAsyncClient.getCertificateWithPolicy("certificateName")
 
 ### Update an existing Certificate Asynchronously
 
-Update an existing Certificate by calling `updateCertificate`.
+Update an existing Certificate by calling `updateCertificateProperties`.
 ```Java
 certificateAsyncClient.getCertificateWithPolicy("certificateName")
     .subscribe(certificateResponseValue -> {

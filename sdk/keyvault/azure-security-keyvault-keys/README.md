@@ -212,7 +212,7 @@ System.out.printf("Key is returned with name %s and id %s \n", key.getName(), ke
 
 ### Update an existing Key
 
-Update an existing Key by calling `updateKey`.
+Update an existing Key by calling `updateKeyProperties`.
 ```Java
 // Get the key to update.
 KeyVaultKey key = keyClient.getKey("key_name");
@@ -224,30 +224,23 @@ System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().
 
 ### Delete a Key
 
-Delete an existing Key by calling `deleteKey`.
+Delete an existing Key by calling `beginDeleteKey`.
 ```Java
-Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
+SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
 
-while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-    System.out.println(deletedKeyPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
+PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
-DeletedKey deletedKey = deletedKeyPoller.getLastPollResponse().getValue();
+// Deleted key is accessible as soon as polling begins
+DeletedKey deletedKey = deletedKeyPollResponse.getValue();
 System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
-System.out.printf("Deleted Key's deletion date %s", deletedKey.getDeletedOn().toString());
 
 // Key is being deleted on server.
-while (!deletedKeyPoller.isComplete()) {
-    System.out.println(deletedKeyPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
-System.out.println(deletedKeyPoller.getStatus().toString());
+deletedKeyPoller.waitForCompletion();
 ```
 
 ### List Keys
 
-List the keys in the key vault by calling `listKeys`.
+List the keys in the key vault by calling `listPropertiesOfKeys`.
 ```java
 // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
 for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
@@ -335,7 +328,7 @@ keyAsyncClient.getKey("keyName").subscribe(key ->
 
 ### Update an existing Key Asynchronously
 
-Update an existing Key by calling `updateKey`.
+Update an existing Key by calling `updateKeyProperties`.
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
      // Get the Key
@@ -349,10 +342,9 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
 
 ### Delete a Key Asynchronously
 
-Delete an existing Key by calling `deleteKey`.
+Delete an existing Key by calling `beginDeleteKey`.
 ```java
 keyAsyncClient.beginDeleteKey("keyName")
-    .getObserver()
     .subscribe(pollResponse -> {
         System.out.println("Delete Status: " + pollResponse.getStatus().toString());
         System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
@@ -362,7 +354,7 @@ keyAsyncClient.beginDeleteKey("keyName")
 
 ### List Keys Asynchronously
 
-List the keys in the key vault by calling `listKeys`.
+List the keys in the key vault by calling `listPropertiesOfKeys`.
 ```Java
 // The List Keys operation returns keys without their value, so for each key returned we call `getKey` to get its // value as well.
 keyAsyncClient.listPropertiesOfKeys()
