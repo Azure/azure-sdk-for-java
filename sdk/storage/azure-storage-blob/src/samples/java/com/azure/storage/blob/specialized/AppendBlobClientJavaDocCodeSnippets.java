@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -91,7 +90,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
      *
      * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
-    public void appendBlock2() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public void appendBlock2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobAccessConditions-Duration-Context
         byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
         AppendBlobRequestConditions accessConditions = new AppendBlobRequestConditions()
