@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -19,13 +19,13 @@ public final class UserDelegationKey {
      * The Azure Active Directory object ID in GUID format.
      */
     @JsonProperty(value = "SignedOid", required = true)
-    private String signedOid;
+    private String signedObjectId;
 
     /*
      * The Azure Active Directory tenant ID in GUID format
      */
     @JsonProperty(value = "SignedTid", required = true)
-    private String signedTid;
+    private String signedTenantId;
 
     /*
      * The date-time the key is active
@@ -58,46 +58,46 @@ public final class UserDelegationKey {
     private String value;
 
     /**
-     * Get the signedOid property: The Azure Active Directory object ID in GUID
-     * format.
+     * Get the signedObjectId property: The Azure Active Directory object ID in
+     * GUID format.
      *
-     * @return the signedOid value.
+     * @return the signedObjectId value.
      */
-    public String signedOid() {
-        return this.signedOid;
+    public String getSignedObjectId() {
+        return this.signedObjectId;
     }
 
     /**
-     * Set the signedOid property: The Azure Active Directory object ID in GUID
-     * format.
+     * Set the signedObjectId property: The Azure Active Directory object ID in
+     * GUID format.
      *
-     * @param signedOid the signedOid value to set.
+     * @param signedObjectId the signedObjectId value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey signedOid(String signedOid) {
-        this.signedOid = signedOid;
+    public UserDelegationKey setSignedObjectId(String signedObjectId) {
+        this.signedObjectId = signedObjectId;
         return this;
     }
 
     /**
-     * Get the signedTid property: The Azure Active Directory tenant ID in GUID
-     * format.
+     * Get the signedTenantId property: The Azure Active Directory tenant ID in
+     * GUID format.
      *
-     * @return the signedTid value.
+     * @return the signedTenantId value.
      */
-    public String signedTid() {
-        return this.signedTid;
+    public String getSignedTenantId() {
+        return this.signedTenantId;
     }
 
     /**
-     * Set the signedTid property: The Azure Active Directory tenant ID in GUID
-     * format.
+     * Set the signedTenantId property: The Azure Active Directory tenant ID in
+     * GUID format.
      *
-     * @param signedTid the signedTid value to set.
+     * @param signedTenantId the signedTenantId value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey signedTid(String signedTid) {
-        this.signedTid = signedTid;
+    public UserDelegationKey setSignedTenantId(String signedTenantId) {
+        this.signedTenantId = signedTenantId;
         return this;
     }
 
@@ -106,7 +106,7 @@ public final class UserDelegationKey {
      *
      * @return the signedStart value.
      */
-    public OffsetDateTime signedStart() {
+    public OffsetDateTime getSignedStart() {
         return this.signedStart;
     }
 
@@ -116,7 +116,7 @@ public final class UserDelegationKey {
      * @param signedStart the signedStart value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey signedStart(OffsetDateTime signedStart) {
+    public UserDelegationKey setSignedStart(OffsetDateTime signedStart) {
         this.signedStart = signedStart;
         return this;
     }
@@ -126,7 +126,7 @@ public final class UserDelegationKey {
      *
      * @return the signedExpiry value.
      */
-    public OffsetDateTime signedExpiry() {
+    public OffsetDateTime getSignedExpiry() {
         return this.signedExpiry;
     }
 
@@ -136,7 +136,7 @@ public final class UserDelegationKey {
      * @param signedExpiry the signedExpiry value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey signedExpiry(OffsetDateTime signedExpiry) {
+    public UserDelegationKey setSignedExpiry(OffsetDateTime signedExpiry) {
         this.signedExpiry = signedExpiry;
         return this;
     }
@@ -147,7 +147,7 @@ public final class UserDelegationKey {
      *
      * @return the signedService value.
      */
-    public String signedService() {
+    public String getSignedService() {
         return this.signedService;
     }
 
@@ -158,7 +158,7 @@ public final class UserDelegationKey {
      * @param signedService the signedService value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey signedService(String signedService) {
+    public UserDelegationKey setSignedService(String signedService) {
         this.signedService = signedService;
         return this;
     }
@@ -169,7 +169,7 @@ public final class UserDelegationKey {
      *
      * @return the signedVersion value.
      */
-    public String signedVersion() {
+    public String getSignedVersion() {
         return this.signedVersion;
     }
 
@@ -180,7 +180,7 @@ public final class UserDelegationKey {
      * @param signedVersion the signedVersion value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey signedVersion(String signedVersion) {
+    public UserDelegationKey setSignedVersion(String signedVersion) {
         this.signedVersion = signedVersion;
         return this;
     }
@@ -190,7 +190,7 @@ public final class UserDelegationKey {
      *
      * @return the value value.
      */
-    public String value() {
+    public String getValue() {
         return this.value;
     }
 
@@ -200,7 +200,7 @@ public final class UserDelegationKey {
      * @param value the value value to set.
      * @return the UserDelegationKey object itself.
      */
-    public UserDelegationKey value(String value) {
+    public UserDelegationKey setValue(String value) {
         this.value = value;
         return this;
     }

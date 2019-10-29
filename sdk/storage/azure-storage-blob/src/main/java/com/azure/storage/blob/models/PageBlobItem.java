@@ -1,76 +1,84 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 
+/**
+ * This class contains the properties about a page blob.
+ */
+@Immutable
 public class PageBlobItem {
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final byte[] contentMd5;
+    private final Boolean isServerEncrypted;
+    private final String encryptionKeySha256;
+    private final Long blobSequenceNumber;
 
-    private OffsetDateTime lastModified;
-
-    private byte[] contentMD5;
-
-    private Boolean isServerEncrypted;
-
-    private String encryptionKeySha256;
-
-    private Long blobSequenceNumber;
-
-    public PageBlobItem(PageBlobCreateHeaders generatedHeaders) {
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
+    /**
+     * Constructs a {@link PageBlobItem}.
+     *
+     * @param eTag ETag of the page blob.
+     * @param lastModified Last modified time of the page blob.
+     * @param contentMd5 Content MD5 of the page blob.
+     * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
+     * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
+     * @param blobSequenceNumber The current sequence number for the page blob.
+     */
+    public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final Long blobSequenceNumber) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.contentMd5 = ImplUtils.clone(contentMd5);
+        this.isServerEncrypted = isServerEncrypted;
+        this.encryptionKeySha256 = encryptionKeySha256;
+        this.blobSequenceNumber = blobSequenceNumber;
     }
 
-    public PageBlobItem(PageBlobUploadPagesHeaders generatedHeaders) {
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
+    /**
+     * @return the eTag of the page blob
+     */
+    public String getETag() {
+        return eTag;
     }
 
-    public PageBlobItem(PageBlobUploadPagesFromURLHeaders generatedHeaders) {
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
-    }
-
-    public PageBlobItem(PageBlobClearPagesHeaders generatedHeaders) {
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
-    }
-
-    public PageBlobItem(PageBlobResizeHeaders generatedHeaders) {
-        this.lastModified = generatedHeaders.lastModified();
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
-    }
-
-    public PageBlobItem(PageBlobUpdateSequenceNumberHeaders generatedHeaders) {
-        this.lastModified = generatedHeaders.lastModified();
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
-    }
-
-    public OffsetDateTime lastModified() {
+    /**
+     * @return the time this page blob was last modified
+     */
+    public OffsetDateTime getLastModified() {
         return lastModified;
-    };
+    }
 
+    /**
+     * @return the encryption status of the page blob on the server
+     */
     public Boolean isServerEncrypted() {
         return isServerEncrypted;
     }
 
-    public String encryptionKeySha256() {
+    /**
+     * @return the key used to encrypt the page blob
+     */
+    public String getEncryptionKeySha256() {
         return encryptionKeySha256;
     }
 
-    public byte[] contentMD5() {
-        return ImplUtils.clone(contentMD5);
+    /**
+     * @return the MD5 of the page blob's content
+     */
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(contentMd5);
     }
 
-    public Long blobSequenceNumber() {
+    /**
+     * @return the current sequence number of the page blob
+     */
+    public Long getBlobSequenceNumber() {
         return blobSequenceNumber;
     }
 }

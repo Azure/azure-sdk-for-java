@@ -147,11 +147,12 @@ public final class ImplUtils {
      * @param <T> The type of the item being returned in the paged response.
      * @return The publisher holding all the generic items combined.
      */
-    public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context, BiFunction<String, Context, Publisher<T>> content) {
-        String nextPageLink = page.nextLink();
+    public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context,
+                                                   BiFunction<String, Context, Publisher<T>> content) {
+        String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
-            return Flux.fromIterable(page.items());
+            return Flux.fromIterable(page.getItems());
         }
-        return Flux.fromIterable(page.items()).concatWith(content.apply(nextPageLink, context));
+        return Flux.fromIterable(page.getItems()).concatWith(content.apply(nextPageLink, context));
     }
 }

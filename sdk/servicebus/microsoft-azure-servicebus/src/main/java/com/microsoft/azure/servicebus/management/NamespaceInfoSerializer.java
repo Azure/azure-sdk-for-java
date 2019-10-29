@@ -23,8 +23,8 @@ class NamespaceInfoSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(NamespaceInfoSerializer.class);
 
     static NamespaceInfo parseFromContent(String xml) throws ServiceBusException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
@@ -34,7 +34,7 @@ class NamespaceInfoSerializer {
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
-                TRACE_LOGGER.error("Exception while parsing response.", e);
+                TRACE_LOGGER.info("Exception while parsing response.", e);
             }
 
             if (TRACE_LOGGER.isDebugEnabled()) {

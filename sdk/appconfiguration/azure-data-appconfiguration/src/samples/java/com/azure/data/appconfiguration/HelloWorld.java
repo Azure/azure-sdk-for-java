@@ -3,7 +3,6 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
 import java.security.InvalidKeyException;
@@ -28,7 +27,7 @@ public class HelloWorld {
 
         // Instantiate a client that will be used to call the service.
         ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-            .credential(new ConfigurationClientCredentials(connectionString))
+            .connectionString(connectionString)
             .buildAsyncClient();
 
         // Name of the key to add to the configuration service.
@@ -40,15 +39,15 @@ public class HelloWorld {
         // We subscribe and wait for the service call to complete then print out the contents of our newly added setting.
         // If an error occurs, we print out that error. On completion of the subscription, we delete the setting.
         // .block() exists there so the program does not end before the deletion has completed.
-        client.setSetting(key, "world").subscribe(
+        client.setSetting(key, null, "world").subscribe(
             result -> {
                 ConfigurationSetting setting = result;
-                System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
+                System.out.println(String.format("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
             },
             error -> System.err.println("There was an error adding the setting: " + error.toString()),
             () -> {
                 System.out.println("Completed. Deleting setting...");
-                client.deleteSetting(key).block();
+                client.deleteSetting(key, null).block();
             });
     }
 }

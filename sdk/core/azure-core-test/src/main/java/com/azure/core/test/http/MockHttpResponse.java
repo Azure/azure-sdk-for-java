@@ -54,6 +54,10 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, new HttpHeaders(), bodyBytes);
     }
 
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
+        this(request, statusCode, headers, new byte[0]);
+    }
+
     /**
      * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, contains the
      * {@code headers}, and response body of {@code bodyBytes}.
@@ -64,10 +68,10 @@ public class MockHttpResponse extends HttpResponse {
      * @param bodyBytes Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+        super(request);
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = ImplUtils.clone(bodyBytes);
-        this.request(request);
     }
 
     /**
@@ -81,6 +85,10 @@ public class MockHttpResponse extends HttpResponse {
      */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, Object serializable) {
         this(request, statusCode, headers, serialize(serializable));
+    }
+
+    public MockHttpResponse(HttpRequest request, int statusCode, Object serializable) {
+        this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
 
     private static byte[] serialize(Object serializable) {
@@ -98,7 +106,7 @@ public class MockHttpResponse extends HttpResponse {
      * {@inheritDoc}
      */
     @Override
-    public int statusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
@@ -106,15 +114,15 @@ public class MockHttpResponse extends HttpResponse {
      * {@inheritDoc}
      */
     @Override
-    public String headerValue(String name) {
-        return headers.value(name);
+    public String getHeaderValue(String name) {
+        return headers.getValue(name);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public HttpHeaders headers() {
+    public HttpHeaders getHeaders() {
         return new HttpHeaders(headers);
     }
 
@@ -122,7 +130,7 @@ public class MockHttpResponse extends HttpResponse {
      * {@inheritDoc}
      */
     @Override
-    public Mono<byte[]> bodyAsByteArray() {
+    public Mono<byte[]> getBodyAsByteArray() {
         if (bodyBytes == null) {
             return Mono.empty();
         } else {
@@ -134,7 +142,7 @@ public class MockHttpResponse extends HttpResponse {
      * {@inheritDoc}
      */
     @Override
-    public Flux<ByteBuffer> body() {
+    public Flux<ByteBuffer> getBody() {
         if (bodyBytes == null) {
             return Flux.empty();
         } else {
@@ -146,16 +154,16 @@ public class MockHttpResponse extends HttpResponse {
      * {@inheritDoc}
      */
     @Override
-    public Mono<String> bodyAsString() {
-        return bodyAsString(StandardCharsets.UTF_8);
+    public Mono<String> getBodyAsString() {
+        return getBodyAsString(StandardCharsets.UTF_8);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<String> bodyAsString(Charset charset) {
-        Objects.requireNonNull(charset);
+    public Mono<String> getBodyAsString(Charset charset) {
+        Objects.requireNonNull(charset, "'charset' cannot be null.");
 
         return bodyBytes == null
                 ? Mono.empty()

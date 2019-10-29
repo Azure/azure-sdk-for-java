@@ -4,12 +4,13 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.implementation.http.spi.HttpClientProvider;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.HttpClientProvider;
 
 public class ReactorNettyClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {
-        return new ReactorNettyClient();
+        return new NettyAsyncHttpClientBuilder().build();
     }
 }

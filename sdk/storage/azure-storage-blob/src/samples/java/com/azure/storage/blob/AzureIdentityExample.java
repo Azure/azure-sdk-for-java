@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Locale;
 
@@ -36,7 +36,7 @@ public class AzureIdentityExample {
                 .buildClient();
 
         System.out.println("Successfully setup client using the Azure Identity, please check the service version: "
-            + storageClient.getProperties().defaultServiceVersion());
+            + storageClient.getProperties().getDefaultServiceVersion());
 
     }
 }

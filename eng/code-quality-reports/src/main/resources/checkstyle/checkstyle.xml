@@ -10,6 +10,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
 <module name="Checker">
 
+  <!-- Exclude module-info.java from checks, as CheckStyle does not presently support it -->
+  <module name="BeforeExecutionExclusionFileFilter">
+    <property name="fileNamePattern" value="module\-info\.java$"/>
+  </module>
+
   <module name="SuppressionFilter">
     <property name="file" value="${samedir}/checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
@@ -44,6 +49,13 @@ page at http://checkstyle.sourceforge.net/config.html -->
   <!-- Checks that a package-info.java file exists for each package. -->
   <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
   <module name="JavadocPackage"/>
+
+  <!-- Enforce line length to 120 char -->
+  <module name="LineLength">
+    <property name="max" value="120"/>
+    <!-- Allow codeSnippet to override max line length -->
+    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)"/>
+  </module>
 
   <!-- All Java AST specific tests live under TreeWalker module. -->
   <module name="TreeWalker">
@@ -269,6 +281,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html -->
     <module name="JavadocMethod">
       <property name="scope" value="protected"/>
+      <property name="suppressLoadErrors" value="true"/>
     </module>
 
     <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->
@@ -276,14 +289,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.JavadocThrowsChecks"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Verifies that subclasses of ServiceClient meet a set of guidelines.
-    1) They cannot have public or protected constructors
-    2) They must implement a public static method named builder
-    -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
-
-    <!-- CUSTOM CHECKS -->
-    <!--Checks for the public API that should
+    <!-- Checks for the public API that should
     1) not return classes in the implementation package
     2) no class of implementation package as method's parameters -->
     <module name="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"/>
@@ -292,8 +298,18 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Verify the classes with annotation @ServiceClient should have following rules:
     1) No public or protected constructors
     2) No public static method named 'builder'
-    3) Since these classes are supposed to be immutable, all fields in the service client classes should be final -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck"/>
+    3) Since these classes are supposed to be immutable, all fields in the service client classes should be final.
+
+    Also, verify all methods that have a @ServiceMethod annotation in a class annotated with @ServiceClient should
+    follow below rules:
+    1) Follows method naming pattern. Refer to Java Spec.
+    2) Methods should not have "Async" added to the method name
+    3) The return type of async and sync clients should be as per guidelines:
+      3.1) The return type for async collection should be of type? extends PagedFlux
+      3.2) The return type for async single value should be of type? extends Mono
+      3.3) The return type for sync collection should be of type? extends PagedIterable
+      3.4) The return type for sync single value should be of type? extends Response -->
+    <module name="com.azure.tools.checkstyle.checks.ServiceClientCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Checks for no external dependency exposed in the public API.
@@ -328,11 +344,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
      parameter name or return -->
     <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
     <module name="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"/>
 
-    <!--CUSTOM CHECKS-->
+    <!-- CUSTOM CHECKS -->
     <!-- Any class that implements the HttpPipelinePolicy interface should:
     1) Must be a public class.
     2) Not in an implementation package or sub-package. -->
@@ -351,5 +367,23 @@ page at http://checkstyle.sourceforge.net/config.html -->
     2) Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)
     3) Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string -->
     <module name="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- Good Logging Practice
+    1) ClientLogger in public API should all named 'logger', public API classes are those classes that are declared
+       as public and that do not exist in an implementation package or subpackage.
+    2) ClientLogger should be non-static instance logger
+    3) Should not use any external logger class, only use ClientLogger. No slf4j, log4j, or other logging imports are allowed.
+      'System.out' and 'System.err' is not allowed as well.
+    4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
+    <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Fluent method checks:
+    (1) A method returns an instance of the class, and that have one parameter,
+    (2) should not start with the words in the avoidStartWords list.-->
+<!--    <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">-->
+<!--      <property name="avoidStartWords" value="with,set"/>-->
+<!--    </module>-->
   </module>
 </module>

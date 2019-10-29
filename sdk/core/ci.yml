@@ -6,7 +6,10 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
- 
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
 trigger:
   branches:
     include:
@@ -40,9 +43,15 @@ stages:
         - name: azure-core-amqp
           safeName: azurecoreamqp
           stagingProfileId: 88192f04117501
-        - name: azure-core-management
-          safeName: azurecoremanagement
+        - name: azure-core-http-netty
+          safeName: azurecorehttpnetty
+          stagingProfileId: 88192f04117501
+        - name: azure-core-http-okhttp
+          safeName: azurecorehttpokhttp
           stagingProfileId: 88192f04117501
         - name: azure-core-test
           safeName: azurecoretest
+          stagingProfileId: 88192f04117501
+        - name: azure-core-tracing-opencensus
+          safeName: azurecoretracingopencensus
           stagingProfileId: 88192f04117501

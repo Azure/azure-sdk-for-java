@@ -1,0 +1,88 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestslistshareswithfilter0146338d8e4560?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "39d93f53-50f4-4e26-9b03-dd97e2df9b58"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F85033C10",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:06 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48acc-a01a-0116-2c88-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:06 GMT",
+      "x-ms-client-request-id" : "39d93f53-50f4-4e26-9b03-dd97e2df9b58"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestslistshareswithfilter0146338d8e4561?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "3d5d9995-c0d9-42c3-b570-72cd33126e95"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F850B7B70",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:06 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48ace-a01a-0116-2d88-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:06 GMT",
+      "x-ms-client-request-id" : "3d5d9995-c0d9-42c3-b570-72cd33126e95"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestslistshareswithfilter0146338d8e4562?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "62e93833-5445-4b84-a5ea-bec6db339db4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F8511E5A8",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:07 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48ad0-a01a-0116-2e88-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:06 GMT",
+      "x-ms-client-request-id" : "62e93833-5445-4b84-a5ea-bec6db339db4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=fileserviceapitestslistshareswithfilter&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "f4a5739c-4b35-490f-9e9c-410310e66483"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "83e48ad2-a01a-0116-2f88-83b7bd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>fileserviceapitestslistshareswithfilter</Prefix><Shares><Share><Name>fileserviceapitestslistshareswithfilter0146338d8e4560</Name><Properties><Last-Modified>Tue, 15 Oct 2019 18:43:06 GMT</Last-Modified><Etag>\"0x8D7519F85033C10\"</Etag><Quota>1</Quota></Properties></Share><Share><Name>fileserviceapitestslistshareswithfilter0146338d8e4561</Name><Properties><Last-Modified>Tue, 15 Oct 2019 18:43:06 GMT</Last-Modified><Etag>\"0x8D7519F850B7B70\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>fileserviceapitestslistshareswithfilter0146338d8e4562</Name><Properties><Last-Modified>Tue, 15 Oct 2019 18:43:07 GMT</Last-Modified><Etag>\"0x8D7519F8511E5A8\"</Etag><Quota>3</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 15 Oct 2019 18:43:06 GMT",
+      "x-ms-client-request-id" : "f4a5739c-4b35-490f-9e9c-410310e66483",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileserviceapitestslistshareswithfilter0146338d8e456" ]
+}

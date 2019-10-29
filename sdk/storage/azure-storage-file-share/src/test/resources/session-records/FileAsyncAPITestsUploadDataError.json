@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploaddataerror05426b580aadbefa?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "0c1ac73f-dd6b-46b5-8058-90e3a437c0cd"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F79F33C80",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:48 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "89e9e78b-f01a-00ef-4488-833b08000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:48 GMT",
+      "x-ms-client-request-id" : "0c1ac73f-dd6b-46b5-8058-90e3a437c0cd"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsuploaddataerror05426b580aadbefa/fileasyncapitestsuploaddataerror64210e9edde9c080?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "18ccc9cc-7b77-4fb7-a410-a06bc2e8529e",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "89e9e78d-f01a-00ef-4588-833b08000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:89e9e78d-f01a-00ef-4588-833b08000000\nTime:2019-10-15T18:42:48.8833125Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:48 GMT",
+      "x-ms-client-request-id" : "18ccc9cc-7b77-4fb7-a410-a06bc2e8529e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileasyncapitestsuploaddataerror05426b580aadbefa", "fileasyncapitestsuploaddataerror64210e9edde9c080" ]
+}

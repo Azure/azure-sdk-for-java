@@ -1,33 +1,39 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
+
+/**
+ * This class contains information about the storage account.
+ */
+@Immutable
 public class StorageAccountInfo {
-
     private final SkuName skuName;
-
     private final AccountKind accountKind;
 
-
-    public StorageAccountInfo(BlobGetAccountInfoHeaders generatedResponseHeaders) {
-        this.skuName = generatedResponseHeaders.skuName();
-        this.accountKind = generatedResponseHeaders.accountKind();
+    /**
+     * Constructs a {@link StorageAccountInfo}.
+     *
+     * @param skuName SKU of the account.
+     * @param accountKind Type of the account.
+     */
+    public StorageAccountInfo(final SkuName skuName, final AccountKind accountKind) {
+        this.skuName = skuName;
+        this.accountKind = accountKind;
     }
 
-    public StorageAccountInfo(ContainerGetAccountInfoHeaders generatedResponseHeaders) {
-        this.skuName = generatedResponseHeaders.skuName();
-        this.accountKind = generatedResponseHeaders.accountKind();
-    }
-
-    public StorageAccountInfo(ServiceGetAccountInfoHeaders generatedResponseHeaders) {
-        this.skuName = generatedResponseHeaders.skuName();
-        this.accountKind = generatedResponseHeaders.accountKind();
-    }
-
-
-    public SkuName skuName() {
+    /**
+     * @return the SKU of the account
+     */
+    public SkuName getSkuName() {
         return skuName;
     }
 
-    public AccountKind accountKind() {
+    /**
+     * @return the type of the account
+     */
+    public AccountKind getAccountKind() {
         return accountKind;
     }
 }

@@ -14,14 +14,17 @@ import com.puppycrawl.tools.checkstyle.utils.BlockCommentPosition;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.Queue;
 
 /**
  * Codesnippet description should match naming pattern requirement below:
  * <ol>
- * <li>Package, class, and method names should be concatenated with a dot '.'. Ex., packageName.className.methodName</li>
- * <li>Methods arguments should be concatenated with a dash '-'. Ex. String-String  for methodName(String s, String s2)</li>
+ * <li>Package, class, and method names should be concatenated with a dot '.'. Ex., packageName.className
+ * .methodName</li>
+ * <li>Methods arguments should be concatenated with a dash '-'. Ex. String-String  for methodName(String s, String
+ * s2)</li>
  * <li>Use '#' to concatenate 1) and 2), ex packageName.className.methodName#String-String</li>
  * <li>Ignore identifier after method arguments</li>
  * </ol>
@@ -40,8 +43,8 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
     };
 
     private String packageName;
-    // A container to contains all class name visited, remove the class name when leave the same token
-    private Deque<String> classNameStack = new ArrayDeque<>();
+    // A LIFO queue contains all class name visited, remove the class name when leave the same token
+    private Queue<String> classNameStack = Collections.asLifoQueue(new ArrayDeque<>());
     // Current METHOD_DEF token while traversal tree
     private DetailAST methodDefToken = null;
 
@@ -68,7 +71,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
     @Override
     public void leaveToken(DetailAST token) {
         if (token.getType() == TokenTypes.CLASS_DEF && !classNameStack.isEmpty()) {
-            classNameStack.pop();
+            classNameStack.poll();
         }
     }
 
@@ -79,7 +82,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
                 packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
                 break;
             case TokenTypes.CLASS_DEF:
-                classNameStack.push(token.findFirstToken(TokenTypes.IDENT).getText());
+                classNameStack.offer(token.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.METHOD_DEF:
                 methodDefToken = token;
@@ -149,7 +152,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             // Check for CodeSnippet naming pattern matching
             if (customDescription == null || customDescription.isEmpty()
                 || !isNamingMatched(customDescription.toLowerCase(Locale.ROOT),
-                    fullPathWithoutParameters.toLowerCase(Locale.ROOT), parameters)) {
+                fullPathWithoutParameters.toLowerCase(Locale.ROOT), parameters)) {
                 log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codesnippet description "
                     + "''%s'' does not match ''%s''. Case Insensitive.", customDescription, fullPath));
             }

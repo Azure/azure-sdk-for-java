@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestslisthandleserror621408a8fa5d40e7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "d22e755e-d057-4c24-a05e-b1d91a89b779"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F61DD5749",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:07 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "beee0fb4-701a-001b-0488-831ee4000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:07 GMT",
+      "x-ms-client-request-id" : "d22e755e-d057-4c24-a05e-b1d91a89b779"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestslisthandleserror621408a8fa5d40e7/directoryapitestslisthandleserror1070998a9fef3360?comp=listhandles",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "1c8b47bc-a99f-4bf4-bc10-d1823485ee1a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "c1ad4e1e-b01a-00ca-2588-83a3bb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:c1ad4e1e-b01a-00ca-2588-83a3bb000000\nTime:2019-10-15T18:42:08.0757904Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:07 GMT",
+      "x-ms-client-request-id" : "1c8b47bc-a99f-4bf4-bc10-d1823485ee1a",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestslisthandleserror621408a8fa5d40e7", "directoryapitestslisthandleserror1070998a9fef3360" ]
+}

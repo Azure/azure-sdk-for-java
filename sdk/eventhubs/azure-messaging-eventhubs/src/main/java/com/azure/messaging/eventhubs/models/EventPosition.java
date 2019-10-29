@@ -3,8 +3,7 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.implementation.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
@@ -26,7 +25,7 @@ public final class EventPosition {
     /**
      * This is a constant defined to represent the start of a partition stream in EventHub.
      */
-    private static final String START_OF_STREAM = "-1";
+    private static final Long START_OF_STREAM = -1L;
 
     /**
      * This is a constant defined to represent the current end of a partition stream in EventHub. This can be used as an
@@ -36,13 +35,17 @@ public final class EventPosition {
     private static final String END_OF_STREAM = "@latest";
 
     private static final EventPosition EARLIEST = fromOffset(START_OF_STREAM, false);
-    private static final EventPosition LATEST = fromOffset(END_OF_STREAM, false);
+    private static final EventPosition LATEST =  new EventPosition(false, END_OF_STREAM, null, null);
 
-    private final ClientLogger logger = new ClientLogger(EventPosition.class);
     private final boolean isInclusive;
     private final String offset;
     private final Long sequenceNumber;
     private final Instant enqueuedDateTime;
+
+    private EventPosition(final boolean isInclusive, final Long offset, final Long sequenceNumber,
+                          final Instant enqueuedDateTime) {
+        this(isInclusive, String.valueOf(offset), sequenceNumber, enqueuedDateTime);
+    }
 
     private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
                           final Instant enqueuedDateTime) {
@@ -82,7 +85,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromEnqueuedTime(Instant enqueuedDateTime) {
-        return new EventPosition(false, null, null, enqueuedDateTime);
+        return new EventPosition(false, (String) null, null, enqueuedDateTime);
     }
 
     /**
@@ -97,7 +100,7 @@ public final class EventPosition {
      * @param offset The offset of the event within that partition.
      * @return An {@link EventPosition} object.
      */
-    public static EventPosition fromOffset(String offset) {
+    public static EventPosition fromOffset(long offset) {
         return fromOffset(offset, true);
     }
 
@@ -106,14 +109,11 @@ public final class EventPosition {
      * with the same offset is returned. Otherwise, the next event is received.
      *
      * @param offset The offset of an event with respect to its relative position in the
-     * @param isInclusive If true, the event with the {@code offset} is included; otherwise, the next event will
-     *         be received.
+     * @param isInclusive If true, the event with the {@code offset} is included; otherwise, the next event will be
+     *     received.
      * @return An {@link EventPosition} object.
-     * @throws NullPointerException if {@code offset} is null.
      */
-    public static EventPosition fromOffset(String offset, boolean isInclusive) {
-        Objects.requireNonNull(offset, "'offset' cannot be null.");
-
+    public static EventPosition fromOffset(long offset, boolean isInclusive) {
         return new EventPosition(isInclusive, offset, null, null);
     }
 
@@ -133,12 +133,12 @@ public final class EventPosition {
      * number is returned. Otherwise, the next event in the sequence is received.
      *
      * @param sequenceNumber is the sequence number of the event.
-     * @param isInclusive If true, the event with the {@code sequenceNumber} is included; otherwise, the next
-     *         event will be received.
+     * @param isInclusive If true, the event with the {@code sequenceNumber} is included; otherwise, the next event
+     *     will be received.
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromSequenceNumber(long sequenceNumber, boolean isInclusive) {
-        return new EventPosition(isInclusive, null, sequenceNumber, null);
+        return new EventPosition(isInclusive, (String) null, sequenceNumber, null);
     }
 
     /**
@@ -158,7 +158,7 @@ public final class EventPosition {
      *
      * @return The offset of the event within that partition.
      */
-    public String offset() {
+    public String getOffset() {
         return offset;
     }
 
@@ -167,16 +167,16 @@ public final class EventPosition {
      *
      * @return The sequence number of the event.
      */
-    public Long sequenceNumber() {
+    public Long getSequenceNumber() {
         return sequenceNumber;
     }
 
     /**
-     * Gets the instant, in UTC, from which the next available event should be chosen..
+     * Gets the instant, in UTC, from which the next available event should be chosen.
      *
-     * @return The instant, in UTC, from which the next available event should be chosen..
+     * @return The instant, in UTC, from which the next available event should be chosen.
      */
-    public Instant enqueuedDateTime() {
+    public Instant getEnqueuedDateTime() {
         return this.enqueuedDateTime;
     }
 

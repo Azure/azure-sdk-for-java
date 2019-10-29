@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.ProxyConfiguration;
 import com.microsoft.azure.eventhubs.TransportType;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -36,11 +37,13 @@ public class ConnectionHandler extends BaseHandler {
         this.connectionId = connectionId;
     }
 
-    static ConnectionHandler create(TransportType transportType, AmqpConnection amqpConnection, String connectionId) {
+    static ConnectionHandler create(TransportType transportType, AmqpConnection amqpConnection, String connectionId,
+                                    ProxyConfiguration proxyConfiguration) {
         switch (transportType) {
             case AMQP_WEB_SOCKETS:
-                if (WebSocketProxyConnectionHandler.shouldUseProxy(amqpConnection.getHostName())) {
-                    return new WebSocketProxyConnectionHandler(amqpConnection);
+                if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
+                    || WebSocketProxyConnectionHandler.shouldUseProxy(amqpConnection.getHostName())) {
+                    return new WebSocketProxyConnectionHandler(amqpConnection, proxyConfiguration);
                 } else {
                     return new WebSocketConnectionHandler(amqpConnection);
                 }

@@ -10,6 +10,7 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.ITokenProvider;
 import com.microsoft.azure.eventhubs.ManagedIdentityTokenProvider;
 import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.ProxyConfiguration;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TimeoutException;
 import com.microsoft.azure.eventhubs.TransportType;
@@ -80,26 +81,27 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                       final ITokenProvider tokenProvider,
                      final RetryPolicy retryPolicy,
                      final ScheduledExecutorService executor,
-                     final ReactorFactory reactorFactory) {
+                     final ReactorFactory reactorFactory,
+                     final ProxyConfiguration proxyConfiguration) {
         super(StringUtil.getRandomString("MF"), null, executor);
 
         if (StringUtil.isNullOrWhiteSpace(hostname)) {
             throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
         }
-        Objects.requireNonNull(operationTimeout, "Operation timeout cannot be null");
-        Objects.requireNonNull(transportType, "Transport type cannot be null");
-        Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
-        Objects.requireNonNull(retryPolicy, "Retry policy cannot be null");
-        Objects.requireNonNull(executor, "Executor cannot be null");
-        Objects.requireNonNull(reactorFactory, "Reactor factory cannot be null");
-        
+        Objects.requireNonNull(operationTimeout, "Operation timeout cannot be null.");
+        Objects.requireNonNull(transportType, "Transport type cannot be null.");
+        Objects.requireNonNull(tokenProvider, "Token provider cannot be null.");
+        Objects.requireNonNull(retryPolicy, "Retry policy cannot be null.");
+        Objects.requireNonNull(executor, "Executor cannot be null.");
+        Objects.requireNonNull(reactorFactory, "Reactor factory cannot be null.");
+
         this.hostName = hostname;
         this.reactorFactory = reactorFactory;
         this.operationTimeout = operationTimeout;
         this.retryPolicy = retryPolicy;
-        this.connectionHandler = ConnectionHandler.create(transportType, this, this.getClientId());
+        this.connectionHandler = ConnectionHandler.create(transportType, this, this.getClientId(), proxyConfiguration);
         this.tokenProvider = tokenProvider;
-        
+
         this.registeredLinks = new LinkedList<>();
         this.reactorLock = new Object();
         this.cbsChannelCreateLock = new Object();
@@ -109,21 +111,23 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString, final ScheduledExecutorService executor) throws IOException {
-        return createFromConnectionString(connectionString, null, executor);
-    }
-
-    public static CompletableFuture<MessagingFactory> createFromConnectionString(
-            final String connectionString,
-            final RetryPolicy retryPolicy,
-            final ScheduledExecutorService executor) throws IOException {
-        return createFromConnectionString(connectionString, retryPolicy, executor, null);
+        return createFromConnectionString(connectionString, null, executor, null);
     }
 
     public static CompletableFuture<MessagingFactory> createFromConnectionString(
             final String connectionString,
             final RetryPolicy retryPolicy,
             final ScheduledExecutorService executor,
-            final ReactorFactory reactorFactory) throws IOException {
+            final ProxyConfiguration proxyConfiguration) throws IOException {
+        return createFromConnectionString(connectionString, retryPolicy, executor, null, proxyConfiguration);
+    }
+
+    public static CompletableFuture<MessagingFactory> createFromConnectionString(
+            final String connectionString,
+            final RetryPolicy retryPolicy,
+            final ScheduledExecutorService executor,
+            final ReactorFactory reactorFactory,
+            final ProxyConfiguration proxyConfiguration) throws IOException {
         final ConnectionStringBuilder csb = new ConnectionStringBuilder(connectionString);
         ITokenProvider tokenProvider = null;
         if (!StringUtil.isNullOrWhiteSpace(csb.getSharedAccessSignature())) {
@@ -136,11 +140,13 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             throw new IllegalArgumentException("Connection string must specify a Shared Access Signature, Shared Access Key, or Managed Identity");
         }
 
-        final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(csb.getEndpoint().getHost(), tokenProvider, executor).
-                setOperationTimeout(csb.getOperationTimeout()).
-                setTransportType(csb.getTransportType()).
-                setRetryPolicy(retryPolicy).
-                setReactorFactory(reactorFactory);
+        final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(csb.getEndpoint().getHost(), tokenProvider, executor)
+                .setOperationTimeout(csb.getOperationTimeout())
+                .setTransportType(csb.getTransportType())
+                .setRetryPolicy(retryPolicy)
+                .setReactorFactory(reactorFactory)
+                .setProxyConfiguration(proxyConfiguration);
+
         return builder.build();
     }
 
@@ -149,51 +155,57 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         private final String hostname;
         private final ITokenProvider tokenProvider;
         private final ScheduledExecutorService executor;
-        
+
         // Optional parameters with defaults
         private Duration operationTimeout = DefaultOperationTimeout;
         private TransportType transportType = TransportType.AMQP;
         private RetryPolicy retryPolicy = RetryPolicy.getDefault();
         private ReactorFactory reactorFactory = new ReactorFactory();
-        
+        private ProxyConfiguration proxyConfiguration;
+
         public MessagingFactoryBuilder(final String hostname, final ITokenProvider tokenProvider, final ScheduledExecutorService executor) {
             if (StringUtil.isNullOrWhiteSpace(hostname)) {
                 throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
             }
             this.hostname = hostname;
-            
+
             this.tokenProvider = Objects.requireNonNull(tokenProvider);
             this.executor = Objects.requireNonNull(executor);
         }
-        
+
         public MessagingFactoryBuilder setOperationTimeout(Duration operationTimeout) {
             if (operationTimeout != null) {
                 this.operationTimeout = operationTimeout;
             }
             return this;
         }
-        
+
         public MessagingFactoryBuilder setTransportType(TransportType transportType) {
             if (transportType != null) {
                 this.transportType = transportType;
             }
             return this;
         }
-        
+
         public MessagingFactoryBuilder setRetryPolicy(RetryPolicy retryPolicy) {
             if (retryPolicy != null) {
                 this.retryPolicy = retryPolicy;
             }
             return this;
         }
-        
+
         public MessagingFactoryBuilder setReactorFactory(ReactorFactory reactorFactory) {
             if (reactorFactory != null) {
                 this.reactorFactory = reactorFactory;
             }
             return this;
         }
-        
+
+        public MessagingFactoryBuilder setProxyConfiguration(ProxyConfiguration proxyConfiguration) {
+            this.proxyConfiguration = proxyConfiguration;
+            return this;
+        }
+
         public CompletableFuture<MessagingFactory> build() throws IOException {
             final MessagingFactory messagingFactory = new MessagingFactory(this.hostname,
                     this.operationTimeout,
@@ -201,7 +213,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                     this.tokenProvider,
                     this.retryPolicy,
                     this.executor,
-                    this.reactorFactory);
+                    this.reactorFactory,
+                    this.proxyConfiguration);
             return MessagingFactory.factoryStartup(messagingFactory);
         }
     }
@@ -234,7 +247,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
         return messagingFactory.open;
     }
-    
+
     @Override
     public String getHostName() {
         return this.hostName;

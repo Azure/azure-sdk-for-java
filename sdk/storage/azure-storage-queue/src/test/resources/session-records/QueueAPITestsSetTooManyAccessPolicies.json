@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssettoomanyaccesspolicies3701347c5c1a20",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssettoomanyaccesspolicies71314a2963875a",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "fefd849b-3606-4ceb-a5b5-15c461813051"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0ae24-d003-0034-5688-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:19 GMT"
-    }
+      "x-ms-request-id" : "2f7e8179-f003-0082-468d-839126000000",
+      "Date" : "Tue, 15 Oct 2019 19:19:37 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssettoomanyaccesspolicies3701347c5c1a20?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssettoomanyaccesspolicies71314a2963875a?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "d1b5b40c-4ebf-4930-bd47-1991fded71ae",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -30,11 +33,12 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "86d0ae2b-d003-0034-5c88-539fde000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:86d0ae2b-d003-0034-5c88-539fde000000\nTime:2019-08-15T16:40:20.2267603Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Thu, 15 Aug 2019 16:40:19 GMT",
+      "x-ms-request-id" : "2f7e8195-f003-0082-5d8d-839126000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:2f7e8195-f003-0082-5d8d-839126000000\nTime:2019-10-15T19:19:38.8337518Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Tue, 15 Oct 2019 19:19:37 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestssettoomanyaccesspolicies3701347c5c1a20" ]
+  "variables" : [ "queueapitestssettoomanyaccesspolicies71314a2963875a" ]
 }

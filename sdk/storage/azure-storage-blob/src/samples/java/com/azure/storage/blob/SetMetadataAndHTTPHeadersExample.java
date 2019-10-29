@@ -4,37 +4,42 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.Metadata;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 
 /**
- * This example shows how to set metadata for containers and blobs and how to set HTTPHeaders for blobs
- * using the Azure Storage Blob SDK for Java.
+ * This example shows how to set metadata for containers and blobs and how to set HTTPHeaders for blobs using the Azure
+ * Storage Blob SDK for Java.
  */
 public class SetMetadataAndHTTPHeadersExample {
 
     /**
      * Entry point into the setting metadata examples for Storage blobs.
-     * @param args Unused. Arguments to the program.
      *
+     * @param args Unused. Arguments to the program.
      * @throws IOException If an I/O error occurs
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         String accountName = SampleHelper.getAccountName();
         String accountKey = SampleHelper.getAccountKey();
 
         /*
          * Use your Storage account's name and key to create a credential object; this is used to access your account.
          */
-        SharedKeyCredential credential = new SharedKeyCredential(accountName, accountKey);
+        StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
 
         /*
          * From the Azure portal, get your Storage account blob service URL endpoint.
@@ -50,41 +55,50 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Create a container client from storageClient.
          */
-        ContainerClient containerClient = storageClient.getContainerClient("mycontainer" + System.currentTimeMillis());
+        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("mycontainer" + System.currentTimeMillis());
 
         /*
          * Setup containerMetadata for container.
          */
-        Metadata containerMetadata = new Metadata(Collections.singletonMap("mycontainermetadata", "sample"));
+        Map<String, String> containerMetadata = Collections.singletonMap("mycontainermetadata", "sample");
 
         /*
          * Create a container with the containerMetadata above.
          */
-        containerClient.createWithResponse(containerMetadata, null, null, new Context("key1", "value1"));
+        blobContainerClient.createWithResponse(containerMetadata, null, null, new Context("key1", "value1"));
 
         /*
          * Create a blob client.
          */
-        BlockBlobClient blobClient = containerClient.getBlockBlobClient("myblob" + System.currentTimeMillis());
+        BlockBlobClient blobClient = blobContainerClient.getBlobClient("myblob" + System.currentTimeMillis()).getBlockBlobClient();
 
         /*
          * Create a blob with blob's blobMetadata and BlobHttpHeaders.
          */
-        Metadata blobMetadata = new Metadata(Collections.singletonMap("myblobmetadata", "sample"));
-        BlobHTTPHeaders blobHTTPHeaders = new BlobHTTPHeaders().blobContentDisposition("attachment")
-            .blobContentType("text/html; charset=utf-8");
+        Map<String, String> blobMetadata = Collections.singletonMap("myblobmetadata", "sample");
+        BlobHttpHeaders blobHTTPHeaders = new BlobHttpHeaders().setContentDisposition("attachment")
+            .setContentType("text/html; charset=utf-8");
+
+
+        String data = "Hello world!";
+
+        /*
+         * Send an MD5 hash of the content to be validated by the service.
+         */
+        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5")
+            .digest(data.getBytes(StandardCharsets.UTF_8)));
 
         /*
          * Data which will upload to block blob.
          */
-        String data = "Hello world!";
         InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
-        blobClient.uploadWithResponse(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, null, null);
+        blobClient.uploadWithResponse(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, md5, null, null,
+            null);
 
         /*
          * Clean up the container and blob.
          */
         blobClient.delete();
-        containerClient.delete();
+        blobContainerClient.delete();
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenRequestContext;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.test.StepVerifier;
@@ -64,14 +65,14 @@ public class EventHubSharedAccessKeyCredentialTest {
         expected.put("skn", KEY_NAME);
 
         // Act & Assert
-        StepVerifier.create(credential.getToken(resource))
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes(resource)))
             .assertNext(accessToken -> {
                 Assert.assertNotNull(accessToken);
 
                 Assert.assertFalse(accessToken.isExpired());
-                Assert.assertTrue(accessToken.expiresOn().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
+                Assert.assertTrue(accessToken.getExpiresAt().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
 
-                final String[] split = accessToken.token().split(" ");
+                final String[] split = accessToken.getToken().split(" ");
                 Assert.assertEquals(2, split.length);
                 Assert.assertEquals("SharedAccessSignature", split[0].trim());
 

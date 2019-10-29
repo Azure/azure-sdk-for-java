@@ -3,10 +3,12 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.RetryPolicy;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.ReactorSession;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -25,15 +27,12 @@ public interface EventHubSession extends AmqpSession {
      *
      * @param linkName Name of the sender link.
      * @param entityPath The entity path this link connects to receive events.
-     * @param eventPositionExpression The position within the partition where the consumer should begin reading events.
      * @param timeout Timeout required for creating and opening AMQP link.
      * @param retry The retry policy to use when receiving messages.
-     * @param ownerLevel {@code null} if multiple {@link EventHubAsyncConsumer EventHubConsumers} can listen to the same
-     *         partition and consumer group. Otherwise, the {@code receiverPriority} that is the highest will listen to
-     *         that partition exclusively.
-     * @param consumerIdentifier Identifier for the consumer that is sent to the service.
+     * @param eventPosition The position within the partition where the consumer should begin reading events.
+     * @param options Options to use when creating the consumer.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createConsumer(String linkName, String entityPath, String eventPositionExpression, Duration timeout,
-                                  RetryPolicy retry, Long ownerLevel, String consumerIdentifier);
+    Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry,
+                                         EventPosition eventPosition, EventHubConsumerOptions options);
 }

@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.storage.queue.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 
@@ -10,33 +12,35 @@ import com.azure.storage.queue.QueueServiceClient;
  *
  * <ul>
  *     <li>
- *         Providing {@link QueuesSegmentOptions#prefix() prefix} will filter {@link QueueItem queues} that begin
+ *         Providing {@link QueuesSegmentOptions#getPrefix() prefix} will filter {@link QueueItem queues} that begin
  *         with the prefix.
  *     </li>
  *     <li>
- *         Providing {@link QueuesSegmentOptions#maxResults() maxResults} will limit the number of {@link QueueItem queues}
- *         returned in a single page.
+ *         Providing {@link QueuesSegmentOptions#getMaxResultsPerPage() maxResultsPerPage} will limit the number of
+ *         {@link QueueItem queues} returned in a single page.
  *     </li>
  *     <li>
- *         Setting {@link QueuesSegmentOptions#includeMetadata() includeMetadata} to true will include the metadata of
- *         each {@link QueueItem queue}, if false {@link QueueItem#metadata() metadata} for each queue will be {@code null}.
+ *         Setting {@link QueuesSegmentOptions#isIncludeMetadata() includeMetadata} to true will include the metadata
+ *         of each {@link QueueItem queue}, if false {@link QueueItem#getMetadata()}  metadata} for each queue will be
+ *         {@code null}.
  *     </li>
  * </ul>
  *
  * @see QueueServiceClient
  * @see QueueServiceAsyncClient
  */
+@Fluent
 public final class QueuesSegmentOptions {
     private boolean includeMetadata;
 
     private String prefix;
 
-    private Integer maxResults;
+    private Integer maxResultsPerPage;
 
     /**
      * @return the status of including metadata when listing queues
      */
-    public boolean includeMetadata() {
+    public boolean isIncludeMetadata() {
         return includeMetadata;
     }
 
@@ -46,7 +50,7 @@ public final class QueuesSegmentOptions {
      * @param includeMetadata Flag indicating if metadata should be included in the listing
      * @return An updated QueuesSegmentOptions object
      */
-    public QueuesSegmentOptions includeMetadata(boolean includeMetadata) {
+    public QueuesSegmentOptions setIncludeMetadata(boolean includeMetadata) {
         this.includeMetadata = includeMetadata;
         return this;
     }
@@ -54,7 +58,7 @@ public final class QueuesSegmentOptions {
     /**
      * @return the prefix the queue name must match to be included in the listing
      */
-    public String prefix() {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -64,7 +68,7 @@ public final class QueuesSegmentOptions {
      * @param prefix The prefix that queues must start with to pass the filter
      * @return An updated QueuesSegmentOptions object
      */
-    public QueuesSegmentOptions prefix(String prefix) {
+    public QueuesSegmentOptions setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -72,18 +76,18 @@ public final class QueuesSegmentOptions {
     /**
      * @return the maximum number of queues to include in a single response
      */
-    public Integer maxResults() {
-        return maxResults;
+    public Integer getMaxResultsPerPage() {
+        return maxResultsPerPage;
     }
 
     /**
      * Sets the maximum number of queues to include in a single response
      *
-     * @param maxResults Maximum number of results to include in a single response
+     * @param maxResultsPerPage Maximum number of results to include in a single response
      * @return An updated QueuesSegmentOptions object
      */
-    public QueuesSegmentOptions maxResults(Integer maxResults) {
-        this.maxResults = maxResults;
+    public QueuesSegmentOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
+        this.maxResultsPerPage = maxResultsPerPage;
         return this;
     }
 }

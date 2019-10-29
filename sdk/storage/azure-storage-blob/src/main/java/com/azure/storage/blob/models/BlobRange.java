@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.Locale;
 
 /**
@@ -10,38 +12,39 @@ import java.util.Locale;
  * immutable to ensure thread-safety of requests, so changing the values for a different operation requires construction
  * of a new object. Passing null as a BlobRange value will default to the entire range of the blob.
  */
+@Immutable
 public final class BlobRange {
     private static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
     private static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
 
-    private long offset;
-    private Long count;
+    private final long offset;
+    private final Long count;
 
     /**
-     * Specifies the download operation to start from the offset position (zero-based) and download the
-     * rest of the entire blob to the end.
+     * Specifies the download operation to start from the offset position (zero-based) and download the rest of the
+     * entire blob to the end.
      *
-     * @param offset
-     *          the zero-based position to start downloading
+     * @param offset the zero-based position to start downloading
+     * @throws IllegalArgumentException If {@code offset} is less than {@code 0}.
      */
     public BlobRange(long offset) {
+        this(offset, null);
+    }
+
+    /**
+     * Specifies the download operation to start from the offset position (zero-based) and download the count number of
+     * bytes.
+     *
+     * @param offset the zero-based position to start downloading
+     * @param count the number of bytes to download
+     * @throws IllegalArgumentException If {@code offset} or {@code count} is less than {@code 0}.
+     */
+    public BlobRange(long offset, Long count) {
         if (offset < 0) {
             throw new IllegalArgumentException("BlobRange offset must be greater than or equal to 0.");
         }
         this.offset = offset;
-    }
 
-    /**
-     * Specifies the download operation to start from the offset position (zero-based) and download the
-     * count number of bytes.
-     *
-     * @param offset
-     *          the zero-based position to start downloading
-     * @param count
-     *          the number of bytes to download
-     */
-    public BlobRange(long offset, Long count) {
-        this(offset);
         if (count != null && count < 0) {
             throw new IllegalArgumentException("BlobRange count must be greater than or equal to 0 if specified.");
         }
@@ -53,7 +56,7 @@ public final class BlobRange {
      *
      * @return the offset for the range
      */
-    public long offset() {
+    public long getOffset() {
         return offset;
     }
 
@@ -62,7 +65,7 @@ public final class BlobRange {
      *
      * @return the number bytes to include in the range
      */
-    public Long count() {
+    public Long getCount() {
         return count;
     }
 
@@ -80,7 +83,8 @@ public final class BlobRange {
     }
 
     /**
-     * @return {@link BlobRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise null.
+     * @return {@link BlobRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise
+     * null.
      */
     public String toHeaderValue() {
         // The default values of a BlobRange

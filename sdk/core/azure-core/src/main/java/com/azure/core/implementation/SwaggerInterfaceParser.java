@@ -3,15 +3,15 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The type responsible for creating individual Swagger interface method parsers from a Swagger
@@ -20,7 +20,7 @@ import java.util.Map;
 public class SwaggerInterfaceParser {
     private final String host;
     private final String serviceName;
-    private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
+    private static final Map<Method, SwaggerMethodParser> METHOD_PARSERS = new ConcurrentHashMap<>();
 
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface
@@ -66,11 +66,11 @@ public class SwaggerInterfaceParser {
      * @param swaggerMethod the method to generate a parser for
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
-    public SwaggerMethodParser methodParser(Method swaggerMethod) {
-        SwaggerMethodParser result = methodParsers.get(swaggerMethod);
+    public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
+        SwaggerMethodParser result = METHOD_PARSERS.get(swaggerMethod);
         if (result == null) {
-            result = new SwaggerMethodParser(swaggerMethod, host());
-            methodParsers.put(swaggerMethod, result);
+            result = new SwaggerMethodParser(swaggerMethod, getHost());
+            METHOD_PARSERS.put(swaggerMethod, result);
         }
         return result;
     }
@@ -80,11 +80,11 @@ public class SwaggerInterfaceParser {
      * calls. This value is retrieved from the @Host annotation placed on the Swagger interface.
      * @return The value of the @Host annotation.
      */
-    String host() {
+    String getHost() {
         return host;
     }
 
-    String serviceName() {
+    String getServiceName() {
         return serviceName;
     }
 }

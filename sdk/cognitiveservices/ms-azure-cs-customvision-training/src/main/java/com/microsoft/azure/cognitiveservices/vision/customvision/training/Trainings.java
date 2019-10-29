@@ -8,27 +8,25 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training;
 
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateTagOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTagsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTagOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.ExportIterationOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagePerformanceCountOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagePerformancesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetIterationPerformanceOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateProjectOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.QuickTestImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.QuickTestImageUrlOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateImageRegionsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateImageTagsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateImagesFromDataOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagesByIdsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetUntaggedImageCountOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTaggedImageCountOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetUntaggedImagesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTaggedImagesOptionalParameter;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateProjectOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateTagOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CustomVisionErrorException;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Domain;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Export;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.ExportIterationOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagePerformanceCountOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagePerformancesOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagesByIdsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetIterationPerformanceOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTagOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTaggedImageCountOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTaggedImagesOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTagsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetUntaggedImageCountOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetUntaggedImagesOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.ImageCreateSummary;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.ImageFileCreateBatch;
@@ -46,10 +44,14 @@ import com.microsoft.azure.cognitiveservices.vision.customvision.training.models
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.PredictionQueryResult;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.PredictionQueryToken;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Project;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.QuickTestImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.QuickTestImageUrlOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Tag;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.TrainProjectOptionalParameter;
+import rx.Observable;
+
 import java.util.List;
 import java.util.UUID;
-import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -63,11 +65,10 @@ public interface Trainings {
      * @param name The tag name.
      * @param createTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Tag object if successful.
      */
-    @Deprecated
     Tag createTag(UUID projectId, String name, CreateTagOptionalParameter createTagOptionalParameter);
 
     /**
@@ -79,7 +80,6 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
      */
-    @Deprecated
     Observable<Tag> createTagAsync(UUID projectId, String name, CreateTagOptionalParameter createTagOptionalParameter);
 
     /**
@@ -127,6 +127,13 @@ public interface Trainings {
              */
             TrainingsCreateTagDefinitionStages.WithExecute withDescription(String description);
 
+            /**
+             * Optional type for the tag. Possible values include: 'Regular', 'Negative'.
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateTagDefinitionStages.WithExecute withType(String type);
+
         }
 
         /**
@@ -164,11 +171,10 @@ public interface Trainings {
      * @param projectId The project id.
      * @param getTagsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Tag&gt; object if successful.
      */
-    @Deprecated
     List<Tag> getTags(UUID projectId, GetTagsOptionalParameter getTagsOptionalParameter);
 
     /**
@@ -179,7 +185,6 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Tag&gt; object
      */
-    @Deprecated
     Observable<List<Tag>> getTagsAsync(UUID projectId, GetTagsOptionalParameter getTagsOptionalParameter);
 
     /**
@@ -254,7 +259,7 @@ public interface Trainings {
      * @param tagId The id of the target tag.
      * @param updatedTag The updated tag model.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Tag object if successful.
      */
@@ -279,7 +284,7 @@ public interface Trainings {
      * @param projectId The project id.
      * @param tagId Id of the tag to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     void deleteTag(UUID projectId, UUID tagId);
@@ -302,11 +307,10 @@ public interface Trainings {
      * @param tagId The tag id.
      * @param getTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Tag object if successful.
      */
-    @Deprecated
     Tag getTag(UUID projectId, UUID tagId, GetTagOptionalParameter getTagOptionalParameter);
 
     /**
@@ -318,7 +322,6 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
      */
-    @Deprecated
     Observable<Tag> getTagAsync(UUID projectId, UUID tagId, GetTagOptionalParameter getTagOptionalParameter);
 
     /**
@@ -402,15 +405,13 @@ public interface Trainings {
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile',
-     *   'ONNX'.
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'.
      * @param exportIterationOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Export object if successful.
      */
-    @Deprecated
     Export exportIteration(UUID projectId, UUID iterationId, String platform, ExportIterationOptionalParameter exportIterationOptionalParameter);
 
     /**
@@ -418,13 +419,11 @@ public interface Trainings {
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile',
-     *   'ONNX'.
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'.
      * @param exportIterationOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
      */
-    @Deprecated
     Observable<Export> exportIterationAsync(UUID projectId, UUID iterationId, String platform, ExportIterationOptionalParameter exportIterationOptionalParameter);
 
     /**
@@ -465,8 +464,7 @@ public interface Trainings {
          */
         interface WithPlatform {
             /**
-             * The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile',
-             *   'ONNX'.
+             * The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'.
              *
              * @return next definition stage
              */
@@ -478,8 +476,7 @@ public interface Trainings {
          */
         interface WithAllOptions {
             /**
-             * The flavor of the target platform (Windows, Linux, ARM, or GPU). Possible values include: 'Linux',
-             *   'Windows'.
+             * The flavor of the target platform. Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12', 'ARM'.
              *
              * @return next definition stage
              */
@@ -524,7 +521,7 @@ public interface Trainings {
      * @param projectId The project id.
      * @param iterationId The iteration id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Export&gt; object if successful.
      */
@@ -541,6 +538,454 @@ public interface Trainings {
     Observable<List<Export>> getExportsAsync(UUID projectId, UUID iterationId);
 
 
+
+    /**
+     * Unpublish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void unpublishIteration(UUID projectId, UUID iterationId);
+
+    /**
+     * Unpublish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> unpublishIterationAsync(UUID projectId, UUID iterationId);
+
+
+
+    /**
+     * Publish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param publishName The name to give the published iteration.
+     * @param predictionId The id of the prediction resource to publish to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the boolean object if successful.
+     */
+    boolean publishIteration(UUID projectId, UUID iterationId, String publishName, String predictionId);
+
+    /**
+     * Publish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param publishName The name to give the published iteration.
+     * @param predictionId The id of the prediction resource to publish to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the boolean object
+     */
+    Observable<Boolean> publishIterationAsync(UUID projectId, UUID iterationId, String publishName, String predictionId);
+
+
+
+    /**
+     * Update a specific iteration.
+     *
+     * @param projectId Project id.
+     * @param iterationId Iteration id.
+     * @param name Gets or sets the name of the iteration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Iteration object if successful.
+     */
+    Iteration updateIteration(UUID projectId, UUID iterationId, String name);
+
+    /**
+     * Update a specific iteration.
+     *
+     * @param projectId Project id.
+     * @param iterationId Iteration id.
+     * @param name Gets or sets the name of the iteration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    Observable<Iteration> updateIterationAsync(UUID projectId, UUID iterationId, String name);
+
+
+
+    /**
+     * Delete a specific iteration of a project.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void deleteIteration(UUID projectId, UUID iterationId);
+
+    /**
+     * Delete a specific iteration of a project.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> deleteIterationAsync(UUID projectId, UUID iterationId);
+
+
+
+    /**
+     * Get a specific iteration.
+     *
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Iteration object if successful.
+     */
+    Iteration getIteration(UUID projectId, UUID iterationId);
+
+    /**
+     * Get a specific iteration.
+     *
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    Observable<Iteration> getIterationAsync(UUID projectId, UUID iterationId);
+
+
+
+    /**
+     * Get iterations for the project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;Iteration&gt; object if successful.
+     */
+    List<Iteration> getIterations(UUID projectId);
+
+    /**
+     * Get iterations for the project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;Iteration&gt; object
+     */
+    Observable<List<Iteration>> getIterationsAsync(UUID projectId);
+
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Iteration object if successful.
+     */
+    Iteration trainProject(UUID projectId, TrainProjectOptionalParameter trainProjectOptionalParameter);
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    Observable<Iteration> trainProjectAsync(UUID projectId, TrainProjectOptionalParameter trainProjectOptionalParameter);
+
+    /**
+     * Queues project for training.
+     *
+     * @return the first stage of the trainProject call
+     */
+    TrainingsTrainProjectDefinitionStages.WithProjectId trainProject();
+
+    /**
+     * Grouping of trainProject definition stages.
+     */
+    interface TrainingsTrainProjectDefinitionStages {
+        /**
+         * The stage of the definition to be specify projectId.
+         */
+        interface WithProjectId {
+            /**
+             * The project id.
+             *
+             * @return next definition stage
+             */
+            TrainingsTrainProjectDefinitionStages.WithExecute withProjectId(UUID projectId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The type of training to use to train the project (default: Regular). Possible values include: 'Regular',
+             *   'Advanced'.
+             *
+             * @return next definition stage
+             */
+            TrainingsTrainProjectDefinitionStages.WithExecute withTrainingType(String trainingType);
+
+            /**
+             * The number of hours reserved as budget for training (if applicable).
+             *
+             * @return next definition stage
+             */
+            TrainingsTrainProjectDefinitionStages.WithExecute withReservedBudgetInHours(Integer reservedBudgetInHours);
+
+            /**
+             * Whether to force train even if dataset and configuration does not change (default: false).
+             *
+             * @return next definition stage
+             */
+            TrainingsTrainProjectDefinitionStages.WithExecute withForceTrain(Boolean forceTrain);
+
+            /**
+             * The email address to send notification to when training finishes (default: null).
+             *
+             * @return next definition stage
+             */
+            TrainingsTrainProjectDefinitionStages.WithExecute withNotificationEmailAddress(String notificationEmailAddress);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TrainingsTrainProjectDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the Iteration object if successful.
+             */
+            Iteration execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the Iteration object
+             */
+            Observable<Iteration> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of trainProject definition.
+     */
+    interface TrainingsTrainProjectDefinition extends
+        TrainingsTrainProjectDefinitionStages.WithProjectId,
+        TrainingsTrainProjectDefinitionStages.WithExecute {
+    }
+
+
+    /**
+     * Update a specific project.
+     *
+     * @param projectId The id of the project to update.
+     * @param updatedProject The updated project model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Project object if successful.
+     */
+    Project updateProject(UUID projectId, Project updatedProject);
+
+    /**
+     * Update a specific project.
+     *
+     * @param projectId The id of the project to update.
+     * @param updatedProject The updated project model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    Observable<Project> updateProjectAsync(UUID projectId, Project updatedProject);
+
+
+
+    /**
+     * Delete a specific project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void deleteProject(UUID projectId);
+
+    /**
+     * Delete a specific project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> deleteProjectAsync(UUID projectId);
+
+
+
+    /**
+     * Get a specific project.
+     *
+     * @param projectId The id of the project to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Project object if successful.
+     */
+    Project getProject(UUID projectId);
+
+    /**
+     * Get a specific project.
+     *
+     * @param projectId The id of the project to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    Observable<Project> getProjectAsync(UUID projectId);
+
+
+    /**
+     * Create a project.
+     *
+     * @param name Name of the project.
+     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Project object if successful.
+     */
+    Project createProject(String name, CreateProjectOptionalParameter createProjectOptionalParameter);
+
+    /**
+     * Create a project.
+     *
+     * @param name Name of the project.
+     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    Observable<Project> createProjectAsync(String name, CreateProjectOptionalParameter createProjectOptionalParameter);
+
+    /**
+     * Create a project.
+     *
+     * @return the first stage of the createProject call
+     */
+    TrainingsCreateProjectDefinitionStages.WithName createProject();
+
+    /**
+     * Grouping of createProject definition stages.
+     */
+    interface TrainingsCreateProjectDefinitionStages {
+        /**
+         * The stage of the definition to be specify name.
+         */
+        interface WithName {
+            /**
+             * Name of the project.
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateProjectDefinitionStages.WithExecute withName(String name);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The description of the project.
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateProjectDefinitionStages.WithExecute withDescription(String description);
+
+            /**
+             * The id of the domain to use for this project. Defaults to General.
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateProjectDefinitionStages.WithExecute withDomainId(UUID domainId);
+
+            /**
+             * The type of classifier to create for this project. Possible values include: 'Multiclass', 'Multilabel'.
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateProjectDefinitionStages.WithExecute withClassificationType(String classificationType);
+
+            /**
+             * List of platforms the trained model is intending exporting to.
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateProjectDefinitionStages.WithExecute withTargetExportPlatforms(List<String> targetExportPlatforms);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TrainingsCreateProjectDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the Project object if successful.
+             */
+            Project execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the Project object
+             */
+            Observable<Project> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createProject definition.
+     */
+    interface TrainingsCreateProjectDefinition extends
+        TrainingsCreateProjectDefinitionStages.WithName,
+        TrainingsCreateProjectDefinitionStages.WithExecute {
+    }
+
+
+    /**
+     * Get your projects.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;Project&gt; object if successful.
+     */
+    List<Project> getProjects();
+
+    /**
+     * Get your projects.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;Project&gt; object
+     */
+    Observable<List<Project>> getProjectsAsync();
+
+
     /**
      * Gets the number of images tagged with the provided {tagIds} that have prediction results from
      *   training for the provided iteration {iterationId}.
@@ -551,11 +996,10 @@ public interface Trainings {
      * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformanceCountOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the int object if successful.
      */
-    @Deprecated
     int getImagePerformanceCount(UUID projectId, UUID iterationId, GetImagePerformanceCountOptionalParameter getImagePerformanceCountOptionalParameter);
 
     /**
@@ -570,7 +1014,6 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the int object
      */
-    @Deprecated
     Observable<Integer> getImagePerformanceCountAsync(UUID projectId, UUID iterationId, GetImagePerformanceCountOptionalParameter getImagePerformanceCountOptionalParameter);
 
     /**
@@ -619,7 +1062,7 @@ public interface Trainings {
              *
              * @return next definition stage
              */
-            TrainingsGetImagePerformanceCountDefinitionStages.WithExecute withTagIds(List<String> tagIds);
+            TrainingsGetImagePerformanceCountDefinitionStages.WithExecute withTagIds(List<UUID> tagIds);
 
         }
 
@@ -664,11 +1107,10 @@ public interface Trainings {
      * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformancesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ImagePerformance&gt; object if successful.
      */
-    @Deprecated
     List<ImagePerformance> getImagePerformances(UUID projectId, UUID iterationId, GetImagePerformancesOptionalParameter getImagePerformancesOptionalParameter);
 
     /**
@@ -685,7 +1127,6 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ImagePerformance&gt; object
      */
-    @Deprecated
     Observable<List<ImagePerformance>> getImagePerformancesAsync(UUID projectId, UUID iterationId, GetImagePerformancesOptionalParameter getImagePerformancesOptionalParameter);
 
     /**
@@ -736,7 +1177,7 @@ public interface Trainings {
              *
              * @return next definition stage
              */
-            TrainingsGetImagePerformancesDefinitionStages.WithExecute withTagIds(List<String> tagIds);
+            TrainingsGetImagePerformancesDefinitionStages.WithExecute withTagIds(List<UUID> tagIds);
 
             /**
              * The ordering. Defaults to newest. Possible values include: 'Newest', 'Oldest'.
@@ -797,11 +1238,10 @@ public interface Trainings {
      * @param iterationId The id of the iteration to get.
      * @param getIterationPerformanceOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IterationPerformance object if successful.
      */
-    @Deprecated
     IterationPerformance getIterationPerformance(UUID projectId, UUID iterationId, GetIterationPerformanceOptionalParameter getIterationPerformanceOptionalParameter);
 
     /**
@@ -813,7 +1253,6 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IterationPerformance object
      */
-    @Deprecated
     Observable<IterationPerformance> getIterationPerformanceAsync(UUID projectId, UUID iterationId, GetIterationPerformanceOptionalParameter getIterationPerformanceOptionalParameter);
 
     /**
@@ -901,334 +1340,50 @@ public interface Trainings {
 
 
     /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
-     * @param updatedIteration The updated iteration model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
-     */
-    Iteration updateIteration(UUID projectId, UUID iterationId, Iteration updatedIteration);
-
-    /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
-     * @param updatedIteration The updated iteration model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    Observable<Iteration> updateIterationAsync(UUID projectId, UUID iterationId, Iteration updatedIteration);
-
-
-
-    /**
-     * Delete a specific iteration of a project.
+     * Get images that were sent to your prediction endpoint.
      *
      * @param projectId The project id.
-     * @param iterationId The iteration id.
+     * @param query Parameters used to query the predictions. Limited to combining 2 tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PredictionQueryResult object if successful.
      */
-    void deleteIteration(UUID projectId, UUID iterationId);
+    PredictionQueryResult queryPredictions(UUID projectId, PredictionQueryToken query);
 
     /**
-     * Delete a specific iteration of a project.
+     * Get images that were sent to your prediction endpoint.
      *
      * @param projectId The project id.
-     * @param iterationId The iteration id.
+     * @param query Parameters used to query the predictions. Limited to combining 2 tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the observable to the PredictionQueryResult object
      */
-    Observable<Void> deleteIterationAsync(UUID projectId, UUID iterationId);
-
-
-
-    /**
-     * Get a specific iteration.
-     *
-     * @param projectId The id of the project the iteration belongs to.
-     * @param iterationId The id of the iteration to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
-     */
-    Iteration getIteration(UUID projectId, UUID iterationId);
-
-    /**
-     * Get a specific iteration.
-     *
-     * @param projectId The id of the project the iteration belongs to.
-     * @param iterationId The id of the iteration to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    Observable<Iteration> getIterationAsync(UUID projectId, UUID iterationId);
-
-
-
-    /**
-     * Get iterations for the project.
-     *
-     * @param projectId The project id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Iteration&gt; object if successful.
-     */
-    List<Iteration> getIterations(UUID projectId);
-
-    /**
-     * Get iterations for the project.
-     *
-     * @param projectId The project id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Iteration&gt; object
-     */
-    Observable<List<Iteration>> getIterationsAsync(UUID projectId);
-
-
-
-    /**
-     * Update a specific project.
-     *
-     * @param projectId The id of the project to update.
-     * @param updatedProject The updated project model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Project object if successful.
-     */
-    Project updateProject(UUID projectId, Project updatedProject);
-
-    /**
-     * Update a specific project.
-     *
-     * @param projectId The id of the project to update.
-     * @param updatedProject The updated project model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    Observable<Project> updateProjectAsync(UUID projectId, Project updatedProject);
-
-
-
-    /**
-     * Delete a specific project.
-     *
-     * @param projectId The project id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    void deleteProject(UUID projectId);
-
-    /**
-     * Delete a specific project.
-     *
-     * @param projectId The project id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
-     */
-    Observable<Void> deleteProjectAsync(UUID projectId);
-
-
-
-    /**
-     * Get a specific project.
-     *
-     * @param projectId The id of the project to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Project object if successful.
-     */
-    Project getProject(UUID projectId);
-
-    /**
-     * Get a specific project.
-     *
-     * @param projectId The id of the project to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    Observable<Project> getProjectAsync(UUID projectId);
-
-
-    /**
-     * Create a project.
-     *
-     * @param name Name of the project.
-     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Project object if successful.
-     */
-    @Deprecated
-    Project createProject(String name, CreateProjectOptionalParameter createProjectOptionalParameter);
-
-    /**
-     * Create a project.
-     *
-     * @param name Name of the project.
-     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    @Deprecated
-    Observable<Project> createProjectAsync(String name, CreateProjectOptionalParameter createProjectOptionalParameter);
-
-    /**
-     * Create a project.
-     *
-     * @return the first stage of the createProject call
-     */
-    TrainingsCreateProjectDefinitionStages.WithName createProject();
-
-    /**
-     * Grouping of createProject definition stages.
-     */
-    interface TrainingsCreateProjectDefinitionStages {
-        /**
-         * The stage of the definition to be specify name.
-         */
-        interface WithName {
-            /**
-             * Name of the project.
-             *
-             * @return next definition stage
-             */
-            TrainingsCreateProjectDefinitionStages.WithExecute withName(String name);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The description of the project.
-             *
-             * @return next definition stage
-             */
-            TrainingsCreateProjectDefinitionStages.WithExecute withDescription(String description);
-
-            /**
-             * The id of the domain to use for this project. Defaults to General.
-             *
-             * @return next definition stage
-             */
-            TrainingsCreateProjectDefinitionStages.WithExecute withDomainId(UUID domainId);
-
-            /**
-             * The type of classifier to create for this project. Possible values include: 'Multiclass', 'Multilabel'.
-             *
-             * @return next definition stage
-             */
-            TrainingsCreateProjectDefinitionStages.WithExecute withClassificationType(String classificationType);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends TrainingsCreateProjectDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Project object if successful.
-             */
-            Project execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Project object
-             */
-            Observable<Project> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createProject definition.
-     */
-    interface TrainingsCreateProjectDefinition extends
-        TrainingsCreateProjectDefinitionStages.WithName,
-        TrainingsCreateProjectDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Get your projects.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Project&gt; object if successful.
-     */
-    List<Project> getProjects();
-
-    /**
-     * Get your projects.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Project&gt; object
-     */
-    Observable<List<Project>> getProjectsAsync();
-
-
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
-     */
-    Iteration trainProject(UUID projectId);
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    Observable<Iteration> trainProjectAsync(UUID projectId);
+    Observable<PredictionQueryResult> queryPredictionsAsync(UUID projectId, PredictionQueryToken query);
 
 
     /**
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData the InputStream value.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param quickTestImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    @Deprecated
     ImagePrediction quickTestImage(UUID projectId, byte[] imageData, QuickTestImageOptionalParameter quickTestImageOptionalParameter);
 
     /**
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData the InputStream value.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param quickTestImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    @Deprecated
     Observable<ImagePrediction> quickTestImageAsync(UUID projectId, byte[] imageData, QuickTestImageOptionalParameter quickTestImageOptionalParameter);
 
     /**
@@ -1258,7 +1413,7 @@ public interface Trainings {
          */
         interface WithImageData {
             /**
-             *
+             * Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
              *
              * @return next definition stage
              */
@@ -1312,25 +1467,25 @@ public interface Trainings {
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param quickTestImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    @Deprecated
-    ImagePrediction quickTestImageUrl(UUID projectId, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter);
+    ImagePrediction quickTestImageUrl(UUID projectId, String url, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter);
 
     /**
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param quickTestImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    @Deprecated
-    Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter);
+    Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter);
 
     /**
      * Quick test an image url.
@@ -1352,7 +1507,18 @@ public interface Trainings {
              *
              * @return next definition stage
              */
-            TrainingsQuickTestImageUrlDefinitionStages.WithExecute withProjectId(UUID projectId);
+            WithUrl withProjectId(UUID projectId);
+        }
+        /**
+         * The stage of the definition to be specify url.
+         */
+        interface WithUrl {
+            /**
+             * Url of the image.
+             *
+             * @return next definition stage
+             */
+            TrainingsQuickTestImageUrlDefinitionStages.WithExecute withUrl(String url);
         }
 
         /**
@@ -1366,13 +1532,6 @@ public interface Trainings {
              * @return next definition stage
              */
             TrainingsQuickTestImageUrlDefinitionStages.WithExecute withIterationId(UUID iterationId);
-
-            /**
-             *
-             *
-             * @return next definition stage
-             */
-            TrainingsQuickTestImageUrlDefinitionStages.WithExecute withUrl(String url);
 
         }
 
@@ -1401,32 +1560,9 @@ public interface Trainings {
      */
     interface TrainingsQuickTestImageUrlDefinition extends
         TrainingsQuickTestImageUrlDefinitionStages.WithProjectId,
+        TrainingsQuickTestImageUrlDefinitionStages.WithUrl,
         TrainingsQuickTestImageUrlDefinitionStages.WithExecute {
     }
-
-
-    /**
-     * Get images that were sent to your prediction endpoint.
-     *
-     * @param projectId The project id.
-     * @param query Parameters used to query the predictions. Limited to combining 2 tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PredictionQueryResult object if successful.
-     */
-    PredictionQueryResult queryPredictions(UUID projectId, PredictionQueryToken query);
-
-    /**
-     * Get images that were sent to your prediction endpoint.
-     *
-     * @param projectId The project id.
-     * @param query Parameters used to query the predictions. Limited to combining 2 tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PredictionQueryResult object
-     */
-    Observable<PredictionQueryResult> queryPredictionsAsync(UUID projectId, PredictionQueryToken query);
-
 
 
     /**
@@ -1435,10 +1571,10 @@ public interface Trainings {
      * @param projectId The project id.
      * @param ids The prediction ids. Limited to 64.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deletePrediction(UUID projectId, List<String> ids);
+    void deletePrediction(UUID projectId, List<UUID> ids);
 
     /**
      * Delete a set of predicted images and their associated prediction results.
@@ -1448,7 +1584,7 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    Observable<Void> deletePredictionAsync(UUID projectId, List<String> ids);
+    Observable<Void> deletePredictionAsync(UUID projectId, List<UUID> ids);
 
 
 
@@ -1460,7 +1596,7 @@ public interface Trainings {
      * @param projectId The project id.
      * @param imageId The image id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageRegionProposal object if successful.
      */
@@ -1481,247 +1617,14 @@ public interface Trainings {
 
 
     /**
-     * Delete a set of image regions.
-     *
-     * @param projectId The project id.
-     * @param regionIds Regions to delete. Limited to 64.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    void deleteImageRegions(UUID projectId, List<String> regionIds);
-
-    /**
-     * Delete a set of image regions.
-     *
-     * @param projectId The project id.
-     * @param regionIds Regions to delete. Limited to 64.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
-     */
-    Observable<Void> deleteImageRegionsAsync(UUID projectId, List<String> regionIds);
-
-
-    /**
-     * Create a set of image regions.
-     * This API accepts a batch of image regions, and optionally tags, to update existing images with region
-     *   information.
-     *   There is a limit of 64 entries in the batch.
-     *
-     * @param projectId The project id.
-     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageRegionCreateSummary object if successful.
-     */
-    @Deprecated
-    ImageRegionCreateSummary createImageRegions(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter);
-
-    /**
-     * Create a set of image regions.
-     * This API accepts a batch of image regions, and optionally tags, to update existing images with region
-     *   information.
-     *   There is a limit of 64 entries in the batch.
-     *
-     * @param projectId The project id.
-     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageRegionCreateSummary object
-     */
-    @Deprecated
-    Observable<ImageRegionCreateSummary> createImageRegionsAsync(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter);
-
-    /**
-     * Create a set of image regions.
-     * This API accepts a batch of image regions, and optionally tags, to update existing images with region
-     *   information.
-     *   There is a limit of 64 entries in the batch.
-     *
-     * @return the first stage of the createImageRegions call
-     */
-    TrainingsCreateImageRegionsDefinitionStages.WithProjectId createImageRegions();
-
-    /**
-     * Grouping of createImageRegions definition stages.
-     */
-    interface TrainingsCreateImageRegionsDefinitionStages {
-        /**
-         * The stage of the definition to be specify projectId.
-         */
-        interface WithProjectId {
-            /**
-             * The project id.
-             *
-             * @return next definition stage
-             */
-            TrainingsCreateImageRegionsDefinitionStages.WithExecute withProjectId(UUID projectId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             *
-             *
-             * @return next definition stage
-             */
-            TrainingsCreateImageRegionsDefinitionStages.WithExecute withRegions(List<ImageRegionCreateEntry> regions);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends TrainingsCreateImageRegionsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the ImageRegionCreateSummary object if successful.
-             */
-            ImageRegionCreateSummary execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the ImageRegionCreateSummary object
-             */
-            Observable<ImageRegionCreateSummary> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createImageRegions definition.
-     */
-    interface TrainingsCreateImageRegionsDefinition extends
-        TrainingsCreateImageRegionsDefinitionStages.WithProjectId,
-        TrainingsCreateImageRegionsDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Remove a set of tags from a set of images.
-     *
-     * @param projectId The project id.
-     * @param imageIds Image ids. Limited to 64 images.
-     * @param tagIds Tags to be deleted from the specified images. Limted to 20 tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    void deleteImageTags(UUID projectId, List<String> imageIds, List<String> tagIds);
-
-    /**
-     * Remove a set of tags from a set of images.
-     *
-     * @param projectId The project id.
-     * @param imageIds Image ids. Limited to 64 images.
-     * @param tagIds Tags to be deleted from the specified images. Limted to 20 tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
-     */
-    Observable<Void> deleteImageTagsAsync(UUID projectId, List<String> imageIds, List<String> tagIds);
-
-
-    /**
-     * Associate a set of images with a set of tags.
-     *
-     * @param projectId The project id.
-     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageTagCreateSummary object if successful.
-     */
-    @Deprecated
-    ImageTagCreateSummary createImageTags(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter);
-
-    /**
-     * Associate a set of images with a set of tags.
-     *
-     * @param projectId The project id.
-     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageTagCreateSummary object
-     */
-    @Deprecated
-    Observable<ImageTagCreateSummary> createImageTagsAsync(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter);
-
-    /**
-     * Associate a set of images with a set of tags.
-     *
-     * @return the first stage of the createImageTags call
-     */
-    TrainingsCreateImageTagsDefinitionStages.WithProjectId createImageTags();
-
-    /**
-     * Grouping of createImageTags definition stages.
-     */
-    interface TrainingsCreateImageTagsDefinitionStages {
-        /**
-         * The stage of the definition to be specify projectId.
-         */
-        interface WithProjectId {
-            /**
-             * The project id.
-             *
-             * @return next definition stage
-             */
-            TrainingsCreateImageTagsDefinitionStages.WithExecute withProjectId(UUID projectId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             *
-             *
-             * @return next definition stage
-             */
-            TrainingsCreateImageTagsDefinitionStages.WithExecute withTags(List<ImageTagCreateEntry> tags);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends TrainingsCreateImageTagsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the ImageTagCreateSummary object if successful.
-             */
-            ImageTagCreateSummary execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the ImageTagCreateSummary object
-             */
-            Observable<ImageTagCreateSummary> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createImageTags definition.
-     */
-    interface TrainingsCreateImageTagsDefinition extends
-        TrainingsCreateImageTagsDefinitionStages.WithProjectId,
-        TrainingsCreateImageTagsDefinitionStages.WithExecute {
-    }
-
-
-    /**
      * Add the specified predicted images to the set of training images.
      * This API creates a batch of images from predicted images specified. There is a limit of 64 images
       *  and 20 tags.
      *
      * @param projectId The project id.
-     * @param batch Image and tag ids. Limted to 64 images and 20 tags per batch.
+     * @param batch Image and tag ids. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
@@ -1733,7 +1636,7 @@ public interface Trainings {
       *  and 20 tags.
      *
      * @param projectId The project id.
-     * @param batch Image and tag ids. Limted to 64 images and 20 tags per batch.
+     * @param batch Image and tag ids. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
@@ -1749,7 +1652,7 @@ public interface Trainings {
      * @param projectId The project id.
      * @param batch Image urls and tag ids. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
@@ -1777,7 +1680,7 @@ public interface Trainings {
      * @param projectId The project id.
      * @param batch The batch of image files to add. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
@@ -1801,22 +1704,22 @@ public interface Trainings {
      * Delete images from the set of training images.
      *
      * @param projectId The project id.
-     * @param imageIds Ids of the images to be deleted. Limted to 256 images per batch.
+     * @param imageIds Ids of the images to be deleted. Limited to 256 images per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deleteImages(UUID projectId, List<String> imageIds);
+    void deleteImages(UUID projectId, List<UUID> imageIds);
 
     /**
      * Delete images from the set of training images.
      *
      * @param projectId The project id.
-     * @param imageIds Ids of the images to be deleted. Limted to 256 images per batch.
+     * @param imageIds Ids of the images to be deleted. Limited to 256 images per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    Observable<Void> deleteImagesAsync(UUID projectId, List<String> imageIds);
+    Observable<Void> deleteImagesAsync(UUID projectId, List<UUID> imageIds);
 
 
     /**
@@ -1825,14 +1728,13 @@ public interface Trainings {
      *   multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData the InputStream value.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param createImagesFromDataOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
-    @Deprecated
     ImageCreateSummary createImagesFromData(UUID projectId, byte[] imageData, CreateImagesFromDataOptionalParameter createImagesFromDataOptionalParameter);
 
     /**
@@ -1841,12 +1743,11 @@ public interface Trainings {
      *   multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData the InputStream value.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param createImagesFromDataOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
-    @Deprecated
     Observable<ImageCreateSummary> createImagesFromDataAsync(UUID projectId, byte[] imageData, CreateImagesFromDataOptionalParameter createImagesFromDataOptionalParameter);
 
     /**
@@ -1878,7 +1779,7 @@ public interface Trainings {
          */
         interface WithImageData {
             /**
-             *
+             * Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
              *
              * @return next definition stage
              */
@@ -1894,7 +1795,7 @@ public interface Trainings {
              *
              * @return next definition stage
              */
-            TrainingsCreateImagesFromDataDefinitionStages.WithExecute withTagIds(List<String> tagIds);
+            TrainingsCreateImagesFromDataDefinitionStages.WithExecute withTagIds(List<UUID> tagIds);
 
         }
 
@@ -1936,11 +1837,10 @@ public interface Trainings {
      * @param projectId The project id.
      * @param getImagesByIdsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
-    @Deprecated
     List<Image> getImagesByIds(UUID projectId, GetImagesByIdsOptionalParameter getImagesByIdsOptionalParameter);
 
     /**
@@ -1954,7 +1854,6 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    @Deprecated
     Observable<List<Image>> getImagesByIdsAsync(UUID projectId, GetImagesByIdsOptionalParameter getImagesByIdsOptionalParameter);
 
     /**
@@ -1992,7 +1891,7 @@ public interface Trainings {
              *
              * @return next definition stage
              */
-            TrainingsGetImagesByIdsDefinitionStages.WithExecute withImageIds(List<String> imageIds);
+            TrainingsGetImagesByIdsDefinitionStages.WithExecute withImageIds(List<UUID> imageIds);
 
             /**
              * The iteration id. Defaults to workspace.
@@ -2032,204 +1931,6 @@ public interface Trainings {
     }
 
     /**
-     * Gets the number of untagged images.
-     * This API returns the images which have no tags for a given project and optionally an iteration. If no
-     *   iteration is specified the
-     *   current workspace is used.
-     *
-     * @param projectId The project id.
-     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the int object if successful.
-     */
-    @Deprecated
-    int getUntaggedImageCount(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter);
-
-    /**
-     * Gets the number of untagged images.
-     * This API returns the images which have no tags for a given project and optionally an iteration. If no
-     *   iteration is specified the
-     *   current workspace is used.
-     *
-     * @param projectId The project id.
-     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the int object
-     */
-    @Deprecated
-    Observable<Integer> getUntaggedImageCountAsync(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter);
-
-    /**
-     * Gets the number of untagged images.
-     * This API returns the images which have no tags for a given project and optionally an iteration. If no
-     *   iteration is specified the
-     *   current workspace is used.
-     *
-     * @return the first stage of the getUntaggedImageCount call
-     */
-    TrainingsGetUntaggedImageCountDefinitionStages.WithProjectId getUntaggedImageCount();
-
-    /**
-     * Grouping of getUntaggedImageCount definition stages.
-     */
-    interface TrainingsGetUntaggedImageCountDefinitionStages {
-        /**
-         * The stage of the definition to be specify projectId.
-         */
-        interface WithProjectId {
-            /**
-             * The project id.
-             *
-             * @return next definition stage
-             */
-            TrainingsGetUntaggedImageCountDefinitionStages.WithExecute withProjectId(UUID projectId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The iteration id. Defaults to workspace.
-             *
-             * @return next definition stage
-             */
-            TrainingsGetUntaggedImageCountDefinitionStages.WithExecute withIterationId(UUID iterationId);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends TrainingsGetUntaggedImageCountDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the int object if successful.
-             */
-            int execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the int object
-             */
-            Observable<Integer> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of getUntaggedImageCount definition.
-     */
-    interface TrainingsGetUntaggedImageCountDefinition extends
-        TrainingsGetUntaggedImageCountDefinitionStages.WithProjectId,
-        TrainingsGetUntaggedImageCountDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Gets the number of images tagged with the provided {tagIds}.
-     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
-     *   "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
-     *
-     * @param projectId The project id.
-     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the int object if successful.
-     */
-    @Deprecated
-    int getTaggedImageCount(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter);
-
-    /**
-     * Gets the number of images tagged with the provided {tagIds}.
-     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
-     *   "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
-     *
-     * @param projectId The project id.
-     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the int object
-     */
-    @Deprecated
-    Observable<Integer> getTaggedImageCountAsync(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter);
-
-    /**
-     * Gets the number of images tagged with the provided {tagIds}.
-     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
-     *   "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
-     *
-     * @return the first stage of the getTaggedImageCount call
-     */
-    TrainingsGetTaggedImageCountDefinitionStages.WithProjectId getTaggedImageCount();
-
-    /**
-     * Grouping of getTaggedImageCount definition stages.
-     */
-    interface TrainingsGetTaggedImageCountDefinitionStages {
-        /**
-         * The stage of the definition to be specify projectId.
-         */
-        interface WithProjectId {
-            /**
-             * The project id.
-             *
-             * @return next definition stage
-             */
-            TrainingsGetTaggedImageCountDefinitionStages.WithExecute withProjectId(UUID projectId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The iteration id. Defaults to workspace.
-             *
-             * @return next definition stage
-             */
-            TrainingsGetTaggedImageCountDefinitionStages.WithExecute withIterationId(UUID iterationId);
-
-            /**
-             * A list of tags ids to filter the images to count. Defaults to all tags when null.
-             *
-             * @return next definition stage
-             */
-            TrainingsGetTaggedImageCountDefinitionStages.WithExecute withTagIds(List<String> tagIds);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends TrainingsGetTaggedImageCountDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the int object if successful.
-             */
-            int execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the int object
-             */
-            Observable<Integer> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of getTaggedImageCount definition.
-     */
-    interface TrainingsGetTaggedImageCountDefinition extends
-        TrainingsGetTaggedImageCountDefinitionStages.WithProjectId,
-        TrainingsGetTaggedImageCountDefinitionStages.WithExecute {
-    }
-
-    /**
      * Get untagged images for a given project iteration.
      * This API supports batching and range selection. By default it will only return first 50 images matching
      *   images.
@@ -2238,11 +1939,10 @@ public interface Trainings {
      * @param projectId The project id.
      * @param getUntaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
-    @Deprecated
     List<Image> getUntaggedImages(UUID projectId, GetUntaggedImagesOptionalParameter getUntaggedImagesOptionalParameter);
 
     /**
@@ -2256,7 +1956,6 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    @Deprecated
     Observable<List<Image>> getUntaggedImagesAsync(UUID projectId, GetUntaggedImagesOptionalParameter getUntaggedImagesOptionalParameter);
 
     /**
@@ -2358,11 +2057,10 @@ public interface Trainings {
      * @param projectId The project id.
      * @param getTaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
-    @Deprecated
     List<Image> getTaggedImages(UUID projectId, GetTaggedImagesOptionalParameter getTaggedImagesOptionalParameter);
 
     /**
@@ -2378,7 +2076,6 @@ public interface Trainings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    @Deprecated
     Observable<List<Image>> getTaggedImagesAsync(UUID projectId, GetTaggedImagesOptionalParameter getTaggedImagesOptionalParameter);
 
     /**
@@ -2425,7 +2122,7 @@ public interface Trainings {
              *
              * @return next definition stage
              */
-            TrainingsGetTaggedImagesDefinitionStages.WithExecute withTagIds(List<String> tagIds);
+            TrainingsGetTaggedImagesDefinitionStages.WithExecute withTagIds(List<UUID> tagIds);
 
             /**
              * The ordering. Defaults to newest. Possible values include: 'Newest', 'Oldest'.
@@ -2480,11 +2177,434 @@ public interface Trainings {
 
 
     /**
+     * Delete a set of image regions.
+     *
+     * @param projectId The project id.
+     * @param regionIds Regions to delete. Limited to 64.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void deleteImageRegions(UUID projectId, List<UUID> regionIds);
+
+    /**
+     * Delete a set of image regions.
+     *
+     * @param projectId The project id.
+     * @param regionIds Regions to delete. Limited to 64.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> deleteImageRegionsAsync(UUID projectId, List<UUID> regionIds);
+
+
+    /**
+     * Create a set of image regions.
+     * This API accepts a batch of image regions, and optionally tags, to update existing images with region
+     *   information.
+     *   There is a limit of 64 entries in the batch.
+     *
+     * @param projectId The project id.
+     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImageRegionCreateSummary object if successful.
+     */
+    ImageRegionCreateSummary createImageRegions(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter);
+
+    /**
+     * Create a set of image regions.
+     * This API accepts a batch of image regions, and optionally tags, to update existing images with region
+     *   information.
+     *   There is a limit of 64 entries in the batch.
+     *
+     * @param projectId The project id.
+     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageRegionCreateSummary object
+     */
+    Observable<ImageRegionCreateSummary> createImageRegionsAsync(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter);
+
+    /**
+     * Create a set of image regions.
+     * This API accepts a batch of image regions, and optionally tags, to update existing images with region
+     *   information.
+     *   There is a limit of 64 entries in the batch.
+     *
+     * @return the first stage of the createImageRegions call
+     */
+    TrainingsCreateImageRegionsDefinitionStages.WithProjectId createImageRegions();
+
+    /**
+     * Grouping of createImageRegions definition stages.
+     */
+    interface TrainingsCreateImageRegionsDefinitionStages {
+        /**
+         * The stage of the definition to be specify projectId.
+         */
+        interface WithProjectId {
+            /**
+             * The project id.
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateImageRegionsDefinitionStages.WithExecute withProjectId(UUID projectId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             *
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateImageRegionsDefinitionStages.WithExecute withRegions(List<ImageRegionCreateEntry> regions);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TrainingsCreateImageRegionsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the ImageRegionCreateSummary object if successful.
+             */
+            ImageRegionCreateSummary execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the ImageRegionCreateSummary object
+             */
+            Observable<ImageRegionCreateSummary> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createImageRegions definition.
+     */
+    interface TrainingsCreateImageRegionsDefinition extends
+        TrainingsCreateImageRegionsDefinitionStages.WithProjectId,
+        TrainingsCreateImageRegionsDefinitionStages.WithExecute {
+    }
+
+
+    /**
+     * Remove a set of tags from a set of images.
+     *
+     * @param projectId The project id.
+     * @param imageIds Image ids. Limited to 64 images.
+     * @param tagIds Tags to be deleted from the specified images. Limited to 20 tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void deleteImageTags(UUID projectId, List<UUID> imageIds, List<UUID> tagIds);
+
+    /**
+     * Remove a set of tags from a set of images.
+     *
+     * @param projectId The project id.
+     * @param imageIds Image ids. Limited to 64 images.
+     * @param tagIds Tags to be deleted from the specified images. Limited to 20 tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> deleteImageTagsAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds);
+
+
+    /**
+     * Associate a set of images with a set of tags.
+     *
+     * @param projectId The project id.
+     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImageTagCreateSummary object if successful.
+     */
+    ImageTagCreateSummary createImageTags(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter);
+
+    /**
+     * Associate a set of images with a set of tags.
+     *
+     * @param projectId The project id.
+     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageTagCreateSummary object
+     */
+    Observable<ImageTagCreateSummary> createImageTagsAsync(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter);
+
+    /**
+     * Associate a set of images with a set of tags.
+     *
+     * @return the first stage of the createImageTags call
+     */
+    TrainingsCreateImageTagsDefinitionStages.WithProjectId createImageTags();
+
+    /**
+     * Grouping of createImageTags definition stages.
+     */
+    interface TrainingsCreateImageTagsDefinitionStages {
+        /**
+         * The stage of the definition to be specify projectId.
+         */
+        interface WithProjectId {
+            /**
+             * The project id.
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateImageTagsDefinitionStages.WithExecute withProjectId(UUID projectId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Image Tag entries to include in this batch.
+             *
+             * @return next definition stage
+             */
+            TrainingsCreateImageTagsDefinitionStages.WithExecute withTags(List<ImageTagCreateEntry> tags);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TrainingsCreateImageTagsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the ImageTagCreateSummary object if successful.
+             */
+            ImageTagCreateSummary execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the ImageTagCreateSummary object
+             */
+            Observable<ImageTagCreateSummary> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createImageTags definition.
+     */
+    interface TrainingsCreateImageTagsDefinition extends
+        TrainingsCreateImageTagsDefinitionStages.WithProjectId,
+        TrainingsCreateImageTagsDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Gets the number of untagged images.
+     * This API returns the images which have no tags for a given project and optionally an iteration. If no
+     *   iteration is specified the
+     *   current workspace is used.
+     *
+     * @param projectId The project id.
+     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the int object if successful.
+     */
+    int getUntaggedImageCount(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter);
+
+    /**
+     * Gets the number of untagged images.
+     * This API returns the images which have no tags for a given project and optionally an iteration. If no
+     *   iteration is specified the
+     *   current workspace is used.
+     *
+     * @param projectId The project id.
+     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the int object
+     */
+    Observable<Integer> getUntaggedImageCountAsync(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter);
+
+    /**
+     * Gets the number of untagged images.
+     * This API returns the images which have no tags for a given project and optionally an iteration. If no
+     *   iteration is specified the
+     *   current workspace is used.
+     *
+     * @return the first stage of the getUntaggedImageCount call
+     */
+    TrainingsGetUntaggedImageCountDefinitionStages.WithProjectId getUntaggedImageCount();
+
+    /**
+     * Grouping of getUntaggedImageCount definition stages.
+     */
+    interface TrainingsGetUntaggedImageCountDefinitionStages {
+        /**
+         * The stage of the definition to be specify projectId.
+         */
+        interface WithProjectId {
+            /**
+             * The project id.
+             *
+             * @return next definition stage
+             */
+            TrainingsGetUntaggedImageCountDefinitionStages.WithExecute withProjectId(UUID projectId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The iteration id. Defaults to workspace.
+             *
+             * @return next definition stage
+             */
+            TrainingsGetUntaggedImageCountDefinitionStages.WithExecute withIterationId(UUID iterationId);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TrainingsGetUntaggedImageCountDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the int object if successful.
+             */
+            int execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the int object
+             */
+            Observable<Integer> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getUntaggedImageCount definition.
+     */
+    interface TrainingsGetUntaggedImageCountDefinition extends
+        TrainingsGetUntaggedImageCountDefinitionStages.WithProjectId,
+        TrainingsGetUntaggedImageCountDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Gets the number of images tagged with the provided {tagIds}.
+     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
+     *   "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
+     *
+     * @param projectId The project id.
+     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the int object if successful.
+     */
+    int getTaggedImageCount(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter);
+
+    /**
+     * Gets the number of images tagged with the provided {tagIds}.
+     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
+     *   "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
+     *
+     * @param projectId The project id.
+     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the int object
+     */
+    Observable<Integer> getTaggedImageCountAsync(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter);
+
+    /**
+     * Gets the number of images tagged with the provided {tagIds}.
+     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
+     *   "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
+     *
+     * @return the first stage of the getTaggedImageCount call
+     */
+    TrainingsGetTaggedImageCountDefinitionStages.WithProjectId getTaggedImageCount();
+
+    /**
+     * Grouping of getTaggedImageCount definition stages.
+     */
+    interface TrainingsGetTaggedImageCountDefinitionStages {
+        /**
+         * The stage of the definition to be specify projectId.
+         */
+        interface WithProjectId {
+            /**
+             * The project id.
+             *
+             * @return next definition stage
+             */
+            TrainingsGetTaggedImageCountDefinitionStages.WithExecute withProjectId(UUID projectId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The iteration id. Defaults to workspace.
+             *
+             * @return next definition stage
+             */
+            TrainingsGetTaggedImageCountDefinitionStages.WithExecute withIterationId(UUID iterationId);
+
+            /**
+             * A list of tags ids to filter the images to count. Defaults to all tags when null.
+             *
+             * @return next definition stage
+             */
+            TrainingsGetTaggedImageCountDefinitionStages.WithExecute withTagIds(List<UUID> tagIds);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TrainingsGetTaggedImageCountDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the int object if successful.
+             */
+            int execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the int object
+             */
+            Observable<Integer> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getTaggedImageCount definition.
+     */
+    interface TrainingsGetTaggedImageCountDefinition extends
+        TrainingsGetTaggedImageCountDefinitionStages.WithProjectId,
+        TrainingsGetTaggedImageCountDefinitionStages.WithExecute {
+    }
+
+
+    /**
      * Get information about a specific domain.
      *
      * @param domainId The id of the domain to get information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Domain object if successful.
      */
@@ -2505,7 +2625,7 @@ public interface Trainings {
      * Get a list of the available domains.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Domain&gt; object if successful.
      */

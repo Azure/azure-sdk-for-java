@@ -9,10 +9,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.management.AsyncOperationResource;
-import com.azure.core.management.HttpBinJSON;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.management.MockResource;
 import com.azure.core.management.OperationState;
 import com.azure.core.management.implementation.AzureAsyncOperationPollStrategy;
@@ -25,7 +24,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
@@ -59,20 +57,20 @@ public class MockAzureHttpClient implements HttpClient {
         MockHttpResponse response = null;
 
         try {
-            final URL requestUrl = request.url();
+            final URL requestUrl = request.getUrl();
             final String requestHost = requestUrl.getHost();
             final String requestPath = requestUrl.getPath();
             final String requestPathLower = requestPath.toLowerCase();
             if (requestHost.equalsIgnoreCase("httpbin.org")) {
                 if (requestPathLower.equals("/anything") || requestPathLower.startsWith("/anything/")) {
-                    if ("HEAD".equals(request.httpMethod())) {
+                    if ("HEAD".equals(request.getHttpMethod())) {
                         response = new MockHttpResponse(request, 200, responseHeaders(), "");
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url(request.url().toString()
+                        json.url(request.getUrl().toString()
                                 // This is just to mimic the behavior we've seen with httpbin.org.
                                 .replace("%20", " "));
-                        json.headers(toMap(request.headers()));
+                        json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, responseHeaders(), json);
                     }
                 } else if (requestPathLower.startsWith("/bytes/")) {
@@ -81,27 +79,27 @@ public class MockAzureHttpClient implements HttpClient {
                     response = new MockHttpResponse(request, 200, responseHeaders(), new byte[byteCount]);
                 } else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.url().toString());
+                    json.url(request.getUrl().toString());
                     json.data(bodyToString(request));
                     response = new MockHttpResponse(request, 200, responseHeaders(), json);
                 } else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.url().toString());
-                    json.headers(toMap(request.headers()));
+                    json.url(request.getUrl().toString());
+                    json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, responseHeaders(), json);
                 } else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.url().toString());
+                    json.url(request.getUrl().toString());
                     json.data(bodyToString(request));
                     response = new MockHttpResponse(request, 200, responseHeaders(), json);
                 } else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.url().toString());
+                    json.url(request.getUrl().toString());
                     json.data(bodyToString(request));
                     response = new MockHttpResponse(request, 200, responseHeaders(), json);
                 } else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.url().toString());
+                    json.url(request.getUrl().toString());
                     json.data(bodyToString(request));
                     response = new MockHttpResponse(request, 200, responseHeaders(), json);
                 } else if (requestPathLower.startsWith("/status/")) {
@@ -110,7 +108,7 @@ public class MockAzureHttpClient implements HttpClient {
                     response = new MockHttpResponse(request, statusCode, responseHeaders(), new byte[0]);
                 }
             } else if (requestHost.equalsIgnoreCase("mock.azure.com")) {
-                if (request.httpMethod() == HttpMethod.GET) {
+                if (request.getHttpMethod() == HttpMethod.GET) {
                     if (requestPathLower.contains("/mockprovider/mockresources/")) {
                         ++getRequests;
                         --pollsRemaining;
@@ -150,11 +148,11 @@ public class MockAzureHttpClient implements HttpClient {
                             } else {
                                 --pollsRemaining;
                                 response = new MockHttpResponse(request, 202, responseHeaders(), new byte[0])
-                                        .addHeader(LocationPollStrategy.HEADER_NAME, request.url().toString());
+                                        .addHeader(LocationPollStrategy.HEADER_NAME, request.getUrl().toString());
                             }
                         }
                     }
-                } else if (request.httpMethod() == HttpMethod.PUT) {
+                } else if (request.getHttpMethod() == HttpMethod.PUT) {
                     ++createRequests;
 
                     final Map<String, String> requestQueryMap = queryToMap(requestUrl.getQuery());
@@ -209,7 +207,7 @@ public class MockAzureHttpClient implements HttpClient {
                             response.addHeader(LocationPollStrategy.HEADER_NAME, pollUrl + "?PollType=" + LocationPollStrategy.HEADER_NAME);
                         }
                     }
-                } else if (request.httpMethod() == HttpMethod.DELETE) {
+                } else if (request.getHttpMethod() == HttpMethod.DELETE) {
                     ++deleteRequests;
 
                     final Map<String, String> requestQueryMap = queryToMap(requestUrl.getQuery());
@@ -254,21 +252,6 @@ public class MockAzureHttpClient implements HttpClient {
         return Mono.<HttpResponse>just(response);
     }
 
-    @Override
-    public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-        throw new IllegalStateException("MockHttpClient.proxy");
-    }
-
-    @Override
-    public HttpClient wiretap(boolean enableWiretap) {
-        throw new IllegalStateException("MockHttpClient.wiretap");
-    }
-
-    @Override
-    public HttpClient port(int port) {
-        throw new IllegalStateException("MockHttpClient.port");
-    }
-
     private static Map<String, String> queryToMap(String url) {
         final Map<String, String> result = new HashMap<>();
 
@@ -288,7 +271,7 @@ public class MockAzureHttpClient implements HttpClient {
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
-        Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.body())
+        Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.getBody())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
         return asyncString.block();
     }
@@ -296,7 +279,7 @@ public class MockAzureHttpClient implements HttpClient {
     private static Map<String, String> toMap(HttpHeaders headers) {
         final Map<String, String> result = new HashMap<>();
         for (final HttpHeader header : headers) {
-            result.put(header.name(), header.value());
+            result.put(header.getName(), header.getValue());
         }
         return result;
     }

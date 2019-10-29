@@ -43,10 +43,9 @@ class RuleDescriptionSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RuleDescriptionSerializer.class);
 
     static String serialize(RuleDescription ruleDescription) throws ServiceBusException {
-        DocumentBuilderFactory dbFactory =
-                DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = null;
         try {
+            DocumentBuilderFactory dbFactory = SerializerUtil.getDocumentBuilderFactory();
             dBuilder = dbFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             throw new ServiceBusException(false, e);
@@ -196,8 +195,8 @@ class RuleDescriptionSerializer {
 
     static List<RuleDescription> parseCollectionFromContent(String xml) {
         ArrayList<RuleDescription> ruleList = new ArrayList<>();
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
@@ -211,7 +210,7 @@ class RuleDescriptionSerializer {
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
-                TRACE_LOGGER.error("Exception while parsing response.", e);
+                TRACE_LOGGER.info("Exception while parsing response.", e);
             }
 
             if (TRACE_LOGGER.isDebugEnabled()) {
@@ -223,8 +222,8 @@ class RuleDescriptionSerializer {
     }
 
     static RuleDescription parseFromContent(String xml) throws MessagingEntityNotFoundException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes(UTF_8)));
             Element doc = dom.getDocumentElement();
@@ -234,7 +233,7 @@ class RuleDescriptionSerializer {
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
-                TRACE_LOGGER.error("Exception while parsing response.", e);
+                TRACE_LOGGER.info("Exception while parsing response.", e);
             }
 
             if (TRACE_LOGGER.isDebugEnabled()) {

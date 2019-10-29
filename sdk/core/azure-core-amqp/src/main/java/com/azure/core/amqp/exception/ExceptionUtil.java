@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
  */
 public final class ExceptionUtil {
     private static final String AMQP_REQUEST_FAILED_ERROR = "status-code: %s, status-description: %s";
-    private static final Pattern ENTITY_NOT_FOUND_PATTERN = Pattern.compile("The messaging entity .* could not be found");
+    private static final Pattern ENTITY_NOT_FOUND_PATTERN =
+        Pattern.compile("The messaging entity .* could not be found");
 
     /**
      * Creates an {@link AmqpException} or Exception based on the {@code errorCondition} from the AMQP request.
@@ -22,7 +23,7 @@ public final class ExceptionUtil {
      * @param errorContext The context that this error occurred in.
      * @return An exception that maps to the {@code errorCondition} provided.
      * @throws IllegalArgumentException when 'errorCondition' is {@code null} or empty, cannot be translated into an
-     *         {@link ErrorCondition}, or cannot be determined whether the {@link ErrorCondition} is transient or not.
+     *     {@link ErrorCondition}, or cannot be determined whether the {@link ErrorCondition} is transient or not.
      * @see ErrorCondition
      */
     public static Exception toException(String errorCondition, String description, ErrorContext errorContext) {
@@ -31,9 +32,9 @@ public final class ExceptionUtil {
         }
 
         final ErrorCondition condition = ErrorCondition.fromString(errorCondition);
-
         if (condition == null) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, "'%s' is not a known ErrorCondition.", errorCondition));
+            throw new IllegalArgumentException(String.format(Locale.ROOT, "'%s' is not a known ErrorCondition.",
+                errorCondition));
         }
 
         boolean isTransient;
@@ -43,6 +44,7 @@ public final class ExceptionUtil {
             case INTERNAL_ERROR:
             case LINK_DETACH_FORCED:
             case CONNECTION_FORCED:
+            case PROTON_IO:
                 isTransient = true;
                 break;
             case ENTITY_DISABLED_ERROR:
@@ -62,7 +64,8 @@ public final class ExceptionUtil {
             case NOT_FOUND:
                 return distinguishNotFound(description, errorContext);
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, "This condition '%s' is not known.", condition));
+                throw new IllegalArgumentException(String.format(Locale.ROOT, "This condition '%s' is not known.",
+                    condition));
         }
 
         return new AmqpException(isTransient, condition, description, errorContext);

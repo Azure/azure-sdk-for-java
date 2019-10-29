@@ -4,9 +4,9 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
-import com.azure.core.implementation.annotation.HeaderCollection;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -67,7 +67,7 @@ public final class BlobDownloadHeaders {
      * message content integrity.
      */
     @JsonProperty(value = "Content-MD5")
-    private byte[] contentMD5;
+    private byte[] contentMd5;
 
     /*
      * This header returns the value that was specified for the
@@ -289,11 +289,11 @@ public final class BlobDownloadHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -305,7 +305,7 @@ public final class BlobDownloadHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders lastModified(OffsetDateTime lastModified) {
+    public BlobDownloadHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -319,7 +319,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -329,7 +329,7 @@ public final class BlobDownloadHeaders {
      * @param metadata the metadata value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders metadata(Map<String, String> metadata) {
+    public BlobDownloadHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -340,7 +340,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -351,7 +351,7 @@ public final class BlobDownloadHeaders {
      * @param contentLength the contentLength value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders contentLength(Long contentLength) {
+    public BlobDownloadHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -362,7 +362,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -373,7 +373,7 @@ public final class BlobDownloadHeaders {
      * @param contentType the contentType value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders contentType(String contentType) {
+    public BlobDownloadHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -385,7 +385,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the contentRange value.
      */
-    public String contentRange() {
+    public String getContentRange() {
         return this.contentRange;
     }
 
@@ -397,7 +397,7 @@ public final class BlobDownloadHeaders {
      * @param contentRange the contentRange value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders contentRange(String contentRange) {
+    public BlobDownloadHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
     }
@@ -409,7 +409,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -421,32 +421,32 @@ public final class BlobDownloadHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders eTag(String eTag) {
+    public BlobDownloadHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
 
     /**
-     * Get the contentMD5 property: If the blob has an MD5 hash and this
+     * Get the contentMd5 property: If the blob has an MD5 hash and this
      * operation is to read the full blob, this response header is returned so
      * that the client can check for message content integrity.
      *
-     * @return the contentMD5 value.
+     * @return the contentMd5 value.
      */
-    public byte[] contentMD5() {
-        return ImplUtils.clone(this.contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(this.contentMd5);
     }
 
     /**
-     * Set the contentMD5 property: If the blob has an MD5 hash and this
+     * Set the contentMd5 property: If the blob has an MD5 hash and this
      * operation is to read the full blob, this response header is returned so
      * that the client can check for message content integrity.
      *
-     * @param contentMD5 the contentMD5 value to set.
+     * @param contentMd5 the contentMd5 value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders contentMD5(byte[] contentMD5) {
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+    public BlobDownloadHeaders setContentMd5(byte[] contentMd5) {
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
 
@@ -456,7 +456,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the contentEncoding value.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return this.contentEncoding;
     }
 
@@ -467,7 +467,7 @@ public final class BlobDownloadHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders contentEncoding(String contentEncoding) {
+    public BlobDownloadHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -478,7 +478,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the cacheControl value.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return this.cacheControl;
     }
 
@@ -489,7 +489,7 @@ public final class BlobDownloadHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders cacheControl(String cacheControl) {
+    public BlobDownloadHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -506,7 +506,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the contentDisposition value.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return this.contentDisposition;
     }
 
@@ -523,7 +523,7 @@ public final class BlobDownloadHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders contentDisposition(String contentDisposition) {
+    public BlobDownloadHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -534,7 +534,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the contentLanguage value.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return this.contentLanguage;
     }
 
@@ -545,7 +545,7 @@ public final class BlobDownloadHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders contentLanguage(String contentLanguage) {
+    public BlobDownloadHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -556,7 +556,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the blobSequenceNumber value.
      */
-    public Long blobSequenceNumber() {
+    public Long getBlobSequenceNumber() {
         return this.blobSequenceNumber;
     }
 
@@ -567,7 +567,7 @@ public final class BlobDownloadHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders blobSequenceNumber(Long blobSequenceNumber) {
+    public BlobDownloadHeaders setBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -578,7 +578,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the blobType value.
      */
-    public BlobType blobType() {
+    public BlobType getBlobType() {
         return this.blobType;
     }
 
@@ -589,7 +589,7 @@ public final class BlobDownloadHeaders {
      * @param blobType the blobType value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders blobType(BlobType blobType) {
+    public BlobDownloadHeaders setBlobType(BlobType blobType) {
         this.blobType = blobType;
         return this;
     }
@@ -605,11 +605,11 @@ public final class BlobDownloadHeaders {
      *
      * @return the copyCompletionTime value.
      */
-    public OffsetDateTime copyCompletionTime() {
+    public OffsetDateTime getCopyCompletionTime() {
         if (this.copyCompletionTime == null) {
             return null;
         }
-        return this.copyCompletionTime.dateTime();
+        return this.copyCompletionTime.getDateTime();
     }
 
     /**
@@ -624,7 +624,7 @@ public final class BlobDownloadHeaders {
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders copyCompletionTime(OffsetDateTime copyCompletionTime) {
+    public BlobDownloadHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
         if (copyCompletionTime == null) {
             this.copyCompletionTime = null;
         } else {
@@ -643,7 +643,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the copyStatusDescription value.
      */
-    public String copyStatusDescription() {
+    public String getCopyStatusDescription() {
         return this.copyStatusDescription;
     }
 
@@ -658,7 +658,7 @@ public final class BlobDownloadHeaders {
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders copyStatusDescription(String copyStatusDescription) {
+    public BlobDownloadHeaders setCopyStatusDescription(String copyStatusDescription) {
         this.copyStatusDescription = copyStatusDescription;
         return this;
     }
@@ -670,7 +670,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the copyId value.
      */
-    public String copyId() {
+    public String getCopyId() {
         return this.copyId;
     }
 
@@ -682,7 +682,7 @@ public final class BlobDownloadHeaders {
      * @param copyId the copyId value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders copyId(String copyId) {
+    public BlobDownloadHeaders setCopyId(String copyId) {
         this.copyId = copyId;
         return this;
     }
@@ -698,7 +698,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the copyProgress value.
      */
-    public String copyProgress() {
+    public String getCopyProgress() {
         return this.copyProgress;
     }
 
@@ -714,7 +714,7 @@ public final class BlobDownloadHeaders {
      * @param copyProgress the copyProgress value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders copyProgress(String copyProgress) {
+    public BlobDownloadHeaders setCopyProgress(String copyProgress) {
         this.copyProgress = copyProgress;
         return this;
     }
@@ -729,7 +729,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the copySource value.
      */
-    public String copySource() {
+    public String getCopySource() {
         return this.copySource;
     }
 
@@ -744,7 +744,7 @@ public final class BlobDownloadHeaders {
      * @param copySource the copySource value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders copySource(String copySource) {
+    public BlobDownloadHeaders setCopySource(String copySource) {
         this.copySource = copySource;
         return this;
     }
@@ -756,7 +756,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the copyStatus value.
      */
-    public CopyStatusType copyStatus() {
+    public CopyStatusType getCopyStatus() {
         return this.copyStatus;
     }
 
@@ -768,7 +768,7 @@ public final class BlobDownloadHeaders {
      * @param copyStatus the copyStatus value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders copyStatus(CopyStatusType copyStatus) {
+    public BlobDownloadHeaders setCopyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
     }
@@ -780,7 +780,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the leaseDuration value.
      */
-    public LeaseDurationType leaseDuration() {
+    public LeaseDurationType getLeaseDuration() {
         return this.leaseDuration;
     }
 
@@ -792,7 +792,7 @@ public final class BlobDownloadHeaders {
      * @param leaseDuration the leaseDuration value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders leaseDuration(LeaseDurationType leaseDuration) {
+    public BlobDownloadHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
         this.leaseDuration = leaseDuration;
         return this;
     }
@@ -803,7 +803,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the leaseState value.
      */
-    public LeaseStateType leaseState() {
+    public LeaseStateType getLeaseState() {
         return this.leaseState;
     }
 
@@ -814,7 +814,7 @@ public final class BlobDownloadHeaders {
      * @param leaseState the leaseState value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders leaseState(LeaseStateType leaseState) {
+    public BlobDownloadHeaders setLeaseState(LeaseStateType leaseState) {
         this.leaseState = leaseState;
         return this;
     }
@@ -825,7 +825,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the leaseStatus value.
      */
-    public LeaseStatusType leaseStatus() {
+    public LeaseStatusType getLeaseStatus() {
         return this.leaseStatus;
     }
 
@@ -836,7 +836,7 @@ public final class BlobDownloadHeaders {
      * @param leaseStatus the leaseStatus value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders leaseStatus(LeaseStatusType leaseStatus) {
+    public BlobDownloadHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
         this.leaseStatus = leaseStatus;
         return this;
     }
@@ -848,7 +848,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -860,7 +860,7 @@ public final class BlobDownloadHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders clientRequestId(String clientRequestId) {
+    public BlobDownloadHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -871,7 +871,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -882,7 +882,7 @@ public final class BlobDownloadHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders requestId(String requestId) {
+    public BlobDownloadHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -894,7 +894,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -906,7 +906,7 @@ public final class BlobDownloadHeaders {
      * @param version the version value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders version(String version) {
+    public BlobDownloadHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -917,7 +917,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the acceptRanges value.
      */
-    public String acceptRanges() {
+    public String getAcceptRanges() {
         return this.acceptRanges;
     }
 
@@ -928,7 +928,7 @@ public final class BlobDownloadHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders acceptRanges(String acceptRanges) {
+    public BlobDownloadHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
     }
@@ -939,11 +939,11 @@ public final class BlobDownloadHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -953,7 +953,7 @@ public final class BlobDownloadHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlobDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -968,7 +968,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the blobCommittedBlockCount value.
      */
-    public Integer blobCommittedBlockCount() {
+    public Integer getBlobCommittedBlockCount() {
         return this.blobCommittedBlockCount;
     }
 
@@ -979,7 +979,7 @@ public final class BlobDownloadHeaders {
      * @param blobCommittedBlockCount the blobCommittedBlockCount value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders blobCommittedBlockCount(Integer blobCommittedBlockCount) {
+    public BlobDownloadHeaders setBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
         return this;
     }
@@ -1007,7 +1007,7 @@ public final class BlobDownloadHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public BlobDownloadHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -1019,7 +1019,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the encryptionKeySha256 value.
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return this.encryptionKeySha256;
     }
 
@@ -1031,7 +1031,7 @@ public final class BlobDownloadHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders encryptionKeySha256(String encryptionKeySha256) {
+    public BlobDownloadHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -1045,7 +1045,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the blobContentMD5 value.
      */
-    public byte[] blobContentMD5() {
+    public byte[] getBlobContentMD5() {
         return ImplUtils.clone(this.blobContentMD5);
     }
 
@@ -1059,7 +1059,7 @@ public final class BlobDownloadHeaders {
      * @param blobContentMD5 the blobContentMD5 value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders blobContentMD5(byte[] blobContentMD5) {
+    public BlobDownloadHeaders setBlobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
         return this;
     }
@@ -1074,7 +1074,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the contentCrc64 value.
      */
-    public byte[] contentCrc64() {
+    public byte[] getContentCrc64() {
         return ImplUtils.clone(this.contentCrc64);
     }
 
@@ -1089,7 +1089,7 @@ public final class BlobDownloadHeaders {
      * @param contentCrc64 the contentCrc64 value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders contentCrc64(byte[] contentCrc64) {
+    public BlobDownloadHeaders setContentCrc64(byte[] contentCrc64) {
         this.contentCrc64 = ImplUtils.clone(contentCrc64);
         return this;
     }
@@ -1099,7 +1099,7 @@ public final class BlobDownloadHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -1109,7 +1109,7 @@ public final class BlobDownloadHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders errorCode(String errorCode) {
+    public BlobDownloadHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

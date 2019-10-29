@@ -6,6 +6,10 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
 
 trigger:
   branches:
@@ -34,6 +38,6 @@ stages:
     parameters:
       ServiceDirectory: authorization
       Artifacts:
-        - name: microsoft-azure-authentication-msi-token-provider
-          safeName: microsoftazureauthenticationmsitokenprovider
+        - name: azure-authentication-msi-token-provider
+          safeName: azureauthenticationmsitokenprovider
           stagingProfileId: 534d15ee3800f4

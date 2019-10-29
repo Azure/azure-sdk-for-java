@@ -7,12 +7,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 /**
  * A collection of headers on an HTTP request or response.
  */
 public class HttpHeaders implements Iterable<HttpHeader> {
-    private final Map<String, HttpHeader> headers = new HashMap<>();
+    private final Map<String, HttpHeader> headers = new ConcurrentHashMap<>();
 
     /**
      * Create an empty HttpHeaders instance.
@@ -40,7 +42,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         this();
 
         for (final HttpHeader header : headers) {
-            this.put(header.name(), header.value());
+            this.put(header.getName(), header.getValue());
         }
     }
 
@@ -49,14 +51,14 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      *
      * @return the number of headers in this collection.
      */
-    public int size() {
+    public int getSize() {
         return headers.size();
     }
 
     /**
-     * Set a header.
+     * Sets a {@link HttpHeader header} with the given name and value.
      *
-     * If header with same name already exists then the value will be overwritten.
+     * <p>If header with same name already exists then the value will be overwritten.</p>
      *
      * @param name the name
      * @param value the value
@@ -68,7 +70,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Get the {@link HttpHeader header} for the provided header name. Null will be returned if the header isn't found.
+     * Gets the {@link HttpHeader header} for the provided header name. {@code Null} is returned if the header isn't
+     * found.
      *
      * @param name the name of the header to find.
      * @return the header if found, null otherwise.
@@ -78,27 +81,38 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Get the header value for the provided header name. Null will be returned if the header
-     * name isn't found.
+     * Removes the {@link HttpHeader header} with the provided header name. {@code Null} is returned if the header
+     * isn't found.
      *
-     * @param name the name of the header to look for
-     * @return The String value of the header, or null if the header isn't found
+     * @param name the name of the header to remove.
+     * @return the header if removed, null otherwise.
      */
-    public String value(String name) {
-        final HttpHeader header = get(name);
-        return header == null ? null : header.value();
+    public HttpHeader remove(String name) {
+        return headers.remove(formatKey(name));
     }
 
     /**
-     * Get the header values for the provided header name. Null will be returned if
-     * the header name isn't found.
+     * Get the value for the provided header name. {@code Null} is returned if the header name isn't found.
      *
-     * @param name the name of the header to look for
+     * @param name the name of the header whose value is being retrieved.
+     * @return the value of the header, or null if the header isn't found
+     */
+    public String getValue(String name) {
+        final HttpHeader header = get(name);
+        return header == null ? null : header.getValue();
+    }
+
+    /**
+     * Get the values for the provided header name. {@code Null} is returned if the header name isn't found.
+     *
+     * <p>This returns {@link #getValue(String) getValue} split by {@code comma}.</p>
+     *
+     * @param name the name of the header whose value is being retrieved.
      * @return the values of the header, or null if the header isn't found
      */
-    public String[] values(String name) {
+    public String[] getValues(String name) {
         final HttpHeader header = get(name);
-        return header == null ? null : header.values();
+        return header == null ? null : header.getValues();
     }
 
     private String formatKey(final String key) {
@@ -106,20 +120,32 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Get {@link Map} representation of the HttpHeaders collection.
+     * Gets a {@link Map} representation of the HttpHeaders collection.
      *
      * @return the headers as map
      */
     public Map<String, String> toMap() {
         final Map<String, String> result = new HashMap<>();
         for (final HttpHeader header : headers.values()) {
-            result.put(header.name(), header.value());
+            result.put(header.getName(), header.getValue());
         }
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<HttpHeader> iterator() {
         return headers.values().iterator();
+    }
+
+    /**
+     * Get a {@link Stream} representation of the HttpHeader values in this instance.
+     *
+     * @return A {@link Stream} of all header values in this instance.
+     */
+    public Stream<HttpHeader> stream() {
+        return headers.values().stream();
     }
 }

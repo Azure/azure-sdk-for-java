@@ -8,10 +8,9 @@ import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +37,7 @@ import java.util.Objects;
 public class InterceptorManager implements AutoCloseable {
     private static final String RECORD_FOLDER = "session-records/";
 
-    private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
+    private final ClientLogger logger = new ClientLogger(InterceptorManager.class);
     private final Map<String, String> textReplacementRules;
     private final String testName;
     private final TestMode testMode;
@@ -66,7 +65,7 @@ public class InterceptorManager implements AutoCloseable {
      * @throws NullPointerException If {@code testName} is {@code null}.
      */
     public InterceptorManager(String testName, TestMode testMode) throws IOException {
-        Objects.requireNonNull(testName);
+        Objects.requireNonNull(testName, "'testName' cannot be null.");
 
         this.testName = testName;
         this.testMode = testMode;
@@ -80,20 +79,20 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Creates a new InterceptorManager that replays test session records. It takes a set of
      * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
-     * {@link NetworkCallRecord#response()}.
+     * {@link NetworkCallRecord#getResponse()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
      *
      * @param testName Name of the test session record.
-     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#response()} when playing
+     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when playing
      * back network calls.
      * @throws IOException An existing test session record could not be located or the data could not be deserialized
      * into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
      */
     public InterceptorManager(String testName, Map<String, String> textReplacementRules) throws IOException {
-        Objects.requireNonNull(testName);
-        Objects.requireNonNull(textReplacementRules);
+        Objects.requireNonNull(testName, "'testName' cannot be null.");
+        Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
 
         this.testName = testName;
         this.testMode = TestMode.PLAYBACK;
@@ -174,8 +173,8 @@ public class InterceptorManager implements AutoCloseable {
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         File recordFile = getRecordFile(testName);
 
-        if (recordFile.createNewFile() && logger.isTraceEnabled()) {
-            logger.trace("Created record file: {}", recordFile.getPath());
+        if (recordFile.createNewFile()) {
+            logger.verbose("Created record file: {}", recordFile.getPath());
         }
 
         mapper.writeValue(recordFile, recordedData);
@@ -186,15 +185,13 @@ public class InterceptorManager implements AutoCloseable {
         File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
 
         if (!folderFile.exists()) {
-            if (folderFile.mkdir() && logger.isTraceEnabled()) {
-                logger.trace("Created directory: {}", folderFile.getPath());
+            if (folderFile.mkdir()) {
+                logger.verbose("Created directory: {}", folderFile.getPath());
             }
         }
 
         String filePath = folderFile.getPath() + "/" + testName + ".json";
-        if (logger.isInfoEnabled()) {
-            logger.info("==> Playback file path: " + filePath);
-        }
+        logger.info("==> Playback file path: " + filePath);
 
         return new File(filePath);
     }

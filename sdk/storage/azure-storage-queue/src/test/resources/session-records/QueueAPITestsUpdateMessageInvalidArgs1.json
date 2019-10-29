@@ -1,78 +1,90 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsupdatemessageinvalidargs156931e2264b7b",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsupdatemessageinvalidargs1379254e0876ed",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "cef97481-9797-485d-b09b-c9cf1b9b22e0"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "c5c66125-f003-010e-289f-589a28000000",
-      "Date" : "Thu, 22 Aug 2019 04:10:32 GMT"
-    }
+      "x-ms-request-id" : "5b8e7cdd-f003-0001-6c0a-85318b000000",
+      "Date" : "Thu, 17 Oct 2019 16:44:28 GMT",
+      "x-ms-client-request-id" : "cef97481-9797-485d-b09b-c9cf1b9b22e0"
+    },
+    "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsupdatemessageinvalidargs156931e2264b7b/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsupdatemessageinvalidargs1379254e0876ed/messages",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "53349150-f6c9-4dea-9b79-1e2c7ac57882",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "c5c66129-f003-010e-2b9f-589a28000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>91921531-1f0f-421e-af05-b790db72cbd9</MessageId><InsertionTime>Thu, 22 Aug 2019 04:10:33 GMT</InsertionTime><ExpirationTime>Thu, 29 Aug 2019 04:10:33 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAVJ4Ki59Y1QE=</PopReceipt><TimeNextVisible>Thu, 22 Aug 2019 04:10:33 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
-      "Date" : "Thu, 22 Aug 2019 04:10:32 GMT",
+      "x-ms-request-id" : "5b8e7cef-f003-0001-7b0a-85318b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>f2b208ff-fb18-4906-9d49-82dd25e08ed6</MessageId><InsertionTime>Thu, 17 Oct 2019 16:44:28 GMT</InsertionTime><ExpirationTime>Thu, 24 Oct 2019 16:44:28 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA4mueJAqF1QE=</PopReceipt><TimeNextVisible>Thu, 17 Oct 2019 16:44:28 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 17 Oct 2019 16:44:28 GMT",
+      "x-ms-client-request-id" : "53349150-f6c9-4dea-9b79-1e2c7ac57882",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsupdatemessageinvalidargs156931e2264b7b/messages?numofmessages=1&visibilitytimeout=30",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsupdatemessageinvalidargs1379254e0876ed/messages?numofmessages=1",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "b14bc20f-63c2-4f60-aaeb-237a00b8fc13"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "c5c6612e-f003-010e-2e9f-589a28000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>91921531-1f0f-421e-af05-b790db72cbd9</MessageId><InsertionTime>Thu, 22 Aug 2019 04:10:33 GMT</InsertionTime><ExpirationTime>Thu, 29 Aug 2019 04:10:33 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAaZL1nJ9Y1QE=</PopReceipt><TimeNextVisible>Thu, 22 Aug 2019 04:11:03 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test message before update</MessageText></QueueMessage></QueueMessagesList>",
-      "Date" : "Thu, 22 Aug 2019 04:10:32 GMT",
+      "x-ms-request-id" : "5b8e7d07-f003-0001-120a-85318b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>f2b208ff-fb18-4906-9d49-82dd25e08ed6</MessageId><InsertionTime>Thu, 17 Oct 2019 16:44:28 GMT</InsertionTime><ExpirationTime>Thu, 24 Oct 2019 16:44:28 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAR8eGNgqF1QE=</PopReceipt><TimeNextVisible>Thu, 17 Oct 2019 16:44:58 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test message before update</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 17 Oct 2019 16:44:28 GMT",
+      "x-ms-client-request-id" : "b14bc20f-63c2-4f60-aaeb-237a00b8fc13",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsupdatemessageinvalidargs156931e2264b7b/messages/91921531-1f0f-421e-af05-b790db72cbd9Random?popreceipt=AgAAAAMAAAAAAAAAaZL1nJ9Y1QE%3d&visibilitytimeout=1",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsupdatemessageinvalidargs1379254e0876ed/messages/f2b208ff-fb18-4906-9d49-82dd25e08ed6Random?popreceipt=AgAAAAMAAAAAAAAAR8eGNgqF1QE%3d&visibilitytimeout=1",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "3def8520-3a84-45fd-afd7-c8a2bef334e8",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "MessageNotFound",
       "retry-after" : "0",
       "Content-Length" : "221",
       "StatusCode" : "404",
-      "x-ms-request-id" : "c5c66130-f003-010e-309f-589a28000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>MessageNotFound</Code><Message>The specified message does not exist.\nRequestId:c5c66130-f003-010e-309f-589a28000000\nTime:2019-08-22T04:10:33.9389106Z</Message></Error>",
-      "Date" : "Thu, 22 Aug 2019 04:10:33 GMT",
+      "x-ms-request-id" : "5b8e7d16-f003-0001-210a-85318b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>MessageNotFound</Code><Message>The specified message does not exist.\nRequestId:5b8e7d16-f003-0001-210a-85318b000000\nTime:2019-10-17T16:44:31.0483857Z</Message></Error>",
+      "Date" : "Thu, 17 Oct 2019 16:44:30 GMT",
+      "x-ms-client-request-id" : "3def8520-3a84-45fd-afd7-c8a2bef334e8",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestsupdatemessageinvalidargs156931e2264b7b" ]
+  "variables" : [ "queueapitestsupdatemessageinvalidargs1379254e0876ed" ]
 }

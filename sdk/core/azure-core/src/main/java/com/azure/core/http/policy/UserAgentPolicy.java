@@ -3,19 +3,18 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.ServiceVersion;
+import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
 /**
- * Pipeline policy that adds 'User-Agent' header to a request.
+ * Pipeline policy that adds "User-Agent" header to a request.
  *
- * Format for User-Agent policy is outlined in https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html under "Client
- * Library Usage Telemetry".
+ * The format for the "User-Agent" string is outlined in
+ * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy>Azure Core: Telemetry policy</a>.
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
@@ -62,19 +61,22 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      *
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
+     * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
      */
-    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration) {
-        boolean telemetryDisabled = configuration.get(BaseConfigurations.AZURE_TELEMETRY_DISABLED, false);
+    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
+        boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
         if (telemetryDisabled) {
-            this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion);
+            this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion,
+                version.getVersion());
         } else {
-            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo());
+            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo(),
+                version.getVersion());
         }
     }
 
     /**
-     * Updates the User-Agent header with the value supplied in the policy.
+     * Updates the "User-Agent" header with the value supplied in the policy.
      *
      * When the User-Agent header already has a value and it differs from the value used to create this policy the
      * User-Agent header is updated by prepending the value in this policy.
@@ -82,20 +84,20 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String header = context.httpRequest().headers().value("User-Agent");
+        String header = context.getHttpRequest().getHeaders().getValue("User-Agent");
         if (header == null || header.startsWith(DEFAULT_USER_AGENT_HEADER)) {
             header = userAgent;
         } else {
             header = userAgent + " " + header;
         }
-        context.httpRequest().headers().put("User-Agent", header);
+        context.getHttpRequest().getHeaders().put("User-Agent", header);
         return next.process();
     }
 
     private static String getPlatformInfo() {
-        String javaVersion = ConfigurationManager.getConfiguration().get("java.version");
-        String osName = ConfigurationManager.getConfiguration().get("os.name");
-        String osVersion = ConfigurationManager.getConfiguration().get("os.version");
+        String javaVersion = Configuration.getGlobalConfiguration().get("java.version");
+        String osName = Configuration.getGlobalConfiguration().get("os.name");
+        String osVersion = Configuration.getGlobalConfiguration().get("os.version");
 
         return String.format(PLATFORM_INFO_FORMAT, javaVersion, osName, osVersion);
     }

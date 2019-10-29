@@ -7,13 +7,13 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
     <relativePath>../../pom.data.xml</relativePath>
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
-  <version>3.1.0</version>
+  <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cosmos DB SQL API</name>
@@ -34,16 +34,17 @@ Licensed under the MIT License.
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <cosmosdb-sdk-direct-impl.version>3.1.0</cosmosdb-sdk-direct-impl.version>
-    <direct-connectivity-version>3.1.0</direct-connectivity-version>
+    <cosmosdb-sdk-direct-impl.version>${project.version}</cosmosdb-sdk-direct-impl.version>
+    <direct-connectivity-version>${project.version}</direct-connectivity-version>
     <metrics.version>4.1.0</metrics.version>
     <micrometer.version>1.2.0</micrometer.version>
     <mockito.version>1.10.19</mockito.version>
-    <netty.version>4.1.38.Final</netty.version>
-    <netty-tcnative.version>2.0.25.Final</netty-tcnative.version>
-    <sdk-version>3.1.0</sdk-version>
+    <netty.version>4.1.42.Final</netty.version>
+    <netty-tcnative.version>2.0.26.Final</netty-tcnative.version>
+    <sdk-version>${project.version}</sdk-version>
     <guava.version>27.0.1-jre</guava.version>
-    <reactor-core.version>3.2.9.RELEASE</reactor-core.version>
+    <reactor-core.version>3.3.0.RELEASE</reactor-core.version>
+    <reactor-netty.version>0.9.0.RELEASE</reactor-netty.version>
     <test.groups>unit</test.groups>
     <collectedArtifactsForReleaseLocation>${project.basedir}/target/collectedArtifactsForRelease</collectedArtifactsForReleaseLocation>
     <javadoc.opts/>
@@ -54,7 +55,7 @@ Licensed under the MIT License.
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-cosmos</artifactId>
-        <version>${project.parent.version}</version>
+        <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;current} -->
       </dependency>
 
       <dependency>

@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.credentials.SASTokenCredential;
-import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.models.DequeuedMessage;
-import com.azure.storage.queue.models.EnqueuedMessage;
-import com.azure.storage.queue.models.PeekedMessage;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.models.SignedIdentifier;
-import com.azure.storage.queue.models.StorageErrorException;
-import com.azure.storage.queue.models.UpdatedMessage;
+import com.azure.storage.queue.models.QueueSignedIdentifier;
+import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.SendMessageResult;
+import com.azure.storage.queue.models.UpdateMessageResult;
+import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +34,9 @@ import java.util.Map;
  *
  * @see QueueClientBuilder
  * @see QueueAsyncClient
- * @see SharedKeyCredential
- * @see SASTokenCredential
+ * @see StorageSharedKeyCredential
  */
+@ServiceClient(builder = QueueClientBuilder.class)
 public final class QueueClient {
     private final QueueAsyncClient client;
 
@@ -50,10 +51,18 @@ public final class QueueClient {
 
     /**
      * @return the URL of the storage queue.
-     * @throws RuntimeException If the queue is using a malformed URL.
      */
-    public URL getQueueUrl() {
+    public String getQueueUrl() {
         return client.getQueueUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public QueueServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -63,15 +72,15 @@ public final class QueueClient {
      *
      * <p>Create a queue</p>
      *
-     *{@codesnippet com.azure.storage.queue.queueClient.create}
+     * {@codesnippet com.azure.storage.queue.queueClient.create}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
-     * @throws StorageErrorException If a queue with the same name already exists in the queue service.
+     * @throws QueueStorageException If a queue with the same name already exists in the queue service.
      */
     public void create() {
-        createWithResponse(null, Context.NONE);
+        createWithResponse(null, null, Context.NONE);
     }
 
     /**
@@ -81,18 +90,23 @@ public final class QueueClient {
      *
      * <p>Create a queue with metadata "queue:metadataMap"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.createWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.createWithResponse#map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to associate with the queue
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If a queue with the same name and different metadata already exists in the queue service.
+     * @throws QueueStorageException If a queue with the same name and different metadata already exists in the queue
+     * service.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse createWithResponse(Map<String, String> metadata, Context context) {
-        return client.createWithResponse(metadata, context).block();
+    public Response<Void> createWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.createWithResponse(metadata, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -107,10 +121,10 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public void delete() {
-        deleteWithResponse(Context.NONE);
+        deleteWithResponse(null, Context.NONE);
     }
 
     /**
@@ -120,17 +134,21 @@ public final class QueueClient {
      *
      * <p>Delete a queue</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.deleteWithResponse#Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.deleteWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
-     * @return A response that only contains headers and response status code
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws StorageErrorException If the queue doesn't exist
+     * @return A response that only contains headers and response status code
+     * @throws QueueStorageException If the queue doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteWithResponse(Context context) {
-        return client.deleteWithResponse(context).block();
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteWithResponse(context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -147,10 +165,10 @@ public final class QueueClient {
      *
      * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
      * messages count of the queue.
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public QueueProperties getProperties() {
-        return getPropertiesWithResponse(Context.NONE).value();
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -160,18 +178,22 @@ public final class QueueClient {
      *
      * <p>Get the properties of the queue</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.getPropertiesWithResponse#Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
      *
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
      * messages count of the queue.
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<QueueProperties> getPropertiesWithResponse(Context context) {
-        return client.getPropertiesWithResponse(context).block();
+    public Response<QueueProperties> getPropertiesWithResponse(Duration timeout, Context context) {
+        Mono<Response<QueueProperties>> response = client.getPropertiesWithResponse(context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -193,10 +215,10 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the queue
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public void setMetadata(Map<String, String> metadata) {
-        setMetadataWithResponse(metadata, Context.NONE);
+        setMetadataWithResponse(metadata, null, Context.NONE);
     }
 
     /**
@@ -208,22 +230,26 @@ public final class QueueClient {
      *
      * <p>Set the queue's metadata to "queue:metadataMap"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.setMetadataWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.setMetadataWithResponse#map-duration-context}
      *
      * <p>Clear the queue's metadata</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.clearMetadataWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.clearMetadataWithResponse#map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the queue
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse setMetadataWithResponse(Map<String, String> metadata, Context context) {
-        return client.setMetadataWithResponse(metadata, context).block();
+    public Response<Void> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -239,10 +265,10 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-acl">Azure Docs</a>.</p>
      *
      * @return The stored access policies specified on the queue.
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
-    public Iterable<SignedIdentifier> getAccessPolicy() {
-        return client.getAccessPolicy().toIterable();
+    public PagedIterable<QueueSignedIdentifier> getAccessPolicy() {
+        return new PagedIterable<>(client.getAccessPolicy());
     }
 
     /**
@@ -258,11 +284,11 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
-     * @throws StorageErrorException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
-     * or the queue will have more than five policies.
+     * @throws QueueStorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled
+     * out, or the queue will have more than five policies.
      */
-    public void setAccessPolicy(List<SignedIdentifier> permissions) {
-        setAccessPolicyWithResponse(permissions, Context.NONE);
+    public void setAccessPolicy(List<QueueSignedIdentifier> permissions) {
+        setAccessPolicyWithResponse(permissions, null, Context.NONE);
     }
 
     /**
@@ -272,19 +298,24 @@ public final class QueueClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
-     * or the queue will have more than five policies.
+     * @throws QueueStorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled
+     * out, or the queue will have more than five policies.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Context context) {
-        return client.setAccessPolicyWithResponse(permissions, context).block();
+    public Response<Void> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions, Duration timeout,
+        Context context) {
+        Mono<Response<Void>> response = client.setAccessPolicyWithResponse(permissions, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -299,10 +330,10 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
      *
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public void clearMessages() {
-        clearMessagesWithResponse(Context.NONE);
+        clearMessagesWithResponse(null, Context.NONE);
     }
 
     /**
@@ -312,72 +343,83 @@ public final class QueueClient {
      *
      * <p>Clear the messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.clearMessagesWithResponse#Context}
+     * {@codesnippet com.azure.storage.queue.queueClient.clearMessagesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
      *
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse clearMessagesWithResponse(Context context) {
-        return client.clearMessagesWithResponse(context).block();
+    public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.clearMessagesWithResponse(context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
-     * Enqueues a message that has a time-to-live of 7 days and is instantly visible.
+     * Sends a message that has a time-to-live of 7 days and is instantly visible.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Enqueue a message of "Hello, Azure"</p>
+     * <p>Sends a message of "Hello, Azure"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.enqueueMessage#string}
+     * {@codesnippet com.azure.storage.queue.queueClient.sendMessage#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
-     * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#messageId() messageId} and
-     * {@link EnqueuedMessage#popReceipt() popReceipt} that are used to interact with the message and other metadata
-     * about the enqueued message.
-     * @throws StorageErrorException If the queue doesn't exist
+     * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
+     * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
+     * and other metadata about the enqueued message.
+     * @throws QueueStorageException If the queue doesn't exist
      */
-    public EnqueuedMessage enqueueMessage(String messageText) {
-        return enqueueMessageWithResponse(messageText, null, null, Context.NONE).value();
+    public SendMessageResult sendMessage(String messageText) {
+        return sendMessageWithResponse(messageText, null, null, null, Context.NONE).getValue();
     }
 
     /**
-     * Enqueues a message with a given time-to-live and a timeout period where the message is invisible in the queue.
+     * Sends a message with a given time-to-live and a timeout period where the message is invisible in the queue.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Add a message of "Hello, Azure" that has a timeout of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.enqueueMessageWithResponse#string-duration-duration-Context}
+     * {@codesnippet com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context1}
      *
      * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration-Context}
+     * {@codesnippet com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context2}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
-     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue in seconds.
-     * If unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue. If
+     * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
      * seconds and 7 days.
-     * @param timeToLive Optional. How long the message will stay alive in the queue in seconds. If unset the value will
-     * default to 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
+     * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
+     * 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#messageId() messageId} and
-     * {@link EnqueuedMessage#popReceipt() popReceipt} that are used to interact with the message and other metadata
-     * about the enqueued message.
-     * @throws StorageErrorException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
+     * @return A response containing the {@link SendMessageResult} value that contains the
+     * {@link SendMessageResult#getMessageId() messageId} and
+     * {@link SendMessageResult#getPopReceipt() popReceipt} that are used to
+     * interact with the message and other metadata about the enqueued message.
+     * @throws QueueStorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
      * are outside of the allowed limits.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<EnqueuedMessage> enqueueMessageWithResponse(String messageText, Duration visibilityTimeout, Duration timeToLive, Context context) {
-        return client.enqueueMessageWithResponse(messageText, visibilityTimeout, timeToLive, context).block();
+    public Response<SendMessageResult> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
+        Duration timeToLive, Duration timeout, Context context) {
+        Mono<Response<SendMessageResult>> response = client.sendMessageWithResponse(messageText,
+            visibilityTimeout, timeToLive, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -385,44 +427,47 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Dequeue a message</p>
+     * <p>Receive a message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages}
+     * {@codesnippet com.azure.storage.queue.queueClient.receiveMessage}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
-     * @return The first {@link DequeuedMessage} in the queue, it contains
-     * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
-     * with the message, additionally it contains other metadata about the message.
-     * @throws StorageErrorException If the queue doesn't exist
+     * @return The first {@link QueueMessageItem MessageItem} in the queue, it contains
+     * {@link QueueMessageItem#getMessageId() messageId} and
+     * {@link QueueMessageItem#getPopReceipt() popReceipt} used to interact with the message,
+     * additionally it contains other metadata about the message.
+     * @throws QueueStorageException If the queue doesn't exist
      */
-    public Iterable<DequeuedMessage> dequeueMessages() {
-        return dequeueMessages(1, Duration.ofSeconds(30));
+    public QueueMessageItem receiveMessage() {
+        return client.receiveMessage().block();
     }
 
     /**
-     * Retrieves up to the maximum number of messages from the queue and hides them from other operations for 30 seconds.
+     * Retrieves up to the maximum number of messages from the queue and hides them from other operations for 30
+     * seconds.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Dequeue up to 5 messages</p>
+     * <p>Receive up to 5 messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer}
+     * {@codesnippet com.azure.storage.queue.queueClient.receiveMessages#integer}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
-     * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue than requested
-     * all the messages will be returned. If left empty only 1 message will be retrieved, the allowed range is 1 to 32
-     * messages.
-     * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DequeuedMessage contains
-     * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
-     * with the message and other metadata about the message.
-     * @throws StorageErrorException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
+     * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue
+     * than requested all the messages will be returned. If left empty only 1 message will be retrieved, the allowed
+     * range is 1 to 32 messages.
+     * @return Up to {@code maxMessages} {@link QueueMessageItem ReceiveMessageItem} from the queue.
+     * Each ReceiveMessageItem contains {@link QueueMessageItem#getMessageId() messageId} and
+     * {@link QueueMessageItem#getPopReceipt() popReceipt}
+     * used to interact with the message and other metadata about the message.
+     * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public Iterable<DequeuedMessage> dequeueMessages(Integer maxMessages) {
-        return dequeueMessages(maxMessages, Duration.ofSeconds(30));
+    public PagedIterable<QueueMessageItem> receiveMessages(Integer maxMessages) {
+        return receiveMessages(maxMessages, Duration.ofSeconds(30), null, Context.NONE);
     }
 
     /**
@@ -431,26 +476,33 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Dequeue up to 5 messages and give them a 60 second timeout period</p>
+     * <p>Receive up to 5 messages and give them a 60 second timeout period</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer-duration}
+     * {@codesnippet com.azure.storage.queue.queueClient.receiveMessages#integer-duration-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
-     * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue than requested
-     * all the messages will be returned. If left empty only 1 message will be retrieved, the allowed range is 1 to 32
-     * messages.
-     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue in seconds.
-     * If left empty the dequeued messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
-     * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DeqeuedMessage contains
-     * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
-     * with the message and other metadata about the message.
-     * @throws StorageErrorException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
+     * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue
+     * than requested all the messages will be returned. If left empty only 1 message will be retrieved, the allowed
+     * range is 1 to 32 messages.
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue. If left
+     * empty the received messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Up to {@code maxMessages} {@link QueueMessageItem DequeuedMessages} from the queue. Each DeqeuedMessage
+     * contains {@link QueueMessageItem#getMessageId() messageId} and
+     * {@link QueueMessageItem#getPopReceipt() popReceipt}
+     * used to interact with the message and other metadata about the message.
+     * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Iterable<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout) {
-        return client.dequeueMessages(maxMessages, visibilityTimeout).toIterable();
+    public PagedIterable<QueueMessageItem> receiveMessages(Integer maxMessages, Duration visibilityTimeout,
+        Duration timeout, Context context) {
+        return new PagedIterable<>(
+            client.receiveMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, timeout, context));
     }
 
     /**
@@ -463,15 +515,15 @@ public final class QueueClient {
      *
      * <p>Peek the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages}
+     * {@codesnippet com.azure.storage.queue.queueClient.peekMessage}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
      *
-     * @return A {@link PeekedMessage} that contains metadata about the message.
+     * @return A {@link PeekedMessageItem} that contains metadata about the message.
      */
-    public Iterable<PeekedMessage> peekMessages() {
-        return peekMessages(null);
+    public PeekedMessageItem peekMessage() {
+        return client.peekMessage().block();
     }
 
     /**
@@ -484,20 +536,24 @@ public final class QueueClient {
      *
      * <p>Peek up to the first five messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages#integer}
+     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages#integer-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
      *
-     * @param maxMessages Optional. Maximum number of messages to peek, if there are less messages exist in the queue than requested
-     * all the messages will be peeked. If left empty only 1 message will be peeked, the allowed range is 1 to 32
-     * messages.
-     * @return Up to {@code maxMessages} {@link PeekedMessage PeekedMessages} from the queue. Each PeekedMessage contains
-     * metadata about the message.
-     * @throws StorageErrorException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
+     * @param maxMessages Optional. Maximum number of messages to peek, if there are less messages exist in the queue
+     * than requested all the messages will be peeked. If left empty only 1 message will be peeked, the allowed range is
+     * 1 to 32 messages.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Up to {@code maxMessages} {@link PeekedMessageItem PeekedMessages} from the queue. Each PeekedMessage
+     * contains metadata about the message.
+     * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Iterable<PeekedMessage> peekMessages(Integer maxMessages) {
-        return client.peekMessages(maxMessages).toIterable();
+    public PagedIterable<PeekedMessageItem> peekMessages(Integer maxMessages, Duration timeout, Context context) {
+        return new PagedIterable<>(client.peekMessagesWithOptionalTimeout(maxMessages, timeout, context));
     }
 
     /**
@@ -512,18 +568,21 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
      *
-     * @param messageText Updated value for the message
      * @param messageId Id of the message to update
      * @param popReceipt Unique identifier that must match for the message to be updated
+     * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#popReceipt() popReceipt} to interact
-     * with the message, additionally contains the updated metadata about the message.
-     * @throws StorageErrorException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
-     * or the {@code visibilityTimeout} is outside the allowed bounds
+     * @return A {@link UpdateMessageResult} that contains the new
+     * {@link UpdateMessageResult#getPopReceipt() popReceipt} to interact with the message,
+     * additionally contains the updated metadata about the message.
+     * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
+     * or the {@code visibilityTimeout} is outside the allowed bounds.
      */
-    public UpdatedMessage updateMessage(String messageText, String messageId, String popReceipt, Duration visibilityTimeout) {
-        return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, Context.NONE).value();
+    public UpdateMessageResult updateMessage(String messageId, String popReceipt, String messageText,
+                                             Duration visibilityTimeout) {
+        return updateMessageWithResponse(messageId, popReceipt,  messageText, visibilityTimeout, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -533,24 +592,31 @@ public final class QueueClient {
      *
      * <p>Dequeue the first message and update it to "Hello again, Azure" and hide it for 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
      *
-     * @param messageText Updated value for the message
      * @param messageId Id of the message to update
      * @param popReceipt Unique identifier that must match for the message to be updated
+     * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link UpdatedMessage} that contains the new {@link UpdatedMessage#popReceipt() popReceipt} to interact
-     * with the message, additionally contains the updated metadata about the message.
-     * @throws StorageErrorException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
-     * or the {@code visibilityTimeout} is outside the allowed bounds
+     * @return A response containing the {@link UpdateMessageResult} that contains the new {@link
+     * UpdateMessageResult#getPopReceipt() popReceipt} to interact with the message, additionally contains the updated
+     * metadata about the message.
+     * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
+     * or the {@code visibilityTimeout} is outside the allowed bounds.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<UpdatedMessage> updateMessageWithResponse(String messageText, String messageId, String popReceipt, Duration visibilityTimeout, Context context) {
-        return client.updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, context).block();
+    public Response<UpdateMessageResult> updateMessageWithResponse(String messageId, String popReceipt,
+        String messageText, Duration visibilityTimeout, Duration timeout, Context context) {
+        Mono<Response<UpdateMessageResult>> response = client.updateMessageWithResponse(messageId,
+            popReceipt, messageText, visibilityTimeout, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -567,10 +633,11 @@ public final class QueueClient {
      *
      * @param messageId Id of the message to deleted
      * @param popReceipt Unique identifier that must match for the message to be deleted
-     * @throws StorageErrorException If the queue or messageId don't exist or the popReceipt doesn't match on the message
+     * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
+     * message.
      */
     public void deleteMessage(String messageId, String popReceipt) {
-        deleteMessageWithResponse(messageId, popReceipt, Context.NONE);
+        deleteMessageWithResponse(messageId, popReceipt, null, Context.NONE);
     }
 
     /**
@@ -580,7 +647,7 @@ public final class QueueClient {
      *
      * <p>Delete the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Context}
+     * {@codesnippet com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
@@ -588,10 +655,39 @@ public final class QueueClient {
      * @param messageId Id of the message to deleted
      * @param popReceipt Unique identifier that must match for the message to be deleted
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the queue or messageId don't exist or the popReceipt doesn't match on the message
+     * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
+     * message.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
-        return client.deleteMessageWithResponse(messageId, popReceipt, context).block();
+    public Response<Void> deleteMessageWithResponse(String messageId, String popReceipt, Duration timeout,
+        Context context) {
+        Mono<Response<Void>> response = client.deleteMessageWithResponse(messageId, popReceipt, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Get the queue name of the client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueClient.getQueueName}
+     *
+     * @return The name of the queue.
+     */
+    public String getQueueName() {
+        return this.client.getQueueName();
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.client.getAccountName();
     }
 }

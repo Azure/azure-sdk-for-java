@@ -23,8 +23,8 @@ public class SubscriptionRuntimeInfoSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SubscriptionRuntimeInfoSerializer.class);
 
     static SubscriptionRuntimeInfo parseFromContent(String topicPath, String xml) throws MessagingEntityNotFoundException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
@@ -34,7 +34,7 @@ public class SubscriptionRuntimeInfoSerializer {
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
-                TRACE_LOGGER.error("Exception while parsing response.", e);
+                TRACE_LOGGER.info("Exception while parsing response.", e);
             }
 
             if (TRACE_LOGGER.isDebugEnabled()) {

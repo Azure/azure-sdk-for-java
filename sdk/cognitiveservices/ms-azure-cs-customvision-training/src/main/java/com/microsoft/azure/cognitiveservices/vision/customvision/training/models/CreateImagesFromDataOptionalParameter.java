@@ -9,6 +9,7 @@
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The CreateImagesFromDataOptionalParameter model.
@@ -17,7 +18,7 @@ public class CreateImagesFromDataOptionalParameter {
     /**
      * The tags ids with which to tag each image. Limited to 20.
      */
-    private List<String> tagIds;
+    private List<UUID> tagIds;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -29,7 +30,7 @@ public class CreateImagesFromDataOptionalParameter {
      *
      * @return the tagIds value
      */
-    public List<String> tagIds() {
+    public List<UUID> tagIds() {
         return this.tagIds;
     }
 
@@ -39,7 +40,7 @@ public class CreateImagesFromDataOptionalParameter {
      * @param tagIds the tagIds value to set
      * @return the CreateImagesFromDataOptionalParameter object itself.
      */
-    public CreateImagesFromDataOptionalParameter withTagIds(List<String> tagIds) {
+    public CreateImagesFromDataOptionalParameter withTagIds(List<UUID> tagIds) {
         this.tagIds = tagIds;
         return this;
     }

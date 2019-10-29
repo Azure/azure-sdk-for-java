@@ -7,8 +7,8 @@ import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpConstants;
-import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
+import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.ErrorContextProvider;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -75,10 +75,10 @@ public final class EventDataBatch {
      *
      * @param eventData The {@link EventData} to add to the batch.
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
-     *         the batch.
+     *     the batch.
      * @throws IllegalArgumentException if {@code eventData} is {@code null}.
      * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link
-     *         EventDataBatch}.
+     *     EventDataBatch}.
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
@@ -90,7 +90,8 @@ public final class EventDataBatch {
             size = getSize(eventData, events.isEmpty());
         } catch (BufferOverflowException exception) {
             throw logger.logExceptionAsWarning(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
+                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
+                    maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
         }
 
@@ -139,13 +140,13 @@ public final class EventDataBatch {
     private Message createAmqpMessage(EventData event, String partitionKey) {
         final Message message = Proton.message();
 
-        if (event.properties() != null && !event.properties().isEmpty()) {
-            final ApplicationProperties applicationProperties = new ApplicationProperties(event.properties());
+        if (event.getProperties() != null && !event.getProperties().isEmpty()) {
+            final ApplicationProperties applicationProperties = new ApplicationProperties(event.getProperties());
             message.setApplicationProperties(applicationProperties);
         }
 
-        if (event.systemProperties() != null) {
-            event.systemProperties().forEach((key, value) -> {
+        if (event.getSystemProperties() != null) {
+            event.getSystemProperties().forEach((key, value) -> {
                 if (EventData.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
                     return;
                 }
@@ -194,7 +195,8 @@ public final class EventDataBatch {
                             message.setReplyToGroupId((String) value);
                             break;
                         default:
-                            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key)));
+                            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
+                                "Property is not a recognized reserved property name: %s", key)));
                     }
                 } else {
                     final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
@@ -214,8 +216,8 @@ public final class EventDataBatch {
             message.setMessageAnnotations(messageAnnotations);
         }
 
-        if (event.body() != null) {
-            message.setBody(new Data(Binary.create(event.body())));
+        if (event.getBody() != null) {
+            message.setBody(new Data(Binary.create(event.getBody())));
         }
 
         return message;

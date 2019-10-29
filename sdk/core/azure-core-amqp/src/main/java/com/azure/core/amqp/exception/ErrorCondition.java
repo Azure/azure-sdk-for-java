@@ -11,8 +11,9 @@ import java.util.Objects;
  * Contains constants common to the AMQP protocol and constants shared by Azure services.
  *
  * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error">AMQP
- * 1.0: Transport Errors</a>
- * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging Exceptions</a>
+ *     1.0: Transport Errors</a>
+ * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging
+ *     Exceptions</a>
  */
 public enum ErrorCondition {
     /**
@@ -97,7 +98,11 @@ public enum ErrorCondition {
     /**
      * Tracking Id for an exception.
      */
-    TRACKING_ID_PROPERTY("com.microsoft:tracking-id");
+    TRACKING_ID_PROPERTY("com.microsoft:tracking-id"),
+    /**
+     * IO exceptions that occur in proton-j library.
+     */
+    PROTON_IO("proton:io");
 
     private static final Map<String, ErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;

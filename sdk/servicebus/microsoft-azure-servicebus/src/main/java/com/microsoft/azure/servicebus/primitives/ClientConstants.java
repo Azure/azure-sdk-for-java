@@ -199,13 +199,13 @@ public final class ClientConstants {
             clientVersion = properties.getProperty("client.version");
         } catch (Exception e) {
             clientVersion = "NOTFOUND";
-            TRACE_LOGGER.error("Exception while retrieving client version. Exception: ", e.toString());
+            TRACE_LOGGER.info("Exception while retrieving client version. Exception: ", e.toString());
         } finally {
             if (clientPropInputStream != null) {
                 try {
                     clientPropInputStream.close();
                 } catch (IOException e) {
-                    TRACE_LOGGER.error("Client Properties InputStream doesn't close properly. Exception: ", e.toString());
+                    TRACE_LOGGER.info("Client Properties InputStream doesn't close properly. Exception: ", e.toString());
                 }
             }
         }

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshot572486f3cc232459045?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "69c3e091-835a-481d-adfc-d744328af32f"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F8C6E4FB6",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:19 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48bf3-a01a-0116-0f88-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:18 GMT",
+      "x-ms-client-request-id" : "69c3e091-835a-481d-adfc-d744328af32f"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshot572486f3cc232459045?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "695596d0-c2fb-4fb6-a6e3-1f1601b38aba"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-10-15T18:43:19.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F8C6E4FB6",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:19 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48bf5-a01a-0116-1088-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:18 GMT",
+      "x-ms-client-request-id" : "695596d0-c2fb-4fb6-a6e3-1f1601b38aba"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestscreatesnapshot572486f3cc232459045", "shareapitestscreatesnapshot7658427388822b0134f" ]
+}

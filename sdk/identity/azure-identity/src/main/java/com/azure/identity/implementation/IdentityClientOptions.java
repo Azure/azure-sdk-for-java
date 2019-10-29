@@ -5,6 +5,7 @@ package com.azure.identity.implementation;
 
 import com.azure.core.http.ProxyOptions;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 /**
@@ -16,7 +17,7 @@ public final class IdentityClientOptions {
 
     private String authorityHost;
     private int maxRetry;
-    private Function<Integer, Integer> retryTimeout;
+    private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
 
     /**
@@ -25,13 +26,13 @@ public final class IdentityClientOptions {
     public IdentityClientOptions() {
         authorityHost = DEFAULT_AUTHORITY_HOST;
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
-        retryTimeout = i -> (int) Math.pow(2, i - 1);
+        retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
     }
 
     /**
      * @return the Azure Active Directory endpoint to acquire tokens.
      */
-    public String authorityHost() {
+    public String getAuthorityHost() {
         return authorityHost;
     }
 
@@ -40,7 +41,7 @@ public final class IdentityClientOptions {
      * @param authorityHost the Azure Active Directory endpoint
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions authorityHost(String authorityHost) {
+    public IdentityClientOptions setAuthorityHost(String authorityHost) {
         this.authorityHost = authorityHost;
         return this;
     }
@@ -48,7 +49,7 @@ public final class IdentityClientOptions {
     /**
      * @return the max number of retries when an authentication request fails.
      */
-    public int maxRetry() {
+    public int getMaxRetry() {
         return maxRetry;
     }
 
@@ -57,7 +58,7 @@ public final class IdentityClientOptions {
      * @param maxRetry the number of retries
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions maxRetry(int maxRetry) {
+    public IdentityClientOptions setMaxRetry(int maxRetry) {
         this.maxRetry = maxRetry;
         return this;
     }
@@ -65,7 +66,7 @@ public final class IdentityClientOptions {
     /**
      * @return a Function to calculate seconds of timeout on every retried request.
      */
-    public Function<Integer, Integer> retryTimeout() {
+    public Function<Duration, Duration> getRetryTimeout() {
         return retryTimeout;
     }
 
@@ -74,7 +75,7 @@ public final class IdentityClientOptions {
      * @param retryTimeout the Function that returns a timeout in seconds given the number of retry
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions retryTimeout(Function<Integer, Integer> retryTimeout) {
+    public IdentityClientOptions setRetryTimeout(Function<Duration, Duration> retryTimeout) {
         this.retryTimeout = retryTimeout;
         return this;
     }
@@ -82,7 +83,7 @@ public final class IdentityClientOptions {
     /**
      * @return the options for proxy configuration.
      */
-    public ProxyOptions proxyOptions() {
+    public ProxyOptions getProxyOptions() {
         return proxyOptions;
     }
 
@@ -91,7 +92,7 @@ public final class IdentityClientOptions {
      * @param proxyOptions the options for proxy configuration
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions proxyOptions(ProxyOptions proxyOptions) {
+    public IdentityClientOptions setProxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }

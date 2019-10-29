@@ -9,14 +9,14 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
     <relativePath>../../../pom.data.xml</relativePath>
   </parent>
-  
+
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-batch</artifactId>
   <packaging>jar</packaging>
-  <version>7.0.0</version>
+  <version>7.1.0-preview.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
 
   <name>Microsoft Azure Batch SDK Root</name>
   <description>This package contains the root module of Microsoft Azure Batch SDK.</description>

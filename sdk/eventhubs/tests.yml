@@ -8,3 +8,15 @@ jobs:
         AZURE_EVENTHUBS_CONNECTION_STRING: $(java-event-hubs-test-connection-string)
         AZURE_TEST_MODE: RECORD
         AZURE_LOG_LEVEL: 4
+        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+        PRIMARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-primary-account-name)
+        PRIMARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-primary-account-key)
+        SECONDARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-secondary-account-name)
+        SECONDARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-secondary-account-key)
+        BLOB_STORAGE_ACCOUNT_NAME: $(java-storage-test-blob-account-name)
+        BLOB_STORAGE_ACCOUNT_KEY: $(java-storage-test-blob-account-key)
+        PREMIUM_STORAGE_ACCOUNT_NAME: $(java-storage-test-premium-account-name)
+        PREMIUM_STORAGE_ACCOUNT_KEY: $(java-storage-test-premium-account-key)
+        AZURE_STORAGE_ACCESS_KEY: $(java-storage-test-access-key)

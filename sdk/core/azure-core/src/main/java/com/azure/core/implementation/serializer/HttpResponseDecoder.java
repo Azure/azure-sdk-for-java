@@ -57,7 +57,8 @@ public final class HttpResponseDecoder {
          * @param serializer the decoder
          * @param decodeData the necessary data required to decode a Http response
          */
-        HttpDecodedResponse(final HttpResponse response, SerializerAdapter serializer, HttpResponseDecodeData decodeData) {
+        HttpDecodedResponse(final HttpResponse response, SerializerAdapter serializer,
+                            HttpResponseDecodeData decodeData) {
             if (HttpResponseBodyDecoder.isDecodable(response, decodeData)) {
                 this.response = response.buffer();
             } else {
@@ -70,7 +71,7 @@ public final class HttpResponseDecoder {
         /**
          * @return get the raw response that this decoded response based on
          */
-        public HttpResponse sourceResponse() {
+        public HttpResponse getSourceResponse() {
             return this.response;
         }
 
@@ -81,11 +82,11 @@ public final class HttpResponseDecoder {
          *
          * @return publisher that emits decoded http content
          */
-        public Mono<Object> decodedBody() {
+        public Mono<Object> getDecodedBody() {
             if (this.bodyCached == null) {
                 this.bodyCached = HttpResponseBodyDecoder.decode(this.response,
-                        this.serializer,
-                        this.decodeData).cache();
+                    this.serializer,
+                    this.decodeData).cache();
             }
             return this.bodyCached;
         }
@@ -96,20 +97,20 @@ public final class HttpResponseDecoder {
          *
          * @return publisher that emits entity instance representing decoded http headers
          */
-        public Mono<Object> decodedHeaders() {
+        public Mono<Object> getDecodedHeaders() {
             if (this.headersCached == null) {
                 this.headersCached = HttpResponseHeaderDecoder.decode(this.response,
-                        this.serializer,
-                        this.decodeData).cache();
+                    this.serializer,
+                    this.decodeData).cache();
             }
             return this.headersCached;
         }
 
         /**
          * @return the {@code java.lang.reflect.Type} used to decode the response body,
-         * null if the body is not decodable
+         *     null if the body is not decodable
          */
-        public Type decodedType() {
+        public Type getDecodedType() {
             return HttpResponseBodyDecoder.decodedType(this.response, this.decodeData);
         }
 

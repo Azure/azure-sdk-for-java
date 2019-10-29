@@ -9,6 +9,7 @@
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The GetImagePerformancesOptionalParameter model.
@@ -18,7 +19,7 @@ public class GetImagePerformancesOptionalParameter {
      * A list of tags ids to filter the images. Defaults to all tagged images
      * when null. Limited to 20.
      */
-    private List<String> tagIds;
+    private List<UUID> tagIds;
 
     /**
      * The ordering. Defaults to newest. Possible values include: 'Newest',
@@ -47,7 +48,7 @@ public class GetImagePerformancesOptionalParameter {
      *
      * @return the tagIds value
      */
-    public List<String> tagIds() {
+    public List<UUID> tagIds() {
         return this.tagIds;
     }
 
@@ -57,7 +58,7 @@ public class GetImagePerformancesOptionalParameter {
      * @param tagIds the tagIds value to set
      * @return the GetImagePerformancesOptionalParameter object itself.
      */
-    public GetImagePerformancesOptionalParameter withTagIds(List<String> tagIds) {
+    public GetImagePerformancesOptionalParameter withTagIds(List<UUID> tagIds) {
         this.tagIds = tagIds;
         return this;
     }

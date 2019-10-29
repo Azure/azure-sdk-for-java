@@ -3,10 +3,10 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import org.junit.Test;
 
@@ -44,8 +44,8 @@ public class SwaggerInterfaceParserTests {
     @Test
     public void hostWithHostAnnotation() {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface3.class, null);
-        assertEquals("https://management.azure.com", interfaceParser.host());
-        assertEquals("myService", interfaceParser.serviceName());
+        assertEquals("https://management.azure.com", interfaceParser.getHost());
+        assertEquals("myService", interfaceParser.getServiceName());
     }
 
     @Host("https://azure.com")
@@ -62,11 +62,11 @@ public class SwaggerInterfaceParserTests {
         final Method testMethod3 = TestInterface4.class.getDeclaredMethods()[0];
         assertEquals("testMethod4", testMethod3.getName());
 
-        final SwaggerMethodParser methodParser = interfaceParser.methodParser(testMethod3);
+        final SwaggerMethodParser methodParser = interfaceParser.getMethodParser(testMethod3);
         assertNotNull(methodParser);
-        assertEquals("com.azure.core.implementation.SwaggerInterfaceParserTests$TestInterface4.testMethod4", methodParser.fullyQualifiedMethodName());
+        assertEquals("com.azure.core.implementation.SwaggerInterfaceParserTests$TestInterface4.testMethod4", methodParser.getFullyQualifiedMethodName());
 
-        final SwaggerMethodParser methodDetails2 = interfaceParser.methodParser(testMethod3);
+        final SwaggerMethodParser methodDetails2 = interfaceParser.getMethodParser(testMethod3);
         assertSame(methodParser, methodDetails2);
     }
 }

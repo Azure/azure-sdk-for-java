@@ -3,18 +3,20 @@
 
 package com.azure.core.http;
 
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
-import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
- * The outgoing Http request.
+ * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod},
+ * {@link URL}, {@link HttpHeader} and request body.
  */
-public class HttpRequest implements Serializable {
-    private static final long serialVersionUID = 6338479743058758810L;
+public class HttpRequest {
+    private final ClientLogger logger = new ClientLogger(HttpRequest.class);
 
     private HttpMethod httpMethod;
     private URL url;
@@ -38,6 +40,23 @@ public class HttpRequest implements Serializable {
      *
      * @param httpMethod the HTTP request method
      * @param url the target address to send the request to
+     * @throws IllegalArgumentException if {@code url} is null or it cannot be parsed into a valid URL.
+     */
+    public HttpRequest(HttpMethod httpMethod, String url) {
+        this.httpMethod = httpMethod;
+        try {
+            this.url = new URL(url);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL", ex));
+        }
+        this.headers = new HttpHeaders();
+    }
+
+    /**
+     * Create a new HttpRequest instance.
+     *
+     * @param httpMethod the HTTP request method
+     * @param url the target address to send the request to
      * @param headers the HTTP headers to use with this request
      * @param body the request content
      */
@@ -53,7 +72,7 @@ public class HttpRequest implements Serializable {
      *
      * @return the request method
      */
-    public HttpMethod httpMethod() {
+    public HttpMethod getHttpMethod() {
         return httpMethod;
     }
 
@@ -63,7 +82,7 @@ public class HttpRequest implements Serializable {
      * @param httpMethod the request method
      * @return this HttpRequest
      */
-    public HttpRequest httpMethod(HttpMethod httpMethod) {
+    public HttpRequest setHttpMethod(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
         return this;
     }
@@ -73,7 +92,7 @@ public class HttpRequest implements Serializable {
      *
      * @return the target address
      */
-    public URL url() {
+    public URL getUrl() {
         return url;
     }
 
@@ -83,8 +102,24 @@ public class HttpRequest implements Serializable {
      * @param url target address as {@link URL}
      * @return this HttpRequest
      */
-    public HttpRequest url(URL url) {
+    public HttpRequest setUrl(URL url) {
         this.url = url;
+        return this;
+    }
+
+    /**
+     * Set the target address to send the request to.
+     *
+     * @param url target address as a String
+     * @return this HttpRequest
+     * @throws IllegalArgumentException if {@code url} is null or it cannot be parsed into a valid URL.
+     */
+    public HttpRequest setUrl(String url) {
+        try {
+            this.url = new URL(url);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
+        }
         return this;
     }
 
@@ -93,7 +128,7 @@ public class HttpRequest implements Serializable {
      *
      * @return headers to be sent
      */
-    public HttpHeaders headers() {
+    public HttpHeaders getHeaders() {
         return headers;
     }
 
@@ -103,7 +138,7 @@ public class HttpRequest implements Serializable {
      * @param headers the set of headers
      * @return this HttpRequest
      */
-    public HttpRequest headers(HttpHeaders headers) {
+    public HttpRequest setHeaders(HttpHeaders headers) {
         this.headers = headers;
         return this;
     }
@@ -116,7 +151,7 @@ public class HttpRequest implements Serializable {
      * @param value the header value
      * @return this HttpRequest
      */
-    public HttpRequest header(String name, String value) {
+    public HttpRequest setHeader(String name, String value) {
         headers.put(name, value);
         return this;
     }
@@ -126,7 +161,7 @@ public class HttpRequest implements Serializable {
      *
      * @return the content to be send
      */
-    public Flux<ByteBuffer> body() {
+    public Flux<ByteBuffer> getBody() {
         return body;
     }
 
@@ -136,9 +171,9 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest body(String content) {
+    public HttpRequest setBody(String content) {
         final byte[] bodyBytes = content.getBytes(StandardCharsets.UTF_8);
-        return body(bodyBytes);
+        return setBody(bodyBytes);
     }
 
     /**
@@ -148,9 +183,9 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest body(byte[] content) {
+    public HttpRequest setBody(byte[] content) {
         headers.put("Content-Length", String.valueOf(content.length));
-        return body(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
+        return setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
     }
 
     /**
@@ -162,21 +197,21 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest body(Flux<ByteBuffer> content) {
+    public HttpRequest setBody(Flux<ByteBuffer> content) {
         this.body = content;
         return this;
     }
 
     /**
-     * Creates a clone of the request.
+     * Creates a copy of the request.
      *
      * The main purpose of this is so that this HttpRequest can be changed and the resulting
-     * HttpRequest can be a backup. This means that the buffered HttpHeaders and body must
+     * HttpRequest can be a backup. This means that the cloned HttpHeaders and body must
      * not be able to change from side effects of this HttpRequest.
      *
      * @return a new HTTP request instance with cloned instances of all mutable properties.
      */
-    public HttpRequest buffer() {
+    public HttpRequest copy() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
         return new HttpRequest(httpMethod, url, bufferedHeaders, body);
     }

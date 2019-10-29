@@ -59,14 +59,16 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.core.implementation.Base64Url"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
   <!-- Suppress non-null warning in the case that we change the code and it is possible for
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
     <Or>
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
-      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
-      <Class name="com.azure.storage.file.implementation.AzureFileStorageBuilder"/>
-      <Class name="com.azure.storage.queue.implementation.AzureQueueStorageBuilder"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
@@ -252,7 +254,6 @@
   <Match>
     <Or>
       <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
-      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
@@ -268,7 +269,12 @@
 
   <!-- No need to implements cloneable. -->
   <Match>
-    <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
+    <Or>
+      <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
+      <Class name="com.azure.core.http.HttpRequest"/>
+      <Class
+          name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
+    </Or>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
@@ -276,12 +282,6 @@
   <Match>
     <Class name="com.azure.core.implementation.util.FluxUtil"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-
-  <Match>
-    <Class
-        name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
-    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
   <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
@@ -377,9 +377,10 @@
   <!-- Exclude the confusing name bugs as it is designed to name the same as autorest. -->
   <Match>
     <Or>
-      <Package name="com.microsoft.azure.storage.blob"/>
-      <Package name="com.azure.storage.file.models"/>
-      <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
+      <Class name="com.azure.storage.blob.HttpGetterInfo"/>
+      <Class name="com.azure.storage.blob.BlobProperties"/>
+      <Class name="com.azure.storage.blob.BlobContainerProperties"/>
+      <Class name="com.azure.storage.file.share.implementation.models.DirectoryCreateHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -448,8 +449,9 @@
   <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
   <Match>
     <Or>
-      <Class name="com.azure.storage.blob.BlobInputStream"/>
-      <Class name="com.azure.storage.blob.BlobOutputStream$AppendBlobOutputStream"/>
+      <Class name="com.azure.storage.blob.specialized.BlobInputStream"/>
+      <Class name="com.azure.storage.file.share.StorageFileInputStream"/>
+      <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
@@ -462,19 +464,9 @@
     <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS"/>
   </Match>
 
-  <!-- Incorrect flagging, if the response is null a HttpResponseException should be thrown
-  https://github.com/azure/azure-sdk-for-java/issues/4556 -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.keys.KeyClient"/>
-      <Class name="com.azure.security.keyvault.secrets.SecretClient"/>
-    </Or>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
   <!-- Super doesn't need to be cloned since it is Object -->
   <Match>
-    <Class name="com.azure.core.util.configuration.Configuration"/>
+    <Class name="com.azure.core.util.Configuration"/>
     <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
 
@@ -482,10 +474,19 @@
   <Match>
     <Or>
       <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.SecretBase"/>
+      <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
+      <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.models.Key"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyBase"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
+      <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
+      <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
+      <Class name="com.azure.security.keyvault.certificates.models.IssuerBase"/>
+      <Class name="com.azure.security.keyvault.certificates.models.Issuer"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
+      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -508,21 +509,44 @@
   <Match>
     <Or>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
+        <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
         <Method name="deserialize"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.ByteExtensions"/>
+        <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
         <Method name="clone"/>
       </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Or>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.webkey.Base64UrlJsonDeserializer"/>
+        <Method name="deserialize"/>
+      </And>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.webkey.ByteExtensions"/>
+        <Method name="clone"/>
+      </And>
+    </Or>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
-    <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
-    <Bug pattern="DLS_DEAD_LOCAL_STORE,URF_UNREAD_FIELD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    <Or>
+      <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+      <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
+    </Or>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE,
+                  URF_UNREAD_FIELD,
+                  SIC_INNER_SHOULD_BE_STATIC_ANON,
+                  DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD,
+                  NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS,
+                  NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- These methods are called, SpotBugs just can't see through the specific lambda and static class code -->
@@ -532,6 +556,7 @@
           name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
       <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
       <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
+      <Class name="com.azure.identity.implementation.AuthorizationCodeListener"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -544,7 +569,7 @@
 
   <!-- This is a false positive, it is possible for usingUserDelegation to be false. -->
   <Match>
-    <Class name="com.azure.storage.blob.ServiceSASSignatureValues"/>
+    <Class name="com.azure.storage.blob.specialized.BlobServiceSasSignatureValues"/>
     <Bug pattern="UC_USELESS_CONDITION"/>
   </Match>
 
@@ -554,12 +579,103 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
+  <!-- Retry thus does not throw -->
   <Match>
-    <Or>
-      <Class name="com.azure.storage.blob.models.StorageException"/>
-      <Class name="com.azure.storage.file.models.StorageException"/>
-      <Class name="com.azure.storage.queue.models.StorageException"/>
-    </Or>
+    <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+  <!-- Return value not needed -->
+  <Match>
+    <Class name="com.azure.identity.implementation.msalextensions.cachepersister.windows.WindowsDPAPICacheProtector"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+  </Match>
+
+  <!-- FlatteningSerializer defines non-transient non-serializable instance field logger,
+  but logger is required for logging-->
+  <Match>
+    <Class name="com.azure.core.implementation.serializer.jackson.FlatteningSerializer"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
+
+  <!-- FIXME: spotbugs issues in core test packages -->
+  <Match>
+    <Or>
+      <Package name="com.azure.core.test"/>
+      <Package name="com.azure.core.test.implementation"/>
+      <Package name="com.azure.core.test.http"/>
+    </Or>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING,
+                  DM_CONVERT_CASE,
+                  EC_UNRELATED_TYPES,
+                  REC_CATCH_EXCEPTION,
+                  DM_DEFAULT_ENCODING,
+                  NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+                  UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+
+  <!-- The field is read by parent class StorageOutputStream methods. -->
+  <Match>
+    <Class name="com.azure.storage.file.share.StorageFileOutputStream"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Initial implementation of Storage Blob Batch is using an inline class -->
+  <Match>
+    <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Initial implementation of JacksonDeserializer is using an inline class in registerCustomDeserializer-->
+  <Match>
+    <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Implementation name confusing with public API name and non-public API -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.implementation.http.UrlBuilder"/>
+      <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
+      <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
+    </Or>
+    <Bug pattern="NM_CONFUSING"/>
+  </Match>
+
+    <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="getFinalResult"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="poll"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="waitForCompletion"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="waitUntil"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+    <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.PollingContext"/>
+    <Method name="clone"/>
+    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+  </Match>
+
 </FindBugsFilter>

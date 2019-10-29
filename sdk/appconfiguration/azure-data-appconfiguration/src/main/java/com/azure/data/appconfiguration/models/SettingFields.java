@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 
 import java.util.Locale;
@@ -12,40 +13,39 @@ import java.util.Locale;
  * @see SettingSelector
  * @see ConfigurationAsyncClient
  */
-public enum SettingFields {
+public final class SettingFields extends ExpandableStringEnum<SettingFields> {
     /**
-     * Populates the {@link ConfigurationSetting#key()} from the service.
+     * Populates the {@link ConfigurationSetting#getKey()} from the service.
      */
-    KEY,
+    public static final SettingFields KEY = fromString("KEY");
     /**
-     * Populates the {@link ConfigurationSetting#label()} from the service.
+     * Populates the {@link ConfigurationSetting#getLabel()} from the service.
      */
-    LABEL,
+    public static final SettingFields LABEL = fromString("LABEL");
     /**
-     * Populates the {@link ConfigurationSetting#value()} from the service.
+     * Populates the {@link ConfigurationSetting#getValue()} from the service.
      */
-    VALUE,
+    public static final SettingFields VALUE = fromString("VALUE");
     /**
-     * Populates the {@link ConfigurationSetting#contentType()} from the service.
+     * Populates the {@link ConfigurationSetting#getContentType()} from the service.
      */
-    CONTENT_TYPE,
+    public static final SettingFields CONTENT_TYPE = fromString("CONTENT_TYPE");
     /**
-     * Populates the {@link ConfigurationSetting#etag()} from the service.
+     * Populates the {@link ConfigurationSetting#getETag()} from the service.
      */
-    ETAG,
+    public static final SettingFields ETAG = fromString("ETAG");
     /**
-     * Populates the {@link ConfigurationSetting#lastModified()} from the service.
+     * Populates the {@link ConfigurationSetting#getLastModified()} from the service.
      */
-    LAST_MODIFIED,
+    public static final SettingFields LAST_MODIFIED = fromString("LAST_MODIFIED");
     /**
-     * Populates the {@link ConfigurationSetting#isLocked()} from the service.
+     * Populates the {@link ConfigurationSetting#isReadOnly()} from the service.
      */
-    LOCKED,
+    public static final SettingFields READ_ONLY = fromString("LOCKED");
     /**
-     * Populates the {@link ConfigurationSetting#tags()} from the service.
+     * Populates the {@link ConfigurationSetting#getTags()} from the service.
      */
-    TAGS;
-
+    public static final SettingFields TAGS = fromString("TAGS");
     /**
      * Converts the SettingFields to a string that is usable for HTTP requests and logging.
      * @param field SettingFields to map.
@@ -53,5 +53,13 @@ public enum SettingFields {
      */
     public static String toStringMapper(SettingFields field) {
         return field.toString().toLowerCase(Locale.US);
+    }
+    /**
+     * Creates or finds a {@link SettingFields} from its string representation.
+     * @param name a name to look for
+     * @return the corresponding {@link SettingFields}
+     */
+    public static SettingFields fromString(String name) {
+        return fromString(name, SettingFields.class);
     }
 }

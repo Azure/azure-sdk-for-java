@@ -18,7 +18,7 @@ public class RequestRateTooLargeException extends CosmosClientException {
     }
 
     public RequestRateTooLargeException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
-        super(HttpConstants.StatusCodes.NOTFOUND, cosmosError, responseHeaders);
+        super(HttpConstants.StatusCodes.TOO_MANY_REQUESTS, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }

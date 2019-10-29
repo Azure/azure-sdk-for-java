@@ -27,15 +27,15 @@ class ItemPage<T> implements Page<T> {
     private List<T> items;
 
     @JsonAlias({"nextLink", "nextPageLink"})
-    private String nextLink;
+    private String continuationToken;
 
     @Override
-    public List<T> items() {
+    public List<T> getItems() {
         return items;
     }
 
     @Override
-    public String nextLink() {
-        return nextLink;
+    public String getContinuationToken() {
+        return continuationToken;
     }
 }

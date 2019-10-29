@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 /**
- * The Pipeline policy that puts a UUID in the request header. Azure uses the request id as
+ * The pipeline policy that puts a UUID in the request header. Azure uses the request id as
  * the unique identifier for the request.
  */
 public class RequestIdPolicy implements HttpPipelinePolicy {
@@ -19,9 +19,9 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String requestId = context.httpRequest().headers().value(REQUEST_ID_HEADER);
+        String requestId = context.getHttpRequest().getHeaders().getValue(REQUEST_ID_HEADER);
         if (requestId == null) {
-            context.httpRequest().headers().put(REQUEST_ID_HEADER, UUID.randomUUID().toString());
+            context.getHttpRequest().getHeaders().put(REQUEST_ID_HEADER, UUID.randomUUID().toString());
         }
         return next.process();
     }

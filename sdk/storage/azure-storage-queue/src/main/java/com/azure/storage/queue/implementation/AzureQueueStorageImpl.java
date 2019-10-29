@@ -29,7 +29,6 @@ public final class AzureQueueStorageImpl {
      * Sets The URL of the service account, queue or message that is the targe of the desired operation.
      *
      * @param url the url value.
-     * @return the service client itself.
      */
     AzureQueueStorageImpl setUrl(String url) {
         this.url = url;
@@ -54,7 +53,6 @@ public final class AzureQueueStorageImpl {
      * Sets Specifies the version of the operation to use for this request.
      *
      * @param version the version value.
-     * @return the service client itself.
      */
     AzureQueueStorageImpl setVersion(String version) {
         this.version = version;

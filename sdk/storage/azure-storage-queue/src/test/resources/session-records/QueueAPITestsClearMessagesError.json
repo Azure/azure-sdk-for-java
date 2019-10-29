@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsclearmessageserror122895bd11a3c794a/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsclearmessageserror5681502a301155707/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "b681b337-2152-49f6-a7b7-93db43816707"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -13,11 +14,12 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "86d0b046-d003-0034-2e88-539fde000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:86d0b046-d003-0034-2e88-539fde000000\nTime:2019-08-15T16:40:24.6890548Z</Message></Error>",
-      "Date" : "Thu, 15 Aug 2019 16:40:24 GMT",
+      "x-ms-request-id" : "2f7e8517-f003-0082-158d-839126000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e8517-f003-0082-158d-839126000000\nTime:2019-10-15T19:19:41.1740288Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 19:19:40 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestsclearmessageserror122895bd11a3c794a" ]
+  "variables" : [ "queueapitestsclearmessageserror5681502a301155707" ]
 }

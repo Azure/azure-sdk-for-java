@@ -79,7 +79,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
         Lease stolenLease = getLeaseToSteal(workerToPartitionCount, target, partitionsNeededForMe, allPartitions);
         List<Lease> stolenLeases = new ArrayList<>();
 
-        if (stolenLease == null) {
+        if (stolenLease != null) {
             stolenLeases.add(stolenLease);
         }
 
@@ -147,7 +147,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
             allPartitions.put(lease.getLeaseToken(), lease);
 
             if (lease.getOwner() == null || lease.getOwner().isEmpty() || this.isExpired(lease)) {
-                // Logger.DebugFormat("Found unused or expired lease: {0}", lease);
+                this.logger.info("Found unused or expired lease {}", lease.getLeaseToken());
                 expiredLeases.add(lease);
             } else {
                 String assignedTo = lease.getOwner();
@@ -171,7 +171,9 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
             return true;
         }
 
-        ZonedDateTime time = ZonedDateTime.parse(lease.getTimestamp());
-        return time.plus(this.leaseExpirationInterval).isBefore(ZonedDateTime.now(ZoneId.of("UTC")));
+
+        ZonedDateTime leaseExpireTime = ZonedDateTime.parse(lease.getTimestamp()).plus(this.leaseExpirationInterval);
+        this.logger.debug("Current lease timestamp: {}, current time: {}", leaseExpireTime, ZonedDateTime.now(ZoneId.of("UTC")));
+        return leaseExpireTime.isBefore(ZonedDateTime.now(ZoneId.of("UTC")));
     }
 }

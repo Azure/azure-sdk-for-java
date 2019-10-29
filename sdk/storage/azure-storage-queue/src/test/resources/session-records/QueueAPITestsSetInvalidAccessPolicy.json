@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidaccesspolicy272461d7c8ddd05",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidaccesspolicy486737b7c15e1ef",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "2e27961c-c049-4d04-83d8-9da70308f4a9"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0adb1-d003-0034-7588-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:18 GMT"
-    }
+      "x-ms-request-id" : "2f7e80be-f003-0082-208d-839126000000",
+      "Date" : "Tue, 15 Oct 2019 19:19:37 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidaccesspolicy272461d7c8ddd05?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidaccesspolicy486737b7c15e1ef?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "ad4a9d0f-91c7-4426-96b7-f0d25dc44004",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -30,11 +33,12 @@
       "retry-after" : "0",
       "Content-Length" : "371",
       "StatusCode" : "400",
-      "x-ms-request-id" : "86d0adb5-d003-0034-7888-539fde000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:86d0adb5-d003-0034-7888-539fde000000\nTime:2019-08-15T16:40:19.3749389Z</Message><LineNumber>1</LineNumber><LinePosition>304</LinePosition><Reason>Signed identifier ID cannot be empty or over 64 characters in length</Reason></Error>",
-      "Date" : "Thu, 15 Aug 2019 16:40:18 GMT",
+      "x-ms-request-id" : "2f7e80cb-f003-0082-2a8d-839126000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:2f7e80cb-f003-0082-2a8d-839126000000\nTime:2019-10-15T19:19:38.4003327Z</Message><LineNumber>1</LineNumber><LinePosition>304</LinePosition><Reason>Signed identifier ID cannot be empty or over 64 characters in length</Reason></Error>",
+      "Date" : "Tue, 15 Oct 2019 19:19:37 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetinvalidaccesspolicy272461d7c8ddd05" ]
+  "variables" : [ "queueapitestssetinvalidaccesspolicy486737b7c15e1ef" ]
 }

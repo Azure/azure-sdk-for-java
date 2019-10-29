@@ -9,11 +9,18 @@
 
   <artifactId>azure-authentication-msi-token-provider</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-Beta-2</version>
+  <version>1.1.0-preview.1</version> <!-- {x-version-update;com.microsoft.azure.msi_auth_token_provider:azure-authentication-msi-token-provider;current} -->
 
   <name>Azure Java Client MSI Authorization Token Provoider Library</name>
   <description>This package contains the MSI token provider classes for Azure.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-data-sdk-parent</artifactId>
+    <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
+    <relativePath>../../../pom.data.xml</relativePath>
+  </parent>
 
   <licenses>
     <license>

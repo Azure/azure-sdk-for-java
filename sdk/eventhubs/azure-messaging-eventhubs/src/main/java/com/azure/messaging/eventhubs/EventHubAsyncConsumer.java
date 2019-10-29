@@ -3,11 +3,14 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
+import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -15,8 +18,10 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
@@ -24,11 +29,11 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * consumer group.
  *
  * <ul>
- * <li>If {@link EventHubAsyncConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
+ * <li>If {@link EventHubAsyncConsumer} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
  * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
  * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+ * {@link EventHubConsumerOptions#getOwnerLevel()} when creating consumers. This non-exclusive consumer is sometimes
  * referred to as a "Non-Epoch Consumer."</li>
  * </ul>
  *
@@ -48,29 +53,40 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  */
 @Immutable
 public class EventHubAsyncConsumer implements Closeable {
-    private static final AtomicReferenceFieldUpdater<EventHubAsyncConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
+    private static final AtomicReferenceFieldUpdater<EventHubAsyncConsumer, AmqpReceiveLink>
+        RECEIVE_LINK_FIELD_UPDATER =
         AtomicReferenceFieldUpdater.newUpdater(EventHubAsyncConsumer.class, AmqpReceiveLink.class, "receiveLink");
 
     // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
-    private static final int MINIMUM_REQUEST = 1;
+    private static final int MINIMUM_REQUEST = 0;
     private static final int MAXIMUM_REQUEST = 100;
 
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumer.class);
+    private final MessageSerializer messageSerializer;
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
+    private final boolean trackLastEnqueuedEventProperties;
 
     private volatile AmqpReceiveLink receiveLink;
 
-    EventHubAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options) {
-        this.emitterProcessor = EmitterProcessor.create(options.prefetchCount(), false);
+    EventHubAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
+                          EventHubConsumerOptions options) {
+        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+        this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
+        this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
+
+        if (options.getTrackLastEnqueuedEventProperties()) {
+            lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
+        }
 
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
             if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
-                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.prefetchCount());
-                link.addCredits(options.prefetchCount());
+                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.getPrefetchCount());
+                link.addCredits(options.getPrefetchCount());
 
                 link.setEmptyCreditListener(() -> {
                     if (emitterProcessor.hasDownstreams()) {
@@ -99,7 +115,7 @@ public class EventHubAsyncConsumer implements Closeable {
                 });
             }
 
-            return link.receive().map(EventData::new);
+            return link.receive().map(message -> onMessageReceived(message));
         }).subscribeWith(emitterProcessor)
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
@@ -125,7 +141,8 @@ public class EventHubAsyncConsumer implements Closeable {
                     ? MAXIMUM_REQUEST
                     : (int) request;
 
-                logger.verbose("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
+                logger.verbose("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(),
+                    newRequest);
                 creditsToRequest.set(newRequest);
             });
     }
@@ -159,5 +176,45 @@ public class EventHubAsyncConsumer implements Closeable {
      */
     public Flux<EventData> receive() {
         return messageFlux;
+    }
+
+    /**
+     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
+     * received from the Event Hubs service.
+     *
+     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
+     *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
+     *     partition.
+     */
+    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
+        return lastEnqueuedEventProperties.get();
+    }
+
+    /**
+     * On each message received from the service, it will try to:
+     * 1. Deserialize the message into an EventData
+     * 2. If {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update
+     *    {@link LastEnqueuedEventProperties}
+     *
+     * @param message AMQP message to deserialize.
+     *
+     * @return The deserialized {@link EventData}.
+     */
+    private EventData onMessageReceived(Message message) {
+        final EventData event = messageSerializer.deserialize(message, EventData.class);
+
+        if (trackLastEnqueuedEventProperties) {
+            final LastEnqueuedEventProperties enqueuedEventProperties =
+                messageSerializer.deserialize(message, LastEnqueuedEventProperties.class);
+
+            if (enqueuedEventProperties != null) {
+                final LastEnqueuedEventProperties updated = new LastEnqueuedEventProperties(
+                    enqueuedEventProperties.getSequenceNumber(), enqueuedEventProperties.getOffset(),
+                    enqueuedEventProperties.getEnqueuedTime(), enqueuedEventProperties.getRetrievalTime());
+                lastEnqueuedEventProperties.set(updated);
+            }
+        }
+
+        return event;
     }
 }

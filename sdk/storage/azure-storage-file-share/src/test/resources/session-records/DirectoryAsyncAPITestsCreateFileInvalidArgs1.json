@@ -1,0 +1,76 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatefileinvalidargs14688557b02?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "c1f7d028-0f74-4219-a236-42898380357e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F6DECD046",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:28 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8639c978-701a-00fe-0588-830c13000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:27 GMT",
+      "x-ms-client-request-id" : "c1f7d028-0f74-4219-a236-42898380357e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatefileinvalidargs14688557b02/directoryasyncapitestscreatefileinvalidargs1206387eca1?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "fb59c3cd-ffb8-494d-ad08-ea6a5737f479"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-10-15T18:42:28.2656711Z",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:28 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 15 Oct 2019 18:42:27 GMT",
+      "ETag" : "0x8D7519F6DF54BC7",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-10-15T18:42:28.2656711Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "8639c97d-701a-00fe-0988-830c13000000",
+      "x-ms-client-request-id" : "fb59c3cd-ffb8-494d-ad08-ea6a5737f479",
+      "x-ms-file-last-write-time" : "2019-10-15T18:42:28.2656711Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatefileinvalidargs14688557b02/directoryasyncapitestscreatefileinvalidargs1206387eca1%2ffileName",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "81d3e4af-e9f9-44ce-b185-d01bde6883f9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "Content-Length" : "236",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "8639c984-701a-00fe-1088-830c13000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:8639c984-701a-00fe-1088-830c13000000\nTime:2019-10-15T18:42:28.3311972Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:27 GMT",
+      "x-ms-client-request-id" : "81d3e4af-e9f9-44ce-b185-d01bde6883f9",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryasyncapitestscreatefileinvalidargs14688557b02", "directoryasyncapitestscreatefileinvalidargs1206387eca1" ]
+}

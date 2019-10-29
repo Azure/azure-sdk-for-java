@@ -1,5 +1,23 @@
 # Release History
 
+## 5.0.0-preview.4 (2019-10-08)
+- Proxy support for Event Hubs sync and async clients.
+- `EventHubConsumer` and `EventHubAsyncConsumer` now provides last enqueued event information.
+- Refactored `azure-messaging-eventhubs` to extract AMQP implementation details to `azure-core-amqp` module.
+- Added modules support for JDK 9+.
+- Renamed model classes to support Java bean naming convention.
+- `EventHubClient` and `EventHubAsyncClient` now provides method to get the name of the Event Hub associated with the client.
+
+## 5.0.0-preview.3 (2019-09-09)
+
+- Added synchronous `EventHubConsumer` and `EventHubProducer`.
+- Added support for balancing partitions across multiple instances of `EventProcessor`.
+- Added `EventProcessorBuilder` to create `EventProcessor` and removed that functionality from `EventHubClientBuilder`.
+- Removed `CheckpointManager`. Checkpointing is done using the `PartitionContext` exposed in `PartitionProcessor` methods.
+- Changed `PartitionProcessor` from an interface to an abstract base class.
+- Changed `EventData.systemProperties` to exclude already exposed properties (ie. sequence number, enqueued time) from
+  the map.
+
 ## 5.0.0-preview.2 (2019-08-06)
 
 - Added support for AMQP protocol using web sockets to connect to Azure Event Hubs.

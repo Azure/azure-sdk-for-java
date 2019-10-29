@@ -14,35 +14,35 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ImagePrediction model.
+ * Result of an image prediction request.
  */
 public class ImagePrediction {
     /**
-     * The id property.
+     * Prediction Id.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
-     * The project property.
+     * Project Id.
      */
     @JsonProperty(value = "project", access = JsonProperty.Access.WRITE_ONLY)
     private UUID project;
 
     /**
-     * The iteration property.
+     * Iteration Id.
      */
     @JsonProperty(value = "iteration", access = JsonProperty.Access.WRITE_ONLY)
     private UUID iteration;
 
     /**
-     * The created property.
+     * Date this prediction was created.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
-     * The predictions property.
+     * List of predictions.
      */
     @JsonProperty(value = "predictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<Prediction> predictions;

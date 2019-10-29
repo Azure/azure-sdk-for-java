@@ -4,11 +4,11 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -47,12 +47,21 @@ public class EventHubClient implements Closeable {
         Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
 
         this.client = Objects.requireNonNull(client, "'client' cannot be null.");
-        this.retry = connectionOptions.retry();
+        this.retry = connectionOptions.getRetry();
         this.defaultProducerOptions = new EventHubProducerOptions()
-            .retry(connectionOptions.retry());
+            .setRetry(connectionOptions.getRetry());
         this.defaultConsumerOptions = new EventHubConsumerOptions()
-            .retry(connectionOptions.retry())
-            .scheduler(connectionOptions.scheduler());
+            .setRetry(connectionOptions.getRetry())
+            .setScheduler(connectionOptions.getScheduler());
+    }
+
+    /**
+     * Gets the Event Hub name this client interacts with.
+     *
+     * @return The Event Hub name this client interacts with.
+     */
+    public String getEventHubName() {
+        return client.getEventHubName();
     }
 
     /**
@@ -62,7 +71,7 @@ public class EventHubClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventHubProperties getProperties() {
-        return client.getProperties().block(retry.tryTimeout());
+        return client.getProperties().block(retry.getTryTimeout());
     }
 
     /**
@@ -84,7 +93,7 @@ public class EventHubClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionProperties getPartitionProperties(String partitionId) {
-        return client.getPartitionProperties(partitionId).block(retry.tryTimeout());
+        return client.getPartitionProperties(partitionId).block(retry.getTryTimeout());
     }
 
     /**
@@ -99,7 +108,7 @@ public class EventHubClient implements Closeable {
 
     /**
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
-     * in batches. If {@link EventHubProducerOptions#partitionId() options.partitionId()} is not {@code null}, the
+     * in batches. If {@link EventHubProducerOptions#getPartitionId() options.partitionId()} is not {@code null}, the
      * events are routed to that specific partition. Otherwise, events are automatically routed to an available
      * partition.
      *
@@ -112,9 +121,9 @@ public class EventHubClient implements Closeable {
 
         final EventHubAsyncProducer producer = client.createProducer(options);
 
-        final Duration tryTimeout = options.retry() != null && options.retry().tryTimeout() != null
-            ? options.retry().tryTimeout()
-            : defaultProducerOptions.retry().tryTimeout();
+        final Duration tryTimeout = options.getRetry() != null && options.getRetry().getTryTimeout() != null
+            ? options.getRetry().getTryTimeout()
+            : defaultProducerOptions.getRetry().getTryTimeout();
 
         return new EventHubProducer(producer, tryTimeout);
     }
@@ -139,7 +148,7 @@ public class EventHubClient implements Closeable {
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition);
-        return new EventHubConsumer(consumer, defaultConsumerOptions);
+        return new EventHubConsumer(consumer, defaultConsumerOptions.getRetry().getTryTimeout());
     }
 
     /**
@@ -156,7 +165,7 @@ public class EventHubClient implements Closeable {
      * Consumers."
      *
      * Designating a consumer as exclusive may be specified in the {@code options}, by setting {@link
-     * EventHubConsumerOptions#ownerLevel(Long)} to a non-null value. By default, consumers are created as
+     * EventHubConsumerOptions#setOwnerLevel(Long)} to a non-null value. By default, consumers are created as
      * non-exclusive.
      * </p>
      *
@@ -174,8 +183,13 @@ public class EventHubClient implements Closeable {
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                            EventHubConsumerOptions options) {
-        final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition, options);
-        return new EventHubConsumer(consumer, options);
+        final EventHubAsyncConsumer consumer =
+            client.createConsumer(consumerGroup, partitionId, eventPosition, options);
+        final Duration timeout = options.getRetry() == null || options.getRetry().getTryTimeout() == null
+            ? defaultConsumerOptions.getRetry().getTryTimeout()
+            : options.getRetry().getTryTimeout();
+
+        return new EventHubConsumer(consumer, timeout);
     }
 
     /**

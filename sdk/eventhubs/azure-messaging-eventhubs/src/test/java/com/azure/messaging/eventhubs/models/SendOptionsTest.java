@@ -17,7 +17,7 @@ public class SendOptionsTest {
         SendOptions options = new SendOptions();
 
         // Act & Assert
-        Assert.assertNull(options.partitionKey());
+        Assert.assertNull(options.getPartitionKey());
     }
 
     /**
@@ -30,10 +30,10 @@ public class SendOptionsTest {
         SendOptions options = new SendOptions();
 
         // Act
-        options.partitionKey(partitionKey);
+        options.setPartitionKey(partitionKey);
 
         // Assert
-        Assert.assertEquals(partitionKey, options.partitionKey());
+        Assert.assertEquals(partitionKey, options.getPartitionKey());
     }
 
     /**
@@ -43,7 +43,7 @@ public class SendOptionsTest {
     public void cloneIdentical() {
         // Arrange
         String partitionKey = "My partition key";
-        SendOptions options = new SendOptions().partitionKey(partitionKey);
+        SendOptions options = new SendOptions().setPartitionKey(partitionKey);
 
         // Act
         SendOptions clone = options.clone();
@@ -51,8 +51,8 @@ public class SendOptionsTest {
         // Assert
         Assert.assertNotSame(clone, options);
 
-        Assert.assertEquals(partitionKey, options.partitionKey());
-        Assert.assertEquals(partitionKey, clone.partitionKey());
+        Assert.assertEquals(partitionKey, options.getPartitionKey());
+        Assert.assertEquals(partitionKey, clone.getPartitionKey());
     }
 
 
@@ -65,14 +65,14 @@ public class SendOptionsTest {
         String originalPartitionKey = "Some partition key";
         String partitionKey = "A new partition key";
 
-        SendOptions options = new SendOptions().partitionKey(originalPartitionKey);
+        SendOptions options = new SendOptions().setPartitionKey(originalPartitionKey);
         SendOptions clone = options.clone();
 
         // Act
-        clone.partitionKey(partitionKey);
+        clone.setPartitionKey(partitionKey);
 
         // Assert
-        Assert.assertEquals(partitionKey, clone.partitionKey());
-        Assert.assertEquals(originalPartitionKey, options.partitionKey());
+        Assert.assertEquals(partitionKey, clone.getPartitionKey());
+        Assert.assertEquals(originalPartitionKey, options.getPartitionKey());
     }
 }

@@ -6,6 +6,10 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
 
 trigger:
   branches:
@@ -38,9 +42,12 @@ stages:
     parameters:
       ServiceDirectory: keyvault
       Artifacts:
-        - name: azure-keyvault-keys
-          safeName: azurekeyvaultkeys
+        - name: azure-security-keyvault-certificates
+          safeName: azuresecuritykeyvaultcertificates
           stagingProfileId: 88192f04117501
-        - name: azure-keyvault-secrets
-          safeName: azurekeyvaultsecrets
+        - name: azure-security-keyvault-keys
+          safeName: azuresecuritykeyvaultkeys
+          stagingProfileId: 88192f04117501
+        - name: azure-security-keyvault-secrets
+          safeName: azuresecuritykeyvaultsecrets
           stagingProfileId: 88192f04117501

@@ -12,13 +12,15 @@ Library containing core classes used to test Azure SDK client libraries.
 ## Getting started
 
 To use this package, add the following to your _pom.xml_.
+[//]: # ({x-version-update-start;com.azure:azure-core-test;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.0.0-preview.3</version>
+  <version>1.0.0</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 
@@ -37,7 +39,7 @@ Use [TestBase][TestBase.java] to easily create live and playback test cases. Ext
 // Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
 // live. By default, tests are run in playback mode.
 public class SessionTests extends TestBase {
-    @Test
+    // Use your JUnit or TestNG annotation here for your testcase
     public void fooTest() {
         // Do some network calls.
     }

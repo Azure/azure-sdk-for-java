@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -32,7 +32,7 @@ public final class KeyInfo {
      *
      * @return the start value.
      */
-    public String start() {
+    public String getStart() {
         return this.start;
     }
 
@@ -43,7 +43,7 @@ public final class KeyInfo {
      * @param start the start value to set.
      * @return the KeyInfo object itself.
      */
-    public KeyInfo start(String start) {
+    public KeyInfo setStart(String start) {
         this.start = start;
         return this;
     }
@@ -54,7 +54,7 @@ public final class KeyInfo {
      *
      * @return the expiry value.
      */
-    public String expiry() {
+    public String getExpiry() {
         return this.expiry;
     }
 
@@ -65,7 +65,7 @@ public final class KeyInfo {
      * @param expiry the expiry value to set.
      * @return the KeyInfo object itself.
      */
-    public KeyInfo expiry(String expiry) {
+    public KeyInfo setExpiry(String expiry) {
         this.expiry = expiry;
         return this;
     }

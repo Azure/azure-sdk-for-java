@@ -8,7 +8,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 /**
- * A wrapper over java.time.OffsetDateTime used for specifying unix seconds format during serialization and deserialization.
+ * A wrapper over java.time.OffsetDateTime used for specifying unix seconds format during serialization and
+ * deserialization.
  */
 public final class UnixTime {
     /**
@@ -39,7 +40,7 @@ public final class UnixTime {
      *
      * @return The underlying DateTime
      */
-    public OffsetDateTime dateTime() {
+    public OffsetDateTime getDateTime() {
         if (this.dateTime == null) {
             return null;
         }
@@ -67,6 +68,6 @@ public final class UnixTime {
         }
 
         UnixTime rhs = (UnixTime) obj;
-        return this.dateTime.equals(rhs.dateTime());
+        return this.dateTime.equals(rhs.getDateTime());
     }
 }

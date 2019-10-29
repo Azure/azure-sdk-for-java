@@ -1,12 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.storage.queue.models;
+
+import com.azure.core.annotation.Immutable;
 
 import java.util.Map;
 
 /**
  * Model class containing properties of a specific queue in the storage Queue service.
  */
+@Immutable
 public final class QueueProperties {
     private final Map<String, String> metadata;
     private final int approximateMessagesCount;
@@ -25,14 +29,14 @@ public final class QueueProperties {
     /**
      * @return the user-defined metadata associated with the queue
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
     /**
      * @return the approximate number of messages contained in the queue at the time of properties retrieval
      */
-    public int approximateMessagesCount() {
+    public int getApproximateMessagesCount() {
         return approximateMessagesCount;
     }
 }

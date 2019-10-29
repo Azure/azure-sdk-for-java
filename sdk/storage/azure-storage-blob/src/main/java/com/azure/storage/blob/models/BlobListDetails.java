@@ -3,50 +3,48 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.ContainerClient;
+import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.BlobContainerClient;
 
 import java.util.ArrayList;
 
 /**
  * This type allows users to specify additional information the service should return with each blob when listing blobs
- * in a container (via a {@link ContainerClient} object). This type is immutable to ensure thread-safety of requests, so
- * changing the details for a different listing operation requires construction of a new object. Null may be passed if
- * none of the options are desirable.
+ * in a container (via a {@link BlobContainerClient} object). This type is immutable to ensure thread-safety of
+ * requests, so changing the details for a different listing operation requires construction of a new object. Null may
+ * be passed if none of the options are desirable.
  */
+@Fluent
 public final class BlobListDetails {
+    private boolean retrieveCopy;
+    private boolean retrieveMetadata;
+    private boolean retrieveSnapshots;
+    private boolean retrieveUncommittedBlobs;
+    private boolean retrieveDeletedBlobs;
 
-    private boolean copy;
-
-    private boolean metadata;
-
-    private boolean snapshots;
-
-    private boolean uncommittedBlobs;
-
-    private boolean deletedBlobs;
-
+    /**
+     * Constructs an unpopulated {@link BlobListDetails}.
+     */
     public BlobListDetails() {
     }
 
     /**
-     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the
-     * response.
+     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the response.
      *
      * @return a flag indicating if copy information will be returned in the listing
      */
-    public boolean copy() {
-        return copy;
+    public boolean getRetrieveCopy() {
+        return retrieveCopy;
     }
 
     /**
-     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the
-     * response.
+     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the response.
      *
-     * @param copy Flag indicating whether copy information should be returned
+     * @param retrieveCopy Flag indicating whether copy information should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails copy(boolean copy) {
-        this.copy = copy;
+    public BlobListDetails setRetrieveCopy(boolean retrieveCopy) {
+        this.retrieveCopy = retrieveCopy;
         return this;
     }
 
@@ -55,18 +53,18 @@ public final class BlobListDetails {
      *
      * @return a flag indicating if metadata will be returned in the listing
      */
-    public boolean metadata() {
-        return metadata;
+    public boolean getRetrieveMetadata() {
+        return retrieveMetadata;
     }
 
     /**
      * Whether blob metadata should be returned.
      *
-     * @param metadata Flag indicating whether metadata should be returned
+     * @param retrieveMetadata Flag indicating whether metadata should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails metadata(boolean metadata) {
-        this.metadata = metadata;
+    public BlobListDetails setRetrieveMetadata(boolean retrieveMetadata) {
+        this.retrieveMetadata = retrieveMetadata;
         return this;
     }
 
@@ -75,40 +73,40 @@ public final class BlobListDetails {
      *
      * @return a flag indicating if snapshots will be returned in the listing
      */
-    public boolean snapshots() {
-        return snapshots;
+    public boolean getRetrieveSnapshots() {
+        return retrieveSnapshots;
     }
 
     /**
      * Whether snapshots should be returned. Snapshots are listed from oldest to newest.
      *
-     * @param snapshots Flag indicating whether snapshots should be returned
+     * @param retrieveSnapshots Flag indicating whether snapshots should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails snapshots(boolean snapshots) {
-        this.snapshots = snapshots;
+    public BlobListDetails setRetrieveSnapshots(boolean retrieveSnapshots) {
+        this.retrieveSnapshots = retrieveSnapshots;
         return this;
     }
 
     /**
-     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
-     * should be included in the response.
+     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List, should
+     * be included in the response.
      *
      * @return a flag indicating if uncommitted blobs will be returned in the listing
      */
-    public boolean uncommittedBlobs() {
-        return uncommittedBlobs;
+    public boolean getRetrieveUncommittedBlobs() {
+        return retrieveUncommittedBlobs;
     }
 
     /**
-     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
-     * should be included in the response.
+     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List, should
+     * be included in the response.
      *
-     * @param uncommittedBlobs Flag indicating whether uncommitted blobs should be returned
+     * @param retrieveUncommittedBlobs Flag indicating whether uncommitted blobs should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails uncommittedBlobs(boolean uncommittedBlobs) {
-        this.uncommittedBlobs = uncommittedBlobs;
+    public BlobListDetails setRetrieveUncommittedBlobs(boolean retrieveUncommittedBlobs) {
+        this.retrieveUncommittedBlobs = retrieveUncommittedBlobs;
         return this;
     }
 
@@ -117,18 +115,18 @@ public final class BlobListDetails {
      *
      * @return a flag indicating if deleted blobs will be returned in the listing
      */
-    public boolean deletedBlobs() {
-        return deletedBlobs;
+    public boolean getRetrieveDeletedBlobs() {
+        return retrieveDeletedBlobs;
     }
 
     /**
      * Whether blobs which have been soft deleted should be returned.
      *
-     * @param deletedBlobs Flag indicating whether deleted blobs should be returned
+     * @param retrieveDeletedBlobs Flag indicating whether deleted blobs should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails deletedBlobs(boolean deletedBlobs) {
-        this.deletedBlobs = deletedBlobs;
+    public BlobListDetails setRetrieveDeletedBlobs(boolean retrieveDeletedBlobs) {
+        this.retrieveDeletedBlobs = retrieveDeletedBlobs;
         return this;
     }
 
@@ -136,20 +134,20 @@ public final class BlobListDetails {
      * @return a list of the flag set to true
      */
     public ArrayList<ListBlobsIncludeItem> toList() {
-        ArrayList<ListBlobsIncludeItem> details = new ArrayList<ListBlobsIncludeItem>();
-        if (this.copy) {
+        ArrayList<ListBlobsIncludeItem> details = new ArrayList<>();
+        if (this.retrieveCopy) {
             details.add(ListBlobsIncludeItem.COPY);
         }
-        if (this.deletedBlobs) {
+        if (this.retrieveDeletedBlobs) {
             details.add(ListBlobsIncludeItem.DELETED);
         }
-        if (this.metadata) {
+        if (this.retrieveMetadata) {
             details.add(ListBlobsIncludeItem.METADATA);
         }
-        if (this.snapshots) {
+        if (this.retrieveSnapshots) {
             details.add(ListBlobsIncludeItem.SNAPSHOTS);
         }
-        if (this.uncommittedBlobs) {
+        if (this.retrieveUncommittedBlobs) {
             details.add(ListBlobsIncludeItem.UNCOMMITTEDBLOBS);
         }
         return details;

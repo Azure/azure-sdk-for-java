@@ -10,7 +10,7 @@ stages:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         TestMatrix:
           Windows - java8:
-            OSVmImage: 'vs2017-win2016'
+            OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             OSName: Windows
             ProfileFlag: '-Punit'
@@ -28,21 +28,21 @@ stages:
         ServiceDirectory: cosmos
         Matrix:
           Tcp_Integration_Tests_Java8:
-            OSVmImage: 'vs2017-win2016'
+            OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Tcp"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
           Https_Integration_Tests_Java8:
-            OSVmImage: 'vs2017-win2016'
+            OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Https"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
           Examples_Integration_Tests_Java8:
-            OSVmImage: 'vs2017-win2016'
+            OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             ProfileFlag: '-Pexamples'
             DisplayName: 'Examples Integration Tests'
@@ -58,7 +58,7 @@ stages:
         PreRunSteps:
         - powershell: |
             Write-Host "Downloading Cosmos Emulator - $(EmulatorMsiUrl)"
-            wget "$(EmulatorMsiUrl)" -outfile "$env:temp\azure-cosmosdb-emulator.msi"
+            Invoke-WebRequest "$(EmulatorMsiUrl)" -OutFile "$env:temp\azure-cosmosdb-emulator.msi"
             Write-Host "Finished Downloading Cosmos Emulator - $env:temp\azure-cosmosdb-emulator.msi"
             dir "$env:temp"
           displayName: 'Download Public Cosmos DB Emulator'

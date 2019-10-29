@@ -32,7 +32,7 @@ class Substitution {
      * Get the placeholder's name.
      * @return The name of the placeholder.
      */
-    public String urlParameterName() {
+    public String getUrlParameterName() {
         return urlParameterName;
     }
 
@@ -40,7 +40,7 @@ class Substitution {
      * Get the index of the method parameter where the replacement value is.
      * @return The index of the method parameter where the replacement value is.
      */
-    public int methodParameterIndex() {
+    public int getMethodParameterIndex() {
         return methodParameterIndex;
     }
 

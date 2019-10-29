@@ -3,9 +3,7 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,14 +11,15 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
+ * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
- * <p>This logger logs formattable messages that use {@code {}} as the placeholder. When a throwable is the last
- * argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String, Object...) verbose} logging the
- * stack trace for the throwable will be included in the log message.</p>
+ * <p>This logger logs formattable messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
+ * is the last argument of the format varargs and the logger is enabled for
+ * {@link ClientLogger#verbose(String, Object...) verbose}, the stack trace for the throwable is logged.</p>
  *
- * <p>A minimum logging level threshold is determined by the {@link BaseConfigurations#AZURE_LOG_LEVEL AZURE_LOG_LEVEL}
- * environment configuration, by default logging is disabled.</p>
+ * <p>A minimum logging level threshold is determined by the
+ * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
+ * <b>disabled</b>.</p>
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
@@ -36,27 +35,27 @@ public class ClientLogger {
     private final Logger logger;
 
     /*
-     * Indicate that log level is at verbose level.
+     * Indicates that log level is at verbose level.
      */
     private static final int VERBOSE_LEVEL = 1;
 
     /*
-     * Indicate that log level is at information level.
+     * Indicates that log level is at information level.
      */
     private static final int INFORMATIONAL_LEVEL = 2;
 
     /*
-     * Indicate that log level is at warning level.
+     * Indicates that log level is at warning level.
      */
     private static final int WARNING_LEVEL = 3;
 
     /*
-     * Indicate that log level is at error level.
+     * Indicates that log level is at error level.
      */
     private static final int ERROR_LEVEL = 4;
 
     /*
-     * Indicate that logging is disabled.
+     * Indicates that logging is disabled.
      */
     private static final int DISABLED_LEVEL = 5;
 
@@ -79,60 +78,64 @@ public class ClientLogger {
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
      * <p>
-     * Logging a message at verbose log level
-     * {@codesnippet com.azure.core.implementation.util.clientlogger.verbose}
+     * Logging a message at verbose log level.
+     * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
      *
-     * @param format The formattable message to log
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param format The formattable message to log.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     *     {@link Throwable}.
      */
     public void verbose(String format, Object... args) {
         log(VERBOSE_LEVEL, format, args);
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code informational} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code informational} log level.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
      * <p>
-     * Logging a message at informational log level
-     * {@codesnippet com.azure.core.implementation.util.clientlogger.info}
+     * Logging a message at informational log level.
+     * {@codesnippet com.azure.core.util.logging.clientlogger.info}
      *
      * @param format The formattable message to log
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     *     {@link Throwable}.
      */
     public void info(String format, Object... args) {
         log(INFORMATIONAL_LEVEL, format, args);
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code warning} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code warning} log level.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
      * <p>
-     * Logging a message at warning log level
-     * {@codesnippet com.azure.core.implementation.util.clientlogger.warning}
+     * Logging a message at warning log level.
+     * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
      *
-     * @param format The formattable message to log
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param format The formattable message to log.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     *     {@link Throwable}.
      */
     public void warning(String format, Object... args) {
         log(WARNING_LEVEL, format, args);
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code error} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code error} log level.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
      * <p>
-     * Logging an error with stack trace
-     * {@codesnippet com.azure.core.implementation.util.clientlogger.error}
+     * Logging an error with stack trace.
+     * {@codesnippet com.azure.core.util.logging.clientlogger.error}
      *
-     * @param format The formattable message to log
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param format The formattable message to log.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     *     {@link Throwable}.
      */
     public void error(String format, Object... args) {
         log(ERROR_LEVEL, format, args);
@@ -152,10 +155,10 @@ public class ClientLogger {
     }
 
     /**
-     * Attempts to log the {@link RuntimeException} at the warning level and returns it to be thrown.
+     * Logs the {@link RuntimeException} at the warning level and returns it to be thrown.
      *
      * @param runtimeException RuntimeException to be logged and returned.
-     * @return the passed {@code RuntimeException}
+     * @return The passed {@code RuntimeException}.
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
@@ -163,10 +166,10 @@ public class ClientLogger {
     }
 
     /**
-     * Attempts to log the {@link RuntimeException} at the error level and returns it to be thrown.
+     * Logs the {@link RuntimeException} at the error level and returns it to be thrown.
      *
      * @param runtimeException RuntimeException to be logged and returned.
-     * @return the passed {@code RuntimeException}
+     * @return The passed {@code RuntimeException}.
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
@@ -174,7 +177,7 @@ public class ClientLogger {
     }
 
     private RuntimeException logException(RuntimeException runtimeException, int logLevel) {
-        Objects.requireNonNull(runtimeException);
+        Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
         // Only log if the level is enabled.
         if (canLogAtLevel(logLevel)) {
@@ -218,11 +221,13 @@ public class ClientLogger {
     /*
      * Helper method that determines if logging is enabled at a given level.
      * @param level Logging level
-     * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the given level.
+     * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the
+     * given level.
      */
     private boolean canLogAtLevel(int level) {
         // Check the configuration level every time the logger is called in case it has changed.
-        int configurationLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
+        int configurationLevel =
+            Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL, DISABLED_LEVEL);
         if (level < configurationLevel) {
             return false;
         }

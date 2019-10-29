@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsgetaccesspolicy3986549d9a11fe03c4",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsgetaccesspolicy89573f4d7bd06870f4",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "a8f6eaf1-8d04-40d6-ac1b-cc3eed029fa5"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0ac98-d003-0034-0188-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:16 GMT"
-    }
+      "x-ms-request-id" : "2f7e8019-f003-0082-088d-839126000000",
+      "Date" : "Tue, 15 Oct 2019 19:19:36 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsgetaccesspolicy3986549d9a11fe03c4?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsgetaccesspolicy89573f4d7bd06870f4?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "d98faa03-08c5-49b5-921b-3718318789ec"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -29,11 +32,12 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "86d0aca0-d003-0034-0888-539fde000000",
+      "x-ms-request-id" : "2f7e802c-f003-0082-1a8d-839126000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers />",
-      "Date" : "Thu, 15 Aug 2019 16:40:17 GMT",
+      "Date" : "Tue, 15 Oct 2019 19:19:36 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetaccesspolicy3986549d9a11fe03c4" ]
+  "variables" : [ "queueapitestsgetaccesspolicy89573f4d7bd06870f4" ]
 }

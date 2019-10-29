@@ -3,6 +3,7 @@
 
 package com.azure.core.test.models;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.UnknownHostException;
@@ -12,11 +13,13 @@ import java.net.UnknownHostException;
  * during the pipeline and deserialize them back into their actual throwable class when running in playback mode.
  */
 public class NetworkCallError {
-    @JsonProperty("Throwable")
-    private Throwable throwable;
-
     @JsonProperty("ClassName")
     private String className;
+
+    @JsonProperty("ErrorMessage")
+    private String errorMessage;
+
+    private Throwable throwable;
 
     /**
      * Empty constructor used by deserialization.
@@ -32,6 +35,7 @@ public class NetworkCallError {
     public NetworkCallError(Throwable throwable) {
         this.throwable = throwable;
         this.className = throwable.getClass().getName();
+        this.errorMessage = throwable.getMessage();
     }
 
     /**
@@ -40,13 +44,16 @@ public class NetworkCallError {
     public Throwable get() {
         switch (className) {
             case "java.lang.NullPointerException":
-                return new NullPointerException(throwable.getMessage());
+                return new NullPointerException(this.errorMessage);
 
             case "java.lang.IndexOutOfBoundsException":
-                return new IndexOutOfBoundsException(throwable.getMessage());
+                return new IndexOutOfBoundsException(this.errorMessage);
 
             case "java.net.UnknownHostException":
-                return new UnknownHostException(throwable.getMessage());
+                return new UnknownHostException(this.errorMessage);
+
+            case "com.azure.core.exception.UnexpectedLengthException":
+                return new UnexpectedLengthException(this.errorMessage, 0L, 0L);
 
             default:
                 return throwable;
@@ -58,7 +65,7 @@ public class NetworkCallError {
      *
      * @param throwable Throwable that was thrown.
      */
-    public void throwable(Throwable throwable) {
+    public void setThrowable(Throwable throwable) {
         this.throwable = throwable;
     }
 
@@ -68,7 +75,17 @@ public class NetworkCallError {
      *
      * @param className Class name of the throwable.
      */
-    public void className(String className) {
+    public void setClassName(String className) {
         this.className = className;
+    }
+
+    /**
+     * Sets the error message of the class of the throwable. This is used during deserialization the construct the
+     * throwable as the actual class that was thrown.
+     *
+     * @param errorMessage Error msg from the exception.
+     */
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

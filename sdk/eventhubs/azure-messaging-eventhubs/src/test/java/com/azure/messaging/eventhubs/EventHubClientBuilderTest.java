@@ -4,12 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.models.ProxyAuthenticationType;
+import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -87,48 +85,6 @@ public class EventHubClientBuilderTest {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "Invalid namespace name: %s", namespace), exception);
         }
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testEventProcessorBuilderMissingProperties() {
-        final EventHubClientBuilder builder = new EventHubClientBuilder().connectionString(CORRECT_CONNECTION_STRING);
-        builder.buildEventProcessor(); // should throw NPE
-    }
-
-    @Test
-    public void testEventProcessorBuilder() {
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .connectionString(CORRECT_CONNECTION_STRING)
-            .partitionProcessorFactory((partitionContext, checkpointManager) -> {
-                // A no-op partition processor for to test builder
-                return new PartitionProcessor() {
-                    @Override
-                    public Mono<Void> initialize() {
-                        System.out.println("Called initialize");
-                        return Mono.empty();
-                    }
-
-                    @Override
-                    public Mono<Void> processEvent(EventData eventData) {
-                        System.out.println("Called process event");
-                        return Mono.empty();
-                    }
-
-                    @Override
-                    public void processError(Throwable throwable) {
-                        // do nothing
-                    }
-
-                    @Override
-                    public Mono<Void> close(CloseReason closeReason) {
-                        return Mono.empty();
-                    }
-                };
-            })
-            .consumerGroupName("test-consumer")
-            .initialEventPosition(EventPosition.latest())
-            .partitionManager(new InMemoryPartitionManager());
-        assertNotNull(builder.buildEventProcessor());
     }
 
     // TODO: add test for retry(), scheduler(), timeout(), transportType()

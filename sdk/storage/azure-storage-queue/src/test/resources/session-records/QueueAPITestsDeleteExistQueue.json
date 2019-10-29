@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeleteexistqueue16092c5b3100623794",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeleteexistqueue57553c6b57b47e0184",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "fdc3c016-61eb-4f19-968e-a8d6d78a1214"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0aaa8-d003-0034-3a88-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:12 GMT"
-    }
+      "x-ms-request-id" : "2f7e7c98-f003-0082-488d-839126000000",
+      "Date" : "Tue, 15 Oct 2019 19:19:34 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeleteexistqueue16092c5b3100623794",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeleteexistqueue57553c6b57b47e0184",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "7a717a1e-1df7-4602-ab82-f813569acac5"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -28,9 +31,10 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "86d0aaab-d003-0034-3c88-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:12 GMT"
-    }
+      "x-ms-request-id" : "2f7e7ca3-f003-0082-518d-839126000000",
+      "Date" : "Tue, 15 Oct 2019 19:19:34 GMT"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestsdeleteexistqueue16092c5b3100623794" ]
+  "variables" : [ "queueapitestsdeleteexistqueue57553c6b57b47e0184" ]
 }

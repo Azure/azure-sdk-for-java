@@ -66,16 +66,16 @@ public class ConsumeEvent {
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
         Disposable subscription = consumer.receive().subscribe(event -> {
-            String contents = UTF_8.decode(event.body()).toString();
+            String contents = UTF_8.decode(event.getBody()).toString();
             System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
-                event.sequenceNumber(), contents));
+                event.getSequenceNumber(), contents));
 
             countDownLatch.countDown();
         });
 
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
         // This creates a producer that only sends events to `firstPartition`.
-        EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(firstPartition);
+        EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(firstPartition);
         EventHubAsyncProducer producer = client.createProducer(producerOptions);
 
         // We create 10 events to send to the service and block until the send has completed.
