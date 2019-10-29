@@ -8,14 +8,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
-import com.azure.messaging.eventhubs.EventHubAsyncProducer;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.jproxy.ProxyServer;
 import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -104,13 +104,13 @@ public class ProxySendTest extends IntegrationTestBase {
     public void sendEvents() {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
-        final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-        final EventHubAsyncProducer producer = client.createProducer(options);
+        final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubProducerAsyncClient producer = client.createProducer();
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
         final Instant sendTime = Instant.now();
 
         // Act
-        StepVerifier.create(producer.send(events))
+        StepVerifier.create(producer.send(events, options))
             .verifyComplete();
 
         // Assert

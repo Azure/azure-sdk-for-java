@@ -7,9 +7,9 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -90,7 +90,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
         final CountDownLatch countDownLatch = new CountDownLatch(partitionIds.size());
         final EventHubAsyncConsumer[] consumers = new EventHubAsyncConsumer[partitionIds.size()];
-        final EventHubAsyncProducer[] producers = new EventHubAsyncProducer[partitionIds.size()];
+        final EventHubProducerAsyncClient[] producers = new EventHubProducerAsyncClient[partitionIds.size()];
         final Disposable.Composite subscriptions = Disposables.composite();
         try {
             for (int i = 0; i < partitionIds.size(); i++) {
@@ -110,19 +110,24 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
                 subscriptions.add(subscription);
 
-                producers[i] = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
+                producers[i] = client.createProducer();
             }
 
             // Act
-            Flux.fromArray(producers).flatMap(producer -> producer.send(TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID)))
-                .blockLast(TIMEOUT);
+            for (int i = 0; i < partitionIds.size(); i++) {
+                final String partitionId = partitionIds.get(i);
+                final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
+                final EventHubProducerAsyncClient producer = producers[i];
+
+                producer.send(TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID), sendOptions).block(TIMEOUT);
+            }
 
             // Assert
             // Wait for all the events we sent to be received.
             countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
             Assert.assertEquals(0, countDownLatch.getCount());
         } catch (InterruptedException e) {
-            Assert.fail("Countdown latch was interrupted:" + e.toString());
+            Assert.fail("Countdown latch was interrupted:" + e);
         } finally {
             logger.info("Disposing of subscriptions, consumers, producers.");
 
@@ -149,7 +154,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final int expectedNumber = 5;
-        final EventHubAsyncProducer producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
         final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
             sent -> logger.info("Event sent."),
             error -> logger.error("Error sending event", error));
@@ -178,11 +183,14 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String secondPartitionId = "1";
         final AtomicBoolean isActive = new AtomicBoolean(true);
-        final EventHubAsyncProducer producer = client.createProducer(
-            new EventHubProducerOptions().setPartitionId(secondPartitionId));
-        final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
-            sent -> logger.info("Event sent."),
-            error -> logger.error("Error sending event", error));
+        final EventHubProducerAsyncClient producer = client.createProducer();
+        final Disposable producerEvents = getEvents(isActive)
+            .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(secondPartitionId)))
+            .subscribe(
+                sent -> {
+                },
+                error -> logger.error("Error sending event", error),
+                () -> logger.info("Event sent."));
 
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(1)
@@ -213,7 +221,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
     }
 
     private static void verifyLastRetrieved(AtomicReference<LastEnqueuedEventProperties> atomicReference,
-                                            LastEnqueuedEventProperties current, boolean isFirst) {
+        LastEnqueuedEventProperties current, boolean isFirst) {
         Assert.assertNotNull(current);
         final LastEnqueuedEventProperties previous = atomicReference.get();
 
@@ -301,7 +309,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final Disposable.Composite subscriptions = Disposables.composite();
 
-        final EventHubAsyncProducer producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
         subscriptions.add(getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
             sent -> logger.info("Event sent."),
             error -> logger.error("Error sending event", error)));
