@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "38cad6f4-44c6-45a3-85d4-1979831d79a1",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidXmlNodeValue",
+      "retry-after" : "0",
+      "Content-Length" : "340",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "83e48b37-a01a-0116-7788-83b7bd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:83e48b37-a01a-0116-7788-83b7bd000000\nTime:2019-10-15T18:43:13.7350481Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:43:12 GMT",
+      "x-ms-client-request-id" : "38cad6f4-44c6-45a3-85d4-1979831d79a1",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileserviceapitestssetandgetpropertieswithinvalidargs457927" ]
+}

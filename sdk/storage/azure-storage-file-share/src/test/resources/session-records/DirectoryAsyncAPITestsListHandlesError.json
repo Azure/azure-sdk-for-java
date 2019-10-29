@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestslisthandleserror21281cf3d3d78?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "dd423f91-223e-48aa-97c9-0abc08b00ab6"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F6AD3F755",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:23 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8639c841-701a-00fe-5f88-830c13000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:22 GMT",
+      "x-ms-client-request-id" : "dd423f91-223e-48aa-97c9-0abc08b00ab6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestslisthandleserror21281cf3d3d78/directoryasyncapitestslisthandleserror89743a991bd6b?comp=listhandles",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "0c191461-ff5a-4c24-9def-dc61d800e90a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "8639c844-701a-00fe-6188-830c13000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:8639c844-701a-00fe-6188-830c13000000\nTime:2019-10-15T18:42:24.0560809Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:23 GMT",
+      "x-ms-client-request-id" : "0c191461-ff5a-4c24-9def-dc61d800e90a",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryasyncapitestslisthandleserror21281cf3d3d78", "directoryasyncapitestslisthandleserror89743a991bd6b" ]
+}

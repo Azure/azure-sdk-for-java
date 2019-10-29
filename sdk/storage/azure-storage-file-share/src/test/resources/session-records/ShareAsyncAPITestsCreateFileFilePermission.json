@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilefilepermission495342a61f2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "0e1b4221-43ed-45dc-872a-b7e091f53262"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F93370887",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:30 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48d20-a01a-0116-7488-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:29 GMT",
+      "x-ms-client-request-id" : "0e1b4221-43ed-45dc-872a-b7e091f53262"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatefilefilepermission495342a61f2/testCreateFile",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "43bab575-a8aa-433d-b842-c8d495f805e9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "6119292009901620917*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-10-15T18:43:30.8370394Z",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:30 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 15 Oct 2019 18:43:29 GMT",
+      "ETag" : "0x8D7519F9340EDDA",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-10-15T18:43:30.8370394Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "83e48d22-a01a-0116-7588-83b7bd000000",
+      "x-ms-client-request-id" : "43bab575-a8aa-433d-b842-c8d495f805e9",
+      "x-ms-file-last-write-time" : "2019-10-15T18:43:30.8370394Z"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestscreatefilefilepermission495342a61f2" ]
+}

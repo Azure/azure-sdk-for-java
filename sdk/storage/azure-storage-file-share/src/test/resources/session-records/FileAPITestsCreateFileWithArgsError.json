@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargserror825773b898c1268?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "b8b3c2df-1790-4ee7-866d-3919f77f97ca"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F707F8F45",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:32 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8639ca57-701a-00fe-4c88-830c13000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:32 GMT",
+      "x-ms-client-request-id" : "b8b3c2df-1790-4ee7-866d-3919f77f97ca"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestscreatefilewithargserror825773b898c1268/fileapitestscreatefilewithargserror31410277cdcfbe9",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "da1a1cea-fa59-4450-ace0-aa1ad21c94e2"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "Content-Length" : "236",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "8639ca59-701a-00fe-4d88-830c13000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:8639ca59-701a-00fe-4d88-830c13000000\nTime:2019-10-15T18:42:32.5692801Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:32 GMT",
+      "x-ms-client-request-id" : "da1a1cea-fa59-4450-ace0-aa1ad21c94e2",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileapitestscreatefilewithargserror825773b898c1268", "fileapitestscreatefilewithargserror31410277cdcfbe9" ]
+}

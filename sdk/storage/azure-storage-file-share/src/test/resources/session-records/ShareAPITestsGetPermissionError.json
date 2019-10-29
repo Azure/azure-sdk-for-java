@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsgetpermissionerror92696a302aa96f548?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "1f1f80b5-5b85-4e94-991b-e2dce9ecd807"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F909F1AD6",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:26 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48ca7-a01a-0116-1888-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:25 GMT",
+      "x-ms-client-request-id" : "1f1f80b5-5b85-4e94-991b-e2dce9ecd807"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsgetpermissionerror92696a302aa96f548?restype=share&comp=filepermission",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "3ffb3981-b70d-4c36-a321-ffa3751c8786"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidHeaderValue",
+      "retry-after" : "0",
+      "Content-Length" : "335",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "83e48ca9-a01a-0116-1988-83b7bd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:83e48ca9-a01a-0116-1988-83b7bd000000\nTime:2019-10-15T18:43:26.5041435Z</Message><HeaderName>x-ms-file-permission-key</HeaderName><HeaderValue>abcde</HeaderValue></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:43:25 GMT",
+      "x-ms-client-request-id" : "3ffb3981-b70d-4c36-a321-ffa3751c8786",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsgetpermissionerror92696a302aa96f548" ]
+}

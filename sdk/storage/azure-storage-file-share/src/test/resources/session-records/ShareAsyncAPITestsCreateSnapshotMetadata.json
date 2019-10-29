@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshotmetadata8447926cdd3b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "a543b85a-aa13-4e21-be7d-2a0e6a8f5e63"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F91B78595",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:28 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48cd9-a01a-0116-3c88-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:27 GMT",
+      "x-ms-client-request-id" : "a543b85a-aa13-4e21-be7d-2a0e6a8f5e63"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshotmetadata8447926cdd3b?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "02494372-ea1e-4968-b4a1-33bc2aa92621"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-10-15T18:43:28.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F91900800",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:28 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48cdb-a01a-0116-3d88-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:27 GMT",
+      "x-ms-client-request-id" : "02494372-ea1e-4968-b4a1-33bc2aa92621"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestscreatesnapshotmetadata8447926cdd3b", "shareasyncapitestscreatesnapshotmetadata38698111ffc8" ]
+}
