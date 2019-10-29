@@ -321,4 +321,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_core_library]: ../../core
 [javadoc]: http://azure.github.io/azure-sdk-for-java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/identity/azure-identity/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

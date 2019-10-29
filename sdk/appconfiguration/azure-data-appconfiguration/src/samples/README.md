@@ -67,4 +67,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_read_only]: java/com/azure/data/appconfiguration/ReadOnlySample.java
 [sample_read_revision_history]: com/azure/data/appconfiguration/ReadRevisionHistory.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/appconfiguration/azure-data-appconfiguration/samples/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2Fsrc%2Fsamples%2FREADME.png)

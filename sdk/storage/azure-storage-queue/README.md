@@ -480,4 +480,4 @@ If you would like to become an active contributor to this project please follow 
 [storage_rest]: https://docs.microsoft.com/rest/api/storageservices/queue-service-error-codes
 [samples]: src/samples
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-queue/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2FREADME.png)

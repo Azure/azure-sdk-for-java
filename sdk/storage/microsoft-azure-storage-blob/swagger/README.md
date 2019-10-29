@@ -17,3 +17,6 @@ directive:
   reason: Default models with header parameters will generated properties on non-default models 
   authorized-by: "@fearthecowboy"
 ```
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fmicrosoft-azure-storage-blob%2Fswagger%2FREADME.png)

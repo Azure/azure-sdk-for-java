@@ -230,4 +230,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [opencensus-quickstart]: https://opencensus.io/quickstart/java/tracing/
 [zipkin-quickstart]: https://zipkin.io/pages/quickstart
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core-tracing-opencensus/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-tracing-opencensus%2FREADME.png)

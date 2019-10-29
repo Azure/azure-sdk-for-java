@@ -79,4 +79,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_ManageDeleted]: java/com/azure/security/keyvault/certificates/ManagingDeletedCertificates.java
 [sample_ManageDeletedAsync]: java/com/azure/security/keyvault/certificates/ManagingDeletedCertificatesAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-certificates/samples/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-certificates%2Fsrc%2Fsamples%2FREADME.png)

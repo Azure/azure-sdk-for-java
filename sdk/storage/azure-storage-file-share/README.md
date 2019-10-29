@@ -535,4 +535,4 @@ If you would like to become an active contributor to this project please follow 
 [storage_file_rest]: https://docs.microsoft.com/rest/api/storageservices/file-service-error-codes
 [samples]: src/samples
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file-share/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2FREADME.png)

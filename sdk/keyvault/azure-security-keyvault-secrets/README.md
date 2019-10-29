@@ -358,4 +358,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [secrets_samples]: src/samples/java/com/azure/security/keyvault/secrets
 [samples]: src/samples/README.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-secrets/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2FREADME.png)

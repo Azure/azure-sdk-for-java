@@ -93,4 +93,4 @@ To use a proxy for unit tests, set an environment variable `RUN_WITH_PROXY` to `
 9. Click "Apply" and then "Run"
 10. You should have a new view next to the package explorer called JUnit showing the running tests and see Console outputs depending on which test currently runs. If you do not see the JUnit tab go to Window > Show view > Other... > Java > JUnit
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/servicebus/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2FREADME.png)

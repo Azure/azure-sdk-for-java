@@ -173,3 +173,6 @@
 
 - First release of `azure-documentdb-rx` SDK.
 - CRUD Document API fully non-blocking using netty. Query async API implemented as a wrapper using blocking SDK `azure-documentdb`.
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fchangelog%2FREADME.png)

@@ -715,3 +715,7 @@ directive:
     where: $..[?(@.serializedName=="File-Download-Headers")]
     transform: $.name.raw = 'Share-File-Download-Headers'
 ```
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)
+
