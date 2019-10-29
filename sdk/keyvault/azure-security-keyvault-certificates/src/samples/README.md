@@ -3,35 +3,11 @@
 This document explains samples and how to use them.
 
 ## Key concepts
-### Certificate
-  Azure Key Vault supports certificates with secret content types(`PKCS12` & `PEM`). The certificate can be backed by keys in key vault of types(`EC` & `RSA`). In addition to the certificate policy, the following attributes may be specified:
-* enabled: Specifies whether the certificate is enabled and useable.
-* created: Indicates when this version of the certificate was created.
-* updated: Indicates when this version of the certificate was updated.
-
-### Certificate Client:
-The Certificate client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing certificates and its versions. The client also supports CRUD operations for certificate issuers and contacts in the key vault. An asynchronous and synchronous, CertificateClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a Certificate, you can interact with the primary resource types in Key Vault.
-
-# Samples Azure Key Vault Certificare APIs
-This document describes how to use samples and what is done in each sample.
+Key concepts are explained in detail [here] [SDK_README_KEY_CONCEPTS].
 
 ## Getting started
 
-### Adding the package to your project
-
-Maven dependency for Azure certificates Client library. Add it to your project's pom file.
-
-[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-certificates;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.0.0-preview.5</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
+Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## How to run
 These sample can be run in your IDE with default JDK.
@@ -89,9 +65,10 @@ For more extensive documentation on Azure Key Vault, see the [API reference docu
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[source_code]:  src
 [CERT_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]: ../../README.md#contributing
+[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
+[SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
 [sample_helloWorld]: java/com/azure/security/keyvault/certificates/HelloWorld.java
 [sample_helloWorldAsync]: java/com/azure/security/keyvault/certificates/HelloWorldAsync.java
@@ -102,4 +79,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_ManageDeleted]: java/com/azure/security/keyvault/certificates/ManagingDeletedCertificates.java
 [sample_ManageDeletedAsync]: java/com/azure/security/keyvault/certificates/ManagingDeletedCertificatesAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-certificates/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-certificates/samples/README.png)

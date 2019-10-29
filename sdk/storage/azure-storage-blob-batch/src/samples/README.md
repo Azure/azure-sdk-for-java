@@ -4,35 +4,13 @@ This document explains samples and how to use them.
 
 ## Key concepts
 
-Blob storage is designed for:
-
-- Serving images or documents directly to a browser.
-- Storing files for distributed access.
-- Streaming video and audio.
-- Writing to log files.
-- Storing data for backup and restore, disaster recovery, and archiving.
-- Storing data for analysis by an on-premises or Azure-hosted service.
+Key concepts are explained in detail [here] [SDK_README_KEY_CONCEPTS].
 
 # Samples Azure Storage Blob Batch APIs
 This document describes how to use samples and what is done in each sample.
 
 ## Getting started
-
-### Adding the package to your project
-
-Maven dependency for Azure Storage blob batch Client library. Add it to your project's pom file.
-
-[//]: # ({x-version-update-start;com.azure:azure-storage-blob-batch;current})
-```xml
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
+Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## How to run
 These sample can be run in your IDE with default JDK.
@@ -62,11 +40,12 @@ For more extensive documentation on Azure Storage blob, see the [API reference d
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[source_code]:  src
+[SDK_README_GETTING_STARTDED]: ../../README.md#getting-started
+[SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [BATCH_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]: ../../README.md#contributing
 [samples_basic]: java/com/azure/storage/blob/batch/ReadmeCodeSamples.java
 [storageblob_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob-batch/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob-batch/samples/README.png)

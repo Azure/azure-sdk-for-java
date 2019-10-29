@@ -9,7 +9,8 @@ Key concepts are explained in detail [here] [SDK_README_KEY_CONCEPTS].
 This document describes how to use samples and what is done in each sample.
 
 ## Getting started
-
+Getting started explained in detail [here][SDK_README_GETTING_STARTED].
+ 
 ### Adding the package to your project
 
 Maven dependency for Azure app configuration Client library. Add it to your project's pom file.
@@ -53,9 +54,9 @@ For more extensive documentation , see the [API reference documentation][azkeyva
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[source_code]:  src
 [KEYS_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]: ../../README.md#contributing
+[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
 [SDK_README_TROUBLESHOOTING]: ../../README.md#troubleshooting
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
@@ -66,4 +67,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_read_only]: java/com/azure/data/appconfiguration/ReadOnlySample.java
 [sample_read_revision_history]: com/azure/data/appconfiguration/ReadRevisionHistory.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/appconfiguration/azure-data-appconfiguration/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/appconfiguration/azure-data-appconfiguration/samples/README.png)

@@ -9,20 +9,7 @@ More detail is defined at [queue key concept][queue_key_concept].
 This document describes how to use samples and what is done in each sample.
 
 ## Getting started
-
-### Adding the package to your project
-
-Maven dependency for Azure Storage queue Client library. Add it to your project's pom file.
-
-[//]: # ({x-version-update-start;com.azure:azure-storage-queue;current})
-```xml
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-storage-queue</artifactId>
-  <version>12.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
 
@@ -53,8 +40,8 @@ For more extensive documentation on Azure Storage blob, see the [API reference d
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[source_code]:  src
 [SDK_README]: ../../README.md
+[SDK_README_GETTING_STARTDED]: ../../README.md#getting-started
 [SDK_README_CONTRIBUTING]: ../../README.md#contributing
 [samples_queue_service]: java/com/azure/storage/queue/QueueServiceSamples.java
 [samples_message]: java/com/azure/storage/queue/MessageSamples.java
@@ -65,4 +52,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [queue_key_concept]: ../../README.md#key-concepts
 [samples]: java/samples/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob-batch/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob-batch/SAMPLES/README.png)

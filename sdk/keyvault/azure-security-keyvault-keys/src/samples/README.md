@@ -3,41 +3,13 @@
 This document explains samples and how to use them.
 
 ## Key concepts
-### Key
-  Azure Key Vault supports multiple key types(`RSA` & `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
-* enabled: Specifies whether the key is enabled and useable for cryptographic operations.
-* not_before: Identifies the time before which the key must not be used for cryptographic operations.
-* expires: Identifies the expiration time on or after which the key MUST NOT be used for cryptographic operation.
-* created: Indicates when this version of the key was created.
-* updated: Indicates when this version of the key was updated.
-
-### Key Client:
-The Key client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing keys and its versions. An asynchronous and synchronous, KeyClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a Key, you can interact with the primary resource types in Key Vault.
-
-### Cryptography Client:
-The Cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key unwrapping and retrieving the configured key. An asynchronous and synchronous, CryptographyClient, client exists in the SDK allowing for selection of a client based on an application's use case.
-
+Key concepts are explained in detail [here] [SDK_README_KEY_CONCEPTS].
 
 # Samples Azure Key Vault Keys APIs
 This document describes how to use samples and what is done in each sample.
 
 ## Getting started
-
-### Adding the package to your project
-
-Maven dependency for Azure Keys Client library. Add it to your project's pom file.
-
-[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-keys;current})
-```xml
-<dependency>
-   <groupId>com.azure</groupId>
-   <artifactId>azure-security-keyvault-keys</artifactId>
-   <version>4.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
+Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## How to run
 These sample can be run in your IDE with default JDK.
@@ -116,9 +88,10 @@ For more extensive documentation on Azure Key Vault, see the [API reference docu
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[source_code]:  src
-[KEYS_SDK_README]: ../../README.md
+[[KEYS_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]: ../../README.md#contributing
+[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
+[SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
 [sample_helloWorld]: java/com/azure/security/keyvault/keys/HelloWorld.java
 [sample_helloWorldAsync]: java/com/azure/security/keyvault/keys/HelloWorldAsync.java
