@@ -22,8 +22,8 @@ The Azure Identity library provides Azure Active Directory token authentication 
     - [Enable applications for shared token cache credential](#enable-applications-for-shared-token-cache-credential)
   - [Key concepts](#key-concepts)
     - [Credentials](#credentials)
-  - [DefaultAzureCredential](#defaultazurecredential)
-  - [Environment variables](#environment-variables)
+    - [DefaultAzureCredential](#defaultazurecredential)
+    - [Environment variables](#environment-variables)
 - [Examples](#examples)
   - [Authenticating with `DefaultAzureCredential`](#authenticating-with-defaultazurecredential)
   - [Authenticating a service principal with a client secret](#authenticating-a-service-principal-with-a-client-secret)
@@ -98,7 +98,13 @@ You need the same application registered as in [Enable applications for interact
 #### Enable applications for shared token cache credential
 You will need to have Visual Studio 2019 installed. Login to Visual Studio with your org ID or live ID and you are ready to use shared token cache credential.
 
-If you see an error "MSAL V3 Deserialization failed", try clearing the cache in `C:\Users\{username}\AppData\.IdentityService`.
+Open your Visual Studio account settings and you can see the list of accounts with cached tokens in the red rectangle below. Note the Personalization Account is not related to this token cache. You can delete all info and tokens of this account in the token cache by removing the account here and closing the Visual Studio window.
+
+![vs2019 account settings](./images/vs2019-account-settings.png)
+
+If you have multiple accounts listed here, you must specify the `AZURE_USERNAME` environment variable to the email of the account you'd like to use for all the authentications.
+
+If you see an error "MSAL V3 Deserialization failed", try clearing the cache in `C:\Users\{username}\AppData\Local\.IdentityService`.
 
 ## Key concepts
 ### Credentials
@@ -121,7 +127,7 @@ The credential types in Azure Identity differ in the types of AAD identities the
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
-## DefaultAzureCredential
+### DefaultAzureCredential
 `DefaultAzureCredential` is appropriate for most scenarios where the application is intended to run in the Azure Cloud. This is because the `DefaultAzureCredential` determines the appropriate credential type based of the environment it is executing in. It supports authenticating both as a service principal or managed identity, and can be configured so that it will work both in a local development environment or when deployed to the cloud.
 
 The `DefaultAzureCredential` will first attempt to authenticate using credentials provided in the environment. In a development environment you can authenticate as a service principal with the `DefaultAzureCredential` by providing configuration in environment variables as described in the next section.
@@ -130,7 +136,9 @@ If the environment configuration is not present or incomplete, the `DefaultAzure
 require platform support. See the
 [managed identity documentation](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities) for more details on this.
 
-## Environment variables
+If a managed identity isn't available, and the application is running on Windows, the `DefaultAzureCredential` will then attempt reading from a local user token cache. `AZURE_USERNAME` environment variable must be specified if there are more than one accounts in the cache. The local token cache is shared between this library, Visual Studio (2019+), and Azure CLI. See [Enable applications for shared token cache credential](#enable-applications-for-shared-token-cache-credential) to see how to populate / clean up this token cache.
+
+### Environment variables
 
 `DefaultAzureCredential` and `EnvironmentCredential` are configured for service
 principal authentication with these environment variables:
