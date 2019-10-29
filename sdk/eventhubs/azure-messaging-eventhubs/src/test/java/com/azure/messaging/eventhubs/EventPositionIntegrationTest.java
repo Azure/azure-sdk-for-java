@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -64,7 +64,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         client = createBuilder().buildAsyncClient();
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
-            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+            final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
             testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
 
             // Receiving back those events we sent so we have something to compare to.
@@ -162,8 +162,8 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String messageValue = UUID.randomUUID().toString();
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
-        final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-        final EventHubAsyncProducer producer = client.createProducer(options);
+        final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubAsyncProducer producer = client.createProducer();
         final Flux<EventData> events = Flux.range(0, NUMBER_OF_EVENTS).map(number -> {
             final EventData eventData = new EventData(("Event " + number).getBytes(UTF_8));
             eventData.addProperty(MESSAGE_TRACKING_ID, messageValue);
@@ -176,7 +176,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         try {
             // Act
-            producer.send(events).block(TIMEOUT);
+            producer.send(events, options).block(TIMEOUT);
             countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
         } finally {
             subscription.dispose();

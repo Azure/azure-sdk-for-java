@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.BatchOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,15 +55,15 @@ public class EventHubProducerIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendMessageToPartition() throws IOException {
         // Arrange
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+        final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducer producer = client.createProducer(producerOptions)) {
-            producer.send(events);
+        try (EventHubProducer producer = client.createProducer()) {
+            producer.send(events, sendOptions);
         }
     }
 

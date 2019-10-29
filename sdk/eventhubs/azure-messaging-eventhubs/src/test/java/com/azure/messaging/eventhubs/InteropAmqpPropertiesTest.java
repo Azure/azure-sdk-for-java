@@ -4,12 +4,11 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
-import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -24,7 +23,6 @@ import org.junit.rules.TestName;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,6 +46,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     private EventHubAsyncClient client;
     private EventHubAsyncProducer producer;
     private EventHubAsyncConsumer consumer;
+    private SendOptions sendOptions;
 
     @Rule
     public TestName testName = new TestName();
@@ -63,12 +62,10 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .setPartitionId(PARTITION_ID)
-            .setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
+        sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
 
         client = createBuilder().buildAsyncClient();
-        producer = client.createProducer(producerOptions);
+        producer = client.createProducer();
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
     }
 
@@ -124,7 +121,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         // We're setting a tracking identifier because we don't want to receive some random operations. We want to
         // receive the event we sent.
         StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1))
-            .then(() -> producer.send(msgEvent).block(TIMEOUT))
+            .then(() -> producer.send(msgEvent, sendOptions).block(TIMEOUT))
             .assertNext(event -> {
                 validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
                 receivedEventData.set(event);
@@ -134,7 +131,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         Assert.assertNotNull(receivedEventData.get());
 
         StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1))
-            .then(() -> producer.send(receivedEventData.get()).block(TIMEOUT))
+            .then(() -> producer.send(receivedEventData.get(), sendOptions).block(TIMEOUT))
             .assertNext(event -> validateAmqpProperties(message, expectedAnnotations, applicationProperties, event))
             .verifyComplete();
     }
