@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
@@ -34,9 +33,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -249,8 +250,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
      * overwrites any existing metadata on the blob. Partial updates are not supported with this method; the content of
      * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
-     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link BlockBlobAsyncClient#commitBlockList(List)},
-     * which this method uses internally. For more information, see the
+     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
+     * BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
@@ -373,7 +374,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlob) {
         final long chunkedUploadRequirement = 4 * Constants.MB;
         final long[] bufferedDataSize = {0};
-        final List<ByteBuffer> cachedBuffers = new ArrayList<>();
+        final LinkedList<ByteBuffer> cachedBuffers = new LinkedList<>();
 
         /*
          * Window the reactive stream until either the stream completes or the windowing size is hit. If the window
@@ -408,11 +409,23 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .next()
             .flatMap(fluxes -> {
                 if (fluxes.size() == 1) {
-                    return uploadFullBlob.apply(Flux.fromIterable(cachedBuffers), bufferedDataSize[0]);
+                    return uploadFullBlob.apply(dequeuingFlux(cachedBuffers), bufferedDataSize[0]);
                 } else {
-                    return uploadInChunks.apply(Flux.fromIterable(cachedBuffers).concatWith(fluxes.get(1)));
+                    return uploadInChunks.apply(dequeuingFlux(cachedBuffers).concatWith(fluxes.get(1)));
                 }
             });
+    }
+
+    private static Flux<ByteBuffer> dequeuingFlux(Queue<ByteBuffer> queue) {
+        // Generate is used as opposed to Flux.fromIterable as it allows the buffers to be garbage collected sooner.
+        return Flux.generate(sink -> {
+            ByteBuffer buffer = queue.poll();
+            if (buffer != null) {
+                sink.next(buffer);
+            } else {
+                sink.complete();
+            }
+        });
     }
 
     /**
