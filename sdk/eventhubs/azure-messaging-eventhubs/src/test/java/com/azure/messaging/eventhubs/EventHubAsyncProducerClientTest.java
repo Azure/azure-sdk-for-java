@@ -581,6 +581,73 @@ public class EventHubAsyncProducerClientTest {
         verify(link, times(2)).getLinkSize();
     }
 
+    /**
+     * Verify we can send messages to multiple partitionIds with same sender.
+     */
+    @Test
+    public void sendMultiplePartitions() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
+            final EventData data = new EventData(contents);
+            return Flux.just(data);
+        });
+
+        final String partitionId1 = "my-partition-id";
+        final String partitionId2 = "my-partition-id-2";
+
+        final AmqpSession partition1Session = mock(AmqpSession.class);
+        final AmqpSession partition2Session = mock(AmqpSession.class);
+        final AmqpSendLink sendLink1 = mock(AmqpSendLink.class);
+        final AmqpSendLink sendLink2 = mock(AmqpSendLink.class);
+
+        when(connection.createSession(any())).thenAnswer(mock -> {
+            final String entityPath = mock.getArgument(0, String.class);
+
+            if (EVENT_HUB_NAME.equals(entityPath)) {
+                return Mono.just(session);
+            } else if (entityPath.endsWith(partitionId1)) {
+                return Mono.just(partition1Session);
+            } else if (entityPath.endsWith(partitionId2)) {
+                return Mono.just(partition2Session);
+            } else {
+                return Mono.error(new IllegalArgumentException("Could not figure out entityPath: " + entityPath));
+            }
+        });
+        when(partition1Session.createProducer(any(), argThat(name -> name.endsWith(partitionId1)), any(), any()))
+            .thenReturn(Mono.just(sendLink1));
+        when(partition2Session.createProducer(any(), argThat(name -> name.endsWith(partitionId1)), any(), any()))
+            .thenReturn(Mono.just(sendLink2));
+        when(sendLink1.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink2.send(anyList())).thenReturn(Mono.empty());
+
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
+            eq(retryOptions.getTryTimeout()), any()))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(producer.send(testData, new SendOptions()))
+            .verifyComplete();
+
+        StepVerifier.create(producer.send(testData, new SendOptions().setPartitionId(partitionId1)))
+            .verifyComplete();
+
+        StepVerifier.create(producer.send(testData, new SendOptions().setPartitionId(partitionId2)))
+            .verifyComplete();
+
+        // Assert
+        verify(sendLink).send(messagesCaptor.capture());
+
+        final List<Message> messagesSent = messagesCaptor.getValue();
+        Assert.assertEquals(count, messagesSent.size());
+
+        verify(sendLink1, times(1)).send(anyList());
+        verify(sendLink2, times(1)).send(anyList());
+    }
+
     static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
         + "Ut sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \n"
         + "Aenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices arcu mattis. Aliquam erat volutpat. \n"
