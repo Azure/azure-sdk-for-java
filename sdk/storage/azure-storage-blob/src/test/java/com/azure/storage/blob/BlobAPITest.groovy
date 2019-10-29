@@ -4,19 +4,20 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
+import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.ImplUtils
 import com.azure.core.util.polling.PollResponse
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
-
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ParallelTransferOptions
@@ -26,18 +27,18 @@ import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.nio.file.FileAlreadyExistsException
-import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.function.Consumer
 
 class BlobAPITest extends APISpec {
     BlobClient bc
@@ -290,164 +291,180 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Download file"() {
         setup:
-        bc.uploadFromFile(file.toPath().toString())
+        def file = getRandomFile(fileSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(testName + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
 
         when:
-
         def properties = bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSize())
+            new ParallelTransferOptions().setBlockSize(4 * 1024 * 1024), null, null, null, null)
+
+        and:
+        def stream1 = new FileInputStream(file)
+        def stream2 = new FileInputStream(outFile)
 
         then:
-        compareFiles(channel, 0, file.size(), outChannel)
-        properties.getBlobType() == BlobType.BLOCK_BLOB
+        compareFiles(stream1, 0, file.size(), stream2)
+        properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
 
         cleanup:
+        stream1.close()
+        stream2.close()
         outFile.delete()
 
         where:
-        file                                | _
-        getRandomFile(0)                    | _ // empty file
-        getRandomFile(20)                   | _ // small file
-        getRandomFile(16 * 1024 * 1024)     | _ // medium file in several chunks
-        getRandomFile(8 * 1026 * 1024 + 10) | _ // medium file not aligned to block
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
-    def compareFiles(AsynchronousFileChannel channel1, long offset, long count, AsynchronousFileChannel channel2) {
+    def compareFiles(FileInputStream stream1, long offset, long count, FileInputStream stream2) {
         int chunkSize = 8 * 1024 * 1024
         long pos = 0
+        stream1.skip(offset)
 
         while (pos < count) {
             chunkSize = Math.min(chunkSize, count - pos)
-            def buf1 = FlowableUtil.collectBytesInBuffer(FlowableUtil.readFile(channel1, offset + pos, chunkSize))
-                .blockingGet()
-            def buf2 = FlowableUtil.collectBytesInBuffer(FlowableUtil.readFile(channel2, pos, chunkSize)).blockingGet()
+            def buf1 = new byte[chunkSize]
+            def buf2 = new byte[chunkSize]
+            def readCount1 = stream1.read(buf1)
+            def readCount2 = stream2.read(buf2)
 
-            buf1.position(0)
-            buf2.position(0)
-
-            if (buf1.compareTo(buf2) != 0) {
+            if (readCount1 != readCount2) {
                 return false
             }
 
+            if (ByteBuffer.wrap(buf1).compareTo(ByteBuffer.wrap(buf2)) != 0) {
+                return false
+            }
             pos += chunkSize
         }
-        if (pos != count && pos != channel2.size()) {
+        if (pos != count && stream2.read() != -1) {
             return false
         }
         return true
     }
 
+    @Requires({ liveMode() })
     @Unroll
     def "Download file range"() {
         setup:
-        def channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null).blockingGet()
-        File outFile = getRandomFile(0)
-        def outChannel = AsynchronousFileChannel.open(outFile.toPath(), StandardOpenOption.WRITE,
-            StandardOpenOption.READ)
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, range, null).blockingGet()
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, null, null)
+
+        and:
+        def stream1 = new FileInputStream(file)
+        def stream2 = new FileInputStream(outFile)
 
         then:
-        compareFiles(channel, range.offset(), range.count(), outChannel)
+        compareFiles(stream1, range.getOffset(), range.getCount(), stream2)
 
         cleanup:
-        channel.close()
-        outChannel.close()
+        stream1.close()
+        stream2.close()
+        outFile.delete()
 
         /*
         The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
         send off parallel requests with invalid ranges.
          */
         where:
-        file                           | range
-        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize) // Exact count
-        getRandomFile(defaultDataSize) | new BlobRange().withOffset(1).withCount(defaultDataSize - 1) // Offset and exact count
-        getRandomFile(defaultDataSize) | new BlobRange().withOffset(3).withCount(2) // Narrow range in middle
-        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize - 1) // Count that is less than total
-        getRandomFile(defaultDataSize) | new BlobRange().withCount(10L * 1024 * 1024 * 1024) // Count much larger than remaining data
+        range                                      | _
+        new BlobRange(0, defaultDataSize)          | _ // Exact count
+        new BlobRange(1, defaultDataSize - 1)      | _ // Offset and exact count
+        new BlobRange(3, 2)                        | _ // Narrow range in middle
+        new BlobRange(0, defaultDataSize - 1)      | _ // Count that is less than total
+        new BlobRange(0, 10L * 1024 * 1024 * 1024) | _ // Count much larger than remaining data
     }
 
     /*
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
 
+    @Requires({ liveMode() })
     @Unroll
     def "Download file range fail"() {
         setup:
-        def channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null).blockingGet()
-        File outFile = getRandomFile(0)
-        def outChannel = AsynchronousFileChannel.open(outFile.toPath(), StandardOpenOption.WRITE,
-            StandardOpenOption.READ)
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, new BlobRange().withOffset(offset).withCount(count), null)
-            .blockingGet()
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(defaultDataSize + 1), null, null, null,
+            null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         cleanup:
-        channel.close()
-        outChannel.close()
-
-        where:
-        file                           | offset              | count
-        getRandomFile(defaultDataSize) | defaultDataSize + 1 | null
+        outFile.delete()
     }
 
     def "Download file count null"() {
         setup:
-        bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
-        File outFile = getRandomFile(0)
-        def outChannel = AsynchronousFileChannel.open(outFile.toPath(), StandardOpenOption.WRITE,
-            StandardOpenOption.READ)
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, new BlobRange(), null)
-            .blockingGet()
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, null, null)
+
+        and:
+        def stream1 = new FileInputStream(file)
+        def stream2 = new FileInputStream(outFile)
 
         then:
-        compareDataToFile(defaultFlowable, outFile)
+        compareFiles(stream1, 0, defaultDataSize, stream2)
 
         cleanup:
-        outChannel.close()
+        stream1.close()
+        stream2.close()
+        outFile.delete()
     }
 
     @Unroll
     def "Download file AC"() {
         setup:
-        def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
-            StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
-            .blockingGet()
-        def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
-            StandardOpenOption.READ)
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
 
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
-            new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
-                .withIfMatch(match).withIfNoneMatch(noneMatch))
-            .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        BlobRequestConditions bro = new BlobRequestConditions().setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManagerDownloadFromBlobOptions(
-            null, null, bac, null, null)).blockingGet()
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, null, null)
 
         then:
-        compareFiles(channel, 0, channel.size(), outChannel)
+        notThrown(BlobStorageException)
 
         cleanup:
-        channel.close()
-        outChannel.close()
+        outFile.delete()
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -462,28 +479,26 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Download file AC fail"() {
         setup:
-        def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
-            StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
-            .blockingGet()
-        def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
-            StandardOpenOption.READ)
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
 
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-        setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
-            new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
-                .withIfMatch(match).withIfNoneMatch(noneMatch))
-            .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
+        BlobRequestConditions bro = new BlobRequestConditions().setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, null,
-            new TransferManagerDownloadFromBlobOptions(null, null, bac, null, null)).blockingGet()
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, null, null)
 
         then:
-        def e = thrown(StorageException)
-        e.errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
-            e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
+            e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -496,99 +511,69 @@ class BlobAPITest extends APISpec {
 
     def "Download file etag lock"() {
         setup:
-        bu.upload(Flowable.just(getRandomData(1 * 1024 * 1024)), 1 * 1024 * 1024, null, null,
-            null, null).blockingGet()
-        def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
-            StandardOpenOption.READ)
+        def file = getRandomFile(1 * 1024 * 1024)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
 
         when:
         /*
          Set up a large download in small chunks so it makes a lot of requests. This will give us time to cut in an
          operation that will change the etag.
          */
-        def success = false
-        TransferManager.downloadBlobToFile(outChannel, bu, null,
-            new TransferManagerDownloadFromBlobOptions(1024, null, null, null, null))
-            .subscribe(
-            new Consumer<BlobDownloadHeaders>() {
-                @Override
-                void accept(BlobDownloadHeaders headers) throws Exception {
-                    success = false
-                }
-            },
+        def etagConflict = false
+        def bac = new BlobClientBuilder().pipeline(bc.getHttpPipeline()).endpoint(bc.getBlobUrl()).buildAsyncClient()
+            .getBlockBlobAsyncClient()
+        bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setBlockSize(1024), null, null)
+            .subscribe(new Consumer<Response<BlobProperties>>() {
+            @Override
+            void accept(Response<BlobProperties> headers) throws Exception {
+                etagConflict = false
+            }
+        },
             new Consumer<Throwable>() {
                 @Override
                 void accept(Throwable throwable) throws Exception {
-                    if (throwable instanceof StorageException &&
-                        ((StorageException) throwable).statusCode() == 412) {
-                        success = true
+                    if (throwable instanceof BlobStorageException &&
+                        ((BlobStorageException) throwable).getStatusCode() == 412) {
+                        etagConflict = true
                         return
                     }
-                    success = false
+                    etagConflict = false
                 }
             })
 
-
         sleep(500) // Give some time for the download request to start.
-        bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
+        bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
 
         sleep(1000) // Allow time for the upload operation
 
         then:
-        success
-
-        cleanup:
-        outChannel.close()
-    }
-
-    @Unroll
-    def "Download file options"() {
-        setup:
-        def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
-            StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
-            .blockingGet()
-        def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
-            StandardOpenOption.READ)
-        def reliableDownloadOptions = new ReliableDownloadOptions()
-        reliableDownloadOptions.withMaxRetryRequests(retries)
-
-        when:
-        TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManagerDownloadFromBlobOptions(
-            blockSize, null, null, reliableDownloadOptions, parallelism)).blockingGet()
-
-        then:
-        compareFiles(channel, 0, channel.size(), outChannel)
-
-        cleanup:
-        channel.close()
-        outChannel.close()
-
-        where:
-        blockSize | parallelism | retries
-        1         | null        | 2
-        null      | 1           | 2
-        null      | null        | 1
+        etagConflict
+        !outFile.exists() // We should delete the file we tried to create
     }
 
     @Unroll
     def "Download file progress receiver"() {
-        def channel = AsynchronousFileChannel.open(getRandomFile(fileSize).toPath(),
-            StandardOpenOption.READ, StandardOpenOption.WRITE)
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null)
-            .blockingGet()
-        def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
-            StandardOpenOption.READ)
+        def file = getRandomFile(fileSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
 
-        def mockReceiver = Mock(IProgressReceiver)
+        def mockReceiver = Mock(ProgressReceiver)
 
-        def numBlocks = fileSize / TransferManager.BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE
+        def numBlocks = fileSize / (4 * 1024 * 1024)
         def prevCount = 0
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, null,
-            new TransferManagerDownloadFromBlobOptions(null, mockReceiver, null,
-                new ReliableDownloadOptions().withMaxRetryRequests(3), 20)).blockingGet()
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setProgressReceiver(mockReceiver),
+            new ReliableDownloadOptions().maxRetryRequests(3), null, null, null)
 
         then:
         // We should receive exactly one notification of the completed progress.
@@ -599,7 +584,7 @@ class BlobAPITest extends APISpec {
         notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
-        (numBlocks - 1.._) * mockReceiver.reportProgress(!channel.size()) >> { long bytesTransferred ->
+        (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
             if (!(bytesTransferred > prevCount)) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
@@ -611,31 +596,13 @@ class BlobAPITest extends APISpec {
         0 * mockReceiver.reportProgress({ it > fileSize })
 
         cleanup:
-        channel.close()
+        file.delete()
+        outFile.delete()
 
         where:
         fileSize             | _
         100                  | _
         8 * 1026 * 1024 + 10 | _
-    }
-
-    @Unroll
-    def "Download file IA null"() {
-        when:
-        TransferManager.downloadBlobToFile(file, blobURL, null, null).blockingGet()
-
-        then:
-        thrown(IllegalArgumentException)
-
-        /*
-        This test is just validating that exceptions are thrown if certain values are null. The values not being test do
-        not need to be correct, simply not null. Because order in which Spock initializes values, we can't just use the
-        bu property for the url.
-         */
-        where:
-        file                                                     | blobURL
-        null                                                     | new BlockBlobURL(new URL("http://account.com"), StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
-        AsynchronousFileChannel.open(getRandomFile(10).toPath()) | null
     }
 
     def "Get properties default"() {
@@ -1951,7 +1918,7 @@ class BlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                 | "斑點"
+        "斑點"                   | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 }

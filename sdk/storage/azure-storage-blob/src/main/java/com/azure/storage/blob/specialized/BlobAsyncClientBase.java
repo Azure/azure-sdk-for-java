@@ -733,11 +733,13 @@ public class BlobAsyncClientBase {
         BlobRange rangeReal = range == null ? new BlobRange(0) : range;
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
             ? new ParallelTransferOptions() : parallelTransferOptions;
+        BlobRequestConditions conditionsReal = requestConditions == null
+            ? new BlobRequestConditions() : requestConditions;
 
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(filePath);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, rangeReal, finalParallelTransferOptions,
-                reliableDownloadOptions, requestConditions, context))
+                reliableDownloadOptions, conditionsReal, context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, filePath, signalType));
     }
 
