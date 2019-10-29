@@ -1483,7 +1483,7 @@ class BlobAPITest extends APISpec {
         setup:
         def blobName = generateBlobName()
         def bc = cc.getBlobClient(blobName).getBlockBlobClient()
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tier1, null, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tier1, null, null, null, null)
         def bcCopy = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:

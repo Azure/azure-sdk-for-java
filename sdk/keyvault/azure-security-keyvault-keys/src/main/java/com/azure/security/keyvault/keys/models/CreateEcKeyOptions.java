@@ -9,6 +9,9 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Map;
 
+/**
+ * Represents the configurable options to create an Ec key.
+ */
 @Fluent
 public class CreateEcKeyOptions extends CreateKeyOptions {
 

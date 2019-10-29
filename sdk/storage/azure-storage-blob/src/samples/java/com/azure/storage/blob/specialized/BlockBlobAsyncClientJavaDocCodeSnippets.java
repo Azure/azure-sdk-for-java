@@ -13,6 +13,8 @@ import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
@@ -32,6 +34,15 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     private String sourceUrl = "https://example.com";
     private long offset = 1024L;
     private long count = length;
+    private byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
+
+    /**
+     * Constructor for snippets.
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public BlockBlobAsyncClientJavaDocCodeSnippets() throws NoSuchAlgorithmException {
+    }
 
     /**
      * Code snippet for {@link BlockBlobAsyncClient#upload(Flux, long)}
@@ -57,24 +68,27 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHttpHeaders, Map, AccessTier, byte[], BlobRequestConditions)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
-    public void upload2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+    public void upload2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
             .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
         BlobRequestConditions accessConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
+        client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, md5, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobAccessConditions
     }
 
     /**
@@ -90,13 +104,15 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, String)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, byte[], String)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
-    public void stageBlock2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-String
-        client.stageBlockWithResponse(base64BlockID, data, length, leaseId).subscribe(response ->
+    public void stageBlock2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String
+        client.stageBlockWithResponse(base64BlockID, data, length, md5, leaseId).subscribe(response ->
             System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-String
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String
     }
 
     /**

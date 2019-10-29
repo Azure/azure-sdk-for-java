@@ -3,39 +3,13 @@
 This document explains samples and how to use them.
 
 ## Key concepts
-### Key
-  Azure Key Vault supports multiple key types(`RSA` & `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
-* enabled: Specifies whether the key is enabled and useable for cryptographic operations.
-* not_before: Identifies the time before which the key must not be used for cryptographic operations.
-* expires: Identifies the expiration time on or after which the key MUST NOT be used for cryptographic operation.
-* created: Indicates when this version of the key was created.
-* updated: Indicates when this version of the key was updated.
-
-### Key Client:
-The Key client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing keys and its versions. An asynchronous and synchronous, KeyClient, client exists in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a Key, you can interact with the primary resource types in Key Vault.
-
-### Cryptography Client:
-The Cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key unwrapping and retrieving the configured key. An asynchronous and synchronous, CryptographyClient, client exists in the SDK allowing for selection of a client based on an application's use case.
-
+Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 
 # Samples Azure Key Vault secrets APIs
 This document describes how to use samples and what is done in each sample.
 
 ## Getting started
-
-Typically, you will not need to install or specifically depend on Azure Core, instead it will be transitively downloaded by your build tool when you depend on of the client libraries using it. In case you want to depend on it explicitly (to implement your own client library, for example), include the following Maven dependency:
-
-[//]: # ({x-version-update-start;com.azure:azure-core;current})
-```xml
-<dependency>
-   <groupId>com.azure</groupId>
-   <artifactId>azure-security-keyvault-secrets</artifactId>
-   <version>4.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
+Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## How to run
 These sample can be run in your IDE with default JDK.
@@ -83,23 +57,21 @@ try {
 }
 ```
 
-
 ## Next steps
-Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
+Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README] [SECRETS_SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
 ## Contributing
-This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
-
+This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[source_code]:  src
+[SECRETS_SDK_README]: ../../README.md
+[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
+[SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
+[SDK_README_CONTRIBUTING]: ../../README.md#contributing
+[azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
 [sample_helloWorld]: java/com/azure/security/keyvault/secrets/HelloWorld.java
 [sample_helloWorldAsync]: java/com/azure/security/keyvault/secrets/HelloWorldAsync.java
 [sample_list]: java/com/azure/security/keyvault/secrets/ListOperations.java
@@ -109,4 +81,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_ManageDeleted]: java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
 [sample_ManageDeletedAsync]: java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-secrets/samples/README.png)
