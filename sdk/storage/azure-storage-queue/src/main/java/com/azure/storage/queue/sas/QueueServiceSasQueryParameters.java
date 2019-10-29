@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue;
+package com.azure.storage.queue.sas;
 
 import com.azure.storage.common.sas.BaseSasQueryParameters;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
+import com.azure.storage.queue.QueueClientBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

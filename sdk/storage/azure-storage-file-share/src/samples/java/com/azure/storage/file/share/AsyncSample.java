@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.storage.file;
+package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
-import com.azure.storage.file.share.ShareServiceAsyncClient;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
 
 import java.util.UUID;
 

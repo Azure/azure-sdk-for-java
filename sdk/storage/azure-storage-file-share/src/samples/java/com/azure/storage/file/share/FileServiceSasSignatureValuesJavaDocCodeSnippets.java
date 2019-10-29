@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.storage.file;
+package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.ShareServiceSasQueryParameters;
-import com.azure.storage.file.share.ShareServiceSasSignatureValues;
-import com.azure.storage.file.share.ShareSasPermission;
+import com.azure.storage.file.share.sas.ShareSasPermission;
+import com.azure.storage.file.share.sas.ShareServiceSasQueryParameters;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;

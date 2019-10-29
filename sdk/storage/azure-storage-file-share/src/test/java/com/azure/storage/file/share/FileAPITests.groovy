@@ -16,6 +16,8 @@ import com.azure.storage.file.share.models.FileRange
 import com.azure.storage.file.share.models.FileStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareSnapshotInfo
+import com.azure.storage.file.share.sas.ShareFileSasPermission
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
 import spock.lang.Unroll
 
