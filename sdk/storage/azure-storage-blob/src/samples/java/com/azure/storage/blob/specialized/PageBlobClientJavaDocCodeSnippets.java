@@ -18,6 +18,8 @@ import com.azure.storage.blob.models.SequenceNumberActionType;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -97,11 +99,14 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#uploadPagesWithResponse(PageRange, InputStream, PageBlobRequestConditions,
-     * Duration, Context)}
+     * Code snippets for {@link PageBlobClient#uploadPagesWithResponse(PageRange, InputStream, byte[],
+     * PageBlobRequestConditions, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
-    public void uploadPagesWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context
+    public void uploadPagesWithResponseCodeSnippet() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobAccessConditions-Duration-Context
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
@@ -110,10 +115,10 @@ public class PageBlobClientJavaDocCodeSnippets {
         Context context = new Context(key, value);
 
         PageBlobItem pageBlob = client
-            .uploadPagesWithResponse(pageRange, dataStream, pageBlobRequestConditions, timeout, context).getValue();
+            .uploadPagesWithResponse(pageRange, dataStream, md5, pageBlobRequestConditions, timeout, context).getValue();
 
         System.out.printf("Uploaded page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobAccessConditions-Duration-Context
     }
 
     /**

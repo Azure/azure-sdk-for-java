@@ -12,7 +12,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
- * The outgoing Http request.
+ * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod},
+ * {@link URL}, {@link HttpHeader} and request body.
  */
 public class HttpRequest {
     private final ClientLogger logger = new ClientLogger(HttpRequest.class);

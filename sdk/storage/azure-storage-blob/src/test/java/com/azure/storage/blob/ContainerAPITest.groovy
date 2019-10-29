@@ -1159,7 +1159,8 @@ class ContainerAPITest extends APISpec {
         bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
         bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
         bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).getStatusCode() == 201
+        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null, null)
+            .getStatusCode() == 201
 
         when:
         def blobs = cc.listBlobs().iterator()
@@ -1192,7 +1193,8 @@ class ContainerAPITest extends APISpec {
         bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
         bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
         bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).getStatusCode() == 201
+        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null, null)
+            .getStatusCode() == 201
 
         when:
         def blobs = cc.listBlobs().iterator()
@@ -1352,7 +1354,7 @@ class ContainerAPITest extends APISpec {
         when:
         def serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl())
 
-        serviceURL.getBlobContainerClient(generateContainerName()).getAccountInfo()
+        serviceURL.getBlobContainerClient(generateContainerName()).getAccountInfo(null)
 
         then:
         thrown(IllegalArgumentException)

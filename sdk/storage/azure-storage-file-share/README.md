@@ -489,13 +489,6 @@ When you interact with file using this Java client library, errors returned by t
 
 ## Next steps
 
-### More Samples
-- [ShareServiceSample][samples_share_service]
-- [ShareSample][samples_share]
-- [DirectorySample][samples_directory]
-- [FileSample][samples_file]
-- [AsyncSample][samples_async]
-
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
@@ -532,10 +525,5 @@ If you would like to become an active contributor to this project please follow 
 [csharp_identifiers]: https://docs.microsoft.com/dotnet/csharp/language-reference/
 [storage_file_rest]: https://docs.microsoft.com/rest/api/storageservices/file-service-error-codes
 [samples]: src/samples
-[samples_share_service]: src/samples/java/com/azure/storage/file/ShareServiceSample.java
-[samples_share]: src/samples/java/com/azure/storage/file/ShareSample.java
-[samples_directory]: src/samples/java/com/azure/storage/file/DirectorySample.java
-[samples_file]: src/samples/java/com/azure/storage/file/FileSample.java
-[samples_async]: src/samples/java/com/azure/storage/file/AsyncSample.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file/README.png)

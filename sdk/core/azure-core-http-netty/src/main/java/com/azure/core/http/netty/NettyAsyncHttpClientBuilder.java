@@ -95,7 +95,7 @@ public class NettyAsyncHttpClientBuilder {
      * Sets the connection provider.
      *
      * @param connectionProvider the connection provider
-     * @return the updated NettyAsyncHttpClientBuilder object
+     * @return the updated {@link NettyAsyncHttpClientBuilder} object
      */
     public NettyAsyncHttpClientBuilder connectionProvider(ConnectionProvider connectionProvider) {
         // Enables overriding the default reactor-netty connection/channel pool.

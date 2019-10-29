@@ -417,12 +417,10 @@ queueClient.setMetadata(metadata);
 When you interact with queue using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][storage_rest] requests. For example, if you try to retrieve a queue that doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
 
 ## Next steps
+Several Storage Queue Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-Get started with our [Queue samples][samples]:
-- [QueueServiceSample][samples_queue_service]: Create, list and delete queues
-- [MessageSample][samples_message]: Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
-- [QueueExceptionSample][samples_queue_exception]: Handle the exceptions from storage queue service side.
-- [AsyncSample][samples_async]: Create queue and enqueue message using async queue client call.
+## Next steps Samples
+Samples are explained in detail [here][samples_readme].
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
@@ -447,6 +445,7 @@ If you would like to become an active contributor to this project please follow 
 
 <!-- LINKS -->
 [source_code]: src
+[samples_readme]: src/samples/README.md
 [api_documentation]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
 [storage_docs]: https://docs.microsoft.com/azure/storage/queues/storage-queues-introduction
 [jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
@@ -457,9 +456,5 @@ If you would like to become an active contributor to this project please follow 
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [storage_rest]: https://docs.microsoft.com/rest/api/storageservices/queue-service-error-codes
 [samples]: src/samples
-[samples_queue_service]: src/samples/java/com/azure/storage/queue/QueueServiceSamples.java
-[samples_message]: src/samples/java/com/azure/storage/queue/MessageSamples.java
-[samples_queue_exception]: src/samples/java/com/azure/storage/queue/QueueExceptionSamples.java
-[samples_async]: src/samples/java/com/azure/storage/queue/AsyncSamples.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-queue/README.png)
