@@ -103,6 +103,16 @@ public class EventHubProducerClient implements Closeable {
     }
 
     /**
+     * Gets the fully qualified Event Hubs namespace that the connection is associated with. This is likely similar to
+     * {@code {yournamespace}.servicebus.windows.net}.
+     *
+     * @return The fully qualified Event Hubs namespace that the connection is associated with
+     */
+    public String getFullyQualifiedNamespace() {
+        return producer.getFullyQualifiedNamespace();
+    }
+
+    /**
      * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
      *
      * @return The set of information for the Event Hub that this client is associated with.

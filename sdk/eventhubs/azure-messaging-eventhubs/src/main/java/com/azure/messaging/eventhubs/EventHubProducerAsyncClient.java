@@ -123,6 +123,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final ConcurrentHashMap<String, AmqpSendLink> openLinks = new ConcurrentHashMap<>();
     private final ClientLogger logger = new ClientLogger(EventHubProducerAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final EventHubLinkProvider linkProvider;
     private final RetryOptions retryOptions;
@@ -134,13 +135,24 @@ public class EventHubProducerAsyncClient implements Closeable {
      * when {@link BatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to load
      * balance the messages amongst available partitions.
      */
-    EventHubProducerAsyncClient(String eventHubName, EventHubLinkProvider linkProvider, RetryOptions retryOptions,
-        TracerProvider tracerProvider, MessageSerializer messageSerializer) {
+    EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
+        RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer) {
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.linkProvider = linkProvider;
         this.retryOptions = retryOptions;
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
+    }
+
+    /**
+     * Gets the fully qualified Event Hubs namespace that the connection is associated with. This is likely similar to
+     * {@code {yournamespace}.servicebus.windows.net}.
+     *
+     * @return The fully qualified Event Hubs namespace that the connection is associated with
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
     }
 
     /**

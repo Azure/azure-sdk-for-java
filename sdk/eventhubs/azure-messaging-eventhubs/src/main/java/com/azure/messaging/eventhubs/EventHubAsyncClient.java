@@ -124,8 +124,8 @@ public class EventHubAsyncClient implements Closeable {
      * @return A new {@link EventHubProducerAsyncClient}.
      */
     public EventHubProducerAsyncClient createProducer() {
-        return new EventHubProducerAsyncClient(getEventHubName(), linkProvider, connectionOptions.getRetry(),
-            tracerProvider, messageSerializer);
+        return new EventHubProducerAsyncClient(connectionOptions.getHostname(), getEventHubName(), linkProvider,
+            connectionOptions.getRetry(), tracerProvider, messageSerializer);
     }
 
     /**
