@@ -182,7 +182,7 @@ public class EventHubConnection implements Closeable {
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
-        EventHubConsumerOptions options) {
+            EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
         Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
@@ -206,7 +206,9 @@ public class EventHubConnection implements Closeable {
             linkProvider.createReceiveLink(linkName, entityPath, eventPosition, getRetryOptions(), clonedOptions)
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
 
-        return new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, clonedOptions);
+        return new EventHubAsyncConsumer(linkProvider, connectionOptions.getHostname(),
+            connectionOptions.getEntityPath(), consumerGroup, eventPosition, receiveLinkMono, messageSerializer,
+            clonedOptions);
     }
 
     /**
