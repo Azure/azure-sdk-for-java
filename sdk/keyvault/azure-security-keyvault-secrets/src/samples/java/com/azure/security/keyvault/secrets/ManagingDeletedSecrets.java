@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -48,84 +48,52 @@ public class ManagingDeletedSecrets {
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // The storage account was closed, need to delete its credentials from the key vault.
-        Poller<DeletedSecret, Void> deletedBankSecretPoller = client.beginDeleteSecret("BankAccountPassword");
+        SyncPoller<DeletedSecret, Void> deletedBankSecretPoller = client.beginDeleteSecret("BankAccountPassword");
 
-        while (deletedBankSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
-            && !deletedBankSecretPoller.isComplete()) {
-            System.out.println(deletedBankSecretPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        PollResponse<DeletedSecret> deletedBankSecretPollResponse = deletedBankSecretPoller.poll();
 
-        DeletedSecret deletedBankSecret = deletedBankSecretPoller.getLastPollResponse().getValue();
-        System.out.println("Deleted Date %s" + deletedBankSecret.getDeletedOn().toString());
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedBankSecret.getRecoveryId());
+        System.out.println("Deleted Date %s" + deletedBankSecretPollResponse.getValue().getDeletedOn().toString());
+        System.out.printf("Deleted Secret's Recovery Id %s", deletedBankSecretPollResponse.getValue().getRecoveryId());
 
         // Key is being deleted on server.
-        while (deletedBankSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(deletedBankSecretPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
-
+        deletedBankSecretPoller.waitForCompletion();
 
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
-        Poller<KeyVaultSecret, Void> recoverSecretPoller =
+        SyncPoller<KeyVaultSecret, Void> recoverSecretPoller =
             client.beginRecoverDeletedSecret("BankAccountPassword");
 
-        while (recoverSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
-            && !recoverSecretPoller.isComplete()) {
-            System.out.println(recoverSecretPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        PollResponse<KeyVaultSecret> recoverSecretResponse = recoverSecretPoller.poll();
 
-        KeyVaultSecret recoveredSecret = recoverSecretPoller.getLastPollResponse().getValue();
-        System.out.println("Recovered Key Name %s" + recoveredSecret.getName());
-        System.out.printf("Recovered Key's Id %s", recoveredSecret.getId());
+        System.out.println("Recovered Key Name %s" + recoverSecretResponse.getValue().getName());
+        System.out.printf("Recovered Key's Id %s", recoverSecretResponse.getValue().getId());
 
         // Key is being recovered on server.
-        while (recoverSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(recoverSecretPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
-
+        recoverSecretPoller.waitForCompletion();
 
         // The bank acoount and storage accounts got closed.
         // Let's delete bank and  storage accounts secrets.
-        Poller<DeletedSecret, Void> deletedSecretPoller = client.beginDeleteSecret("BankAccountPassword");
+        SyncPoller<DeletedSecret, Void> deletedBankPwdSecretPoller
+                = client.beginDeleteSecret("BankAccountPassword");
 
-        while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
-            && !deletedSecretPoller.isComplete()) {
-            System.out.println(deletedSecretPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        PollResponse<DeletedSecret> deletedBankPwdSecretPollResponse = deletedBankPwdSecretPoller.poll();
 
-        DeletedSecret deletedSecret = deletedSecretPoller.getLastPollResponse().getValue();
-        System.out.println("Deleted Date %s" + deletedSecret.getDeletedOn().toString());
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
+        System.out.println("Deleted Date %s" + deletedBankPwdSecretPollResponse.getValue().getDeletedOn().toString());
+        System.out.printf("Deleted Secret's Recovery Id %s", deletedBankPwdSecretPollResponse.getValue().getRecoveryId());
 
         // Key is being deleted on server.
-        while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(deletedSecretPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        deletedBankPwdSecretPoller.waitForCompletion();
 
-        Poller<DeletedSecret, Void> deletedStorageSecretPoller = client.beginDeleteSecret("StorageAccountPassword");
+        SyncPoller<DeletedSecret, Void> deletedStorageSecretPoller
+                = client.beginDeleteSecret("StorageAccountPassword");
 
-        while (deletedStorageSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
-            && !deletedStorageSecretPoller.isComplete()) {
-            System.out.println(deletedStorageSecretPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        PollResponse<DeletedSecret> deletedStorageSecretPollResponse = deletedStorageSecretPoller.poll();
 
-        DeletedSecret deletedStorageSecret = deletedStorageSecretPoller.getLastPollResponse().getValue();
-        System.out.println("Deleted Date  %s" + deletedStorageSecret.getDeletedOn().toString());
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedStorageSecret.getRecoveryId());
+        System.out.println("Deleted Date  %s" + deletedStorageSecretPollResponse.getValue().getDeletedOn().toString());
+        System.out.printf("Deleted Secret's Recovery Id %s", deletedStorageSecretPollResponse.getValue().getRecoveryId());
 
         // Key is being deleted on server.
-        while (deletedStorageSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(deletedStorageSecretPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        deletedStorageSecretPoller.waitForCompletion();
 
 
         // You can list all the deleted and non-purged secrets, assuming key vault is soft-delete enabled.

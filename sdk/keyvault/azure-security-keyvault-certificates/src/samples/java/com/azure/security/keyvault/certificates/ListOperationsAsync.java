@@ -44,7 +44,7 @@ public class ListOperationsAsync {
         tags.put("foo", "bar");
 
         certificateAsyncClient.beginCreateCertificate("certificatName", policy, true, tags)
-            .getObserver().subscribe(pollResponse -> {
+            .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());
@@ -63,7 +63,7 @@ public class ListOperationsAsync {
 
         //Let's create a certificate signed by our issuer.
         certificateAsyncClient.beginCreateCertificate("myCert", new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), true, tags)
-            .getObserver().subscribe(pollResponse -> {
+            .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());

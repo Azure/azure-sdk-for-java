@@ -203,7 +203,6 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.deleteSecret#string
         secretAsyncClient.beginDeleteSecret("secretName")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
@@ -269,7 +268,6 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string
         secretAsyncClient.beginRecoverDeletedSecret("deletedSecretName")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recovered Secret Name: " + pollResponse.getValue().getName());

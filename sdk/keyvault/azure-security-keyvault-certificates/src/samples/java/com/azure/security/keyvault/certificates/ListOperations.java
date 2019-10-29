@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -44,10 +44,10 @@ public class ListOperations {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, tags);
-        certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
+        SyncPoller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, tags);
+        certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-        Certificate cert = certificatePoller.getResult().block();
+        Certificate cert = certificatePoller.getFinalResult();
 
         //Let's create a certificate issuer.
         Issuer issuer = new Issuer("myIssuer", "Test");
@@ -57,7 +57,7 @@ public class ListOperations {
         //Let's create a certificate signed by our issuer.
         certificateClient.beginCreateCertificate("myCertificate",
             new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), tags)
-            .blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
+            .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
 
         // Let's list all the certificates in the key vault.

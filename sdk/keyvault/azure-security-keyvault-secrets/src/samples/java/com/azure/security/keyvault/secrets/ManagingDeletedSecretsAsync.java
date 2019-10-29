@@ -52,7 +52,6 @@ public class ManagingDeletedSecretsAsync {
 
         // The storage account was closed, need to delete its credentials from the key vault.
         secretAsyncClient.beginDeleteSecret("BankAccountPassword")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
@@ -65,7 +64,6 @@ public class ManagingDeletedSecretsAsync {
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
         secretAsyncClient.beginRecoverDeletedSecret("BankAccountPassword")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recovered Secret Name: " + pollResponse.getValue().getName());
@@ -78,7 +76,6 @@ public class ManagingDeletedSecretsAsync {
         // The bank acoount and storage accounts got closed.
         // Let's delete bank and  storage accounts secrets.
         secretAsyncClient.beginDeleteSecret("BankAccountPassword")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
@@ -86,7 +83,6 @@ public class ManagingDeletedSecretsAsync {
             });
 
         secretAsyncClient.beginDeleteSecret("StorageAccountPassword")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
