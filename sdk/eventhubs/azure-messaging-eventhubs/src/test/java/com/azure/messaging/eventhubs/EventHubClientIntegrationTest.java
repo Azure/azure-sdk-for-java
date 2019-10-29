@@ -38,12 +38,12 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
             .buildConnection();
-        client = new EventHubClient(connection, RETRY_OPTIONS);
+        client = new EventHubClient(connection, RETRY_OPTIONS, true);
     }
 
     @Override
     protected void afterTest() {
-        dispose(client);
+        dispose(client, connection);
     }
 
     /**

@@ -81,7 +81,7 @@ public class EventHubProducerAsyncClientTest {
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, retryOptions);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
-            messageSerializer);
+            messageSerializer, false);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
     }
@@ -207,7 +207,7 @@ public class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer);
+            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
 
         when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
             .thenReturn(Mono.just(session));
@@ -249,7 +249,7 @@ public class EventHubProducerAsyncClientTest {
      */
     @Test
     public void sendMessageAddLink() {
-        //Arrange
+        // Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
@@ -261,7 +261,7 @@ public class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer);
+            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
 
         when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
             .thenReturn(Mono.just(session));
