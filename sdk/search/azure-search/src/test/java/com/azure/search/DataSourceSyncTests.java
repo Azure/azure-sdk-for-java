@@ -24,7 +24,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
 
         DataSource dataSource1 = createTestBlobDataSource(null);
-        DataSource dataSource2 = createTestSqlDataSource(null, null);
+        DataSource dataSource2 = createTestSqlDataSource();
 
         client.createOrUpdateDataSource(dataSource1);
         client.createOrUpdateDataSource(dataSource2);
@@ -65,7 +65,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         client = getSearchServiceClientBuilder().buildClient();
 
-        DataSource dataSource = createTestSqlDataSource(null, null);
+        DataSource dataSource = createTestSqlDataSource();
         dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
 
         try {

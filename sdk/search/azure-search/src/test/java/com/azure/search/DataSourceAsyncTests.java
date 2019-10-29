@@ -24,7 +24,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client = getSearchServiceClientBuilder().buildAsyncClient();
 
         DataSource dataSource1 = createTestBlobDataSource(null);
-        DataSource dataSource2 = createTestSqlDataSource(null, null);
+        DataSource dataSource2 = createTestSqlDataSource();
 
         client.createOrUpdateDataSource(dataSource1).block();
         client.createOrUpdateDataSource(dataSource2).block();
@@ -68,7 +68,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         client = getSearchServiceClientBuilder().buildAsyncClient();
 
-        DataSource dataSource = createTestSqlDataSource(null, null);
+        DataSource dataSource = createTestSqlDataSource();
         dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
 
         StepVerifier
