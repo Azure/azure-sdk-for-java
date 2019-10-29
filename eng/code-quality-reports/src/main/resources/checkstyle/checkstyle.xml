@@ -67,6 +67,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="regexp" value="true"/>
       <property name="illegalPkgs" value="^(com\.)?sun\.\w*, ^io\.opencensus"/>
     </module>
+
+    <module name="IllegalImport">
+      <property name="illegalClasses" value="java.util.Random"/>
+      <message key="import.illegal"
+               value="Class java.util.Random is not secure random. Use java.security.SecureRandom instead."/>
+    </module>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
 
@@ -377,6 +383,24 @@ page at http://checkstyle.sourceforge.net/config.html -->
       'System.out' and 'System.err' is not allowed as well.
     4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
     <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
+
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Invalid Method Checks:
+      Math.random method that should not be used in the Azure SDK. Use SecureRandom instead -->
+    <module name="com.azure.tools.checkstyle.checks.InvalidMethodsCheck">
+      <property name="methods" value="java.lang.Math.random, Math.random"/>
+      <property name="message" value="%s is not secure random. Use java.security.SecureRandom instead."/>
+    </module>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Invalid Method Checks:
+      Invalid methods that should not be used in the Azure SDK. Such as it could avoid inherently unsafe method. -->
+    <module name="com.azure.tools.checkstyle.checks.InvalidMethodsCheck">
+      <property name="methods" value="java.lang.System.runFinalizersOnExit, System.runFinalizersOnExit,
+       java.lang.Runtime.runFinalizersOnExit, Runtime.runFinalizersOnExit"/>
+      <property name="message" value="Function %s is inherently unsafe and deprecated."/>
+    </module>
 
     <!-- CUSTOM CHECKS -->
     <!-- Fluent method checks:

@@ -3,15 +3,15 @@
 
 package com.azure.core.test.utils;
 
+import java.security.SecureRandom;
 import java.util.Locale;
-import java.util.Random;
 import java.util.UUID;
 
 /**
  * A random string generator used in tests.
  */
 public class ResourceNamer {
-    private static final Random RANDOM = new Random();
+    private static final SecureRandom RANDOM = new SecureRandom();
     private static final Locale LOCALE = Locale.US;
 
     private final String randName;

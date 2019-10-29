@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Random;
 
 public class MockServer {
     private static class TestHandler extends HandlerWrapper {
@@ -27,7 +27,7 @@ public class MockServer {
         public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
             LoggerFactory.getLogger(getClass()).info("Received request for " + baseRequest.getRequestURL());
             baseRequest.setHandled(true);
-            Random random = new Random();
+            SecureRandom random = new SecureRandom();
 
             byte[] buf = new byte[8192];
             InputStream is = request.getInputStream();
