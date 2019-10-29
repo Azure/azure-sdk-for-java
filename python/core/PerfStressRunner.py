@@ -81,7 +81,11 @@ class PerfStressRunner:
         # Dynamically enumerate all python modules under the tests path for classes that implement PerfStressTest       
         for loader, name, _ in pkgutil.walk_packages([test_folder_path]):
 
-            module = loader.find_module(name).load_module(name)
+            try:
+                module = loader.find_module(name).load_module(name)
+            except Exception as e:
+                self.logger.warn("Unable to load module {}: {}".format(name, e))
+                continue
             for name, value in inspect.getmembers(module):
 
                 if name.startswith('_'):
