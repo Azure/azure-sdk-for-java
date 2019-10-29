@@ -96,11 +96,11 @@ public class EventHubClient implements Closeable {
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
      * in batches. Event data is automatically routed to an available partition.
      *
-     * @return A new {@link EventHubProducer}.
+     * @return A new {@link EventHubProducerClient}.
      */
-    public EventHubProducer createProducer() {
+    public EventHubProducerClient createProducer() {
         final EventHubAsyncProducerClient producer = client.createProducer();
-        return new EventHubProducer(producer, retry.getTryTimeout());
+        return new EventHubProducerClient(producer, retry.getTryTimeout());
     }
 
     /**

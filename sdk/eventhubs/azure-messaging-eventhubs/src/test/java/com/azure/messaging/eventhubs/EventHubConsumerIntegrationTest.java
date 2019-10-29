@@ -134,7 +134,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
-        final EventHubProducer producer = client.createProducer();
+        final EventHubProducerClient producer = client.createProducer();
 
         try {
             producer.send(events, sendOptions);
@@ -167,7 +167,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(Instant.now()));
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
-        final EventHubProducer producer = client.createProducer();
+        final EventHubProducerClient producer = client.createProducer();
 
         try {
             producer.send(events, sendOptions);
@@ -199,7 +199,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
         final EventHubConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
-        final EventHubProducer producer = client.createProducer();
+        final EventHubProducerClient producer = client.createProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
 
         try {

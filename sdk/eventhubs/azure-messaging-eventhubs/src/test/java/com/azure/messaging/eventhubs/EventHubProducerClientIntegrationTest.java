@@ -19,12 +19,12 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class EventHubProducerIntegrationTest extends IntegrationTestBase {
+public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
     private EventHubClient client;
 
-    public EventHubProducerIntegrationTest() {
-        super(new ClientLogger(EventHubProducerIntegrationTest.class));
+    public EventHubProducerClientIntegrationTest() {
+        super(new ClientLogger(EventHubProducerClientIntegrationTest.class));
     }
 
     @Rule
@@ -62,13 +62,13 @@ public class EventHubProducerIntegrationTest extends IntegrationTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducer producer = client.createProducer()) {
+        try (EventHubProducerClient producer = client.createProducer()) {
             producer.send(events, sendOptions);
         }
     }
 
     /**
-     * Verifies that we can create an {@link EventHubProducer} that does not care about partitions and lets the service
+     * Verifies that we can create an {@link EventHubProducerClient} that does not care about partitions and lets the service
      * distribute the events.
      */
     @Test
@@ -80,7 +80,7 @@ public class EventHubProducerIntegrationTest extends IntegrationTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducer producer = client.createProducer()) {
+        try (EventHubProducerClient producer = client.createProducer()) {
             producer.send(events);
         }
     }
@@ -97,7 +97,7 @@ public class EventHubProducerIntegrationTest extends IntegrationTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducer producer = client.createProducer()) {
+        try (EventHubProducerClient producer = client.createProducer()) {
             EventDataBatch batch = producer.createBatch();
             events.forEach(event -> {
                 Assert.assertTrue(batch.tryAdd(event));
@@ -119,7 +119,7 @@ public class EventHubProducerIntegrationTest extends IntegrationTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducer producer = client.createProducer()) {
+        try (EventHubProducerClient producer = client.createProducer()) {
             final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
             final EventDataBatch batch = producer.createBatch(options);
 

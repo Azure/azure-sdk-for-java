@@ -3,19 +3,17 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link EventHubProducer}.
+ * Contains code snippets when generating javadocs through doclets for {@link EventHubProducerClient}.
  */
 public class EventHubProducerJavaDocCodeSamples {
     private final EventHubClient client = new EventHubClientBuilder()
@@ -23,7 +21,7 @@ public class EventHubProducerJavaDocCodeSamples {
         .buildClient();
 
     /**
-     * Code snippet demonstrating how to create an {@link EventHubProducer} that automatically routes events to any
+     * Code snippet demonstrating how to create an {@link EventHubProducerClient} that automatically routes events to any
      * partition.
      *
      * @throws IOException if the producer cannot be disposed.
@@ -34,7 +32,7 @@ public class EventHubProducerJavaDocCodeSamples {
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
             .buildClient();
 
-        EventHubProducer producer = client.createProducer();
+        EventHubProducerClient producer = client.createProducer();
         // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation
 
         producer.close();
@@ -51,7 +49,7 @@ public class EventHubProducerJavaDocCodeSamples {
         SendOptions options = new SendOptions()
             .setPartitionId("foo");
 
-        EventHubProducer producer = client.createProducer();
+        EventHubProducerClient producer = client.createProducer();
         producer.send(eventData, options);
         // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
 
@@ -69,7 +67,7 @@ public class EventHubProducerJavaDocCodeSamples {
             new EventData("wheat".getBytes(UTF_8))
         );
 
-        final EventHubProducer producer = client.createProducer();
+        final EventHubProducerClient producer = client.createProducer();
         final SendOptions options = new SendOptions()
             .setPartitionKey("bread");
 
@@ -81,7 +79,7 @@ public class EventHubProducerJavaDocCodeSamples {
      * Code snippet demonstrating how to create an {@link EventDataBatch} and send it.
      */
     public void sendEventDataBatch() {
-        final EventHubProducer producer = client.createProducer();
+        final EventHubProducerClient producer = client.createProducer();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.send#eventDataBatch
         final List<EventData> telemetryEvents = Arrays.asList(

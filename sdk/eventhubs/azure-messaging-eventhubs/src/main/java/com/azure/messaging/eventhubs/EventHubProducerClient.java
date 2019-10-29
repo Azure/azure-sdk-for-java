@@ -37,13 +37,13 @@ import java.util.Objects;
  *
  * <p><strong>Create a producer that routes events to any partition</strong></p>
  * To allow automatic routing of messages to available partition, do not specify the {@link
- * SendOptions#getPartitionId() partitionId} when creating the {@link EventHubProducer}.
+ * SendOptions#getPartitionId() partitionId} when creating the {@link EventHubProducerClient}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
  * Developers can push events to a single partition by specifying the
- * {@link SendOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducer}.
+ * {@link SendOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducerClient}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId}
  *
@@ -76,16 +76,16 @@ import java.util.Objects;
  * @see EventHubAsyncProducerClient To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.
  */
 @Immutable
-public class EventHubProducer implements Closeable {
+public class EventHubProducerClient implements Closeable {
     private final EventHubAsyncProducerClient producer;
     private final Duration tryTimeout;
 
     /**
-     * Creates a new instance of {@link EventHubProducer} that sends messages to an Azure Event Hub.
+     * Creates a new instance of {@link EventHubProducerClient} that sends messages to an Azure Event Hub.
      *
      * @throws NullPointerException if {@code producer} or {@code tryTimeout} is null.
      */
-    EventHubProducer(EventHubAsyncProducerClient producer, Duration tryTimeout) {
+    EventHubProducerClient(EventHubAsyncProducerClient producer, Duration tryTimeout) {
         this.producer = Objects.requireNonNull(producer, "'producer' cannot be null.");
         this.tryTimeout = Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
     }
@@ -182,8 +182,8 @@ public class EventHubProducer implements Closeable {
      *
      * @param batch The batch to send to the service.
      * @throws NullPointerException if {@code batch} is {@code null}.
-     * @see EventHubProducer#createBatch()
-     * @see EventHubProducer#createBatch(BatchOptions)
+     * @see EventHubProducerClient#createBatch()
+     * @see EventHubProducerClient#createBatch(BatchOptions)
      */
     public void send(EventDataBatch batch) {
         producer.send(batch).block();

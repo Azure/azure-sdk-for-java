@@ -15,7 +15,7 @@ import com.azure.messaging.eventhubs.EventHubAsyncProducerClient;
 import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumer;
-import com.azure.messaging.eventhubs.EventHubProducer;
+import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -41,7 +41,7 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
 
     private EventHubClient client;
-    private EventHubProducer sender;
+    private EventHubProducerClient sender;
     private SendOptions sendOptions;
 
     public ProxyIntegrationTest() {

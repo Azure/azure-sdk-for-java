@@ -52,9 +52,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests to verify functionality of {@link EventHubProducer}.
+ * Unit tests to verify functionality of {@link EventHubProducerClient}.
  */
-public class EventHubProducerTest {
+public class EventHubProducerClientTest {
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
 
@@ -102,7 +102,7 @@ public class EventHubProducerTest {
     @Test
     public void sendSingleMessage() {
         // Arrange
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
         when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
@@ -134,7 +134,7 @@ public class EventHubProducerTest {
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubAsyncProducerClient asyncProducer = new EventHubAsyncProducerClient(EVENT_HUB_NAME, linkProvider,
             retryOptions, tracerProvider, messageSerializer);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
         when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
@@ -186,7 +186,7 @@ public class EventHubProducerTest {
 
         final EventHubAsyncProducerClient asyncProducer = new EventHubAsyncProducerClient(EVENT_HUB_NAME, linkProvider,
             retryOptions, tracerProvider, messageSerializer);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE));
 
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
@@ -220,7 +220,7 @@ public class EventHubProducerTest {
 
         final String partitionId = "partition-id-1";
         final SendOptions options = new SendOptions().setPartitionId(partitionId);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
             .thenReturn(Mono.just(session));
@@ -268,7 +268,7 @@ public class EventHubProducerTest {
 
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
-        final EventHubProducer hubProducer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient hubProducer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         // Act
         final EventDataBatch batch = hubProducer.createBatch();
@@ -307,7 +307,7 @@ public class EventHubProducerTest {
         final BatchOptions options = new BatchOptions()
             .setPartitionKey("some-key")
             .setMaximumSizeInBytes(maxBatchSize);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         // Act
         final EventDataBatch batch = producer.createBatch(options);
@@ -344,7 +344,7 @@ public class EventHubProducerTest {
         final BatchOptions options = new BatchOptions()
             .setPartitionId(partitionId)
             .setMaximumSizeInBytes(maxBatchSize);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         // Act
         final EventDataBatch batch = producer.createBatch(options);
@@ -379,7 +379,7 @@ public class EventHubProducerTest {
         // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
         final BatchOptions options = new BatchOptions()
             .setMaximumSizeInBytes(maxBatchSize);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventDataBatch batch = producer.createBatch(options);
 
         // Act & Assert

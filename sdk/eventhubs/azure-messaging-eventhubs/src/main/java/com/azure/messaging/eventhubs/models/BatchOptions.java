@@ -5,12 +5,12 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubAsyncProducerClient;
-import com.azure.messaging.eventhubs.EventHubProducer;
+import com.azure.messaging.eventhubs.EventHubProducerClient;
 
 /**
  * The set of options that can be specified when creating an {@link EventDataBatch}.
  *
- * @see EventHubProducer#createBatch(BatchOptions)
+ * @see EventHubProducerClient#createBatch(BatchOptions)
  * @see EventHubAsyncProducerClient#createBatch(BatchOptions)
  */
 public class BatchOptions implements Cloneable {
