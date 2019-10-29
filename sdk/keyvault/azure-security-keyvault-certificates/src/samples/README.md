@@ -86,7 +86,7 @@ Start using KeyVault Java SDK in your solutions. Our SDK details could be found 
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
 ## Contributing
-This project welcomes contributions and suggestions. Find [more conributing][SDK_README_CONTRIBUTING] details here.
+This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
 [source_code]:  src

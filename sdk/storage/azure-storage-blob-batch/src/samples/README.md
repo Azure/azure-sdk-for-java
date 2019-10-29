@@ -20,7 +20,7 @@ This document describes how to use samples and what is done in each sample.
 
 ### Adding the package to your project
 
-Maven dependency for Azure Storage blob Client library. Add it to your project's pom file.
+Maven dependency for Azure Storage blob batch Client library. Add it to your project's pom file.
 
 [//]: # ({x-version-update-start;com.azure:azure-storage-blob-batch;current})
 ```xml
@@ -59,7 +59,7 @@ Start using Storage blob batch Java SDK in your solutions. Our SDK details could
 For more extensive documentation on Azure Storage blob, see the [API reference documentation][storageblob_rest].
 
 ## Contributing
-This project welcomes contributions and suggestions. Find [more conributing][SDK_README_CONTRIBUTING] details here.
+This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
 [source_code]:  src

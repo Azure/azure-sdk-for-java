@@ -58,7 +58,7 @@ Start using Storage blob Java SDK in your solutions. Our SDK details could be fo
 For more extensive documentation on Azure Storage blob, see the [API reference documentation][storageblob_rest].
 
 ## Contributing
-This project welcomes contributions and suggestions. Find [more conributing][SDK_README_CONTRIBUTING] details here.
+This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
 [source_code]:  src

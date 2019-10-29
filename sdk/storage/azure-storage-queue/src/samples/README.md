@@ -12,7 +12,7 @@ This document describes how to use samples and what is done in each sample.
 
 ### Adding the package to your project
 
-Maven dependency for Azure Storage blob Client library. Add it to your project's pom file.
+Maven dependency for Azure Storage queue Client library. Add it to your project's pom file.
 
 [//]: # ({x-version-update-start;com.azure:azure-storage-queue;current})
 ```xml
@@ -44,13 +44,13 @@ status codes returned for [REST API][error_codes] requests. For example, if you 
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`
 
 ## Next steps
-Start using Storage blob batch Java SDK in your solutions. Our SDK details could be found at [SDK README] [SDK_README]. 
+Start using Storage Queue Java SDK in your solutions. Our SDK details could be found at [SDK README] [SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Storage blob, see the [API reference documentation][storage_queue_rest].
 
 ## Contributing
-This project welcomes contributions and suggestions. Find [more conributing][SDK_README_CONTRIBUTING] details here.
+This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
 [source_code]:  src
