@@ -222,10 +222,10 @@ public class EventHubProducerTest {
         final SendOptions options = new SendOptions().setPartitionId(partitionId);
         final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
 
-        when(connection.createSession(partitionId)).thenReturn(Mono.just(session));
+        when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
+            .thenReturn(Mono.just(session));
 
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(session.createProducer(argThat(name -> name.startsWith("PS")), eq(EVENT_HUB_NAME),
+        when(session.createProducer(argThat(name -> name.startsWith("PS")), argThat(name -> name.endsWith(partitionId)),
             eq(retryOptions.getTryTimeout()), any()))
             .thenReturn(Mono.just(sendLink));
 
@@ -330,10 +330,10 @@ public class EventHubProducerTest {
         int maxEventPayload = maxBatchSize - eventOverhead;
 
         String partitionId = "my-partition-id";
-        when(connection.createSession(partitionId)).thenReturn(Mono.just(session));
+        when(connection.createSession(argThat(name -> name.endsWith(partitionId)))).thenReturn(Mono.just(session));
 
         // PS is the prefix when a partition sender link is created.
-        when(session.createProducer(argThat(name -> name.startsWith("PS")), eq(partitionId),
+        when(session.createProducer(argThat(name -> name.startsWith("PS")), argThat(name -> name.endsWith(partitionId)),
             eq(retryOptions.getTryTimeout()), any()))
             .thenReturn(Mono.just(sendLink));
 
