@@ -6,7 +6,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.time.Duration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -36,7 +35,7 @@ public class PublishEventsWithCustomMetadata {
             .buildAsyncClient();
 
         // Create a producer. This overload of `createProducer` does not accept any arguments
-        EventHubAsyncProducer producer = client.createProducer();
+        EventHubAsyncProducerClient producer = client.createProducer();
 
         // Because an event consists mainly of an opaque set of bytes, it may be difficult for consumers of those events
         // to make informed decisions about how to process them.

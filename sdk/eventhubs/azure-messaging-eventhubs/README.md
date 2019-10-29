@@ -170,7 +170,7 @@ are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
 ### Publish events to an Event Hub
 
 In order to publish events, you'll need to create an asynchronous
-[`EventHubAsyncProducer`][source_eventhubasyncproducer] or a synchronous [`EventHubProducer`][source_eventhubproducer].
+[`EventHubAsyncProducerClient`][source_eventhubasyncproducerclient] or a synchronous [`EventHubProducer`][source_eventhubproducer].
 Producers may be dedicated to a specific partition, or allow the Event Hubs service to decide which partition events
 should be published to. It is recommended to use automatic routing when the publishing of events needs to be highly
 available or when event data should be distributed evenly among the partitions. In the our example, we will take
@@ -181,7 +181,7 @@ advantage of automatic routing.
 With an existing [EventHubAsyncClient][source_eventhubasyncclient] or [EventHubClient][source_eventhubclient],
 developers can create a producer by calling `createProducer()` or `createProducer(EventHubProducerOptions)`. If
 `EventHubClient` is used, a synchronous `EventHubProducer` is created. If `EventHubAsyncClient` is used, an asynchronous
-`EventHubAsyncProducer` is returned.
+`EventHubAsyncProducerClient` is returned.
 
 The snippet below creates a producer that sends events to any partition, allowing Event Hubs service to route the event
 to an available partition.
@@ -190,11 +190,11 @@ to an available partition.
 EventHubAsyncClient client = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .buildAsyncClient();
-EventHubAsyncProducer producer = client.createProducer();
+EventHubAsyncProducerClient producer = client.createProducer();
 ```
 
 To send events to a particular partition, set the optional parameter `partitionId` on
-[`EventHubProducerOptions`][source_eventhubproduceroptions] when creating an event producer.
+[`SendOptions`][source_sendOptions] or [`BatchOptions`][source_batchOptions].
 
 #### Partition identifier
 
@@ -438,10 +438,11 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_errorcondition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java
 [source_errorcontext]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorContext.java
 [source_eventhubasyncclient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubAsyncClient.java
-[source_eventhubasyncproducer]: ./src/main/java/com/azure/messaging/eventhubs/EventHubAsyncProducer.java
+[source_eventhubasyncproducerclient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubAsyncProducerClient.java
 [source_eventhubclient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubClient.java
-[source_eventhubproduceroptions]: ./src/main/java/com/azure/messaging/eventhubs/models/EventHubProducerOptions.java
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
+[source_sendOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/SendOptions.java
+[source_batchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/BatchOptions.java
 [source_inmemorypartitionmanager]: ./src/main/java/com/azure/messaging/eventhubs/InMemoryPartitionManager.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java

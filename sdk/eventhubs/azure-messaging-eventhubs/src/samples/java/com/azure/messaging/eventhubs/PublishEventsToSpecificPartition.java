@@ -6,7 +6,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.time.Duration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -44,7 +43,7 @@ public class PublishEventsToSpecificPartition {
         String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
         SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
 
-        EventHubAsyncProducer producer = client.createProducer();
+        EventHubAsyncProducerClient producer = client.createProducer();
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(

@@ -42,7 +42,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * </p>
  *
  * @see EventHubProducer
- * @see EventHubAsyncProducer
+ * @see EventHubAsyncProducerClient
  */
 public class EventData implements Comparable<EventData> {
     /*

@@ -44,7 +44,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
     private final MessageSerializer serializer = new EventHubMessageSerializer();
     private EventHubAsyncClient client;
-    private EventHubAsyncProducer producer;
+    private EventHubAsyncProducerClient producer;
     private EventHubAsyncConsumer consumer;
     private SendOptions sendOptions;
 

@@ -45,7 +45,7 @@ public class BackCompatTest extends IntegrationTestBase {
 
     private MessageSerializer serializer = new EventHubMessageSerializer();
     private EventHubAsyncClient client;
-    private EventHubAsyncProducer producer;
+    private EventHubAsyncProducerClient producer;
     private EventHubAsyncConsumer consumer;
     private SendOptions sendOptions;
 

@@ -73,11 +73,11 @@ import java.util.Objects;
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#eventDataBatch}
  *
  * @see EventHubClient#createProducer()
- * @see EventHubAsyncProducer To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.
+ * @see EventHubAsyncProducerClient To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.
  */
 @Immutable
 public class EventHubProducer implements Closeable {
-    private final EventHubAsyncProducer producer;
+    private final EventHubAsyncProducerClient producer;
     private final Duration tryTimeout;
 
     /**
@@ -85,7 +85,7 @@ public class EventHubProducer implements Closeable {
      *
      * @throws NullPointerException if {@code producer} or {@code tryTimeout} is null.
      */
-    EventHubProducer(EventHubAsyncProducer producer, Duration tryTimeout) {
+    EventHubProducer(EventHubAsyncProducerClient producer, Duration tryTimeout) {
         this.producer = Objects.requireNonNull(producer, "'producer' cannot be null.");
         this.tryTimeout = Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
     }

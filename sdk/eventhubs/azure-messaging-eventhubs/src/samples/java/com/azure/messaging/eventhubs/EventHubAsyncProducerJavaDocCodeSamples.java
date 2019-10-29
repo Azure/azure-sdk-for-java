@@ -13,13 +13,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link EventHubAsyncProducer}.
+ * Contains code snippets when generating javadocs through doclets for {@link EventHubAsyncProducerClient}.
  */
 public class EventHubAsyncProducerJavaDocCodeSamples {
     private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
 
     /**
-     * Code snippet demonstrating how to create an {@link EventHubAsyncProducer} that automatically routes events to any
+     * Code snippet demonstrating how to create an {@link EventHubAsyncProducerClient} that automatically routes events to any
      * partition.
      *
      */
@@ -29,14 +29,14 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
             .buildAsyncClient();
 
-        EventHubAsyncProducer producer = client.createProducer();
+        EventHubAsyncProducerClient producer = client.createProducer();
         // END: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation
 
         producer.close();
     }
 
     /**
-     * Code snippet demonstrating how to create an {@link EventHubAsyncProducer}  that routes events to a single
+     * Code snippet demonstrating how to create an {@link EventHubAsyncProducerClient}  that routes events to a single
      * partition.
      *
      * @throws IOException if the producer cannot be disposed.
@@ -47,7 +47,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
         SendOptions options = new SendOptions()
             .setPartitionId("foo");
 
-        EventHubAsyncProducer producer = client.createProducer();
+        EventHubAsyncProducerClient producer = client.createProducer();
         producer.send(eventData, options);
         // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
 
@@ -65,7 +65,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
             new EventData("wheat".getBytes(UTF_8))
         );
 
-        EventHubAsyncProducer producer = client.createProducer();
+        EventHubAsyncProducerClient producer = client.createProducer();
         SendOptions options = new SendOptions()
             .setPartitionKey("bread");
 
@@ -79,7 +79,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
      * Code snippet demonstrating how to create an {@link EventDataBatch} and send it.
      */
     public void sendEventDataBatch() {
-        final EventHubAsyncProducer producer = client.createProducer();
+        final EventHubAsyncProducerClient producer = client.createProducer();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducer.send#eventDataBatch
         final Flux<EventData> telemetryEvents = Flux.just(

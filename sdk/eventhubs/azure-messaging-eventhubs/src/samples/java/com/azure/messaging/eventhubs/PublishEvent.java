@@ -30,7 +30,7 @@ public class PublishEvent {
 
         // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
         // sent from this producer are load balanced between all available partitions in the Event Hub instance.
-        EventHubAsyncProducer producer = client.createProducer();
+        EventHubAsyncProducerClient producer = client.createProducer();
 
         // Create an event to send.
         EventData data = new EventData("Hello world!".getBytes(UTF_8));

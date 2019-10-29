@@ -15,7 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncProducer;
+import com.azure.messaging.eventhubs.EventHubAsyncProducerClient;
 import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducer;
@@ -165,7 +165,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("Pushing events to partition. Message tracking value: {}", messageId);
 
-        final EventHubAsyncProducer producer = client.createProducer();
+        final EventHubAsyncProducerClient producer = client.createProducer();
         final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
         final Instant datePushed = Instant.now();
 
