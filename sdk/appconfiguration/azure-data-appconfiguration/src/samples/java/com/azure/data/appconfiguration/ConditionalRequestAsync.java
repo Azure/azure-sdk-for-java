@@ -30,46 +30,46 @@ public class ConditionalRequestAsync {
 
         ConfigurationSetting setting = new ConfigurationSetting().setKey("key").setLabel("label").setValue("value");
 
-
-        // If you want to use conditional request, then you should set the boolean value of 'ifUnchanged' to true, so
-        // the API will use the ETag value from the given setting to make a conditional request.
+        // If you want to conditionally update the setting, set `ifUnchanged` to true. If the ETag of the
+        // given setting matches the one in the service, then the setting is updated. Otherwise, it is
+        // not updated.
+        // If the given setting is not exist in the service, the setting will be added to the service.
         client.setConfigurationSettingWithResponse(setting, true).subscribe(
             result -> {
                 final ConfigurationSetting output = result.getValue();
                 final int statusCode = result.getStatusCode();
-                System.out.println(String.format("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
+                System.out.printf(String.format("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
                     output.getValue()));
             },
-            error -> System.err.println("There was an error while setting the setting: " + error.toString()),
-            null);
+            error -> System.err.println("There was an error while setting the setting: " + error));
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
-        // If you want to use conditional request, then you should set the boolean value of ifChanged' to true, so the
-        // API will use the ETag value from the given setting to make a conditional request.
+        // If you want to conditionally retrieve the setting, set `ifChanged` to true. If the ETag of the
+        // given setting matches the one in the service, then 304 status code with null value returned in the response.
+        // Otherwise, a setting with new ETag returned, which is the latest setting retrieved from the service.
         client.getConfigurationSettingWithResponse(setting, null, true).subscribe(
             result -> {
                 final ConfigurationSetting output = result.getValue();
                 final int statusCode = result.getStatusCode();
-                System.out.println(String.format("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
+                System.out.printf(String.format("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
                     output.getValue()));
             },
-            error -> System.err.println("There was an error while getting the setting: " + error.toString()),
-            null);
+            error -> System.err.println("There was an error while getting the setting: " + error));
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
-        // If you want to use conditional request, then you should set the boolean value of 'ifUnchanged' to true, so
-        // the API will use the ETag value from the given setting to make a conditional request.
+        // If you want to conditionally delete the setting, set `ifUnchanged` to true. If the ETag of the
+        // given setting matches the one in the service, then the setting is deleted. Otherwise, it is
+        // not deleted.
         client.deleteConfigurationSettingWithResponse(setting, true).subscribe(
             result -> {
                 final ConfigurationSetting output = result.getValue();
                 final int statusCode = result.getStatusCode();
-                System.out.println(String.format("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
+                System.out.printf(String.format("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
                     output.getValue()));
             },
-            error -> System.err.println("There was an error while deleting the setting: " + error.toString()),
-            null);
+            error -> System.err.println("There was an error while deleting the setting: " + error));
     }
 
 

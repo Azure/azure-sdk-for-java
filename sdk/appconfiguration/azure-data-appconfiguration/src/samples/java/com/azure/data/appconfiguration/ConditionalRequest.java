@@ -12,8 +12,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
  */
 public class ConditionalRequest {
     /**
-     * Runs the sample algorithm and demonstrates how to add, get, and delete a configuration setting by conditional
-     * request asynchronously
+     * Runs the sample program and demonstrates how to add, get, and delete a configuration setting by conditional request.
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
@@ -28,22 +27,26 @@ public class ConditionalRequest {
 
         ConfigurationSetting setting = new ConfigurationSetting().setKey("key").setLabel("label").setValue("value");
 
-        // If you want to use conditional request, then you should set the boolean value of 'ifUnchanged' to true, so
-        // the API will use the ETag value from the given setting to make a conditional request.
+        // If you want to conditionally update the setting, set `ifUnchanged` to true. If the ETag of the
+        // given setting matches the one in the service, then the setting is updated. Otherwise, it is
+        // not updated.
+        // If the given setting is not exist in the service, the setting will be added to the service.
         Response<ConfigurationSetting> settingResponse = client.setConfigurationSettingWithResponse(setting, true, Context.NONE);
-        System.out.println(String.format("Status code: %s, Key: %s, Value: %s", settingResponse.getStatusCode(),
+        System.out.printf(String.format("Status code: %s, Key: %s, Value: %s", settingResponse.getStatusCode(),
             settingResponse.getValue().getKey(), settingResponse.getValue().getValue()));
 
-        // If you want to use conditional request, then you should set the boolean value of ifChanged' to true, so the
-        // API will use the ETag value from the given setting to make a conditional request.
+        // If you want to conditionally retrieve the setting, set `ifChanged` to true. If the ETag of the
+        // given setting matches the one in the service, then 304 status code with null value returned in the response.
+        // Otherwise, a setting with new ETag returned, which is the latest setting retrieved from the service.
         settingResponse = client.getConfigurationSettingWithResponse(setting, null, true, Context.NONE);
-        System.out.println(String.format("Status code: %s, Key: %s, Value: %s", settingResponse.getStatusCode(),
+        System.out.printf(String.format("Status code: %s, Key: %s, Value: %s", settingResponse.getStatusCode(),
             settingResponse.getValue().getKey(), settingResponse.getValue().getValue()));
 
-        // If you want to use conditional request, then you should set the boolean value of 'ifUnchanged' to true, so
-        // the API will use the ETag value from the given setting to make a conditional request.
+        // If you want to conditionally delete the setting, set `ifUnchanged` to true. If the ETag of the
+        // given setting matches the one in the service, then the setting is deleted. Otherwise, it is
+        // not deleted.
         client.deleteConfigurationSettingWithResponse(settingResponse.getValue(), true, Context.NONE);
-        System.out.println(String.format("Status code: %s, Key: %s, Value: %s", settingResponse.getStatusCode(),
+        System.out.printf(String.format("Status code: %s, Key: %s, Value: %s", settingResponse.getStatusCode(),
             settingResponse.getValue().getKey(), settingResponse.getValue().getValue()));
     }
 }

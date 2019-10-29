@@ -174,15 +174,6 @@ client.listConfigurationSettings(new SettingSelector().setLabels(periodicUpdateL
 ## Examples
 
 The following sections provide several code snippets covering some of the most common configuration service tasks, including:
-- [Create a configuration setting][sample_hello_world]
-- [Retrieve a configuration setting][sample_hello_world]
-- [Update an existing configuration setting][sample_hello_world]
-- [Delete a configuration setting][sample_hello_world]
-- [List configuration settings with multiple keys][sample_list_configuration_settings]
-- [List revisions of multiple configuration settings][sample_read_revision_history]
-- [Set a configuration setting to read only][sample_read_only]
-- [Clear read only from a configuration setting][sample_read_only]
-- [Conditional request a configuration setting][sample_conditional_request]
 
 ### Create a configuration client
 Create a configuration client by using `ConfigurationClientBuilder` by passing connection string.
@@ -263,12 +254,9 @@ PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
 List all revision of a configuration settings by calling `listRevisions`.
 ```Java
 String key = "revisionKey";
-String Key2 = "newRevisionKey";
 client.setConfigurationSetting(key, "some_label", "some_value");
 client.setConfigurationSetting(key, "new_label", "new_value");
-client.setConfigurationSetting(key2, "some_label", "some_value");
-client.setConfigurationSetting(key2, "new_label", "new_value");
-SettingSelector selector = new SettingSelector().setKeys(key, key2);
+SettingSelector selector = new SettingSelector().setKeys(key);
 PagedIterable<ConfigurationSetting> settings = client.listRevisions(selector);
 ``` 
 
@@ -293,8 +281,8 @@ ConfigurationSetting setting = client.clearReadOnly("some_key", "some_label");
 When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a configuration setting that doesn't exist in your configuration store, a `404` error is returned, indicating `Not Found`.
 
 ## Next steps
-
-[Quickstart: Create a Java Spring app with App Configuration][spring_quickstart]
+- Samples are explained in detail [here][samples_readme].
+- [Quickstart: Create a Java Spring app with App Configuration][spring_quickstart]
 
 ## Contributing
 
@@ -316,11 +304,7 @@ If you would like to become an active contributor to this project please follow 
 [package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [samples]: src/samples/java/com/azure/data/appconfiguration
-[sample_hello_world]: src/samples/java/com/azure/data/appconfiguration/HelloWorld.java
-[sample_list_configuration_settings]: src/samples/java/com/azure/data/appconfiguration/ConfigurationSets.java
-[sample_conditional_request]: src/samples/java/com/azure/data/appconfiguration/ConditionalRequest.java
-[sample_read_only]: src/samples/java/com/azure/data/appconfiguration/ReadOnlySample.java
-[sample_read_revision_history]: src/samples/java/com/azure/data/appconfiguration/ReadRevisionHistory.java
+[samples_readme]: src/samples/README.md
 [source_code]: src
 [spring_quickstart]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 

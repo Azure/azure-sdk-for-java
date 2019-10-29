@@ -31,11 +31,11 @@ public class ReadOnlySample {
         final ConfigurationSetting setting = client.setConfigurationSetting(key, null, value);
         // Read-Only
         final ConfigurationSetting readOnlySetting = client.setReadOnly(setting.getKey(), setting.getLabel());
-        System.out.println(String.format("Setting is read-only now, Key: %s, Value: %s",
+        System.out.printf(String.format("Setting is read-only now, Key: %s, Value: %s",
             readOnlySetting.getKey(), readOnlySetting.getValue()));
         // Clear Read-Only
         final ConfigurationSetting clearedReadOnlySetting = client.clearReadOnly(setting.getKey(), setting.getLabel());
-        System.out.println(String.format("Setting is no longer read-only, Key: %s, Value: %s",
+        System.out.printf(String.format("Setting is no longer read-only, Key: %s, Value: %s",
             clearedReadOnlySetting.getKey(), clearedReadOnlySetting.getValue()));
     }
 }

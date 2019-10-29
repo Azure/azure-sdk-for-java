@@ -31,18 +31,18 @@ public class ReadOnlySampleAsync {
         client.setConfigurationSetting(key, null, value).subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
-                System.out.println(String.format("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+                System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
             },
-            error -> System.err.println("There was an error while adding the setting: " + error.toString()),
-            () -> System.out.println(String.format("Set setting with key=%s and value=%s added or updated.", key, value)));
+            error -> System.err.println("There was an error while adding the setting: " + error),
+            () -> System.out.printf(String.format("Set setting with key=%s and value=%s added or updated.", key, value)));
 
         // Read-Only
         client.setReadOnly(key, null).subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
-                System.out.println(String.format("[Read-Only Setting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+                System.out.printf(String.format("[Read-Only Setting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
             },
-            error -> System.err.println("There was an error while making the setting to read-only: " + error.toString()),
+            error -> System.err.println("There was an error while making the setting to read-only: " + error),
             null
         );
 
@@ -50,9 +50,9 @@ public class ReadOnlySampleAsync {
         client.clearReadOnly(key, null).subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
-                System.out.println(String.format("[Cleared Read-Only Setting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+                System.out.printf(String.format("[Cleared Read-Only Setting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
             },
-            error -> System.err.println("There was an error while making the setting to read-only: " + error.toString()),
+            error -> System.err.println("There was an error while making the setting to read-only: " + error),
             null
         );
     }

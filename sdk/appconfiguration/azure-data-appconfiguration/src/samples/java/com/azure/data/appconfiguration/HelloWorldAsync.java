@@ -37,25 +37,26 @@ public class HelloWorldAsync {
         // addConfigurationSetting which only succeeds if the setting does not exist in the store. Or, you can call setConfigurationSetting to
         // update a setting that is already present in the store.
         // We subscribe and wait for the service call to complete then print out the contents of our newly added setting.
-        // If an error occurs, we print out that error. On completion of the subscription, we delete the setting.
-        // .block() exists there so the program does not end before the deletion has completed.
+        // If an error occurs, we print out that error.
         client.setConfigurationSetting(key, null, value).subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
-                System.out.println(String.format("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+                System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
             },
-            error -> System.err.println("There was an error adding the setting: " + error.toString()),
-            () -> System.out.println(String.format("Set setting with key=%s and value=%s added or updated.", key, value)));
+            error -> System.err.println("There was an error adding the setting: " + error),
+            () -> System.out.printf(String.format("Set setting with key=%s and value=%s added or updated.", key, value)));
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
         client.getConfigurationSetting(key, null, null).subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
-                System.out.println(String.format("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+                System.out.printf(String.format("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
             },
-            error -> System.err.println("There was an error getting the setting: " + error.toString()),
+            error -> System.err.println("There was an error getting the setting: " + error),
             () -> {
+                // On completion of the subscription, we delete the setting.
+                // .block() exists there so the program does not end before the deletion has completed.
                 System.out.println("Completed. Deleting setting...");
                 client.deleteConfigurationSetting(key, null).block();
             });

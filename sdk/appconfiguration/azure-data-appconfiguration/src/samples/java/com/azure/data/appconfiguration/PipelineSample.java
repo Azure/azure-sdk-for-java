@@ -75,7 +75,7 @@ class PipelineSample {
 
         void print() {
             tracker.forEach((key, value) -> {
-                System.out.println(String.format("HTTP Method [%s], # of calls: %s", key, value));
+                System.out.printf(String.format("HTTP Method [%s], # of calls: %s", key, value));
             });
         }
     }
