@@ -47,6 +47,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -214,21 +215,21 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
         if (options == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'options' cannot be null.")));
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
         final BatchOptions clone = options.clone();
 
         if (!ImplUtils.isNullOrEmpty(clone.getPartitionKey()) && !ImplUtils.isNullOrEmpty(clone.getPartitionId())) {
-            return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
-                clone.getPartitionKey(), clone.getPartitionId()))));
+                clone.getPartitionKey(), clone.getPartitionId())));
         } else if (!ImplUtils.isNullOrEmpty(clone.getPartitionKey())
             && clone.getPartitionKey().length() > MAX_PARTITION_KEY_LENGTH) {
-            return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", clone.getPartitionKey(),
-                MAX_PARTITION_KEY_LENGTH))));
+                MAX_PARTITION_KEY_LENGTH)));
         }
 
         return getSendLink(clone.getPartitionId())
@@ -239,10 +240,10 @@ public class EventHubProducerAsyncClient implements Closeable {
                         : MAX_MESSAGE_LENGTH_BYTES;
 
                     if (clone.getMaximumSizeInBytes() > maximumLinkSize) {
-                        return Mono.error(logger.logExceptionAsError(
+                        return monoError(logger,
                             new IllegalArgumentException(String.format(Locale.US,
                                 "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
-                                clone.getMaximumSizeInBytes(), maximumLinkSize))));
+                                clone.getMaximumSizeInBytes(), maximumLinkSize)));
                     }
 
                     final int batchSize = clone.getMaximumSizeInBytes() > 0
@@ -270,7 +271,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public Mono<Void> send(EventData event) {
         if (event == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'event' cannot be null.")));
+            return monoError(logger, new NullPointerException("'event' cannot be null."));
         }
 
         return send(Flux.just(event));
@@ -293,9 +294,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public Mono<Void> send(EventData event, SendOptions options) {
         if (event == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'event' cannot be null.")));
+            return monoError(logger, new NullPointerException("'event' cannot be null."));
         } else if (options == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'options' cannot be null.")));
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
         return send(Flux.just(event), options);
@@ -312,7 +313,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public Mono<Void> send(Iterable<EventData> events) {
         if (events == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'events' cannot be null.")));
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
 
         return send(Flux.fromIterable(events));
@@ -330,9 +331,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         if (events == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'events' cannot be null.")));
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'options' cannot be null.")));
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
         return send(Flux.fromIterable(events), options);
@@ -349,7 +350,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public Mono<Void> send(Flux<EventData> events) {
         if (events == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'events' cannot be null.")));
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
 
         return send(events, DEFAULT_SEND_OPTIONS);
@@ -367,9 +368,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public Mono<Void> send(Flux<EventData> events, SendOptions options) {
         if (events == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'events' cannot be null.")));
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'options' cannot be null.")));
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
         return sendInternal(events, options);
@@ -388,7 +389,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public Mono<Void> send(EventDataBatch batch) {
         if (batch == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("'batch' cannot be null.")));
+            return monoError(logger, new NullPointerException("'batch' cannot be null."));
         } else if (batch.getEvents().isEmpty()) {
             logger.warning("Cannot send an EventBatch that is empty.");
             return Mono.empty();
@@ -428,10 +429,10 @@ public class EventHubProducerAsyncClient implements Closeable {
         final boolean isTracingEnabled = tracerProvider.isEnabled();
 
         if (!ImplUtils.isNullOrEmpty(clone.getPartitionKey()) && !ImplUtils.isNullOrEmpty(clone.getPartitionId())) {
-            return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
-                clone.getPartitionKey(), clone.getPartitionId()))));
+                clone.getPartitionKey(), clone.getPartitionId())));
         }
 
         return getSendLink(options.getPartitionId())
