@@ -33,7 +33,6 @@
   </scm>
 
   <properties>
-    <project.automatic.module.name>com.azure.data.appconfiguration</project.automatic.module.name>
   </properties>
 
   <dependencies>

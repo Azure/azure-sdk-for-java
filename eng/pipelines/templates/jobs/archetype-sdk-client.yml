@@ -23,17 +23,17 @@ parameters:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.11'
-      ProfileFlag: '-Djava-lts'
+      ProfileFlag: ''
     macOS - Java LTS:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.11'
-      ProfileFlag: '-Djava-lts'
+      ProfileFlag: ''
     Windows - Java LTS:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
-      ProfileFlag: '-Djava-lts'
+      ProfileFlag: ''
 
 jobs:
   - job: 'Build'
@@ -46,13 +46,9 @@ jobs:
 
     strategy:
       matrix:
-        Java 8:
+        Java 8 and 11:
           ArtifactName: 'packages'
           ProfileFlag: ''
-          JavaVersion: '1.8'
-        Java LTS:
-          ArtifactName: 'java-lts-packages'
-          ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
 
     steps:

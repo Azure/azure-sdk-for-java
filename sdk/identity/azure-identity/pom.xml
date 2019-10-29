@@ -20,7 +20,6 @@
   </parent>
 
   <properties>
-    <project.automatic.module.name>com.azure.identity</project.automatic.module.name>
   </properties>
 
   <dependencies>

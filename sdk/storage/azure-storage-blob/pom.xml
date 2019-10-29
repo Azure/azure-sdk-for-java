@@ -33,7 +33,6 @@
   </scm>
 
   <properties>
-    <project.automatic.module.name>com.azure.storage.blob</project.automatic.module.name>
     <src.dir>src/main/java</src.dir>
     <test.dir>src/test/java</test.dir>
   </properties>

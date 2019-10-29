@@ -34,7 +34,6 @@
   </scm>
 
   <properties>
-    <project.automatic.module.name>com.azure.messaging.eventhubs</project.automatic.module.name>
   </properties>
 
   <dependencies>

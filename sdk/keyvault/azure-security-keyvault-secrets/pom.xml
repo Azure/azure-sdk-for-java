@@ -31,7 +31,6 @@
   </scm>
 
   <properties>
-    <project.automatic.module.name>com.azure.security.keyvault.secrets</project.automatic.module.name>
   </properties>
 
   <dependencies>

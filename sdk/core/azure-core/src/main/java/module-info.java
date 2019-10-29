@@ -13,7 +13,7 @@ module com.azure.core {
     requires transitive reactor.core;
     requires transitive org.reactivestreams;
 
-    requires org.slf4j;
+    requires transitive org.slf4j;
 
     // public API surface area
     exports com.azure.core.annotation;
