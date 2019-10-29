@@ -14,8 +14,6 @@ import java.time.Instant;
  * Code snippets demonstrating various {@link EventHubConsumer} scenarios.
  */
 public class EventHubConsumerJavaDocCodeSamples {
-    private final EventHubClient client = new EventHubClientBuilder().connectionString("fake-string").buildClient();
-
     /**
      * Code snippet for creating an EventHubConsumer
      *
@@ -23,13 +21,14 @@ public class EventHubConsumerJavaDocCodeSamples {
      */
     public void instantiate() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.instantiation
-        EventHubClient client = new EventHubClientBuilder()
-            .connectionString("event-hub-instance-connection-string")
-            .buildClient();
-
         String partitionId = "0";
         String consumerGroup = "$DEFAULT";
-        EventHubConsumer consumer = client.createConsumer(consumerGroup, partitionId, EventPosition.latest());
+        EventHubConsumer consumer = new EventHubClientBuilder()
+            .connectionString("event-hub-instance-connection-string")
+            .consumerGroup(consumerGroup)
+            .startingPosition(EventPosition.latest())
+            .partitionId(partitionId)
+            .buildConsumer();
         // END: com.azure.messaging.eventhubs.eventhubconsumer.instantiation
 
         consumer.close();
@@ -43,8 +42,11 @@ public class EventHubConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubClient.getPartitionIds().
         String partitionId = "0";
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
-        EventHubConsumer consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-            EventPosition.fromEnqueuedTime(twelveHoursAgo));
+        EventHubConsumer consumer = new EventHubClientBuilder().connectionString("fake-string")
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.fromEnqueuedTime(twelveHoursAgo))
+            .partitionId(partitionId)
+            .buildConsumer();
 
         IterableStream<EventData> events = consumer.receive(100, Duration.ofSeconds(30));
 
