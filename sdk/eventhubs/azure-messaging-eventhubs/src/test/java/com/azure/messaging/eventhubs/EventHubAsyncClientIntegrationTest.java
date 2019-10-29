@@ -22,6 +22,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,10 +75,13 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         client = builder.buildAsyncClient();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.info("Already pushed events to partition. Skipping.");
+            logger.warning("Already pushed events to partition. Skipping.");
         } else {
+            logger.warning("Pushing... events to partition.");
+
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
             testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            logger.warning("Pushed events to partition.");
         }
     }
 
@@ -102,7 +106,8 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(consumer.receive().filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofMinutes(1));
     }
 
     /**

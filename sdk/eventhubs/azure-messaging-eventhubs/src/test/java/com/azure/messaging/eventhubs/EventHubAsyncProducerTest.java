@@ -186,7 +186,6 @@ public class EventHubAsyncProducerTest {
         StepVerifier.create(producer.send(testData, options))
             .expectError(IllegalArgumentException.class)
             .verify(Duration.ofSeconds(10));
-        Assert.fail("Should have thrown an exception.");
 
         verifyZeroInteractions(sendLink);
     }
