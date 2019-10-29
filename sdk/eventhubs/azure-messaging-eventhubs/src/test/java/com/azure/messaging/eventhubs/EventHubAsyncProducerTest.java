@@ -463,6 +463,45 @@ public class EventHubAsyncProducerTest {
     }
 
     @Test
+    public void sendEventRequired() {
+        // Arrange
+        final EventData event = new EventData("Event-data");
+        final SendOptions sendOptions = new SendOptions();
+
+        StepVerifier.create(producer.send(event, null))
+            .verifyError(NullPointerException.class);
+
+        StepVerifier.create(producer.send((EventData) null, sendOptions))
+            .verifyError(NullPointerException.class);
+    }
+
+    @Test
+    public void sendEventIterableRequired() {
+        // Arrange
+        final List<EventData> event = Collections.singletonList(new EventData("Event-data"));
+        final SendOptions sendOptions = new SendOptions();
+
+        StepVerifier.create(producer.send(event, null))
+            .verifyError(NullPointerException.class);
+
+        StepVerifier.create(producer.send((Iterable<EventData>) null, sendOptions))
+            .verifyError(NullPointerException.class);
+    }
+
+    @Test
+    public void sendEventFluxRequired() {
+        // Arrange
+        final Flux<EventData> event = Flux.just(new EventData("Event-data"));
+        final SendOptions sendOptions = new SendOptions();
+
+        StepVerifier.create(producer.send(event, null))
+            .verifyError(NullPointerException.class);
+
+        StepVerifier.create(producer.send((Flux<EventData>) null, sendOptions))
+            .verifyError(NullPointerException.class);
+    }
+
+    @Test
     public void batchOptionsIsCloned() {
         // Arrange
         int maxLinkSize = 1024;

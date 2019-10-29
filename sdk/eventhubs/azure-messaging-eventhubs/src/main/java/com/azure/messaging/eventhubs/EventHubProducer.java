@@ -5,11 +5,9 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.models.BatchOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -27,7 +25,7 @@ import java.util.Objects;
  * </p>
  *
  * <p>
- * If no {@link EventHubProducerOptions#getPartitionId() partitionId} is specified, the following rules are used for
+ * If no {@link SendOptions#getPartitionId() partitionId} is specified, the following rules are used for
  * automatically selecting one:
  *
  * <ol>
@@ -39,13 +37,13 @@ import java.util.Objects;
  *
  * <p><strong>Create a producer that routes events to any partition</strong></p>
  * To allow automatic routing of messages to available partition, do not specify the {@link
- * EventHubProducerOptions#getPartitionId() partitionId} when creating the {@link EventHubProducer}.
+ * SendOptions#getPartitionId() partitionId} when creating the {@link EventHubProducer}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
  * Developers can push events to a single partition by specifying the
- * {@link EventHubProducerOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducer}.
+ * {@link SendOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducer}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId}
  *
@@ -75,7 +73,6 @@ import java.util.Objects;
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#eventDataBatch}
  *
  * @see EventHubClient#createProducer()
- * @see EventHubClient#createProducer(EventHubProducerOptions)
  * @see EventHubAsyncProducer To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.
  */
 @Immutable
@@ -196,7 +193,7 @@ public class EventHubProducer implements Closeable {
      * {@inheritDoc}
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         producer.close();
     }
 }
