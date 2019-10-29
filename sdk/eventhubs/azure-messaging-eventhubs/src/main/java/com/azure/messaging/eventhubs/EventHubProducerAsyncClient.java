@@ -13,10 +13,13 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
@@ -138,6 +141,47 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryOptions = retryOptions;
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
+    }
+
+    /**
+     * Gets the Event Hub name this client interacts with.
+     *
+     * @return The Event Hub name this client interacts with.
+     */
+    public String getEventHubName() {
+        return eventHubName;
+    }
+
+    /**
+     * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
+     *
+     * @return The set of information for the Event Hub that this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EventHubProperties> getProperties() {
+        return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
+    }
+
+    /**
+     * Retrieves the identifiers for the partitions of an Event Hub.
+     *
+     * @return A Flux of identifiers for the partitions of an Event Hub.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<String> getPartitionIds() {
+        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
+    }
+
+    /**
+     * Retrieves information about a specific partition for an Event Hub, including elements that describe the available
+     * events in the partition event stream.
+     *
+     * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+        return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
