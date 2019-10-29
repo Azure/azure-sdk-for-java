@@ -90,13 +90,13 @@ class EventHubLinkProvider implements Closeable {
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-            EventHubConsumerOptions options) {
+            RetryOptions retryOptions, EventHubConsumerOptions options) {
         return connectionMono.flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
             .flatMap(session -> {
                 logger.verbose("Creating consumer for path: {}", entityPath);
-                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(options.getRetry());
+                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-                return session.createConsumer(linkName, entityPath, options.getRetry().getTryTimeout(),
+                return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(),
                     retryPolicy, eventPosition, options);
             });
     }

@@ -21,6 +21,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
 
     @Rule
     public TestName testName = new TestName();
+    private EventHubConnection connection;
 
     public EventHubClientIntegrationTest() {
         super(new ClientLogger(EventHubClientIntegrationTest.class));
@@ -33,10 +34,11 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = new EventHubClientBuilder()
+        connection = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
-            .buildClient();
+            .buildConnection();
+        client = new EventHubClient(connection, RETRY_OPTIONS);
     }
 
     @Override

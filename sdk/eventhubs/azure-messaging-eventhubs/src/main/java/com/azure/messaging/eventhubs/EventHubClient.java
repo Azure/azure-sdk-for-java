@@ -33,11 +33,11 @@ import java.util.Objects;
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
 class EventHubClient implements Closeable {
-    private final EventHubConnection client;
+    private final EventHubConnection eventHubConnection;
     private final RetryOptions retry;
 
-    EventHubClient(EventHubConnection client, RetryOptions retryOptions) {
-        this.client = Objects.requireNonNull(client, "'client' cannot be null.");
+    EventHubClient(EventHubConnection eventHubConnection, RetryOptions retryOptions) {
+        this.eventHubConnection = Objects.requireNonNull(eventHubConnection, "'eventHubConnection' cannot be null.");
         this.retry = retryOptions;
     }
 
@@ -47,7 +47,7 @@ class EventHubClient implements Closeable {
      * @return The Event Hub name this client interacts with.
      */
     String getEventHubName() {
-        return client.getEventHubName();
+        return eventHubConnection.getEventHubName();
     }
 
     /**
@@ -57,7 +57,7 @@ class EventHubClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EventHubProperties getProperties() {
-        return client.getProperties().block(retry.getTryTimeout());
+        return eventHubConnection.getProperties().block(retry.getTryTimeout());
     }
 
     /**
@@ -67,7 +67,7 @@ class EventHubClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     IterableStream<String> getPartitionIds() {
-        return new IterableStream<>(client.getPartitionIds());
+        return new IterableStream<>(eventHubConnection.getPartitionIds());
     }
 
     /**
@@ -79,7 +79,7 @@ class EventHubClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PartitionProperties getPartitionProperties(String partitionId) {
-        return client.getPartitionProperties(partitionId).block(retry.getTryTimeout());
+        return eventHubConnection.getPartitionProperties(partitionId).block(retry.getTryTimeout());
     }
 
     /**
@@ -89,7 +89,7 @@ class EventHubClient implements Closeable {
      * @return A new {@link EventHubProducerClient}.
      */
     EventHubProducerClient createProducer() {
-        final EventHubProducerAsyncClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = eventHubConnection.createProducer();
         return new EventHubProducerClient(producer, retry.getTryTimeout());
     }
 
@@ -112,7 +112,7 @@ class EventHubClient implements Closeable {
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
     EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
-        final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition);
+        final EventHubAsyncConsumer consumer = eventHubConnection.createConsumer(consumerGroup, partitionId, eventPosition);
         return new EventHubConsumer(consumer, retry.getTryTimeout());
     }
 
@@ -149,7 +149,7 @@ class EventHubClient implements Closeable {
     EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
             EventHubConsumerOptions options) {
         final EventHubAsyncConsumer consumer =
-            client.createConsumer(consumerGroup, partitionId, eventPosition, options);
+            eventHubConnection.createConsumer(consumerGroup, partitionId, eventPosition, options);
 
         return new EventHubConsumer(consumer, retry.getTryTimeout());
     }
@@ -159,6 +159,6 @@ class EventHubClient implements Closeable {
      */
     @Override
     public void close() {
-        client.close();
+        eventHubConnection.close();
     }
 }

@@ -5,16 +5,13 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.CloseReason;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubConnection;
 import com.azure.messaging.eventhubs.EventHubConsumer;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
@@ -23,6 +20,8 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import reactor.core.publisher.Signal;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Locale;
@@ -30,7 +29,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-import reactor.core.publisher.Signal;
+
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
@@ -50,7 +52,7 @@ public class PartitionPumpManager {
     private final PartitionManager partitionManager;
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventPosition initialEventPosition;
-    private final EventHubAsyncClient eventHubAsyncClient;
+    private final EventHubConnection eventHubAsyncClient;
     private final TracerProvider tracerProvider;
 
     /**
@@ -65,7 +67,7 @@ public class PartitionPumpManager {
      */
     public PartitionPumpManager(PartitionManager partitionManager,
         Supplier<PartitionProcessor> partitionProcessorFactory,
-        EventPosition initialEventPosition, EventHubAsyncClient eventHubAsyncClient, TracerProvider tracerProvider) {
+        EventPosition initialEventPosition, EventHubConnection eventHubAsyncClient, TracerProvider tracerProvider) {
         this.partitionManager = partitionManager;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.initialEventPosition = initialEventPosition;

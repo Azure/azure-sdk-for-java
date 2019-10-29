@@ -114,8 +114,7 @@ public class EventHubLinkProviderTest {
             .setMaxRetries(2)
             .setRetryMode(RetryMode.FIXED);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setIdentifier("foo")
-            .setRetry(retryOptions);
+            .setIdentifier("foo");
 
         final EventPosition position = EventPosition.fromOffset(10L);
         final String linkName = "some-link-name";
@@ -130,7 +129,7 @@ public class EventHubLinkProviderTest {
             .thenReturn(Mono.just(receiveLink));
 
         // Act & Assert
-        StepVerifier.create(provider.createReceiveLink(linkName, entityPath, position, options))
+        StepVerifier.create(provider.createReceiveLink(linkName, entityPath, position, retryOptions, options))
             .expectNext(receiveLink)
             .verifyComplete();
     }

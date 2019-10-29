@@ -39,6 +39,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static volatile IntegrationTestEventData testData = null;
 
+    private EventHubClientBuilder builder;
     private EventHubConnection client;
     private EventHubAsyncConsumer consumer;
 
@@ -56,11 +57,12 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = createBuilder().buildConnection();
+        builder = createBuilder();
+        client = builder.buildConnection();
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(builder, NUMBER_OF_EVENTS, options);
         }
     }
 
@@ -80,7 +82,6 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         final int eventCount = NUMBER_OF_EVENTS;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setRetry(RETRY_OPTIONS)
             .setPrefetchCount(2000);
 
         consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,

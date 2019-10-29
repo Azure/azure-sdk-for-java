@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
-import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,7 +28,6 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -85,9 +83,7 @@ public class EventHubAsyncConsumerTest {
 
         EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setIdentifier("an-identifier")
-            .setPrefetchCount(PREFETCH)
-            .setRetry(new RetryOptions())
-            .setScheduler(Schedulers.single());
+            .setPrefetchCount(PREFETCH);
         consumer = new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, options);
     }
 

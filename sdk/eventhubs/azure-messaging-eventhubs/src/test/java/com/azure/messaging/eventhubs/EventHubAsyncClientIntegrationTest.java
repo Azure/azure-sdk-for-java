@@ -70,9 +70,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        builder = createBuilder()
-            .transportType(transportType);
-        client = builder.buildConnection();
+        builder = createBuilder().transportType(transportType);
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.warning("Already pushed events to partition. Skipping.");
@@ -80,7 +78,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             logger.warning("Pushing... events to partition.");
 
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(builder, NUMBER_OF_EVENTS, options);
             logger.warning("Pushed events to partition.");
         }
     }

@@ -42,9 +42,8 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 
 /**
- * This class provides a fluent builder API to aid the instantiation of {@link EventHubConnection} and {@link
- * EventHubClient}. Calling {@link #buildConnection() buildAsyncClient()} or {@link #buildClient() buildClient()}
- * constructs an instance of the respective client.
+ * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncConsumer},
+ * {@link EventHubProducerAsyncClient}, {@link EventHubConnection}, and their synchronous counter parts.
  *
  * <p>
  * <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
@@ -66,12 +65,11 @@ import java.util.ServiceLoader;
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string}
  *
  * <p>
- * <strong>Creating a synchronous {@link EventHubClient} using an Event Hub instance connection string</strong>
+ * <strong>Creating a synchronous {@link EventHubProducerClient} using an Event Hub instance connection string</strong>
  * </p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
  *
- * @see EventHubClient
  * @see EventHubConnection
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class})
@@ -402,7 +400,6 @@ public class EventHubClientBuilder {
 
         return connection.createConsumer(consumerGroup, partitionId, startingPosition, options);
     }
-
 
     /**
      * Creates a new {@link EventHubConnection} based on options set on this builder. Every time

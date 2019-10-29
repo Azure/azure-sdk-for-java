@@ -32,7 +32,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static volatile IntegrationTestEventData testData = null;
 
-    private EventHubClient client;
+    private EventHubClientBuilder builder;
     private EventHubConsumer consumer;
 
     // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
@@ -53,26 +53,26 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = new EventHubClientBuilder()
+        builder = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .scheduler(Schedulers.single())
-            .retry(RETRY_OPTIONS)
-            .buildClient();
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .retry(RETRY_OPTIONS);
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(builder, NUMBER_OF_EVENTS, options);
         }
 
-        consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
+        builder.startingPosition(EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
+        consumer = builder.buildConsumer(PARTITION_ID);
     }
 
     @Override
     protected void afterTest() {
-        dispose(consumer, client);
+        dispose(consumer);
     }
 
     /**
@@ -131,10 +131,18 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final String partitionId = "1";
         final List<EventData> events = getEventsAsList(numberOfEvents);
 
-        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
+        final EventHubConnection connection = new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .scheduler(Schedulers.single())
+            .buildConnection();
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .retry(RETRY_OPTIONS)
+            .startingPosition(EventPosition.fromEnqueuedTime(Instant.now()))
+            .connection(connection);
+        final EventHubConsumer consumer = builder.buildConsumer(partitionId);
+        final EventHubProducerClient producer = builder.buildProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
-        final EventHubProducerClient producer = client.createProducer();
 
         try {
             producer.send(events, sendOptions);
@@ -164,10 +172,18 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
         final List<EventData> events2 = getEventsAsList(secondSetOfEvents);
 
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-            EventPosition.fromEnqueuedTime(Instant.now()));
+        final EventHubConnection connection = new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .scheduler(Schedulers.single())
+            .buildConnection();
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .retry(RETRY_OPTIONS)
+            .startingPosition(EventPosition.fromEnqueuedTime(Instant.now()))
+            .connection(connection);
+        final EventHubConsumer consumer = builder.buildConsumer(partitionId);
+        final EventHubProducerClient producer = builder.buildProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
-        final EventHubProducerClient producer = client.createProducer();
 
         try {
             producer.send(events, sendOptions);
@@ -197,9 +213,19 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
-        final EventHubConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
-        final EventHubProducerClient producer = client.createProducer();
+        final EventHubConnection connection = new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .scheduler(Schedulers.single())
+            .buildConnection();
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .retry(RETRY_OPTIONS)
+            .startingPosition(EventPosition.fromEnqueuedTime(Instant.now()))
+            .connection(connection);
+        final EventHubConsumer consumer = builder.buildConsumer(partitionId);
+        final EventHubConsumer consumer2 = builder.buildConsumer(partitionId);
+
+        final EventHubProducerClient producer = builder.buildProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
 
         try {

@@ -102,7 +102,7 @@ public class EventHubConnection implements Closeable {
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    Flux<String> getPartitionIds() {
+    public Flux<String> getPartitionIds() {
         return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
     }
 
@@ -181,7 +181,7 @@ public class EventHubConnection implements Closeable {
      * {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
+    public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
         EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
@@ -203,7 +203,7 @@ public class EventHubConnection implements Closeable {
             String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubName, consumerGroup, partitionId);
 
         final Mono<AmqpReceiveLink> receiveLinkMono =
-            linkProvider.createReceiveLink(linkName, entityPath, eventPosition, clonedOptions)
+            linkProvider.createReceiveLink(linkName, entityPath, eventPosition, getRetryOptions(), clonedOptions)
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
 
         return new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, clonedOptions);

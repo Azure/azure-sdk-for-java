@@ -5,8 +5,8 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubConnection;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
@@ -46,7 +46,7 @@ public final class PartitionBasedLoadBalancer {
     private final String eventHubName;
     private final String consumerGroupName;
     private final PartitionManager partitionManager;
-    private final EventHubAsyncClient eventHubAsyncClient;
+    private final EventHubConnection eventHubAsyncClient;
     private final String ownerId;
     private final long inactiveTimeLimitInSeconds;
     private final PartitionPumpManager partitionPumpManager;
@@ -65,7 +65,7 @@ public final class PartitionBasedLoadBalancer {
      * that this {@link EventProcessor} is processing.
      */
     public PartitionBasedLoadBalancer(final PartitionManager partitionManager,
-        final EventHubAsyncClient eventHubAsyncClient,
+        final EventHubConnection eventHubAsyncClient,
         final String eventHubName, final String consumerGroupName, final String ownerId,
         final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager) {
         this.partitionManager = partitionManager;
