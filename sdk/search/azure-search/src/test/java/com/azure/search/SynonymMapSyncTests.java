@@ -3,6 +3,7 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
@@ -50,12 +51,43 @@ public class SynonymMapSyncTests extends SynonymMapTestBase {
 
     @Override
     public void getSynonymMapReturnsCorrectDefinition() {
+        SynonymMap expected = createTestSynonymMap();
+
+        client.createSynonymMap(expected);
+
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        Context context = new Context("key", "value");
+
+        SynonymMap actual = client.getSynonymMap(expected.getName());
+        assertSynonymMapsEqual(expected, actual);
+
+        actual = client.getSynonymMap(expected.getName(), requestOptions);
+        assertSynonymMapsEqual(expected, actual);
+
+        actual = client.getSynonymMapWithResponse(expected.getName(), requestOptions, context)
+            .getValue();
+        assertSynonymMapsEqual(expected, actual);
+
 
     }
 
     @Override
     public void getSynonymMapThrowsOnNotFound() {
+        final String synonymMapName = "thisSynonymMapDoesNotExist";
 
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        Context context = new Context("key", "value");
+
+        validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMap(synonymMapName));
+        validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMap(synonymMapName, requestOptions));
+        validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMap(synonymMapName,
+            requestOptions, context));
+        validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMapWithResponse(synonymMapName,
+            requestOptions, context));
     }
 
     @Override
@@ -169,5 +201,19 @@ public class SynonymMapSyncTests extends SynonymMapTestBase {
     @Override
     public void existsReturnsFalseForNonExistingSynonymMap() {
 
+    }
+
+    private void validateSynonymMapNotFoundThrowsException(String synonymMapName, Runnable getSynonymMapAction) {
+        final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
+        try {
+            getSynonymMapAction.run();
+            Assert.fail("the action did not throw an exception");
+        }
+        catch (Exception ex) {
+            Assert.assertEquals(HttpResponseException.class, ex.getClass());
+            Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
+                ((HttpResponseException) ex).getResponse().getStatusCode());
+            Assert.assertTrue(ex.getMessage().contains(exceptionMessage));
+        }
     }
 }

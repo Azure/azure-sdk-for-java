@@ -904,20 +904,52 @@ public class SearchServiceClient {
             context).block();
     }
 
-    /**
-     * @return the SynonymMap.
-     * @throws NotImplementedException not implemented
+    /** Retrieves a synonym map definition.
+     *
+     * @param synonymMapName name of the synonym map to retrieve
+     * @return the {@link SynonymMap} definition
      */
-    public SynonymMap getSynonymMap() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public SynonymMap getSynonymMap(String synonymMapName) {
+        return asyncClient.getSynonymMap(synonymMapName).block();
     }
 
-    /**
-     * @return a response containing the SynonymMap.
-     * @throws NotImplementedException not implemented
+    /** Retrieves a synonym map definition.
+     *
+     * @param synonymMapName name of the synonym map to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the {@link SynonymMap} definition.
      */
-    public Response<SynonymMap> getSynonymMapWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public SynonymMap getSynonymMap(String synonymMapName, RequestOptions requestOptions) {
+        return asyncClient.getSynonymMap(synonymMapName, requestOptions).block();
+    }
+
+    /** Retrieves a synonym map definition.
+     *
+     * @param synonymMapName name of the synonym map to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context a context that is passed through the HTTP pipeline during the service call
+     * @return the {@link SynonymMap} definition.
+     */
+    public SynonymMap getSynonymMap(String synonymMapName,
+                                    RequestOptions requestOptions,
+                                    Context context) {
+        return this.getSynonymMapWithResponse(synonymMapName, requestOptions, context).getValue();
+    }
+
+    /** Retrieves a synonym map definition.
+     *
+     * @param synonymMapName name of the synonym map to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context a context that is passed through the HTTP pipeline during the service call
+     * @return a response containing the SynonymMap.
+     */
+    public Response<SynonymMap> getSynonymMapWithResponse(String synonymMapName,
+                                                          RequestOptions requestOptions,
+                                                          Context context) {
+        return asyncClient.getSynonymMapWithResponse(synonymMapName, requestOptions, context).block();
     }
 
     /**

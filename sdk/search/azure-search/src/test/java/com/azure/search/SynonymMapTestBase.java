@@ -14,8 +14,10 @@ public abstract class SynonymMapTestBase extends SearchServiceTestBase {
     @Test
     public abstract void createSynonymMapFailsWithUsefulMessageOnUserError();
 
+    @Test
     public abstract void getSynonymMapReturnsCorrectDefinition();
 
+    @Test
     public abstract void getSynonymMapThrowsOnNotFound();
 
     public abstract void canUpdateSynonymMap();

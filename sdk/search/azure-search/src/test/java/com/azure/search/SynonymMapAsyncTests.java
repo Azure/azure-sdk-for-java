@@ -3,6 +3,7 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
@@ -53,12 +54,62 @@ public class SynonymMapAsyncTests extends SynonymMapTestBase {
 
     @Override
     public void getSynonymMapReturnsCorrectDefinition() {
+        SynonymMap expected = createTestSynonymMap();
+        client.createSynonymMap(expected).block();
 
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        StepVerifier
+            .create(client.getSynonymMap(expected.getName()))
+            .assertNext(actual -> assertSynonymMapsEqual(expected, actual))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.getSynonymMap(expected.getName(), requestOptions))
+            .assertNext(actual -> assertSynonymMapsEqual(expected, actual))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.getSynonymMapWithResponse(expected.getName(), requestOptions))
+            .assertNext(result -> assertSynonymMapsEqual(expected, result.getValue()))
+            .verifyComplete();
     }
 
     @Override
     public void getSynonymMapThrowsOnNotFound() {
+        final String synonymMapName = "thisSynonymMapDoesNotExist";
+        final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
 
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        StepVerifier
+            .create(client.getSynonymMap(synonymMapName))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage().contains(exceptionMessage));
+            });
+
+        StepVerifier
+            .create(client.getSynonymMap(synonymMapName, requestOptions))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage().contains(exceptionMessage));
+            });
+
+        StepVerifier
+            .create(client.getSynonymMapWithResponse(synonymMapName, requestOptions))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage().contains(exceptionMessage));
+            });
     }
 
     @Override

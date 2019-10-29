@@ -1001,20 +1001,47 @@ public class SearchServiceAsyncClient {
             .map(Function.identity());
     }
 
-    /**
-     * @return the SynonymMap.
-     * @throws NotImplementedException not implemented
+    /** Retrieves a synonym map definition.
+     *
+     * @param synonymMapName name of the synonym map to retrieve
+     * @return the {@link SynonymMap} definition
      */
-    public Mono<SynonymMap> getSynonymMap() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<SynonymMap> getSynonymMap(String synonymMapName) {
+        return this.getSynonymMapWithResponse(synonymMapName, null)
+            .map(Response::getValue);
     }
 
-    /**
-     * @return a response containing the SynonymMap.
-     * @throws NotImplementedException not implemented
+    /** Retrieves a synonym map definition.
+     *
+     * @param synonymMapName name of the synonym map to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the {@link SynonymMap} definition
      */
-    public Mono<Response<SynonymMap>> getSynonymMapWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<SynonymMap> getSynonymMap(String synonymMapName, RequestOptions requestOptions) {
+        return this.getSynonymMapWithResponse(synonymMapName, requestOptions)
+            .map(Response::getValue);
+    }
+
+    /** Retrieves a synonym map definition.
+     *
+     * @param synonymMapName name of the synonym map to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing the SynonymMap.
+     */
+    public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
+                                                                RequestOptions requestOptions) {
+        return withContext(context -> getSynonymMapWithResponse(synonymMapName, requestOptions, context));
+    }
+
+    Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
+                                                         RequestOptions requestOptions,
+                                                         Context context) {
+        return restClient
+            .synonymMaps()
+            .getWithRestResponseAsync(synonymMapName, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**
