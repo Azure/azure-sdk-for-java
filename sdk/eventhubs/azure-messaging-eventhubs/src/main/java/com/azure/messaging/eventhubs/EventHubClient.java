@@ -35,10 +35,12 @@ import java.util.Objects;
 class EventHubClient implements Closeable {
     private final EventHubConnection eventHubConnection;
     private final RetryOptions retry;
+    private final boolean isSharedConnection;
 
-    EventHubClient(EventHubConnection eventHubConnection, RetryOptions retryOptions) {
+    EventHubClient(EventHubConnection eventHubConnection, RetryOptions retryOptions, boolean isSharedConnection) {
         this.eventHubConnection = Objects.requireNonNull(eventHubConnection, "'eventHubConnection' cannot be null.");
         this.retry = retryOptions;
+        this.isSharedConnection = isSharedConnection;
     }
 
     /**
@@ -89,7 +91,7 @@ class EventHubClient implements Closeable {
      * @return A new {@link EventHubProducerClient}.
      */
     EventHubProducerClient createProducer() {
-        final EventHubProducerAsyncClient producer = eventHubConnection.createProducer();
+        final EventHubProducerAsyncClient producer = eventHubConnection.createProducer(isSharedConnection);
         return new EventHubProducerClient(producer, retry.getTryTimeout());
     }
 

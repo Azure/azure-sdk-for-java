@@ -130,6 +130,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final RetryOptions retryOptions;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
+    private final boolean isSharedConnection;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -137,13 +138,15 @@ public class EventHubProducerAsyncClient implements Closeable {
      * balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
-        RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer) {
+            RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
+            boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.linkProvider = linkProvider;
         this.retryOptions = retryOptions;
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
+        this.isSharedConnection = isSharedConnection;
     }
 
     /**
@@ -553,6 +556,10 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
             });
             openLinks.clear();
+
+            if (!isSharedConnection) {
+                linkProvider.close();
+            }
         }
     }
 

@@ -349,9 +349,9 @@ public class EventHubClientBuilder {
      */
     public EventHubProducerAsyncClient buildAsyncProducer() {
         if (eventHubConnection != null) {
-            return eventHubConnection.createProducer();
+            return eventHubConnection.createProducer(true);
         } else {
-            return buildConnection().createProducer();
+            return buildConnection().createProducer(false);
         }
     }
 
@@ -458,8 +458,9 @@ public class EventHubClientBuilder {
      * @return A synchronous event hub client.
      */
     private EventHubClient buildClient() {
-        final EventHubConnection connection = eventHubConnection != null ? eventHubConnection : buildConnection();
-        return new EventHubClient(connection, connection.getRetryOptions());
+        final boolean isSharedConnection = eventHubConnection != null;
+        final EventHubConnection connection = isSharedConnection ? eventHubConnection : buildConnection();
+        return new EventHubClient(connection, connection.getRetryOptions(), isSharedConnection);
     }
 
     private ConnectionOptions getConnectionOptions() {

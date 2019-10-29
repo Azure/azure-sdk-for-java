@@ -44,7 +44,7 @@ public class BackCompatTest extends IntegrationTestBase {
     private static final String PAYLOAD = "test-message";
 
     private MessageSerializer serializer = new EventHubMessageSerializer();
-    private EventHubConnection client;
+    private EventHubConnection connection;
     private EventHubProducerAsyncClient producer;
     private EventHubAsyncConsumer consumer;
     private SendOptions sendOptions;
@@ -63,16 +63,19 @@ public class BackCompatTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = createBuilder().buildConnection();
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+        connection = createBuilder().buildConnection();
+        consumer = new EventHubClientBuilder().connection(connection)
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.latest())
+            .buildAsyncConsumer(PARTITION_ID);
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
-        producer = client.createProducer();
+        producer = new EventHubClientBuilder().connection(connection).buildAsyncProducer();
     }
 
     @Override
     protected void afterTest() {
-        dispose(consumer, producer, client);
+        dispose(consumer, producer, connection);
     }
 
     /**

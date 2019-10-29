@@ -28,12 +28,9 @@ public class PublishEventsWithPartitionKey {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubConnection client = new EventHubClientBuilder()
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildConnection();
-
-        // Create a producer. This overload of `createProducer` does not accept any arguments
-        EventHubProducerAsyncClient producer = client.createProducer();
+            .buildAsyncProducer();
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(
@@ -73,7 +70,6 @@ public class PublishEventsWithPartitionKey {
             }, () -> {
                 // Disposing of our producer and client.
                 producer.close();
-                client.close();
             });
     }
 }

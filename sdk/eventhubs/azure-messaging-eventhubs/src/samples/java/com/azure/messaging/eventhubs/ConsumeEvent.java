@@ -73,7 +73,9 @@ public class ConsumeEvent {
             countDownLatch.countDown();
         });
 
-        EventHubProducerAsyncClient producer = client.createProducer();
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .connectionString(connectionString)
+            .buildAsyncProducer();
 
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
         // We set the send options to send the events to `firstPartition`.
