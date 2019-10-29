@@ -8,6 +8,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionBasedLoadBalancer;
 import com.azure.messaging.eventhubs.implementation.PartitionPumpManager;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import reactor.core.Disposable;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.UUID;
@@ -15,9 +19,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
-import reactor.core.Disposable;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * Event Processor provides a convenient mechanism to consume events from all partitions of an Event Hub in the context
@@ -48,7 +49,7 @@ public class EventProcessor {
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
      *
-     * @param eventHubAsyncClient The {@link EventHubAsyncClient}.
+     * @param eventHubAsyncClient The {@link EventHubConnection}.
      * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
@@ -56,7 +57,7 @@ public class EventProcessor {
      * information.
      * @param tracerProvider The tracer implementation.
      */
-    EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroup,
+    EventProcessor(EventHubConnection eventHubAsyncClient, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
         PartitionManager partitionManager, TracerProvider tracerProvider) {
 

@@ -24,7 +24,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
 
-    private EventHubAsyncClient client;
+    private EventHubConnection client;
 
     public EventHubProducerAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerAsyncClientIntegrationTest.class));
@@ -44,7 +44,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
             .scheduler(Schedulers.parallel())
-            .buildAsyncClient();
+            .buildConnection();
     }
 
     @Override

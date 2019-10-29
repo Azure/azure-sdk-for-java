@@ -39,7 +39,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static volatile IntegrationTestEventData testData = null;
 
-    private EventHubAsyncClient client;
+    private EventHubConnection client;
     private EventHubAsyncConsumer consumer;
 
     @Rule
@@ -56,7 +56,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = createBuilder().buildAsyncClient();
+        client = createBuilder().buildConnection();
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
@@ -83,7 +83,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
             .setRetry(RETRY_OPTIONS)
             .setPrefetchCount(2000);
 
-        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
         final Disposable subscription = consumer.receive()
@@ -111,7 +111,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions().setPrefetchCount(11);
 
-        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
         final Disposable subscription = consumer.receive()

@@ -33,7 +33,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
-    private EventHubAsyncClient client;
+    private EventHubConnection client;
     private EventHubProducerAsyncClient producer;
 
     @Mock
@@ -55,7 +55,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        client = createBuilder().buildAsyncClient();
+        client = createBuilder().buildConnection();
         producer = client.createProducer();
     }
 
@@ -138,7 +138,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
             // Creating consumers on all the partitions and subscribing to the receive event.
             consumers = client.getPartitionIds()
-                .map(id -> client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, id, EventPosition.latest()));
+                .map(id -> client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, id, EventPosition.latest()));
 
             final List<Disposable> consumerSubscriptions = consumers.map(consumer -> {
                 return consumer.receive().subscribe(event -> {

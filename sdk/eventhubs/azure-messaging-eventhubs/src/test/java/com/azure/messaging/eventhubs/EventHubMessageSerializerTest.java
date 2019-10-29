@@ -64,7 +64,7 @@ public class EventHubMessageSerializerTest {
     public void cannotDeserializeObject() {
         final Message message = getMessage("hello-world".getBytes(UTF_8));
 
-        serializer.deserialize(message, EventHubAsyncClient.class);
+        serializer.deserialize(message, EventHubConnection.class);
     }
 
     /**

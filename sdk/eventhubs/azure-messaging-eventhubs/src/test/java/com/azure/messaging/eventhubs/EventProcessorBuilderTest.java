@@ -3,15 +3,16 @@
 
 package com.azure.messaging.eventhubs;
 
-import static org.junit.Assert.assertNotNull;
-
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import org.junit.Test;
+import reactor.core.publisher.Mono;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
-import org.junit.Test;
-import reactor.core.publisher.Mono;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Unit tests for {@link EventProcessorBuilder}.
@@ -55,9 +56,9 @@ public class EventProcessorBuilderTest {
 
     @Test
     public void testEventProcessorBuilderWithFactory() {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
+        EventHubConnection eventHubAsyncClient = new EventHubClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
-            .buildAsyncClient();
+            .buildConnection();
 
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")

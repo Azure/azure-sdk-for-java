@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+
 import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -22,7 +23,7 @@ import java.util.function.Supplier;
  *
  * <ul>
  * <li>{@link #consumerGroup(String) Consumer group name}.</li>
- * <li>{@link EventHubAsyncClient} - An asynchronous Event Hub client the {@link EventProcessor} will use for
+ * <li>{@link EventHubConnection} - An asynchronous Event Hub client the {@link EventProcessor} will use for
  * consuming events.</li>
  * <li>{@link PartitionManager} - An instance of PartitionManager. To get started, you can pass an instance of
  * {@link InMemoryPartitionManager}. For production, choose an implementation that will store checkpoints and partition
@@ -47,7 +48,7 @@ public class EventProcessorBuilder {
     private Supplier<PartitionProcessor> partitionProcessorFactory;
     private String consumerGroup;
     private PartitionManager partitionManager;
-    private EventHubAsyncClient eventHubAsyncClient;
+    private EventHubConnection eventHubAsyncClient;
 
     /**
      * Sets the Event Hub client the {@link EventProcessor} will use to connect to the Event Hub for consuming events.
@@ -55,7 +56,7 @@ public class EventProcessorBuilder {
      * @param eventHubAsyncClient The Event Hub asynchronous client for consuming events.
      * @return The updated {@link EventProcessorBuilder} instance.
      */
-    public EventProcessorBuilder eventHubClient(EventHubAsyncClient eventHubAsyncClient) {
+    public EventProcessorBuilder eventHubClient(EventHubConnection eventHubAsyncClient) {
         this.eventHubAsyncClient = eventHubAsyncClient;
         return this;
     }

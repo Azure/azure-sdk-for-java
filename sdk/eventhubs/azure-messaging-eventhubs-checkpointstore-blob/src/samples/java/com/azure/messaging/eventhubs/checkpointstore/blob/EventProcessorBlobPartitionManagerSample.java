@@ -14,8 +14,9 @@ import com.azure.messaging.eventhubs.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import java.util.concurrent.TimeUnit;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample for using {@link BlobPartitionManager} with {@link EventProcessor}.
@@ -49,7 +50,7 @@ public class EventProcessorBlobPartitionManagerSample {
     public static void main(String[] args) throws Exception {
         EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
             .connectionString(EH_CONNECTION_STRING)
-            .buildAsyncClient();
+            .buildConnection();
 
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(STORAGE_CONNECTION_STRING)

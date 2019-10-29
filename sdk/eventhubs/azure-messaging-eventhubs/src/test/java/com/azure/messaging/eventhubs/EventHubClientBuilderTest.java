@@ -36,13 +36,13 @@ public class EventHubClientBuilderTest {
     @Test(expected = IllegalArgumentException.class)
     public void missingConnectionString() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
-        builder.buildAsyncClient();
+        builder.buildConnection();
     }
 
     @Test
     public void defaultProxyConfigurationBuilder() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
-        final EventHubAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING).buildAsyncClient();
+        final EventHubConnection client = builder.connectionString(CORRECT_CONNECTION_STRING).buildConnection();
 
         assertNotNull(client);
     }
@@ -60,7 +60,7 @@ public class EventHubClientBuilderTest {
             .transportType(TransportType.AMQP_WEB_SOCKETS);
 
         // Assert
-        assertNotNull(builder.buildAsyncClient());
+        assertNotNull(builder.buildConnection());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -75,7 +75,7 @@ public class EventHubClientBuilderTest {
             .proxyConfiguration(proxyConfig);
 
         // Assert
-        assertNotNull(builder.buildAsyncClient());
+        assertNotNull(builder.buildConnection());
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

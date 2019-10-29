@@ -25,7 +25,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     private final String[] expectedPartitionIds = new String[]{"0", "1"};
-    private EventHubAsyncClient client;
+    private EventHubConnection client;
     private String eventHubName;
 
     public EventHubClientMetadataIntegrationTest() {
@@ -42,7 +42,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = createBuilder().buildAsyncClient();
+        client = createBuilder().buildConnection();
         eventHubName = getConnectionStringProperties().getEntityPath();
     }
 
@@ -119,9 +119,9 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         final ConnectionStringProperties original = getConnectionStringProperties();
         final TokenCredential invalidTokenCredential = new EventHubSharedAccessKeyCredential(
             original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
-        final EventHubAsyncClient invalidClient = createBuilder()
+        final EventHubConnection invalidClient = createBuilder()
             .credential(original.getEndpoint().getHost(), original.getEntityPath(), invalidTokenCredential)
-            .buildAsyncClient();
+            .buildConnection();
 
         // Act & Assert
         StepVerifier.create(invalidClient.getProperties())
@@ -145,9 +145,9 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         final ConnectionStringProperties original = getConnectionStringProperties();
         final TokenCredential validCredentials = new EventHubSharedAccessKeyCredential(
             original.getSharedAccessKeyName(), original.getSharedAccessKey(), TIMEOUT);
-        final EventHubAsyncClient invalidClient = createBuilder()
+        final EventHubConnection invalidClient = createBuilder()
             .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
-            .buildAsyncClient();
+            .buildConnection();
 
         // Act & Assert
         StepVerifier.create(invalidClient.getPartitionIds())

@@ -4,12 +4,12 @@
 package com.azure.messaging.eventhubs;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link EventHubAsyncClient}.
+ * Contains code snippets when generating javadocs through doclets for {@link EventHubConnection}.
  */
 public class EventHubAsyncClientJavaDocCodeSamples {
 
     /**
-     * Creating an {@link EventHubAsyncClient} using an Event Hubs namespace connection string with an Event Hub name.
+     * Creating an {@link EventHubConnection} using an Event Hubs namespace connection string with an Event Hub name.
      */
     public void instantiation() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string
@@ -17,25 +17,25 @@ public class EventHubAsyncClientJavaDocCodeSamples {
             + "SharedAccessKey={sharedAccessKey}";
         String eventHubName = "my-event-hub";
 
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubConnection client = new EventHubClientBuilder()
             .connectionString(connectionString, eventHubName)
-            .buildAsyncClient();
+            .buildConnection();
         // END: com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string
 
         client.close();
     }
 
     /**
-     * Creating an {@link EventHubAsyncClient} using a connection string specific to an Event Hub instance.
+     * Creating an {@link EventHubConnection} using a connection string specific to an Event Hub instance.
      */
     public void instantiationInstance() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubConnection client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildConnection();
         // END: com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string
 
         client.close();

@@ -48,8 +48,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber}
  *
- * @see EventHubAsyncClient#createConsumer(String, String, EventPosition)
- * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
+ * @see EventHubConnection#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 @Immutable
 public class EventHubAsyncConsumer implements Closeable {
@@ -166,7 +165,7 @@ public class EventHubAsyncConsumer implements Closeable {
 
     /**
      * Begin consuming events until there are no longer any subscribers, or the parent {@link
-     * EventHubAsyncClient#close() EventHubAsyncClient.close()} is called.
+     * EventHubConnection#close() EventHubAsyncClient.close()} is called.
      *
      * <p><strong>Consuming events from Event Hub</strong></p>
      *

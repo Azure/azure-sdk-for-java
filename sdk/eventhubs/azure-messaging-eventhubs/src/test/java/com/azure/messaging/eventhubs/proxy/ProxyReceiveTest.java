@@ -91,7 +91,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         client = new EventHubClientBuilder()
             .transportType(TransportType.AMQP_WEB_SOCKETS)
             .connectionString(getConnectionString())
-            .buildAsyncClient();
+            .buildConnection();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.info("Already pushed events to partition. Skipping.");

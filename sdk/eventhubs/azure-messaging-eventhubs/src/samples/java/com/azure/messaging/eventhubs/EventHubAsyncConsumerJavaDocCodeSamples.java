@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Code snippets demonstrating various {@link EventHubAsyncConsumer} scenarios.
  */
 public class EventHubAsyncConsumerJavaDocCodeSamples {
-    private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
+    private final EventHubConnection client = new EventHubClientBuilder().connectionString("fake-string").buildConnection();
 
     /**
      * Receives event data
@@ -24,7 +24,7 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        EventHubAsyncConsumer consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.latest());
 
         // Keep a reference to `subscription`. When the program is finished receiving events, call
@@ -44,7 +44,7 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+        EventHubAsyncConsumer consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
             partitionId, EventPosition.latest());
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber

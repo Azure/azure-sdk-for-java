@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
-import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 
 /**
  * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubAsyncConsumer}
@@ -50,7 +50,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
     private static final int MAX_NUMBER_OF_CONSUMERS = 5;
     private static final String MESSAGE_TRACKING_ID = UUID.randomUUID().toString();
 
-    private EventHubAsyncClient client;
+    private EventHubConnection client;
 
     public EventHubAsyncConsumerIntegrationTest() {
         super(new ClientLogger(EventHubAsyncConsumerIntegrationTest.class));
@@ -68,7 +68,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         client = createBuilder()
             .scheduler(Schedulers.single())
-            .buildAsyncClient();
+            .buildConnection();
     }
 
     @Override

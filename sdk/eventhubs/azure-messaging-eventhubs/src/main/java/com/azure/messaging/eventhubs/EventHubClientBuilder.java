@@ -25,8 +25,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -40,8 +40,8 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 
 /**
- * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and {@link
- * EventHubClient}. Calling {@link #buildAsyncClient() buildAsyncClient()} or {@link #buildClient() buildClient()}
+ * This class provides a fluent builder API to aid the instantiation of {@link EventHubConnection} and {@link
+ * EventHubClient}. Calling {@link #buildConnection() buildAsyncClient()} or {@link #buildClient() buildClient()}
  * constructs an instance of the respective client.
  *
  * <p>
@@ -58,7 +58,7 @@ import java.util.ServiceLoader;
  * </ul>
  *
  * <p>
- * <strong>Creating an asynchronous {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong>
+ * <strong>Creating an asynchronous {@link EventHubConnection} using Event Hubs namespace connection string</strong>
  * </p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string}
@@ -70,10 +70,14 @@ import java.util.ServiceLoader;
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
  *
  * @see EventHubClient
- * @see EventHubAsyncClient
+ * @see EventHubConnection
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class})
 public class EventHubClientBuilder {
+    /**
+     * The name of the default consumer group in the Event Hubs service.
+     */
+    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
@@ -88,6 +92,7 @@ public class EventHubClientBuilder {
     private TransportType transport;
     private String fullyQualifiedNamespace;
     private String eventHubName;
+    private EventHubConnection eventHubConnection;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
@@ -187,10 +192,10 @@ public class EventHubClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * If not specified, the default configuration store is used to configure the {@link EventHubAsyncClient}. Use
+     * If not specified, the default configuration store is used to configure the {@link EventHubConnection}. Use
      * {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
-     * @param configuration The configuration store used to configure the {@link EventHubAsyncClient}.
+     * @param configuration The configuration store used to configure the {@link EventHubConnection}.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
@@ -231,7 +236,19 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
+     * Sets the Event Hub connection to use when interacting with Event Hubs. If not set, a new connection will be
+     * constructed and used.
+     *
+     * @param eventHubConnection Event Hub connection to use.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder connection(EventHubConnection eventHubConnection) {
+        this.eventHubConnection = eventHubConnection;
+        return this;
+    }
+
+    /**
+     * Sets the proxy configuration to use for {@link EventHubConnection}. When a proxy is configured, {@link
      * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyConfiguration The proxy configuration to use.
@@ -269,7 +286,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, the default retry options are used.
+     * Sets the retry policy for {@link EventHubConnection}. If not specified, the default retry options are used.
      *
      * @param retryOptions The retry policy to use.
      *
@@ -291,7 +308,7 @@ public class EventHubClientBuilder {
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerAsyncClient buildAsyncProducer() {
-        return buildAsyncClient().createProducer();
+        return buildConnection().createProducer();
     }
 
     /**
@@ -309,8 +326,8 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time
-     * {@code buildAsyncClient()} is invoked, a new instance of {@link EventHubAsyncClient} is created.
+     * Creates a new {@link EventHubConnection} based on options set on this builder. Every time
+     * {@code buildConnection()} is invoked, a new instance of {@link EventHubConnection} is created.
      *
      * <p>
      * The following options are used if ones are not specified in the builder:
@@ -327,15 +344,15 @@ public class EventHubClientBuilder {
      * <li>If no scheduler is specified, an {@link Schedulers#elastic() elastic scheduler} is used.</li>
      * </ul>
      *
-     * @return A new {@link EventHubAsyncClient} instance with all the configured options.
+     * @return A new {@link EventHubConnection} instance with all the configured options.
      *
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubAsyncClient buildAsyncClient() {
+    public EventHubConnection buildConnection() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
-        return buildAsyncClient(connectionOptions);
+        return buildConnection(connectionOptions);
     }
 
     /**
@@ -363,32 +380,32 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubClient buildClient() {
+    EventHubClient buildClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
-        final EventHubAsyncClient client = buildAsyncClient(connectionOptions);
+        final EventHubConnection client = buildConnection(connectionOptions);
 
         return new EventHubClient(client, connectionOptions);
     }
 
-    private static EventHubAsyncClient buildAsyncClient(ConnectionOptions connectionOptions) {
+    private static EventHubConnection buildConnection(ConnectionOptions connectionOptions) {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
+        final Mono<EventHubAmqpConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
             final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                 connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
-            return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
+            return new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
                 tokenManagerProvider, messageSerializer);
         });
         final EventHubLinkProvider linkProvider = new EventHubLinkProvider(connectionMono,
             connectionOptions.getHostname(), connectionOptions.getRetry());
 
-        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, linkProvider);
+        return new EventHubConnection(connectionOptions, tracerProvider, messageSerializer, linkProvider);
     }
 
     private ConnectionOptions getConnectionOptions() {
@@ -460,4 +477,5 @@ public class EventHubClientBuilder {
 
         return new ProxyConfiguration(authentication, proxy, username, password);
     }
+
 }

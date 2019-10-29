@@ -21,7 +21,6 @@ import reactor.core.publisher.Mono;
 import java.io.Closeable;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An <strong>asynchronous</strong> client that is the main point of interaction with Azure Event Hubs. It connects to a
@@ -32,11 +31,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Instantiated through {@link EventHubClientBuilder}.
  * </p>
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using an Event Hubs namespace connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubConnection} using an Event Hubs namespace connection string</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string}
  *
- * <p><strong>Creating an {@link EventHubAsyncClient} using an Event Hub instance connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubConnection} using an Event Hub instance connection string</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string}
  *
@@ -45,25 +44,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
-public class EventHubAsyncClient implements Closeable {
-    /**
-     * The name of the default consumer group in the Event Hubs service.
-     */
-    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
-
+public class EventHubConnection implements Closeable {
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
 
-    private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(EventHubConnection.class);
     private final MessageSerializer messageSerializer;
     private final EventHubLinkProvider linkProvider;
-    private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionOptions connectionOptions;
     private final String eventHubName;
     private final EventHubConsumerOptions defaultConsumerOptions;
     private final TracerProvider tracerProvider;
 
-    EventHubAsyncClient(ConnectionOptions connectionOptions, TracerProvider tracerProvider,
-                        MessageSerializer messageSerializer, EventHubLinkProvider linkProvider) {
+    EventHubConnection(ConnectionOptions connectionOptions, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, EventHubLinkProvider linkProvider) {
 
         this.connectionOptions = Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
@@ -81,7 +74,7 @@ public class EventHubAsyncClient implements Closeable {
      *
      * @return The Event Hub name this client interacts with.
      */
-    public String getEventHubName() {
+    String getEventHubName() {
         return eventHubName;
     }
 
@@ -91,7 +84,7 @@ public class EventHubAsyncClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EventHubProperties> getProperties() {
+    Mono<EventHubProperties> getProperties() {
         return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
@@ -101,7 +94,7 @@ public class EventHubAsyncClient implements Closeable {
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<String> getPartitionIds() {
+    Flux<String> getPartitionIds() {
         return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
     }
 
@@ -113,7 +106,7 @@ public class EventHubAsyncClient implements Closeable {
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+    Mono<PartitionProperties> getPartitionProperties(String partitionId) {
         return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
@@ -123,7 +116,7 @@ public class EventHubAsyncClient implements Closeable {
      *
      * @return A new {@link EventHubProducerAsyncClient}.
      */
-    public EventHubProducerAsyncClient createProducer() {
+    EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connectionOptions.getHostname(), getEventHubName(), linkProvider,
             connectionOptions.getRetry(), tracerProvider, messageSerializer);
     }
@@ -138,7 +131,7 @@ public class EventHubAsyncClient implements Closeable {
      *
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      * context of this group. The name of the consumer group that is created by default is {@link
-     * #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubAsyncConsumer} that receives events from the partition at the given position.
@@ -146,7 +139,7 @@ public class EventHubAsyncClient implements Closeable {
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
      * string.
      */
-    public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
+    EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         return createConsumer(consumerGroup, partitionId, eventPosition, defaultConsumerOptions);
     }
 
@@ -170,7 +163,7 @@ public class EventHubAsyncClient implements Closeable {
      *
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      * context of this group. The name of the consumer group that is created by default is {@link
-     * #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
@@ -180,12 +173,12 @@ public class EventHubAsyncClient implements Closeable {
      * {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
+    EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
         EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
-        Objects.requireNonNull(options, "'options' cannot be null.");
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
         Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (consumerGroup.isEmpty()) {
             throw logger.logExceptionAsError(
@@ -196,6 +189,7 @@ public class EventHubAsyncClient implements Closeable {
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
+
         if (clonedOptions.getScheduler() == null) {
             clonedOptions.setScheduler(connectionOptions.getScheduler());
         }

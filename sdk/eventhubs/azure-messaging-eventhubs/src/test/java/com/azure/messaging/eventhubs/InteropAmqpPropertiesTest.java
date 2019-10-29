@@ -43,7 +43,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     private static final String PAYLOAD = "test-message";
 
     private final MessageSerializer serializer = new EventHubMessageSerializer();
-    private EventHubAsyncClient client;
+    private EventHubConnection client;
     private EventHubProducerAsyncClient producer;
     private EventHubAsyncConsumer consumer;
     private SendOptions sendOptions;
@@ -64,9 +64,9 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     protected void beforeTest() {
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
 
-        client = createBuilder().buildAsyncClient();
+        client = createBuilder().buildConnection();
         producer = client.createProducer();
-        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
     }
 
     @Override

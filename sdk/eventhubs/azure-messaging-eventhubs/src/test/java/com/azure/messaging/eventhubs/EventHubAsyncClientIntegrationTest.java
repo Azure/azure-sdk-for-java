@@ -31,12 +31,12 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Tests scenarios on {@link EventHubAsyncClient}.
+ * Tests scenarios on {@link EventHubConnection}.
  */
 @RunWith(Parameterized.class)
 public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
@@ -53,7 +53,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static volatile IntegrationTestEventData testData = null;
 
-    private EventHubAsyncClient client;
+    private EventHubConnection client;
 
     @Rule
     public TestName testName = new TestName();
@@ -72,7 +72,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         builder = createBuilder()
             .transportType(transportType);
-        client = builder.buildAsyncClient();
+        client = builder.buildConnection();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.warning("Already pushed events to partition. Skipping.");
@@ -128,9 +128,9 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         });
 
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
-        final EventHubAsyncClient[] clients = new EventHubAsyncClient[numberOfClients];
+        final EventHubConnection[] clients = new EventHubConnection[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
-            clients[i] = builder.buildAsyncClient();
+            clients[i] = builder.buildConnection();
         }
 
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
@@ -139,7 +139,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final Disposable.Composite subscriptions = Disposables.composite();
 
         try {
-            for (final EventHubAsyncClient hubClient : clients) {
+            for (final EventHubConnection hubClient : clients) {
                 final EventHubAsyncConsumer consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
                 consumers.add(consumer);
 

@@ -24,9 +24,9 @@ public class PublishEvent {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubConnection client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildConnection();
 
         // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
         // sent from this producer are load balanced between all available partitions in the Event Hub instance.

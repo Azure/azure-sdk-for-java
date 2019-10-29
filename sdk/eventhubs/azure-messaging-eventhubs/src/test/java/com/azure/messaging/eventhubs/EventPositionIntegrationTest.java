@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -45,7 +45,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
     private static final AtomicReference<EventData[]> EVENTS_PUSHED = new AtomicReference<>();
     private static volatile IntegrationTestEventData testData = null;
 
-    private EventHubAsyncClient client;
+    private EventHubConnection client;
 
     public EventPositionIntegrationTest() {
         super(new ClientLogger(EventPositionIntegrationTest.class));
@@ -61,7 +61,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = createBuilder().buildAsyncClient();
+        client = createBuilder().buildConnection();
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);

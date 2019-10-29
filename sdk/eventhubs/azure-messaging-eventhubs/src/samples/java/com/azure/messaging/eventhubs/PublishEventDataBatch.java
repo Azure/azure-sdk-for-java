@@ -34,9 +34,9 @@ public class PublishEventDataBatch {
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Instantiate a client that will be used to call the service.
-        final EventHubAsyncClient client = new EventHubClientBuilder()
+        final EventHubConnection client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildConnection();
 
         // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
         // sent from this producer are load balanced between all available partitions in the Event Hub instance.

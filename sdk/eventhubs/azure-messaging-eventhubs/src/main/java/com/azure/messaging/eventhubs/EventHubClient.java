@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -32,16 +31,15 @@ import java.util.Objects;
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
  *
  * @see EventHubClientBuilder
- * @see EventHubAsyncClient To communicate with Event Hub using an asynchronous client.
+ * @see EventHubConnection To communicate with Event Hub using an asynchronous client.
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
-@ServiceClient(builder = EventHubClientBuilder.class)
-public class EventHubClient implements Closeable {
-    private final EventHubAsyncClient client;
+class EventHubClient implements Closeable {
+    private final EventHubConnection client;
     private final RetryOptions retry;
     private final EventHubConsumerOptions defaultConsumerOptions;
 
-    EventHubClient(EventHubAsyncClient client, ConnectionOptions connectionOptions) {
+    EventHubClient(EventHubConnection client, ConnectionOptions connectionOptions) {
         Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
 
         this.client = Objects.requireNonNull(client, "'client' cannot be null.");
@@ -56,7 +54,7 @@ public class EventHubClient implements Closeable {
      *
      * @return The Event Hub name this client interacts with.
      */
-    public String getEventHubName() {
+    String getEventHubName() {
         return client.getEventHubName();
     }
 
@@ -66,7 +64,7 @@ public class EventHubClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventHubProperties getProperties() {
+    EventHubProperties getProperties() {
         return client.getProperties().block(retry.getTryTimeout());
     }
 
@@ -76,7 +74,7 @@ public class EventHubClient implements Closeable {
      * @return The identifiers for all partitions of an Event Hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<String> getPartitionIds() {
+    IterableStream<String> getPartitionIds() {
         return new IterableStream<>(client.getPartitionIds());
     }
 
@@ -88,7 +86,7 @@ public class EventHubClient implements Closeable {
      * @return The information for the requested partition under the Event Hub this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartitionProperties getPartitionProperties(String partitionId) {
+    PartitionProperties getPartitionProperties(String partitionId) {
         return client.getPartitionProperties(partitionId).block(retry.getTryTimeout());
     }
 
@@ -98,7 +96,7 @@ public class EventHubClient implements Closeable {
      *
      * @return A new {@link EventHubProducerClient}.
      */
-    public EventHubProducerClient createProducer() {
+    EventHubProducerClient createProducer() {
         final EventHubProducerAsyncClient producer = client.createProducer();
         return new EventHubProducerClient(producer, retry.getTryTimeout());
     }
@@ -113,7 +111,7 @@ public class EventHubClient implements Closeable {
      *
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *     context of this group. The name of the consumer group that is created by default is {@link
-     *     EventHubAsyncClient#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubConsumer} that receives events from the partition at the given position.
@@ -121,7 +119,7 @@ public class EventHubClient implements Closeable {
      *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
+    EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition);
         return new EventHubConsumer(consumer, defaultConsumerOptions.getRetry().getTryTimeout());
     }
@@ -146,7 +144,7 @@ public class EventHubClient implements Closeable {
      *
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *     context of this group. The name of the consumer group that is created by default is {@link
-     *     EventHubAsyncClient#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
@@ -156,8 +154,8 @@ public class EventHubClient implements Closeable {
      *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
-                                           EventHubConsumerOptions options) {
+    EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
+            EventHubConsumerOptions options) {
         final EventHubAsyncConsumer consumer =
             client.createConsumer(consumerGroup, partitionId, eventPosition, options);
         final Duration timeout = options.getRetry() == null || options.getRetry().getTryTimeout() == null

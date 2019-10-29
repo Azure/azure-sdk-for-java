@@ -12,10 +12,10 @@ import java.util.Arrays;
 /**
  * Holds information about an Event Hub which can come handy while performing operations like
  * {@link EventHubClient#createConsumer(String, String, EventPosition) creating an EventHubConsumer} or
- * {@link EventHubAsyncClient#createConsumer(String, String, EventPosition) an EventHubAsyncConsumer}.
+ * {@link EventHubConnection#createConsumer(String, String, EventPosition) an EventHubAsyncConsumer}.
  *
  * @see EventHubClient
- * @see EventHubAsyncClient
+ * @see EventHubConnection
  */
 @Immutable
 public final class EventHubProperties {

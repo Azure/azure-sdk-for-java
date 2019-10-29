@@ -97,7 +97,7 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final EventHubAsyncClient asyncClient = new EventHubClientBuilder()
             .connectionString(getConnectionString())
-            .buildAsyncClient();
+            .buildConnection();
         final EventHubProducerAsyncClient producer = asyncClient.createProducer();
         final EventHubConsumer receiver = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             PARTITION_ID, EventPosition.earliest());

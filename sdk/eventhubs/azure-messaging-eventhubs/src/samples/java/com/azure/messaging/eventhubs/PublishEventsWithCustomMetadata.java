@@ -30,9 +30,9 @@ public class PublishEventsWithCustomMetadata {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubConnection client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildConnection();
 
         // Create a producer. This overload of `createProducer` does not accept any arguments
         EventHubProducerAsyncClient producer = client.createProducer();

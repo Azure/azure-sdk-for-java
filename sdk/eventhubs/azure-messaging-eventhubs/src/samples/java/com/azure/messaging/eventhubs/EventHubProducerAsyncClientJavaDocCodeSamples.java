@@ -16,7 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains code snippets when generating javadocs through doclets for {@link EventHubProducerAsyncClient}.
  */
 public class EventHubProducerAsyncClientJavaDocCodeSamples {
-    private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
+    private final EventHubConnection client = new EventHubClientBuilder().connectionString("fake-string").buildConnection();
 
     /**
      * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient} that automatically routes events to any
@@ -25,9 +25,9 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
      */
     public void instantiate() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubConnection client = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
-            .buildAsyncClient();
+            .buildConnection();
 
         EventHubProducerAsyncClient producer = client.createProducer();
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation

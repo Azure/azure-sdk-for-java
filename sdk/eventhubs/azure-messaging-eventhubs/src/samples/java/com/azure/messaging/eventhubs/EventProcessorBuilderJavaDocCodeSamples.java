@@ -20,9 +20,9 @@ public class EventProcessorBuilderJavaDocCodeSamples {
     public EventProcessor createEventProcessor() {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
+        EventHubConnection eventHubAsyncClient = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildConnection();
 
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")

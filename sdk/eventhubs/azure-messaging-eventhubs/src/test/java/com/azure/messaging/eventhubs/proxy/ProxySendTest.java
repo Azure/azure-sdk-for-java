@@ -89,7 +89,7 @@ public class ProxySendTest extends IntegrationTestBase {
         client = new EventHubClientBuilder()
             .transportType(TransportType.AMQP_WEB_SOCKETS)
             .connectionString(getConnectionString())
-            .buildAsyncClient();
+            .buildConnection();
     }
 
     @Override

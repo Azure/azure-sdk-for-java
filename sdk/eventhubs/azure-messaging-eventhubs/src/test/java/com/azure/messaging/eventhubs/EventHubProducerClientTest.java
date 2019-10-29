@@ -15,7 +15,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -63,7 +63,7 @@ public class EventHubProducerClientTest {
     @Mock
     private AmqpSession session;
     @Mock
-    private EventHubConnection connection;
+    private EventHubAmqpConnection connection;
     @Captor
     private ArgumentCaptor<Message> singleMessageCaptor;
     @Captor
