@@ -39,13 +39,13 @@ import java.util.Objects;
  * To allow automatic routing of messages to available partition, do not specify the {@link
  * SendOptions#getPartitionId() partitionId} when creating the {@link EventHubProducerClient}.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
  * Developers can push events to a single partition by specifying the
  * {@link SendOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducerClient}.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId}
  *
  * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#setPartitionKey(String)}
  * </strong></p>
@@ -57,7 +57,7 @@ import java.util.Objects;
  * of the available partitions. All that matters to the end user is that they are grouped together.
  * </p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#publisher-sendOptions}
  *
  * <p><strong>Publish events using an {@link EventDataBatch}</strong></p>
  * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these events together.
@@ -70,7 +70,7 @@ import java.util.Objects;
  * {@link EventDataBatch batches} to be no larger than 256 bytes. The events within the batch also get hashed to the
  * same partition because they all share the same {@link BatchOptions#getPartitionKey()}.
  * </p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#eventDataBatch}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch}
  *
  * @see EventHubClient#createProducer()
  * @see EventHubAsyncProducerClient To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.

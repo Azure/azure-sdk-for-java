@@ -15,7 +15,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Contains code snippets when generating javadocs through doclets for {@link EventHubProducerClient}.
  */
-public class EventHubProducerJavaDocCodeSamples {
+public class EventHubProducerClientJavaDocCodeSamples {
     private final EventHubClient client = new EventHubClientBuilder()
         .connectionString("fake-string")
         .buildClient();
@@ -27,13 +27,13 @@ public class EventHubProducerJavaDocCodeSamples {
      * @throws IOException if the producer cannot be disposed.
      */
     public void instantiate() throws IOException {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiation
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation
         EventHubClient client = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
             .buildClient();
 
         EventHubProducerClient producer = client.createProducer();
-        // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation
 
         producer.close();
     }
@@ -44,14 +44,14 @@ public class EventHubProducerJavaDocCodeSamples {
      * @throws IOException if the producer cannot be disposed.
      */
     public void instantiatePartitionProducer() throws IOException {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId
         EventData eventData = new EventData("data-to-partition-foo");
         SendOptions options = new SendOptions()
             .setPartitionId("foo");
 
         EventHubProducerClient producer = client.createProducer();
         producer.send(eventData, options);
-        // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId
 
         producer.close();
     }
@@ -60,7 +60,7 @@ public class EventHubProducerJavaDocCodeSamples {
      * Code snippet demonstrating how to send events with a partition key.
      */
     public void sendEventsSendOptions() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.send#publisher-sendOptions
         final List<EventData> events = Arrays.asList(
             new EventData("sourdough".getBytes(UTF_8)),
             new EventData("rye".getBytes(UTF_8)),
@@ -72,7 +72,7 @@ public class EventHubProducerJavaDocCodeSamples {
             .setPartitionKey("bread");
 
         producer.send(events, options);
-        // END: com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.send#publisher-sendOptions
     }
 
     /**
@@ -81,7 +81,7 @@ public class EventHubProducerJavaDocCodeSamples {
     public void sendEventDataBatch() {
         final EventHubProducerClient producer = client.createProducer();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.send#eventDataBatch
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch
         final List<EventData> telemetryEvents = Arrays.asList(
             new EventData("92".getBytes(UTF_8)).addProperty("telemetry", "latency"),
             new EventData("98".getBytes(UTF_8)).addProperty("telemetry", "cpu-temperature"),
@@ -102,6 +102,6 @@ public class EventHubProducerJavaDocCodeSamples {
                 currentBatch = producer.createBatch(options);
             }
         }
-        // END: com.azure.messaging.eventhubs.eventhubproducer.send#eventDataBatch
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch
     }
 }
