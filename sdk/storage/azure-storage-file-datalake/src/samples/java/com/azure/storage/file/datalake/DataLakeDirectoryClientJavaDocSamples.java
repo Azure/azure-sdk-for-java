@@ -30,6 +30,24 @@ public class DataLakeDirectoryClientJavaDocSamples {
     private String destinationPath = "destinationPath";
 
     /**
+     * Code snippet for {@link DataLakeDirectoryClient#getSubDirectoryClient(String)}
+     */
+    public void getDirectoryClient() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.getSubDirectoryClient#String
+        DataLakeDirectoryClient dataLakeDirectoryClient = client.getSubDirectoryClient(directoryName);
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.getSubDirectoryClient#String
+    }
+
+    /**
+     * Code snippet for {@link DataLakeDirectoryClient#getFileClient(String)}
+     */
+    public void getFileClient() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.getFileClient#String
+        DataLakeFileClient dataLakeFileClient = client.getFileClient(fileName);
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.getFileClient#String
+    }
+
+    /**
      * Code snippets for {@link DataLakeDirectoryClient#create()} and
      * {@link DataLakeDirectoryClient#createWithResponse(PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
      */
@@ -47,8 +65,9 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String permissions = "permissions";
         String umask = "umask";
 
-        Response<PathInfo> response = client.createWithResponse(httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask, timeout, new Context(key1, value1));
+        Response<PathInfo> response = client.createWithResponse(httpHeaders,
+            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask, timeout,
+            new Context(key1, value1));
         System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
     }
@@ -58,19 +77,19 @@ public class DataLakeDirectoryClientJavaDocSamples {
      * {@link DataLakeDirectoryClient#deleteWithResponse(boolean, DataLakeRequestConditions, Duration, Context)}
      */
     public void deleteCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.delete
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.delete
         client.delete();
         System.out.println("Delete request completed");
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.delete
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.delete
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteWithResponse#boolean-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
         boolean recursive = false; // Default value
 
         client.deleteWithResponse(recursive, requestConditions, timeout, new Context(key1, value1));
         System.out.println("Delete request completed");
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteWithResponse#boolean-DataLakeRequestConditions-Duration-Context
     }
 
     /**
@@ -80,7 +99,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String
         DataLakeFileClient fileClient = client.createFile(fileName);
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.create#String
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -106,23 +125,23 @@ public class DataLakeDirectoryClientJavaDocSamples {
         System.out.println("Delete request completed");
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteFile#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
 
         client.deleteFileWithResponse(fileName, requestConditions, timeout, new Context(key1, value1));
         System.out.println("Delete request completed");
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryClient#createSubDirectory(String) and
+     * Code snippets for {@link DataLakeDirectoryClient#createSubDirectory(String)} and
      * {@link DataLakeDirectoryClient#createSubDirectoryWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
      */
     public void createSubDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectory#String
         DataLakeDirectoryClient directoryClient = client.createSubDirectory(directoryName);
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.create
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectory#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -132,9 +151,9 @@ public class DataLakeDirectoryClientJavaDocSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Response<DataLakeDirectoryClient> newDirectoryClient = client.createSubDirectoryWithResponse(directoryName, httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask, timeout, new Context(key1, value1));
+        Response<DataLakeDirectoryClient> newDirectoryClient = client.createSubDirectoryWithResponse(directoryName,
+            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask, timeout,
+            new Context(key1, value1));
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
     }
 
@@ -153,7 +172,8 @@ public class DataLakeDirectoryClientJavaDocSamples {
             .setLeaseId(leaseId);
         boolean recursive = false; // Default value
 
-        client.deleteSubDirectoryWithResponse(directoryName, recursive, requestConditions, timeout, new Context(key1, value1));
+        client.deleteSubDirectoryWithResponse(directoryName, recursive, requestConditions, timeout,
+            new Context(key1, value1));
         System.out.println("Delete request completed");
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context
     }

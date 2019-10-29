@@ -1,7 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.file.datalake.FileSystemAsyncClient;
 import com.azure.storage.file.datalake.FileSystemClient;
 
@@ -11,7 +13,7 @@ import com.azure.storage.file.datalake.FileSystemClient;
  * passed in place of an object of this type if no options are desirable.
  */
 public class ListPathsOptions {
-    private final ClientLogger logger = new ClientLogger(ListBlobContainersOptions.class);
+    private final ClientLogger logger = new ClientLogger(ListPathsOptions.class);
 
     private String path;
     private boolean recursive;

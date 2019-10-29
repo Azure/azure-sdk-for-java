@@ -46,12 +46,12 @@ import java.util.Objects;
  * accessible.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {DataLakeFileClient.class, DataLakeFileAsyncClient.class, DataLakeDirectoryClient.class,
-    DataLakeDirectoryAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {DataLakeFileClient.class, DataLakeFileAsyncClient.class,
+    DataLakeDirectoryClient.class, DataLakeDirectoryAsyncClient.class})
 public final class PathClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(PathClientBuilder.class);
-    private BlobClientBuilder blobClientBuilder;
+    private final BlobClientBuilder blobClientBuilder;
 
     private String endpoint;
     private String accountName;
@@ -119,19 +119,19 @@ public final class PathClientBuilder {
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-                if (storageSharedKeyCredential != null) {
-                    return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-                } else if (tokenCredential != null) {
-                    return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-                } else if (sasTokenCredential != null) {
-                    return new SasTokenCredentialPolicy(sasTokenCredential);
-                } else {
-                    return null;
-                }
-            }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+            } else if (tokenCredential != null) {
+                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
+            } else if (sasTokenCredential != null) {
+                return new SasTokenCredentialPolicy(sasTokenCredential);
+            } else {
+                return null;
+            }
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
-            serviceVersion, accountName, dataLakeFileSystemName, pathName,
+        return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
+            pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
             blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
@@ -146,7 +146,8 @@ public final class PathClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      */
     public DataLakeDirectoryClient buildDirectoryClient() {
-        return new DataLakeDirectoryClient(buildDirectoryAsyncClient(), blobClientBuilder.buildClient().getBlockBlobClient());
+        return new DataLakeDirectoryClient(buildDirectoryAsyncClient(),
+            blobClientBuilder.buildClient().getBlockBlobClient());
     }
 
     /**
@@ -185,8 +186,8 @@ public final class PathClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
-            serviceVersion, accountName, dataLakeFileSystemName, pathName,
+        return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
+            pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
             blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 

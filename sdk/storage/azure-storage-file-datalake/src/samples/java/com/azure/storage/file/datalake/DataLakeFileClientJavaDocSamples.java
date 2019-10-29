@@ -57,8 +57,9 @@ public class DataLakeFileClientJavaDocSamples {
         String permissions = "permissions";
         String umask = "umask";
 
-        Response<PathInfo> response = client.createWithResponse(httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask, timeout, new Context(key1, value1));
+        Response<PathInfo> response = client.createWithResponse(httpHeaders,
+            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask, timeout,
+            new Context(key1, value1));
         System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
         // END: com.azure.storage.file.datalake.DataLakeFileClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
     }
@@ -68,18 +69,18 @@ public class DataLakeFileClientJavaDocSamples {
      * {@link DataLakeFileClient#deleteWithResponse(DataLakeRequestConditions, Duration, Context)}
      */
     public void deleteCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.delete
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.delete
         client.delete();
         System.out.println("Delete request completed");
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.delete
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.delete
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
 
         client.deleteWithResponse(requestConditions, timeout, new Context(key1, value1));
         System.out.println("Delete request completed");
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
     }
 
     /**
@@ -138,7 +139,8 @@ public class DataLakeFileClientJavaDocSamples {
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
         byte[] contentMd5 = new byte[0]; // Replace with valid md5
 
-        Response<Void> response = client.appendWithResponse(data, offset, length, contentMd5, leaseId, timeout, new Context(key1, value1));
+        Response<Void> response = client.appendWithResponse(data, offset, length, contentMd5, leaseId, timeout,
+            new Context(key1, value1));
         System.out.printf("Append data completed with status %d%n", response.getStatusCode());
         // END: com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-byte-String-Duration-Context
     }

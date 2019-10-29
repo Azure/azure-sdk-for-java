@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpPipeline;
@@ -111,7 +114,6 @@ public class PathClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the resource.
-     * @return A response containing status code and HTTP headers.
      */
     public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, null, Context.NONE);
@@ -134,8 +136,8 @@ public class PathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setMetadataWithResponse(Map<String, String> metadata, DataLakeRequestConditions accessConditions,
-        Duration timeout, Context context) {
+    public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
+        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
         return blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(accessConditions),
             timeout, context);
     }
@@ -174,8 +176,8 @@ public class PathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers, DataLakeRequestConditions accessConditions,
-        Duration timeout, Context context) {
+    public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers,
+        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
         return blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
             Transforms.toBlobRequestConditions(accessConditions), timeout, context);
     }
@@ -293,8 +295,8 @@ public class PathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource properties and metadata.
      */
-    public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions accessConditions, Duration timeout,
-        Context context) {
+    public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions accessConditions,
+        Duration timeout, Context context) {
         Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
             Transforms.toBlobRequestConditions(accessConditions), timeout, context);
         return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
@@ -310,8 +312,9 @@ public class PathClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathClient} used to interact with the path created.
      */
-    Mono<Response<PathClient>> renameWithResponse(String destinationPath, DataLakeRequestConditions sourceAccessConditions,
-        DataLakeRequestConditions destAccessConditions, Context context) {
+    Mono<Response<PathClient>> renameWithResponse(String destinationPath,
+        DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions,
+        Context context) {
 
         destAccessConditions = destAccessConditions == null ? new DataLakeRequestConditions() : destAccessConditions;
         sourceAccessConditions = sourceAccessConditions == null ? new DataLakeRequestConditions()

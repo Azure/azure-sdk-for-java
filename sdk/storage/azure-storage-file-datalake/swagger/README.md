@@ -120,14 +120,16 @@ directive:
     $.patch.consumes = ["application/octet-stream"];
 ```
 
-### Make etag on Path lower case
+
+
+### Make ACL on Path Get Properties lower case
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["definitions"]["Path"]
+  where: $["x-ms-paths"]["/{filesystem}/{path}"]["head"]["responses"]["200"]
   transform: >
-      delete $.properties.eTag;
-      $.properties.etag = {"type": "string"};
+      delete $.headers["x-ms-acl"]["x-ms-client-name"];
+      $.headers["x-ms-acl"]["x-ms-client-name"] = "acl";
 ```
 
 ### Rename PathHTTPHeaders to PathHttpHeaders
@@ -141,6 +143,7 @@ directive:
     $.ContentEncoding["x-ms-parameter-grouping"].name = "path-http-headers";
     $.ContentLanguage["x-ms-parameter-grouping"].name = "path-http-headers";
     $.ContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
+    $.ContentMD5["x-ms-client-name"] = "contentMd5";
     $.ContentType["x-ms-parameter-grouping"].name = "path-http-headers";
     $.TransactionalContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
 ```

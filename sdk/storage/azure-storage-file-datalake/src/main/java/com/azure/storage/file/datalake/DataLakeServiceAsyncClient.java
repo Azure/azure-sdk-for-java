@@ -56,7 +56,7 @@ public class DataLakeServiceAsyncClient {
     private final String accountName;
     private final DataLakeServiceVersion serviceVersion;
 
-    private BlobServiceAsyncClient blobServiceAsyncClient;
+    private final BlobServiceAsyncClient blobServiceAsyncClient;
 
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
@@ -240,8 +240,8 @@ public class DataLakeServiceAsyncClient {
     }
 
     /**
-     * Returns a reactive Publisher emitting all the file systems in this account lazily as needed. For more information,
-     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
+     * Returns a reactive Publisher emitting all the file systems in this account lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *

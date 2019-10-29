@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpPipeline;
@@ -101,7 +104,7 @@ public class PathAsyncClient {
                 metadata.
                  */
                 sb.append(entry.getKey()).append('=')
-                    .append(new String(Base64.getEncoder().encode(entry.getValue().getBytes()),
+                    .append(new String(Base64.getEncoder().encode(entry.getValue().getBytes(Charset.forName("UTF-8"))),
                         Charset.forName("UTF-8"))).append(',');
             }
             sb.deleteCharAt(sb.length() - 1); // Remove the extraneous "," after the last element.
@@ -486,7 +489,7 @@ public class PathAsyncClient {
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
             PathGetPropertiesAction.GET_ACCESS_CONTROL, returnUpn, null, null, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, new PathAccessControl()
-                .setAcl(response.getDeserializedHeaders().getACL())
+                .setAcl(response.getDeserializedHeaders().getAcl())
                 .setGroup(response.getDeserializedHeaders().getGroup())
                 .setOwner(response.getDeserializedHeaders().getOwner())
                 .setPermissions(response.getDeserializedHeaders().getPermissions())));

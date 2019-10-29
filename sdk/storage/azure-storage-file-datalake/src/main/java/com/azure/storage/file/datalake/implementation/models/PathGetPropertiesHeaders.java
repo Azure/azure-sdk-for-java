@@ -155,7 +155,7 @@ public final class PathGetPropertiesHeaders {
      * Namespace is enabled for the account.
      */
     @JsonProperty(value = "x-ms-acl")
-    private String aCL;
+    private String acl;
 
     /*
      * When a resource is leased, specifies whether the lease is of infinite or
@@ -643,28 +643,28 @@ public final class PathGetPropertiesHeaders {
     }
 
     /**
-     * Get the aCL property: The POSIX access control list for the file or
+     * Get the acl property: The POSIX access control list for the file or
      * directory.  Included in the response only if the action is
      * "getAccessControl" and Hierarchical Namespace is enabled for the
      * account.
      *
-     * @return the aCL value.
+     * @return the acl value.
      */
-    public String getACL() {
-        return this.aCL;
+    public String getAcl() {
+        return this.acl;
     }
 
     /**
-     * Set the aCL property: The POSIX access control list for the file or
+     * Set the acl property: The POSIX access control list for the file or
      * directory.  Included in the response only if the action is
      * "getAccessControl" and Hierarchical Namespace is enabled for the
      * account.
      *
-     * @param aCL the aCL value to set.
+     * @param acl the acl value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders setACL(String aCL) {
-        this.aCL = aCL;
+    public PathGetPropertiesHeaders setAcl(String acl) {
+        this.acl = acl;
         return this;
     }
 

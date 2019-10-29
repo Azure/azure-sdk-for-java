@@ -16,7 +16,9 @@ public class PathAccessControl {
     /**
      * Constructs a new {@link PathAccessControl}.
      */
-    public PathAccessControl(){}
+    public PathAccessControl() {
+
+    }
 
     /**
      * Get the acl property: The acl property.

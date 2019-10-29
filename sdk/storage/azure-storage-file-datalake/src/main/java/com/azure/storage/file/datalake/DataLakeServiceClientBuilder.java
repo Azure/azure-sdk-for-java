@@ -46,7 +46,7 @@ import java.util.Objects;
 public class DataLakeServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(DataLakeServiceClientBuilder.class);
 
-    private BlobServiceClientBuilder blobServiceClientBuilder;
+    private final BlobServiceClientBuilder blobServiceClientBuilder;
 
     private String endpoint;
     private String accountName;

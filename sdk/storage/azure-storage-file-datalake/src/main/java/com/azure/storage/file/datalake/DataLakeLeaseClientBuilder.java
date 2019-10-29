@@ -42,7 +42,7 @@ import java.util.UUID;
 @ServiceClientBuilder(serviceClients = { DataLakeLeaseClient.class, DataLakeLeaseAsyncClient.class })
 public final class DataLakeLeaseClientBuilder {
 
-    BlobLeaseClientBuilder blobLeaseClientBuilder;
+    final BlobLeaseClientBuilder blobLeaseClientBuilder;
 
     public DataLakeLeaseClientBuilder() {
         blobLeaseClientBuilder = new BlobLeaseClientBuilder();

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.datalake;
 
 import com.azure.storage.blob.models.BlobContainerItem;
@@ -30,6 +33,9 @@ import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+
 class Transforms {
 
     static com.azure.storage.blob.models.PublicAccessType toBlobPublicAccessType(PublicAccessType
@@ -40,7 +46,7 @@ class Transforms {
         return com.azure.storage.blob.models.PublicAccessType.fromString(fileSystemPublicAccessType.toString());
     }
 
-    static LeaseDurationType toDataLakeLeaseDurationType(com.azure.storage.blob.models.LeaseDurationType
+    private static LeaseDurationType toDataLakeLeaseDurationType(com.azure.storage.blob.models.LeaseDurationType
         blobLeaseDurationType) {
         if (blobLeaseDurationType == null) {
             return null;
@@ -48,7 +54,7 @@ class Transforms {
         return LeaseDurationType.fromString(blobLeaseDurationType.toString());
     }
 
-    static LeaseStateType toDataLakeLeaseStateType(com.azure.storage.blob.models.LeaseStateType
+    private static LeaseStateType toDataLakeLeaseStateType(com.azure.storage.blob.models.LeaseStateType
         blobLeaseStateType) {
         if (blobLeaseStateType == null) {
             return null;
@@ -56,7 +62,7 @@ class Transforms {
         return LeaseStateType.fromString(blobLeaseStateType.toString());
     }
 
-    static LeaseStatusType toDataLakeLeaseStatusType(com.azure.storage.blob.models.LeaseStatusType
+    private static LeaseStatusType toDataLakeLeaseStatusType(com.azure.storage.blob.models.LeaseStatusType
         blobLeaseStatusType) {
         if (blobLeaseStatusType == null) {
             return null;
@@ -64,7 +70,7 @@ class Transforms {
         return LeaseStatusType.fromString(blobLeaseStatusType.toString());
     }
 
-    static PublicAccessType toDataLakePublicAccessType(com.azure.storage.blob.models.PublicAccessType
+    private static PublicAccessType toDataLakePublicAccessType(com.azure.storage.blob.models.PublicAccessType
         blobPublicAccessType) {
         if (blobPublicAccessType == null) {
             return null;
@@ -72,14 +78,15 @@ class Transforms {
         return PublicAccessType.fromString(blobPublicAccessType.toString());
     }
 
-    static CopyStatusType toDataLakeCopyStatusType(com.azure.storage.blob.models.CopyStatusType blobCopyStatus) {
+    private static CopyStatusType toDataLakeCopyStatusType(
+        com.azure.storage.blob.models.CopyStatusType blobCopyStatus) {
         if (blobCopyStatus == null) {
             return null;
         }
         return CopyStatusType.fromString(blobCopyStatus.toString());
     }
 
-    static ArchiveStatus toDataLakeArchiveStatus(
+    private static ArchiveStatus toDataLakeArchiveStatus(
         com.azure.storage.blob.models.ArchiveStatus blobArchiveStatus) {
         if (blobArchiveStatus == null) {
             return null;
@@ -87,7 +94,7 @@ class Transforms {
         return ArchiveStatus.fromString(blobArchiveStatus.toString());
     }
 
-    static AccessTier toDataLakeAccessTier(com.azure.storage.blob.models.AccessTier blobAccessTier) {
+    private static AccessTier toDataLakeAccessTier(com.azure.storage.blob.models.AccessTier blobAccessTier) {
         if (blobAccessTier == null) {
             return null;
         }
@@ -154,7 +161,7 @@ class Transforms {
             .setContentEncoding(pathHTTPHeaders.getContentEncoding())
             .setContentLanguage(pathHTTPHeaders.getContentLanguage())
             .setContentType(pathHTTPHeaders.getContentType())
-            .setContentMd5(pathHTTPHeaders.getContentMD5());
+            .setContentMd5(pathHTTPHeaders.getContentMd5());
     }
 
     static BlobRange toBlobRange(FileRange fileRange) {
@@ -223,7 +230,10 @@ class Transforms {
         if (path == null) {
             return null;
         }
-        return new PathItem(path);
+        return new PathItem(path.getETag(),
+            OffsetDateTime.parse(path.getLastModified(), DateTimeFormatter.RFC_1123_DATE_TIME),
+            path.getContentLength(), path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(),
+            path.getName(), path.getOwner(), path.getPermissions());
     }
 
     static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions accessConditions) {

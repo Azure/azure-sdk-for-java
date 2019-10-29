@@ -114,7 +114,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         });
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.read
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readWithResponse#OutputStream-FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readWithResponse#FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean
         FileRange range = new FileRange(1024, 2048L);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
@@ -128,7 +128,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
                 }
             });
         });
-        // END: com.azure.storage.file.datalake.DataLakeFileClient.readWithResponse#OutputStream-FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readWithResponse#FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean
     }
 
     /**
@@ -158,12 +158,12 @@ public class DataLakeFileAsyncClientJavaDocSamples {
      * {@link DataLakeFileAsyncClient#flushWithResponse(long, boolean, boolean, PathHttpHeaders, DataLakeRequestConditions)}
      */
     public void flushCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.flush#long
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long
         client.flush(position).subscribe(response ->
             System.out.println("Flush data completed"));
-        // END: com.azure.storage.file.datalake.DataLakeFileClient.flush#long
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions
         FileRange range = new FileRange(1024, 2048L);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
         byte[] contentMd5 = new byte[0]; // Replace with valid md5
@@ -178,7 +178,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         client.flushWithResponse(position, retainUncommittedData, close, httpHeaders,
             requestConditions).subscribe(response ->
             System.out.printf("Flush data completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions
     }
 
 }

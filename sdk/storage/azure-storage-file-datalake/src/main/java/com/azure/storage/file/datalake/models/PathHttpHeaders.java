@@ -53,7 +53,7 @@ public final class PathHttpHeaders {
      * service.
      */
     @JsonProperty(value = "")
-    private byte[] contentMD5;
+    private byte[] contentMd5;
 
     /*
      * Specify the transactional md5 for the body, to be validated by the
@@ -181,24 +181,24 @@ public final class PathHttpHeaders {
     }
 
     /**
-     * Get the contentMD5 property: Specify the transactional md5 for the body,
+     * Get the contentMd5 property: Specify the transactional md5 for the body,
      * to be validated by the service.
      *
-     * @return the contentMD5 value.
+     * @return the contentMd5 value.
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(this.contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(this.contentMd5);
     }
 
     /**
-     * Set the contentMD5 property: Specify the transactional md5 for the body,
+     * Set the contentMd5 property: Specify the transactional md5 for the body,
      * to be validated by the service.
      *
-     * @param contentMD5 the contentMD5 value to set.
+     * @param contentMd5 the contentMd5 value to set.
      * @return the PathHttpHeaders object itself.
      */
-    public PathHttpHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+    public PathHttpHeaders setContentMd5(byte[] contentMd5) {
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
 

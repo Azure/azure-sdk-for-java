@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpPipeline;
@@ -159,16 +162,17 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeFileAsyncClient object by concatenating fileName to the end of DataLakeDirectoryAsyncClient's URL. The new
-     * DataLakeFileAsyncClient uses the same request policy pipeline as the DataLakeDirectoryAsyncClient.
+     * Creates a new DataLakeFileAsyncClient object by concatenating fileName to the end of
+     * DataLakeDirectoryAsyncClient's URL. The new DataLakeFileAsyncClient uses the same request policy pipeline as the
+     * DataLakeDirectoryAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getFileAsyncClient#String}
      *
      * @param fileName A {@code String} representing the name of the file.
-     * @return A new {@link DataLakeFileAsyncClient} object which references the file with the specified name in this file
-     * system.
+     * @return A new {@link DataLakeFileAsyncClient} object which references the file with the specified name in this
+     * file system.
      */
     public DataLakeFileAsyncClient getFileAsyncClient(String fileName) {
         if (ImplUtils.isNullOrEmpty(fileName)) {
@@ -178,13 +182,14 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
 
         return new DataLakeFileAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getPathUrl(), fileName).toString(), getServiceVersion(),
-            getAccountName(), getFileSystemName(), getObjectPath() + "/"+ fileName, blockBlobAsyncClient);
+            getAccountName(), getFileSystemName(), getObjectPath() + "/" + fileName, blockBlobAsyncClient);
     }
 
     /**
      * Creates a new file within a directory. If a file with the same name already exists, the file will be
      * overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -204,7 +209,8 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
     /**
      * Creates a new file within a directory. If a file with the same name already exists, the file will be
      * overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -273,16 +279,17 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeDirectoryAsyncClient object by concatenating subDirectoryName to the end of DataLakeDirectoryAsyncClient's
-     * URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline as the DataLakeDirectoryAsyncClient.
+     * Creates a new DataLakeDirectoryAsyncClient object by concatenating subDirectoryName to the end of
+     * DataLakeDirectoryAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
+     * as the DataLakeDirectoryAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getDirectoryAsyncClient#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubDirectoryAsyncClient#String}
      *
      * @param subDirectoryName A {@code String} representing the name of the sub-directory.
-     * @return A new {@link DataLakeDirectoryAsyncClient} object which references the directory with the specified name in this
-     * file system.
+     * @return A new {@link DataLakeDirectoryAsyncClient} object which references the directory with the specified name
+     * in this file system.
      */
     public DataLakeDirectoryAsyncClient getSubDirectoryAsyncClient(String subDirectoryName) {
         if (ImplUtils.isNullOrEmpty(subDirectoryName)) {
@@ -293,7 +300,7 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getPathUrl(), subDirectoryName).toString(), getServiceVersion(),
-            getAccountName(), getFileSystemName(), getObjectPath() + "/"+ subDirectoryName, blockBlobAsyncClient);
+            getAccountName(), getFileSystemName(), getObjectPath() + "/" + subDirectoryName, blockBlobAsyncClient);
     }
 
     /**
@@ -306,7 +313,8 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectory#String}
      *
      * @param subDirectoryName Name of the sub-directory to create.
-     * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory created.
+     * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
+     * created.
      */
     public Mono<DataLakeDirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
         try {
@@ -342,8 +350,8 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
         try {
             DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getSubDirectoryAsyncClient(subDirectoryName);
 
-            return dataLakeDirectoryAsyncClient.createWithResponse(headers, metadata, accessConditions, permissions, umask)
-                .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
+            return dataLakeDirectoryAsyncClient.createWithResponse(headers, metadata, accessConditions, permissions,
+                umask).map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -403,7 +411,8 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String}
      *
      * @param destinationPath Relative path from the file system to rename the directory to.
-     * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the new directory created.
+     * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the new directory
+     * created.
      */
     public Mono<DataLakeDirectoryAsyncClient> rename(String destinationPath) {
         try {

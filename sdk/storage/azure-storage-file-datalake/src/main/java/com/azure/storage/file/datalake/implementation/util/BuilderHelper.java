@@ -89,8 +89,8 @@ public final class BuilderHelper {
     public static HttpLogOptions getDefaultHttpLogOptions() {
         HttpLogOptions defaultOptions = new HttpLogOptions();
         DataLakeHeadersAndQueryParameters.getDataLakeHeaders().forEach(defaultOptions::addAllowedHeaderName);
-        DataLakeHeadersAndQueryParameters.getDataLakeQueryParameters().forEach
-            (defaultOptions::addAllowedQueryParamName);
+        DataLakeHeadersAndQueryParameters.getDataLakeQueryParameters().forEach(
+            defaultOptions::addAllowedQueryParamName);
         return defaultOptions;
     }
 

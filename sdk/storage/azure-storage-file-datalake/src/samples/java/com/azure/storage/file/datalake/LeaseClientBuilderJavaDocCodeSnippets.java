@@ -24,11 +24,11 @@ public class LeaseClientBuilderJavaDocCodeSnippets {
      * Code snippets for {@link DataLakeLeaseClientBuilder#buildClient()}.
      */
     public void syncInstantiationWithDirectory() {
-        // BEGIN: com.azure.storage.file.datalake.LeaseClientBuilder.syncInstantiationWithDirectory
+        // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithDirectory
         DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder()
             .pathClient(directoryClient)
             .buildClient();
-        // END: com.azure.storage.file.datalake.LeaseClientBuilder.syncInstantiationWithDirectory
+        // END: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithDirectory
     }
 
     /**
@@ -47,11 +47,11 @@ public class LeaseClientBuilderJavaDocCodeSnippets {
      * Code snippets for {@link DataLakeLeaseClientBuilder#buildClient()}.
      */
     public void syncInstantiationWithFile() {
-        // BEGIN: com.azure.storage.file.datalake.LeaseClientBuilder.syncInstantiationWithFile
+        // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFile
         DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder()
             .pathClient(fileClient)
             .buildClient();
-        // END: com.azure.storage.file.datalake.LeaseClientBuilder.syncInstantiationWithFile
+        // END: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFile
     }
 
     /**
@@ -70,11 +70,11 @@ public class LeaseClientBuilderJavaDocCodeSnippets {
      * Code snippets for {@link DataLakeLeaseClientBuilder#buildClient()}.
      */
     public void syncInstantiationWithFileSystem() {
-        // BEGIN: com.azure.storage.file.datalake.LeaseClientBuilder.syncInstantiationWithFileSystem
+        // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystem
         DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder()
             .fileSystemClient(fileSystemClient)
             .buildClient();
-        // END: com.azure.storage.file.datalake.LeaseClientBuilder.syncInstantiationWithFileSystem
+        // END: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystem
     }
 
     /**

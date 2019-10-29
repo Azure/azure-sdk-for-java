@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 
 /**
- * {@code DownloadRetryOptions} contains properties which help the {@code Flux} returned from {@link
- * DownloadAsyncResponse#body(DownloadRetryOptions)} determine when to retry.
+ * This class contains the configuration options used to download from the blob service using smart retries, starting
+ * from a checkpoint, rather than starting over from the beginning.
  */
 public final class DownloadRetryOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";

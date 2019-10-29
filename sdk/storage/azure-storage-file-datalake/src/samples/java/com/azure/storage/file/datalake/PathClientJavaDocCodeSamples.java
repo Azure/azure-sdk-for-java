@@ -155,7 +155,7 @@ public class PathClientJavaDocCodeSamples {
        System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
                 response.getValue().getAcl(), response.getValue().getGroup(), response.getValue().getOwner(),
                 response.getValue().getPermissions());
-        // END: com.azure.storage.file.datalake.PathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context}
+        // END: com.azure.storage.file.datalake.PathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
     }
 
 }

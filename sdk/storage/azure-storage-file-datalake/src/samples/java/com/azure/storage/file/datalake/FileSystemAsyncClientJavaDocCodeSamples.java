@@ -215,8 +215,8 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createDirectoryWithResponse(fileName, httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask);
+        Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createDirectoryWithResponse(fileName,
+            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask);
         // END: com.azure.storage.file.datalake.FileSystemAsyncClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
     }
 
@@ -245,17 +245,17 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
      * {@link FileSystemAsyncClient#listPaths(ListPathsOptions)}
      */
     public void listPaths() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.listPaths
+        // BEGIN: com.azure.storage.file.datalake.FileSystemAsyncClient.listPaths
         client.listPaths().subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
-        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.listPaths
+        // END: com.azure.storage.file.datalake.FileSystemAsyncClient.listPaths
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.listPaths#ListPathsOptions
+        // BEGIN: com.azure.storage.file.datalake.FileSystemAsyncClient.listPaths#ListPathsOptions
         ListPathsOptions options = new ListPathsOptions()
             .setPath("PathNamePrefixToMatch")
             .setMaxResults(10);
 
         client.listPaths(options).subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
-        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.listPaths#ListPathsOptions
+        // END: com.azure.storage.file.datalake.FileSystemAsyncClient.listPaths#ListPathsOptions
     }
 
 }

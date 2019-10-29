@@ -27,7 +27,9 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import static com.azure.core.implementation.util.FluxUtil.*;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.fluxError;
 
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
@@ -58,8 +60,8 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      * @param fileName The file name.
      * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
-    DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion, String accountName,
-        String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient) {
+    DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
+        String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, blockBlobAsyncClient);
     }
 
@@ -255,7 +257,7 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
 
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
 
-        PathHttpHeaders headers = new PathHttpHeaders().setContentMD5(contentMd5);
+        PathHttpHeaders headers = new PathHttpHeaders().setContentMd5(contentMd5);
 
         return this.dataLakeStorage.paths().appendDataWithRestResponseAsync(data, offset, null, length, null,
             headers, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response, null));
@@ -267,7 +269,7 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#Long}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -291,7 +293,7 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#Long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -412,7 +414,7 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-PathHTTPHeaders-Map-String-String-DataLakeRequestConditions-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
      * @param destinationPath Relative path from the file system to rename the file to.
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.

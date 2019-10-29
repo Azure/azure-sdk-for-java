@@ -98,7 +98,8 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
             .setPrefix("filSystemNamePrefixToMatch")
             .setDetails(new FileSystemListDetails().setRetrieveMetadata(true));
 
-        client.listFileSystems(options, timeout).forEach(fileSystem -> System.out.printf("Name: %s%n", fileSystem.getName()));
+        client.listFileSystems(options, timeout).forEach(fileSystem -> System.out.printf("Name: %s%n",
+            fileSystem.getName()));
         // END: com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems#ListFileSystemsOptions-Duration
     }
 

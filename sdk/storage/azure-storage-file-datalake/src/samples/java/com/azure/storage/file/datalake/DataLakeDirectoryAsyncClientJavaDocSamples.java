@@ -23,6 +23,24 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
     private String destinationPath = "destinationPath";
 
     /**
+     * Code snippet for {@link DataLakeDirectoryAsyncClient#getSubDirectoryAsyncClient(String)}
+     */
+    public void getDirectoryClient() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubDirectoryAsyncClient#String
+        DataLakeDirectoryAsyncClient dataLakeDirectoryClient = client.getSubDirectoryAsyncClient(directoryName);
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubDirectoryAsyncClient#String
+    }
+
+    /**
+     * Code snippet for {@link DataLakeDirectoryAsyncClient#getFileAsyncClient(String)}
+     */
+    public void getFileClient() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getFileAsyncClient#String
+        DataLakeFileAsyncClient dataLakeFileClient = client.getFileAsyncClient(fileName);
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getFileAsyncClient#String
+    }
+
+    /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#create()} and
      * {@link DataLakeDirectoryAsyncClient#createWithResponse(PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
      */
@@ -84,8 +102,9 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Mono<Response<DataLakeFileAsyncClient>> newFileClient = client.createFileWithResponse(fileName, httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask);
+        Mono<Response<DataLakeFileAsyncClient>> newFileClient = client.createFileWithResponse(fileName,
+            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions,
+            umask);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
     }
 
@@ -125,8 +144,9 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createSubDirectoryWithResponse(fileName, httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask);
+        Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createSubDirectoryWithResponse(
+            fileName, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions,
+            umask);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
     }
 
@@ -165,8 +185,8 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
             .setLeaseId(leaseId);
         DataLakeRequestConditions destinationRequestConditions = new DataLakeRequestConditions();
 
-        DataLakeDirectoryAsyncClient newRenamedClient = client.renameWithResponse(destinationPath, sourceRequestConditions,
-            destinationRequestConditions).block().getValue();
+        DataLakeDirectoryAsyncClient newRenamedClient = client.renameWithResponse(destinationPath,
+            sourceRequestConditions, destinationRequestConditions).block().getValue();
         System.out.println("Directory Client has been renamed");
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions
     }

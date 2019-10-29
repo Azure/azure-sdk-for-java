@@ -20,7 +20,7 @@ public class DataLakeServiceSasSignatureValuesJavaDocCodeSnippets {
      * Generates a file or directory SAS with {@link StorageSharedKeyCredential}
      */
     public void fileSas() {
-        // BEGIN: com.azure.storage.file.datalake.sas.DataLakeServiceSasQueryParameters.generateSasQueryParameters#StorageSharedKeyCredential
+        // BEGIN: com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential
         PathSasPermission pathPermission = new PathSasPermission().setReadPermission(true);
 
         // We are creating a SAS to a path because we set both the file system name and path name.
@@ -33,14 +33,14 @@ public class DataLakeServiceSasSignatureValuesJavaDocCodeSnippets {
 
         StorageSharedKeyCredential credential = new StorageSharedKeyCredential("account-name", "key");
         DataLakeServiceSasQueryParameters sasQueryParameters = builder.generateSasQueryParameters(credential);
-        // END: com.azure.storage.file.datalake.sas.DataLakeServiceSasQueryParameters.generateSasQueryParameters#StorageSharedKeyCredential
+        // END: com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential
     }
 
     /**
      * Generates a file system SAS using {@link UserDelegationKey}.
      */
     public void userDelegationKey() {
-        // BEGIN: com.azure.storage.file.datalake.sas.DataLakeServiceSasQueryParameters.generateSasQueryParameters#UserDelegationKey-String
+        // BEGIN: com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues.generateSasQueryParameters#UserDelegationKey-String
         PathSasPermission pathPermission = new PathSasPermission()
             .setReadPermission(true)
             .setWritePermission(true);
@@ -56,6 +56,6 @@ public class DataLakeServiceSasSignatureValuesJavaDocCodeSnippets {
         UserDelegationKey credential = new UserDelegationKey();
         String account = "my-path-storage-account";
         DataLakeServiceSasQueryParameters sasQueryParameters = builder.generateSasQueryParameters(credential, account);
-        // END: com.azure.storage.file.datalake.sas.DataLakeServiceSasQueryParameters.generateSasQueryParameters#UserDelegationKey-String
+        // END: com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues.generateSasQueryParameters#UserDelegationKey-String
     }
 }

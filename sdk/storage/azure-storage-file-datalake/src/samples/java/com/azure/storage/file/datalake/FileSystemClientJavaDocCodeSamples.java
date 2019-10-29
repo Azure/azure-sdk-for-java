@@ -190,7 +190,7 @@ public class FileSystemClientJavaDocCodeSamples {
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.FileSystemClient.createFile#String
         DataLakeFileClient fileClient = client.createFile(fileName);
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.create#String
+        // END: com.azure.storage.file.datalake.FileSystemClient.createFile#String
 
         // BEGIN: com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -216,23 +216,23 @@ public class FileSystemClientJavaDocCodeSamples {
         System.out.println("Delete request completed");
         // END: com.azure.storage.file.datalake.FileSystemClient.deleteFile#String
 
-        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
 
         client.deleteFileWithResponse(fileName, requestConditions, timeout, new Context(key1, value1));
         System.out.println("Delete request completed");
-        // END: com.azure.storage.file.datalake.FileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.FileSystemClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context
     }
 
     /**
-     * Code snippets for {@link FileSystemClient#createDirectory(String) and
+     * Code snippets for {@link FileSystemClient#createDirectory(String)} and
      * {@link FileSystemClient#createDirectoryWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
      */
     public void createDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.FileSystemClient.createDirectory#String
         DataLakeDirectoryClient directoryClient = client.createDirectory(directoryName);
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.create
+        // END: com.azure.storage.file.datalake.FileSystemClient.createDirectory#String
 
         // BEGIN: com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -242,8 +242,8 @@ public class FileSystemClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Response<DataLakeDirectoryClient> newDirectoryClient = client.createDirectoryWithResponse(directoryName, httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions,
+        Response<DataLakeDirectoryClient> newDirectoryClient = client.createDirectoryWithResponse(directoryName,
+            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
             permissions, umask, timeout, new Context(key1, value1));
         // END: com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
     }
@@ -263,7 +263,8 @@ public class FileSystemClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         boolean recursive = false; // Default value
 
-        client.deleteDirectoryWithResponse(directoryName, recursive, requestConditions, timeout, new Context(key1, value1));
+        client.deleteDirectoryWithResponse(directoryName, recursive, requestConditions, timeout,
+            new Context(key1, value1));
         System.out.println("Delete request completed");
         // END: com.azure.storage.file.datalake.FileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context
     }
@@ -275,15 +276,15 @@ public class FileSystemClientJavaDocCodeSamples {
     public void listPaths() {
         // BEGIN: com.azure.storage.file.datalake.FileSystemClient.listPaths
         client.listPaths().forEach(path -> System.out.printf("Name: %s%n", path.getName()));
-        // END: com.azure.storage.file.datalake.FileSystemClient.listFileSystems
+        // END: com.azure.storage.file.datalake.FileSystemClient.listPaths
 
-        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.listPaths#ListFileSystemsOptions-Duration
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.listPaths#ListPathsOptions-Duration
         ListPathsOptions options = new ListPathsOptions()
             .setPath("pathPrefixToMatch")
             .setMaxResults(10);
 
         client.listPaths(options, timeout).forEach(path -> System.out.printf("Name: %s%n", path.getName()));
-        // END: com.azure.storage.file.datalake.FileSystemClient.listPaths#ListFileSystemsOptions-Duration
+        // END: com.azure.storage.file.datalake.FileSystemClient.listPaths#ListPathsOptions-Duration
     }
 
 }

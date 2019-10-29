@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
@@ -42,9 +45,9 @@ import java.util.Objects;
  */
 public class DataLakeFileClient extends PathClient {
 
-    private ClientLogger logger = new ClientLogger(DataLakeFileClient.class);
+    private final ClientLogger logger = new ClientLogger(DataLakeFileClient.class);
 
-    private DataLakeFileAsyncClient dataLakeFileAsyncClient;
+    private final DataLakeFileAsyncClient dataLakeFileAsyncClient;
 
     DataLakeFileClient(DataLakeFileAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient) {
         super(pathAsyncClient, blockBlobClient);
@@ -121,7 +124,8 @@ public class DataLakeFileClient extends PathClient {
      * @return A response containing information about the created file
      */
     public Response<PathInfo> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions, String permissions, String umask, Duration timeout, Context context) {
+        DataLakeRequestConditions accessConditions, String permissions, String umask, Duration timeout,
+        Context context) {
         Mono<Response<PathInfo>> response = pathAsyncClient.createWithResponse(PathResourceType.FILE, headers, metadata,
             accessConditions, permissions, umask, context);
 
@@ -160,7 +164,8 @@ public class DataLakeFileClient extends PathClient {
      *
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> deleteWithResponse(DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
+    public Response<Void> deleteWithResponse(DataLakeRequestConditions accessConditions, Duration timeout,
+        Context context) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         Mono<Response<Void>> response = pathAsyncClient.deleteWithResponse(null, accessConditions, context);
 
@@ -215,8 +220,8 @@ public class DataLakeFileClient extends PathClient {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
-        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(fbb.subscribeOn(Schedulers.elastic()),
-            offset, length, contentMd5, leaseId, context);
+        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
+            fbb.subscribeOn(Schedulers.elastic()), offset, length, contentMd5, leaseId, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -310,6 +315,7 @@ public class DataLakeFileClient extends PathClient {
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified file range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
@@ -345,16 +351,20 @@ public class DataLakeFileClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.renameWithResponse#String-PathHTTPHeaders-Map-String-String-DataLakeRequestConditions-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context}
      *
      * @param destinationPath Relative path from the file system to rename the file to.
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
      * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
-     * @return A {@link Response} whose {@link Response#getValue() value} that contains a {@link DataLakeFileClient} used
-     * to interact with the file created.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} that contains a {@link DataLakeFileClient}
+     * used to interact with the file created.
      */
-    public Response<DataLakeFileClient> renameWithResponse(String destinationPath, DataLakeRequestConditions sourceAccessConditions,
-        DataLakeRequestConditions destAccessConditions, Duration timeout, Context context) {
+    public Response<DataLakeFileClient> renameWithResponse(String destinationPath,
+        DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions,
+        Duration timeout, Context context) {
 
         Mono<Response<PathClient>> response = renameWithResponse(destinationPath, sourceAccessConditions,
             destAccessConditions, context);

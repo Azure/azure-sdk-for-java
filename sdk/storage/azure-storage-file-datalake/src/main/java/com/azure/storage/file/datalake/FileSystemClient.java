@@ -30,9 +30,9 @@ import java.util.Map;
  * may also be used to construct URLs to files/directories.
  *
  * <p>
- * This client contains operations on a file system. Operations on a path are available on {@link DataLakeFileClient} and
- * {@link DataLakeDirectoryClient} through {@link #getFileClient(String)} and {@link #getDirectoryClient(String)} respectively,
- * and operations on the service are available on {@link DataLakeServiceClient}.
+ * This client contains operations on a file system. Operations on a path are available on {@link DataLakeFileClient}
+ * and {@link DataLakeDirectoryClient} through {@link #getFileClient(String)} and {@link #getDirectoryClient(String)}
+ * respectively, and operations on the service are available on {@link DataLakeServiceClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>
@@ -63,8 +63,8 @@ public class FileSystemClient {
     }
 
     /**
-     * Initializes a new DataLakeFileClient object by concatenating fileName to the end of FileSystemClient's URL. The new
-     * DataLakeFileClient uses the same request policy pipeline as the FileSystemClient.
+     * Initializes a new DataLakeFileClient object by concatenating fileName to the end of FileSystemClient's URL. The
+     * new DataLakeFileClient uses the same request policy pipeline as the FileSystemClient.
      *
      * @param fileName A {@code String} representing the name of the file.
      *
@@ -72,7 +72,8 @@ public class FileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getFileClient#String}
      *
-     * @return A new {@link DataLakeFileClient} object which references the file with the specified name in this file system.
+     * @return A new {@link DataLakeFileClient} object which references the file with the specified name in this file
+     * system.
      */
     public DataLakeFileClient getFileClient(String fileName) {
         if (ImplUtils.isNullOrEmpty(fileName)) {
@@ -83,8 +84,8 @@ public class FileSystemClient {
     }
 
     /**
-     * Initializes a new DataLakeDirectoryClient object by concatenating directoryName to the end of FileSystemClient's URL.
-     * The new DataLakeDirectoryClient uses the same request policy pipeline as the FileSystemClient.
+     * Initializes a new DataLakeDirectoryClient object by concatenating directoryName to the end of FileSystemClient's
+     * URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the FileSystemClient.
      *
      * @param directoryName A {@code String} representing the name of the directory.
      *
@@ -92,8 +93,8 @@ public class FileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getDirectoryClient#String}
      *
-     * @return A new {@link DataLakeDirectoryClient} object which references the directory with the specified name in this
-     * file system.
+     * @return A new {@link DataLakeDirectoryClient} object which references the directory with the specified name in
+     * this file system.
      */
     public DataLakeDirectoryClient getDirectoryClient(String directoryName) {
         return new DataLakeDirectoryClient(fileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
@@ -287,8 +288,8 @@ public class FileSystemClient {
 
     /**
      * Returns a lazy loaded list of files/directories in this account. The returned {@link PagedIterable} can be
-     * consumed while new items are automatically retrieved as needed. For more information, see the <a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     * consumed while new items are automatically retrieved as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -302,8 +303,8 @@ public class FileSystemClient {
 
     /**
      * Returns a lazy loaded list of files/directories in this account. The returned {@link PagedIterable} can be
-     * consumed while new items are automatically retrieved as needed. For more information, see the <a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     * consumed while new items are automatically retrieved as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -335,12 +336,11 @@ public class FileSystemClient {
 
     /**
      * Creates a new file within a file system. If a file with the same name already exists, the file will be
-     * overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * overwritten. For more information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
      *
      * @param fileName Name of the file to create.
      * @param headers {@link PathHttpHeaders}
@@ -348,6 +348,9 @@ public class FileSystemClient {
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
      * to interact with the file created.
      */
@@ -356,8 +359,8 @@ public class FileSystemClient {
         String permissions, String umask, Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
 
-        return new SimpleResponse<>(dataLakeFileClient.createWithResponse(headers, metadata, accessConditions, permissions,
-            umask, timeout, context), dataLakeFileClient);
+        return new SimpleResponse<>(dataLakeFileClient.createWithResponse(headers, metadata, accessConditions,
+            permissions, umask, timeout, context), dataLakeFileClient);
     }
 
     /**
@@ -418,7 +421,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
      *
      * @param directoryName Name of the directory to create.
      * @param headers {@link PathHttpHeaders}
@@ -426,16 +429,19 @@ public class FileSystemClient {
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient} used to
-     * interact with the directory created.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient}
+     * used to interact with the directory created.
      */
     public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
         String permissions, String umask, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
 
-        return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(headers, metadata, accessConditions, permissions, umask,
-            timeout, context), dataLakeDirectoryClient);
+        return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(headers, metadata, accessConditions,
+            permissions, umask, timeout, context), dataLakeDirectoryClient);
     }
 
     /**

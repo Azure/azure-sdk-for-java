@@ -10,15 +10,15 @@ import java.util.Map;
  * Properties of a file system.
  */
 public final class FileSystemProperties {
-    private Map<String, String> metadata;
-    private String eTag;
-    private OffsetDateTime lastModified;
-    private LeaseDurationType leaseDuration;
-    private LeaseStateType leaseState;
-    private LeaseStatusType leaseStatus;
-    private PublicAccessType dataLakePublicAccess;
-    private boolean hasImmutabilityPolicy;
-    private boolean hasLegalHold;
+    private final Map<String, String> metadata;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final LeaseDurationType leaseDuration;
+    private final LeaseStateType leaseState;
+    private final LeaseStatusType leaseStatus;
+    private final PublicAccessType dataLakePublicAccess;
+    private final boolean hasImmutabilityPolicy;
+    private final boolean hasLegalHold;
 
     /**
      * Constructs a {@link FileSystemProperties}.
@@ -35,8 +35,8 @@ public final class FileSystemProperties {
      */
     public FileSystemProperties(final Map<String, String> metadata, final String eTag,
         final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
-        final LeaseStatusType leaseStatus, final PublicAccessType dataLakePublicAccess, final boolean hasImmutabilityPolicy,
-        final boolean hasLegalHold) {
+        final LeaseStatusType leaseStatus, final PublicAccessType dataLakePublicAccess,
+        final boolean hasImmutabilityPolicy, final boolean hasLegalHold) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
