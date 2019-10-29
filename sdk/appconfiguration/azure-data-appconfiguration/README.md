@@ -176,6 +176,7 @@ client.listConfigurationSettings(new SettingSelector().setLabels(periodicUpdateL
 The following sections provide several code snippets covering some of the most common configuration service tasks, including:
 
 ### Create a configuration client
+
 Create a configuration client by using `ConfigurationClientBuilder` by passing connection string.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
@@ -186,9 +187,13 @@ ConfigurationClient client = new ConfigurationClientBuilder()
 ### Create a configuration setting
 
 Create a configuration setting to be stored in the configuration store. There are two ways to store a configuration setting:
-- `addConfigurationSetting` creates a setting only if the setting does not already exist in the store.
-- `setConfigurationSetting` creates a setting if it doesn't exist or overrides an existing setting.
 
+- `addConfigurationSetting` creates a setting only if the setting does not already exist in the store.
+```Java
+ConfigurationSetting setting = configurationClient.addConfigurationSetting("new_key", "new_label", "new_value");
+```
+Or
+- `setConfigurationSetting` creates a setting if it doesn't exist or overrides an existing setting.
 ```Java
 ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ```
@@ -200,9 +205,10 @@ Retrieve a previously stored configuration setting by calling `getConfigurationS
 ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting retrievedSetting = client.getConfigurationSetting("some_key", "some_label");
 ```
-For conditional request, if you want to include the ETag value of `ConfigurationSetting` in the HTTP request, 
-set the `ifChanged` parameter to true. If you decided to make a conditional request, the method could return a
-response with status code 304 (Which indicates the given configuration in the request is exactly same as in the service) if the configuration setting contains same ETag value as in the service, and response's value will be null.
+For conditional request, if you want to conditionally fetch a configuration setting, set `ifChanged` to true. 
+When `ifChanged` is true, the configuration setting is only retrieved if it is different than the given `setting`. 
+This is determined by comparing the ETag of the `setting` to the one in the service to see if they are the same or not.
+If the ETags are not the same, it means the configuration setting is different, and its value is retrieved.
 ```Java
 Response<ConfigurationSetting> settingResponse = client.getConfigurationSettingWithResponse(setting, null, true, Context.NONE);
 ```
@@ -214,9 +220,10 @@ Update an existing configuration setting by calling `setConfigurationSetting`.
 ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting updatedSetting = client.setConfigurationSetting("some_key", "some_label", "new_value");
 ```
-For conditional request, if you want to include the ETag value of `ConfigurationSetting` in the HTTP request, 
-set the `ifUnchanged` parameter to true. The configuration setting will be updated only if the ETag value matched.
-Otherwise, an exception `HttpResponseException` will be thrown. You can find what cause the exception by looking into the response's properties, `getStatusCode`, `getHeaders`, and `getRequest` if it helps.
+For conditional request, if you want to conditionally update a configuration setting, set the `ifUnchanged` parameter to
+true. When `ifUnchanged` is true, the configuration setting is only updated if it is same as the given `setting`.
+This is determined by comparing the ETag of the `setting` to the one in the service to see if they are the same or not.
+If the ETag are the same, it means the configuration setting is same, and its value is updated.
 ```Java
 Response<ConfigurationSetting> settingResponse = client.setConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
@@ -228,10 +235,10 @@ Delete an existing configuration setting by calling `deleteConfigurationSetting`
 ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting deletedSetting = client.deleteConfigurationSetting("some_key", "some_label");
 ```
-For conditional request, if you want to include the ETag value of `ConfigurationSetting` in the HTTP request, 
-set the `ifUnchanged` parameter to true. If you decided to make a conditional request, the method could return a
-response with status code 204 if the configuration setting contains same ETag value as in the service but the no same configuration setting found in the service, and the response's value will be null.
-
+For conditional request, if you want to conditionally delete a configuration setting, set the `ifUnchanged` parameter 
+to true. When `ifUnchanged` parameter to true. When `ifUnchanged` is true, the configuration setting is only deleted if 
+it is same as the given `setting`. This is determined by comparing the ETag of the `setting` to the one in the service 
+to see if they are the same or not. If the ETag are same, it means the configuration setting is same, and its value is deleted.
 ```Java
 Response<ConfigurationSetting> settingResponse = client.deleteConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
