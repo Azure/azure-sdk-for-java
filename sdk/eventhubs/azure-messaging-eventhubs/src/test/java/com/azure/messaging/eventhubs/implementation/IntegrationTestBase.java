@@ -170,7 +170,7 @@ public abstract class IntegrationTestBase extends TestBase {
         final Instant datePushed = Instant.now();
 
         try {
-            producer.send(events).block(TIMEOUT);
+            producer.send(events, options).block(TIMEOUT);
         } finally {
             dispose(producer);
         }
