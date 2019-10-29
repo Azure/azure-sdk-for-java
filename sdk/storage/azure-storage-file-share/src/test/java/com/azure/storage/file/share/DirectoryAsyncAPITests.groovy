@@ -1,14 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file
+package com.azure.storage.file.share
 
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.share.ShareFileAsyncClient
-import com.azure.storage.file.share.ShareFileSmbProperties
-import com.azure.storage.file.share.ShareClient
-import com.azure.storage.file.share.ShareDirectoryAsyncClient
 import com.azure.storage.file.share.models.FileErrorCode
 import com.azure.storage.file.share.models.FileHttpHeaders
 import com.azure.storage.file.share.models.FileStorageException

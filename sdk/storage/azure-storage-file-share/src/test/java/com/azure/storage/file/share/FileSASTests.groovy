@@ -1,4 +1,4 @@
-package com.azure.storage.file
+package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
@@ -8,13 +8,6 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
-
-import com.azure.storage.file.share.ShareFileClient
-import com.azure.storage.file.share.ShareFileSasPermission
-import com.azure.storage.file.share.ShareServiceSasSignatureValues
-import com.azure.storage.file.share.ShareClient
-import com.azure.storage.file.share.ShareSasPermission
-import com.azure.storage.file.share.ShareServiceClient
 import com.azure.storage.file.share.models.FileAccessPolicy
 import com.azure.storage.file.share.models.FileSignedIdentifier
 import com.azure.storage.file.share.models.FileStorageException

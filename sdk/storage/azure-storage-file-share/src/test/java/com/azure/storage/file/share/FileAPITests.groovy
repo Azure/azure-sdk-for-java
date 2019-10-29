@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file
+package com.azure.storage.file.share
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
@@ -9,11 +9,6 @@ import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.file.share.ShareFileSasPermission
-import com.azure.storage.file.share.ShareServiceSasSignatureValues
-import com.azure.storage.file.share.ShareFileSmbProperties
-import com.azure.storage.file.share.ShareClient
-import com.azure.storage.file.share.ShareFileClient
 import com.azure.storage.file.share.models.FileCopyInfo
 import com.azure.storage.file.share.models.FileErrorCode
 import com.azure.storage.file.share.models.FileHttpHeaders

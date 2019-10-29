@@ -1,13 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file
+package com.azure.storage.file.share
 
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
-
-import com.azure.storage.file.share.StorageFileInputStream
-import com.azure.storage.file.share.StorageFileOutputStream
 
 class StorageFileInputOutputStreamTests extends APISpec {
     def fileClient
