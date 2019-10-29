@@ -6,7 +6,7 @@ import com.azure.search.models.SynonymMap;
 import org.junit.Assert;
 import org.junit.Test;
 
-public abstract class SynonymMapTestBase extends SearchServiceTestBase {
+public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void createSynonymMapReturnsCorrectDefinition();

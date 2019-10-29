@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class SynonymMapSyncTests extends SynonymMapTestBase {
+public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase {
     private SearchServiceClient client;
 
     @Override

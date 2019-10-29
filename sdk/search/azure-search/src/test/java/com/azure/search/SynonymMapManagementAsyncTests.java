@@ -14,7 +14,7 @@ import reactor.test.StepVerifier;
 import java.util.UUID;
 
 
-public class SynonymMapAsyncTests extends SynonymMapTestBase {
+public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase {
     private SearchServiceAsyncClient client;
 
     @Override
