@@ -28,7 +28,7 @@ public class ConsumeEvent {
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
      *         complete.
      * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubAsyncConsumer},
-     *         or the {@link EventHubAsyncProducerClient}
+     *         or the {@link EventHubProducerAsyncClient}
      */
     public static void main(String[] args) throws InterruptedException, IOException {
         CountDownLatch countDownLatch = new CountDownLatch(NUMBER_OF_EVENTS);
@@ -73,7 +73,7 @@ public class ConsumeEvent {
             countDownLatch.countDown();
         });
 
-        EventHubAsyncProducerClient producer = client.createProducer();
+        EventHubProducerAsyncClient producer = client.createProducer();
 
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
         // We set the send options to send the events to `firstPartition`.

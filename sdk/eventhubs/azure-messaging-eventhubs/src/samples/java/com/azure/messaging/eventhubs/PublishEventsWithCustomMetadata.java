@@ -35,7 +35,7 @@ public class PublishEventsWithCustomMetadata {
             .buildAsyncClient();
 
         // Create a producer. This overload of `createProducer` does not accept any arguments
-        EventHubAsyncProducerClient producer = client.createProducer();
+        EventHubProducerAsyncClient producer = client.createProducer();
 
         // Because an event consists mainly of an opaque set of bytes, it may be difficult for consumers of those events
         // to make informed decisions about how to process them.

@@ -99,7 +99,7 @@ public class EventHubClient implements Closeable {
      * @return A new {@link EventHubProducerClient}.
      */
     public EventHubProducerClient createProducer() {
-        final EventHubAsyncProducerClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
         return new EventHubProducerClient(producer, retry.getTryTimeout());
     }
 

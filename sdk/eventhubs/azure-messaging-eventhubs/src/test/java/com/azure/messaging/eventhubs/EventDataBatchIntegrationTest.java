@@ -34,7 +34,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
     private EventHubAsyncClient client;
-    private EventHubAsyncProducerClient producer;
+    private EventHubProducerAsyncClient producer;
 
     @Mock
     private ErrorContextProvider contextProvider;

@@ -69,7 +69,7 @@ public class EventHubProducerClientTest {
     @Captor
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
-    private EventHubAsyncProducerClient asyncProducer;
+    private EventHubProducerAsyncClient asyncProducer;
     private RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(30));
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubLinkProvider linkProvider;
@@ -84,7 +84,7 @@ public class EventHubProducerClientTest {
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, retryOptions);
-        asyncProducer = new EventHubAsyncProducerClient(EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
+        asyncProducer = new EventHubProducerAsyncClient(EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
             messageSerializer);
     }
 
@@ -132,7 +132,7 @@ public class EventHubProducerClientTest {
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
-        final EventHubAsyncProducerClient asyncProducer = new EventHubAsyncProducerClient(EVENT_HUB_NAME, linkProvider,
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(EVENT_HUB_NAME, linkProvider,
             retryOptions, tracerProvider, messageSerializer);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
@@ -184,7 +184,7 @@ public class EventHubProducerClientTest {
             eq(retryOptions.getTryTimeout()), any()))
             .thenReturn(Mono.just(sendLink));
 
-        final EventHubAsyncProducerClient asyncProducer = new EventHubAsyncProducerClient(EVENT_HUB_NAME, linkProvider,
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(EVENT_HUB_NAME, linkProvider,
             retryOptions, tracerProvider, messageSerializer);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE));

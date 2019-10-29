@@ -27,7 +27,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
      *         complete.
      * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubAsyncConsumer},
-     *         or the {@link EventHubAsyncProducerClient}
+     *         or the {@link EventHubProducerAsyncClient}
      */
     public static void main(String[] args) throws InterruptedException, IOException {
         Semaphore semaphore = new Semaphore(0);
@@ -90,7 +90,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
             semaphore.release();
         });
 
-        EventHubAsyncProducerClient producer = client.createProducer();
+        EventHubProducerAsyncClient producer = client.createProducer();
 
         // Because the consumer is only listening to new events, we need to send some events to that partition.
         // This sends the events to `lastEnqueuedSequencePartitionId`.

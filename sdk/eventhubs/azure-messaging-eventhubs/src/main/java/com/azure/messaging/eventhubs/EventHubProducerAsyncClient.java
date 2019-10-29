@@ -74,12 +74,12 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  *
  * <p><strong>Create a producer that routes events to any partition</strong></p>
  * To allow automatic routing of messages to available partition, do not specify the {@link
- * BatchOptions#getPartitionId() partitionId} when creating the {@link EventHubAsyncProducerClient}.
+ * BatchOptions#getPartitionId() partitionId} when creating the {@link EventHubProducerAsyncClient}.
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
  * Developers can push events to a single partition by specifying the
- * {@link BatchOptions#setPartitionId(String) partitionId} when creating an {@link EventHubAsyncProducerClient}.
+ * {@link BatchOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducerAsyncClient}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation#partitionId}
  *
@@ -106,7 +106,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch}
  */
 @Immutable
-public class EventHubAsyncProducerClient implements Closeable {
+public class EventHubProducerAsyncClient implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
@@ -118,7 +118,7 @@ public class EventHubAsyncProducerClient implements Closeable {
      * load balance messages is the eventHubName.
      */
     private final ConcurrentHashMap<String, AmqpSendLink> openLinks = new ConcurrentHashMap<>();
-    private final ClientLogger logger = new ClientLogger(EventHubAsyncProducerClient.class);
+    private final ClientLogger logger = new ClientLogger(EventHubProducerAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String eventHubName;
     private final EventHubLinkProvider linkProvider;
@@ -127,11 +127,11 @@ public class EventHubAsyncProducerClient implements Closeable {
     private final MessageSerializer messageSerializer;
 
     /**
-     * Creates a new instance of this {@link EventHubAsyncProducerClient} that can send messages to a single partition
+     * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
      * when {@link BatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to load
      * balance the messages amongst available partitions.
      */
-    EventHubAsyncProducerClient(String eventHubName, EventHubLinkProvider linkProvider, RetryOptions retryOptions,
+    EventHubProducerAsyncClient(String eventHubName, EventHubLinkProvider linkProvider, RetryOptions retryOptions,
         TracerProvider tracerProvider, MessageSerializer messageSerializer) {
         this.eventHubName = eventHubName;
         this.linkProvider = linkProvider;
@@ -327,8 +327,8 @@ public class EventHubAsyncProducerClient implements Closeable {
      * @return A {@link Mono} that completes when the batch is pushed to the service.
      *
      * @throws NullPointerException if {@code batch} is {@code null}.
-     * @see EventHubAsyncProducerClient#createBatch()
-     * @see EventHubAsyncProducerClient#createBatch(BatchOptions)
+     * @see EventHubProducerAsyncClient#createBatch()
+     * @see EventHubProducerAsyncClient#createBatch(BatchOptions)
      */
     public Mono<Void> send(EventDataBatch batch) {
         if (batch == null) {
@@ -483,7 +483,7 @@ public class EventHubAsyncProducerClient implements Closeable {
     }
 
     /**
-     * Disposes of the {@link EventHubAsyncProducerClient} by closing the underlying connection to the service.
+     * Disposes of the {@link EventHubProducerAsyncClient} by closing the underlying connection to the service.
      */
     @Override
     public void close() {

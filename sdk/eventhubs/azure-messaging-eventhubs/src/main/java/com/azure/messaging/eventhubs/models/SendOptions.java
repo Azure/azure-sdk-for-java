@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncProducerClient;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import reactor.core.publisher.Flux;
 
@@ -15,9 +15,9 @@ import reactor.core.publisher.Flux;
  *
  * @see EventHubProducerClient#send(EventData, SendOptions)
  * @see EventHubProducerClient#send(Iterable, SendOptions)
- * @see EventHubAsyncProducerClient#send(EventData, SendOptions)
- * @see EventHubAsyncProducerClient#send(Iterable, SendOptions)
- * @see EventHubAsyncProducerClient#send(Flux, SendOptions)
+ * @see EventHubProducerAsyncClient#send(EventData, SendOptions)
+ * @see EventHubProducerAsyncClient#send(Iterable, SendOptions)
+ * @see EventHubProducerAsyncClient#send(Flux, SendOptions)
  */
 @Fluent
 public class SendOptions implements Cloneable {

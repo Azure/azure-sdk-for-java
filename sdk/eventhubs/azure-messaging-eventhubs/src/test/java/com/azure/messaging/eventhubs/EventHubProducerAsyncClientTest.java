@@ -52,7 +52,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-public class EventHubAsyncProducerClientTest {
+public class EventHubProducerAsyncClientTest {
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
 
@@ -71,7 +71,7 @@ public class EventHubAsyncProducerClientTest {
 
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(10));
-    private EventHubAsyncProducerClient producer;
+    private EventHubProducerAsyncClient producer;
     private EventHubLinkProvider linkProvider;
 
     @Before
@@ -80,7 +80,7 @@ public class EventHubAsyncProducerClientTest {
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, retryOptions);
-        producer = new EventHubAsyncProducerClient(EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
+        producer = new EventHubProducerAsyncClient(EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
             messageSerializer);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -206,7 +206,7 @@ public class EventHubAsyncProducerClientTest {
         final String partitionId = "my-partition-id";
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
-        final EventHubAsyncProducerClient asyncProducer = new EventHubAsyncProducerClient(EVENT_HUB_NAME, linkProvider,
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(EVENT_HUB_NAME, linkProvider,
             retryOptions, tracerProvider, messageSerializer);
 
         when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
@@ -260,7 +260,7 @@ public class EventHubAsyncProducerClientTest {
         final String partitionId = "my-partition-id";
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
-        final EventHubAsyncProducerClient asyncProducer = new EventHubAsyncProducerClient(EVENT_HUB_NAME, linkProvider,
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(EVENT_HUB_NAME, linkProvider,
             retryOptions, tracerProvider, messageSerializer);
 
         when(connection.createSession(argThat(name -> name.endsWith(partitionId))))

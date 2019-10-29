@@ -134,7 +134,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubAsyncProducerClient producer = clients[0].createProducer();
+        final EventHubProducerAsyncClient producer = clients[0].createProducer();
         final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
 

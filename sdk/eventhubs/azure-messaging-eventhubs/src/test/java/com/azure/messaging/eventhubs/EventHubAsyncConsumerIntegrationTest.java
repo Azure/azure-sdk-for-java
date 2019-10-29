@@ -90,7 +90,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
         final CountDownLatch countDownLatch = new CountDownLatch(partitionIds.size());
         final EventHubAsyncConsumer[] consumers = new EventHubAsyncConsumer[partitionIds.size()];
-        final EventHubAsyncProducerClient[] producers = new EventHubAsyncProducerClient[partitionIds.size()];
+        final EventHubProducerAsyncClient[] producers = new EventHubProducerAsyncClient[partitionIds.size()];
         final Disposable.Composite subscriptions = Disposables.composite();
         try {
             for (int i = 0; i < partitionIds.size(); i++) {
@@ -117,7 +117,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
             for (int i = 0; i < partitionIds.size(); i++) {
                 final String partitionId = partitionIds.get(i);
                 final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
-                final EventHubAsyncProducerClient producer = producers[i];
+                final EventHubProducerAsyncClient producer = producers[i];
 
                 producer.send(TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID), sendOptions).block(TIMEOUT);
             }
@@ -154,7 +154,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final int expectedNumber = 5;
-        final EventHubAsyncProducerClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
         final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
             sent -> logger.info("Event sent."),
             error -> logger.error("Error sending event", error));
@@ -183,7 +183,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String secondPartitionId = "1";
         final AtomicBoolean isActive = new AtomicBoolean(true);
-        final EventHubAsyncProducerClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
         final Disposable producerEvents = getEvents(isActive)
             .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(secondPartitionId)))
             .subscribe(
@@ -309,7 +309,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final Disposable.Composite subscriptions = Disposables.composite();
 
-        final EventHubAsyncProducerClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
         subscriptions.add(getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
             sent -> logger.info("Event sent."),
             error -> logger.error("Error sending event", error)));

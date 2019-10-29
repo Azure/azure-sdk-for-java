@@ -43,7 +43,7 @@ public class PublishEventsToSpecificPartition {
         String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
         SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
 
-        EventHubAsyncProducerClient producer = client.createProducer();
+        EventHubProducerAsyncClient producer = client.createProducer();
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(

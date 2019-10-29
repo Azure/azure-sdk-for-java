@@ -40,7 +40,7 @@ public class PublishEventDataBatch {
 
         // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
         // sent from this producer are load balanced between all available partitions in the Event Hub instance.
-        final EventHubAsyncProducerClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
 
         // Creating a batch where we want the events ending up in the same partition by setting the partition key.
         final BatchOptions options = new BatchOptions()

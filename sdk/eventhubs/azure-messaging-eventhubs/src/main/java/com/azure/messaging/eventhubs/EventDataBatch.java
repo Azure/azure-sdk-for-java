@@ -29,9 +29,9 @@ import java.util.Objects;
  * sent to the Azure Event Hubs service.
  *
  * @see EventHubProducerClient#createBatch()
- * @see EventHubAsyncProducerClient#createBatch()
+ * @see EventHubProducerAsyncClient#createBatch()
  * @see EventHubProducerClient See EventHubProducer for examples using the synchronous producer.
- * @see EventHubAsyncProducerClient See EventHubAsyncProducerClient for examples using the asynchronous producer.
+ * @see EventHubProducerAsyncClient See EventHubProducerAsyncClient for examples using the asynchronous producer.
  */
 public final class EventDataBatch {
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);

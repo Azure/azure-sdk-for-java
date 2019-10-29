@@ -121,10 +121,10 @@ public class EventHubAsyncClient implements Closeable {
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
      * in batches.
      *
-     * @return A new {@link EventHubAsyncProducerClient}.
+     * @return A new {@link EventHubProducerAsyncClient}.
      */
-    public EventHubAsyncProducerClient createProducer() {
-        return new EventHubAsyncProducerClient(getEventHubName(), linkProvider, connectionOptions.getRetry(),
+    public EventHubProducerAsyncClient createProducer() {
+        return new EventHubProducerAsyncClient(getEventHubName(), linkProvider, connectionOptions.getRetry(),
             tracerProvider, messageSerializer);
     }
 
@@ -216,7 +216,7 @@ public class EventHubAsyncClient implements Closeable {
 
     /**
      * Closes and disposes of connection to service. Any {@link EventHubAsyncConsumer EventHubConsumers} and {@link
-     * EventHubAsyncProducerClient EventHubProducers} created with this instance will have their connections closed.
+     * EventHubProducerAsyncClient EventHubProducers} created with this instance will have their connections closed.
      */
     @Override
     public void close() {

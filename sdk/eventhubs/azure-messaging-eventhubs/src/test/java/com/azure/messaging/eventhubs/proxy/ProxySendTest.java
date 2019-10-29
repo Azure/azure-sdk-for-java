@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
-import com.azure.messaging.eventhubs.EventHubAsyncProducerClient;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
@@ -105,7 +105,7 @@ public class ProxySendTest extends IntegrationTestBase {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubAsyncProducerClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
         final Instant sendTime = Instant.now();
 

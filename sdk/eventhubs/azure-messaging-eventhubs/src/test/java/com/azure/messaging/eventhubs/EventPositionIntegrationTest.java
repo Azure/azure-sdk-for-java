@@ -163,7 +163,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final String messageValue = UUID.randomUUID().toString();
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubAsyncProducerClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
         final Flux<EventData> events = Flux.range(0, NUMBER_OF_EVENTS).map(number -> {
             final EventData eventData = new EventData(("Event " + number).getBytes(UTF_8));
             eventData.addProperty(MESSAGE_TRACKING_ID, messageValue);
