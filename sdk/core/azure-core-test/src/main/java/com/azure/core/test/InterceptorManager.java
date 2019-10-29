@@ -15,6 +15,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -191,8 +194,11 @@ public class InterceptorManager implements AutoCloseable {
         }
 
         String filePath = folderFile.getPath() + "/" + testName + ".json";
+        if (Files.notExists(Paths.get(filePath))) {
+            throw  logger.logExceptionAsError(new RuntimeException(String.format(
+                "Missing playback file. File path:  %s. ", filePath)));
+        }
         logger.info("==> Playback file path: " + filePath);
-
         return new File(filePath);
     }
 
