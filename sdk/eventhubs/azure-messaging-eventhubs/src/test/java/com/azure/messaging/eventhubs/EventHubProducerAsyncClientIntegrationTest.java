@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -94,7 +93,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Verifies we can create an {@link EventDataBatch} and send it using our EventHubProducer.
      */
     @Test
-    public void sendBatch() throws IOException {
+    public void sendBatch() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -120,7 +119,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Verifies we can create an {@link EventDataBatch} with a partition key and send it using our EventHubProducer.
      */
     @Test
-    public void sendBatchWithPartitionKey() throws IOException {
+    public void sendBatchWithPartitionKey() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),

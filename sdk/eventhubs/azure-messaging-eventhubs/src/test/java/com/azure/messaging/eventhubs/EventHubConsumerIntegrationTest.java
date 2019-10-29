@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
@@ -256,6 +257,61 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(consumer, producer);
         }
+    }
+
+    /**
+     * Verifies we can get partition ids of an Event Hub.
+     */
+    @Test
+    public void getPartitionIds() {
+        // Act
+        final IterableStream<String> response = consumer.getPartitionIds();
+
+        // Assert
+        Assert.assertNotNull(response);
+
+        final List<String> partitionIds = response.stream().collect(Collectors.toList());
+        Assert.assertTrue(partitionIds.size() > 1);
+    }
+
+    /**
+     * Verifies we can get partition ids of an Event Hub.
+     */
+    @Test
+    public void getMetadata() {
+        // Arrange
+        final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
+
+        // Act
+        final EventHubProperties properties = consumer.getProperties();
+
+        // Assert
+        Assert.assertNotNull(properties);
+        Assert.assertEquals(connectionProperties.getEntityPath(), properties.getName());
+        Assert.assertTrue(properties.getCreatedAt().isBefore(Instant.now()));
+
+        Assert.assertNotNull(properties.getPartitionIds());
+        Assert.assertTrue(properties.getPartitionIds().length > 1);
+    }
+
+    /**
+     * Verifies we can get partition ids of an Event Hub.
+     */
+    @Test
+    public void getPartitionProperties() {
+        // Arrange
+        final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
+        final EventHubProperties properties = consumer.getProperties();
+        final String partitionId = properties.getPartitionIds()[0];
+
+        // Act
+        final PartitionProperties partitionProperties = consumer.getPartitionProperties(partitionId);
+
+        // Assert
+        Assert.assertNotNull(partitionProperties);
+
+        Assert.assertEquals(connectionProperties.getEntityPath(), partitionProperties.getEventHubName());
+        Assert.assertEquals(partitionId, partitionProperties.getId());
     }
 
     private static List<EventData> getEventsAsList(int numberOfEvents) {

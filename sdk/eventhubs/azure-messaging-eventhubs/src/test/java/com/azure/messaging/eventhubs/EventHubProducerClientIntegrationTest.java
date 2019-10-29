@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.BatchOptions;
@@ -14,8 +16,10 @@ import org.junit.rules.TestName;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -49,6 +53,70 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void afterTest() {
         dispose(asyncProducer);
+    }
+
+    /**
+     * Verifies we can get partition ids of an Event Hub.
+     */
+    @Test
+    public void getPartitionIds() {
+        // Act
+
+        // Act & Assert
+        try (EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, tryTimeout)) {
+            final IterableStream<String> response = producer.getPartitionIds();
+
+            Assert.assertNotNull(response);
+
+            final List<String> partitionIds = response.stream().collect(Collectors.toList());
+            Assert.assertTrue(partitionIds.size() > 1);
+        }
+    }
+
+    /**
+     * Verifies we can get partition ids of an Event Hub.
+     */
+    @Test
+    public void getMetadata() {
+        // Arrange
+        final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
+
+        // Act
+        try (EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, tryTimeout)) {
+            final EventHubProperties properties = producer.getProperties();
+
+            // Assert
+            Assert.assertNotNull(properties);
+            Assert.assertEquals(connectionProperties.getEntityPath(), properties.getName());
+            Assert.assertTrue(properties.getCreatedAt().isBefore(Instant.now()));
+
+            Assert.assertNotNull(properties.getPartitionIds());
+            Assert.assertTrue(properties.getPartitionIds().length > 1);
+        }
+    }
+
+    /**
+     * Verifies we can get partition ids of an Event Hub.
+     */
+    @Test
+    public void getPartitionProperties() {
+        // Arrange
+        final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
+
+        // Act
+
+        // Act
+        try (EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, tryTimeout)) {
+            final EventHubProperties properties = producer.getProperties();
+            final String partitionId = properties.getPartitionIds()[0];
+            final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
+
+            // Assert
+            Assert.assertNotNull(partitionProperties);
+
+            Assert.assertEquals(connectionProperties.getEntityPath(), partitionProperties.getEventHubName());
+            Assert.assertEquals(partitionId, partitionProperties.getId());
+        }
     }
 
     /**
