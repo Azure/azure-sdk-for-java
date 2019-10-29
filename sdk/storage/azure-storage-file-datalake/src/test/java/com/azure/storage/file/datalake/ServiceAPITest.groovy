@@ -132,8 +132,8 @@ class ServiceAPITest extends APISpec {
         expect:
         response.getStatusCode() == 200
         response.getValue() != null
-        response.getValue().getSignedOid() != null
-        response.getValue().getSignedTid() != null
+        response.getValue().getSignedObjectId() != null
+        response.getValue().getSignedTenantId() != null
         response.getValue().getSignedStart() != null
         response.getValue().getSignedExpiry() != null
         response.getValue().getSignedService() != null

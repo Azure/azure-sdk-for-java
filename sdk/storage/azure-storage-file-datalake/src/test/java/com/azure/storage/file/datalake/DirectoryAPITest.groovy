@@ -3,7 +3,7 @@ package com.azure.storage.file.datalake
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders
+
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
@@ -578,7 +578,7 @@ class DirectoryAPITest extends APISpec {
         properties.getETag()
         properties.getFileSize() >= 0
         properties.getContentType()
-        !properties.getContentMD5() // tested in "set HTTP headers"
+        !properties.getContentMd5() // tested in "set HTTP headers"
         !properties.getContentEncoding() // tested in "set HTTP headers"
         !properties.getContentDisposition() // tested in "set HTTP headers"
         !properties.getContentLanguage() // tested in "set HTTP headers"

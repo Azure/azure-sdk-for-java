@@ -3,41 +3,41 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.storage.file.datalake.implementation.models.PathCreateHeaders;
-import com.azure.storage.file.datalake.implementation.models.PathFlushDataHeaders;
-import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlHeaders;
-
 import java.time.OffsetDateTime;
 
+/**
+ * {@code PathInfo} contains basic information about a path that is returned by the service after certain
+ * operations.
+ */
 public class PathInfo {
 
     private final String eTag;
     private final OffsetDateTime lastModified;
 
+    /**
+     * Constructs a {@link PathInfo}
+     * @param eTag ETag of the path.
+     * @param lastModified Datetime when the path was last modified.
+     */
     public PathInfo(String eTag, OffsetDateTime lastModified) {
         this.eTag = eTag;
         this.lastModified = lastModified;
     }
 
-    public PathInfo(PathCreateHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-    }
-
-    public PathInfo(PathFlushDataHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-    }
-
-    public PathInfo(PathSetAccessControlHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-    }
-
+    /**
+     * Get the eTag property: The eTag property.
+     *
+     * @return the eTag value.
+     */
     public String getETag() {
         return eTag;
     }
 
+    /**
+     * Get the last modified property: The last modified property.
+     *
+     * @return the time when the file was last modified
+     */
     public OffsetDateTime getLastModified() {
         return lastModified;
     }

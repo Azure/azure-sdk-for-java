@@ -3,7 +3,7 @@ package com.azure.storage.file.datalake
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders
+
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
@@ -851,7 +851,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getFileClient(fileName).create()
 
         when:
-        def response = fsc.listPaths(new GetPathsOptions().setRecursive(true), null).iterator()
+        def response = fsc.listPaths(new ListPathsOptions().setRecursive(true), null).iterator()
 
         then:
         def dirPath = response.next()
@@ -869,7 +869,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getFileClient(fileName).create()
 
         when:
-        def response = fsc.listPaths(new GetPathsOptions().setReturnUpn(true), null).iterator()
+        def response = fsc.listPaths(new ListPathsOptions().setReturnUpn(true), null).iterator()
 
         then:
         def dirPath = response.next()
@@ -887,7 +887,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getFileClient(fileName).create()
 
         when:
-        def response = fsc.listPaths(new GetPathsOptions().setMaxResults(1), null).iterator()
+        def response = fsc.listPaths(new ListPathsOptions().setMaxResults(1), null).iterator()
 
         then:
         def dirPath = response.next()
@@ -905,7 +905,7 @@ class FileSystemAPITest extends APISpec {
 //        fsc.getFileClient(fileName).create()
 //
 //        when:
-//        def response = fsc.listPaths(new GetPathsOptions().setPath("foo"), null).iterator()
+//        def response = fsc.listPaths(new ListPathsOptions().setPath("foo"), null).iterator()
 //
 //        then:
 //        def dirPath = response.next()

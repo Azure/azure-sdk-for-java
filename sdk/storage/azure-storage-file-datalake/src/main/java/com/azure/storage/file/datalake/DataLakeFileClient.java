@@ -8,11 +8,10 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import reactor.core.publisher.Flux;
@@ -192,7 +191,7 @@ public class DataLakeFileClient extends PathClient {
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-byte-String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-byte-String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -216,7 +215,7 @@ public class DataLakeFileClient extends PathClient {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
-        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendDataWithResponse(fbb.subscribeOn(Schedulers.elastic()),
+        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(fbb.subscribeOn(Schedulers.elastic()),
             offset, length, contentMd5, leaseId, context);
 
         try {
@@ -270,7 +269,7 @@ public class DataLakeFileClient extends PathClient {
      */
     public Response<PathInfo> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PathInfo>> response =  dataLakeFileAsyncClient.flushDataWithResponse(position, retainUncommittedData,
+        Mono<Response<PathInfo>> response =  dataLakeFileAsyncClient.flushWithResponse(position, retainUncommittedData,
             close, httpHeaders, accessConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -299,7 +298,7 @@ public class DataLakeFileClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.readWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.readWithResponse#OutputStream-FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>

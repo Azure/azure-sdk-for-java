@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake;
+package com.azure.storage.file.datalake.sas;
 
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -11,6 +11,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 import java.time.OffsetDateTime;
@@ -25,12 +26,12 @@ import java.time.OffsetDateTime;
  * <p><strong>Generating SAS query parameters with {@link StorageSharedKeyCredential}</strong></p>
  * The following code generates SAS query parameters for an Azure storage path.
  * <p>
- * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
+ * {@codesnippet com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
  *
  * <p><strong>Generating SAS query parameters with {@link UserDelegationKey}</strong></p>
  * The following sample generates SAS query parameters for an Azure storage file system.
  * <p>
- * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceSasSignatureValues.generateSasQueryParameters#UserDelegationKey-String}
+ * {@codesnippet com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues.generateSasQueryParameters#UserDelegationKey-String}
  *
  * @see DataLakeServiceSasQueryParameters
  * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>

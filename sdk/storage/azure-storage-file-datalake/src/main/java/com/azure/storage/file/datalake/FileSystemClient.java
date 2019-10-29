@@ -13,9 +13,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerProperties;
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.GetPathsOptions;
+import com.azure.storage.file.datalake.models.FileSystemProperties;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 
@@ -296,7 +297,7 @@ public class FileSystemClient {
      * @return The list of files/directories.
      */
     public PagedIterable<PathItem> listPaths() {
-        return this.listPaths(new GetPathsOptions(), null);
+        return this.listPaths(new ListPathsOptions(), null);
     }
 
     /**
@@ -306,13 +307,13 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.listPaths#GetPathsOptions-Duration}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.listPaths#ListPathsOptions-Duration}
      *
-     * @param options A {@link GetPathsOptions} which specifies what data should be returned by the service.
+     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of files/directories.
      */
-    public PagedIterable<PathItem> listPaths(GetPathsOptions options, Duration timeout) {
+    public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
         return new PagedIterable<>(fileSystemAsyncClient.listPathsWithOptionalTimeout(options, timeout));
     }
 

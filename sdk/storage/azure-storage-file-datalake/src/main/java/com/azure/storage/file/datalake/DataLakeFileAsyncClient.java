@@ -13,12 +13,12 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileDownloadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Flux;
@@ -210,9 +210,9 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> appendData(Flux<ByteBuffer> data, long offset, long length) {
+    public Mono<Void> append(Flux<ByteBuffer> data, long offset, long length) {
         try {
-            return appendDataWithResponse(data, offset, length, null, null).flatMap(FluxUtil::toMono);
+            return appendWithResponse(data, offset, length, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -240,17 +240,17 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> appendDataWithResponse(Flux<ByteBuffer> data, long offset, long length,
+    public Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long offset, long length,
         byte[] contentMd5, String leaseId) {
         try {
-            return withContext(context -> appendDataWithResponse(data, offset, length, contentMd5,
+            return withContext(context -> appendWithResponse(data, offset, length, contentMd5,
                 leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> appendDataWithResponse(Flux<ByteBuffer> data, long offset, long length,
+    Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long offset, long length,
         byte[] contentMd5, String leaseId, Context context) {
 
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
@@ -277,9 +277,9 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      *
      * @return A reactive response containing the information of the created resource.
      */
-    public Mono<PathInfo> flushData(long position) {
+    public Mono<PathInfo> flush(long position) {
         try {
-            return flushDataWithResponse(position, false, false, null, null).flatMap(FluxUtil::toMono);
+            return flushWithResponse(position, false, false, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -305,17 +305,17 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      *
      * @return A reactive response containing the information of the created resource.
      */
-    public Mono<Response<PathInfo>> flushDataWithResponse(long position, boolean retainUncommittedData, boolean close,
+    public Mono<Response<PathInfo>> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions accessConditions) {
         try {
-            return withContext(context -> flushDataWithResponse(position, retainUncommittedData, close, httpHeaders,
+            return withContext(context -> flushWithResponse(position, retainUncommittedData, close, httpHeaders,
                 accessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PathInfo>> flushDataWithResponse(long position, boolean retainUncommittedData, boolean close,
+    Mono<Response<PathInfo>> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions accessConditions, Context context) {
 
         httpHeaders = httpHeaders == null ? new PathHttpHeaders() : httpHeaders;
@@ -330,7 +330,8 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
 
         return this.dataLakeStorage.paths().flushDataWithRestResponseAsync(null, position, retainUncommittedData, close,
             (long) 0, null, httpHeaders, lac, mac, context)
-            .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders())));
+            .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
+                response.getDeserializedHeaders().getLastModified())));
     }
 
     /**

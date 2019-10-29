@@ -17,14 +17,15 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
+import com.azure.storage.file.datalake.models.PathProperties;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
@@ -200,7 +201,8 @@ public class PathAsyncClient {
 
         return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null,
             buildMetadataString(metadata), permissions, umask, null, null, headers, lac, mac, null, context)
-            .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders())));
+            .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
+                response.getDeserializedHeaders().getLastModified())));
     }
 
     /**
@@ -273,7 +275,6 @@ public class PathAsyncClient {
         }
     }
 
-
     /**
      * Changes a resource's HTTP header properties. if only one HTTP header is updated, the others will all be erased.
      * In order to preserve existing values, they must be passed alongside the header being changed.
@@ -290,7 +291,7 @@ public class PathAsyncClient {
      */
     public Mono<Void> setHttpHeaders(PathHttpHeaders headers) {
         try {
-            return setHttpHeaders(headers, null).flatMap(FluxUtil::toMono);
+            return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -302,7 +303,7 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeaders#PathHttpHeaders-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -311,7 +312,8 @@ public class PathAsyncClient {
      * @param accessConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setHttpHeaders(PathHttpHeaders headers, DataLakeRequestConditions accessConditions) {
+    public Mono<Response<Void>> setHttpHeadersWithResponse(PathHttpHeaders headers,
+        DataLakeRequestConditions accessConditions) {
         try {
             return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
                 Transforms.toBlobRequestConditions(accessConditions));
@@ -422,7 +424,8 @@ public class PathAsyncClient {
 
         return this.dataLakeStorage.paths().setAccessControlWithRestResponseAsync(null, accessControl.getOwner(),
             accessControl.getGroup(), accessControl.getPermissions(), accessControl.getAcl(), null, lac, mac, context)
-            .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders())));
+            .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
+                response.getDeserializedHeaders().getLastModified())));
     }
 
     /**
@@ -450,7 +453,7 @@ public class PathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getAccessControl#boolean-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.PathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
@@ -482,7 +485,11 @@ public class PathAsyncClient {
 
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
             PathGetPropertiesAction.GET_ACCESS_CONTROL, returnUpn, null, null, lac, mac, context)
-            .map(response -> new SimpleResponse<>(response, new PathAccessControl(response.getDeserializedHeaders())));
+            .map(response -> new SimpleResponse<>(response, new PathAccessControl()
+                .setAcl(response.getDeserializedHeaders().getACL())
+                .setGroup(response.getDeserializedHeaders().getGroup())
+                .setOwner(response.getDeserializedHeaders().getOwner())
+                .setPermissions(response.getDeserializedHeaders().getPermissions())));
     }
 
     /**
@@ -552,7 +559,7 @@ public class PathAsyncClient {
      */
     SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationPath) {
         // Get current Blob URL and replace current path with user provided path
-        String newBlobEndpoint = BlobUrlParts.parse(Transforms.endpointToDesiredEndpoint(getPathUrl(), "dfs", "blob"))
+        String newBlobEndpoint = BlobUrlParts.parse(Transforms.endpointToDesiredEndpoint(getPathUrl(), "blob", "dfs"))
             .setBlobName(destinationPath).toUrl().toString();
 
         // TODO (gapra) : Investigate how to convert from datalake service version to blob service version

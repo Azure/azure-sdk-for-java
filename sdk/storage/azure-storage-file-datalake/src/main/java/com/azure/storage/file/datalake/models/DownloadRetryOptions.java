@@ -29,7 +29,7 @@ public final class DownloadRetryOptions {
      *
      * @return the maximum number of retries to attempt before the request finally fails
      */
-    public int maxRetryRequests() {
+    public int getMaxRetryRequests() {
         return maxRetryRequests;
     }
 
@@ -39,13 +39,13 @@ public final class DownloadRetryOptions {
      *
      * @param maxRetryRequests The number of retries to attempt before the request finally fails
      * @return the updated DownloadRetryOptions object
-     * @throws IllegalArgumentException If {@code maxRetryRequests} is less than 0
+     * @throws IllegalArgumentException If {@code setMaxRetryRequests} is less than 0
      */
-    public DownloadRetryOptions maxRetryRequests(int maxRetryRequests) {
+    public DownloadRetryOptions setMaxRetryRequests(int maxRetryRequests) {
         if (maxRetryRequests < 0) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,
-                    "options.maxRetryRequests", 0, Integer.MAX_VALUE)));
+                    "options.setMaxRetryRequests", 0, Integer.MAX_VALUE)));
         }
 
         this.maxRetryRequests = maxRetryRequests;

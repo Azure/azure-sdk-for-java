@@ -4,8 +4,7 @@ import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders
+
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
@@ -421,7 +420,7 @@ class FileAPITest extends APISpec {
         properties.getETag()
         properties.getFileSize() >= 0
         properties.getContentType()
-        !properties.getContentMD5() // tested in "set HTTP headers"
+        !properties.getContentMd5() // tested in "set HTTP headers"
         !properties.getContentEncoding() // tested in "set HTTP headers"
         !properties.getContentDisposition() // tested in "set HTTP headers"
         !properties.getContentLanguage() // tested in "set HTTP headers"
@@ -788,7 +787,7 @@ class FileAPITest extends APISpec {
 
         when:
         def range = new FileRange(2, 5L)
-        def options = new DownloadRetryOptions().maxRetryRequests(3)
+        def options = new DownloadRetryOptions().setMaxRetryRequests(3)
         fileClient.readWithResponse(new ByteArrayOutputStream(), range, options, null, false, null, null)
 
         then:
@@ -1127,8 +1126,7 @@ class FileAPITest extends APISpec {
         def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
 
         expect:
-        fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, new LeaseAccessConditions()
-            .setLeaseId(leaseID), null, null).getStatusCode() == 202
+        fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, leaseID, null, null).getStatusCode() == 202
     }
 
     def "Append data lease fail"() {
@@ -1136,8 +1134,7 @@ class FileAPITest extends APISpec {
         setupPathLeaseCondition(fc, receivedLeaseID)
 
         when:
-        fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, new LeaseAccessConditions()
-            .setLeaseId(garbageLeaseID), null, null)
+        fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, garbageLeaseID, null, null)
 
         then:
         def e = thrown(StorageErrorException)

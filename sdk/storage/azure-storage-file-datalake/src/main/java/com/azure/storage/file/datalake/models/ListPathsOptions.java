@@ -10,7 +10,7 @@ import com.azure.storage.file.datalake.FileSystemClient;
  * or a {@link FileSystemAsyncClient} object. See the constructor for details on each of the options. Null may be
  * passed in place of an object of this type if no options are desirable.
  */
-public class GetPathsOptions {
+public class ListPathsOptions {
     private final ClientLogger logger = new ClientLogger(ListBlobContainersOptions.class);
 
     private String path;
@@ -19,7 +19,7 @@ public class GetPathsOptions {
     private Integer maxResults;
 
 
-    public GetPathsOptions() {
+    public ListPathsOptions() {
     }
 
     /**
@@ -55,14 +55,14 @@ public class GetPathsOptions {
      * An error occurs if the path does not exist.
      *
      * @param path The path value
-     * @return the updated GetPathsOptions object
+     * @return the updated ListPathsOptions object
      */
-    public GetPathsOptions setPath(String path) {
+    public ListPathsOptions setPath(String path) {
         this.path = path;
         return this;
     }
 
-    public GetPathsOptions setRecursive(boolean recursive) {
+    public ListPathsOptions setRecursive(boolean recursive) {
         this.recursive = recursive;
         return this;
     }
@@ -75,9 +75,9 @@ public class GetPathsOptions {
      * have unique friendly names.
      *
      * @param returnUpn The returnUpn value
-     * @return the updated GetPathsOptions object
+     * @return the updated ListPathsOptions object
      */
-    public GetPathsOptions setReturnUpn(boolean returnUpn) {
+    public ListPathsOptions setReturnUpn(boolean returnUpn) {
         this.returnUpn = returnUpn;
         return this;
     }
@@ -100,7 +100,7 @@ public class GetPathsOptions {
      * @return the updated ListBlobContainersOptions object
      * @throws IllegalArgumentException If {@code maxResults} is less than or equal to {@code 0}.
      */
-    public GetPathsOptions setMaxResults(Integer maxResults) {
+    public ListPathsOptions setMaxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("MaxResults must be greater than 0."));
         }

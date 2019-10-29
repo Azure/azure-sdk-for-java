@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: FileSystemInfo, FileSystemItem, FileSystemProperties, PathInfo, PathItem, PathProperties, ListFileSystemsOptions, PathHttpHeaders
+custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders
 custom-types-subpackage: models
 ```
 

@@ -3,10 +3,14 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.FileSystemProperties;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 
 import java.time.Duration;
@@ -27,6 +31,8 @@ public class FileSystemClientJavaDocCodeSamples {
     private String proposedId = "proposedId";
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
     private Duration timeout = Duration.ofSeconds(30);
+    private String key1 = "key1";
+    private String value1 = "value1";
 
     /**
      * Code snippet for {@link FileSystemClient#getFileClient(String)}
@@ -175,6 +181,109 @@ public class FileSystemClientJavaDocCodeSamples {
         System.out.printf("Set metadata completed with status %d%n",
             client.setMetadataWithResponse(metadata, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.file.datalake.FileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link FileSystemClient#createFile(String)} and
+     * {@link FileSystemClient#createFileWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
+     */
+    public void createFileCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.createFile#String
+        DataLakeFileClient fileClient = client.createFile(fileName);
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.create#String
+
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        String permissions = "permissions";
+        String umask = "umask";
+        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, httpHeaders,
+            Collections.singletonMap("metadata", "value"), requestConditions,
+            permissions, umask, timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link FileSystemClient#deleteFile(String)} and
+     * {@link FileSystemClient#deleteFileWithResponse(String, DataLakeRequestConditions, Duration, Context)}
+     */
+    public void deleteFileCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.deleteFile#String
+        client.deleteFile(fileName);
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.FileSystemClient.deleteFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+
+        client.deleteFileWithResponse(fileName, requestConditions, timeout, new Context(key1, value1));
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.FileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link FileSystemClient#createDirectory(String) and
+     * {@link FileSystemClient#createDirectoryWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
+     */
+    public void createDirectoryCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.createDirectory#String
+        DataLakeDirectoryClient directoryClient = client.createDirectory(directoryName);
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.create
+
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        String permissions = "permissions";
+        String umask = "umask";
+        Response<DataLakeDirectoryClient> newDirectoryClient = client.createDirectoryWithResponse(directoryName, httpHeaders,
+            Collections.singletonMap("metadata", "value"), requestConditions,
+            permissions, umask, timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link FileSystemClient#deleteDirectory(String)} and
+     * {@link FileSystemClient#deleteDirectoryWithResponse(String, boolean, DataLakeRequestConditions, Duration, Context)}
+     */
+    public void deleteDirectoryCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.deleteDirectory#String
+        client.deleteDirectory(directoryName);
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.FileSystemClient.deleteDirectory#String
+
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        boolean recursive = false; // Default value
+
+        client.deleteDirectoryWithResponse(directoryName, recursive, requestConditions, timeout, new Context(key1, value1));
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.FileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link FileSystemClient#listPaths()} and
+     * {@link FileSystemClient#listPaths(ListPathsOptions, Duration)}
+     */
+    public void listPaths() {
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.listPaths
+        client.listPaths().forEach(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.FileSystemClient.listFileSystems
+
+        // BEGIN: com.azure.storage.file.datalake.FileSystemClient.listPaths#ListFileSystemsOptions-Duration
+        ListPathsOptions options = new ListPathsOptions()
+            .setPath("pathPrefixToMatch")
+            .setMaxResults(10);
+
+        client.listPaths(options, timeout).forEach(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.FileSystemClient.listPaths#ListFileSystemsOptions-Duration
     }
 
 }

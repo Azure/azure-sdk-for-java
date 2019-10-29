@@ -17,6 +17,7 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
+import com.azure.storage.file.datalake.models.PathProperties
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -90,7 +91,7 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    public static final String defaultEndpointTemplate = "http://%s.dfs.core.windows.net/"
+    public static final String defaultEndpointTemplate = "https://%s.dfs.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def DATA_LAKE_STORAGE = "DATA_LAKE_STORAGE_"
@@ -392,7 +393,7 @@ class APISpec extends Specification {
             response.getValue().getContentDisposition() == contentDisposition &&
             response.getValue().getContentEncoding() == contentEncoding &&
             response.getValue().getContentLanguage() == contentLanguage &&
-            response.getValue().getContentMD5() == contentMD5 &&
+            response.getValue().getContentMd5() == contentMD5 &&
             response.getHeaders().getValue("Content-Type") == contentType
     }
 

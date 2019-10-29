@@ -1,28 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake;
+package com.azure.storage.file.datalake.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.file.datalake.models.AccessTier;
-import com.azure.storage.file.datalake.models.ArchiveStatus;
-import com.azure.storage.file.datalake.models.CopyStatusType;
-import com.azure.storage.file.datalake.models.LeaseDurationType;
-import com.azure.storage.file.datalake.models.LeaseStateType;
-import com.azure.storage.file.datalake.models.LeaseStatusType;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 
+/**
+ * This class contains the response information returned from the service when getting path properties.
+ */
+@Immutable
 public class PathProperties {
-
     private final OffsetDateTime creationTime;
     private final OffsetDateTime lastModified;
     private final String eTag;
     private final long fileSize;
     private final String contentType;
-    private final byte[] contentMD5;
+    private final byte[] contentMd5;
     private final String contentEncoding;
     private final String contentDisposition;
     private final String contentLanguage;
@@ -44,41 +41,73 @@ public class PathProperties {
     private final OffsetDateTime accessTierChangeTime;
     private final Map<String, String> metadata;
 
-    public PathProperties(BlobProperties properties) {
-        this.creationTime = properties.getCreationTime();
-        this.lastModified = properties.getLastModified();
-        this.eTag = properties.getETag();
-        this.fileSize = properties.getBlobSize();
-        this.contentType = properties.getContentType();
-        this.contentMD5 = properties.getContentMd5();
-        this.contentEncoding = properties.getContentEncoding();
-        this.contentDisposition = properties.getContentDisposition();
-        this.contentLanguage = properties.getContentLanguage();
-        this.cacheControl = properties.getCacheControl();
-        this.leaseStatus = properties.getLeaseStatus() == null ? null :
-            LeaseStatusType.fromString(properties.getLeaseStatus().toString());
-        this.leaseState = properties.getLeaseState() == null ? null :
-            LeaseStateType.fromString(properties.getLeaseState().toString());
-        this.leaseDuration = properties.getLeaseDuration() == null ? null :
-            LeaseDurationType.fromString(properties.getLeaseDuration().toString());
-        this.copyId = properties.getCopyId();
-        this.copyStatus = properties.getCopyStatus() == null ? null :
-            CopyStatusType.fromString(properties.getCopyStatus().toString());
-        this.copySource = properties.getCopySource();
-        this.copyProgress = properties.getCopyProgress();
-        this.copyCompletionTime = properties.getCopyCompletionTime();
-        this.copyStatusDescription = properties.getCopyStatusDescription();
-        this.isServerEncrypted = properties.isServerEncrypted();
-        this.isIncrementalCopy = properties.isIncrementalCopy();
-        this.accessTier = properties.getAccessTier() == null ? null :
-            AccessTier.fromString(properties.getAccessTier().toString());
-        this.archiveStatus = properties.getArchiveStatus() == null ? null :
-            ArchiveStatus.fromString(properties.getArchiveStatus().toString());
-        this.encryptionKeySha256 = properties.getEncryptionKeySha256();
-        this.accessTierChangeTime = properties.getAccessTierChangeTime();
-        this.metadata = properties.getMetadata();
+    /**
+     * Constructs a {@link PathProperties}.
+     *
+     * @param creationTime Creation time of the file.
+     * @param lastModified Datetime when the file was last modified.
+     * @param eTag ETag of the file.
+     * @param fileSize Size of the file.
+     * @param contentType Content type specified for the blob.
+     * @param contentMd5 Content MD5 specified for the blob.
+     * @param contentEncoding Content encoding specified for the blob.
+     * @param contentDisposition Content disposition specified for the blob.
+     * @param contentLanguage Content language specified for the blob.
+     * @param cacheControl Cache control specified for the blob.
+     * @param leaseStatus Status of the lease on the blob.
+     * @param leaseState State of the lease on the blob.
+     * @param leaseDuration Type of lease on the blob.
+     * @param copyId Identifier of the last copy operation performed on the blob.
+     * @param copyStatus Status of the last copy operation performed on the blob.
+     * @param copySource Source of the last copy operation performed on the blob.
+     * @param copyProgress Progress of the last copy operation performed on the blob.
+     * @param copyCompletionTime Datetime when the last copy operation on the blob completed.
+     * @param copyStatusDescription Description of the last copy operation on the blob.
+     * @param isServerEncrypted Flag indicating if the blob's content is encrypted on the server.
+     * @param isIncrementalCopy Flag indicating if the blob was incrementally copied.
+     * @param accessTier Access tier of the blob.
+     * @param archiveStatus Archive status of the blob.
+     * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the server.
+     * @param accessTierChangeTime Datetime when the access tier of the blob last changed.
+     * @param metadata Metadata associated with the blob.
+     * pass {@code null}.
+     */
+    public PathProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
+        final long fileSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
+        final String contentDisposition, final String contentLanguage, final String cacheControl,
+        final LeaseStatusType leaseStatus, final LeaseStateType leaseState, final LeaseDurationType leaseDuration,
+        final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
+        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
+        final Boolean isIncrementalCopy, final AccessTier accessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime,
+        final Map<String, String> metadata) {
+        this.creationTime = creationTime;
+        this.lastModified = lastModified;
+        this.eTag = eTag;
+        this.fileSize = fileSize;
+        this.contentType = contentType;
+        this.contentMd5 = ImplUtils.clone(contentMd5);
+        this.contentEncoding = contentEncoding;
+        this.contentDisposition = contentDisposition;
+        this.contentLanguage = contentLanguage;
+        this.cacheControl = cacheControl;
+        this.leaseStatus = leaseStatus;
+        this.leaseState = leaseState;
+        this.leaseDuration = leaseDuration;
+        this.copyId = copyId;
+        this.copyStatus = copyStatus;
+        this.copySource = copySource;
+        this.copyProgress = copyProgress;
+        this.copyCompletionTime = copyCompletionTime;
+        this.copyStatusDescription = copyStatusDescription;
+        this.isServerEncrypted = isServerEncrypted;
+        this.isIncrementalCopy = isIncrementalCopy;
+        this.accessTier = accessTier;
+        this.archiveStatus = archiveStatus;
+        this.encryptionKeySha256 = encryptionKeySha256;
+        this.accessTierChangeTime = accessTierChangeTime;
+        this.metadata = metadata;
     }
-
     /**
      * @return the time when the file was created
      */
@@ -117,8 +146,8 @@ public class PathProperties {
     /**
      * @return the MD5 of the file's content
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(contentMd5);
     }
 
     /**

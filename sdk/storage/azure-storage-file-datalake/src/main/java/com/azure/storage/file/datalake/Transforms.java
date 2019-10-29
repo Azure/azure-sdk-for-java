@@ -10,17 +10,22 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.file.datalake.implementation.models.Path;
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.AccessTier;
+import com.azure.storage.file.datalake.models.ArchiveStatus;
+import com.azure.storage.file.datalake.models.CopyStatusType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.FileSystemItemProperties;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
+import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
+import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
@@ -67,11 +72,39 @@ class Transforms {
         return PublicAccessType.fromString(blobPublicAccessType.toString());
     }
 
+    static CopyStatusType toDataLakeCopyStatusType(com.azure.storage.blob.models.CopyStatusType blobCopyStatus) {
+        if (blobCopyStatus == null) {
+            return null;
+        }
+        return CopyStatusType.fromString(blobCopyStatus.toString());
+    }
+
+    static ArchiveStatus toDataLakeArchiveStatus(
+        com.azure.storage.blob.models.ArchiveStatus blobArchiveStatus) {
+        if (blobArchiveStatus == null) {
+            return null;
+        }
+        return ArchiveStatus.fromString(blobArchiveStatus.toString());
+    }
+
+    static AccessTier toDataLakeAccessTier(com.azure.storage.blob.models.AccessTier blobAccessTier) {
+        if (blobAccessTier == null) {
+            return null;
+        }
+        return AccessTier.fromString(blobAccessTier.toString());
+    }
+
     static FileSystemProperties toFileSystemProperties(BlobContainerProperties blobContainerProperties) {
         if (blobContainerProperties == null) {
             return null;
         }
-        return new FileSystemProperties(blobContainerProperties);
+        return new FileSystemProperties(blobContainerProperties.getMetadata(), blobContainerProperties.getETag(),
+            blobContainerProperties.getLastModified(),
+            Transforms.toDataLakeLeaseDurationType(blobContainerProperties.getLeaseDuration()),
+            Transforms.toDataLakeLeaseStateType(blobContainerProperties.getLeaseState()),
+            Transforms.toDataLakeLeaseStatusType(blobContainerProperties.getLeaseStatus()),
+            Transforms.toDataLakePublicAccessType(blobContainerProperties.getBlobPublicAccess()),
+            blobContainerProperties.hasImmutabilityPolicy(), blobContainerProperties.hasLegalHold());
     }
 
     private static BlobContainerListDetails toBlobContainerListDetails(FileSystemListDetails fileSystemListDetails) {
@@ -137,16 +170,28 @@ class Transforms {
             return null;
         }
         return new com.azure.storage.blob.models.DownloadRetryOptions()
-            .setMaxRetryRequests(dataLakeOptions.maxRetryRequests());
+            .setMaxRetryRequests(dataLakeOptions.getMaxRetryRequests());
     }
 
-    static PathProperties toPathProperties(BlobProperties blobProperties) {
-        if (blobProperties == null) {
+    static PathProperties toPathProperties(BlobProperties properties) {
+        if (properties == null) {
             return null;
         } else {
-            return new PathProperties(blobProperties);
+            return new PathProperties(properties.getCreationTime(), properties.getLastModified(), properties.getETag(),
+                properties.getBlobSize(), properties.getContentType(), properties.getContentMd5(),
+                properties.getContentEncoding(), properties.getContentDisposition(), properties.getContentLanguage(),
+                properties.getCacheControl(), Transforms.toDataLakeLeaseStatusType(properties.getLeaseStatus()),
+                Transforms.toDataLakeLeaseStateType(properties.getLeaseState()),
+                Transforms.toDataLakeLeaseDurationType(properties.getLeaseDuration()), properties.getCopyId(),
+                Transforms.toDataLakeCopyStatusType(properties.getCopyStatus()), properties.getCopySource(),
+                properties.getCopyProgress(), properties.getCopyCompletionTime(), properties.getCopyStatusDescription(),
+                properties.isServerEncrypted(), properties.isIncrementalCopy(),
+                Transforms.toDataLakeAccessTier(properties.getAccessTier()),
+                Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
+                properties.getAccessTierChangeTime(), properties.getMetadata());
         }
     }
+
 
     static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {
         if (blobContainerItem == null) {

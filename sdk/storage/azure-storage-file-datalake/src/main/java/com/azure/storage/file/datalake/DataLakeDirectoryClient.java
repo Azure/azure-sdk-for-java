@@ -7,9 +7,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import reactor.core.publisher.Mono;
 
@@ -183,7 +183,7 @@ public class DataLakeDirectoryClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFile#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String}
      *
      * @param fileName Name of the file to create.
      * @return A {@link DataLakeFileClient} used to interact with the file created.
@@ -199,7 +199,7 @@ public class DataLakeDirectoryClient extends PathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
      *
      * @param fileName Name of the file to create.
      * @param headers {@link PathHttpHeaders}

@@ -22,9 +22,10 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuild
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
-import com.azure.storage.file.datalake.implementation.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.GetPathsOptions;
+import com.azure.storage.file.datalake.models.FileSystemProperties;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import reactor.core.publisher.Mono;
@@ -378,7 +379,7 @@ public class FileSystemAsyncClient {
      */
     public PagedFlux<PathItem> listPaths() {
         try {
-            return this.listPaths(new GetPathsOptions());
+            return this.listPaths(new ListPathsOptions());
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -390,16 +391,16 @@ public class FileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.listPaths#GetPathsOptions}
+     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.listPaths#ListPathsOptions}
      *
-     * @param options A {@link GetPathsOptions} which specifies what data should be returned by the service.
+     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of files/directories.
      */
-    public PagedFlux<PathItem> listPaths(GetPathsOptions options) {
+    public PagedFlux<PathItem> listPaths(ListPathsOptions options) {
         return listPathsWithOptionalTimeout(options, null);
     }
 
-    PagedFlux<PathItem> listPathsWithOptionalTimeout(GetPathsOptions options,
+    PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options,
         Duration timeout) {
         Function<String, Mono<PagedResponse<Path>>> func =
             marker -> listPathsSegment(marker, options, timeout)
@@ -415,8 +416,8 @@ public class FileSystemAsyncClient {
     }
 
     private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker,
-        GetPathsOptions options, Duration timeout) {
-        options = options == null ? new GetPathsOptions() : options;
+        ListPathsOptions options, Duration timeout) {
+        options = options == null ? new ListPathsOptions() : options;
 
         return StorageImplUtils.applyOptionalTimeout(
             this.azureDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
