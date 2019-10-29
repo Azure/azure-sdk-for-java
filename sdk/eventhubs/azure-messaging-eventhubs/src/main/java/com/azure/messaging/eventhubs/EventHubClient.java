@@ -4,9 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
@@ -14,23 +11,13 @@ import java.io.Closeable;
 import java.util.Objects;
 
 /**
+ * Package-private.
+ *
  * A <strong>synchronous</strong> client that is the main point of interaction with Azure Event Hubs. It connects to a
  * specific Event Hub and allows operations for sending event data, receiving data, and inspecting the Event Hub's
  * metadata.
  *
- * <p>
- * Instantiated through {@link EventHubClientBuilder}.
- * </p>
- *
- * <p>
- * <strong>Creating a synchronous {@link EventHubClient} using an Event Hub instance connection string</strong>
- * </p>
- *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
- *
  * @see EventHubClientBuilder
- * @see EventHubConnection To communicate with Event Hub using an asynchronous client.
- * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
 class EventHubClient implements Closeable {
     private final EventHubConnection eventHubConnection;
@@ -41,47 +28,6 @@ class EventHubClient implements Closeable {
         this.eventHubConnection = Objects.requireNonNull(eventHubConnection, "'eventHubConnection' cannot be null.");
         this.retry = retryOptions;
         this.isSharedConnection = isSharedConnection;
-    }
-
-    /**
-     * Gets the Event Hub name this client interacts with.
-     *
-     * @return The Event Hub name this client interacts with.
-     */
-    String getEventHubName() {
-        return eventHubConnection.getEventHubName();
-    }
-
-    /**
-     * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
-     *
-     * @return The set of information for the Event Hub that this client is associated with.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EventHubProperties getProperties() {
-        return eventHubConnection.getProperties().block(retry.getTryTimeout());
-    }
-
-    /**
-     * Retrieves the identifiers for all the partitions of an Event Hub.
-     *
-     * @return The identifiers for all partitions of an Event Hub.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    IterableStream<String> getPartitionIds() {
-        return new IterableStream<>(eventHubConnection.getPartitionIds());
-    }
-
-    /**
-     * Retrieves information about a specific partition for an Event Hub, including elements that describe the available
-     * events in the partition event stream.
-     *
-     * @param partitionId The unique identifier of a partition associated with the Event Hub.
-     * @return The information for the requested partition under the Event Hub this client is associated with.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PartitionProperties getPartitionProperties(String partitionId) {
-        return eventHubConnection.getPartitionProperties(partitionId).block(retry.getTryTimeout());
     }
 
     /**

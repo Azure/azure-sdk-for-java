@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
@@ -63,6 +65,97 @@ public class EventHubConsumer implements Closeable {
 
         this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
         this.timeout = tryTimeout;
+    }
+
+    /**
+     * Gets the fully qualified Event Hubs namespace that the connection is associated with. This is likely similar to
+     * {@code {yournamespace}.servicebus.windows.net}.
+     *
+     * @return The fully qualified Event Hubs namespace that the connection is associated with
+     */
+    public String getFullyQualifiedNamespace() {
+        return consumer.getFullyQualifiedNamespace();
+    }
+
+    /**
+     * Gets the Event Hub name this client interacts with.
+     *
+     * @return The Event Hub name this client interacts with.
+     */
+    public String getEventHubName() {
+        return consumer.getEventHubName();
+    }
+
+    /**
+     * Gets the name of the consumer group that this consumer is associated with. Events will be read only in the
+     * context of this group.
+     *
+     * @return The name of the consumer group that this consumer is associated with.
+     */
+    public String getConsumerGroup() {
+        return consumer.getConsumerGroup();
+    }
+
+    /**
+     * Gets the position of the event in the partition where the consumer should begin reading.
+     *
+     * @return The position of the event in the partition where the consumer should begin reading
+     */
+    public EventPosition getStartingPosition() {
+        return consumer.getStartingPosition();
+    }
+
+    /**
+     * When populated, the priority indicates that a consumer is intended to be the only reader of events for the
+     * requested partition and an associated consumer group.  To do so, this consumer will attempt to assert ownership
+     *
+     * @return The priority that a consumer is intended to be the only reader of events for the partitions and and
+     *     associated consumer group. {@code null} if it is a non-exclusive reader for the partition.
+     */
+    public Long getOwnerLevel() {
+        return consumer.getOwnerLevel();
+    }
+
+    /**
+     * Gets the text-based identifier label that has optionally been assigned to the consumer.
+     *
+     * @return The text-based identifier label that has optionally been assigned to the consumer. {@code null} if there
+     *     is no label for the consumer.
+     */
+    public String getIdentifier() {
+        return consumer.getIdentifier();
+    }
+
+    /**
+     * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
+     *
+     * @return The set of information for the Event Hub that this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventHubProperties getProperties() {
+        return consumer.getProperties().block(timeout);
+    }
+
+    /**
+     * Retrieves the identifiers for the partitions of an Event Hub.
+     *
+     * @return A Flux of identifiers for the partitions of an Event Hub.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<String> getPartitionIds() {
+        return new IterableStream<>(consumer.getPartitionIds());
+    }
+
+    /**
+     * Retrieves information about a specific partition for an Event Hub, including elements that describe the available
+     * events in the partition event stream.
+     *
+     * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PartitionProperties getPartitionProperties(String partitionId) {
+        return consumer.getPartitionProperties(partitionId).block(timeout);
     }
 
     /**
