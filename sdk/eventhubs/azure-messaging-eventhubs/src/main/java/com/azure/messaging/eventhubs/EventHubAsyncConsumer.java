@@ -6,7 +6,10 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -18,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -65,19 +67,30 @@ public class EventHubAsyncConsumer implements Closeable {
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumer.class);
     private final EventHubLinkProvider linkProvider;
+    private final String fullyQualifiedNamespace;
+    private final String eventHubName;
+    private final String consumerGroup;
+    private final EventPosition startingPosition;
     private final MessageSerializer messageSerializer;
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
     private final boolean trackLastEnqueuedEventProperties;
+    private final EventHubConsumerOptions options;
 
     private volatile AmqpReceiveLink receiveLink;
 
-    EventHubAsyncConsumer(EventHubLinkProvider linkProvider, Mono<AmqpReceiveLink> receiveLinkMono,
+    EventHubAsyncConsumer(EventHubLinkProvider linkProvider, String fullyQualifiedNamespace, String eventHubName,
+            String consumerGroup, EventPosition startingPosition, Mono<AmqpReceiveLink> receiveLinkMono,
             MessageSerializer messageSerializer, EventHubConsumerOptions options) {
         this.linkProvider = linkProvider;
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        this.eventHubName = eventHubName;
+        this.consumerGroup = consumerGroup;
+        this.startingPosition = startingPosition;
         this.messageSerializer = messageSerializer;
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
         this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
+        this.options = options;
 
         if (options.getTrackLastEnqueuedEventProperties()) {
             lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
@@ -146,6 +159,97 @@ public class EventHubAsyncConsumer implements Closeable {
                     newRequest);
                 creditsToRequest.set(newRequest);
             });
+    }
+
+    /**
+     * Gets the fully qualified Event Hubs namespace that the connection is associated with. This is likely similar to
+     * {@code {yournamespace}.servicebus.windows.net}.
+     *
+     * @return The fully qualified Event Hubs namespace that the connection is associated with
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Gets the Event Hub name this client interacts with.
+     *
+     * @return The Event Hub name this client interacts with.
+     */
+    public String getEventHubName() {
+        return eventHubName;
+    }
+
+    /**
+     * Gets the name of the consumer group that this consumer is associated with. Events will be read only in the
+     * context of this group.
+     *
+     * @return The name of the consumer group that this consumer is associated with.
+     */
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    /**
+     * Gets the position of the event in the partition where the consumer should begin reading.
+     *
+     * @return The position of the event in the partition where the consumer should begin reading
+     */
+    public EventPosition getStartingPosition() {
+        return startingPosition;
+    }
+
+    /**
+     * When populated, the priority indicates that a consumer is intended to be the only reader of events for the
+     * requested partition and an associated consumer group.  To do so, this consumer will attempt to assert ownership
+     *
+     * @return The priority that a consumer is intended to be the only reader of events for the partitions and and
+     *     associated consumer group. {@code null} if it is a non-exclusive reader for the partition.
+     */
+    public Long getOwnerLevel() {
+        return options.getOwnerLevel();
+    }
+
+    /**
+     * Gets the text-based identifier label that has optionally been assigned to the consumer.
+     *
+     * @return The text-based identifier label that has optionally been assigned to the consumer. {@code null} if there
+     *     is no label for the consumer.
+     */
+    public String getIdentifier() {
+        return options.getIdentifier();
+    }
+
+    /**
+     * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
+     *
+     * @return The set of information for the Event Hub that this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EventHubProperties> getProperties() {
+        return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
+    }
+
+    /**
+     * Retrieves the identifiers for the partitions of an Event Hub.
+     *
+     * @return A Flux of identifiers for the partitions of an Event Hub.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<String> getPartitionIds() {
+        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
+    }
+
+    /**
+     * Retrieves information about a specific partition for an Event Hub, including elements that describe the available
+     * events in the partition event stream.
+     *
+     * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+        return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
