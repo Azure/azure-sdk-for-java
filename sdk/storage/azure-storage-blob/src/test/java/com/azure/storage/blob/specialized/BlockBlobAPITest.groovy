@@ -23,7 +23,6 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
-
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.ParallelTransferOptions
@@ -932,15 +931,15 @@ class BlockBlobAPITest extends APISpec {
         bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
 
         where:
-        dataSize           | bufferSize         | numBuffs || blockCount
-        35 * Constants.MB  | 5 * Constants.MB   | 2        || 7 // Requires cycling through the same buffers multiple times.
-        35 * Constants.MB  | 5 * Constants.MB   | 5        || 7 // Most buffers may only be used once.
-        100 * Constants.MB | 10 * Constants.MB  | 2        || 10 // Larger data set.
-        100 * Constants.MB | 10 * Constants.MB  | 5        || 10 // Larger number of Buffs.
-        10 * Constants.MB  | 1 * Constants.MB   | 10       || 10 // Exactly enough buffer space to hold all the data.
-        50 * Constants.MB  | 10 * Constants.MB  | 2        || 5 // Larger data.
-        10 * Constants.MB  | 2 * Constants.MB   | 4        || 5
-        10 * Constants.MB  | 1.5 * Constants.MB | 3        || 7 // Data does not squarely fit in buffers.
+        dataSize           | bufferSize        | numBuffs || blockCount
+        35 * Constants.MB  | 5 * Constants.MB  | 2        || 7 // Requires cycling through the same buffers multiple times.
+        35 * Constants.MB  | 5 * Constants.MB  | 5        || 7 // Most buffers may only be used once.
+        100 * Constants.MB | 10 * Constants.MB | 2        || 10 // Larger data set.
+        100 * Constants.MB | 10 * Constants.MB | 5        || 10 // Larger number of Buffs.
+        10 * Constants.MB  | 1 * Constants.MB  | 10       || 10 // Exactly enough buffer space to hold all the data.
+        50 * Constants.MB  | 10 * Constants.MB | 2        || 5 // Larger data.
+        10 * Constants.MB  | 2 * Constants.MB  | 4        || 5
+        10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -1100,8 +1099,9 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload headers"() {
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, null, null)
-        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders()
+        def data = getRandomByteArray(dataSize)
+        def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(data) : null
+        blobac.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), null, new BlobHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -1116,10 +1116,13 @@ class BlockBlobAPITest extends APISpec {
         // HTTP default content type is application/octet-stream.
 
         where:
-        // The MD5 is simply set on the blob for commitBlockList, not validated.
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        // Depending on the size of the stream either Put Blob or Put Block List will be used.
+        // Put Blob will implicitly calculate the MD5 whereas Put Block List won't.
+        dataSize         | cacheControl | contentDisposition | contentEncoding | contentLanguage | validateContentMD5 | contentType
+        defaultDataSize  | null         | null               | null            | null            | true               | null
+        defaultDataSize  | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
+        6 * Constants.MB | null         | null               | null            | null            | false              | null
+        6 * Constants.MB | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
