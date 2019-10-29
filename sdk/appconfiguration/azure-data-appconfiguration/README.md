@@ -239,7 +239,7 @@ Response<ConfigurationSetting> settingResponse = client.deleteConfigurationSetti
 ### List configuration settings with multiple keys
 
 List multiple configuration settings by calling `listConfigurationSettings`.
-Pass null `SettingSelector` into the method If you want to fetch all configuration settings.
+Pass a null `SettingSelector` into the method if you want to fetch all the configuration settings and their fields.
 ```Java
 String key = "some_key";
 String key2 = "new_key";
@@ -251,7 +251,7 @@ PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
 
 ### List revisions of multiple configuration settings
 
-List all revision of a configuration settings by calling `listRevisions`.
+List all revisions of a configuration setting by calling `listRevisions`.
 ```Java
 String key = "revisionKey";
 client.setConfigurationSetting(key, "some_label", "some_value");
