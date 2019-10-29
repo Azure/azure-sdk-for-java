@@ -169,6 +169,13 @@ public class EventHubAsyncProducerTest {
             new EventData(TEST_CONTENTS.getBytes(UTF_8)),
             new EventData(TEST_CONTENTS.getBytes(UTF_8)));
 
+        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
+
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
+            eq(retryOptions.getTryTimeout()), any()))
+            .thenReturn(Mono.just(sendLink));
+
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final SendOptions options = new SendOptions()
@@ -203,8 +210,11 @@ public class EventHubAsyncProducerTest {
         final EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(EVENT_HUB_NAME, linkProvider,
             retryOptions, tracerProvider, messageSerializer);
 
-        when(connection.createSession(partitionId)).thenReturn(Mono.just(session));
-        when(session.createProducer(argThat(name -> name.startsWith("PS")), eq(partitionId),
+        when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
+            .thenReturn(Mono.just(session));
+        when(session.createProducer(
+            argThat(name -> name.startsWith("PS")),
+            argThat(name -> name.endsWith(partitionId)),
             eq(retryOptions.getTryTimeout()), any()))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
@@ -254,8 +264,11 @@ public class EventHubAsyncProducerTest {
         final EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(EVENT_HUB_NAME, linkProvider,
             retryOptions, tracerProvider, messageSerializer);
 
-        when(connection.createSession(partitionId)).thenReturn(Mono.just(session));
-        when(session.createProducer(argThat(name -> name.startsWith("PS")), eq(partitionId),
+        when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
+            .thenReturn(Mono.just(session));
+        when(session.createProducer(
+            argThat(name -> name.startsWith("PS")),
+            argThat(name -> name.endsWith(partitionId)),
             eq(retryOptions.getTryTimeout()), any()))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());

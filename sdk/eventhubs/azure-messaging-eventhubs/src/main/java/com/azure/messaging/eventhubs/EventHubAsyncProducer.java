@@ -165,10 +165,9 @@ public class EventHubAsyncProducer implements Closeable {
 
         if (!ImplUtils.isNullOrEmpty(clone.getPartitionKey()) && !ImplUtils.isNullOrEmpty(clone.getPartitionId())) {
             return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                "BatchOptions.partitionKey() cannot be set when an EventHubProducer is created with"
-                    + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to "
-                    + "partition '%s'.",
-                clone.getPartitionId()))));
+                "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
+                    + " other can be used. partitionKey: '%s'. partitionId: '%s'",
+                clone.getPartitionKey(), clone.getPartitionId()))));
         } else if (!ImplUtils.isNullOrEmpty(clone.getPartitionKey())
             && clone.getPartitionKey().length() > MAX_PARTITION_KEY_LENGTH) {
             return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
@@ -368,7 +367,15 @@ public class EventHubAsyncProducer implements Closeable {
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
+        final SendOptions clone = options.clone();
         final boolean isTracingEnabled = tracerProvider.isEnabled();
+
+        if (!ImplUtils.isNullOrEmpty(clone.getPartitionKey()) && !ImplUtils.isNullOrEmpty(clone.getPartitionId())) {
+            return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
+                    + " other can be used. partitionKey: '%s'. partitionId: '%s'",
+                clone.getPartitionKey(), clone.getPartitionId()))));
+        }
 
         return getSendLink(options.getPartitionId())
             .flatMap(link -> {
@@ -381,9 +388,10 @@ public class EventHubAsyncProducer implements Closeable {
                         final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                         final BatchOptions batchOptions = new BatchOptions()
                             .setPartitionKey(options.getPartitionKey())
+                            .setPartitionId(options.getPartitionId())
                             .setMaximumSizeInBytes(batchSize);
 
-                        final AtomicBoolean isFirst = new AtomicBoolean();
+                        final AtomicBoolean isFirst = new AtomicBoolean(true);
                         return events.map(eventData -> {
                             if (!isTracingEnabled) {
                                 return eventData;
