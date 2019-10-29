@@ -127,8 +127,8 @@ public class EventHubAsyncProducerClient implements Closeable {
     private final MessageSerializer messageSerializer;
 
     /**
-     * Creates a new instance of this {@link EventHubAsyncProducerClient} that can send messages to a single partition when
-     * {@link BatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to load
+     * Creates a new instance of this {@link EventHubAsyncProducerClient} that can send messages to a single partition
+     * when {@link BatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to load
      * balance the messages amongst available partitions.
      */
     EventHubAsyncProducerClient(String eventHubName, EventHubLinkProvider linkProvider, RetryOptions retryOptions,
@@ -183,9 +183,10 @@ public class EventHubAsyncProducerClient implements Closeable {
                         : MAX_MESSAGE_LENGTH_BYTES;
 
                     if (clone.getMaximumSizeInBytes() > maximumLinkSize) {
-                        return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                            "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
-                            clone.getMaximumSizeInBytes(), maximumLinkSize))));
+                        return Mono.error(logger.logExceptionAsError(
+                            new IllegalArgumentException(String.format(Locale.US,
+                                "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
+                                clone.getMaximumSizeInBytes(), maximumLinkSize))));
                     }
 
                     final int batchSize = clone.getMaximumSizeInBytes() > 0

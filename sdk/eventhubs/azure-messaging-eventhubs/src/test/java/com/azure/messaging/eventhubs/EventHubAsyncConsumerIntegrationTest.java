@@ -114,7 +114,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
             }
 
             // Act
-            for (int i = 0; i < partitionIds.size(); i ++) {
+            for (int i = 0; i < partitionIds.size(); i++) {
                 final String partitionId = partitionIds.get(i);
                 final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
                 final EventHubAsyncProducerClient producer = producers[i];
@@ -187,7 +187,8 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         final Disposable producerEvents = getEvents(isActive)
             .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(secondPartitionId)))
             .subscribe(
-                sent -> {},
+                sent -> {
+                },
                 error -> logger.error("Error sending event", error),
                 () -> logger.info("Event sent."));
 
@@ -220,7 +221,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
     }
 
     private static void verifyLastRetrieved(AtomicReference<LastEnqueuedEventProperties> atomicReference,
-                                            LastEnqueuedEventProperties current, boolean isFirst) {
+        LastEnqueuedEventProperties current, boolean isFirst) {
         Assert.assertNotNull(current);
         final LastEnqueuedEventProperties previous = atomicReference.get();
 
