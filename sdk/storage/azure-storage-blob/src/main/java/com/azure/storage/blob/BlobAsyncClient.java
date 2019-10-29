@@ -353,7 +353,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         UUID.randomUUID().toString().getBytes(UTF_8));
 
                     return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
-                        accessConditionsFinal.getLeaseId())
+                        null, accessConditionsFinal.getLeaseId())
                         // We only care about the stageBlock insofar as it was successful,
                         // but we need to collect the ids.
                         .map(x -> blockId)
@@ -491,7 +491,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
                             return blockBlobAsyncClient.uploadWithResponse(FluxUtil.readFile(channel), fileSize,
-                                headers, metadata, tier, accessConditions)
+                                headers, metadata, tier, null, accessConditions)
                                 .then();
                         }
                     } catch (IOException ex) {
@@ -529,7 +529,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
                     progressReceiver, progressLock, totalProgress);
 
-                return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(),
+                return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(), null,
                     finalRequestConditions.getLeaseId());
             })
             .then(Mono.defer(() -> client.commitBlockListWithResponse(

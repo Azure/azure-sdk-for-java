@@ -12,6 +12,8 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -83,20 +85,23 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(InputStream, long, AppendBlobRequestConditions,
+     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(InputStream, long, byte[], AppendBlobRequestConditions,
      * Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
-    public void appendBlock2() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context
+    public void appendBlock2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobAccessConditions-Duration-Context
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
         AppendBlobRequestConditions accessConditions = new AppendBlobRequestConditions()
             .setAppendPosition(POSITION)
             .setMaxSize(maxSize);
         Context context = new Context("key", "value");
 
         System.out.printf("AppendBlob has %d committed blocks%n",
-            client.appendBlockWithResponse(data, length, accessConditions, timeout,
-                context).getValue().getBlobCommittedBlockCount());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context
+            client.appendBlockWithResponse(data, length, md5, accessConditions, timeout, context)
+                .getValue().getBlobCommittedBlockCount());
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobAccessConditions-Duration-Context
     }
 
     /**
