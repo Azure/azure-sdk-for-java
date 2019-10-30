@@ -46,7 +46,7 @@ jobs:
 
     strategy:
       matrix:
-        Client Libraries:
+        Java 8 and 11:
           ArtifactName: 'packages'
           ProfileFlag: ''
           JavaVersion: '1.11'
@@ -69,12 +69,6 @@ jobs:
           RootFolder: $(Build.SourcesDirectory)
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
-
-      - task: CacheBeta@0
-        inputs:
-          key: maven
-          path: $(MAVEN_CACHE_FOLDER)
-        displayName: Cache Maven local repo
 
       - task: Maven@3
         displayName: 'Build and Package'
@@ -119,12 +113,6 @@ jobs:
         # builds should be sufficient.
         condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
         displayName: 'Component Detection'
-
-      - task: CacheBeta@0
-        inputs:
-          key: maven
-          path: $(MAVEN_CACHE_FOLDER)
-        displayName: Cache Maven local repo
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -247,12 +235,6 @@ jobs:
           OSName: $(OSName)
 
       - template: ../steps/cache-maven-repository.yml
-
-      - task: CacheBeta@0
-        inputs:
-          key: maven
-          path: $(MAVEN_CACHE_FOLDER)
-        displayName: Cache Maven local repo
 
       - task: Maven@3
         displayName: 'Start Jetty'
