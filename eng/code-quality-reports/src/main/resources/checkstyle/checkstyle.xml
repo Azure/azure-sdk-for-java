@@ -389,7 +389,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
       Math.random method that should not be used in the Azure SDK. Use SecureRandom instead -->
     <module name="com.azure.tools.checkstyle.checks.InvalidMethodsCheck">
       <property name="methods" value="java.lang.Math.random, Math.random"/>
-      <property name="message" value="%s is not secure random. Use java.security.SecureRandom instead."/>
+      <property name="message" value="%s is not secure. Use java.security.SecureRandom instead."/>
     </module>
 
     <!-- CUSTOM CHECKS -->
