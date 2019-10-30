@@ -23,13 +23,9 @@ jobs:
 
     strategy:
       matrix:
-        Java 8:
+        Java 8 and 11:
           ArtifactName: 'packages'
           ProfileFlag: ''
-          JavaVersion: '1.8'
-        Java LTS:
-          ArtifactName: 'java-lts-packages'
-          ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
 
     steps:
@@ -97,7 +93,7 @@ jobs:
         displayName: 'Install all client libraries (for SpotBugs analysis)'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -110,7 +106,7 @@ jobs:
         displayName: 'Run SpotBugs and CheckStyle'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '-Djava-lts -DskipTests -Dgpg.skip'
+          options: '-DskipTests -Dgpg.skip'
           mavenOptions: ''
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -125,7 +121,7 @@ jobs:
         condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -140,7 +136,7 @@ jobs:
         condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
-          options: '--batch-mode -Djava-lts -DskipTests -Dgpg.skip'
+          options: '--batch-mode -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -212,21 +208,21 @@ jobs:
           OSVmImage: 'windows-2019'
           JavaVersion: '1.8'
           ProfileFlag: ''
-        Linux - Java LTS:
+        Linux - Java 11:
           OSName: 'Linux'
           OSVmImage: 'ubuntu-16.04'
           JavaVersion: '1.11'
-          ProfileFlag: '-Djava-lts'
-        macOS - Java LTS:
+          ProfileFlag: ''
+        macOS - Java 11:
           OSName: 'macOS'
           OSVmImage: 'macOS-10.13'
           JavaVersion: '1.11'
-          ProfileFlag: '-Djava-lts'
-        Windows - Java LTS:
+          ProfileFlag: ''
+        Windows - Java 11:
           OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.11'
-          ProfileFlag: '-Djava-lts'
+          ProfileFlag: ''
 
     pool:
       vmImage: $(OSVmImage)
@@ -235,18 +231,6 @@ jobs:
       - template: eng/pipelines/templates/scripts/verify-agent-os.yml@azure-sdk-tools
         parameters:
           OSName: $(OSVmImage)
-
-      - task: Maven@3
-        displayName: 'Start Jetty'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) $(ProfileFlag)'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'jetty:run-forked'
 
       - task: Maven@3
         displayName: 'Run tests'

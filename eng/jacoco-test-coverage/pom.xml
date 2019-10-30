@@ -23,7 +23,6 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <project.automatic.module.name>com.azure.eng.jacoco.test.coverage</project.automatic.module.name>
   </properties>
 
   <distributionManagement>
@@ -56,9 +55,25 @@
       <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>
     <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-okhttp</artifactId>
+        <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
       <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+    </dependency>
+    <!-- Not required for jacoco test coverage report -->
+    <!-- <dependency> -->
+      <!-- <groupId>com.azure</groupId> -->
+      <!-- <artifactId>azure-core-test</artifactId> -->
+      <!-- <version>1.0.0-preview.7</version> --> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+    <!-- </dependency> -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-tracing-opencensus</artifactId>
+      <version>1.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -69,6 +84,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-certificates</artifactId>
+      <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -130,20 +150,6 @@
       <artifactId>azure-storage-queue-cryptography</artifactId>
       <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-queue-cryptography;current} -->
     </dependency>
-    <!-- Tracing will be built and released separately. Removing tracing dependency
-     until we finalize dependency composition -->
-    <!--    <dependency>-->
-    <!--      <groupId>com.azure</groupId>-->
-    <!--      <artifactId>tracing-opentelemetry</artifactId>-->
-    <!--      <version>1.0.0-preview.3</version>-->
-    <!--    </dependency>-->
-
-    <!-- Not required for jacoco test coverage report -->
-    <!--    <dependency>-->
-    <!--      <groupId>com.azure</groupId>-->
-    <!--      <artifactId>azure-core-test</artifactId>-->
-    <!--      <version>1.0.0-preview.5</version>-->
-    <!--    </dependency>-->
   </dependencies>
 
   <build>
