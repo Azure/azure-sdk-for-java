@@ -10,8 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class InvalidMethodsCheckInherentlyUnsafeTest extends AbstractModuleTestSupport {
-    String[] invalidMethods = {
+public class BlacklistedMethodsCheckInherentlyUnsafeTest extends AbstractModuleTestSupport {
+    String[] blacklistedMethods = {
         "System.runFinalizersOnExit",
         "java.lang.System.runFinalizersOnExit",
         "Runtime.runFinalizersOnExit",
@@ -33,16 +33,16 @@ public class InvalidMethodsCheckInherentlyUnsafeTest extends AbstractModuleTestS
 
     @Override
     protected String getPackageLocation() {
-        return "com/azure/tools/checkstyle/checks/InvalidMethodsCheck";
+        return "com/azure/tools/checkstyle/checks/BlacklistedMethodsCheck";
     }
 
     @Test
     public void mathRandomTestData() throws Exception  {
         String[] expected = {
-            TestUtils.expectedErrorMessage(4, 35, String.format("Function %s is inherently unsafe and deprecated.", invalidMethods[0])),
-            TestUtils.expectedErrorMessage(9, 45, String.format("Function %s is inherently unsafe and deprecated.", invalidMethods[1])),
-            TestUtils.expectedErrorMessage(14, 36, String.format("Function %s is inherently unsafe and deprecated.", invalidMethods[2])),
-            TestUtils.expectedErrorMessage(19, 46, String.format("Function %s is inherently unsafe and deprecated.", invalidMethods[3]))
+            TestUtils.expectedErrorMessage(4, 35, String.format("Function %s is inherently unsafe and deprecated.", blacklistedMethods[0])),
+            TestUtils.expectedErrorMessage(9, 45, String.format("Function %s is inherently unsafe and deprecated.", blacklistedMethods[1])),
+            TestUtils.expectedErrorMessage(14, 36, String.format("Function %s is inherently unsafe and deprecated.", blacklistedMethods[2])),
+            TestUtils.expectedErrorMessage(19, 46, String.format("Function %s is inherently unsafe and deprecated.", blacklistedMethods[3]))
         };
         verify(checker, getPath("InherentlyUnsafeTestData.java"), expected);
     }
@@ -51,12 +51,12 @@ public class InvalidMethodsCheckInherentlyUnsafeTest extends AbstractModuleTestS
     private DefaultConfiguration prepareConfiguration() {
         DefaultConfiguration checks = new DefaultConfiguration("Checks");
         DefaultConfiguration treeWalker = new DefaultConfiguration("TreeWalker");
-        DefaultConfiguration invalidMethodsCheck = new DefaultConfiguration(InvalidMethodsCheck.class.getCanonicalName());
-        invalidMethodsCheck.addAttribute("methods",
+        DefaultConfiguration blacklistedMethodsCheck = new DefaultConfiguration(BlacklistedMethodsCheck.class.getCanonicalName());
+        blacklistedMethodsCheck.addAttribute("methods",
         "java.lang.System.runFinalizersOnExit, System.runFinalizersOnExit, java.lang.Runtime.runFinalizersOnExit, Runtime.runFinalizersOnExit");
-        invalidMethodsCheck.addAttribute("message", "Function %s is inherently unsafe and deprecated.");
+        blacklistedMethodsCheck.addAttribute("message", "Function %s is inherently unsafe and deprecated.");
         checks.addChild(treeWalker);
-        treeWalker.addChild(invalidMethodsCheck);
+        treeWalker.addChild(blacklistedMethodsCheck);
         return checks;
     }
 }

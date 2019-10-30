@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class InvalidMethodsCheckMathClassTests extends AbstractModuleTestSupport {
+public class BlacklistedMethodsCheckMathClassTests extends AbstractModuleTestSupport {
 
     private Checker checker;
 
@@ -27,7 +27,7 @@ public class InvalidMethodsCheckMathClassTests extends AbstractModuleTestSupport
 
     @Override
     protected String getPackageLocation() {
-        return "com/azure/tools/checkstyle/checks/InvalidMethodsCheck";
+        return "com/azure/tools/checkstyle/checks/BlacklistedMethodsCheck";
     }
 
     @Test
@@ -42,7 +42,7 @@ public class InvalidMethodsCheckMathClassTests extends AbstractModuleTestSupport
     private DefaultConfiguration prepareConfiguration() {
         DefaultConfiguration checks = new DefaultConfiguration("Checks");
         DefaultConfiguration treeWalker = new DefaultConfiguration("TreeWalker");
-        DefaultConfiguration invalidMethodsCheck = new DefaultConfiguration(InvalidMethodsCheck.class.getCanonicalName());
+        DefaultConfiguration invalidMethodsCheck = new DefaultConfiguration(BlacklistedMethodsCheck.class.getCanonicalName());
         invalidMethodsCheck.addAttribute("methods", "java.lang.Math.random, Math.random");
         invalidMethodsCheck.addAttribute("message", "%s is not secure random. Use java.security.SecureRandom instead.");
         checks.addChild(treeWalker);

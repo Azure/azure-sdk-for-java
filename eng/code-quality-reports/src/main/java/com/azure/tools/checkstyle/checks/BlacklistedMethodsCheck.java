@@ -14,9 +14,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Invalid method that should not be used in the Azure SDK. Such as it could avoid inherently unsafe method.
+ * Blacklist methods that should not be used in the Azure SDK. Such as it could avoid inherently unsafe method.
  */
-public class InvalidMethodsCheck extends AbstractCheck {
+public class BlacklistedMethodsCheck extends AbstractCheck {
 
     /**
      * Specified full name of invalid methods.
@@ -75,10 +75,9 @@ public class InvalidMethodsCheck extends AbstractCheck {
         if (methodCallName.isEmpty()) {
             return;
         }
-        for (String fullMethodName : methods) {
-            if (methodCallName.equals(fullMethodName)) {
-                log(methodCallToken, String.format(message, methodCallName));
-            }
+
+        if (methods.contains(methodCallName)) {
+            log(methodCallToken, String.format(message, methodCallName));
         }
     }
 }
