@@ -14,7 +14,7 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 /**
- * Code snippets for {@link PathClientBuilder}
+ * Code snippets for {@link DataLakePathClientBuilder}
  */
 @SuppressWarnings({"unused"})
 public class PathClientBuilderJavaDocCodeSnippets {
@@ -31,51 +31,51 @@ public class PathClientBuilderJavaDocCodeSnippets {
         .build();
 
     /**
-     * Code snippet for {@link PathClientBuilder#buildFileClient()} using credential and endpoint
+     * Code snippet for {@link DataLakePathClientBuilder#buildFileClient()} using credential and endpoint
      */
     public void fileClientCredentialAndEndpoint() {
-        // BEGIN: com.azure.storage.file.datalake.PathClientBuilder.buildFileClient
-        DataLakeFileClient client = new PathClientBuilder()
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileClient
+        DataLakeFileClient client = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .credential(storageSharedKeyCredential)
             .buildFileClient();
-        // END: com.azure.storage.file.datalake.PathClientBuilder.buildFileClient
+        // END: com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileClient
     }
 
     /**
-     * Code snippet for {@link PathClientBuilder#buildFileAsyncClient()} using credential and endpoint
+     * Code snippet for {@link DataLakePathClientBuilder#buildFileAsyncClient()} using credential and endpoint
      */
     public void fileAsyncClientCredentialAndEndpoint() {
-        // BEGIN: com.azure.storage.file.datalake.PathClientBuilder.buildFileAsyncClient
-        DataLakeFileAsyncClient client = new PathClientBuilder()
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileAsyncClient
+        DataLakeFileAsyncClient client = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .credential(storageSharedKeyCredential)
             .buildFileAsyncClient();
-        // END: com.azure.storage.file.datalake.PathClientBuilder.buildFileAsyncClient
+        // END: com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileAsyncClient
     }
 
     /**
-     * Code snippet for {@link PathClientBuilder#buildDirectoryClient()} using credential and endpoint
+     * Code snippet for {@link DataLakePathClientBuilder#buildDirectoryClient()} using credential and endpoint
      */
     public void directoryClientCredentialAndEndpoint() {
-        // BEGIN: com.azure.storage.file.datalake.PathClientBuilder.buildDirectoryClient
-        DataLakeDirectoryClient client = new PathClientBuilder()
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryClient
+        DataLakeDirectoryClient client = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .credential(storageSharedKeyCredential)
             .buildDirectoryClient();
-        // END: com.azure.storage.file.datalake.PathClientBuilder.buildDirectoryClient
+        // END: com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryClient
     }
 
     /**
-     * Code snippet for {@link PathClientBuilder#buildDirectoryAsyncClient()} using credential and endpoint
+     * Code snippet for {@link DataLakePathClientBuilder#buildDirectoryAsyncClient()} using credential and endpoint
      */
     public void directoryAsyncClientCredentialAndEndpoint() {
-        // BEGIN: com.azure.storage.file.datalake.PathClientBuilder.buildDirectoryAsyncClient
-        DataLakeDirectoryAsyncClient client = new PathClientBuilder()
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryAsyncClient
+        DataLakeDirectoryAsyncClient client = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .credential(storageSharedKeyCredential)
             .buildDirectoryAsyncClient();
-        // END: com.azure.storage.file.datalake.PathClientBuilder.buildDirectoryAsyncClient
+        // END: com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryAsyncClient
     }
 
 }

@@ -31,44 +31,44 @@ public class PathClientJavaDocCodeSamples {
     private String value2 = "val2";
 
     /**
-     * Code snippets for {@link PathClient#setMetadata(Map)}
+     * Code snippets for {@link DataLakePathClient#setMetadata(Map)}
      */
     public void setMetadataCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.setMetadata#Map
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setMetadata#Map
         client.setMetadata(Collections.singletonMap("metadata", "value"));
         System.out.println("Set metadata completed");
-        // END: com.azure.storage.file.datalake.PathClient.setMetadata#Map
+        // END: com.azure.storage.file.datalake.DataLakePathClient.setMetadata#Map
     }
 
     /**
-     * Code snippets for {@link PathClient#setMetadataWithResponse(Map, DataLakeRequestConditions, Duration, Context)}
+     * Code snippets for {@link DataLakePathClient#setMetadataWithResponse(Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void setMetadataWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.setMetadata#Map-DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setMetadata#Map-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
 
         client.setMetadataWithResponse(Collections.singletonMap("metadata", "value"), accessConditions, timeout,
             new Context(key2, value2));
         System.out.println("Set metadata completed");
-        // END: com.azure.storage.file.datalake.PathClient.setMetadata#Map-DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakePathClient.setMetadata#Map-DataLakeRequestConditions-Duration-Context
     }
 
     /**
-     * Code snippets for {@link PathClient#setHttpHeaders(PathHttpHeaders)}
+     * Code snippets for {@link DataLakePathClient#setHttpHeaders(PathHttpHeaders)}
      */
     public void setHTTPHeadersCodeSnippet() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.setHttpHeaders#PathHttpHeaders
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setHttpHeaders#PathHttpHeaders
         client.setHttpHeaders(new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary"));
-        // END: com.azure.storage.file.datalake.PathClient.setHttpHeaders#PathHttpHeaders
+        // END: com.azure.storage.file.datalake.DataLakePathClient.setHttpHeaders#PathHttpHeaders
     }
 
     /**
-     * Code snippets for {@link PathClient#setHttpHeadersWithResponse(PathHttpHeaders, DataLakeRequestConditions, Duration, Context)}
+     * Code snippets for {@link DataLakePathClient#setHttpHeadersWithResponse(PathHttpHeaders, DataLakeRequestConditions, Duration, Context)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
 
         Response<Void> response = client.setHttpHeadersWithResponse(new PathHttpHeaders()
@@ -76,24 +76,24 @@ public class PathClientJavaDocCodeSamples {
             .setContentType("binary"), accessConditions, timeout, new Context(key2, value2));
         System.out.printf("Set HTTP headers completed with status %d%n",
                     response.getStatusCode());
-        // END: com.azure.storage.file.datalake.PathClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakePathClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions-Duration-Context
     }
 
     /**
-     * Code snippets for {@link PathClient#getProperties()}
+     * Code snippets for {@link DataLakePathClient#getProperties()}
      */
     public void getPropertiesCodeSnippet() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.getProperties
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getProperties
         System.out.printf("Creation Time: %s, Size: %d%n", client.getProperties().getCreationTime(),
             client.getProperties().getFileSize());
-        // END: com.azure.storage.file.datalake.PathClient.getProperties
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getProperties
     }
 
     /**
-     * Code snippets for {@link PathClient#getPropertiesWithResponse(DataLakeRequestConditions, Duration, Context)}
+     * Code snippets for {@link DataLakePathClient#getPropertiesWithResponse(DataLakeRequestConditions, Duration, Context)}
      */
     public void getPropertiesWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
 
         Response<PathProperties> response = client.getPropertiesWithResponse(accessConditions, timeout,
@@ -101,51 +101,51 @@ public class PathClientJavaDocCodeSamples {
 
         System.out.printf("Creation Time: %s, Size: %d%n", response.getValue().getCreationTime(),
             response.getValue().getFileSize());
-        // END: com.azure.storage.file.datalake.PathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context
     }
 
     /**
-     * Code snippets for {@link PathClient#setAccessControl(PathAccessControl)}
+     * Code snippets for {@link DataLakePathClient#setAccessControl(PathAccessControl)}
      */
     public void setAccessControlCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.setAccessControl#PathAccessControl
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setAccessControl#PathAccessControl
         PathAccessControl control = new PathAccessControl()
             .setPermissions("0766");
 
         System.out.printf("Last Modified Time: %s", client.setAccessControl(control).getLastModified());
-        // END: com.azure.storage.file.datalake.PathClient.setAccessControl#PathAccessControl
+        // END: com.azure.storage.file.datalake.DataLakePathClient.setAccessControl#PathAccessControl
     }
 
     /**
-     * Code snippets for {@link PathClient#setAccessControlWithResponse(PathAccessControl, DataLakeRequestConditions, Duration, Context)}
+     * Code snippets for {@link DataLakePathClient#setAccessControlWithResponse(PathAccessControl, DataLakeRequestConditions, Duration, Context)}
      */
     public void setAccessControlWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.setAccessControlWithResponse#PathAccessControl-DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlWithResponse#PathAccessControl-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
         PathAccessControl control = new PathAccessControl().setPermissions("0766");
 
         Response<PathInfo> response = client.setAccessControlWithResponse(control, accessConditions, timeout,
             new Context(key2, value2));
         System.out.printf("Last Modified Time: %s", response.getValue().getLastModified());
-        // END: com.azure.storage.file.datalake.PathClient.setAccessControlWithResponse#PathAccessControl-DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlWithResponse#PathAccessControl-DataLakeRequestConditions-Duration-Context
     }
 
     /**
-     * Code snippets for {@link PathClient#getAccessControl()}
+     * Code snippets for {@link DataLakePathClient#getAccessControl()}
      */
     public void getAccessControlCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.getAccessControl
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getAccessControl
         PathAccessControl response = client.getAccessControl();
         System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
                 response.getAcl(), response.getGroup(), response.getOwner(), response.getPermissions());
-        // END: com.azure.storage.file.datalake.PathClient.getAccessControl
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getAccessControl
     }
 
     /**
-     * Code snippets for {@link PathClient#getAccessControlWithResponse(boolean, DataLakeRequestConditions, Duration, Context)}
+     * Code snippets for {@link DataLakePathClient#getAccessControlWithResponse(boolean, DataLakeRequestConditions, Duration, Context)}
      */
     public void getAccessControlWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.PathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
         boolean returnUpn = false;
 
@@ -155,7 +155,7 @@ public class PathClientJavaDocCodeSamples {
        System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
                 response.getValue().getAcl(), response.getValue().getGroup(), response.getValue().getOwner(),
                 response.getValue().getPermissions());
-        // END: com.azure.storage.file.datalake.PathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
     }
 
 }

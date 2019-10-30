@@ -13,6 +13,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
@@ -91,17 +92,17 @@ public class DataLakeServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getFileSystemAsyncClient#String}
      *
      * @param fileSystemName The name of the file system to point to. A value of null or empty string will be
-     *                       interpreted as pointing to the root file system and will be replaced by "$root".
+     * interpreted as pointing to the root file system and will be replaced by "$root".
      * @return A {@link FileSystemAsyncClient} object pointing to the specified file system
      */
     public FileSystemAsyncClient getFileSystemAsyncClient(String fileSystemName) {
         if (ImplUtils.isNullOrEmpty(fileSystemName)) {
             fileSystemName = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
         }
-
         return new FileSystemAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getAccountUrl(), fileSystemName).toString(), getServiceVersion(),
-            getAccountName(), fileSystemName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName)
+            StorageImplUtils.appendToUrlPath(getAccountUrl(), Utility.urlEncode(Utility.urlDecode(fileSystemName)))
+                .toString(), getServiceVersion(), getAccountName(), fileSystemName,
+            blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName)
         );
     }
 
@@ -248,7 +249,7 @@ public class DataLakeServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.listFileSystems#ListFileSystemsOptions}
      *
      * @param options A {@link ListFileSystemsOptions} which specifies what data should be returned by the service.
-     * @return A reactive response emitting the list of containers.
+     * @return A reactive response emitting the list of file systems.
      */
     public PagedFlux<FileSystemItem> listFileSystems(ListFileSystemsOptions options) {
         try {

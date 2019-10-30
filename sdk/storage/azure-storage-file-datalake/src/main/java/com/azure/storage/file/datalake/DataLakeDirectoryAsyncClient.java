@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -32,19 +33,19 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * subdirectories.
  *
  * <p>
- * This client is instantiated through {@link PathClientBuilder} or retrieved via
+ * This client is instantiated through {@link DataLakePathClientBuilder} or retrieved via
  * {@link FileSystemAsyncClient#getDirectoryAsyncClient(String) getDirectoryAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
  * Docs</a> for more information.
  */
-public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
+public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakeDirectoryAsyncClient.class);
 
     /**
-     * Package-private constructor for use by {@link PathClientBuilder}.
+     * Package-private constructor for use by {@link DataLakePathClientBuilder}.
      *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
@@ -59,10 +60,10 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, directoryName, blockBlobAsyncClient);
     }
 
-    DataLakeDirectoryAsyncClient(PathAsyncClient pathAsyncClient) {
-        super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
-            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.getObjectPath(),
-            pathAsyncClient.getBlockBlobAsyncClient());
+    DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
+        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getPathUrl(), dataLakePathAsyncClient.getServiceVersion(),
+            dataLakePathAsyncClient.getAccountName(), dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.getObjectPath(),
+            dataLakePathAsyncClient.getBlockBlobAsyncClient());
     }
 
     /**
@@ -181,8 +182,9 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
         BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(fileName).buildBlockBlobAsyncClient();
 
         return new DataLakeFileAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), fileName).toString(), getServiceVersion(),
-            getAccountName(), getFileSystemName(), getObjectPath() + "/" + fileName, blockBlobAsyncClient);
+            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(fileName))).toString(),
+            getServiceVersion(), getAccountName(), getFileSystemName(), getObjectPath() + "/"
+            + Utility.urlDecode(fileName), blockBlobAsyncClient);
     }
 
     /**
@@ -299,8 +301,9 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
             .buildBlockBlobAsyncClient();
 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), subDirectoryName).toString(), getServiceVersion(),
-            getAccountName(), getFileSystemName(), getObjectPath() + "/" + subDirectoryName, blockBlobAsyncClient);
+            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(subDirectoryName)))
+                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), getObjectPath() + "/"
+            + Utility.urlDecode(subDirectoryName), blockBlobAsyncClient);
     }
 
     /**
@@ -410,7 +413,8 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String}
      *
-     * @param destinationPath Relative path from the file system to rename the directory to.
+     * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
+     * name.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the new directory
      * created.
      */
@@ -431,7 +435,8 @@ public final class DataLakeDirectoryAsyncClient extends PathAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
-     * @param destinationPath Relative path from the file system to rename the directory to.
+     * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
+     * name.
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
      * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link

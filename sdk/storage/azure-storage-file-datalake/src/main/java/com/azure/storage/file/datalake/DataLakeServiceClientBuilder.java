@@ -175,8 +175,6 @@ public class DataLakeServiceClientBuilder {
         return this;
     }
 
-    // TODO (gapra) : Figure out connection string ability
-
     /**
      * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
      *

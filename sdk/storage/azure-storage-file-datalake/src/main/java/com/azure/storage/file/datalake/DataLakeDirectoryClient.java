@@ -26,14 +26,14 @@ import java.util.Map;
  * subdirectories.
  *
  * <p>
- * This client is instantiated through {@link PathClientBuilder} or retrieved via
+ * This client is instantiated through {@link DataLakePathClientBuilder} or retrieved via
  * {@link FileSystemClient#getDirectoryClient(String) getDirectoryClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
  * Docs</a> for more information.
  */
-public class DataLakeDirectoryClient extends PathClient {
+public class DataLakeDirectoryClient extends DataLakePathClient {
     private final ClientLogger logger = new ClientLogger(DataLakeDirectoryClient.class);
 
     private final DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
@@ -43,9 +43,9 @@ public class DataLakeDirectoryClient extends PathClient {
         this.dataLakeDirectoryAsyncClient = pathAsyncClient;
     }
 
-    private DataLakeDirectoryClient(PathClient pathClient) {
-        super(pathClient.pathAsyncClient, pathClient.blockBlobClient);
-        this.dataLakeDirectoryAsyncClient = new DataLakeDirectoryAsyncClient(pathClient.pathAsyncClient);
+    private DataLakeDirectoryClient(DataLakePathClient dataLakePathClient) {
+        super(dataLakePathClient.dataLakePathAsyncClient, dataLakePathClient.blockBlobClient);
+        this.dataLakeDirectoryAsyncClient = new DataLakeDirectoryAsyncClient(dataLakePathClient.dataLakePathAsyncClient);
     }
 
     /**
@@ -116,7 +116,7 @@ public class DataLakeDirectoryClient extends PathClient {
     public Response<PathInfo> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions accessConditions, String permissions, String umask, Duration timeout,
         Context context) {
-        Mono<Response<PathInfo>> response = pathAsyncClient.createWithResponse(PathResourceType.DIRECTORY, headers,
+        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(PathResourceType.DIRECTORY, headers,
             metadata, accessConditions, permissions, umask, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -158,7 +158,7 @@ public class DataLakeDirectoryClient extends PathClient {
     public Response<Void> deleteWithResponse(boolean recursive, DataLakeRequestConditions accessConditions,
         Duration timeout, Context context) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
-        Mono<Response<Void>> response = pathAsyncClient.deleteWithResponse(recursive, accessConditions, context);
+        Mono<Response<Void>> response = dataLakePathAsyncClient.deleteWithResponse(recursive, accessConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -264,7 +264,6 @@ public class DataLakeDirectoryClient extends PathClient {
         Duration timeout, Context context) {
         return getFileClient(fileName).deleteWithResponse(accessConditions, timeout, context);
     }
-
 
     /**
      * Initializes a new DataLakeDirectoryClient object by concatenating directoryName to the end of
@@ -382,7 +381,8 @@ public class DataLakeDirectoryClient extends PathClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.rename#String}
      *
-     * @param destinationPath Relative path from the file system to rename the directory to.
+     * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
+     * name.
      * @return A {@link DataLakeDirectoryClient} used to interact with the new directory created.
      */
     public DataLakeDirectoryClient rename(String destinationPath) {
@@ -398,7 +398,8 @@ public class DataLakeDirectoryClient extends PathClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context}
      *
-     * @param destinationPath Relative path from the file system to rename the directory to.
+     * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
+     * name.
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
      * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -411,10 +412,10 @@ public class DataLakeDirectoryClient extends PathClient {
         DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions,
         Duration timeout, Context context) {
 
-        Mono<Response<PathClient>> response = renameWithResponse(destinationPath, sourceAccessConditions,
+        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationPath, sourceAccessConditions,
             destAccessConditions, context);
 
-        Response<PathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeDirectoryClient(resp.getValue()));
     }
 }

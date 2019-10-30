@@ -20,7 +20,6 @@ public class ListPathsOptions {
     private boolean returnUpn;
     private Integer maxResults;
 
-
     public ListPathsOptions() {
     }
 

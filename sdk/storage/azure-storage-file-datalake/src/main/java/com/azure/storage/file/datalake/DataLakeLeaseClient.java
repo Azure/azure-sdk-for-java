@@ -16,7 +16,7 @@ import java.time.Duration;
 
 /**
  * This class provides a client that contains all the leasing operations for {@link FileSystemClient file systems} and
- * {@link PathClient files and directories}. This client acts as a supplement to those clients and only handles leasing
+ * {@link DataLakePathClient files and directories}. This client acts as a supplement to those clients and only handles leasing
  * operations.
  *
  * <p><strong>Instantiating a DataLakeLeaseClient</strong></p>
@@ -30,8 +30,8 @@ import java.time.Duration;
  * <p>View {@link DataLakeLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
  * <p>For more information about leasing see the
- * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-container">container leasing</a> or
- * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">blob leasing</a> documentation.</p>
+ * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-container">file system leasing</a> or
+ * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">path leasing</a> documentation.</p>
  *
  * @see DataLakeLeaseClientBuilder
  */
@@ -46,7 +46,7 @@ public final class DataLakeLeaseClient {
     /**
      * Gets the {@link URL} of the lease client.
      *
-     * <p>The lease will either be a container or blob URL depending on which the lease client is associated.</p>
+     * <p>The lease will either be a file system or path URL depending on which the lease client is associated.</p>
      *
      * @return URL of the lease client.
      */

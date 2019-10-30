@@ -331,7 +331,7 @@ public class FileSystemAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.setMetadata#Map}
      *
-     * @param metadata Metadata to associate with the container.
+     * @param metadata Metadata to associate with the file system.
      * @return A reactive response signalling completion.
      */
     public Mono<Void> setMetadata(Map<String, String> metadata) {

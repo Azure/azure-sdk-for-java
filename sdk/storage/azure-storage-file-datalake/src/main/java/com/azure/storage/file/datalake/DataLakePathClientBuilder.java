@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake;
 
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -42,15 +41,15 @@ import java.util.Objects;
  * <ul>
  * <li>the endpoint through {@code .endpoint()}, including the file system name and file/directory name, in the format
  * of {@code https://{accountName}.dfs.core.windows.net/{fileSystemName}/{pathName}}.
- * <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly
+ * <li>the credential through {@code .credential()} or {@code .connectionString()} if the file system is not publicly
  * accessible.
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {DataLakeFileClient.class, DataLakeFileAsyncClient.class,
     DataLakeDirectoryClient.class, DataLakeDirectoryAsyncClient.class})
-public final class PathClientBuilder {
+public final class DataLakePathClientBuilder {
 
-    private final ClientLogger logger = new ClientLogger(PathClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(DataLakePathClientBuilder.class);
     private final BlobClientBuilder blobClientBuilder;
 
     private String endpoint;
@@ -76,7 +75,8 @@ public final class PathClientBuilder {
      * DataLakeFileAsyncClient FileAsyncClients}, {@link DataLakeDirectoryClient DirectoryClients} and
      * {@link DataLakeDirectoryAsyncClient DirectoryAsyncClients}.
      */
-    public PathClientBuilder() {
+    public DataLakePathClientBuilder() {
+        logOptions = getDefaultHttpLogOptions();
         blobClientBuilder = new BlobClientBuilder();
     }
 
@@ -85,7 +85,7 @@ public final class PathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClientBuilder.buildFileClient}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileClient}
      *
      * @return a {@link DataLakeFileClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
@@ -99,7 +99,7 @@ public final class PathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClientBuilder.buildFileAsyncClient}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileAsyncClient}
      *
      * @return a {@link DataLakeFileAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
@@ -140,7 +140,7 @@ public final class PathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClientBuilder.buildDirectoryClient}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryClient}
      *
      * @return a {@link DataLakeDirectoryClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
@@ -155,7 +155,7 @@ public final class PathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.PathClientBuilder.buildDirectoryAsyncClient}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryAsyncClient}
      *
      * @return a {@link DataLakeDirectoryAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
@@ -191,50 +191,14 @@ public final class PathClientBuilder {
             blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
-
-    PathClient buildPathClient() {
-        return new PathClient(buildPathAsyncClient(), blobClientBuilder.buildClient().getBlockBlobClient());
-    }
-
-    PathAsyncClient buildPathAsyncClient() {
-        Objects.requireNonNull(pathName, "'pathName' cannot be null.");
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
-
-        /*
-        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
-        to read and debug.
-         */
-        String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
-            ? FileSystemAsyncClient.ROOT_FILESYSTEM_NAME
-            : fileSystemName;
-
-        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
-
-        return new PathAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName, pathName),
-            serviceVersion, accountName, dataLakeFileSystemName, pathName,
-            blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
-    }
-
     /**
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
-     * @return the updated PathClientBuilder
+     * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public PathClientBuilder credential(StorageSharedKeyCredential credential) {
+    public DataLakePathClientBuilder credential(StorageSharedKeyCredential credential) {
         blobClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
@@ -246,10 +210,10 @@ public final class PathClientBuilder {
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
-     * @return the updated PathClientBuilder
+     * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public PathClientBuilder credential(TokenCredential credential) {
+    public DataLakePathClientBuilder credential(TokenCredential credential) {
         blobClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
@@ -261,10 +225,10 @@ public final class PathClientBuilder {
      * Sets the SAS token used to authorize requests sent to the service.
      *
      * @param sasToken The SAS token to use for authenticating requests.
-     * @return the updated PathClientBuilder
+     * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
-    public PathClientBuilder sasToken(String sasToken) {
+    public DataLakePathClientBuilder sasToken(String sasToken) {
         blobClientBuilder.sasToken(sasToken);
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
@@ -276,11 +240,11 @@ public final class PathClientBuilder {
     /**
      * Clears the credential used to authorize the request.
      *
-     * <p>This is for blobs that are publicly accessible.</p>
+     * <p>This is for paths that are publicly accessible.</p>
      *
-     * @return the updated PathClientBuilder
+     * @return the updated DataLakePathClientBuilder
      */
-    public PathClientBuilder setAnonymousAccess() {
+    public DataLakePathClientBuilder setAnonymousAccess() {
         blobClientBuilder.setAnonymousAccess();
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
@@ -295,13 +259,13 @@ public final class PathClientBuilder {
      * path name as the file system name. With only one path element, it is impossible to distinguish between a file
      * system name and a path in the root file system, so it is assumed to be the file system name as this is much more
      * common. When working with paths in the root file system, it is best to set the endpoint to the account url and
-     * specify the path name separately using the {@link PathClientBuilder#pathName(String) pathName} method.</p>
+     * specify the path name separately using the {@link DataLakePathClientBuilder#pathName(String) pathName} method.</p>
      *
      * @param endpoint URL of the service
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
-    public PathClientBuilder endpoint(String endpoint) {
+    public DataLakePathClientBuilder endpoint(String endpoint) {
         blobClientBuilder.endpoint(Transforms.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
         try {
             URL url = new URL(endpoint);
@@ -328,9 +292,9 @@ public final class PathClientBuilder {
      *
      * @param fileSystemName Name of the file system. If the value {@code null} or empty the root file system,
      * {@code $root}, will be used.
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      */
-    public PathClientBuilder fileSystemName(String fileSystemName) {
+    public DataLakePathClientBuilder fileSystemName(String fileSystemName) {
         blobClientBuilder.containerName(fileSystemName);
         this.fileSystemName = fileSystemName;
         return this;
@@ -340,10 +304,10 @@ public final class PathClientBuilder {
      * Sets the name of the file/directory.
      *
      * @param pathName Name of the path.
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code pathName} is {@code null}
      */
-    public PathClientBuilder pathName(String pathName) {
+    public DataLakePathClientBuilder pathName(String pathName) {
         blobClientBuilder.blobName(pathName);
         this.pathName = Objects.requireNonNull(pathName, "'pathName' cannot be null.");
         return this;
@@ -353,9 +317,9 @@ public final class PathClientBuilder {
      * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
      *
      * @param httpClient HttpClient to use for requests.
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      */
-    public PathClientBuilder httpClient(HttpClient httpClient) {
+    public DataLakePathClientBuilder httpClient(HttpClient httpClient) {
         blobClientBuilder.httpClient(httpClient);
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -369,23 +333,32 @@ public final class PathClientBuilder {
      * Adds a pipeline policy to apply on each request sent.
      *
      * @param pipelinePolicy a pipeline policy
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
-    public PathClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public DataLakePathClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         blobClientBuilder.addPolicy(pipelinePolicy);
         this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
         return this;
     }
 
     /**
+     * Gets the default Storage whitelist log headers and query parameters.
+     *
+     * @return the default http log options.
+     */
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        return BuilderHelper.getDefaultHttpLogOptions();
+    }
+
+    /**
      * Sets the {@link HttpLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public PathClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public DataLakePathClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         blobClientBuilder.httpLogOptions(logOptions);
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -395,9 +368,9 @@ public final class PathClientBuilder {
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
      * @param configuration Configuration store used to retrieve environment configurations.
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      */
-    public PathClientBuilder configuration(Configuration configuration) {
+    public DataLakePathClientBuilder configuration(Configuration configuration) {
         blobClientBuilder.configuration(configuration);
         this.configuration = configuration;
         return this;
@@ -407,10 +380,10 @@ public final class PathClientBuilder {
      * Sets the request retry options for all the requests made through the client.
      *
      * @param retryOptions The options used to configure retry behavior.
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
-    public PathClientBuilder retryOptions(RequestRetryOptions retryOptions) {
+    public DataLakePathClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         blobClientBuilder.retryOptions(retryOptions);
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         return this;
@@ -422,9 +395,9 @@ public final class PathClientBuilder {
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
      *
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      */
-    public PathClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public DataLakePathClientBuilder pipeline(HttpPipeline httpPipeline) {
         blobClientBuilder.pipeline(httpPipeline);
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -443,9 +416,9 @@ public final class PathClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link DataLakeServiceVersion} of the service to be used when making requests.
-     * @return the updated PathClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      */
-    public PathClientBuilder serviceVersion(DataLakeServiceVersion version) {
+    public DataLakePathClientBuilder serviceVersion(DataLakeServiceVersion version) {
         this.version = version;
         return this;
     }

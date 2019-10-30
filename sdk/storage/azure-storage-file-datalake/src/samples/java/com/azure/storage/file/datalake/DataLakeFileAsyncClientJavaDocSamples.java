@@ -140,7 +140,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         client.append(data, offset, length)
             .subscribe(
                 response -> System.out.println("Append data completed"),
-                error -> System.out.printf("Error when calling stage Block: %s", error));
+                error -> System.out.printf("Error when calling append data: %s", error));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.append#Flux-long-long
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-byte-String

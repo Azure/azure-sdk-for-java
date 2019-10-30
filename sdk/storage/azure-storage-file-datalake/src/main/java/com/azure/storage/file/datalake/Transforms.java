@@ -7,6 +7,9 @@ import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
@@ -18,6 +21,9 @@ import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
+import com.azure.storage.file.datalake.models.FileReadHeaders;
+import com.azure.storage.file.datalake.models.FileReadResponse;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.FileSystemItemProperties;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
@@ -247,5 +253,58 @@ class Transforms {
             .setIfMatch(accessConditions.getIfMatch())
             .setIfModifiedSince(accessConditions.getIfModifiedSince());
 
+    }
+
+    static FileReadResponse toFileReadResponse(BlobDownloadResponse r) {
+        if (r == null) {
+            return null;
+        }
+        return new FileReadResponse(Transforms.toFileReadAsyncResponse(new BlobDownloadAsyncResponse(r.getRequest(),
+            r.getStatusCode(), r.getHeaders(), null, r.getDeserializedHeaders())));
+    }
+
+    static FileReadAsyncResponse toFileReadAsyncResponse(BlobDownloadAsyncResponse r) {
+        if (r == null) {
+            return null;
+        }
+        return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
+            Transforms.toPathReadHeaders(r.getDeserializedHeaders()));
+    }
+
+    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h) {
+        if (h == null) {
+            return null;
+        }
+        return new FileReadHeaders()
+            .setLastModified(h.getLastModified())
+            .setMetadata(h.getMetadata())
+            .setContentLength(h.getContentLength())
+            .setContentType(h.getContentType())
+            .setContentRange(h.getContentRange())
+            .setETag(h.getETag())
+            .setContentMd5(h.getContentMd5())
+            .setContentEncoding(h.getContentEncoding())
+            .setCacheControl(h.getCacheControl())
+            .setContentDisposition(h.getContentDisposition())
+            .setContentLanguage(h.getContentLanguage())
+            .setCopyCompletionTime(h.getCopyCompletionTime())
+            .setCopyStatusDescription(h.getCopyStatusDescription())
+            .setCopyId(h.getCopyId())
+            .setCopyProgress(h.getCopyProgress())
+            .setCopySource(h.getCopySource())
+            .setCopyStatus(Transforms.toDataLakeCopyStatusType(h.getCopyStatus()))
+            .setLeaseDuration(Transforms.toDataLakeLeaseDurationType(h.getLeaseDuration()))
+            .setLeaseState(Transforms.toDataLakeLeaseStateType(h.getLeaseState()))
+            .setLeaseStatus(Transforms.toDataLakeLeaseStatusType(h.getLeaseStatus()))
+            .setClientRequestId(h.getClientRequestId())
+            .setRequestId(h.getRequestId())
+            .setVersion(h.getVersion())
+            .setAcceptRanges(h.getAcceptRanges())
+            .setDateProperty(h.getDateProperty())
+            .setIsServerEncrypted(h.isServerEncrypted())
+            .setEncryptionKeySha256(h.getEncryptionKeySha256())
+            .setFileContentMd5(h.getBlobContentMD5())
+            .setContentCrc64(h.getContentCrc64())
+            .setErrorCode(h.getErrorCode());
     }
 }

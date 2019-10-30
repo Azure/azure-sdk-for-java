@@ -72,7 +72,7 @@ public class FileSystemClientJavaDocCodeSamples {
             System.out.printf("Create completed%n");
         } catch (BlobStorageException error) {
             if (error.getErrorCode().equals(BlobErrorCode.CONTAINER_ALREADY_EXISTS)) {
-                System.out.printf("Can't create container. It already exists %n");
+                System.out.printf("Can't create file system. It already exists %n");
             }
         }
         // END: com.azure.storage.file.datalake.FileSystemClient.create

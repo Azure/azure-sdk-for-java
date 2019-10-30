@@ -95,7 +95,7 @@ public class FileSystemClientBuilder {
      * @return a {@link FileSystemAsyncClient} created from the configurations in this builder.
      */
     public FileSystemAsyncClient buildAsyncClient() {
-/*
+        /*
         Implicit and explicit root file system access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
@@ -211,8 +211,6 @@ public class FileSystemClientBuilder {
         return this;
     }
 
-    // TODO (gapra) : Connection String
-
     /**
      * Sets the name of the file system.
      *
@@ -248,7 +246,7 @@ public class FileSystemClientBuilder {
      * @return the default http log options.
      */
     public static HttpLogOptions getDefaultHttpLogOptions() {
-        return com.azure.storage.blob.implementation.util.BuilderHelper.getDefaultHttpLogOptions();
+        return BuilderHelper.getDefaultHttpLogOptions();
     }
 
     /**

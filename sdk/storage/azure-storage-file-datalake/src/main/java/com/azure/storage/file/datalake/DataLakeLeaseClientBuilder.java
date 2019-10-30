@@ -12,7 +12,7 @@ import java.util.UUID;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Lease
- * clients. Lease clients are able to interact with both container and blob clients and act as a supplement client. A
+ * clients. Lease clients are able to interact with both file system and path clients and act as a supplement client. A
  * new instance of {@link DataLakeLeaseClient} and {@link DataLakeLeaseAsyncClient} are constructed every time
  * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} are called
  * respectively.
@@ -67,28 +67,28 @@ public final class DataLakeLeaseClientBuilder {
     }
 
     /**
-     * Configures the builder based on the passed {@link PathClient}. This will set the {@link HttpPipeline} and
+     * Configures the builder based on the passed {@link DataLakePathClient}. This will set the {@link HttpPipeline} and
      * {@link URL} that are used to interact with the service.
      *
-     * @param pathClient Client used to configure the builder.
+     * @param dataLakePathClient Client used to configure the builder.
      * @return the updated DataLakeLeaseClientBuilder object
-     * @throws NullPointerException If {@code pathClient} is {@code null}.
+     * @throws NullPointerException If {@code dataLakePathClient} is {@code null}.
      */
-    public DataLakeLeaseClientBuilder pathClient(PathClient pathClient) {
-        blobLeaseClientBuilder.blobClient(pathClient.getBlockBlobClient());
+    public DataLakeLeaseClientBuilder pathClient(DataLakePathClient dataLakePathClient) {
+        blobLeaseClientBuilder.blobClient(dataLakePathClient.getBlockBlobClient());
         return this;
     }
 
     /**
-     * Configures the builder based on the passed {@link PathAsyncClient}. This will set the {@link HttpPipeline} and
+     * Configures the builder based on the passed {@link DataLakePathAsyncClient}. This will set the {@link HttpPipeline} and
      * {@link URL} that are used to interact with the service.
      *
-     * @param pathAsyncClient PathAsyncClient used to configure the builder.
+     * @param dataLakePathAsyncClient DataLakePathAsyncClient used to configure the builder.
      * @return the updated DataLakeLeaseClientBuilder object
-     * @throws NullPointerException If {@code pathAsyncClient} is {@code null}.
+     * @throws NullPointerException If {@code dataLakePathAsyncClient} is {@code null}.
      */
-    public DataLakeLeaseClientBuilder pathAsyncClient(PathAsyncClient pathAsyncClient) {
-        blobLeaseClientBuilder.blobAsyncClient(pathAsyncClient.getBlockBlobAsyncClient());
+    public DataLakeLeaseClientBuilder pathAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
+        blobLeaseClientBuilder.blobAsyncClient(dataLakePathAsyncClient.getBlockBlobAsyncClient());
         return this;
     }
 

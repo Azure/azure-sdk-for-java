@@ -290,11 +290,11 @@ class APISpec extends Specification {
         }
     }
 
-    static DataLakeLeaseClient createLeaseClient(PathClient pathClient) {
+    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient) {
         return createLeaseClient(pathClient, null)
     }
 
-    static DataLakeLeaseClient createLeaseClient(PathClient pathClient, String leaseId) {
+    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient, String leaseId) {
         return new DataLakeLeaseClientBuilder()
             .pathClient(pathClient)
             .leaseId(leaseId)
@@ -313,7 +313,7 @@ class APISpec extends Specification {
     }
 
     DataLakeFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
-        PathClientBuilder builder = new PathClientBuilder()
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -330,7 +330,7 @@ class APISpec extends Specification {
     }
 
     DataLakeFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, String pathName) {
-        PathClientBuilder builder = new PathClientBuilder()
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .pathName(pathName)
             .httpClient(getHttpClient())
@@ -344,7 +344,7 @@ class APISpec extends Specification {
     }
 
     DataLakeFileClient getFileClient(String sasToken, String endpoint, String pathName) {
-        PathClientBuilder builder = new PathClientBuilder()
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .pathName(pathName)
             .httpClient(getHttpClient())
@@ -462,7 +462,7 @@ class APISpec extends Specification {
      * @return
      * The appropriate etag value to run the current test.
      */
-    def setupPathMatchCondition(PathClient pc, String match) {
+    def setupPathMatchCondition(DataLakePathClient pc, String match) {
         if (match == receivedEtag) {
             return pc.getProperties().getETag()
         } else {
@@ -470,7 +470,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupPathMatchCondition(PathAsyncClient pac, String match) {
+    def setupPathMatchCondition(DataLakePathAsyncClient pac, String match) {
         if (match == receivedEtag) {
             return pac.getProperties().block().getETag()
         } else {
@@ -492,7 +492,7 @@ class APISpec extends Specification {
      * The actual leaseAccessConditions of the path if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
-    def setupPathLeaseCondition(PathClient pc, String leaseID) {
+    def setupPathLeaseCondition(DataLakePathClient pc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = createLeaseClient(pc).acquireLease(-1)
@@ -504,7 +504,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupPathLeaseCondition(PathAsyncClient pac, String leaseID) {
+    def setupPathLeaseCondition(DataLakePathAsyncClient pac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = new DataLakeLeaseClientBuilder()

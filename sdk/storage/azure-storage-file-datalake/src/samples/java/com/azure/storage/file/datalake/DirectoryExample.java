@@ -29,7 +29,7 @@ public class DirectoryExample {
         FileSystemClient fileSystemClient = new FileSystemClientBuilder().endpoint(ENDPOINT).fileSystemName(fileSystemName).buildClient();
         fileSystemClient.create();
         // Build up a directory client
-        DataLakeDirectoryClient directoryClient = new PathClientBuilder().endpoint(ENDPOINT)
+        DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder().endpoint(ENDPOINT)
             .pathName(generateRandomName())
             .fileSystemName(fileSystemName)
             .buildDirectoryClient();

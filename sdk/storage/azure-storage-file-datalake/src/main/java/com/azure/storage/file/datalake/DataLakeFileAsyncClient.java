@@ -16,7 +16,7 @@ import com.azure.storage.file.datalake.implementation.models.ModifiedAccessCondi
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
-import com.azure.storage.file.datalake.models.FileDownloadAsyncResponse;
+import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
@@ -38,19 +38,19 @@ import static com.azure.core.implementation.util.FluxUtil.fluxError;
  * data to write to a file.
  *
  * <p>
- * This client is instantiated through {@link PathClientBuilder} or retrieved via
+ * This client is instantiated through {@link DataLakePathClientBuilder} or retrieved via
  * {@link FileSystemAsyncClient#getFileAsyncClient(String)}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
  * Docs</a> for more information.
  */
-public class DataLakeFileAsyncClient extends PathAsyncClient {
+public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileAsyncClient.class);
 
     /**
-     * Package-private constructor for use by {@link PathClientBuilder}.
+     * Package-private constructor for use by {@link DataLakePathClientBuilder}.
      *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
@@ -65,7 +65,7 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, blockBlobAsyncClient);
     }
 
-    DataLakeFileAsyncClient(PathAsyncClient pathAsyncClient) {
+    DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.getObjectPath(),
             pathAsyncClient.getBlockBlobAsyncClient());
@@ -237,8 +237,8 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      * data emitted by the {@code Flux}.
      * @param contentMd5 An MD5 hash of the content of the data. If specified, the service will calculate the MD5 of the
      * received data and fail the request if it does not match the provided MD5.
-     * @param leaseId By setting lease access conditions, requests will fail if the provided lease does
-     * not match the active lease on the file.
+     * @param leaseId By setting lease id, requests will fail if the provided lease does not match the active lease on
+     * the file.
      *
      * @return A reactive response signalling completion.
      */
@@ -257,7 +257,7 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
 
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
 
-        PathHttpHeaders headers = new PathHttpHeaders().setContentMd5(contentMd5);
+        PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(contentMd5);
 
         return this.dataLakeStorage.paths().appendDataWithRestResponseAsync(data, offset, null, length, null,
             headers, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response, null));
@@ -351,7 +351,7 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
     public Flux<ByteBuffer> read() {
         try {
             return readWithResponse(null, null, null, false)
-                .flatMapMany(FileDownloadAsyncResponse::getValue);
+                .flatMapMany(FileReadAsyncResponse::getValue);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
         }
@@ -373,14 +373,12 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified file range should be returned.
      * @return A reactive response containing the file data.
      */
-    public Mono<FileDownloadAsyncResponse> readWithResponse(FileRange range, DownloadRetryOptions options,
+    public Mono<FileReadAsyncResponse> readWithResponse(FileRange range, DownloadRetryOptions options,
         DataLakeRequestConditions accessConditions, boolean rangeGetContentMD5) {
         try {
             return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
                 Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(accessConditions),
-                rangeGetContentMD5).map(response -> new FileDownloadAsyncResponse(response.getRequest(),
-                response.getStatusCode(), response.getHeaders(), response.getValue(),
-                response.getDeserializedHeaders()));
+                rangeGetContentMD5).map(response -> Transforms.toFileReadAsyncResponse(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -396,7 +394,7 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String}
      *
-     * @param destinationPath Relative path from the file system to rename the file to.
+     * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the new file created.
      */
     public Mono<DataLakeFileAsyncClient> rename(String destinationPath) {
@@ -408,15 +406,14 @@ public class DataLakeFileAsyncClient extends PathAsyncClient {
     }
 
     /**
-     * Creates a new sub-directory within a directory. If a sub-directory with the same name already exists, the
-     * sub-directory will be overwritten. For more information, see the
+     * Moves the file to another location within the file system. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
-     * @param destinationPath Relative path from the file system to rename the file to.
+     * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
      * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
