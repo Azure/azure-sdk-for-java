@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * consumer group.
  *
  * <ul>
- * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
+ * <li>If {@link EventHubConsumerClient} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
  * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
  * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * </ul>
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
- * Create an {@link EventHubConsumer} using {@link EventHubClient}.
+ * Create an {@link EventHubConsumerClient} using {@link EventHubClient}.
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.instantiation}
  *
  * <p><strong>Consuming events from an Event Hub</strong></p>
@@ -46,19 +46,19 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * @see EventHubClient#createConsumer(String, String, EventPosition)
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
-public class EventHubConsumer implements Closeable {
-    private static final AtomicReferenceFieldUpdater<EventHubConsumer, SynchronousEventSubscriber> SUBSCRIBER =
-        AtomicReferenceFieldUpdater.newUpdater(EventHubConsumer.class, SynchronousEventSubscriber.class,
+public class EventHubConsumerClient implements Closeable {
+    private static final AtomicReferenceFieldUpdater<EventHubConsumerClient, SynchronousEventSubscriber> SUBSCRIBER =
+        AtomicReferenceFieldUpdater.newUpdater(EventHubConsumerClient.class, SynchronousEventSubscriber.class,
             "eventSubscriber");
 
-    private final ClientLogger logger = new ClientLogger(EventHubConsumer.class);
+    private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
     private final AtomicLong idGenerator = new AtomicLong();
 
     private final EventHubAsyncConsumer consumer;
     private final Duration timeout;
     private volatile SynchronousEventSubscriber eventSubscriber;
 
-    EventHubConsumer(EventHubAsyncConsumer consumer, Duration tryTimeout) {
+    EventHubConsumerClient(EventHubAsyncConsumer consumer, Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
 
         this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");

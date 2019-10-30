@@ -26,20 +26,20 @@ import java.util.stream.Collectors;
 
 import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
 
-public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
+public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final int NUMBER_OF_EVENTS = 10;
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static volatile IntegrationTestEventData testData = null;
 
     private EventHubClient client;
-    private EventHubConsumer consumer;
+    private EventHubConsumerClient consumer;
 
     // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
     // our own.
 
-    public EventHubConsumerIntegrationTest() {
-        super(new ClientLogger(EventHubConsumerIntegrationTest.class));
+    public EventHubConsumerClientIntegrationTest() {
+        super(new ClientLogger(EventHubConsumerClientIntegrationTest.class));
     }
 
     @Rule
@@ -132,7 +132,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
         final EventHubProducerClient producer = client.createProducer();
 
@@ -164,7 +164,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
         final List<EventData> events2 = getEventsAsList(secondSetOfEvents);
 
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(Instant.now()));
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
         final EventHubProducerClient producer = client.createProducer();
@@ -197,8 +197,8 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
-        final EventHubConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
+        final EventHubConsumerClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
         final EventHubProducerClient producer = client.createProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
 

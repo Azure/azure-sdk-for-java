@@ -10,14 +10,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventHubClient;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.Locale;
 import java.util.Optional;
 
 /**
- * The baseline set of options that can be specified when creating an {@link EventHubConsumer} or an
+ * The baseline set of options that can be specified when creating an {@link EventHubConsumerClient} or an
  * {@link EventHubAsyncConsumer} to configure its behavior.
  *
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)

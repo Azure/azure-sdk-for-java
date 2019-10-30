@@ -15,7 +15,7 @@ import com.azure.messaging.eventhubs.CloseReason;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.PartitionProcessor;
@@ -34,7 +34,7 @@ import reactor.core.publisher.Signal;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
- * partition pump is an {@link EventHubConsumer} that is receiving events from partitions this {@link EventProcessor}
+ * partition pump is an {@link EventHubConsumerClient} that is receiving events from partitions this {@link EventProcessor}
  * has claimed ownership of.
  *
  * <p>

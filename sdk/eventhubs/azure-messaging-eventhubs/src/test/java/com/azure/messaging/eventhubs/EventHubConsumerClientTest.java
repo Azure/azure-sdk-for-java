@@ -39,7 +39,7 @@ import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Mockito.when;
 
-public class EventHubConsumerTest {
+public class EventHubConsumerClientTest {
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
@@ -55,7 +55,7 @@ public class EventHubConsumerTest {
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
 
-    private EventHubConsumer consumer;
+    private EventHubConsumerClient consumer;
 
     @Before
     public void setup() {
@@ -73,7 +73,7 @@ public class EventHubConsumerTest {
             .setRetry(new RetryOptions())
             .setScheduler(Schedulers.elastic());
         EventHubAsyncConsumer asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, serializer, options);
-        consumer = new EventHubConsumer(asyncConsumer, options.getRetry().getTryTimeout());
+        consumer = new EventHubConsumerClient(asyncConsumer, options.getRetry().getTryTimeout());
     }
 
     @After
@@ -159,9 +159,9 @@ public class EventHubConsumerTest {
 
         // Assert
         final Map<Integer, EventData> firstActual = receive.stream()
-            .collect(Collectors.toMap(EventHubConsumerTest::getPositionId, Function.identity()));
+            .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
         final Map<Integer, EventData> secondActual = receive2.stream()
-            .collect(Collectors.toMap(EventHubConsumerTest::getPositionId, Function.identity()));
+            .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
 
         Assert.assertEquals(firstReceive, firstActual.size());
         Assert.assertEquals(secondReceive, secondActual.size());
@@ -192,7 +192,7 @@ public class EventHubConsumerTest {
 
         // Assert
         final Map<Integer, EventData> firstActual = receive.stream()
-            .collect(Collectors.toMap(EventHubConsumerTest::getPositionId, Function.identity()));
+            .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
 
         Assert.assertEquals(numberOfEvents, firstActual.size());
         IntStream.range(0, numberOfEvents)

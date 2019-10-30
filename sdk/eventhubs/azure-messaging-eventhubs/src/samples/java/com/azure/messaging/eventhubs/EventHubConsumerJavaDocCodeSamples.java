@@ -11,7 +11,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 /**
- * Code snippets demonstrating various {@link EventHubConsumer} scenarios.
+ * Code snippets demonstrating various {@link EventHubConsumerClient} scenarios.
  */
 public class EventHubConsumerJavaDocCodeSamples {
     private final EventHubClient client = new EventHubClientBuilder().connectionString("fake-string").buildClient();
@@ -29,7 +29,7 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         String partitionId = "0";
         String consumerGroup = "$DEFAULT";
-        EventHubConsumer consumer = client.createConsumer(consumerGroup, partitionId, EventPosition.latest());
+        EventHubConsumerClient consumer = client.createConsumer(consumerGroup, partitionId, EventPosition.latest());
         // END: com.azure.messaging.eventhubs.eventhubconsumer.instantiation
 
         consumer.close();
@@ -43,7 +43,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubClient.getPartitionIds().
         String partitionId = "0";
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
-        EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        EventHubConsumerClient consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(twelveHoursAgo));
 
         IterableStream<EventData> events = consumer.receive(100, Duration.ofSeconds(30));

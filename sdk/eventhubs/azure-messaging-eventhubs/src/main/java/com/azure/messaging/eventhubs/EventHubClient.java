@@ -116,14 +116,14 @@ public class EventHubClient implements Closeable {
      *     EventHubAsyncClient#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
-     * @return A new {@link EventHubConsumer} that receives events from the partition at the given position.
+     * @return A new {@link EventHubConsumerClient} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
      *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
+    public EventHubConsumerClient createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition);
-        return new EventHubConsumer(consumer, defaultConsumerOptions.getRetry().getTryTimeout());
+        return new EventHubConsumerClient(consumer, defaultConsumerOptions.getRetry().getTryTimeout());
     }
 
     /**
@@ -150,13 +150,13 @@ public class EventHubClient implements Closeable {
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
-     * @return An new {@link EventHubConsumer} that receives events from the partition with all configured {@link
+     * @return An new {@link EventHubConsumerClient} that receives events from the partition with all configured {@link
      *     EventHubConsumerOptions}.
      * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
      *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
+    public EventHubConsumerClient createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                            EventHubConsumerOptions options) {
         final EventHubAsyncConsumer consumer =
             client.createConsumer(consumerGroup, partitionId, eventPosition, options);
@@ -164,7 +164,7 @@ public class EventHubClient implements Closeable {
             ? defaultConsumerOptions.getRetry().getTryTimeout()
             : options.getRetry().getTryTimeout();
 
-        return new EventHubConsumer(consumer, timeout);
+        return new EventHubConsumerClient(consumer, timeout);
     }
 
     /**
