@@ -718,11 +718,6 @@
       <activation>
         <jdk>[11,)</jdk>
       </activation>
-      <properties>
-        <!-- We set the default to 11 here, but further down we set to 8 as appropriate -->
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-      </properties>
       <build>
         <plugins>
           <plugin>
@@ -730,10 +725,11 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>${maven-compiler-plugin.version}</version>
             <configuration>
+              <testRelease>11</testRelease>
               <compilerArgs>
                 <!-- Turn off annotation processing -->
                 <arg>-proc:none</arg>
-                
+
                 <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
                 <arg>-Xlint:cast</arg>
                 <arg>-Xlint:classfile</arg>

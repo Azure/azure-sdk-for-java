@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        Java 8 and 11:
+        Client Libraries:
           ArtifactName: 'packages'
           ProfileFlag: ''
           JavaVersion: '1.11'
