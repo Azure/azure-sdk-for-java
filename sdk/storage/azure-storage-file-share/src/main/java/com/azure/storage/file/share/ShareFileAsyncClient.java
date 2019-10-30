@@ -856,11 +856,12 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the ShareFileRangeWriteType is
-     * set to clear, the value of this header must be set to zero.
+     * @param length Specifies the number of bytes being transmitted in the request body. When the
+     * ShareFileRangeWriteType is set to clear, the value of this header must be set to zero.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is
      * {@code null}.
-     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response status code
+     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
+     * status code.
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
@@ -927,8 +928,8 @@ public class ShareFileAsyncClient {
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
      * @param sourceUrl Specifies the URL of the source file.
-     * @return A response containing the {@link ShareFileUploadRangeFromUrlInfo file upload range from url info} with headers
-     * and response status code.
+     * @return A response containing the {@link ShareFileUploadRangeFromUrlInfo file upload range from url info} with
+     * headers and response status code.
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,

@@ -345,8 +345,8 @@ public class ShareFileClient {
      * @throws NullPointerException If {@code stream} is {@code null}.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileRange range, Boolean rangeGetContentMD5,
-                                                     Duration timeout, Context context) {
+    public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileRange range,
+        Boolean rangeGetContentMD5, Duration timeout, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
         Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(range, rangeGetContentMD5,
@@ -475,8 +475,8 @@ public class ShareFileClient {
      * @return The {@link ShareFileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public ShareFileInfo setProperties(long newFileSize, ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties,
-                                  String filePermission) {
+    public ShareFileInfo setProperties(long newFileSize, ShareFileHttpHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission) {
         return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null, Context.NONE)
             .getValue();
     }
@@ -571,7 +571,8 @@ public class ShareFileClient {
      */
     public Response<ShareFileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
-        Mono<Response<ShareFileMetadataInfo>> response = shareFileAsyncClient.setMetadataWithResponse(metadata, context);
+        Mono<Response<ShareFileMetadataInfo>> response = shareFileAsyncClient
+            .setMetadataWithResponse(metadata, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -618,13 +619,14 @@ public class ShareFileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response status code
+     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
+     * status code.
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset, Duration timeout,
-        Context context) {
+    public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset,
+        Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(shareFileAsyncClient.uploadWithResponse(Utility
                 .convertStreamToByteBuffer(data, length, (int) ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE),
             length, offset, context), timeout);
@@ -724,12 +726,14 @@ public class ShareFileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response status code
+     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
+     * status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareFileUploadInfo> clearRangeWithResponse(long length, long offset, Duration timeout,
         Context context) {
-        Mono<Response<ShareFileUploadInfo>> response = shareFileAsyncClient.clearRangeWithResponse(length, offset, context);
+        Mono<Response<ShareFileUploadInfo>> response = shareFileAsyncClient
+            .clearRangeWithResponse(length, offset, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

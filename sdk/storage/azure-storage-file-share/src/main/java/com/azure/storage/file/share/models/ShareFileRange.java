@@ -83,8 +83,8 @@ public final class ShareFileRange {
     }
 
     /**
-     * @return {@link ShareFileRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise
-     * null.
+     * @return {@link ShareFileRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0,
+     * otherwise null.
      */
     public String toHeaderValue() {
         // The default values of a BlobRange
