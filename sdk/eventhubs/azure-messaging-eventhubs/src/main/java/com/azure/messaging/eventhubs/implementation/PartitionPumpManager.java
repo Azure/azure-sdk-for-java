@@ -5,12 +5,9 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.CloseReason;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
@@ -23,6 +20,8 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import reactor.core.publisher.Signal;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Locale;
@@ -30,7 +29,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-import reactor.core.publisher.Signal;
+
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
@@ -123,7 +125,8 @@ public class PartitionPumpManager {
                 eventHubConsumerOptions);
 
         partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
-        eventHubConsumer.receive().subscribe(eventData -> {
+        eventHubConsumer.receive(claimedOwnership.getPartitionId()).subscribe(partitionEvent -> {
+            EventData eventData = partitionEvent.getEventData();
             try {
                 Context processSpanContext = startProcessTracingSpan(eventData);
                 if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
@@ -172,9 +175,6 @@ public class PartitionPumpManager {
             try {
                 // close the consumer
                 eventHubConsumer.close();
-            } catch (IOException ex) {
-                logger.warning("Failed to close EventHubConsumer for partition {}", claimedOwnership.getPartitionId(),
-                    ex);
             } finally {
                 // finally, remove the partition from partitionPumps map
                 partitionPumps.remove(claimedOwnership.getPartitionId());

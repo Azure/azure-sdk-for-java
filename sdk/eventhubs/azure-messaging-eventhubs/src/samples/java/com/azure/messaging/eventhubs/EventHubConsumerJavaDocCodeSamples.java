@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -23,13 +24,13 @@ public class EventHubConsumerJavaDocCodeSamples {
      */
     public void instantiate() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
-        EventHubClient client = new EventHubClientBuilder()
-            .connectionString("event-hub-instance-connection-string")
-            .buildClient();
-
-        String partitionId = "0";
         String consumerGroup = "$DEFAULT";
-        EventHubConsumerClient consumer = client.createConsumer(consumerGroup, partitionId, EventPosition.latest());
+
+        EventHubConsumerClient consumer = new EventHubClientBuilder()
+            .connectionString("event-hub-instance-connection-string")
+            .consumerGroup(consumerGroup)
+            .startingPosition(EventPosition.latest())
+            .buildConsumer();
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
 
         consumer.close();
@@ -43,23 +44,26 @@ public class EventHubConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubClient.getPartitionIds().
         String partitionId = "0";
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
-        EventHubConsumerClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-            EventPosition.fromEnqueuedTime(twelveHoursAgo));
+        EventHubConsumerClient consumer = new EventHubClientBuilder()
+            .connectionString("event-hub-instance-connection-string")
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.fromEnqueuedTime(twelveHoursAgo))
+            .buildConsumer();
 
-        IterableStream<EventData> events = consumer.receive(100, Duration.ofSeconds(30));
+        IterableStream<PartitionEvent> events = consumer.receive(partitionId, 100, Duration.ofSeconds(30));
 
-        for (EventData event : events) {
+        for (PartitionEvent partitionEvent : events) {
             // For each event, perform some sort of processing.
-            System.out.print("Event received: " + event.getSequenceNumber());
+            System.out.print("Event received: " + partitionEvent.getEventData().getSequenceNumber());
         }
 
         // Gets the next set of events to consume and process.
-        IterableStream<EventData> nextEvents = consumer.receive(100, Duration.ofSeconds(30));
+        IterableStream<PartitionEvent> nextEvents = consumer.receive(partitionId, 100, Duration.ofSeconds(30));
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-duration
 
-        for (EventData event : nextEvents) {
+        for (PartitionEvent partitionEvent : nextEvents) {
             // For each event, perform some sort of processing.
-            System.out.print("Event received: " + event.getSequenceNumber());
+            System.out.print("Event received: " + partitionEvent.getEventData().getSequenceNumber());
         }
     }
 }

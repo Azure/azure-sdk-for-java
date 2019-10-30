@@ -74,12 +74,16 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
         // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
         // service we only want events that are sent to the partition after we begin listening.
-        EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
-            lastEnqueuedSequencePartitionId, EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false));
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+            .connectionString("fake-string")
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false))
+            .buildAsyncConsumer();
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
-        Disposable subscription = consumer.receive().subscribe(event -> {
+        Disposable subscription = consumer.receive(lastEnqueuedSequencePartitionId).subscribe(partitionEvent -> {
+            EventData event = partitionEvent.getEventData();
             String contents = UTF_8.decode(event.getBody()).toString();
             // ex. The last enqueued sequence number is 99. If isInclusive is true, the received event starting from the same
             // event with sequence number of '99'. Otherwise, the event with sequence number of '100' will be the first

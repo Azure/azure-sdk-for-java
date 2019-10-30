@@ -121,8 +121,8 @@ public class EventHubClient implements Closeable {
      *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumerClient createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, partitionId, eventPosition);
+    public EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition) {
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, eventPosition);
         return new EventHubConsumerClient(consumer, defaultConsumerOptions.getRetry().getTryTimeout());
     }
 
@@ -147,7 +147,6 @@ public class EventHubClient implements Closeable {
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *     context of this group. The name of the consumer group that is created by default is {@link
      *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubConsumerClient} that receives events from the partition with all configured {@link
@@ -156,10 +155,9 @@ public class EventHubClient implements Closeable {
      *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumerClient createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
-                                           EventHubConsumerOptions options) {
-        final EventHubConsumerAsyncClient consumer =
-            client.createConsumer(consumerGroup, partitionId, eventPosition, options);
+    public EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition,
+            EventHubConsumerOptions options) {
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, eventPosition, options);
         final Duration timeout = options.getRetry() == null || options.getRetry().getTryTimeout() == null
             ? defaultConsumerOptions.getRetry().getTryTimeout()
             : options.getRetry().getTryTimeout();

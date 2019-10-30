@@ -328,6 +328,34 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Creates a new {@link EventHubConsumerAsyncClient} based on the options set on this builder. Every time
+     * {@code buildAsyncConsumer()} is invoked, a new instance of {@link EventHubConsumerAsyncClient} is created.
+     *
+     * @return A new {@link EventHubConsumerAsyncClient} with the configured options.
+     */
+    public EventHubConsumerAsyncClient buildAsyncConsumer() {
+        final EventHubConsumerOptions options = consumerOptions != null
+            ? consumerOptions
+            : new EventHubConsumerOptions();
+
+        return buildAsyncClient().createConsumer(consumerGroup, startingPosition, options);
+    }
+
+    /**
+     * Creates a new {@link EventHubConsumerClient} based on the options set on this builder. Every time
+     * {@code buildConsumer()} is invoked, a new instance of {@link EventHubConsumerClient} is created.
+     *
+     * @return A new {@link EventHubConsumerClient} with the configured options.
+     */
+    public EventHubConsumerClient buildConsumer() {
+        final EventHubConsumerOptions options = consumerOptions != null
+            ? consumerOptions
+            : new EventHubConsumerOptions();
+
+        return buildClient().createConsumer(consumerGroup, startingPosition, options);
+    }
+
+    /**
      * Creates a new {@link EventHubProducerAsyncClient} based on options set on this builder. Every time
      * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubProducerAsyncClient} is created.
      *
