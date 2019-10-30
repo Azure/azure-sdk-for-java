@@ -139,7 +139,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     /**
-     * verify that we can send to multiple partitions, round-robin, and with a partition key, using the same producer.
+     * Verify that we can send to multiple partitions, round-robin, and with a partition key, using the same producer.
      */
     @Test
     public void sendEventsWithKeyAndPartition() {
