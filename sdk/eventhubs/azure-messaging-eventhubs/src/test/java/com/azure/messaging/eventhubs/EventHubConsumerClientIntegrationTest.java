@@ -31,6 +31,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final int NUMBER_OF_EVENTS = 10;
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
+    private final String[] expectedPartitionIds = new String[]{"0", "1"};
+
     private static volatile IntegrationTestEventData testData = null;
 
     private EventHubClient client;
@@ -199,7 +201,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, position);
-        final EventHubConsumerClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,  position);
+        final EventHubConsumerClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, position);
         final EventHubProducerClient producer = client.createProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
 
@@ -228,6 +230,71 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             dispose(consumer, producer);
         }
     }
+
+    /**
+     * Verifies that we can get the metadata about an Event Hub
+     */
+    @Test
+    public void getEventHubProperties() {
+        final EventHubConsumerClient consumer = createBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.earliest())
+            .buildConsumer();
+
+        // Act & Assert
+        try {
+            final EventHubProperties properties = consumer.getProperties();
+            Assert.assertNotNull(properties);
+            Assert.assertEquals(consumer.getEventHubName(), properties.getName());
+            Assert.assertEquals(2, properties.getPartitionIds().length);
+        } finally {
+            dispose(consumer);
+        }
+    }
+
+    /**
+     * Verifies that we can get the partition identifiers of an Event Hub.
+     */
+    @Test
+    public void getPartitionIds() {
+        final EventHubConsumerClient consumer = createBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.earliest())
+            .buildConsumer();
+
+        // Act & Assert
+        try {
+            final IterableStream<String> partitionIds = consumer.getPartitionIds();
+            final List<String> collect = partitionIds.stream().collect(Collectors.toList());
+
+            Assert.assertEquals(2, collect.size());
+        } finally {
+            dispose(consumer);
+        }
+    }
+
+    /**
+     * Verifies that we can get partition information for each of the partitions in an Event Hub.
+     */
+    @Test
+    public void getPartitionProperties() {
+        final EventHubConsumerClient consumer = createBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.earliest())
+            .buildConsumer();
+
+        // Act & Assert
+        try {
+            for (String partitionId : expectedPartitionIds) {
+                final PartitionProperties properties = consumer.getPartitionProperties(partitionId);
+                Assert.assertEquals(consumer.getEventHubName(), properties.getEventHubName());
+                Assert.assertEquals(partitionId, properties.getId());
+            }
+        } finally {
+            dispose(consumer);
+        }
+    }
+
 
     private static List<EventData> getEventsAsList(int numberOfEvents) {
         return TestUtils.getEvents(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID).collectList().block();

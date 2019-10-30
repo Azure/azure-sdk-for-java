@@ -37,14 +37,16 @@ import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEED
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 
 /**
- * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubConsumerAsyncClient}
- * in other scenarios.
+ * Integration tests with Azure Event Hubs service. There are other tests that also test {@link
+ * EventHubConsumerAsyncClient} in other scenarios.
  *
  * @see SetPrefetchCountTest
  * @see EventPositionIntegrationTest
  */
 public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
+    private final String[] expectedPartitionIds = new String[]{"0", "1"};
+
     // The maximum number of receivers on a partition + consumer group is 5.
     private static final int MAX_NUMBER_OF_CONSUMERS = 5;
     private static final String MESSAGE_TRACKING_ID = UUID.randomUUID().toString();
@@ -344,6 +346,74 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             subscriptions.dispose();
             isActive.set(false);
             dispose(producer, consumer, consumer2);
+        }
+    }
+
+    /**
+     * Verifies that we can get the metadata about an Event Hub
+     */
+    @Test
+    public void getEventHubProperties() {
+        final EventHubConsumerAsyncClient consumer = createBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.earliest())
+            .buildAsyncConsumer();
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.getProperties())
+                .assertNext(properties -> {
+                    Assert.assertNotNull(properties);
+                    Assert.assertEquals(consumer.getEventHubName(), properties.getName());
+                    Assert.assertEquals(2, properties.getPartitionIds().length);
+                }).verifyComplete();
+        } finally {
+            dispose(consumer);
+        }
+    }
+
+    /**
+     * Verifies that we can get the partition identifiers of an Event Hub.
+     */
+    @Test
+    public void getPartitionIds() {
+        final EventHubConsumerAsyncClient consumer = createBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.earliest())
+            .buildAsyncConsumer();
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.getPartitionIds())
+                .expectNextCount(expectedPartitionIds.length)
+                .verifyComplete();
+        } finally {
+            dispose(consumer);
+        }
+    }
+
+    /**
+     * Verifies that we can get partition information for each of the partitions in an Event Hub.
+     */
+    @Test
+    public void getPartitionProperties() {
+        final EventHubConsumerAsyncClient consumer = createBuilder()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.earliest())
+            .buildAsyncConsumer();
+
+        // Act & Assert
+        try {
+            for (String partitionId : expectedPartitionIds) {
+                StepVerifier.create(consumer.getPartitionProperties(partitionId))
+                    .assertNext(properties -> {
+                        Assert.assertEquals(consumer.getEventHubName(), properties.getEventHubName());
+                        Assert.assertEquals(partitionId, properties.getId());
+                    })
+                    .verifyComplete();
+            }
+        } finally {
+            dispose(consumer);
         }
     }
 
