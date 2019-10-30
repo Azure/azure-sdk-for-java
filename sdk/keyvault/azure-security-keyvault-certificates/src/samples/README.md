@@ -3,7 +3,7 @@
 This document explains samples and how to use them.
 
 ## Key concepts
-Key concepts are explained in detail [here] [SDK_README_KEY_CONCEPTS].
+Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 
 ## Getting started
 
@@ -56,7 +56,7 @@ try {
 ```
 
 ## Next steps
-Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README] [CERT_SDK_README]. 
+Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README][CERT_SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].

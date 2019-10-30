@@ -3,7 +3,7 @@
 This document explains samples and how to use them.
 
 ## Key concepts
-Key concepts are explained in detail [here] [SDK_README_KEY_CONCEPTS].
+Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 
 # Samples Azure Key Vault Keys APIs
 This document describes how to use samples and what is done in each sample.
@@ -79,7 +79,7 @@ try {
 ```
 
 ## Next steps
-Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README] [KEYS_SDK_README]. 
+Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README][KEYS_SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
