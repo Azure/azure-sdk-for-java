@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * <p><strong>Consuming events from Event Hub</strong></p>
  *
- * {@codesnippet receive}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive}
  *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  *

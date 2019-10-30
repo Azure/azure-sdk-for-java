@@ -11,11 +11,10 @@ import java.util.Arrays;
 
 /**
  * Holds information about an Event Hub which can come handy while performing operations like
- * {@link EventHubClient#createConsumer(String, String, EventPosition) creating an EventHubConsumer} or
- * {@link EventHubAsyncClient#createConsumer(String, String, EventPosition) an EventHubAsyncConsumer}.
+ * {@link EventHubConsumerAsyncClient#receive(String) receiving events from a specific partition}.
  *
- * @see EventHubClient
- * @see EventHubAsyncClient
+ * @see EventHubConsumerAsyncClient
+ * @see EventHubConsumerClient
  */
 @Immutable
 public final class EventHubProperties {
