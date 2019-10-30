@@ -21,8 +21,8 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -187,7 +187,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int maxMessageSize = 1024;
         final EventDataBatch batch = new EventDataBatch(maxMessageSize, PARTITION_KEY, contextProvider);
-        final Random random = new Random();
+        final SecureRandom random = new SecureRandom();
         final SendOptions sendOptions = new SendOptions();
         int count = 0;
 

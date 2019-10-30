@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
+import java.util.SecureRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -40,7 +40,7 @@ import static java.util.stream.Collectors.toList;
  */
 public final class PartitionBasedLoadBalancer {
 
-    private static final Random RANDOM = new Random();
+    private static final SecureRandom RANDOM = new SecureRandom();
     private final ClientLogger logger = new ClientLogger(PartitionBasedLoadBalancer.class);
 
     private final String eventHubName;

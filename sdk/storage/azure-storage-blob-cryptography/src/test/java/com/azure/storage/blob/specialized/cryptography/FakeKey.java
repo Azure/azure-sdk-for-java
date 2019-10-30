@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * Extremely basic key resolver to test client side encryption
@@ -26,7 +26,7 @@ public class FakeKey implements AsyncKeyEncryptionKey, IKey {
     FakeKey(String keyId, int keySize) {
         this.keyId = keyId;
         this.randomData = new byte[keySize];
-        new Random().nextBytes(this.randomData);
+        new SecureRandom().nextBytes(this.randomData);
     }
 
     @Override
