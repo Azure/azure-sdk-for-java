@@ -289,20 +289,20 @@ shareClient.createDirectory(dirName);
 ```
 
 ### Create a subdirectory
-Taking the dataLakeDirectoryClient in KeyConcept, [`${dataLakeDirectoryClient}`](#Directory).
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory).
 
 ```Java
 String subDirName = "testsubdir";
-dataLakeDirectoryClient.createSubDirectory(subDirName);
+directoryClient.createSubDirectory(subDirName);
 ```
 
 ### Create a File
-Taking the dataLakeDirectoryClient in KeyConcept, [`${dataLakeDirectoryClient}`](#Directory) .
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String fileName = "testfile";
 long maxSize = 1024;
-dataLakeDirectoryClient.createFile(fileName, maxSize);
+directoryClient.createFile(fileName, maxSize);
 ```
 
 ### List all Shares
@@ -313,17 +313,17 @@ shareServiceClient.listShares();
 ```
 
 ### List all subdirectories and files
-Taking the dataLakeDirectoryClient in KeyConcept, [`${dataLakeDirectoryClient}`](#Directory)
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory)
 
 ```Java
-dataLakeDirectoryClient.listFilesAndDirectories();
+directoryClient.listFilesAndDirectories();
 ```
 
 ### List all ranges on file
-Taking the dataLakeFileClient in KeyConcept, [`${dataLakeFileClient}`](#File)
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File)
 
 ```Java
-dataLakeFileClient.listRanges();
+fileClient.listRanges();
 ```
 
 ### Delete a share
@@ -342,65 +342,65 @@ shareClient.deleteDirectory(dirName);
 ```
 
 ### Delete a subdirectory
-Taking the dataLakeDirectoryClient in KeyConcept, [`${dataLakeDirectoryClient}`](#Directory) .
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String subDirName = "testsubdir";
-dataLakeDirectoryClient.deleteSubDirectory(subDirName);
+directoryClient.deleteSubDirectory(subDirName);
 ```
 
 ### Delete a file
-Taking the dataLakeDirectoryClient in KeyConcept, [`${dataLakeDirectoryClient}`](#Directory) .
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String fileName = "testfile";
-dataLakeDirectoryClient.deleteFile(fileName);
+directoryClient.deleteFile(fileName);
 ```
 
 ### Copy a file
-Taking the dataLakeFileClient in KeyConcept, [`${dataLakeFileClient}`](#File) with string of source URL.
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with string of source URL.
 
 ```Java
 String sourceURL = "https://myaccount.file.core.windows.net/myshare/myfile";
-FileCopyInfo copyInfo = dataLakeFileClient.startCopy(sourceURL, null);
+FileCopyInfo copyInfo = fileClient.startCopy(sourceURL, null);
 ```
 
 ### Abort copy a file
-Taking the dataLakeFileClient in KeyConcept, [`${dataLakeFileClient}`](#File) with the copy info response returned above `${copyId}=[copyInfoResponse](#Copy-a-file)`.
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the copy info response returned above `${copyId}=[copyInfoResponse](#Copy-a-file)`.
 
 ```Java
 String copyId = copyInfoResponse.copyId();
-dataLakeFileClient.abortCopy(copyId);
+fileClient.abortCopy(copyId);
 ```
 
 ### Upload data to storage
-Taking the dataLakeFileClient in KeyConcept, [`${dataLakeFileClient}`](#File) with data of "default" .
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with data of "default" .
 
 ```Java
 String uploadText = "default";
 ByteBuffer data = ByteBuffer.wrap(uploadText.getBytes(StandardCharsets.UTF_8));
-dataLakeFileClient.upload(data, uploadText.length());
+fileClient.upload(data, uploadText.length());
 ```
 
 ### Upload file to storage
-Taking the dataLakeFileClient in KeyConcept, [`${dataLakeFileClient}`](#File) .
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 ```Java
 String filePath = "/mydir/myfile";
-dataLakeFileClient.uploadFromFile(filePath);
+fileClient.uploadFromFile(filePath);
 ```
 
 ### Download data from file range
-Taking the dataLakeFileClient in KeyConcept, [`${dataLakeFileClient}`](#File) with the range from 1024 to 2048.
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the range from 1024 to 2048.
 ```Java
 FileRange fileRange = new FileRange(1024L, 2047L);
-dataLakeFileClient.downloadWithPropertiesWithResponse(fileRange, false, null, Context.NONE);
+fileClient.downloadWithPropertiesWithResponse(fileRange, false, null, Context.NONE);
 ```
 
 ### Download file from storage
-Taking the dataLakeFileClient in KeyConcept, [`${dataLakeFileClient}`](#File) and download to the file of filePath.
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) and download to the file of filePath.
 ```Java
 String filePath = "/mydir/myfile";
-dataLakeFileClient.downloadToFile(filePath);
+fileClient.downloadToFile(filePath);
 ```
 
 ### Get a file service properties
@@ -450,18 +450,18 @@ shareClient.setAccessPolicy(Collections.singletonList(permission));
 ```
 
 ### Get handles on directory file
-Taking the dataLakeDirectoryClient in KeyConcept, [`${dataLakeDirectoryClient}`](#Directory)
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory)
 
 ```Java
-PagedIterable<HandleItem> handleItems = dataLakeDirectoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE);
+PagedIterable<HandleItem> handleItems = directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE);
 ```
 
 ### Force close handles on handle id
-Taking the dataLakeDirectoryClient in KeyConcept, [`${dataLakeDirectoryClient}`](#Directory) and the handle id returned above `${handleId}=[handleItems](#Get-handles-on-directory-file)`
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) and the handle id returned above `${handleId}=[handleItems](#Get-handles-on-directory-file)`
 
 ```Java
 String handleId = handleItems.iterator().next().getHandleId();
-dataLakeDirectoryClient.forceCloseHandles(handleId, true, Duration.ofSeconds(30), Context.NONE);
+directoryClient.forceCloseHandles(handleId, true, Duration.ofSeconds(30), Context.NONE);
 ```
 
 ### Set quota on share
@@ -473,12 +473,12 @@ shareClient.setQuota(quotaOnGB);
 ```
 
 ### Set file httpheaders
-Taking the dataLakeFileClient in KeyConcept, [`${dataLakeFileClient}`](#File) .
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 
 ```Java
 FileHTTPHeaders httpHeaders = new FileHTTPHeaders().setFileContentType("text/plain");
 long newFileSize = 1024;
-dataLakeFileClient.setHttpHeaders(newFileSize, httpHeaders);
+fileClient.setHttpHeaders(newFileSize, httpHeaders);
 ```
 
 ## Troubleshooting
