@@ -65,11 +65,11 @@ public class BlacklistedMethodsCheck extends AbstractCheck {
     @Override
     public void visitToken(DetailAST token) {
         if (token.getType() == TokenTypes.METHOD_CALL) {
-            invalidMethodCall(token);
+            blacklistedMethodsCheck(token);
         }
     }
 
-    private void invalidMethodCall(DetailAST methodCallToken) {
+    private void blacklistedMethodsCheck(DetailAST methodCallToken) {
         final String methodCallName = FullIdent.createFullIdentBelow(methodCallToken).getText();
         // FullIdent.getText() will never return null but an empty string
         if (methodCallName.isEmpty()) {
