@@ -8,16 +8,16 @@ from azure.storage.blob.aio import ContainerClient as AsyncContainerClient
 
 class GetBlobsTest(PerfStressTest):
     '''This test evaluates the perf of enumerating blobs'''
+    container_name = NewGuid()
     def __init__(self):
         connection_string = os.environ.get("STORAGE_CONNECTION_STRING")
         if not connection_string:
             raise Exception("Undefined environment variable STORAGE_CONNECTION_STRING")
 
-        container_name = NewGuid()
-        self.container_client = SyncContainerClient.from_connection_string(conn_str=connection_string, container_name=container_name)
+        self.container_client = SyncContainerClient.from_connection_string(conn_str=connection_string, container_name=self.container_name)
 
         #TODO: I really hate this.
-        self.async_container_client = AsyncContainerClient.from_connection_string(conn_str=connection_string, container_name=container_name)
+        self.async_container_client = AsyncContainerClient.from_connection_string(conn_str=connection_string, container_name=self.container_name)
 
 
     async def SetupAsync(self):
@@ -50,4 +50,4 @@ class GetBlobsTest(PerfStressTest):
 
     @staticmethod
     def AddArguments(parser):
-        parser.add_argument('-c', '--count', nargs='?', help='Number of blobs to populate.  Default is 1.', default=1)
+        parser.add_argument('-c', '--count', nargs='?', type=int, help='Number of blobs to populate.  Default is 1.', default=1)

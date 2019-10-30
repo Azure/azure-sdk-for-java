@@ -30,8 +30,10 @@ class PerfStressRunner:
         self._operation_count_lock = threading.Lock()
         self._operation_count = 0
         self._last_completed = -1
-        #NOTE: despite this being "for each thread" the semantics don't actually care about each thread; just the N latest durations where N arbitrarily == # of parallel threads.
-        self._latest_operation_durations = [0 for _ in range(0, self._test_class_to_run.Arguments.parallel)] 
+        self._latest_operation_durations = []
+        # These (durations and status) are different despite tracking the runners _technically_ it's not wise to use structures like this in a non-thread-safe manner, 
+        # so I'm only abusing this for ease of status updates where error doesn't really matter, and durations is still aggregated in a safe way.
+        self._status = {} 
         
 
     def _ParseArgs(self):
@@ -127,58 +129,71 @@ class PerfStressRunner:
     async def _RunTestsAsync(self, tests, duration, title):
         self._operation_count = 0
         self._last_completed = -1
-        self._latest_operation_durations = [0 for _ in range(0, self._test_class_to_run.Arguments.parallel)] 
+        self._latest_operation_durations = []
+        self._status = {}
 
         status_thread = RepeatedTimer(1, self._PrintStatus, title)
 
         if self._test_class_to_run.Arguments.sync:
             threads = []
-            for test in tests:
-                thread = threading.Thread(target=lambda: self.RunLoop(test, duration))
+            for id, test in enumerate(tests):
+                thread = threading.Thread(target=lambda: self.RunLoop(test, duration, id))
                 threads.append(thread)
                 thread.start()
             for thread in threads:
                 thread.join()
         else:
-            #await asyncio.gather(*[self.RunLoopAsync(test, duration) for test in tests])
-            await self.RunLoopAsync(tests[0], duration)
+            await asyncio.gather(*[self.RunLoopAsync(test, duration, id) for id, test in enumerate(tests)])
 
         status_thread.stop()
 
         self.logger.info("=== Results ===")
-        count_per_second = self._operation_count / (sum(self._latest_operation_durations) / len(self._latest_operation_durations))
-        count_per_second_per_thread = count_per_second / self._test_class_to_run.Arguments.parallel
-        seconds_per_operation = 1/count_per_second_per_thread
+        try:
+            count_per_second = (self._operation_count / (sum(self._latest_operation_durations) / len(self._latest_operation_durations)))
+            count_per_second_per_thread = count_per_second / self._test_class_to_run.Arguments.parallel
+            seconds_per_operation = 1/count_per_second_per_thread
+        except ZeroDivisionError as e:
+            self.logger.warn("Attempted to divide by zero: {}".format(e))
+            count_per_second = 0
+            count_per_second_per_thread = 0
+            seconds_per_operation = 'N/A'
         self.logger.info("\tCompleted {} operations\n\tAverage {} operations per thread per second\n\tAverage {} seconds per operation".format(self._operation_count, count_per_second_per_thread, seconds_per_operation))
 
 
-    def RunLoop(self, test, duration):
+    def RunLoop(self, test, duration, id):
         start = time.time()
         runtime = 0
+        count = 0
         while runtime < duration:
             test.Run()
             runtime = time.time() - start
-            self._IncrementOperationCountAndTime(runtime)
+            count += 1
+            self._status[id] = count
+        self._IncrementOperationCountAndTime(count, runtime)
 
 
-    async def RunLoopAsync(self, test, duration):
+    async def RunLoopAsync(self, test, duration, id):
         start = time.time()
         runtime = 0
+        count = 0
         while runtime < duration:
             await test.RunAsync()
             runtime = time.time() - start
-            self._IncrementOperationCountAndTime(runtime) #NOTE: to exactly match the other algo, change this to not count the last iteration which exceeds duration. (since the cancellation token there will actually cancel it.)
+            count += 1
+            self._status[id] = count
+        self._IncrementOperationCountAndTime(count, runtime) 
 
 
-    def _IncrementOperationCountAndTime(self, runtime):
-        with self._operation_count_lock: #NOTE: If you want to improve perf, calling this at the end of every thread instead of every iteration would be a great attempt.
-            self._operation_count += 1
-            self._latest_operation_durations[self._operation_count % len(self._latest_operation_durations)] = runtime
+    def _IncrementOperationCountAndTime(self, count, runtime):
+        with self._operation_count_lock: # Be aware that while this can be used to update more often than "once at the end" it'll thrash the lock in the parallel case and ruin perf.
+            self._operation_count += count
+            self._latest_operation_durations.append(runtime)
 
 
     def _PrintStatus(self, title):
         if self._last_completed == -1:
             self._last_completed = 0
             self.logger.info("=== {} ===\nCurrent\t\tTotal".format(title))
-        self.logger.info("{}\t\t{}".format(self._operation_count - self._last_completed, self._operation_count))
-        self._last_completed = self._operation_count
+        operation_count = sum(self._status.values())
+        self.logger.info("{}\t\t{}".format(operation_count - self._last_completed, operation_count))
+        self._last_completed = operation_count
