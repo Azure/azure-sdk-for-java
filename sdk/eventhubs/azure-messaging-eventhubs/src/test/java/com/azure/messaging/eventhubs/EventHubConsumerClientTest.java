@@ -4,13 +4,13 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -35,6 +35,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -68,7 +70,7 @@ public class EventHubConsumerClientTest {
     @Mock
     private EventHubConnection connection;
     @Mock
-    private AmqpSession session;
+    private EventHubSession session;
 
     private EventHubConsumerClient consumer;
     private EventHubLinkProvider linkProvider;
@@ -83,9 +85,9 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, new RetryOptions());
-        when(connection.createSession(any())).thenReturn(Mono.just(session));
-        when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any()))
-            .thenReturn(Mono.just(amqpReceiveLink));
+        when(connection.createSession(any())).thenReturn(Mono.fromCallable(() -> session));
+        when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
+            .thenReturn(Mono.fromCallable(() -> amqpReceiveLink));
 
         EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setIdentifier("an-identifier")
@@ -111,7 +113,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(),
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false));
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
         sendMessages(numberOfEvents);
@@ -163,18 +165,28 @@ public class EventHubConsumerClientTest {
      * Verifies that this receives a number of events.
      */
     @Test
-    public void receivesNumberOfEvents() {
+    public void receivesNumberOfEvents() throws InterruptedException {
         // Arrange
         final int numberToReceive = 3;
+        final AtomicReference<IterableStream<PartitionEvent>> received = new AtomicReference<>();
+        final Semaphore semaphore = new Semaphore(1);
 
         // Act
+        semaphore.acquire();
+        service.execute(() -> {
+            received.set(consumer.receive(PARTITION_ID, numberToReceive));
+            semaphore.release();
+        });
+
         service.execute(() -> {
             sendMessages(10);
         });
 
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberToReceive);
-
         // Assert
+        semaphore.acquire();
+        final IterableStream<PartitionEvent> receive = received.get();
+        Assert.assertNotNull(receive);
+
         final Map<Integer, PartitionEvent> actual = receive.stream()
             .collect(Collectors.toMap(e -> {
                 final String value = String.valueOf(e.getEventData().getProperties().get(MESSAGE_POSITION_ID));
