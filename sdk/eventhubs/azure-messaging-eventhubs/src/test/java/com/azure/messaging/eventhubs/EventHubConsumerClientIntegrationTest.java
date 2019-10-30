@@ -295,7 +295,6 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-
     private static List<EventData> getEventsAsList(int numberOfEvents) {
         return TestUtils.getEvents(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID).collectList().block();
     }

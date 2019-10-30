@@ -47,9 +47,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * BaseSubscriber#request(long)}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#basesubscriber}
- *
- * @see EventHubAsyncClient#createConsumer(String, String, EventPosition)
- * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 @Immutable
 public class EventHubConsumerAsyncClient implements Closeable {

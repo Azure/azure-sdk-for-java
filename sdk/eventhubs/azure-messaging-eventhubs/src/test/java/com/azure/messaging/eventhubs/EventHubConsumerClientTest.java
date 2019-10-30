@@ -258,6 +258,28 @@ public class EventHubConsumerClientTest {
             .forEachOrdered(number -> Assert.assertTrue(firstActual.containsKey(number)));
     }
 
+    @Test
+    public void setsCorrectProperties() {
+        EventPosition position = EventPosition.fromOffset(105L);
+        EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .setIdentifier("id-id")
+            .setOwnerLevel(100L)
+            .setPrefetchCount(100);
+
+        // Act
+        EventHubConsumerClient consumer = new EventHubClientBuilder()
+            .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
+            .startingPosition(position)
+            .consumerGroup(CONSUMER_GROUP)
+            .consumerOptions(options)
+            .buildConsumer();
+
+        Assert.assertEquals("dummy-event-hub", consumer.getEventHubName());
+        Assert.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
+        Assert.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
+        Assert.assertSame(position, consumer.getStartingPosition());
+    }
+
     private static Integer getPositionId(PartitionEvent partitionEvent) {
         EventData event = partitionEvent.getEventData();
         final String value = String.valueOf(event.getProperties().get(MESSAGE_POSITION_ID));

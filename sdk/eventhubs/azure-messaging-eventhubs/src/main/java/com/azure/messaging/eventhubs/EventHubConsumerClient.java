@@ -14,7 +14,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -200,7 +199,7 @@ public class EventHubConsumerClient implements Closeable {
      * {@inheritDoc}
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         consumer.close();
     }
 }

@@ -444,6 +444,28 @@ public class EventHubConsumerAsyncClientTest {
         }
     }
 
+    @Test
+    public void setsCorrectProperties() {
+        EventPosition position = EventPosition.fromOffset(105L);
+        EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .setIdentifier("id-id")
+            .setOwnerLevel(100L)
+            .setPrefetchCount(100);
+
+        // Act
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+            .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
+            .startingPosition(position)
+            .consumerGroup(CONSUMER_GROUP)
+            .consumerOptions(options)
+            .buildAsyncConsumer();
+
+        Assert.assertEquals("dummy-event-hub", consumer.getEventHubName());
+        Assert.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
+        Assert.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
+        Assert.assertSame(position, consumer.getStartingPosition());
+    }
+
     private void sendMessages(int numberOfEvents) {
         // When we start receiving, then send those 10 messages.
         FluxSink<Message> sink = messageProcessor.sink();

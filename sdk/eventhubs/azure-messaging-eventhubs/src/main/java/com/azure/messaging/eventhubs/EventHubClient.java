@@ -38,14 +38,12 @@ import java.util.Objects;
 public class EventHubClient implements Closeable {
     private final EventHubAsyncClient client;
     private final RetryOptions retry;
-    private final EventHubConsumerOptions defaultConsumerOptions;
 
     EventHubClient(EventHubAsyncClient client, ConnectionOptions connectionOptions) {
         Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
 
         this.client = Objects.requireNonNull(client, "'client' cannot be null.");
         this.retry = connectionOptions.getRetry();
-        this.defaultConsumerOptions = new EventHubConsumerOptions();
     }
 
     /**
