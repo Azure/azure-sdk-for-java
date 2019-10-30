@@ -4,12 +4,17 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.EmitterProcessor;
@@ -19,6 +24,7 @@ import reactor.core.publisher.Mono;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,6 +67,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private static final int MINIMUM_REQUEST = 0;
     private static final int MAXIMUM_REQUEST = 100;
 
+    private final ConcurrentHashMap<String, Flux<PartitionEvent>> openReceives = new ConcurrentHashMap<>();
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
@@ -72,8 +79,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     private volatile AmqpReceiveLink receiveLink;
 
-    EventHubConsumerAsyncClient(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
-                          EventHubConsumerOptions options) {
+    EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
+        MessageSerializer messageSerializer,
+        EventHubConsumerOptions options) {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
         this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
@@ -145,6 +153,57 @@ public class EventHubConsumerAsyncClient implements Closeable {
                     newRequest);
                 creditsToRequest.set(newRequest);
             });
+    }
+
+    /**
+     * Gets the fully qualified Event Hubs namespace that the connection is associated with. This is likely similar to
+     * {@code {yournamespace}.servicebus.windows.net}.
+     *
+     * @return The fully qualified Event Hubs namespace that the connection is associated with
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Gets the Event Hub name this client interacts with.
+     *
+     * @return The Event Hub name this client interacts with.
+     */
+    public String getEventHubName() {
+        return eventHubName;
+    }
+
+    /**
+     * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
+     *
+     * @return The set of information for the Event Hub that this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EventHubProperties> getProperties() {
+        return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
+    }
+
+    /**
+     * Retrieves the identifiers for the partitions of an Event Hub.
+     *
+     * @return A Flux of identifiers for the partitions of an Event Hub.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<String> getPartitionIds() {
+        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
+    }
+
+    /**
+     * Retrieves information about a specific partition for an Event Hub, including elements that describe the available
+     * events in the partition event stream.
+     *
+     * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+        return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
