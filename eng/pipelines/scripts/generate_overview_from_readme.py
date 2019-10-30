@@ -18,19 +18,19 @@ import argparse
 import markdown2
 import os.path
 from io import open
+import sys
 
 
 def generate_overview(readme_file, version):
 
     readme_exists = False
-    print(u'in generate_overview, version={}'.format(version))
     if os.path.exists(readme_file) and os.path.isfile(readme_file):
         readme_exists = True
     else:
         # Not every artifact has a README.md file. If the file doesn't exist then
-        # just output a message which will end up in the build logs.
+        # just output a message which will end up in the build logs. This will
+        # allow processing to continue without failing the build the way a raise would.
         print('{} does not exist'.format(readme_file))
-
 
     html_overview_file = str(readme_file).lower().replace('readme.md', 'readme_overview.html')
 
