@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
@@ -21,7 +21,7 @@ public class SynchronousReceiveWork {
     private final AtomicInteger remaining;
     private final int numberToReceive;
     private final Duration timeout;
-    private final FluxSink<EventData> emitter;
+    private final FluxSink<PartitionEvent> emitter;
 
     private volatile boolean isTerminal = false;
 
@@ -33,7 +33,7 @@ public class SynchronousReceiveWork {
      * @param timeout Maximum duration to wait for {@code numberOfReceive} events.
      * @param emitter Sink to publish received events to.
      */
-    public SynchronousReceiveWork(long id, int numberToReceive, Duration timeout, FluxSink<EventData> emitter) {
+    public SynchronousReceiveWork(long id, int numberToReceive, Duration timeout, FluxSink<PartitionEvent> emitter) {
         this.id = id;
         this.remaining = new AtomicInteger(numberToReceive);
         this.numberToReceive = numberToReceive;
@@ -83,7 +83,7 @@ public class SynchronousReceiveWork {
      *
      * @param event Event to publish downstream.
      */
-    public void next(EventData event) {
+    public void next(PartitionEvent event) {
         try {
             emitter.next(event);
             remaining.decrementAndGet();

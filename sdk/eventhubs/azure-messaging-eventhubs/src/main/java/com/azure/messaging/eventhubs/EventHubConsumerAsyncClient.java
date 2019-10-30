@@ -153,7 +153,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * Begin consuming events from a single partition starting at {@link #getStartingPosition()} until there are no more
      * subscribers.
      *
-     * @return A stream of events for this partition.
+     * @param partitionId Identifier of the partition to read events from.
+     * @return A stream of events for this partition. If a stream for the events was opened before, the same position
+     *     within that partition is returned. Otherwise, events are read starting from {@link #getStartingPosition()}.
      *
      * @throws NullPointerException if {@code partitionId} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.

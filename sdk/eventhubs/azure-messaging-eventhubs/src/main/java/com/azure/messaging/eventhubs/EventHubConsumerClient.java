@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
 import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -17,8 +17,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
@@ -35,28 +35,26 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
  * Create an {@link EventHubConsumerClient} using {@link EventHubClient}.
+ *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
  *
  * <p><strong>Consuming events from an Event Hub</strong></p>
- * Events can be consumed using {@link #receive(int)} or {@link #receive(int, Duration)}. The call to `receive`
- * completes and returns an {@link IterableStream} when either the number of events is reached, or the
+ * Events can be consumed using {@link #receive(String, int)} or {@link #receive(String, int, Duration)}. The call to
+ * `receive` completes and returns an {@link IterableStream} when either the number of events is reached, or the
  * timeout duration is reached.
+ *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-duration}
  *
  * @see EventHubClient#createConsumer(String, String, EventPosition)
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 public class EventHubConsumerClient implements Closeable {
-    private static final AtomicReferenceFieldUpdater<EventHubConsumerClient, SynchronousEventSubscriber> SUBSCRIBER =
-        AtomicReferenceFieldUpdater.newUpdater(EventHubConsumerClient.class, SynchronousEventSubscriber.class,
-            "eventSubscriber");
-
     private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
+    private final ConcurrentHashMap<String, SynchronousEventSubscriber> openSubscribers = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
 
     private final EventHubConsumerAsyncClient consumer;
     private final Duration timeout;
-    private volatile SynchronousEventSubscriber eventSubscriber;
 
     EventHubConsumerClient(EventHubConsumerAsyncClient consumer, Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
@@ -66,15 +64,83 @@ public class EventHubConsumerClient implements Closeable {
     }
 
     /**
+     * Gets the fully qualified Event Hubs namespace that the connection is associated with. This is likely similar to
+     * {@code {yournamespace}.servicebus.windows.net}.
+     *
+     * @return The fully qualified Event Hubs namespace that the connection is associated with
+     */
+    public String getFullyQualifiedNamespace() {
+        return consumer.getFullyQualifiedNamespace();
+    }
+
+    /**
+     * Gets the Event Hub name this client interacts with.
+     *
+     * @return The Event Hub name this client interacts with.
+     */
+    public String getEventHubName() {
+        return consumer.getEventHubName();
+    }
+
+    /**
+     * Gets the position of the event in the partition where the consumer should begin reading.
+     *
+     * @return The position of the event in the partition where the consumer should begin reading.
+     */
+    public EventPosition getStartingPosition() {
+        return consumer.getStartingPosition();
+    }
+
+    /**
+     * Gets the consumer group this consumer is reading events as a part of.
+     *
+     * @return The consumer group this consumer is reading events as a part of.
+     */
+    public String getConsumerGroup() {
+        return consumer.getConsumerGroup();
+    }
+
+    /**
+     * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
+     *
+     * @return The set of information for the Event Hub that this client is associated with.
+     */
+    public EventHubProperties getProperties() {
+        return consumer.getProperties().block(timeout);
+    }
+
+    /**
+     * Retrieves the identifiers for the partitions of an Event Hub.
+     *
+     * @return A Flux of identifiers for the partitions of an Event Hub.
+     */
+    public IterableStream<String> getPartitionIds() {
+        return new IterableStream<>(consumer.getPartitionIds());
+    }
+
+    /**
+     * Retrieves information about a specific partition for an Event Hub, including elements that describe the available
+     * events in the partition event stream.
+     *
+     * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     */
+    public PartitionProperties getPartitionProperties(String partitionId) {
+        return consumer.getPartitionProperties(partitionId).block(timeout);
+    }
+
+    /**
      * Receives a batch of EventData from the Event Hub partition.
      *
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
+     * @param partitionId Identifier of the partition to read events from.
      * @return A set of {@link EventData} that was received. The iterable contains up to {@code maximumMessageCount}
-     *     events.
+     *     events. If a stream for the events was opened before, the same position within that partition is returned.
+     *     Otherwise, events are read starting from {@link #getStartingPosition()}.
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1.
      */
-    public IterableStream<EventData> receive(int maximumMessageCount) {
-        return receive(maximumMessageCount, timeout);
+    public IterableStream<PartitionEvent> receive(String partitionId, int maximumMessageCount) {
+        return receive(partitionId, maximumMessageCount, timeout);
     }
 
     /**
@@ -89,7 +155,7 @@ public class EventHubConsumerClient implements Closeable {
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
      *     zero or a negative duration.
      */
-    public IterableStream<EventData> receive(int maximumMessageCount, Duration maximumWaitTime) {
+    public IterableStream<PartitionEvent> receive(String partitionId, int maximumMessageCount, Duration maximumWaitTime) {
         Objects.requireNonNull(maximumWaitTime, "'maximumWaitTime' cannot be null.");
 
         if (maximumMessageCount < 1) {
@@ -100,11 +166,11 @@ public class EventHubConsumerClient implements Closeable {
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-        final Flux<EventData> events = Flux.create(emitter -> {
-            queueWork(maximumMessageCount, maximumWaitTime, emitter);
+        final Flux<PartitionEvent> events = Flux.create(emitter -> {
+            queueWork(partitionId, maximumMessageCount, maximumWaitTime, emitter);
         });
 
-        final Flux<EventData> map = events.collectList().map(x -> {
+        final Flux<PartitionEvent> map = events.collectList().map(x -> {
             logger.info("Number of events received: {}", x.size());
             return Flux.fromIterable(x);
         }).block();
@@ -112,33 +178,23 @@ public class EventHubConsumerClient implements Closeable {
     }
 
     /**
-     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
-     * received from the Event Hubs service.
-     *
-     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
-     *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
-     *     partition.
+     * Given an {@code emitter}, queues that work in {@link SynchronousEventSubscriber}. If the synchronous job has not
+     * been created, will initialise it.
      */
-    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
-        return consumer.getLastEnqueuedEventProperties();
-    }
-
-    /**
-     * Given an {@code emitter}, queues that work in {@link SynchronousEventSubscriber}. If the {@link #eventSubscriber}
-     * has not been initialised yet, will initialise it.
-     */
-    private void queueWork(int maximumMessageCount, Duration maximumWaitTime, FluxSink<EventData> emitter) {
+    private void queueWork(String partitionId, int maximumMessageCount, Duration maximumWaitTime,
+        FluxSink<PartitionEvent> emitter) {
         final long id = idGenerator.getAndIncrement();
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
             emitter);
 
-        if (SUBSCRIBER.compareAndSet(this, null, new SynchronousEventSubscriber(work))) {
-            logger.info("Started synchronous event subscriber.");
-            consumer.receive().subscribeWith(SUBSCRIBER.get(this));
-        } else {
-            logger.info("Queueing work item in SynchronousEventSubscriber.");
-            SUBSCRIBER.get(this).queueReceiveWork(work);
-        }
+        final SynchronousEventSubscriber subscriber =
+            openSubscribers.computeIfAbsent(partitionId, key -> {
+                logger.info("Started synchronous event subscriber for partition '{}'.", key);
+                return new SynchronousEventSubscriber();
+            });
+
+        logger.info("Queueing work item in SynchronousEventSubscriber.");
+        subscriber.queueReceiveWork(work);
     }
 
     /**
