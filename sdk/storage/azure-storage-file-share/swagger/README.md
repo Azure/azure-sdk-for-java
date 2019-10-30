@@ -35,7 +35,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders
+custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,FileDownloadHeaders
 ```
 
 ### Query Parameters
@@ -289,7 +289,6 @@ directive:
   transform: >
     if (!$["/{shareName}/{filePath}"]) {
         const op = $["/{shareName}/{filePath}"] = $["/{shareName}/{directory}/{fileName}"];
-        op.get.operationId="ShareFile_Download"
         const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
         op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
@@ -708,4 +707,11 @@ directive:
         /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
         "@UnexpectedResponseExceptionType(ShareStorageException.class)"
       );
+```
+### Rename FileDownloadHeaders to ShareFileDownloadHeaders
+``` yaml
+directive: 
+  - rename-model: 
+      from: "File-Download-Headers"
+      to: "Share-File-Download-Headers"
 ```

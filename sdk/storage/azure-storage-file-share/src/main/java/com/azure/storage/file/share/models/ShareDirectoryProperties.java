@@ -30,8 +30,8 @@ public final class ShareDirectoryProperties {
      * encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the directory.
      */
-    public ShareDirectoryProperties(final Map<String, String> metadata, final String eTag, final OffsetDateTime lastModified,
-                                    final boolean isServerEncrypted, final FileSmbProperties smbProperties) {
+    public ShareDirectoryProperties(final Map<String, String> metadata, final String eTag,
+        final OffsetDateTime lastModified, final boolean isServerEncrypted, final FileSmbProperties smbProperties) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;

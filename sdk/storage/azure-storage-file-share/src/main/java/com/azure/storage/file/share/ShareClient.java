@@ -618,9 +618,9 @@ public class ShareClient {
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-        Context context) {
+    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize,
+        ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, Duration timeout, Context context) {
         ShareFileClient shareFileClient = getFileClient(fileName);
         return new SimpleResponse<>(shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
             filePermission, metadata, timeout, context), shareFileClient);

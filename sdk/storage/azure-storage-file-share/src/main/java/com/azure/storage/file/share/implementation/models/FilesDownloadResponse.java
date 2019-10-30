@@ -7,7 +7,7 @@ package com.azure.storage.file.share.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
+import com.azure.storage.file.share.models.FileDownloadHeaders;
 import java.io.Closeable;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Flux;
 /**
  * Contains all response data for the download operation.
  */
-public final class FilesDownloadResponse extends ResponseBase<ShareFileDownloadHeaders, Flux<ByteBuffer>> implements Closeable {
+public final class FilesDownloadResponse extends ResponseBase<FileDownloadHeaders, Flux<ByteBuffer>> implements Closeable {
     /**
      * Creates an instance of FilesDownloadResponse.
      *
@@ -25,7 +25,7 @@ public final class FilesDownloadResponse extends ResponseBase<ShareFileDownloadH
      * @param value the content stream.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public FilesDownloadResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuffer> value, ShareFileDownloadHeaders headers) {
+    public FilesDownloadResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuffer> value, FileDownloadHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

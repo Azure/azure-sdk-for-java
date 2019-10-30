@@ -227,7 +227,8 @@ public class ShareDirectoryClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareDirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        Mono<Response<ShareDirectoryProperties>> response = shareDirectoryAsyncClient.getPropertiesWithResponse(context);
+        Mono<Response<ShareDirectoryProperties>> response = shareDirectoryAsyncClient
+            .getPropertiesWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -638,9 +639,9 @@ public class ShareDirectoryClient {
      * name is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-        Context context) {
+    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize,
+        ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, Duration timeout, Context context) {
         ShareFileClient shareFileClient = getFileClient(fileName);
         Response<ShareFileInfo> response = shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
             filePermission, metadata, timeout, context);

@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
 /**
  * This class contains the response information returned from the server when downloading a file.
  */
-public class ShareFileDownloadAsyncResponse extends ResponseBase<ShareFileDownloadHeaders, Flux<ByteBuffer>> {
+public class ShareFileDownloadAsyncResponse extends ResponseBase<FileDownloadHeaders, Flux<ByteBuffer>> {
     /**
      * Constructs a {@link ShareFileDownloadAsyncResponse}.
      *
@@ -23,8 +23,8 @@ public class ShareFileDownloadAsyncResponse extends ResponseBase<ShareFileDownlo
      * @param value Stream of download data being returned by the service.
      * @param deserializedHeaders Headers deserialized into an object.
      */
-    public ShareFileDownloadAsyncResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value,
-        ShareFileDownloadHeaders deserializedHeaders) {
+    public ShareFileDownloadAsyncResponse(HttpRequest request, int statusCode, HttpHeaders headers,
+        Flux<ByteBuffer> value, FileDownloadHeaders deserializedHeaders) {
         super(request, statusCode, headers, value, deserializedHeaders);
     }
 }

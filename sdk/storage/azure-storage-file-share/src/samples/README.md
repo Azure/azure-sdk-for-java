@@ -1,5 +1,5 @@
 
-## Azure Azure Storage ile FSamples client library for Java
+## Azure Azure Storage File Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts

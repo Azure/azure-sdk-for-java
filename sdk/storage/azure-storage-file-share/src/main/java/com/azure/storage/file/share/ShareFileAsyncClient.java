@@ -430,7 +430,8 @@ public class ShareFileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @return An empty response.
      */
-    public Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range) {
+    public Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath,
+        ShareFileRange range) {
         try {
             return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, context));
         } catch (RuntimeException ex) {
@@ -505,7 +506,8 @@ public class ShareFileAsyncClient {
      */
     public Flux<ByteBuffer> download() {
         try {
-            return downloadWithResponse(null, null).flatMapMany(ShareFileDownloadAsyncResponse::getValue);
+            return downloadWithResponse(null, null).flatMapMany(
+                ShareFileDownloadAsyncResponse::getValue);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
         }
@@ -899,8 +901,8 @@ public class ShareFileAsyncClient {
      * @return The {@link ShareFileUploadRangeFromUrlInfo file upload range from url info}
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Mono<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
-                                                                    String sourceUrl) {
+    public Mono<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrl(long length, long destinationOffset,
+        long sourceOffset, String sourceUrl) {
         try {
             return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceUrl)
                 .flatMap(FluxUtil::toMono);
@@ -990,7 +992,8 @@ public class ShareFileAsyncClient {
      * @param length Specifies the number of bytes being cleared in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is
      * {@code null}
-     * @return A response of {@link ShareFileUploadInfo file upload info} that only contains headers and response status code
+     * @return A response of {@link ShareFileUploadInfo file upload info} that only contains headers and response
+     * status code.
      */
     public Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset) {
         try {
@@ -1003,8 +1006,8 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset, Context context) {
         ShareFileRange range = new ShareFileRange(offset, offset + length - 1);
         return azureFileStorageClient.files()
-            .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR, 0L,
-                null, null, null, context)
+            .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
+                0L, null, null, null, context)
             .map(this::uploadResponse);
     }
 
@@ -1381,7 +1384,8 @@ public class ShareFileAsyncClient {
             contentMD5 = null;
         }
         Boolean isServerEncrypted = headers.isServerEncrypted();
-        ShareFileUploadInfo shareFileUploadInfo = new ShareFileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
+        ShareFileUploadInfo shareFileUploadInfo = new ShareFileUploadInfo(eTag, lastModified, contentMD5,
+            isServerEncrypted);
         return new SimpleResponse<>(response, shareFileUploadInfo);
     }
 

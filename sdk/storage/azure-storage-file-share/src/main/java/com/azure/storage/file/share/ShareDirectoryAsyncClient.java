@@ -130,7 +130,8 @@ public class ShareDirectoryAsyncClient {
      */
     public ShareFileAsyncClient getFileClient(String fileName) {
         String filePath = directoryPath + "/" + fileName;
-        return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName, serviceVersion);
+        return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName,
+            serviceVersion);
     }
 
     /**
@@ -149,7 +150,8 @@ public class ShareDirectoryAsyncClient {
     }
 
     /**
-     * Creates this directory in the file share and returns a response of {@link ShareDirectoryInfo} to interact with it.
+     * Creates this directory in the file share and returns a response of {@link ShareDirectoryInfo} to interact
+     * with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -457,7 +459,8 @@ public class ShareDirectoryAsyncClient {
         }
     }
 
-    Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
+    Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
+        Context context) {
         return azureFileStorageClient.directorys()
             .setMetadataWithRestResponseAsync(shareName, directoryPath, null, metadata, context)
             .map(this::setMetadataResponse);
@@ -712,7 +715,7 @@ public class ShareDirectoryAsyncClient {
      * subdirectory is an invalid resource name.
      */
     public Mono<Response<ShareDirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
-                                                                                    FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
             return withContext(
                 context -> createSubDirectoryWithResponse(subDirectoryName, smbProperties, filePermission,
@@ -813,7 +816,8 @@ public class ShareDirectoryAsyncClient {
     }
 
     /**
-     * Creates a file in this directory with specific name and returns a response of ShareDirectoryInfo to interact with it.
+     * Creates a file in this directory with specific name and returns a response of ShareDirectoryInfo to
+     * interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -993,7 +997,8 @@ public class ShareDirectoryAsyncClient {
     private Response<ShareDirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
-        ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag, isServerEncrypted);
+        ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag,
+            isServerEncrypted);
         return new SimpleResponse<>(response, shareDirectorySetMetadataInfo);
     }
 

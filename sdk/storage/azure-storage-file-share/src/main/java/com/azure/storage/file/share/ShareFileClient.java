@@ -441,7 +441,8 @@ public class ShareFileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link ShareFileProperties Storage file properties} with headers and status code
+     * @return A response containing the {@link ShareFileProperties Storage file properties} with headers and
+     * status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareFileProperties> getPropertiesWithResponse(Duration timeout, Context context) {
@@ -588,8 +589,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the ShareFileRangeWriteType is
-     * set to clear, the value of this header must be set to zero..
+     * @param length Specifies the number of bytes being transmitted in the request body. When the
+     * ShareFileRangeWriteType is set to clear, the value of this header must be set to zero.
      * @return The {@link ShareFileUploadInfo file upload info}
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
@@ -673,8 +674,8 @@ public class ShareFileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link ShareFileUploadRangeFromUrlInfo file upload range from url info} with headers
-     * and response status code.
+     * @return A response containing the {@link ShareFileUploadRangeFromUrlInfo file upload range from url info} with
+     * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API

@@ -72,11 +72,11 @@ public final class ShareFileProperties {
      * @param smbProperties The SMB properties of the file.
      */
     public ShareFileProperties(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata,
-                               final String fileType, final Long contentLength, final String contentType, final byte[] contentMd5,
-                               final String contentEncoding, final String cacheControl, final String contentDisposition,
-                               final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final String copyId,
-                               final String copyProgress, final String copySource, final CopyStatusType copyStatus,
-                               final Boolean isServerEncrypted, final FileSmbProperties smbProperties) {
+        final String fileType, final Long contentLength, final String contentType, final byte[] contentMd5,
+        final String contentEncoding, final String cacheControl, final String contentDisposition,
+        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final String copyId,
+        final String copyProgress, final String copySource, final CopyStatusType copyStatus,
+        final Boolean isServerEncrypted, final FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.metadata = metadata;
