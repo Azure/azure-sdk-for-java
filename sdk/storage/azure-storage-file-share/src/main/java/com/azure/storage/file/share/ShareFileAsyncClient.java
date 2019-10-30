@@ -34,14 +34,14 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeRespon
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
-import com.azure.storage.file.share.models.FileDownloadAsyncResponse;
+import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
-import com.azure.storage.file.share.models.FileInfo;
-import com.azure.storage.file.share.models.FileMetadataInfo;
+import com.azure.storage.file.share.models.ShareFileInfo;
+import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
-import com.azure.storage.file.share.models.FileRange;
-import com.azure.storage.file.share.models.FileStorageException;
-import com.azure.storage.file.share.models.FileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.HandleItem;
 import reactor.core.Exceptions;
@@ -149,7 +149,7 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Creates a file in the storage account and returns a response of {@link FileInfo} to interact with it.
+     * Creates a file in the storage account and returns a response of {@link ShareFileInfo} to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -162,10 +162,10 @@ public class ShareFileAsyncClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return A response containing the file info and the status of creating the file.
-     * @throws FileStorageException If the file has already existed, the parent directory does not exist or fileName
+     * @throws ShareStorageException If the file has already existed, the parent directory does not exist or fileName
      * is an invalid resource name.
      */
-    public Mono<FileInfo> create(long maxSize) {
+    public Mono<ShareFileInfo> create(long maxSize) {
         try {
             return createWithResponse(maxSize, null, null, null, null)
                 .flatMap(FluxUtil::toMono);
@@ -175,7 +175,7 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Creates a file in the storage account and returns a response of FileInfo to interact with it.
+     * Creates a file in the storage account and returns a response of ShareFileInfo to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -191,11 +191,11 @@ public class ShareFileAsyncClient {
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
-     * @return A response containing the {@link FileInfo file info} and the status of creating the file.
-     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * @return A response containing the {@link ShareFileInfo file info} and the status of creating the file.
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
      * directory is an invalid resource name.
      */
-    public Mono<Response<FileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
+    public Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
             return withContext(context ->
@@ -205,7 +205,7 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<FileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
+    Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
@@ -430,7 +430,7 @@ public class ShareFileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @return An empty response.
      */
-    public Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range) {
+    public Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range) {
         try {
             return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, context));
         } catch (RuntimeException ex) {
@@ -438,7 +438,7 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range,
+    Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
                                                                    Context context) {
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
             channel -> getPropertiesWithResponse(context).flatMap(response ->
@@ -447,22 +447,22 @@ public class ShareFileAsyncClient {
 
     private Mono<Response<ShareFileProperties>> downloadResponseInChunk(Response<ShareFileProperties> response,
                                                                         AsynchronousFileChannel channel,
-                                                                        FileRange range, Context context) {
-        return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new FileRange(0, response.getValue()
+                                                                        ShareFileRange range, Context context) {
+        return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new ShareFileRange(0, response.getValue()
             .getContentLength())))
             .map(currentRange -> {
-                List<FileRange> chunks = new ArrayList<>();
+                List<ShareFileRange> chunks = new ArrayList<>();
                 for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
                     long count = FILE_DEFAULT_BLOCK_SIZE;
                     if (pos + count > currentRange.getEnd()) {
                         count = currentRange.getEnd() - pos;
                     }
-                    chunks.add(new FileRange(pos, pos + count - 1));
+                    chunks.add(new ShareFileRange(pos, pos + count - 1));
                 }
                 return chunks;
             }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
                 downloadWithResponse(chunk, false, context)
-                .map(FileDownloadAsyncResponse::getValue)
+                .map(ShareFileDownloadAsyncResponse::getValue)
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(fbb -> FluxUtil
                     .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
@@ -505,7 +505,7 @@ public class ShareFileAsyncClient {
      */
     public Flux<ByteBuffer> download() {
         try {
-            return downloadWithResponse(null, null).flatMapMany(FileDownloadAsyncResponse::getValue);
+            return downloadWithResponse(null, null).flatMapMany(ShareFileDownloadAsyncResponse::getValue);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
         }
@@ -528,7 +528,7 @@ public class ShareFileAsyncClient {
      * true, as long as the range is less than or equal to 4 MB in size.
      * @return A reactive response containing response data and the file data.
      */
-    public Mono<FileDownloadAsyncResponse> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5) {
+    public Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileRange range, Boolean rangeGetContentMD5) {
         try {
             return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, context));
         } catch (RuntimeException ex) {
@@ -536,13 +536,13 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<FileDownloadAsyncResponse> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5,
+    Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileRange range, Boolean rangeGetContentMD5,
         Context context) {
         String rangeString = range == null ? null : range.toString();
 
         return azureFileStorageClient.files()
             .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, context)
-            .map(response -> new FileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+            .map(response -> new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
 
@@ -559,7 +559,7 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @return An empty response
-     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist.
+     * @throws ShareStorageException If the directory doesn't exist or the file doesn't exist.
      */
     public Mono<Void> delete() {
         try {
@@ -582,7 +582,7 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist.
+     * @throws ShareStorageException If the directory doesn't exist or the file doesn't exist.
      */
     public Mono<Response<Void>> deleteWithResponse() {
         try {
@@ -674,10 +674,10 @@ public class ShareFileAsyncClient {
      * @param httpHeaders The user settable file http headers.
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file
-     * @return The {@link FileInfo file info}
+     * @return The {@link ShareFileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<FileInfo> setProperties(long newFileSize, ShareFileHttpHeaders httpHeaders,
+    public Mono<ShareFileInfo> setProperties(long newFileSize, ShareFileHttpHeaders httpHeaders,
                                         FileSmbProperties smbProperties, String filePermission) {
         try {
             return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission)
@@ -711,10 +711,10 @@ public class ShareFileAsyncClient {
      * @param httpHeaders The user settable file http headers.
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
-     * @return Response containing the {@link FileInfo file info} and response status code.
+     * @return Response containing the {@link ShareFileInfo file info} and response status code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
+    public Mono<Response<ShareFileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
                                                               FileSmbProperties smbProperties, String filePermission) {
         try {
             return withContext(context ->
@@ -724,7 +724,7 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
+    Mono<Response<ShareFileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Context context) {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
@@ -764,10 +764,10 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
-     * @return {@link FileMetadataInfo file meta info}
-     * @throws FileStorageException If the file doesn't exist or the metadata contains invalid keys
+     * @return {@link ShareFileMetadataInfo file meta info}
+     * @throws ShareStorageException If the file doesn't exist or the metadata contains invalid keys
      */
-    public Mono<FileMetadataInfo> setMetadata(Map<String, String> metadata) {
+    public Mono<ShareFileMetadataInfo> setMetadata(Map<String, String> metadata) {
         try {
             return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -794,10 +794,10 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
-     * @return A response containing the {@link FileMetadataInfo file meta info} and status code
-     * @throws FileStorageException If the file doesn't exist or the metadata contains invalid keys
+     * @return A response containing the {@link ShareFileMetadataInfo file meta info} and status code
+     * @throws ShareStorageException If the file doesn't exist or the metadata contains invalid keys
      */
-    public Mono<Response<FileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
+    public Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
             return withContext(context -> setMetadataWithResponse(metadata, context));
         } catch (RuntimeException ex) {
@@ -805,7 +805,7 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<FileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
+    Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         try {
             return azureFileStorageClient.files()
                 .setMetadataWithRestResponseAsync(shareName, filePath, null, metadata, context)
@@ -832,7 +832,7 @@ public class ShareFileAsyncClient {
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @return A response that only contains headers and response status code
      */
-    public Mono<FileUploadInfo> upload(Flux<ByteBuffer> data, long length) {
+    public Mono<ShareFileUploadInfo> upload(Flux<ByteBuffer> data, long length) {
         try {
             return uploadWithResponse(data, length, 0L).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -858,11 +858,11 @@ public class ShareFileAsyncClient {
      * set to clear, the value of this header must be set to zero.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is
      * {@code null}.
-     * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
-     * @throws FileStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response status code
+     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
-    public Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset) {
+    public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset) {
         try {
             return withContext(context -> uploadWithResponse(data, length, offset, context));
         } catch (RuntimeException ex) {
@@ -870,10 +870,10 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
+    Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         Context context) {
         long rangeOffset = (offset == null) ? 0L : offset;
-        FileRange range = new FileRange(rangeOffset, rangeOffset + length - 1);
+        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + length - 1);
         return azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
                 length, data, null, null, context)
@@ -941,8 +941,8 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, String sourceUrl, Context context) {
-        FileRange destinationRange = new FileRange(destinationOffset, destinationOffset + length - 1);
-        FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
+        ShareFileRange destinationRange = new ShareFileRange(destinationOffset, destinationOffset + length - 1);
+        ShareFileRange sourceRange = new ShareFileRange(sourceOffset, sourceOffset + length - 1);
 
         return azureFileStorageClient.files()
             .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(), sourceUrl, 0,
@@ -964,9 +964,9 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being cleared.
-     * @return The {@link FileUploadInfo file upload info}
+     * @return The {@link ShareFileUploadInfo file upload info}
      */
-    public Mono<FileUploadInfo> clearRange(long length) {
+    public Mono<ShareFileUploadInfo> clearRange(long length) {
         try {
             return clearRangeWithResponse(length, 0).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -990,9 +990,9 @@ public class ShareFileAsyncClient {
      * @param length Specifies the number of bytes being cleared in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is
      * {@code null}
-     * @return A response of {@link FileUploadInfo file upload info} that only contains headers and response status code
+     * @return A response of {@link ShareFileUploadInfo file upload info} that only contains headers and response status code
      */
-    public Mono<Response<FileUploadInfo>> clearRangeWithResponse(long length, long offset) {
+    public Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset) {
         try {
             return withContext(context -> clearRangeWithResponse(length, offset, context));
         } catch (RuntimeException ex) {
@@ -1000,8 +1000,8 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<FileUploadInfo>> clearRangeWithResponse(long length, long offset, Context context) {
-        FileRange range = new FileRange(offset, offset + length - 1);
+    Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset, Context context) {
+        ShareFileRange range = new ShareFileRange(offset, offset + length - 1);
         return azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR, 0L,
                 null, null, null, context)
@@ -1042,16 +1042,16 @@ public class ShareFileAsyncClient {
         }
     }
 
-    private List<FileRange> sliceFile(String path) {
+    private List<ShareFileRange> sliceFile(String path) {
         File file = new File(path);
         assert file.exists();
-        List<FileRange> ranges = new ArrayList<>();
+        List<ShareFileRange> ranges = new ArrayList<>();
         for (long pos = 0; pos < file.length(); pos += FILE_DEFAULT_BLOCK_SIZE) {
             long count = FILE_DEFAULT_BLOCK_SIZE;
             if (pos + count > file.length()) {
                 count = file.length() - pos;
             }
-            ranges.add(new FileRange(pos, pos + count - 1));
+            ranges.add(new ShareFileRange(pos, pos + count - 1));
         }
         return ranges;
     }
@@ -1068,9 +1068,9 @@ public class ShareFileAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
-     * @return {@link FileRange ranges} in the files.
+     * @return {@link ShareFileRange ranges} in the files.
      */
-    public PagedFlux<FileRange> listRanges() {
+    public PagedFlux<ShareFileRange> listRanges() {
         try {
             return listRanges(null);
         } catch (RuntimeException ex) {
@@ -1091,9 +1091,9 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
-     * @return {@link FileRange ranges} in the files that satisfy the requirements
+     * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      */
-    public PagedFlux<FileRange> listRanges(FileRange range) {
+    public PagedFlux<ShareFileRange> listRanges(ShareFileRange range) {
         try {
             return listRangesWithOptionalTimeout(range, null, Context.NONE);
         } catch (RuntimeException ex) {
@@ -1101,16 +1101,16 @@ public class ShareFileAsyncClient {
         }
     }
 
-    PagedFlux<FileRange> listRangesWithOptionalTimeout(FileRange range, Duration timeout, Context context) {
+    PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range, Duration timeout, Context context) {
         String rangeString = range == null ? null : range.toString();
-        Function<String, Mono<PagedResponse<FileRange>>> retriever =
+        Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, context),
                 timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    response.getValue().stream().map(FileRange::new).collect(Collectors.toList()),
+                    response.getValue().stream().map(ShareFileRange::new).collect(Collectors.toList()),
                     null,
                     response.getDeserializedHeaders()));
 
@@ -1320,22 +1320,22 @@ public class ShareFileAsyncClient {
         return this.accountName;
     }
 
-    private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {
+    private Response<ShareFileInfo> createFileInfoResponse(final FilesCreateResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
-        return new SimpleResponse<>(response, fileInfo);
+        ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
+        return new SimpleResponse<>(response, shareFileInfo);
     }
 
-    private Response<FileInfo> setPropertiesResponse(final FilesSetHTTPHeadersResponse response) {
+    private Response<ShareFileInfo> setPropertiesResponse(final FilesSetHTTPHeadersResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
-        return new SimpleResponse<>(response, fileInfo);
+        ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
+        return new SimpleResponse<>(response, shareFileInfo);
     }
 
     private Response<ShareFileProperties> getPropertiesResponse(final FilesGetPropertiesResponse response) {
@@ -1370,7 +1370,7 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileProperties);
     }
 
-    private Response<FileUploadInfo> uploadResponse(final FilesUploadRangeResponse response) {
+    private Response<ShareFileUploadInfo> uploadResponse(final FilesUploadRangeResponse response) {
         FileUploadRangeHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
@@ -1381,8 +1381,8 @@ public class ShareFileAsyncClient {
             contentMD5 = null;
         }
         Boolean isServerEncrypted = headers.isServerEncrypted();
-        FileUploadInfo fileUploadInfo = new FileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
-        return new SimpleResponse<>(response, fileUploadInfo);
+        ShareFileUploadInfo shareFileUploadInfo = new ShareFileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
+        return new SimpleResponse<>(response, shareFileUploadInfo);
     }
 
     private Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlResponse(
@@ -1396,11 +1396,11 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileUploadRangeFromUrlInfo);
     }
 
-    private Response<FileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {
+    private Response<ShareFileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         Boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
-        FileMetadataInfo fileMetadataInfo = new FileMetadataInfo(eTag, isServerEncrypted);
-        return new SimpleResponse<>(response, fileMetadataInfo);
+        ShareFileMetadataInfo shareFileMetadataInfo = new ShareFileMetadataInfo(eTag, isServerEncrypted);
+        return new SimpleResponse<>(response, shareFileMetadataInfo);
     }
 
     /**

@@ -7,7 +7,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
-import com.azure.storage.file.share.models.FileStorageException
+import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import reactor.test.StepVerifier
 import spock.lang.Unroll
@@ -375,7 +375,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandle("invalidHandleId"))
-            .verifyErrorSatisfies({ it instanceof  FileStorageException })
+            .verifyErrorSatisfies({ it instanceof  ShareStorageException })
     }
 
     def "Force close all handles min"() {

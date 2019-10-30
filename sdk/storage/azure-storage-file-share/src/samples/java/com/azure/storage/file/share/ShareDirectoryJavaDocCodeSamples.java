@@ -7,7 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
-import com.azure.storage.file.share.models.DirectorySetMetadataInfo;
+import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -338,7 +338,7 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void setMetadata() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map
-        DirectorySetMetadataInfo response =
+        ShareDirectorySetMetadataInfo response =
             shareDirectoryClient.setMetadata(Collections.singletonMap("directory", "updatedMetadata"));
         System.out.printf("Setting the directory metadata completed with updated etag %s", response.getETag());
         // END: com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map
@@ -350,7 +350,7 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void setMetadataWithResponse() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.setMetadataWithResponse#map-duration-context
-        Response<DirectorySetMetadataInfo> response =
+        Response<ShareDirectorySetMetadataInfo> response =
             shareDirectoryClient.setMetadataWithResponse(Collections.singletonMap("directory", "updatedMetadata"),
                 Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the directory metadata completed with updated etag %d", response.getStatusCode());
@@ -363,7 +363,7 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void clearSetMetadata() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map.clearMetadata
-        DirectorySetMetadataInfo response = shareDirectoryClient.setMetadata(null);
+        ShareDirectorySetMetadataInfo response = shareDirectoryClient.setMetadata(null);
         System.out.printf("Cleared metadata.");
         // END: com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map.clearMetadata
     }
@@ -374,7 +374,7 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void clearMetadata() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata
-        Response<DirectorySetMetadataInfo> response = shareDirectoryClient.setMetadataWithResponse(null,
+        Response<ShareDirectorySetMetadataInfo> response = shareDirectoryClient.setMetadataWithResponse(null,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Directory latest modified date is %s.", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareDirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata

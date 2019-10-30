@@ -9,9 +9,9 @@ import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareItem
-import com.azure.storage.file.share.models.FileStorageException
 import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ShareServiceProperties
+import com.azure.storage.file.share.models.ShareStorageException
 
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -28,13 +28,13 @@ class FileTestHelper {
     }
 
     static boolean assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
-        return throwable instanceof FileStorageException &&
-            ((FileStorageException) throwable).getStatusCode() == expectedStatusCode
+        return throwable instanceof ShareStorageException &&
+            ((ShareStorageException) throwable).getStatusCode() == expectedStatusCode
     }
 
     static boolean assertExceptionErrorMessage(Throwable throwable, ShareErrorCode errMessage) {
-        return throwable instanceof FileStorageException &&
-            ((FileStorageException) throwable).getErrorCode() == errMessage
+        return throwable instanceof ShareStorageException &&
+            ((ShareStorageException) throwable).getErrorCode() == errMessage
     }
 
     static boolean assertMetricsAreEqual(ShareMetrics expected, ShareMetrics actual) {

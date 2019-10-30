@@ -24,9 +24,9 @@ import com.azure.storage.file.share.implementation.models.DirectorysSetMetadataR
 import com.azure.storage.file.share.implementation.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
-import com.azure.storage.file.share.models.DirectorySetMetadataInfo;
+import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareFileItem;
 import reactor.core.publisher.Mono;
@@ -161,7 +161,7 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @return The {@link ShareDirectoryInfo directory info}.
-     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
      * directory name is an invalid resource name.
      */
     public Mono<ShareDirectoryInfo> create() {
@@ -188,7 +188,7 @@ public class ShareDirectoryAsyncClient {
      * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
      * directory name is an invalid resource name.
      */
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
@@ -234,7 +234,7 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @return An empty response.
-     * @throws FileStorageException If the share doesn't exist
+     * @throws ShareStorageException If the share doesn't exist
      */
     public Mono<Void> delete() {
         try {
@@ -257,7 +257,7 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the share doesn't exist
+     * @throws ShareStorageException If the share doesn't exist
      */
     public Mono<Response<Void>> deleteWithResponse() {
         try {
@@ -416,9 +416,9 @@ public class ShareDirectoryAsyncClient {
      * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is
      * cleared
      * @return information about the directory
-     * @throws FileStorageException If the directory doesn't exist or the metadata contains invalid keys
+     * @throws ShareStorageException If the directory doesn't exist or the metadata contains invalid keys
      */
-    public Mono<DirectorySetMetadataInfo> setMetadata(Map<String, String> metadata) {
+    public Mono<ShareDirectorySetMetadataInfo> setMetadata(Map<String, String> metadata) {
         try {
             return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -447,9 +447,9 @@ public class ShareDirectoryAsyncClient {
      * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is
      * cleared
      * @return A response containing the information about the directory with headers and response status code
-     * @throws FileStorageException If the directory doesn't exist or the metadata contains invalid keys
+     * @throws ShareStorageException If the directory doesn't exist or the metadata contains invalid keys
      */
-    public Mono<Response<DirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
+    public Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
             return withContext(context -> setMetadataWithResponse(metadata, context));
         } catch (RuntimeException ex) {
@@ -457,7 +457,7 @@ public class ShareDirectoryAsyncClient {
         }
     }
 
-    Mono<Response<DirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
+    Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         return azureFileStorageClient.directorys()
             .setMetadataWithRestResponseAsync(shareName, directoryPath, null, metadata, context)
             .map(this::setMetadataResponse);
@@ -678,7 +678,7 @@ public class ShareDirectoryAsyncClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A subdirectory client.
-     * @throws FileStorageException If the subdirectory has already existed, the parent directory does not exist or
+     * @throws ShareStorageException If the subdirectory has already existed, the parent directory does not exist or
      * directory is an invalid resource name.
      */
     public Mono<ShareDirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
@@ -708,7 +708,7 @@ public class ShareDirectoryAsyncClient {
      * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
-     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
      * subdirectory is an invalid resource name.
      */
     public Mono<Response<ShareDirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
@@ -743,7 +743,7 @@ public class ShareDirectoryAsyncClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return An empty response.
-     * @throws FileStorageException If the subdirectory doesn't exist, the parent directory does not exist or
+     * @throws ShareStorageException If the subdirectory doesn't exist, the parent directory does not exist or
      * subdirectory name is an invalid resource name.
      */
     public Mono<Void> deleteSubDirectory(String subDirectoryName) {
@@ -768,7 +768,7 @@ public class ShareDirectoryAsyncClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the subdirectory doesn't exist, the parent directory does not exist or
+     * @throws ShareStorageException If the subdirectory doesn't exist, the parent directory does not exist or
      * subdirectory name is an invalid resource name.
      */
     public Mono<Response<Void>> deleteSubDirectoryWithResponse(String subDirectoryName) {
@@ -800,7 +800,7 @@ public class ShareDirectoryAsyncClient {
      * @param fileName Name of the file
      * @param maxSize Size of the file
      * @return The ShareFileAsyncClient.
-     * @throws FileStorageException If the file has already existed, the parent directory does not exist or file name
+     * @throws ShareStorageException If the file has already existed, the parent directory does not exist or file name
      * is an invalid resource name.
      */
     public Mono<ShareFileAsyncClient> createFile(String fileName, long maxSize) {
@@ -831,7 +831,7 @@ public class ShareDirectoryAsyncClient {
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or file
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or file
      * name is an invalid resource name.
      */
     public Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
@@ -869,7 +869,7 @@ public class ShareDirectoryAsyncClient {
      *
      * @param fileName Name of the file
      * @return An empty response.
-     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
+     * @throws ShareStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
      * resource name.
      */
     public Mono<Void> deleteFile(String fileName) {
@@ -894,7 +894,7 @@ public class ShareDirectoryAsyncClient {
      *
      * @param fileName Name of the file
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
+     * @throws ShareStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
      * resource name.
      */
     public Mono<Response<Void>> deleteFileWithResponse(String fileName) {
@@ -990,11 +990,11 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    private Response<DirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
+    private Response<ShareDirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
-        DirectorySetMetadataInfo directorySetMetadataInfo = new DirectorySetMetadataInfo(eTag, isServerEncrypted);
-        return new SimpleResponse<>(response, directorySetMetadataInfo);
+        ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag, isServerEncrypted);
+        return new SimpleResponse<>(response, shareDirectorySetMetadataInfo);
     }
 
     private List<ShareFileItem> convertResponseAndGetNumOfResults(

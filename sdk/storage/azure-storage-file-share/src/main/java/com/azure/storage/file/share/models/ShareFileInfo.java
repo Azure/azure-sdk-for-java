@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  * Contains information about a File in the storage File service.
  */
 @Immutable
-public final class FileInfo {
+public final class ShareFileInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final Boolean isServerEncrypted;
@@ -27,7 +27,7 @@ public final class FileInfo {
      * encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the file.
      */
-    public FileInfo(final String eTag, final OffsetDateTime lastModified, final Boolean isServerEncrypted,
+    public ShareFileInfo(final String eTag, final OffsetDateTime lastModified, final Boolean isServerEncrypted,
         final FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;

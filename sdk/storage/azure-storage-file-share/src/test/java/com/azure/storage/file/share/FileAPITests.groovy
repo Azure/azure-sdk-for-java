@@ -9,13 +9,13 @@ import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.file.share.models.FileRange
-import com.azure.storage.file.share.models.FileStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
+import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.models.ShareSnapshotInfo
+import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
@@ -91,7 +91,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(-1)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.OUT_OF_RANGE_INPUT)
     }
 
@@ -141,7 +141,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.createWithResponse(-1, null, null, null, testMetadata, null, null)
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.OUT_OF_RANGE_INPUT)
     }
 
@@ -192,7 +192,7 @@ class FileAPITests extends APISpec {
         when:
         def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null, null)
         def stream = new ByteArrayOutputStream()
-        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new FileRange(1, dataLength), true, null, null)
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, dataLength), true, null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(uploadResponse, 201)
@@ -207,7 +207,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -221,7 +221,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.clearRange(7)
         def stream = new ByteArrayOutputStream()
-        primaryFileClient.downloadWithResponse(stream, new FileRange(0, 6), false, null, null)
+        primaryFileClient.downloadWithResponse(stream, new ShareFileRange(0, 6), false, null, null)
 
         then:
         for (def b : stream.toByteArray()) {
@@ -239,7 +239,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.clearRangeWithResponse(7, 1, null, null)
         def stream = new ByteArrayOutputStream()
-        primaryFileClient.downloadWithResponse(stream, new FileRange(1, 7), false, null, null)
+        primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, 7), false, null, null)
 
         then:
         for (def b : stream.toByteArray()) {
@@ -258,7 +258,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.clearRange(30)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 416, ShareErrorCode.INVALID_RANGE)
     }
 
@@ -273,7 +273,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.clearRangeWithResponse(7, 20, null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 416, ShareErrorCode.INVALID_RANGE)
     }
 
@@ -297,10 +297,10 @@ class FileAPITests extends APISpec {
 
     def "Download data error"() {
         when:
-        primaryFileClient.downloadWithResponse(new ByteArrayOutputStream(), new FileRange(0, 1023), false, null, null)
+        primaryFileClient.downloadWithResponse(new ByteArrayOutputStream(), new ShareFileRange(0, 1023), false, null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -436,7 +436,7 @@ class FileAPITests extends APISpec {
         poller.waitForCompletion()
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE)
     }
 
@@ -458,7 +458,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.deleteWithResponse(null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -545,7 +545,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.setPropertiesWithResponse(-1, null, null, null, null, null)
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.OUT_OF_RANGE_INPUT)
     }
 
@@ -574,7 +574,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.setMetadataWithResponse(errorMetadata, null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY)
     }
 
@@ -603,7 +603,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadFromFile(uploadFile)
 
         expect:
-        primaryFileClient.listRanges(new FileRange(0, 511L), null, null).each {
+        primaryFileClient.listRanges(new ShareFileRange(0, 511L), null, null).each {
             assert it.getStart() == 0
             assert it.getEnd() == 511
         }
@@ -636,7 +636,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.forceCloseHandle("1")
 
         then:
-        notThrown(FileStorageException)
+        notThrown(ShareStorageException)
     }
 
     def "Force close handle invalid handle ID"() {
@@ -647,7 +647,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.forceCloseHandle("invalidHandleId")
 
         then:
-        thrown(FileStorageException)
+        thrown(ShareStorageException)
     }
 
     def "Force close all handles min"() {
@@ -658,7 +658,7 @@ class FileAPITests extends APISpec {
         def numberOfHandlesClosed = primaryFileClient.forceCloseAllHandles(null, null)
 
         then:
-        notThrown(FileStorageException)
+        notThrown(ShareStorageException)
         numberOfHandlesClosed == 0
     }
 

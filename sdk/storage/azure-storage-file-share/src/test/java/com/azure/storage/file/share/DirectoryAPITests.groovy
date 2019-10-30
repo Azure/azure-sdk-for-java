@@ -7,9 +7,9 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
-import com.azure.storage.file.share.models.FileStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareSnapshotInfo
+import com.azure.storage.file.share.models.ShareStorageException
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -92,7 +92,7 @@ class DirectoryAPITests extends APISpec {
         directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryClient().create()
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
@@ -164,7 +164,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.delete()
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -191,7 +191,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.getPropertiesWithResponse(null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -273,7 +273,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.setMetadata(errorMetadata)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY)
     }
 
@@ -373,7 +373,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.listHandles(null, true, null, null).iterator().hasNext()
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -385,7 +385,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.forceCloseHandle("1")
 
         then:
-        notThrown(FileStorageException)
+        notThrown(ShareStorageException)
     }
 
     def "Force close handle invalid handle ID"() {
@@ -396,7 +396,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.forceCloseHandle("invalidHandleId")
 
         then:
-        thrown(FileStorageException)
+        thrown(ShareStorageException)
     }
 
     def "Force close all handles min"() {
@@ -407,7 +407,7 @@ class DirectoryAPITests extends APISpec {
         def numberOfHandlesClosed = primaryDirectoryClient.forceCloseAllHandles(false, null, null)
 
         then:
-        notThrown(FileStorageException)
+        notThrown(ShareStorageException)
         numberOfHandlesClosed == 0
     }
 
@@ -428,7 +428,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.createSubDirectory("test/subdirectory")
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND)
     }
 
@@ -449,7 +449,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.createSubDirectoryWithResponse("testsubdirectory", null, null, Collections.singletonMap("", "value"), null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY)
     }
 
@@ -491,7 +491,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.deleteSubDirectory("testsubdirectory")
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
@@ -513,7 +513,7 @@ class DirectoryAPITests extends APISpec {
         when:
         primaryDirectoryClient.createFileWithResponse(fileName, maxSize, null, null, null, null, null, null)
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
 
         where:
@@ -545,7 +545,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata, null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg)
 
         where:
@@ -576,7 +576,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.deleteFileWithResponse("testfile", null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 

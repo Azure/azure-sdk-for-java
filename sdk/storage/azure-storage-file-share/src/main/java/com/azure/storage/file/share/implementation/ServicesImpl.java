@@ -24,7 +24,7 @@ import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesResponse;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -63,17 +63,17 @@ public final class ServicesImpl {
     private interface ServicesService {
         @Put("")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(FileStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") ShareServiceProperties shareServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(FileStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(FileStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ServicesListSharesSegmentResponse> listSharesSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
     }
 

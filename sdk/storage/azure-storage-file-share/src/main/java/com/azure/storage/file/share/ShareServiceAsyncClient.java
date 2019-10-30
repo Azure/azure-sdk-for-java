@@ -20,7 +20,7 @@ import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionT
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareServiceProperties;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
 import reactor.core.publisher.Mono;
@@ -287,7 +287,7 @@ public final class ShareServiceAsyncClient {
      *
      * @param properties Storage account File service properties
      * @return An empty response
-     * @throws FileStorageException When one of the following is true
+     * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
@@ -332,7 +332,7 @@ public final class ShareServiceAsyncClient {
      *
      * @param properties Storage account File service properties
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException When one of the following is true
+     * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
@@ -373,7 +373,7 @@ public final class ShareServiceAsyncClient {
      *
      * @param shareName Name of the share
      * @return The {@link ShareAsyncClient ShareAsyncClient}
-     * @throws FileStorageException If a share with the same name already exists
+     * @throws ShareStorageException If a share with the same name already exists
      */
     public Mono<ShareAsyncClient> createShare(String shareName) {
         try {
@@ -405,7 +405,7 @@ public final class ShareServiceAsyncClient {
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
      * @return A response containing the {@link ShareAsyncClient ShareAsyncClient} and the status of creating the share.
-     * @throws FileStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
+     * @throws ShareStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
      * allowed range.
      */
     public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
@@ -440,7 +440,7 @@ public final class ShareServiceAsyncClient {
      *
      * @param shareName Name of the share
      * @return An empty response
-     * @throws FileStorageException If the share doesn't exist
+     * @throws ShareStorageException If the share doesn't exist
      */
     public Mono<Void> deleteShare(String shareName) {
         try {
@@ -466,7 +466,7 @@ public final class ShareServiceAsyncClient {
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the share doesn't exist or the snapshot doesn't exist
+     * @throws ShareStorageException If the share doesn't exist or the snapshot doesn't exist
      */
     public Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot) {
         try {

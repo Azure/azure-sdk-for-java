@@ -35,7 +35,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,FileDownloadHeaders
+custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders
 ```
 
 ### Query Parameters
@@ -289,6 +289,7 @@ directive:
   transform: >
     if (!$["/{shareName}/{filePath}"]) {
         const op = $["/{shareName}/{filePath}"] = $["/{shareName}/{directory}/{fileName}"];
+        op.get.operationId="ShareFile_Download"
         const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
         op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
@@ -665,11 +666,11 @@ directive:
     return $.
       replace(
         "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.FileStorageException"
+        "com.azure.storage.file.share.models.ShareStorageException"
       ).
       replace(
         /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(FileStorageException.class)"
+        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
       );
 - from: SharesImpl.java
   where: $
@@ -677,11 +678,11 @@ directive:
     return $.
       replace(
         "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.FileStorageException"
+        "com.azure.storage.file.share.models.ShareStorageException"
       ).
       replace(
         /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(FileStorageException.class)"
+        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
       );
 - from: DirectorysImpl.java
   where: $
@@ -689,11 +690,11 @@ directive:
     return $.
       replace(
         "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.FileStorageException"
+        "com.azure.storage.file.share.models.ShareStorageException"
       ).
       replace(
         /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(FileStorageException.class)"
+        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
       );
 - from: FilesImpl.java
   where: $
@@ -701,10 +702,10 @@ directive:
     return $.
       replace(
         "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.FileStorageException"
+        "com.azure.storage.file.share.models.ShareStorageException"
       ).
       replace(
         /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(FileStorageException.class)"
+        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
       );
 ```

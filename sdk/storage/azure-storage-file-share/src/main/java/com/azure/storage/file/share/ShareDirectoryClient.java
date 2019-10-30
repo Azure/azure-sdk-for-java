@@ -12,11 +12,11 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
-import com.azure.storage.file.share.models.DirectorySetMetadataInfo;
+import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
-import com.azure.storage.file.share.models.FileInfo;
+import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.HandleItem;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileItem;
 import reactor.core.publisher.Mono;
 
@@ -109,7 +109,7 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @return The {@link ShareDirectoryInfo directory info}.
-     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
      * directory name is an invalid resource name.
      */
     public ShareDirectoryInfo create() {
@@ -135,7 +135,7 @@ public class ShareDirectoryClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
      * directory name is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
@@ -158,7 +158,7 @@ public class ShareDirectoryClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
-     * @throws FileStorageException If the share doesn't exist
+     * @throws ShareStorageException If the share doesn't exist
      */
     public void delete() {
         deleteWithResponse(null, Context.NONE);
@@ -180,7 +180,7 @@ public class ShareDirectoryClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the share doesn't exist
+     * @throws ShareStorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
@@ -299,9 +299,9 @@ public class ShareDirectoryClient {
      * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is
      * cleared
      * @return The information about the directory
-     * @throws FileStorageException If the directory doesn't exist or the metadata contains invalid keys
+     * @throws ShareStorageException If the directory doesn't exist or the metadata contains invalid keys
      */
-    public DirectorySetMetadataInfo setMetadata(Map<String, String> metadata) {
+    public ShareDirectorySetMetadataInfo setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata, null, Context.NONE).getValue();
     }
 
@@ -328,12 +328,12 @@ public class ShareDirectoryClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the information about the directory and response status code
-     * @throws FileStorageException If the directory doesn't exist or the metadata contains invalid keys
+     * @throws ShareStorageException If the directory doesn't exist or the metadata contains invalid keys
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<DirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
+    public Response<ShareDirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
-        Mono<Response<DirectorySetMetadataInfo>> response = shareDirectoryAsyncClient
+        Mono<Response<ShareDirectorySetMetadataInfo>> response = shareDirectoryAsyncClient
             .setMetadataWithResponse(metadata, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -498,7 +498,7 @@ public class ShareDirectoryClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return The subdirectory client.
-     * @throws FileStorageException If the subdirectory has already existed, the parent directory does not exist or
+     * @throws ShareStorageException If the subdirectory has already existed, the parent directory does not exist or
      * directory is an invalid resource name.
      */
     public ShareDirectoryClient createSubDirectory(String subDirectoryName) {
@@ -527,7 +527,7 @@ public class ShareDirectoryClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the subdirectory client and the status of creating the directory.
-     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
      * subdirectory is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
@@ -553,7 +553,7 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param subDirectoryName Name of the subdirectory
-     * @throws FileStorageException If the subdirectory doesn't exist, the parent directory does not exist or
+     * @throws ShareStorageException If the subdirectory doesn't exist, the parent directory does not exist or
      * subdirectory name is an invalid resource name.
      */
     public void deleteSubDirectory(String subDirectoryName) {
@@ -578,7 +578,7 @@ public class ShareDirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the subdirectory doesn't exist, the parent directory does not exist or
+     * @throws ShareStorageException If the subdirectory doesn't exist, the parent directory does not exist or
      * subdirectory name is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
@@ -604,7 +604,7 @@ public class ShareDirectoryClient {
      * @param fileName Name of the file
      * @param maxSize Size of the file
      * @return The ShareFileClient
-     * @throws FileStorageException If the file has already existed, the parent directory does not exist or file name
+     * @throws ShareStorageException If the file has already existed, the parent directory does not exist or file name
      * is an invalid resource name.
      */
     public ShareFileClient createFile(String fileName, long maxSize) {
@@ -634,7 +634,7 @@ public class ShareDirectoryClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or file
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or file
      * name is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
@@ -642,7 +642,7 @@ public class ShareDirectoryClient {
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
         Context context) {
         ShareFileClient shareFileClient = getFileClient(fileName);
-        Response<FileInfo> response = shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
+        Response<ShareFileInfo> response = shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
             filePermission, metadata, timeout, context);
         return new SimpleResponse<>(response, shareFileClient);
     }
@@ -660,7 +660,7 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
-     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
+     * @throws ShareStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
      * resource name.
      */
     public void deleteFile(String fileName) {
@@ -684,7 +684,7 @@ public class ShareDirectoryClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
+     * @throws ShareStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
      * resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */

@@ -9,8 +9,8 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.file.share.models.ShareAccessPolicy
-import com.azure.storage.file.share.models.FileStorageException
 import com.azure.storage.file.share.models.ShareSignedIdentifier
+import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
@@ -194,7 +194,7 @@ class FileSASTests extends APISpec {
         client.upload(getInputStream(data.getBytes(StandardCharsets.UTF_8)), (long) data.length())
 
         then:
-        notThrown(FileStorageException)
+        notThrown(ShareStorageException)
         Arrays.copyOfRange(stream.toByteArray(), 0, data.length()) == data.getBytes(StandardCharsets.UTF_8)
     }
 
@@ -246,13 +246,13 @@ class FileSASTests extends APISpec {
         client.upload(getInputStream(data.getBytes()), (long) data.length())
 
         then:
-        thrown(FileStorageException)
+        thrown(ShareStorageException)
 
         when:
         client.delete()
 
         then:
-        notThrown(FileStorageException)
+        notThrown(ShareStorageException)
     }
 
     def "ShareSAS network test identifier permissions create delete"() {
@@ -306,7 +306,7 @@ class FileSASTests extends APISpec {
         client2.deleteDirectory("dir")
 
         then:
-        notThrown(FileStorageException)
+        notThrown(ShareStorageException)
     }
 
     def "AccountSAS FileService network test create delete share succeeds"() {
@@ -345,7 +345,7 @@ class FileSASTests extends APISpec {
         sc.deleteShare("create")
 
         then:
-        notThrown(FileStorageException)
+        notThrown(ShareStorageException)
     }
 
 

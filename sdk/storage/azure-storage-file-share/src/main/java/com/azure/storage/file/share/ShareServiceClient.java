@@ -14,7 +14,7 @@ import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareStorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -206,7 +206,7 @@ public final class ShareServiceClient {
      * Docs</a>.</p>
      *
      * @param properties Storage account File service properties
-     * @throws FileStorageException When one of the following is true
+     * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
@@ -250,7 +250,7 @@ public final class ShareServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException When one of the following is true
+     * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
@@ -284,7 +284,7 @@ public final class ShareServiceClient {
      *
      * @param shareName Name of the share
      * @return The {@link ShareClient ShareClient}
-     * @throws FileStorageException If a share with the same name already exists
+     * @throws ShareStorageException If a share with the same name already exists
      */
     public ShareClient createShare(String shareName) {
         return createShareWithResponse(shareName, null, null, null, Context.NONE).getValue();
@@ -311,7 +311,7 @@ public final class ShareServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareClient ShareClient} and the status of creating the share.
-     * @throws FileStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
+     * @throws ShareStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
      * allowed range.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
@@ -334,7 +334,7 @@ public final class ShareServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
-     * @throws FileStorageException If the share doesn't exist
+     * @throws ShareStorageException If the share doesn't exist
      */
     public void deleteShare(String shareName) {
         deleteShareWithResponse(shareName, null, null, Context.NONE);
@@ -359,7 +359,7 @@ public final class ShareServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the share doesn't exist or the snapshot doesn't exist
+     * @throws ShareStorageException If the share doesn't exist or the snapshot doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteShareWithResponse(String shareName, String snapshot, Duration timeout,

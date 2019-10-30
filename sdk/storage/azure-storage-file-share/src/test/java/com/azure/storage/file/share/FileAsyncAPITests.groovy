@@ -8,12 +8,12 @@ import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.share.models.FileRange
-import com.azure.storage.file.share.models.FileStorageException
+import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
+import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import reactor.core.publisher.Flux
@@ -180,7 +180,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 1))
-        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(1, dataLength), true))
+        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(1, dataLength), true))
 
         then:
         uploadVerifier.assertNext {
@@ -237,7 +237,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Download data error"() {
         when:
-        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(0, 1023), false))
+        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(0, 1023), false))
 
         then:
         downloadDataErrorVerifier.verifyErrorSatisfies({
@@ -254,7 +254,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 0))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(0, 6), false))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(0, 6), false))
 
         then:
         clearRangeVerifier.assertNext {
@@ -279,7 +279,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 1))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(1, 7), false))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(1, 7), false))
 
         then:
         clearRangeVerifier.assertNext {
@@ -647,7 +647,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 
         expect:
-        StepVerifier.create(primaryFileAsyncClient.listRanges(new FileRange(0, 511L)))
+        StepVerifier.create(primaryFileAsyncClient.listRanges(new ShareFileRange(0, 511L)))
             .assertNext {
                 assert it.getStart() == 0
                 assert it.getEnd() == 511
@@ -690,7 +690,7 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("invalidHandleId"))
-            .verifyErrorSatisfies({ it instanceof  FileStorageException })
+            .verifyErrorSatisfies({ it instanceof  ShareStorageException })
     }
 
     def "Force close all handles min"() {
