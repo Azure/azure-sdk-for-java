@@ -10,8 +10,8 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <!-- NOTE: Commenting out becuase we are now binary composed.
-      <module>../core/azure-core</module>
     -->
+      <module>../core/azure-core</module>
     <module>azure-identity</module>
   </modules>
 </project>
