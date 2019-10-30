@@ -22,7 +22,8 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
 
     public abstract void canUpdateSynonymMap();
 
-    public abstract void createOrUpdateCreatesWhenSynonymMapDoesNotExist();
+    @Test
+    public abstract void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExist();
 
     public abstract void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource();
 

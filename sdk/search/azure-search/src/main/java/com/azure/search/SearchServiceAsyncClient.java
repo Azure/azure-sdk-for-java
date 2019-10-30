@@ -1147,19 +1147,77 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return the updated SynonymMap.
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     *
+     * @param synonymMap the definition of the synonym map to create or update
+     * @return the synonym map that was created or updated.
      */
-    public Mono<SynonymMap> createOrUpdateSynonymMap() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
+        return this.createOrUpdateSynonymMapWithResponse(synonymMap, null, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @return a response containing the updated SynonymMap.
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     *
+     * @param synonymMap the definition of the synonym map to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @return the synonym map that was created or updated.
      */
-    public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap, AccessCondition accessCondition) {
+        return this.createOrUpdateSynonymMapWithResponse(synonymMap, accessCondition, null)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     *
+     * @param synonymMap the definition of the synonym map to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the synonym map that was created or updated.
+     */
+    public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap,
+                                                     AccessCondition accessCondition,
+                                                     RequestOptions requestOptions) {
+        return this.createOrUpdateSynonymMapWithResponse(synonymMap, accessCondition, requestOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     *
+     * @param synonymMap the definition of the synonym map to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing the synonym map that was created or updated.
+     */
+    public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
+                                                                           AccessCondition accessCondition,
+                                                                           RequestOptions requestOptions) {
+        return withContext(context -> createOrUpdateSynonymMapWithResponse(synonymMap,
+            accessCondition,
+            requestOptions,
+            context));
+    }
+
+    Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
+                                                                    AccessCondition accessCondition,
+                                                                    RequestOptions requestOptions,
+                                                                    Context context) {
+        return restClient
+            .synonymMaps()
+            .createOrUpdateWithRestResponseAsync(synonymMap.getName(),
+                synonymMap,
+                requestOptions,
+                accessCondition,
+                context)
+                .map(Function.identity());
     }
 
     /**

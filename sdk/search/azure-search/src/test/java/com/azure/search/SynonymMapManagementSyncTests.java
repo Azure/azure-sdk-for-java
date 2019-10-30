@@ -3,8 +3,10 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -96,8 +98,26 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     }
 
     @Override
-    public void createOrUpdateCreatesWhenSynonymMapDoesNotExist() {
+    public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExist() {
+        SynonymMap expected = createTestSynonymMap();
 
+        RequestOptions requestOptions = new RequestOptions()
+                .setClientRequestId(UUID.randomUUID());
+
+        Context context = new Context("key", "value");
+
+        SynonymMap actual = client.createOrUpdateSynonymMap(expected);
+        assertSynonymMapsEqual(expected, actual);
+
+        actual = client.createOrUpdateSynonymMap(expected.setName("test-synonym1"),
+            new AccessCondition(), requestOptions);
+        assertSynonymMapsEqual(expected, actual);
+
+        Response<SynonymMap> createOrUpdateResponse = client.createOrUpdateSynonymMapWithResponse(
+            expected.setName("test-synonym2"),
+            new AccessCondition(), requestOptions, context);
+        Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
+        assertSynonymMapsEqual(expected, createOrUpdateResponse.getValue());
     }
 
     @Override
