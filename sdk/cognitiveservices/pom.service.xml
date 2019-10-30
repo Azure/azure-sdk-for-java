@@ -19,7 +19,6 @@
     <module>ms-azure-cs-entitysearch</module>
     <module>ms-azure-cs-faceapi</module>
     <module>ms-azure-cs-imagesearch</module>
-    <module>ms-azure-cs-inkrecognizer</module>
     <module>ms-azure-cs-luis-authoring</module>
     <module>ms-azure-cs-luis-runtime</module>
     <module>ms-azure-cs-newssearch</module>
