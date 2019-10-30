@@ -64,7 +64,7 @@ public final class ShareFileHttpHeaders {
         return this.contentType;
     }
 
-    /**
+    FileHttpHeaders.java /**
      * Set the contentType property: Sets the MIME content type of the file.
      * The default type is 'application/octet-stream'.
      *
