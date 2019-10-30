@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 /**
  * Sample for using {@link BlobEventProcessorStore} with {@link EventProcessor}.
  */
-public class EventProcessorBlobPartitionManagerSample {
+public class EventProcessorBlobEventProcessorStoreSample {
 
     private static final String EH_CONNECTION_STRING = "";
     private static final String SAS_TOKEN_STRING = "";

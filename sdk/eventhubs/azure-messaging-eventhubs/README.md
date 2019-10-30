@@ -287,15 +287,15 @@ events received to console.
 ```java
 class Program {
     public static void main(String[] args) {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
-            .buildAsyncClient();
-
         EventProcessor eventProcessor = new EventProcessorBuilder()
-            .consumerGroup("<< CONSUMER GROUP NAME>>")
-            .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory((SimplePartitionProcessor::new))
+            .consumerGroup("<< CONSUMER GROUP NAME >>")
+            .connectionString("<< EVENT HUB CONNECTION STRING >>")
             .eventProcessorStore(new InMemoryPartitionManager())
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
@@ -306,17 +306,6 @@ class Program {
 
         // When the user wishes to stop processing events, they can call `stop()`.
         eventProcessor.stop();
-    }
-}
-
-class SimplePartitionProcessor extends PartitionProcessor {
-    /**
-     * Processes the event data.
-     */
-    @Override
-    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-        System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
-        return partitionContext.updateCheckpoint(eventData);
     }
 }
 ```

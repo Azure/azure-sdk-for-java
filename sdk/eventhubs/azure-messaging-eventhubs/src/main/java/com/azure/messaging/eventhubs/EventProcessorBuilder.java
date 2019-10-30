@@ -30,9 +30,22 @@ import reactor.core.scheduler.Scheduler;
  *
  * <ul>
  * <li>{@link #consumerGroup(String) Consumer group name}.</li>
- * <li>{@link EventHubAsyncClient} - An asynchronous Event Hub client the {@link EventProcessor} will use for
- * consuming events.</li>
- * <li>{@link EventProcessorStore} - An instance of EventProcessorStore.</li>
+ * <li>{@link EventProcessorStore} - An implementation of EventProcessorStore that stores checkpoint and
+ * partition ownership information to enable load balancing.</li>
+ * <li>{@link #processEvent(Function)} - A callback that processes events received from the Event Hub.</li>
+ * <li>Credentials -
+ *  <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
+ *  one of the following methods:
+ *  <ul>
+ *  <li>{@link #connectionString(String) connectionString(String)} with a connection string to a specific Event Hub.
+ *  </li>
+ *  <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
+ *  connection string and the Event Hub name.</li>
+ *  <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the
+ *  fully qualified domain name (FQDN), Event Hub name, and a set of credentials authorized to use the Event Hub.
+ *  </li>
+ *  </ul>
+ *  </li>
  * </ul>
  *
  * <p><strong>Creating an {@link EventProcessor}</strong></p>
@@ -301,6 +314,7 @@ public class EventProcessorBuilder {
             public void processError(ErrorContext errorContext) {
                 if (processError != null) {
                     processError.apply(errorContext);
+                    return;
                 }
                 super.processError(errorContext);
             }
@@ -308,7 +322,7 @@ public class EventProcessorBuilder {
             @Override
             public Mono<Void> close(CloseContext closeContext) {
                 if (closePartition != null) {
-                    closePartition.apply(closeContext);
+                    return closePartition.apply(closeContext);
                 }
 
                 return super.close(closeContext);

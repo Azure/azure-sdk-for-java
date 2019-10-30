@@ -22,13 +22,13 @@ public class EventProcessorBuilderJavaDocCodeSamples {
 
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")
-            .connectionString(connectionString)
+            .eventProcessorStore(new InMemoryEventProcessorStore())
             .processEvent(partitionEvent -> {
                 System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
                 return Mono.empty();
             })
-            .eventProcessorStore(new InMemoryEventProcessorStore())
+            .connectionString(connectionString)
             .buildEventProcessor();
         return eventProcessor;
     }
