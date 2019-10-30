@@ -35,6 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -593,7 +594,7 @@ public class SearchServiceAsyncClient {
      * @return true if the index exists; false otherwise.
      */
     public Mono<Boolean> indexExists(String indexName) {
-        return indexExistsWithResponse(indexName, null).map(Response::getValue);
+        return this.indexExistsWithResponse(indexName, null).map(Response::getValue);
     }
 
     /**
@@ -605,7 +606,7 @@ public class SearchServiceAsyncClient {
      * @return true if the index exists; false otherwise.
      */
     public Mono<Boolean> indexExists(String indexName, RequestOptions requestOptions) {
-        return indexExistsWithResponse(indexName, requestOptions).map(Response::getValue);
+        return this.indexExistsWithResponse(indexName, requestOptions).map(Response::getValue);
     }
 
     /**
@@ -617,22 +618,13 @@ public class SearchServiceAsyncClient {
      * @return true if the index exists; false otherwise.
      */
     public Mono<Response<Boolean>> indexExistsWithResponse(String indexName, RequestOptions requestOptions) {
-        return withContext(context -> indexExistsWithResponse(indexName, requestOptions, context));
+        return withContext(context -> this.indexExistsWithResponse(indexName, requestOptions, context));
     }
 
     Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
                                                     RequestOptions requestOptions,
                                                     Context context) {
-        return this.getIndexWithResponse(indexName, requestOptions, context)
-            .map(i -> (Response<Boolean>) new SimpleResponse<>(i, true))
-            .onErrorResume(
-                t -> t instanceof HttpResponseException
-                    && ((HttpResponseException) t).getResponse().getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((HttpResponseException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), false));
-                });
+        return this.resourceExistsWithResponse(() -> this.getIndexWithResponse(indexName, requestOptions, context));
     }
 
     /**
@@ -1184,6 +1176,67 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<Response<Void>>> deleteSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Determines whether or not the given synonym map exists.
+     *
+     * @param synonymMapName the name of the synonym map
+     * @return true if the synonym map exists; false otherwise.
+     */
+    public Mono<Boolean> synonymMapExists(String synonymMapName) {
+        return this.synonymMapExistsWithResponse(synonymMapName, null).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given synonym map exists.
+     *
+     * @param synonymMapName the name of the synonym map
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return true if the synonym map exists; false otherwise.
+     */
+    public Mono<Boolean> synonymMapExists(String synonymMapName, RequestOptions requestOptions) {
+        return this.synonymMapExistsWithResponse(synonymMapName, requestOptions).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given synonym map exists.
+     *
+     * @param synonymMapName the name of the synonym map
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return true if the synonym map exists; false otherwise.
+     */
+    public Mono<Response<Boolean>> synonymMapExistsWithResponse(String synonymMapName, RequestOptions requestOptions) {
+        return withContext(context -> this.synonymMapExistsWithResponse(synonymMapName, requestOptions, context));
+    }
+
+    Mono<Response<Boolean>> synonymMapExistsWithResponse(String synonymMapName,
+                                                         RequestOptions requestOptions,
+                                                         Context context) {
+        return resourceExistsWithResponse(() ->
+            this.getSynonymMapWithResponse(synonymMapName, requestOptions, context));
+    }
+
+    /**
+     * Runs an async action and determines if a resource exists or not
+     *
+     * @param action the runnable async action
+     * @return true if the resource exists (service returns a '200' status code); otherwise false.
+     */
+    private static <T> Mono<Response<Boolean>> resourceExistsWithResponse(Supplier<Mono<Response<T>>> action) {
+        return action.get()
+            .map(i ->
+                (Response<Boolean>) new SimpleResponse<>(i, i.getStatusCode() == 200))
+            .onErrorResume(
+                t -> t instanceof HttpResponseException
+                    && ((HttpResponseException) t).getResponse().getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((HttpResponseException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     private static String deserializeHeaders(HttpHeaders headers) {

@@ -48,8 +48,10 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     @Test
     public abstract void canListSynonymMapsWithSelectedField();
 
+    @Test
     public abstract void existsReturnsTrueForExistingSynonymMap();
 
+    @Test
     public abstract void existsReturnsFalseForNonExistingSynonymMap();
 
     protected void assertSynonymMapsEqual(SynonymMap actual, SynonymMap expected) {

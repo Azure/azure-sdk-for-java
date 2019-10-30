@@ -1069,4 +1069,57 @@ public class SearchServiceClient {
     public Response<Response<Void>> deleteSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
+
+    /**
+     * Determines whether or not the given synonym map exists.
+     *
+     * @param synonymMapName the name of the synonym map
+     * @return true if the synonym map exists; false otherwise.
+     */
+    public Boolean synonymMapExists(String synonymMapName) {
+        return asyncClient.synonymMapExists(synonymMapName).block();
+    }
+
+    /**
+     * Determines whether or not the given synonym map exists.
+     *
+     * @param synonymMapName the name of the synonym map
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return true if the synonym map exists; false otherwise.
+     */
+    public Boolean synonymMapExists(String synonymMapName, RequestOptions requestOptions) {
+        return asyncClient.synonymMapExists(synonymMapName, requestOptions).block();
+    }
+
+    /**
+     * Determines whether or not the given synonym map exists.
+     *
+     * @param synonymMapName the name of the synonym map
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return true if the index exists; false otherwise.
+     */
+    public Boolean synonymMapExists(String synonymMapName, RequestOptions requestOptions, Context context) {
+        return this.synonymMapExistsWithResponse(synonymMapName, requestOptions, context)
+            .getValue();
+    }
+
+    /**
+     * Determines whether or not the given synonym map exists.
+     *
+     * @param synonymMapName the name of the synonym map
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return true if the index exists; false otherwise.
+     */
+    public Response<Boolean> synonymMapExistsWithResponse(String synonymMapName,
+                                                          RequestOptions requestOptions,
+                                                          Context context) {
+        return asyncClient
+            .synonymMapExistsWithResponse(synonymMapName, requestOptions, context)
+            .block();
+    }
 }

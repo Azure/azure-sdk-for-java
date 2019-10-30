@@ -195,12 +195,36 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
 
     @Override
     public void existsReturnsTrueForExistingSynonymMap() {
+        SynonymMap synonymMap = createTestSynonymMap();
 
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+        Context context = new Context("key", "value");
+
+        client.createSynonymMap(synonymMap);
+
+        Assert.assertTrue(client.synonymMapExists(synonymMap.getName()));
+        Assert.assertTrue(client.synonymMapExists(synonymMap.getName(), requestOptions));
+        Assert.assertTrue(client.synonymMapExistsWithResponse(synonymMap.getName(),
+            requestOptions,
+            context)
+            .getValue());
     }
 
     @Override
     public void existsReturnsFalseForNonExistingSynonymMap() {
+        String synonymMapName = "thisSynonymMapDoesNotExist";
 
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+        Context context = new Context("key", "value");
+
+        Assert.assertFalse(client.synonymMapExists(synonymMapName));
+        Assert.assertFalse(client.synonymMapExists(synonymMapName, requestOptions));
+        Assert.assertFalse(client.synonymMapExistsWithResponse(synonymMapName,
+            requestOptions,
+            context)
+            .getValue());
     }
 
     private void validateSynonymMapNotFoundThrowsException(String synonymMapName, Runnable getSynonymMapAction) {
