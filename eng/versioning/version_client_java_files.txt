@@ -12,5 +12,5 @@ sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/implementati
 sdk/storage/azure-storage-blob-cryptography/src/main/java/com/azure/storage/blob/specialized/cryptography/BlobCryptographyConfiguration.java
 sdk/storage/azure-storage-file-share/src/main/java/com/azure/storage/file/share/implementation/util/BuilderHelper.java
 sdk/storage/azure-storage-file-share/src/main/java/com/azure/storage/file/share/FileConfiguration.java
-sdk/storage/azure-storage-queue/src/main/java/com/azure/storage/queue/BuilderHelper.java
+sdk/storage/azure-storage-queue/src/main/java/com/azure/storage/queue/implementation/util/BuilderHelper.java
 sdk/storage/azure-storage-queue/src/main/java/com/azure/storage/queue/QueueConfiguration.java
