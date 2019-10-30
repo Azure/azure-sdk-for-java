@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,22 +13,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
-import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
@@ -59,100 +53,31 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  */
 @Immutable
 public class EventHubConsumerAsyncClient implements Closeable {
-    private static final AtomicReferenceFieldUpdater<EventHubConsumerAsyncClient, AmqpReceiveLink>
-        RECEIVE_LINK_FIELD_UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(EventHubConsumerAsyncClient.class, AmqpReceiveLink.class, "receiveLink");
+    private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
 
-    // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
-    private static final int MINIMUM_REQUEST = 0;
-    private static final int MAXIMUM_REQUEST = 100;
+    private final ConcurrentHashMap<String, EventHubPartitionAsyncConsumer> openPartitionConsumers =
+        new ConcurrentHashMap<>();
 
-    private final ConcurrentHashMap<String, Flux<PartitionEvent>> openReceives = new ConcurrentHashMap<>();
-    private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClient.class);
+    private final String fullyQualifiedNamespace;
+    private final String eventHubName;
+    private final EventHubLinkProvider linkProvider;
     private final MessageSerializer messageSerializer;
-    private final EmitterProcessor<EventData> emitterProcessor;
-    private final Flux<EventData> messageFlux;
-    private final boolean trackLastEnqueuedEventProperties;
-
-    private volatile AmqpReceiveLink receiveLink;
+    private final String consumerGroup;
+    private final EventPosition startingPosition;
+    private final EventHubConsumerOptions consumerOptions;
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
-        MessageSerializer messageSerializer,
-        EventHubConsumerOptions options) {
-        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
-        this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
-
-        if (options.getTrackLastEnqueuedEventProperties()) {
-            lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
-        }
-
-        // Caching the created link so we don't invoke another link creation.
-        this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
-            if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
-                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.getPrefetchCount());
-                link.addCredits(options.getPrefetchCount());
-
-                link.setEmptyCreditListener(() -> {
-                    if (emitterProcessor.hasDownstreams()) {
-                        return creditsToRequest.get();
-                    } else {
-                        logger.verbose("Emitter has no downstream subscribers. Not adding credits.");
-                        return 0;
-                    }
-                });
-
-                link.getErrors().subscribe(error -> {
-                    logger.info("Error received in ReceiveLink. {}", error.toString());
-
-                    //TODO (conniey): Surface error to EmitterProcessor.
-                });
-
-                link.getShutdownSignals().subscribe(signal -> {
-                    logger.info("Shutting down. Initiated by client? {}. Reason: {}",
-                        signal.isInitiatedByClient(), signal.toString());
-
-                    try {
-                        close();
-                    } catch (IOException e) {
-                        logger.error("Error closing consumer: {}", e.toString());
-                    }
-                });
-            }
-
-            return link.receive().map(message -> onMessageReceived(message));
-        }).subscribeWith(emitterProcessor)
-            .doOnSubscribe(subscription -> {
-                AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
-                if (existingLink == null) {
-                    logger.warning("AmqpReceiveLink not set yet.");
-                    return;
-                }
-
-                logger.verbose("Subscription received for consumer.");
-                if (existingLink.getCredits() == 0) {
-                    logger.info("Subscription received and there are no remaining credits on the link. Adding more.");
-                    existingLink.addCredits(creditsToRequest.get());
-                }
-            })
-            .doOnRequest(request -> {
-                if (request < MINIMUM_REQUEST) {
-                    logger.warning("Back pressure request value not valid. It must be between {} and {}.",
-                        MINIMUM_REQUEST, MAXIMUM_REQUEST);
-                    return;
-                }
-
-                final int newRequest = request > MAXIMUM_REQUEST
-                    ? MAXIMUM_REQUEST
-                    : (int) request;
-
-                logger.verbose("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(),
-                    newRequest);
-                creditsToRequest.set(newRequest);
-            });
+        MessageSerializer messageSerializer, String consumerGroup, EventPosition startingPosition,
+        EventHubConsumerOptions consumerOptions) {
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        this.eventHubName = eventHubName;
+        this.linkProvider = linkProvider;
+        this.messageSerializer = messageSerializer;
+        this.consumerGroup = consumerGroup;
+        this.startingPosition = startingPosition;
+        this.consumerOptions = consumerOptions;
     }
 
     /**
@@ -172,6 +97,24 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     public String getEventHubName() {
         return eventHubName;
+    }
+
+    /**
+     * Gets the position of the event in the partition where the consumer should begin reading.
+     *
+     * @return The position of the event in the partition where the consumer should begin reading.
+     */
+    public EventPosition getStartingPosition() {
+        return startingPosition;
+    }
+
+    /**
+     * Gets the consumer group this consumer is reading events as a part of.
+     *
+     * @return The consumer group this consumer is reading events as a part of.
+     */
+    public String getConsumerGroup() {
+        return consumerGroup;
     }
 
     /**
@@ -207,73 +150,53 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
+     * Begin consuming events from a single partition starting at {@link #getStartingPosition()} until there are no more
+     * subscribers.
+     *
+     * @return A stream of events for this partition.
+     *
+     * @throws NullPointerException if {@code partitionId} is null.
+     * @throws IllegalArgumentException if {@code partitionId} is an empty string.
+     */
+    public Flux<PartitionEvent> receive(String partitionId) {
+        if (partitionId == null) {
+            return Flux.error(logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null.")));
+        } else if (partitionId.isEmpty()) {
+            return Flux.error(logger.logExceptionAsError(
+                new IllegalArgumentException("'partitionId' cannot be an empty string.")));
+        }
+
+        return openPartitionConsumers.computeIfAbsent(partitionId, id -> {
+            final String linkName = StringUtil.getRandomString("PR");
+            final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
+                getEventHubName(), consumerGroup, partitionId);
+
+            final Mono<AmqpReceiveLink> receiveLinkMono =
+                linkProvider.createReceiveLink(linkName, entityPath, getStartingPosition(), consumerOptions)
+                    .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
+
+            return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer,
+                getEventHubName(), consumerGroup, partitionId, consumerOptions);
+        }).receive();
+    }
+
+    /**
      * Disposes of the consumer by closing the underlying connection to the service.
      *
-     * @throws IOException if the underlying transport and its resources could not be disposed.
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (!isDisposed.getAndSet(true)) {
-            final AmqpReceiveLink receiveLink = RECEIVE_LINK_FIELD_UPDATER.getAndSet(this, null);
-            if (receiveLink != null) {
-                receiveLink.close();
-            }
+            openPartitionConsumers.forEach((key, value) -> {
+                try {
+                    value.close();
+                } catch (IOException e) {
+                    logger.warning("Exception occurred while closing consumer for partition '{}'", key, e);
+                }
+            });
+            openPartitionConsumers.clear();
 
-            emitterProcessor.onComplete();
+            //TODO (conniey): Depending on whether or not shared connection, dispose of connection.
         }
-    }
-
-    /**
-     * Begin consuming events until there are no longer any subscribers, or the parent {@link
-     * EventHubAsyncClient#close() EventHubAsyncClient.close()} is called.
-     *
-     * <p><strong>Consuming events from Event Hub</strong></p>
-     *
-     * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive}
-     *
-     * @return A stream of events for this consumer.
-     */
-    public Flux<EventData> receive() {
-        return messageFlux;
-    }
-
-    /**
-     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
-     * received from the Event Hubs service.
-     *
-     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
-     *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
-     *     partition.
-     */
-    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
-        return lastEnqueuedEventProperties.get();
-    }
-
-    /**
-     * On each message received from the service, it will try to:
-     * 1. Deserialize the message into an EventData
-     * 2. If {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update
-     *    {@link LastEnqueuedEventProperties}
-     *
-     * @param message AMQP message to deserialize.
-     *
-     * @return The deserialized {@link EventData}.
-     */
-    private EventData onMessageReceived(Message message) {
-        final EventData event = messageSerializer.deserialize(message, EventData.class);
-
-        if (trackLastEnqueuedEventProperties) {
-            final LastEnqueuedEventProperties enqueuedEventProperties =
-                messageSerializer.deserialize(message, LastEnqueuedEventProperties.class);
-
-            if (enqueuedEventProperties != null) {
-                final LastEnqueuedEventProperties updated = new LastEnqueuedEventProperties(
-                    enqueuedEventProperties.getSequenceNumber(), enqueuedEventProperties.getOffset(),
-                    enqueuedEventProperties.getEnqueuedTime(), enqueuedEventProperties.getRetrievalTime());
-                lastEnqueuedEventProperties.set(updated);
-            }
-        }
-
-        return event;
     }
 }
