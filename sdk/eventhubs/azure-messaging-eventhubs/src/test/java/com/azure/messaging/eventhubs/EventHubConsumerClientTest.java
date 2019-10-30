@@ -27,7 +27,6 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -88,12 +87,10 @@ public class EventHubConsumerClientTest {
 
         EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setIdentifier("an-identifier")
-            .setPrefetchCount(PREFETCH)
-            .setRetry(new RetryOptions())
-            .setScheduler(Schedulers.elastic());
+            .setPrefetchCount(PREFETCH);
         EventHubConsumerAsyncClient asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(), options);
-        consumer = new EventHubConsumerClient(asyncConsumer, options.getRetry().getTryTimeout());
+        consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
     @After

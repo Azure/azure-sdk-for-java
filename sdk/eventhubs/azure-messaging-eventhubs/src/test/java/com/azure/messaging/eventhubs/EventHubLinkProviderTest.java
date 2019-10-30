@@ -114,8 +114,7 @@ public class EventHubLinkProviderTest {
             .setMaxRetries(2)
             .setRetryMode(RetryMode.FIXED);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setIdentifier("foo")
-            .setRetry(retryOptions);
+            .setIdentifier("foo");
 
         final EventPosition position = EventPosition.fromOffset(10L);
         final String linkName = "some-link-name";

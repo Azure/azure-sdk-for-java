@@ -80,7 +80,6 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         final int eventCount = NUMBER_OF_EVENTS;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setRetry(RETRY_OPTIONS)
             .setPrefetchCount(2000);
 
         consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,

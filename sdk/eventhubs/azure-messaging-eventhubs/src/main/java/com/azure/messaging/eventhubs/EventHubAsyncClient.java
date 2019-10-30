@@ -62,9 +62,7 @@ public class EventHubAsyncClient implements Closeable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.linkProvider = Objects.requireNonNull(linkProvider, "'linkProvider' cannot be null.");
 
-        this.defaultConsumerOptions = new EventHubConsumerOptions()
-            .setRetry(connectionOptions.getRetry())
-            .setScheduler(connectionOptions.getScheduler());
+        this.defaultConsumerOptions = new EventHubConsumerOptions();
     }
 
     /**
@@ -181,12 +179,6 @@ public class EventHubAsyncClient implements Closeable {
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
-        if (clonedOptions.getScheduler() == null) {
-            clonedOptions.setScheduler(connectionOptions.getScheduler());
-        }
-        if (clonedOptions.getRetry() == null) {
-            clonedOptions.setRetry(connectionOptions.getRetry());
-        }
 
         return new EventHubConsumerAsyncClient(connectionOptions.getHostname(), connectionOptions.getEntityPath(),
             linkProvider, messageSerializer, consumerGroup, eventPosition, clonedOptions);

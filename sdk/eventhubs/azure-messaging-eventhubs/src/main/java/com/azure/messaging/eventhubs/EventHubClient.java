@@ -13,7 +13,6 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.io.Closeable;
-import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -46,9 +45,7 @@ public class EventHubClient implements Closeable {
 
         this.client = Objects.requireNonNull(client, "'client' cannot be null.");
         this.retry = connectionOptions.getRetry();
-        this.defaultConsumerOptions = new EventHubConsumerOptions()
-            .setRetry(connectionOptions.getRetry())
-            .setScheduler(connectionOptions.getScheduler());
+        this.defaultConsumerOptions = new EventHubConsumerOptions();
     }
 
     /**
@@ -114,7 +111,6 @@ public class EventHubClient implements Closeable {
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *     context of this group. The name of the consumer group that is created by default is {@link
      *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubConsumerClient} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
@@ -123,7 +119,7 @@ public class EventHubClient implements Closeable {
      */
     public EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition) {
         final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, eventPosition);
-        return new EventHubConsumerClient(consumer, defaultConsumerOptions.getRetry().getTryTimeout());
+        return new EventHubConsumerClient(consumer, retry.getTryTimeout());
     }
 
     /**
@@ -158,11 +154,8 @@ public class EventHubClient implements Closeable {
     public EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition,
             EventHubConsumerOptions options) {
         final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, eventPosition, options);
-        final Duration timeout = options.getRetry() == null || options.getRetry().getTryTimeout() == null
-            ? defaultConsumerOptions.getRetry().getTryTimeout()
-            : options.getRetry().getTryTimeout();
 
-        return new EventHubConsumerClient(consumer, timeout);
+        return new EventHubConsumerClient(consumer, retry.getTryTimeout());
     }
 
     /**
