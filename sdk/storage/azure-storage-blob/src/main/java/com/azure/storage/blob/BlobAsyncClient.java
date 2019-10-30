@@ -71,6 +71,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Docs</a> for more information.
  */
 public class BlobAsyncClient extends BlobAsyncClientBase {
+    private static final int CHUNKED_UPLOAD_REQUIREMENT = 4* Constants.MB;
+
     public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
     /**
@@ -328,7 +330,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         preserve the ordering of the buffers, but we don't really care if one is split before another.
          */
         Flux<ByteBuffer> chunkedSource = data
-            .filter(ByteBuffer::hasRemaining)
             .flatMapSequential(buffer -> {
                 if (buffer.remaining() <= parallelTransferOptions.getBlockSize()) {
                     return Flux.just(buffer);
@@ -372,7 +373,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private Mono<Response<BlockBlobItem>> determineUploadFullOrChunked(final Flux<ByteBuffer> data,
         final Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunks,
         final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlob) {
-        final long chunkedUploadRequirement = 4 * Constants.MB;
         final long[] bufferedDataSize = {0};
         final LinkedList<ByteBuffer> cachedBuffers = new LinkedList<>();
 
@@ -385,13 +385,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
          * Put Block List as the upload mechanism otherwise use Put Blob.
          */
         return data
+            .filter(ByteBuffer::hasRemaining)
             .windowUntil(buffer -> {
-                if (bufferedDataSize[0] > chunkedUploadRequirement) {
+                if (bufferedDataSize[0] > CHUNKED_UPLOAD_REQUIREMENT) {
                     return false;
                 } else {
                     bufferedDataSize[0] += buffer.remaining();
 
-                    if (bufferedDataSize[0] > chunkedUploadRequirement) {
+                    if (bufferedDataSize[0] > CHUNKED_UPLOAD_REQUIREMENT) {
                         return true;
                     } else {
                         /*
@@ -401,7 +402,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                          * explicitly states that it supports non-replayable streams.
                          */
                         ByteBuffer cachedBuffer = ByteBuffer.allocate(buffer.remaining()).put(buffer);
-                        cachedBuffer.position(0);
+                        cachedBuffer.flip();
                         cachedBuffers.add(cachedBuffer);
                         return false;
                     }
@@ -415,7 +416,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 } else {
                     return uploadInChunks.apply(dequeuingFlux(cachedBuffers).concatWith(fluxes.get(1)));
                 }
-            });
+            })
+            // If nothing was emitted from the stream upload an empty blob.
+            .switchIfEmpty(uploadFullBlob.apply(Flux.empty(), 0L));
     }
 
     private static Flux<ByteBuffer> dequeuingFlux(Queue<ByteBuffer> queue) {
