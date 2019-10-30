@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.implementation.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.internal.AsyncDocumentClient;
 import com.azure.cosmos.internal.Configs;
 import com.azure.cosmos.internal.Database;

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.internal.Configs;
 import com.azure.cosmos.internal.Permission;
 import com.azure.cosmos.internal.Configs;
