@@ -33,6 +33,8 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -60,7 +62,7 @@ public class EventHubConsumerClientTest {
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
     private final MessageSerializer serializer = new EventHubMessageSerializer();
-
+    private final ExecutorService service = Executors.newFixedThreadPool(4);
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
     @Mock
@@ -97,6 +99,7 @@ public class EventHubConsumerClientTest {
     public void teardown() throws IOException {
         Mockito.framework().clearInlineMocks();
         consumer.close();
+        service.shutdown();
     }
 
     /**
@@ -162,11 +165,13 @@ public class EventHubConsumerClientTest {
     @Test
     public void receivesNumberOfEvents() {
         // Arrange
-        final int numberOfEvents = 10;
-        sendMessages(numberOfEvents);
         final int numberToReceive = 3;
 
         // Act
+        service.execute(() -> {
+            sendMessages(10);
+        });
+
         final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberToReceive);
 
         // Assert

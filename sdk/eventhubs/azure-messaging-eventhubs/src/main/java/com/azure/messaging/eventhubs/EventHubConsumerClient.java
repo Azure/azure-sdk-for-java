@@ -44,9 +44,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * timeout duration is reached.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-duration}
- *
- * @see EventHubClient#createConsumer(String, String, EventPosition)
- * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 public class EventHubConsumerClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
@@ -190,7 +187,9 @@ public class EventHubConsumerClient implements Closeable {
         final SynchronousEventSubscriber subscriber =
             openSubscribers.computeIfAbsent(partitionId, key -> {
                 logger.info("Started synchronous event subscriber for partition '{}'.", key);
-                return new SynchronousEventSubscriber();
+                SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber();
+                consumer.receive(key).subscribeWith(syncSubscriber);
+                return syncSubscriber;
             });
 
         logger.info("Queueing work item in SynchronousEventSubscriber.");
