@@ -7,8 +7,8 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -62,7 +62,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
-            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+            final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
             testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
         }
 
@@ -133,11 +133,11 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
-
-        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
+        final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
+        final EventHubProducerClient producer = client.createProducer();
 
         try {
-            producer.send(events);
+            producer.send(events, sendOptions);
 
             // Act
             final IterableStream<EventData> receive = consumer.receive(100, Duration.ofSeconds(5));
@@ -166,11 +166,11 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
 
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(Instant.now()));
-
-        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
+        final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
+        final EventHubProducerClient producer = client.createProducer();
 
         try {
-            producer.send(events);
+            producer.send(events, sendOptions);
 
             // Act
             final IterableStream<EventData> receive = consumer.receive(receiveNumber, Duration.ofSeconds(5));
@@ -199,10 +199,11 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
         final EventHubConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
-        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
+        final EventHubProducerClient producer = client.createProducer();
+        final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
 
         try {
-            producer.send(events);
+            producer.send(events, sendOptions);
 
             // Act
             final IterableStream<EventData> receive = consumer.receive(receiveNumber, Duration.ofSeconds(5));

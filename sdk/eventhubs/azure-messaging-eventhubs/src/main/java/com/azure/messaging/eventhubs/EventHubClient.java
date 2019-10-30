@@ -4,13 +4,12 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
-import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.io.Closeable;
@@ -40,7 +39,6 @@ import java.util.Objects;
 public class EventHubClient implements Closeable {
     private final EventHubAsyncClient client;
     private final RetryOptions retry;
-    private final EventHubProducerOptions defaultProducerOptions;
     private final EventHubConsumerOptions defaultConsumerOptions;
 
     EventHubClient(EventHubAsyncClient client, ConnectionOptions connectionOptions) {
@@ -48,8 +46,6 @@ public class EventHubClient implements Closeable {
 
         this.client = Objects.requireNonNull(client, "'client' cannot be null.");
         this.retry = connectionOptions.getRetry();
-        this.defaultProducerOptions = new EventHubProducerOptions()
-            .setRetry(connectionOptions.getRetry());
         this.defaultConsumerOptions = new EventHubConsumerOptions()
             .setRetry(connectionOptions.getRetry())
             .setScheduler(connectionOptions.getScheduler());
@@ -100,32 +96,11 @@ public class EventHubClient implements Closeable {
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
      * in batches. Event data is automatically routed to an available partition.
      *
-     * @return A new {@link EventHubProducer}.
+     * @return A new {@link EventHubProducerClient}.
      */
-    public EventHubProducer createProducer() {
-        return createProducer(defaultProducerOptions);
-    }
-
-    /**
-     * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
-     * in batches. If {@link EventHubProducerOptions#getPartitionId() options.partitionId()} is not {@code null}, the
-     * events are routed to that specific partition. Otherwise, events are automatically routed to an available
-     * partition.
-     *
-     * @param options The set of options to apply when creating the producer.
-     * @return A new {@link EventHubProducer}.
-     * @throws NullPointerException if {@code options} is {@code null}.
-     */
-    public EventHubProducer createProducer(EventHubProducerOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-
-        final EventHubAsyncProducer producer = client.createProducer(options);
-
-        final Duration tryTimeout = options.getRetry() != null && options.getRetry().getTryTimeout() != null
-            ? options.getRetry().getTryTimeout()
-            : defaultProducerOptions.getRetry().getTryTimeout();
-
-        return new EventHubProducer(producer, tryTimeout);
+    public EventHubProducerClient createProducer() {
+        final EventHubProducerAsyncClient producer = client.createProducer();
+        return new EventHubProducerClient(producer, retry.getTryTimeout());
     }
 
     /**

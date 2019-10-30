@@ -3,59 +3,55 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
 import com.azure.messaging.eventhubs.models.BatchOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link EventHubProducer}.
+ * Contains code snippets when generating javadocs through doclets for {@link EventHubProducerClient}.
  */
-public class EventHubProducerJavaDocCodeSamples {
+public class EventHubProducerClientJavaDocCodeSamples {
     private final EventHubClient client = new EventHubClientBuilder()
         .connectionString("fake-string")
         .buildClient();
 
     /**
-     * Code snippet demonstrating how to create an {@link EventHubProducer} that automatically routes events to any
+     * Code snippet demonstrating how to create an {@link EventHubProducerClient} that automatically routes events to any
      * partition.
      *
      * @throws IOException if the producer cannot be disposed.
      */
     public void instantiate() throws IOException {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiation
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation
         EventHubClient client = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
             .buildClient();
 
-        EventHubProducer producer = client.createProducer();
-        // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation
+        EventHubProducerClient producer = client.createProducer();
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation
 
         producer.close();
     }
 
     /**
-     * Code snippet demonstrating how to create an {@link EventHubProducer} that routes events to a single partition.
+     * Code snippet demonstrating how to send events to a single partition.
      *
      * @throws IOException if the producer cannot be disposed.
      */
     public void instantiatePartitionProducer() throws IOException {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
-        RetryOptions retryOptions = new RetryOptions()
-            .setTryTimeout(Duration.ofSeconds(45));
-        EventHubProducerOptions options = new EventHubProducerOptions()
-            .setPartitionId("foo")
-            .setRetry(retryOptions);
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId
+        EventData eventData = new EventData("data-to-partition-foo");
+        SendOptions options = new SendOptions()
+            .setPartitionId("foo");
 
-        EventHubProducer producer = client.createProducer(options);
-        // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
+        EventHubProducerClient producer = client.createProducer();
+        producer.send(eventData, options);
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId
 
         producer.close();
     }
@@ -64,28 +60,28 @@ public class EventHubProducerJavaDocCodeSamples {
      * Code snippet demonstrating how to send events with a partition key.
      */
     public void sendEventsSendOptions() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.send#publisher-sendOptions
         final List<EventData> events = Arrays.asList(
             new EventData("sourdough".getBytes(UTF_8)),
             new EventData("rye".getBytes(UTF_8)),
             new EventData("wheat".getBytes(UTF_8))
         );
 
-        final EventHubProducer producer = client.createProducer();
+        final EventHubProducerClient producer = client.createProducer();
         final SendOptions options = new SendOptions()
             .setPartitionKey("bread");
 
         producer.send(events, options);
-        // END: com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.send#publisher-sendOptions
     }
 
     /**
      * Code snippet demonstrating how to create an {@link EventDataBatch} and send it.
      */
     public void sendEventDataBatch() {
-        final EventHubProducer producer = client.createProducer();
+        final EventHubProducerClient producer = client.createProducer();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.send#eventDataBatch
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch
         final List<EventData> telemetryEvents = Arrays.asList(
             new EventData("92".getBytes(UTF_8)).addProperty("telemetry", "latency"),
             new EventData("98".getBytes(UTF_8)).addProperty("telemetry", "cpu-temperature"),
@@ -106,6 +102,6 @@ public class EventHubProducerJavaDocCodeSamples {
                 currentBatch = producer.createBatch(options);
             }
         }
-        // END: com.azure.messaging.eventhubs.eventhubproducer.send#eventDataBatch
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch
     }
 }
