@@ -71,7 +71,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Docs</a> for more information.
  */
 public class BlobAsyncClient extends BlobAsyncClientBase {
-    private static final int CHUNKED_UPLOAD_REQUIREMENT = 4* Constants.MB;
+    private static final int CHUNKED_UPLOAD_REQUIREMENT = 4 * Constants.MB;
 
     public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
@@ -292,19 +292,25 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         AccessTier tier, BlobRequestConditions accessConditions) {
         try {
             Objects.requireNonNull(data, "'data' must not be null");
-            BlobRequestConditions accessConditionsFinal = accessConditions == null
+            BlobRequestConditions validatedAccessConditions = accessConditions == null
                 ? new BlobRequestConditions() : accessConditions;
-            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+            final ParallelTransferOptions validatedParallelTransferOptions = parallelTransferOptions == null
                 ? new ParallelTransferOptions(null, null, null)
                 : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
                 parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
-            return determineUploadFullOrChunked(data, (stream) -> uploadInChunks(blockBlobAsyncClient, stream,
-                finalParallelTransferOptions, headers, metadata, tier, accessConditionsFinal),
-                (stream, length) -> blockBlobAsyncClient.uploadWithResponse(
-                    ProgressReporter.addProgressReporting(stream, finalParallelTransferOptions.getProgressReceiver()),
-                    length, headers, metadata, tier, null, accessConditionsFinal));
+
+            Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
+                uploadInChunks(blockBlobAsyncClient, stream, validatedParallelTransferOptions, headers, metadata, tier,
+                    validatedAccessConditions);
+
+            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
+                (stream, length) -> blockBlobAsyncClient.uploadWithResponse(ProgressReporter
+                    .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
+                    length, headers, metadata, tier, null, validatedAccessConditions);
+
+            return determineUploadFullOrChunked(data, uploadInChunksFunction, uploadFullBlobMethod);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
