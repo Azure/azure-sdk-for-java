@@ -1,0 +1,53 @@
+{
+    "networkCallRecords" : [ {
+        "Method" : "PUT",
+        "Uri" : "https://azs-sdkd416392145e6.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+        "Headers" : {
+            "Content-Type" : "application/json; charset=utf-8"
+        },
+        "Response" : {
+            "Pragma" : "no-cache",
+            "retry-after" : "0",
+            "request-id" : "bffa77ab-c840-46d3-bd00-6a092d8de2f2",
+            "StatusCode" : "201",
+            "Date" : "Wed, 30 Oct 2019 21:01:10 GMT",
+            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+            "Cache-Control" : "no-cache",
+            "ETag" : "W/\"0x8D75D7C4A751462\"",
+            "elapsed-time" : "41",
+            "OData-Version" : "4.0",
+            "Expires" : "-1",
+            "Content-Length" : "198",
+            "Body" : "{\"@odata.context\":\"https://azs-sdkd416392145e6.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D75D7C4A751462\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
+            "Preference-Applied" : "odata.include-annotations=\"*\"",
+            "Content-Type" : "application/json; odata.metadata=minimal",
+            "Location" : "https://azs-sdkd416392145e6.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+        },
+        "Exception" : null
+    }, {
+        "Method" : "PUT",
+        "Uri" : "https://azs-sdkd416392145e6.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+        "Headers" : {
+            "Content-Type" : "application/json; charset=utf-8"
+        },
+        "Response" : {
+            "Pragma" : "no-cache",
+            "retry-after" : "0",
+            "request-id" : "1829483b-3647-4c26-b18a-22069ffc9e10",
+            "StatusCode" : "412",
+            "Date" : "Wed, 30 Oct 2019 21:01:10 GMT",
+            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+            "Cache-Control" : "no-cache",
+            "elapsed-time" : "7",
+            "OData-Version" : "4.0",
+            "Expires" : "-1",
+            "Content-Length" : "160",
+            "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The precondition given in one of the request headers evaluated to false. No change was made to the resource from this request.\"}}",
+            "Preference-Applied" : "odata.include-annotations=\"*\"",
+            "Content-Language" : "en",
+            "Content-Type" : "application/json; odata.metadata=minimal"
+        },
+        "Exception" : null
+    } ],
+    "variables" : [ ]
+}

@@ -10,10 +10,10 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.UUID;
-
 
 public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase {
     private SearchServiceAsyncClient client;
@@ -148,31 +148,46 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
     @Override
     public void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap, generateEmptyAccessCondition()).block();
+        SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
 
+        StepVerifier
+            .create(client.createOrUpdateSynonymMap(mutatedResource, generateIfNotExistsAccessCondition()))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+            });
     }
 
     @Override
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource() {
+        SynonymMap resource = createTestSynonymMap();
+        Mono<SynonymMap> updatedResource = client.createOrUpdateSynonymMap(resource, generateIfNotExistsAccessCondition());
+
+        StepVerifier
+            .create(updatedResource)
+            .assertNext(res -> Assert.assertFalse(res.getETag().isEmpty()))
+            .verifyComplete();
+    }
+
+    @Override
+    public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
 
     }
 
     @Override
-    public void updateSynonymMapIfExistsSucceedsOnExistingResource() {
+    public void createOrUpdateSynonymMapIfExistsFailsOnNoResource() {
 
     }
 
     @Override
-    public void updateSynonymMapIfExistsFailsOnNoResource() {
+    public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
 
     }
 
     @Override
-    public void updateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
-
-    }
-
-    @Override
-    public void updateSynonymMapIfNotChangedFailsWhenResourceChanged() {
+    public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged() {
 
     }
 

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
@@ -541,42 +540,6 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     protected Index mutateCorsOptionsInIndex(Index index) {
         index.setCorsOptions(index.getCorsOptions().setAllowedOrigins("*"));
         return index;
-    }
-
-    /**
-     * Constructs an access condition such that an operation will be performed only if the resource's current ETag
-     * value matches the specified ETag value.
-     * @param eTag ehe ETag value to check against the resource's ETag
-     * @return An AccessCondition object that represents the If-Match condition
-     */
-    protected AccessCondition generateIfMatchAccessCondition(String eTag) {
-        return new AccessCondition().setIfMatch(eTag);
-    }
-
-    /**
-     * Constructs an access condition such that an operation will be performed only if the resource does not exist.
-     * @return an AccessCondition object that represents a condition where a resource does not exist
-     */
-    protected AccessCondition generateIfNotExistsAccessCondition() {
-        // Setting this access condition modifies the request to include the HTTP If-None-Match conditional header set to "*"
-        return new AccessCondition().setIfNoneMatch("*");
-    }
-
-    /**
-     * Constructs an access condition such that an operation will be performed only if the resource exists.
-     * @return an AccessCondition object that represents a condition where a resource exists
-     */
-    protected AccessCondition generateIfExistsAccessCondition() {
-        // Setting this access condition modifies the request to include the HTTP If-Match conditional header set to "*"
-        return new AccessCondition().setIfMatch("*");
-    }
-
-    /**
-     * Constructs an empty access condition.
-     * @return an empty AccessCondition object
-     */
-    protected AccessCondition generateEmptyAccessCondition() {
-        return new AccessCondition();
     }
 
     protected Field getFieldByName(Index index, String name) {

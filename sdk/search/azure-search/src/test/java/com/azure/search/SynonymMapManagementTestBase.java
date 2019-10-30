@@ -25,17 +25,19 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     @Test
     public abstract void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExist();
 
+    @Test
     public abstract void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource();
 
+    @Test
     public abstract void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource();
 
-    public abstract void updateSynonymMapIfExistsSucceedsOnExistingResource();
+    public abstract void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource();
 
-    public abstract void updateSynonymMapIfExistsFailsOnNoResource();
+    public abstract void createOrUpdateSynonymMapIfExistsFailsOnNoResource();
 
-    public abstract void updateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged();
+    public abstract void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged();
 
-    public abstract void updateSynonymMapIfNotChangedFailsWhenResourceChanged();
+    public abstract void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged();
 
     public abstract void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource();
 
@@ -64,5 +66,10 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
         return new SynonymMap()
             .setName("test-synonym")
             .setSynonyms("word1,word2");
+    }
+
+    protected SynonymMap mutateSynonymsInSynonymMap(SynonymMap synonymMap) {
+        synonymMap.setSynonyms("mutated1, mutated2");
+        return synonymMap;
     }
 }

@@ -16,7 +16,6 @@ import java.util.UUID;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase {
     private SearchServiceClient client;
 
@@ -122,31 +121,44 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
 
     @Override
     public void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap, generateEmptyAccessCondition());
+        SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
 
+        try {
+            client.createOrUpdateSynonymMap(mutatedResource, generateIfNotExistsAccessCondition());
+            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
+        } catch (Exception ex) {
+            Assert.assertEquals(HttpResponseException.class, ex.getClass());
+            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+        }
     }
 
     @Override
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource() {
+        SynonymMap resource = createTestSynonymMap();
+        SynonymMap updatedResource = client.createOrUpdateSynonymMap(resource, generateIfNotExistsAccessCondition());
+
+        Assert.assertFalse(updatedResource.getETag().isEmpty());
+    }
+
+    @Override
+    public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
 
     }
 
     @Override
-    public void updateSynonymMapIfExistsSucceedsOnExistingResource() {
+    public void createOrUpdateSynonymMapIfExistsFailsOnNoResource() {
 
     }
 
     @Override
-    public void updateSynonymMapIfExistsFailsOnNoResource() {
+    public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
 
     }
 
     @Override
-    public void updateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
-
-    }
-
-    @Override
-    public void updateSynonymMapIfNotChangedFailsWhenResourceChanged() {
+    public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged() {
 
     }
 

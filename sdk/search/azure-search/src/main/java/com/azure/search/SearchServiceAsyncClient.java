@@ -1217,7 +1217,7 @@ public class SearchServiceAsyncClient {
                 requestOptions,
                 accessCondition,
                 context)
-                .map(Function.identity());
+            .map(Function.identity());
     }
 
     /**
