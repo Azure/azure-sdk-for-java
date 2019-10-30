@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.implementation.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceClient;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
