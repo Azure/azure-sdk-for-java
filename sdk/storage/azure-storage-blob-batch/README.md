@@ -66,6 +66,7 @@ Netty and include OkHTTP client in your pom.xml.
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-blobserviceclient), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
+
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .port(8080)
@@ -106,11 +107,13 @@ The following sections provide several code snippets covering some of the most c
 ### Creating BlobBatchClient
 
 Create a BlobBatchClient from a [`BlobServiceClient`]().
+
 ```java
 BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
 ```
 
 ### Bulk Deleting Blobs
+
 ```java
 blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
     System.out.printf("Deleting blob with URL %s completed with status code %d%n",
@@ -128,6 +131,7 @@ blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
 ### Advanced Batching
 
 Deleting blobs in a batch that have different pre-requisites.
+
 ```java
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
@@ -152,6 +156,7 @@ System.out.printf("Deleting blob with lease completed with status code %d%n",
 ```
 
 Setting `AccessTier` on blobs in batch that have different pre-requisites. 
+
 ```java
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
