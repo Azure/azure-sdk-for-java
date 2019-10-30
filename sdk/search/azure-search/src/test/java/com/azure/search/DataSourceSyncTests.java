@@ -4,10 +4,10 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceCredentials;
-import com.azure.search.models.DataSourceListResult;
 import com.azure.search.models.DataSourceType;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.http.HttpStatus;
@@ -29,14 +29,12 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSource(dataSource1);
         client.createOrUpdateDataSource(dataSource2);
 
-        DataSourceListResult dataSourceListResult = client.listDataSources();
+        PagedIterable<DataSource> results = client.listDataSources();
+        List<DataSource> resultList = results.stream().collect(Collectors.toList());
 
-        Assert.assertEquals(2, dataSourceListResult.getDataSources().size());
-
-        List<String> names = dataSourceListResult.getDataSources().stream()
-            .map(dataSource -> dataSource.getName()).collect(Collectors.toList());
-        Assert.assertTrue(names.contains(dataSource1.getName()));
-        Assert.assertTrue(names.contains(dataSource2.getName()));
+        Assert.assertEquals(2, resultList.size());
+        Assert.assertEquals(resultList.get(0).getName(), dataSource1.getName());
+        Assert.assertEquals(resultList.get(1).getName(), dataSource2.getName());
     }
 
     @Override

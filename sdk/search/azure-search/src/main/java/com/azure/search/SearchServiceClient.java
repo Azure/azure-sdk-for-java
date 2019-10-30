@@ -11,16 +11,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeResult;
 import com.azure.search.models.DataSource;
-import com.azure.search.models.DataSourceListResult;
 import com.azure.search.models.Index;
 import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.IndexerListResult;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
-import com.azure.search.models.RequestOptions;
 
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -145,18 +144,56 @@ public class SearchServiceClient {
     }
 
     /**
-     * @return a list of datasources
+     * List all DataSources from an Azure Cognitive Search service.
+     *
+     * @return a list of DataSources
      */
-    public DataSourceListResult listDataSources() {
-        return asyncClient.listDataSources().block();
+    public PagedIterable<DataSource> listDataSources() {
+        return new PagedIterable<>(asyncClient.listDataSources());
     }
 
     /**
-     * @return a response containing all DataSources from the Search service.
-     * @throws NotImplementedException not implemented
+     * List all DataSources from an Azure Cognitive Search service.
+     *
+     * @param select Selects which top-level properties of DataSource definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties.
+     *
+     * @return a list of DataSources
      */
-    public Response<DataSourceListResult> listDataSourcesWithResponse() {
-        return asyncClient.listDataSourcesWithResponse().block();
+    public PagedIterable<DataSource> listDataSources(String select) {
+        return new PagedIterable<>(asyncClient.listDataSources(select));
+    }
+
+    /**
+     * List all DataSources from an Azure Cognitive Search service.
+     *
+     * @param select Selects which top-level properties of DataSource definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties.
+     * @param requestOptions Additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging.
+     *
+     * @return a list of DataSources
+     */
+    public PagedIterable<DataSource> listDataSources(String select, RequestOptions requestOptions) {
+        return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions));
+    }
+
+    /**
+     * List all DataSources from an Azure Cognitive Search service.
+     *
+     * @param select Selects which top-level properties of DataSource definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties.
+     * @param requestOptions Additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return a list of DataSources
+     */
+    public PagedIterable<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions, context));
     }
 
     /**

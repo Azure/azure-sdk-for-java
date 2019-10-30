@@ -21,7 +21,6 @@ import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeResult;
 import com.azure.search.models.DataSource;
-import com.azure.search.models.DataSourceListResult;
 import com.azure.search.models.Index;
 import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.Indexer;
@@ -209,21 +208,73 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return all DataSources from the Search service.
-     * @throws NotImplementedException not implemented
+     * List all DataSources from an Azure Cognitive Search service.
+     *
+     * @return a list of DataSources
      */
-    public Mono<DataSourceListResult> listDataSources() {
-        return withContext(context -> restClient.dataSources()
-            .listWithRestResponseAsync(context)).map(Response::getValue);
+    public PagedFlux<DataSource> listDataSources() {
+        return this.listDataSources(null, null);
     }
 
     /**
-     * @return a response containing all DataSources from the Search service.
-     * @throws NotImplementedException not implemented
+     * List all DataSources from an Azure Cognitive Search service.
+     *
+     * @param select Selects which top-level properties of DataSource definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties.
+     *
+     * @return a list of DataSources
      */
-    public Mono<Response<DataSourceListResult>> listDataSourcesWithResponse() {
-        throw logger.logExceptionAsError(
-            new NotImplementedException("not implemented."));
+    public PagedFlux<DataSource> listDataSources(String select) {
+        return this.listDataSources(select, null);
+    }
+
+    /**
+     * List all DataSources from an Azure Cognitive Search service.
+     *
+     * @param select Selects which top-level properties of DataSource definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties.
+     * @param requestOptions Additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @return a list of DataSources
+     */
+    public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
+        return new PagedFlux<>(
+            () -> withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)),
+            nextLink -> Mono.empty());
+    }
+
+    /**
+     * List all DataSources from an Azure Cognitive Search service.
+     *
+     * @param select Selects which top-level properties of DataSource definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties.
+     * @param requestOptions Additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return a list of DataSources
+     */
+    public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> this.listDataSourcesWithResponse(select, requestOptions, context),
+            nextLink -> Mono.empty());
+    }
+
+    public Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(
+        String select, RequestOptions requestOptions, Context context) {
+        return restClient.dataSources()
+            .listWithRestResponseAsync(select, requestOptions, context)
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getDataSources(),
+                null,
+                deserializeHeaders(response.getHeaders()))
+            );
     }
 
     /**

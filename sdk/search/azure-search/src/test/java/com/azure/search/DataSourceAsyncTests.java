@@ -4,6 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceCredentials;
@@ -12,9 +13,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class DataSourceAsyncTests extends DataSourceTestBase {
     private SearchServiceAsyncClient client;
@@ -29,15 +27,14 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSource(dataSource1).block();
         client.createOrUpdateDataSource(dataSource2).block();
 
-        StepVerifier
-            .create(client.listDataSources())
-            .assertNext(dataSourceListResult -> {
-                Assert.assertEquals(2, dataSourceListResult.getDataSources().size());
+        PagedFlux<DataSource> results = client.listDataSources();
 
-                List<String> names = dataSourceListResult.getDataSources().stream()
-                    .map(dataSource -> dataSource.getName()).collect(Collectors.toList());
-                Assert.assertTrue(names.contains(dataSource1.getName()));
-                Assert.assertTrue(names.contains(dataSource2.getName()));
+        StepVerifier
+            .create(results.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(result.get(0).getName(), dataSource1.getName());
+                Assert.assertEquals(result.get(1).getName(), dataSource2.getName());
             })
             .verifyComplete();
     }
