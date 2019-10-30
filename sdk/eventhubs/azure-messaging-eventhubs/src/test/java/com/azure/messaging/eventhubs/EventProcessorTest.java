@@ -25,8 +25,10 @@ import reactor.test.StepVerifier;
 import java.io.Closeable;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +40,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
@@ -303,26 +306,33 @@ public class EventProcessorTest {
     public void testWithMultiplePartitions() throws Exception {
         // Arrange
         final CountDownLatch count = new CountDownLatch(1);
+        final Set<String> identifiers = new HashSet<>();
+        identifiers.add("1");
+        identifiers.add("2");
+        identifiers.add("3");
+        final Set<String> original = new HashSet<>(identifiers);
 
         when(eventHubAsyncClient
             .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1, consumer2, consumer3);
 
-        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(identifiers));
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
 
-        when(consumer1.receive(eq("1"))).thenReturn(
-            Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData1), getEvent(eventData2))));
+        when(consumer1.receive(argThat(arg -> identifiers.remove(arg))))
+            .thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData1), getEvent(eventData2))));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData2.getOffset()).thenReturn(100L);
 
-        when(consumer2.receive(eq("2"))).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData3))));
+        when(consumer2.receive(argThat(arg -> identifiers.remove(arg))))
+            .thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData3))));
         when(eventData3.getSequenceNumber()).thenReturn(1L);
         when(eventData3.getOffset()).thenReturn(1L);
 
-        when(consumer3.receive( eq("3"))).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData4))));
+        when(consumer3.receive(argThat(arg -> identifiers.remove(arg))))
+            .thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData4))));
         when(eventData4.getSequenceNumber()).thenReturn(1L);
         when(eventData4.getOffset()).thenReturn(1L);
 
@@ -346,18 +356,13 @@ public class EventProcessorTest {
         verify(eventHubAsyncClient, times(1))
             .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class));
 
+        // We expected one to be removed.
+        Assert.assertEquals(2, identifiers.size());
+
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .assertNext(po -> {
-                if (po.getPartitionId().equals("1")) {
-                    verify(consumer1, atLeastOnce()).receive("1");
-                    verify(consumer1, atLeastOnce()).close();
-                } else if (po.getPartitionId().equals("2")) {
-                    verify(consumer2, atLeastOnce()).receive("2");
-                    verify(consumer2, atLeastOnce()).close();
-                } else {
-                    verify(consumer3, atLeastOnce()).receive("3");
-                    verify(consumer3, atLeastOnce()).close();
-                }
+                String partitionId = po.getPartitionId();
+                verify(consumer1, atLeastOnce()).receive(eq(partitionId));
             }).verifyComplete();
     }
 
