@@ -1,0 +1,28 @@
+{
+    "networkCallRecords" : [ {
+        "Method" : "PUT",
+        "Uri" : "https://azs-sdka7c49316cd9c.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+        "Headers" : {
+            "Content-Type" : "application/json; charset=utf-8"
+        },
+        "Response" : {
+            "Pragma" : "no-cache",
+            "retry-after" : "0",
+            "request-id" : "991bdb4c-a156-4872-bbb0-f70ca2f90fe2",
+            "StatusCode" : "412",
+            "Date" : "Wed, 30 Oct 2019 21:29:38 GMT",
+            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+            "Cache-Control" : "no-cache",
+            "elapsed-time" : "28",
+            "OData-Version" : "4.0",
+            "Expires" : "-1",
+            "Content-Length" : "160",
+            "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The precondition given in one of the request headers evaluated to false. No change was made to the resource from this request.\"}}",
+            "Preference-Applied" : "odata.include-annotations=\"*\"",
+            "Content-Language" : "en",
+            "Content-Type" : "application/json; odata.metadata=minimal"
+        },
+        "Exception" : null
+    } ],
+    "variables" : [ ]
+}

@@ -144,12 +144,28 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
 
     @Override
     public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap, generateEmptyAccessCondition());
+        SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
+        SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource, generateIfExistsAccessCondition());
 
+        Assert.assertFalse(updatedResource.getETag().isEmpty());
+        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
     }
 
     @Override
     public void createOrUpdateSynonymMapIfExistsFailsOnNoResource() {
+        SynonymMap resource = createTestSynonymMap();
 
+        try {
+            client.createOrUpdateSynonymMap(resource, generateIfExistsAccessCondition());
+            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
+        } catch (Exception ex) {
+            Assert.assertEquals(HttpResponseException.class, ex.getClass());
+            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+        }
+        // The resource should never have been created on the server, and thus it should not have an ETag
+        Assert.assertNull(resource.getETag());
     }
 
     @Override
