@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import reactor.core.publisher.Mono;
 
 /**
@@ -20,15 +19,12 @@ public class EventProcessorBuilderJavaDocCodeSamples {
     public EventProcessor createEventProcessor() {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient();
 
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")
-            .eventHubClient(eventHubAsyncClient)
+            .connectionString(connectionString)
             .partitionProcessorFactory((PartitionProcessorImpl::new))
-            .partitionManager(new InMemoryPartitionManager())
+            .eventProcessorStore(new InMemoryEventProcessorStore())
             .buildEventProcessor();
         return eventProcessor;
     }
@@ -44,9 +40,9 @@ public class EventProcessorBuilderJavaDocCodeSamples {
          * @return a representation of deferred processing of events.
          */
         @Override
-        public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-            System.out.println("Processing event with sequence number " + eventData.getSequenceNumber());
-            return partitionContext.updateCheckpoint(eventData);
+        public Mono<Void> processEvent(PartitionEvent partitionEvent) {
+            System.out.println("Processing event with sequence number " + partitionEvent.getEventData().getSequenceNumber());
+            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
         }
     }
     // END: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation

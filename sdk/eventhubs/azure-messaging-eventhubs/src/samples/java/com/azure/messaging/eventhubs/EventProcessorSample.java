@@ -19,15 +19,11 @@ public class EventProcessorSample {
      * @throws Exception If there are any errors while running the {@link EventProcessor}.
      */
     public static void main(String[] args) throws Exception {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(EH_CONNECTION_STRING)
-            .buildAsyncClient();
-
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
             .consumerGroup(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
-            .eventHubClient(eventHubAsyncClient)
+            .connectionString(EH_CONNECTION_STRING)
             .partitionProcessorFactory(LogPartitionProcessor::new)
-            .partitionManager(new InMemoryPartitionManager());
+            .eventProcessorStore(new InMemoryEventProcessorStore());
 
         EventProcessor eventProcessor = eventProcessorBuilder.buildEventProcessor();
         System.out.println("Starting event processor");

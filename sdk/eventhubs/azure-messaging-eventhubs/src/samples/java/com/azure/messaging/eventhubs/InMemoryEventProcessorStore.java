@@ -14,24 +14,26 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A simple in-memory implementation of a {@link PartitionManager}. This implementation keeps track of partition
+ * A simple in-memory implementation of a {@link EventProcessorStore}. This implementation keeps track of partition
  * ownership details including checkpointing information in-memory. Using this implementation will only facilitate
  * checkpointing and load balancing of Event Processors running within this process.
  */
-public class InMemoryPartitionManager implements PartitionManager {
+public class InMemoryEventProcessorStore implements EventProcessorStore {
 
     private final Map<String, PartitionOwnership> partitionOwnershipMap = new ConcurrentHashMap<>();
-    private final ClientLogger logger = new ClientLogger(InMemoryPartitionManager.class);
+    private final ClientLogger logger = new ClientLogger(InMemoryEventProcessorStore.class);
 
     /**
      * {@inheritDoc}
      *
+     * @param fullyQualifiedNamespace The fully qualified namespace of the Event Hub.
      * @param eventHubName The name of the Event Hub to list ownership of.
      * @param consumerGroupName The name of the consumer group to list ownership of.
      * @return A {@link Flux} of partition ownership information.
      */
     @Override
-    public Flux<PartitionOwnership> listOwnership(String eventHubName, String consumerGroupName) {
+    public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
+        String consumerGroupName) {
         logger.info("Listing partition ownership");
         return Flux.fromIterable(partitionOwnershipMap.values());
     }

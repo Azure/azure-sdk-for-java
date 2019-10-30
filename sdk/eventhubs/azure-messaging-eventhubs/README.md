@@ -295,7 +295,7 @@ class Program {
             .consumerGroup("<< CONSUMER GROUP NAME>>")
             .eventHubClient(eventHubAsyncClient)
             .partitionProcessorFactory((SimplePartitionProcessor::new))
-            .partitionManager(new InMemoryPartitionManager())
+            .eventProcessorStore(new InMemoryPartitionManager())
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.

@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.PartitionManager;
+import com.azure.messaging.eventhubs.EventProcessorStore;
 import com.azure.messaging.eventhubs.PartitionProcessor;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -23,7 +23,7 @@ public class PartitionContext {
     private final String consumerGroup;
     private final String ownerId;
     private final AtomicReference<String> eTag;
-    private final PartitionManager partitionManager;
+    private final EventProcessorStore eventProcessorStore;
 
     /**
      * Creates an instance of PartitionContext that contains partition information available to each
@@ -33,18 +33,18 @@ public class PartitionContext {
      * @param eventHubName The Event Hub name associated with the {@link EventProcessor}.
      * @param consumerGroup The consumer group name associated with the {@link EventProcessor}.
      * @param ownerId The unique identifier of the {@link EventProcessor} instance.
-     * @param eTag The last known ETag stored in {@link PartitionManager} for this partition.
-     * @param partitionManager A {@link PartitionManager} implementation to read and update partition ownership and
+     * @param eTag The last known ETag stored in {@link EventProcessorStore} for this partition.
+     * @param eventProcessorStore A {@link EventProcessorStore} implementation to read and update partition ownership and
      * checkpoint information.
      */
     public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
-        String ownerId, String eTag, PartitionManager partitionManager) {
+        String ownerId, String eTag, EventProcessorStore eventProcessorStore) {
         this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null.");
         this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null.");
         this.eTag = new AtomicReference<>(eTag);
-        this.partitionManager = Objects.requireNonNull(partitionManager, "partitionManager cannot be null.");
+        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "partitionManager cannot be null.");
     }
 
     /**
@@ -91,7 +91,7 @@ public class PartitionContext {
             .setSequenceNumber(eventData.getSequenceNumber())
             .setOffset(eventData.getOffset())
             .setETag(previousETag);
-        return this.partitionManager.updateCheckpoint(checkpoint)
+        return this.eventProcessorStore.updateCheckpoint(checkpoint)
             .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))
             .then();
     }
@@ -115,7 +115,7 @@ public class PartitionContext {
             .setOffset(offset)
             .setETag(previousETag);
 
-        return this.partitionManager.updateCheckpoint(checkpoint)
+        return this.eventProcessorStore.updateCheckpoint(checkpoint)
             .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))
             .then();
     }

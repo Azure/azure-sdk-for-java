@@ -16,12 +16,8 @@ public final class EventProcessorJavaDocCodeSamples {
     public void startStopSample() {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient();
-
         EventProcessor eventProcessor = new EventProcessorBuilder()
-            .eventHubClient(eventHubAsyncClient)
+            .connectionString(connectionString)
             .partitionProcessorFactory((PartitionProcessorImpl::new))
             .consumerGroup("consumer-group")
             .buildEventProcessor();

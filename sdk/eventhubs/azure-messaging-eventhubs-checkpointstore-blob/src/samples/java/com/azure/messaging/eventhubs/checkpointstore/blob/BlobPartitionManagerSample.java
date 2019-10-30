@@ -12,7 +12,7 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.StringJoiner;
 
 /**
- * Sample that demonstrates the use {@link BlobPartitionManager} for storing and updating partition ownership records in
+ * Sample that demonstrates the use {@link BlobEventProcessorStore} for storing and updating partition ownership records in
  * Storage Blobs.
  */
 public class BlobPartitionManagerSample {
@@ -32,8 +32,8 @@ public class BlobPartitionManagerSample {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
-        BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
-        blobPartitionManager.listOwnership("abc", "xyz")
+        BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
+        blobPartitionManager.listOwnership("namespace", "abc", "xyz")
             .subscribe(BlobPartitionManagerSample::printPartitionOwnership);
 
         System.out.println("Updating checkpoint");

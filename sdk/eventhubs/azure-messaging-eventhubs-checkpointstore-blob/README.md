@@ -94,7 +94,7 @@ class Program {
             .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
             .consumerGroupName("<< CONSUMER GROUP NAME>>")
             .partitionProcessorFactory(SimplePartitionProcessor::new)
-            .partitionManager(new BlobPartitionManager(blobContainerAsyncClient))
+            .eventProcessorStore(new BlobPartitionManager(blobContainerAsyncClient))
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
