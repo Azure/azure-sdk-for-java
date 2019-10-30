@@ -135,13 +135,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that when an etag is passed to set it will only set if the current representation of the setting has the
-     * etag. If the set etag doesn't match anything the update won't happen, this will result in a 412. This will
+     * Tests that when an ETag is passed to set it will only set if the current representation of the setting has the
+     * ETag. If the set ETag doesn't match anything the update won't happen, this will result in a 412. This will
      * prevent set from doing an add as well.
      */
     public void setConfigurationSettingIfETag() {
         setConfigurationSettingIfETagRunner((initial, update) -> {
-            // This etag is not the correct format. It is not the correct hash that the service is expecting.
+            // This ETag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial.setETag("badEtag"), true))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
@@ -270,8 +270,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that when an etag is passed to delete it will only delete if the current representation of the setting has the etag.
-     * If the delete etag doesn't match anything the delete won't happen, this will result in a 412.
+     * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has the ETag.
+     * If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
      */
     public void deleteConfigurationSettingWithETag() {
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
@@ -837,7 +837,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     /**
      * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
-     * scenario will return a setting when the etag provided does not match the one of the current setting.
+     * scenario will return a setting when the ETag provided does not match the one of the current setting.
      */
     public void getConfigurationSettingWhenValueNotUpdated() {
         final String key = getKey();

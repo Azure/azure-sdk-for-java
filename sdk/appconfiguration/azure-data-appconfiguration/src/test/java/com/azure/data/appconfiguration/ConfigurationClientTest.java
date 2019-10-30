@@ -610,7 +610,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     /**
      * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
-     * scenario will return a setting when the etag provided does not match the one of the current setting.
+     * scenario will return a setting when the ETag provided does not match the one of the current setting.
      */
     public void getConfigurationSettingWhenValueNotUpdated() {
         final String key = getKey();

@@ -270,8 +270,8 @@ public final class ConfigurationClient {
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination.
      *
-     * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}), then
-     * the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated the
+     * If {@link ConfigurationSetting#getETag() ETag} is specified and is not the wildcard character ({@code "*"}), then
+     * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
      * ConfigurationSetting yet.
      *
      * <p><strong>Code Samples</strong></p>
@@ -286,13 +286,13 @@ public final class ConfigurationClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
      * is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value or
-     * {@link ConfigurationSetting#getETag() etag} is set but does not match the current etag
+     * {@link ConfigurationSetting#getETag() ETag} is set but does not match the current ETag
      * (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If {@code setting} is read-only.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
-     * character, and does not match the current etag value.
+     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() ETag} is specified, not the wildcard
+     * character, and does not match the current ETag value.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
