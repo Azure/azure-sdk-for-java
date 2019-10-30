@@ -25,7 +25,7 @@ public class PartitionEvent {
      */
     public PartitionEvent(PartitionContext partitionContext, EventData eventData) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null.");
-        this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null.");;
+        this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null.");
     }
 
     /**

@@ -187,7 +187,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @throws NullPointerException if {@code partitionId} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
-    public Flux<PartitionEvent> receive(int number) {
+    public Flux<PartitionEvent> receive() {
         return allPartitionsFlux;
     }
 

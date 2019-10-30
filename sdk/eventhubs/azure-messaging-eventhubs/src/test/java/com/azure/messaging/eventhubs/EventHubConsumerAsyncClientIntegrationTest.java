@@ -417,6 +417,49 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         }
     }
 
+    /**
+     * Verify that each time we receive an event, the data, {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()},
+     * null as we are consuming events.
+     */
+    @Test
+    public void canReceiveMultipleTimes() {
+        // Arrange
+        final String secondPartitionId = "1";
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final EventHubProducerAsyncClient producer = client.createProducer();
+        final Disposable producerEvents = getEvents(isActive)
+            .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(secondPartitionId)))
+            .subscribe(
+                sent -> {
+                },
+                error -> logger.error("Error sending event", error),
+                () -> logger.info("Event sent."));
+
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .setPrefetchCount(1)
+            .setTrackLastEnqueuedEventProperties(true);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,
+            EventPosition.latest(), options);
+        final AtomicReference<LastEnqueuedEventProperties> lastViewed = new AtomicReference<>(
+            new LastEnqueuedEventProperties(null, null, null, null));
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.receive(secondPartitionId).take(10))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), true))
+                .expectNextCount(5)
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
+                .verifyComplete();
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            consumer.close();
+        }
+    }
+
     private Flux<EventData> getEvents(AtomicBoolean isActive) {
         return Flux.interval(Duration.ofMillis(500))
             .takeWhile(count -> isActive.get())

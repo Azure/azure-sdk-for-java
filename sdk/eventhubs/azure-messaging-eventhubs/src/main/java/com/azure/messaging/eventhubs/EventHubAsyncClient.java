@@ -161,8 +161,8 @@ public class EventHubAsyncClient implements Closeable {
      * {@link EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
-     * @return An new {@link EventHubConsumerAsyncClient} that receives events from the partition with all configured {@link
-     * EventHubConsumerOptions}.
+     * @return An new {@link EventHubConsumerAsyncClient} that receives events from the partition with all configured
+     * {@link EventHubConsumerOptions}.
      * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
      * {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
@@ -185,8 +185,9 @@ public class EventHubAsyncClient implements Closeable {
     }
 
     /**
-     * Closes and disposes of connection to service. Any {@link EventHubConsumerAsyncClient EventHubConsumers} and {@link
-     * EventHubProducerAsyncClient EventHubProducers} created with this instance will have their connections closed.
+     * Closes and disposes of connection to service. Any {@link EventHubConsumerAsyncClient EventHubConsumers} and
+     * {@link EventHubProducerAsyncClient EventHubProducers} created with this instance will have their connections
+     * closed.
      */
     @Override
     public void close() {

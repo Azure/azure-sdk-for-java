@@ -146,7 +146,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                         && event.getProperties().containsKey(messageTrackingId)
                         && messageTrackingValue.equals(event.getProperties().get(messageTrackingId));
                 }).take(numberOfEvents).subscribe(partitionEvent -> {
-                        EventData event = partitionEvent.getEventData();
+                    EventData event = partitionEvent.getEventData();
                     logger.info("Event[{}] matched.", event.getSequenceNumber());
                 }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
                     () -> {

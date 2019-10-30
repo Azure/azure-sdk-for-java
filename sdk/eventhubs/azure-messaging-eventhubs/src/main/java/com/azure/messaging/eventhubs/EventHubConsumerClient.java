@@ -142,6 +142,7 @@ public class EventHubConsumerClient implements Closeable {
     /**
      * Receives a batch of EventData from the Event Hub partition
      *
+     * @param partitionId Identifier of the partition to read events from.
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
      * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
      *     batch; if not specified, the default wait time specified when the consumer was created will be used.
@@ -151,7 +152,8 @@ public class EventHubConsumerClient implements Closeable {
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
      *     zero or a negative duration.
      */
-    public IterableStream<PartitionEvent> receive(String partitionId, int maximumMessageCount, Duration maximumWaitTime) {
+    public IterableStream<PartitionEvent> receive(String partitionId, int maximumMessageCount,
+            Duration maximumWaitTime) {
         Objects.requireNonNull(maximumWaitTime, "'maximumWaitTime' cannot be null.");
 
         if (maximumMessageCount < 1) {

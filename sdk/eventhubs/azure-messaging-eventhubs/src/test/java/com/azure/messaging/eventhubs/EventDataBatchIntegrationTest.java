@@ -153,11 +153,11 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                             event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_TRACKING_ID)));
                     }
                 }, error -> {
-                    Assert.fail("An error should not have occurred:" + error.toString());
-                }, () -> {
-                    logger.info("Disposing of consumer now that the receive is complete.");
-                    dispose(consumer);
-                });
+                        Assert.fail("An error should not have occurred:" + error.toString());
+                    }, () -> {
+                        logger.info("Disposing of consumer now that the receive is complete.");
+                        dispose(consumer);
+                    });
             }
 
             // Act

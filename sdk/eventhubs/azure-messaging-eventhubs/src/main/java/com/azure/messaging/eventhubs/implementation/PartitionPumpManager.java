@@ -36,8 +36,8 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
- * partition pump is an {@link EventHubConsumerClient} that is receiving events from partitions this {@link EventProcessor}
- * has claimed ownership of.
+ * partition pump is an {@link EventHubConsumerClient} that is receiving events from partitions this
+ * {@link EventProcessor} has claimed ownership of.
  *
  * <p>
  * New partition pumps are created when this {@link EventProcessor} claims ownership of a new partition. When the {@link
@@ -143,8 +143,9 @@ public class PartitionPumpManager {
             () -> partitionProcessor.close(partitionContext, CloseReason.EVENT_PROCESSOR_SHUTDOWN));
     }
 
-    private void handleProcessingError(PartitionOwnership claimedOwnership, EventHubConsumerAsyncClient eventHubConsumer,
-        PartitionProcessor partitionProcessor, Throwable error, PartitionContext partitionContext) {
+    private void handleProcessingError(PartitionOwnership claimedOwnership,
+            EventHubConsumerAsyncClient eventHubConsumer, PartitionProcessor partitionProcessor, Throwable error,
+            PartitionContext partitionContext) {
         try {
             // There was an error in process event (user provided code), call process error and if that
             // also fails just log and continue
