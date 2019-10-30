@@ -3,7 +3,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.models.FileServiceProperties;
+import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
 
 import java.time.LocalDateTime;
@@ -212,7 +212,7 @@ public class ShareServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceAsyncClient#setProperties(FileServiceProperties)}
+     * Generates a code sample for using {@link ShareServiceAsyncClient#setProperties(ShareServiceProperties)}
      */
     public void setPropertiesAsync() {
         ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
@@ -229,13 +229,13 @@ public class ShareServiceAsyncJavaDocCodeSamples {
 
 
     /**
-     * Generates a code sample for using {@link ShareServiceAsyncClient#setPropertiesWithResponse(FileServiceProperties)}
+     * Generates a code sample for using {@link ShareServiceAsyncClient#setPropertiesWithResponse(ShareServiceProperties)}
      */
     public void setPropertiesWithResponseAsync() {
         ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.setPropertiesWithResponseAsync#fileServiceProperties
         fileServiceAsyncClient.getPropertiesWithResponse().subscribe(response -> {
-            FileServiceProperties properties = response.getValue();
+            ShareServiceProperties properties = response.getValue();
             properties.getMinuteMetrics().setEnabled(true);
             properties.getHourMetrics().setEnabled(true);
 
@@ -246,7 +246,7 @@ public class ShareServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceAsyncClient#setPropertiesWithResponse(FileServiceProperties)} to clear CORS in file service.
+     * Generates a code sample for using {@link ShareServiceAsyncClient#setPropertiesWithResponse(ShareServiceProperties)} to clear CORS in file service.
      */
     public void clearPropertiesAsync() {
         ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();

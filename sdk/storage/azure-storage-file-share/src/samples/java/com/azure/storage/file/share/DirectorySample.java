@@ -3,7 +3,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
-import com.azure.storage.file.share.models.DirectoryProperties;
+import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.FileStorageException;
 
 import java.util.UUID;
@@ -74,7 +74,7 @@ public class DirectorySample {
 
         // Get the parent directory properties.
         try {
-            DirectoryProperties propertiesResponse = directoryClient.getProperties();
+            ShareDirectoryProperties propertiesResponse = directoryClient.getProperties();
             System.out.printf("This is the eTag of the directory: %s%n", propertiesResponse.getETag());
         } catch (FileStorageException e) {
             System.out.println("Failed to get the properties of the parent directory");

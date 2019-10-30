@@ -8,9 +8,9 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
-import com.azure.storage.file.share.models.FileAccessPolicy
-import com.azure.storage.file.share.models.FileSignedIdentifier
+import com.azure.storage.file.share.models.ShareAccessPolicy
 import com.azure.storage.file.share.models.FileStorageException
+import com.azure.storage.file.share.models.ShareSignedIdentifier
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
@@ -257,9 +257,9 @@ class FileSASTests extends APISpec {
 
     def "ShareSAS network test identifier permissions create delete"() {
         setup:
-        FileSignedIdentifier identifier = new FileSignedIdentifier()
+        ShareSignedIdentifier identifier = new ShareSignedIdentifier()
             .setId("0000")
-            .setAccessPolicy(new FileAccessPolicy().setPermissions("rcwdl")
+            .setAccessPolicy(new ShareAccessPolicy().setPermissions("rcwdl")
                 .setExpiresOn(getUTCNow().plusDays(1)))
 
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))

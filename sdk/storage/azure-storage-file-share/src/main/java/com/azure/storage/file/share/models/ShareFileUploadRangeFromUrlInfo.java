@@ -8,13 +8,13 @@ import java.time.OffsetDateTime;
 /**
  * Response from uploading a range from a URL source.
  */
-public final class FileUploadRangeFromUrlInfo {
+public final class ShareFileUploadRangeFromUrlInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final Boolean isServerEncrypted;
 
-    public FileUploadRangeFromUrlInfo(final String eTag, final OffsetDateTime lastModified,
-        final Boolean isServerEncrypted) {
+    public ShareFileUploadRangeFromUrlInfo(final String eTag, final OffsetDateTime lastModified,
+                                           final Boolean isServerEncrypted) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;

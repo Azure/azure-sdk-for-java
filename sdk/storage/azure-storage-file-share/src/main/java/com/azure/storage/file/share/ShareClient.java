@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.share.models.FileHttpHeaders;
-import com.azure.storage.file.share.models.FileSignedIdentifier;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.FileStorageException;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
@@ -404,7 +404,7 @@ public class ShareClient {
      * @return The stored access policies specified on the queue.
      * @throws FileStorageException If the share doesn't exist
      */
-    public PagedIterable<FileSignedIdentifier> getAccessPolicy() {
+    public PagedIterable<ShareSignedIdentifier> getAccessPolicy() {
         return new PagedIterable<>(client.getAccessPolicy());
     }
 
@@ -425,7 +425,7 @@ public class ShareClient {
      * @throws FileStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the share will have more than five policies.
      */
-    public ShareInfo setAccessPolicy(List<FileSignedIdentifier> permissions) {
+    public ShareInfo setAccessPolicy(List<ShareSignedIdentifier> permissions) {
         return setAccessPolicyWithResponse(permissions, null, Context.NONE).getValue();
     }
 
@@ -451,8 +451,8 @@ public class ShareClient {
      * out, or the share will have more than five policies.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareInfo> setAccessPolicyWithResponse(List<FileSignedIdentifier> permissions, Duration timeout,
-        Context context) {
+    public Response<ShareInfo> setAccessPolicyWithResponse(List<ShareSignedIdentifier> permissions, Duration timeout,
+                                                           Context context) {
         Mono<Response<ShareInfo>> response = client.setAccessPolicyWithResponse(permissions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -527,7 +527,7 @@ public class ShareClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-ShareFileSmbProperties-String-Map-Duration-Context}
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -547,8 +547,8 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareDirectoryClient> createDirectoryWithResponse(String directoryName,
-        ShareFileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-        Context context) {
+                                                                      FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+                                                                      Context context) {
         ShareDirectoryClient shareDirectoryClient = getDirectoryClient(directoryName);
         return new SimpleResponse<>(shareDirectoryClient.createWithResponse(smbProperties, filePermission, metadata,
             timeout, context), shareDirectoryClient);
@@ -591,7 +591,7 @@ public class ShareClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-FileHttpHeaders-ShareFileSmbProperties-String-Map-Duration-Context}
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -618,9 +618,9 @@ public class ShareClient {
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize, FileHttpHeaders httpHeaders,
-        ShareFileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-        Context context) {
+    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
+                                                            FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+                                                            Context context) {
         ShareFileClient shareFileClient = getFileClient(fileName);
         return new SimpleResponse<>(shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
             filePermission, metadata, timeout, context), shareFileClient);

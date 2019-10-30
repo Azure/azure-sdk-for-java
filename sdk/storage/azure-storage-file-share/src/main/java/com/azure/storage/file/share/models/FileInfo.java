@@ -4,7 +4,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.storage.file.share.ShareFileSmbProperties;
+import com.azure.storage.file.share.FileSmbProperties;
 
 import java.time.OffsetDateTime;
 
@@ -16,7 +16,7 @@ public final class FileInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final Boolean isServerEncrypted;
-    private final ShareFileSmbProperties smbProperties;
+    private final FileSmbProperties smbProperties;
 
     /**
      * Creates an instance of information about a specific Directory.
@@ -28,7 +28,7 @@ public final class FileInfo {
      * @param smbProperties The SMB properties of the file.
      */
     public FileInfo(final String eTag, final OffsetDateTime lastModified, final Boolean isServerEncrypted,
-        final ShareFileSmbProperties smbProperties) {
+        final FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
@@ -60,7 +60,7 @@ public final class FileInfo {
     /**
      * @return The SMB Properties of the file.
      */
-    public ShareFileSmbProperties getSmbProperties() {
+    public FileSmbProperties getSmbProperties() {
         return smbProperties;
     }
 }

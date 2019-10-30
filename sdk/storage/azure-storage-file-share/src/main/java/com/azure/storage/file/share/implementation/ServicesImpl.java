@@ -25,7 +25,7 @@ import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesR
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.share.models.FileStorageException;
-import com.azure.storage.file.share.models.FileServiceProperties;
+import com.azure.storage.file.share.models.ShareServiceProperties;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -64,7 +64,7 @@ public final class ServicesImpl {
         @Put("")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(FileStorageException.class)
-        Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") FileServiceProperties fileServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") ShareServiceProperties shareServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
@@ -80,33 +80,33 @@ public final class ServicesImpl {
     /**
      * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param fileServiceProperties The FileStorage properties.
+     * @param shareServiceProperties The FileStorage properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(FileServiceProperties fileServiceProperties, Context context) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(ShareServiceProperties shareServiceProperties, Context context) {
         final Integer timeout = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.getUrl(), fileServiceProperties, timeout, this.client.getVersion(), restype, comp, context);
+        return service.setProperties(this.client.getUrl(), shareServiceProperties, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
      * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param fileServiceProperties The FileStorage properties.
+     * @param shareServiceProperties The FileStorage properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(FileServiceProperties fileServiceProperties, Integer timeout, Context context) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(ShareServiceProperties shareServiceProperties, Integer timeout, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.getUrl(), fileServiceProperties, timeout, this.client.getVersion(), restype, comp, context);
+        return service.setProperties(this.client.getUrl(), shareServiceProperties, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**

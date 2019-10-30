@@ -22,8 +22,8 @@ import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
-import com.azure.storage.file.share.models.FileHttpHeaders;
-import com.azure.storage.file.share.models.FileSignedIdentifier;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.FileStorageException;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
@@ -505,9 +505,9 @@ public class ShareAsyncClient {
      * @return The stored access policies specified on the queue.
      * @throws FileStorageException If the share doesn't exist
      */
-    public PagedFlux<FileSignedIdentifier> getAccessPolicy() {
+    public PagedFlux<ShareSignedIdentifier> getAccessPolicy() {
         try {
-            Function<String, Mono<PagedResponse<FileSignedIdentifier>>> retriever =
+            Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever =
                 marker -> this.azureFileStorageClient.shares()
                     .getAccessPolicyWithRestResponseAsync(shareName, Context.NONE)
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -540,7 +540,7 @@ public class ShareAsyncClient {
      * @throws FileStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the share will have more than five policies.
      */
-    public Mono<ShareInfo> setAccessPolicy(List<FileSignedIdentifier> permissions) {
+    public Mono<ShareInfo> setAccessPolicy(List<ShareSignedIdentifier> permissions) {
         try {
             return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -566,7 +566,7 @@ public class ShareAsyncClient {
      * @throws FileStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the share will have more than five policies.
      */
-    public Mono<Response<ShareInfo>> setAccessPolicyWithResponse(List<FileSignedIdentifier> permissions) {
+    public Mono<Response<ShareInfo>> setAccessPolicyWithResponse(List<ShareSignedIdentifier> permissions) {
         try {
             return withContext(context -> setAccessPolicyWithResponse(permissions, context));
         } catch (RuntimeException ex) {
@@ -574,7 +574,7 @@ public class ShareAsyncClient {
         }
     }
 
-    Mono<Response<ShareInfo>> setAccessPolicyWithResponse(List<FileSignedIdentifier> permissions, Context context) {
+    Mono<Response<ShareInfo>> setAccessPolicyWithResponse(List<ShareSignedIdentifier> permissions, Context context) {
         /*
         We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
         OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
@@ -582,7 +582,7 @@ public class ShareAsyncClient {
         signed identifiers is not really necessary.
          */
         if (permissions != null) {
-            for (FileSignedIdentifier permission : permissions) {
+            for (ShareSignedIdentifier permission : permissions) {
                 if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStartsOn() != null) {
                     permission.getAccessPolicy().setStartsOn(
                         permission.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
@@ -682,7 +682,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createDirectoryWithResponse#String-ShareFileSmbProperties-String-Map}
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -698,7 +698,7 @@ public class ShareAsyncClient {
      * name.
      */
     public Mono<Response<ShareDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
-        ShareFileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+                                                                                 FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
             return withContext(context ->
                 createDirectoryWithResponse(directoryName, smbProperties, filePermission, metadata, context));
@@ -708,7 +708,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
-        ShareFileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
+                                                                          FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = getDirectoryClient(directoryName);
         return shareDirectoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata)
             .map(response -> new SimpleResponse<>(response, shareDirectoryAsyncClient));
@@ -754,7 +754,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-FileHttpHeaders-ShareFileSmbProperties-String-Map}
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -778,8 +778,8 @@ public class ShareAsyncClient {
      * </ul>
      */
     public Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
-        FileHttpHeaders httpHeaders, ShareFileSmbProperties smbProperties, String filePermission,
-        Map<String, String> metadata) {
+                                                                       ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+                                                                       Map<String, String> metadata) {
         try {
             return withContext(context ->
                 createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
@@ -790,8 +790,8 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
-        FileHttpHeaders httpHeaders, ShareFileSmbProperties smbProperties, String filePermission,
-        Map<String, String> metadata, Context context) {
+                                                                ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+                                                                Map<String, String> metadata, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
             .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context)

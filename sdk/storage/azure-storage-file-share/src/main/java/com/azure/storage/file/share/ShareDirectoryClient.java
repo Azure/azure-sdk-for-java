@@ -10,14 +10,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.share.models.DirectoryInfo;
-import com.azure.storage.file.share.models.DirectoryProperties;
+import com.azure.storage.file.share.models.ShareDirectoryInfo;
+import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.DirectorySetMetadataInfo;
-import com.azure.storage.file.share.models.FileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.FileInfo;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.FileStorageException;
-import com.azure.storage.file.share.models.StorageFileItem;
+import com.azure.storage.file.share.models.ShareFileItem;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -97,7 +97,7 @@ public class ShareDirectoryClient {
     }
 
     /**
-     * Creates a directory in the file share and returns a response of {@link DirectoryInfo} to interact with it.
+     * Creates a directory in the file share and returns a response of {@link ShareDirectoryInfo} to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -108,22 +108,22 @@ public class ShareDirectoryClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
-     * @return The {@link DirectoryInfo directory info}.
+     * @return The {@link ShareDirectoryInfo directory info}.
      * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
      * directory name is an invalid resource name.
      */
-    public DirectoryInfo create() {
+    public ShareDirectoryInfo create() {
         return createWithResponse(null, null, null, null, Context.NONE).getValue();
     }
 
     /**
-     * Creates a directory in the file share and returns a response of DirectoryInfo to interact with it.
+     * Creates a directory in the file share and returns a response of ShareDirectoryInfo to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Create the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#ShareFileSmbProperties-String-Map-Duration-Context}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -139,9 +139,9 @@ public class ShareDirectoryClient {
      * directory name is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<DirectoryInfo> createWithResponse(ShareFileSmbProperties smbProperties, String filePermission,
-        Map<String, String> metadata, Duration timeout, Context context) {
-        Mono<Response<DirectoryInfo>> response = shareDirectoryAsyncClient
+    public Response<ShareDirectoryInfo> createWithResponse(FileSmbProperties smbProperties, String filePermission,
+                                                           Map<String, String> metadata, Duration timeout, Context context) {
+        Mono<Response<ShareDirectoryInfo>> response = shareDirectoryAsyncClient
             .createWithResponse(smbProperties, filePermission, metadata, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -203,7 +203,7 @@ public class ShareDirectoryClient {
      *
      * @return Storage directory properties
      */
-    public DirectoryProperties getProperties() {
+    public ShareDirectoryProperties getProperties() {
         return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
@@ -226,8 +226,8 @@ public class ShareDirectoryClient {
      * @return A response containing the storage directory properties with response status code and headers
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<DirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        Mono<Response<DirectoryProperties>> response = shareDirectoryAsyncClient.getPropertiesWithResponse(context);
+    public Response<ShareDirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
+        Mono<Response<ShareDirectoryProperties>> response = shareDirectoryAsyncClient.getPropertiesWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -238,7 +238,7 @@ public class ShareDirectoryClient {
      *
      * <p>Set directory properties</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setProperties#ShareFileSmbProperties-String}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setProperties#FileSmbProperties-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
@@ -247,7 +247,7 @@ public class ShareDirectoryClient {
      * @param filePermission The file permission of the directory.
      * @return The storage directory SMB properties
      */
-    public DirectoryInfo setProperties(ShareFileSmbProperties smbProperties, String filePermission) {
+    public ShareDirectoryInfo setProperties(FileSmbProperties smbProperties, String filePermission) {
         return setPropertiesWithResponse(smbProperties, filePermission, null, Context.NONE).getValue();
     }
 
@@ -258,7 +258,7 @@ public class ShareDirectoryClient {
      *
      * <p>Set directory properties</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#ShareFileSmbProperties-String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
@@ -270,10 +270,10 @@ public class ShareDirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the storage directory smb properties with headers and response status code
      */
-    public Response<DirectoryInfo> setPropertiesWithResponse(ShareFileSmbProperties smbProperties,
-        String filePermission,
-        Duration timeout, Context context) {
-        Mono<Response<DirectoryInfo>> response = shareDirectoryAsyncClient
+    public Response<ShareDirectoryInfo> setPropertiesWithResponse(FileSmbProperties smbProperties,
+                                                                  String filePermission,
+                                                                  Duration timeout, Context context) {
+        Mono<Response<ShareDirectoryInfo>> response = shareDirectoryAsyncClient
             .setPropertiesWithResponse(smbProperties, filePermission, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -351,9 +351,9 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure
      * Docs</a>.</p>
      *
-     * @return {@link StorageFileItem File info} in the storage directory
+     * @return {@link ShareFileItem File info} in the storage directory
      */
-    public PagedIterable<StorageFileItem> listFilesAndDirectories() {
+    public PagedIterable<ShareFileItem> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null, null, Context.NONE);
     }
 
@@ -379,11 +379,11 @@ public class ShareDirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return {@link StorageFileItem File info} in this directory with prefix and max number of return results.
+     * @return {@link ShareFileItem File info} in this directory with prefix and max number of return results.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public PagedIterable<StorageFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage,
-                                                                  Duration timeout, Context context) {
+    public PagedIterable<ShareFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage,
+                                                                Duration timeout, Context context) {
         return new PagedIterable<>(shareDirectoryAsyncClient
             .listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResultsPerPage, timeout, context));
     }
@@ -514,7 +514,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createSubDirectoryWithResponse#String-ShareFileSmbProperties-String-Map-Duration-Context}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createSubDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -532,8 +532,8 @@ public class ShareDirectoryClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareDirectoryClient> createSubDirectoryWithResponse(String subDirectoryName,
-        ShareFileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-        Context context) {
+                                                                         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+                                                                         Context context) {
         ShareDirectoryClient shareDirectoryClient = getSubDirectoryClient(subDirectoryName);
         return new SimpleResponse<>(shareDirectoryClient
             .createWithResponse(smbProperties, filePermission, metadata, timeout, context), shareDirectoryClient);
@@ -590,7 +590,7 @@ public class ShareDirectoryClient {
 
     /**
      * Creates a file in this directory with specific name, max number of results and returns a response of
-     * DirectoryInfo to interact with it.
+     * ShareDirectoryInfo to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -613,13 +613,13 @@ public class ShareDirectoryClient {
     }
 
     /**
-     * Creates a file in this directory with specific name and returns a response of DirectoryInfo to interact with it.
+     * Creates a file in this directory with specific name and returns a response of ShareDirectoryInfo to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createFile#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-FileHttpHeaders-ShareFileSmbProperties-String-Map-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createFile#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -638,9 +638,9 @@ public class ShareDirectoryClient {
      * name is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize, FileHttpHeaders httpHeaders,
-        ShareFileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-        Context context) {
+    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
+                                                            FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+                                                            Context context) {
         ShareFileClient shareFileClient = getFileClient(fileName);
         Response<FileInfo> response = shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
             filePermission, metadata, timeout, context);

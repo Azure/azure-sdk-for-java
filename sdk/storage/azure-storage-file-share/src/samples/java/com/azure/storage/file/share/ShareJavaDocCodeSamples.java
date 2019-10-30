@@ -5,9 +5,9 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.models.FileAccessPolicy;
-import com.azure.storage.file.share.models.FileHttpHeaders;
-import com.azure.storage.file.share.models.FileSignedIdentifier;
+import com.azure.storage.file.share.models.ShareAccessPolicy;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
@@ -150,18 +150,18 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createDirectoryWithResponse(String, ShareFileSmbProperties, String, Map, Duration, Context)}
+     * Generates a code sample for using {@link ShareClient#createDirectoryWithResponse(String, FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createDirectoryWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-ShareFileSmbProperties-String-Map-Duration-Context
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties();
+        // BEGIN: com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context
+        FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         Response<ShareDirectoryClient> response = shareClient.createDirectoryWithResponse("documents",
             smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the directory completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-ShareFileSmbProperties-String-Map-Duration-Context
+        // END: com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context
     }
 
     /**
@@ -200,18 +200,18 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileHttpHeaders, ShareFileSmbProperties, String, Map, Duration, Context)}
+     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, ShareFileHttpHeaders, FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-FileHttpHeaders-ShareFileSmbProperties-String-Map-Duration-Context
-        FileHttpHeaders httpHeaders = new FileHttpHeaders()
+        // BEGIN: com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
             .setContentLanguage("en")
             .setCacheControl("no-transform")
             .setContentDisposition("attachment");
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties()
+        FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
             .setFileLastWriteTime(OffsetDateTime.now())
@@ -222,7 +222,7 @@ public class ShareJavaDocCodeSamples {
             httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-FileHttpHeaders-ShareFileSmbProperties-String-Map-Duration-Context
+        // END: com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context
     }
 
     /**
@@ -381,7 +381,7 @@ public class ShareJavaDocCodeSamples {
     public void getAccessPolicy() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareClient.getAccessPolicy
-        for (FileSignedIdentifier result : shareClient.getAccessPolicy()) {
+        for (ShareSignedIdentifier result : shareClient.getAccessPolicy()) {
             System.out.printf("Access policy %s allows these permissions: %s",
                 result.getId(), result.getAccessPolicy().getPermissions());
         }
@@ -394,11 +394,11 @@ public class ShareJavaDocCodeSamples {
     public void setAccessPolicy() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: ShareClient.setAccessPolicy#List
-        FileAccessPolicy accessPolicy = new FileAccessPolicy().setPermissions("r")
+        ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
             .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
             .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        FileSignedIdentifier permission = new FileSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        ShareSignedIdentifier permission = new ShareSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 
         shareClient.setAccessPolicy(Collections.singletonList(permission));
         System.out.println("Setting access policies completed.");
@@ -411,11 +411,11 @@ public class ShareJavaDocCodeSamples {
     public void setAccessPolicyWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#list-duration-context
-        FileAccessPolicy accessPolicy = new FileAccessPolicy().setPermissions("r")
+        ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
             .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
             .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        FileSignedIdentifier permission = new FileSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        ShareSignedIdentifier permission = new ShareSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 
         Response<ShareInfo> response = shareClient.setAccessPolicyWithResponse(Collections.singletonList(permission),
             Duration.ofSeconds(1), new Context(key1, value1));

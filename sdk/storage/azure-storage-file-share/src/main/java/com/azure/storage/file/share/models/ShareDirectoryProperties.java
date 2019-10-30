@@ -4,7 +4,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.storage.file.share.ShareFileSmbProperties;
+import com.azure.storage.file.share.FileSmbProperties;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -13,12 +13,12 @@ import java.util.Map;
  * Contains properties information about a Directory in the storage File service.
  */
 @Immutable
-public final class DirectoryProperties {
+public final class ShareDirectoryProperties {
     private final Map<String, String> metadata;
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final boolean isServerEncrypted;
-    private final ShareFileSmbProperties smbProperties;
+    private final FileSmbProperties smbProperties;
 
     /**
      * Creates an instance of properties information about a specific Directory.
@@ -30,8 +30,8 @@ public final class DirectoryProperties {
      * encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the directory.
      */
-    public DirectoryProperties(final Map<String, String> metadata, final String eTag, final OffsetDateTime lastModified,
-        final boolean isServerEncrypted, final ShareFileSmbProperties smbProperties) {
+    public ShareDirectoryProperties(final Map<String, String> metadata, final String eTag, final OffsetDateTime lastModified,
+                                    final boolean isServerEncrypted, final FileSmbProperties smbProperties) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
@@ -71,7 +71,7 @@ public final class DirectoryProperties {
     /**
      * @return The SMB Properties of the directory.
      */
-    public ShareFileSmbProperties getSmbProperties() {
+    public FileSmbProperties getSmbProperties() {
         return smbProperties;
     }
 }

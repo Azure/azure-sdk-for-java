@@ -4,8 +4,8 @@ package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.storage.file.share.models.FileCopyInfo;
-import com.azure.storage.file.share.models.FileProperties;
+import com.azure.storage.file.share.models.ShareFileCopyInfo;
+import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.FileStorageException;
 
 import java.io.ByteArrayInputStream;
@@ -73,7 +73,7 @@ public class FileSample {
 
         String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
         Duration pollInterval = Duration.ofSeconds(2);
-        SyncPoller<FileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null, pollInterval);
+        SyncPoller<ShareFileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null, pollInterval);
 
         try {
             poller.waitForCompletion(Duration.ofMinutes(15));
@@ -119,7 +119,7 @@ public class FileSample {
 
         // Get the file properties
         try {
-            FileProperties propertiesResponse = srcFileClient.getProperties();
+            ShareFileProperties propertiesResponse = srcFileClient.getProperties();
             System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.getETag(), propertiesResponse.getFileType());
         } catch (FileStorageException e) {
             System.out.println("Failed to get file properties. Reasons: " + e.getMessage());

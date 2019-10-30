@@ -24,17 +24,17 @@ public final class ShareFileSasPermission {
     private boolean deletePermission;
 
     /**
-     * Initializes an {@code FileSasPermission} object with all fields set to false.
+     * Initializes an {@code ShareFileSasPermission} object with all fields set to false.
      */
     public ShareFileSasPermission() {
     }
 
     /**
-     * Creates an {@code FileSasPermission} from the specified permissions string. This method will throw an
+     * Creates an {@code ShareFileSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code FileSasPermission}.
-     * @return A {@code FileSasPermission} generated from the given {@code String}.
+     * @param permString A {@code String} which represents the {@code ShareFileSasPermission}.
+     * @return A {@code ShareFileSasPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, c, w, or d.
      */
     public static ShareFileSasPermission parse(String permString) {
@@ -75,7 +75,7 @@ public final class ShareFileSasPermission {
      * Sets the read permission status.
      *
      * @param hasReadPermission Permission status to set
-     * @return the updated FileSasPermission object
+     * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setReadPermission(boolean hasReadPermission) {
         this.readPermission = hasReadPermission;
@@ -93,7 +93,7 @@ public final class ShareFileSasPermission {
      * Sets the create permission status.
      *
      * @param hasCreatePermission Permission status to set
-     * @return the updated FileSasPermission object
+     * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setCreatePermission(boolean hasCreatePermission) {
         this.createPermission = hasCreatePermission;
@@ -111,7 +111,7 @@ public final class ShareFileSasPermission {
      * Sets the write permission status.
      *
      * @param hasWritePermission Permission status to set
-     * @return the updated FileSasPermission object
+     * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setWritePermission(boolean hasWritePermission) {
         this.writePermission = hasWritePermission;
@@ -129,7 +129,7 @@ public final class ShareFileSasPermission {
      * Sets the delete permission status.
      *
      * @param hasDeletePermission Permission status to set
-     * @return the updated FileSasPermission object
+     * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setDeletePermission(boolean hasDeletePermission) {
         this.deletePermission = hasDeletePermission;
@@ -140,7 +140,7 @@ public final class ShareFileSasPermission {
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@code String} which represents the {@code FileSasPermission}.
+     * @return A {@code String} which represents the {@code ShareFileSasPermission}.
      */
     @Override
     public String toString() {

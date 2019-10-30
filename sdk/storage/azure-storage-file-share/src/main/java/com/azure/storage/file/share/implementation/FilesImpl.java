@@ -22,7 +22,6 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.storage.file.share.implementation.models.FileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.FilesAbortCopyResponse;
 import com.azure.storage.file.share.implementation.models.FilesCreateResponse;
 import com.azure.storage.file.share.implementation.models.FilesDeleteResponse;
@@ -37,7 +36,7 @@ import com.azure.storage.file.share.implementation.models.FilesStartCopyResponse
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.models.FileStorageException;
-import com.azure.storage.file.share.models.FileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -183,37 +182,37 @@ public final class FilesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileHttpHeaders Additional parameters for the operation.
+     * @param shareFileHttpHeaders Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, FileHttpHeaders fileHttpHeaders, Context context) {
+    public Mono<FilesCreateResponse> createWithRestResponseAsync(String shareName, String filePath, long fileContentLength, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String fileTypeConstant = "file";
         String contentType = null;
-        if (fileHttpHeaders != null) {
-            contentType = fileHttpHeaders.getContentType();
+        if (shareFileHttpHeaders != null) {
+            contentType = shareFileHttpHeaders.getContentType();
         }
         String contentEncoding = null;
-        if (fileHttpHeaders != null) {
-            contentEncoding = fileHttpHeaders.getContentEncoding();
+        if (shareFileHttpHeaders != null) {
+            contentEncoding = shareFileHttpHeaders.getContentEncoding();
         }
         String contentLanguage = null;
-        if (fileHttpHeaders != null) {
-            contentLanguage = fileHttpHeaders.getContentLanguage();
+        if (shareFileHttpHeaders != null) {
+            contentLanguage = shareFileHttpHeaders.getContentLanguage();
         }
         String cacheControl = null;
-        if (fileHttpHeaders != null) {
-            cacheControl = fileHttpHeaders.getCacheControl();
+        if (shareFileHttpHeaders != null) {
+            cacheControl = shareFileHttpHeaders.getCacheControl();
         }
         byte[] contentMd5 = null;
-        if (fileHttpHeaders != null) {
-            contentMd5 = fileHttpHeaders.getContentMd5();
+        if (shareFileHttpHeaders != null) {
+            contentMd5 = shareFileHttpHeaders.getContentMd5();
         }
         String contentDisposition = null;
-        if (fileHttpHeaders != null) {
-            contentDisposition = fileHttpHeaders.getContentDisposition();
+        if (shareFileHttpHeaders != null) {
+            contentDisposition = shareFileHttpHeaders.getContentDisposition();
         }
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition, context);
@@ -355,37 +354,37 @@ public final class FilesImpl {
      * @param fileContentLength Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte value are cleared.
      * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileHttpHeaders Additional parameters for the operation.
+     * @param shareFileHttpHeaders Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey, FileHttpHeaders fileHttpHeaders, Context context) {
+    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(String shareName, String filePath, String fileAttributes, String fileCreationTime, String fileLastWriteTime, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "properties";
         String contentType = null;
-        if (fileHttpHeaders != null) {
-            contentType = fileHttpHeaders.getContentType();
+        if (shareFileHttpHeaders != null) {
+            contentType = shareFileHttpHeaders.getContentType();
         }
         String contentEncoding = null;
-        if (fileHttpHeaders != null) {
-            contentEncoding = fileHttpHeaders.getContentEncoding();
+        if (shareFileHttpHeaders != null) {
+            contentEncoding = shareFileHttpHeaders.getContentEncoding();
         }
         String contentLanguage = null;
-        if (fileHttpHeaders != null) {
-            contentLanguage = fileHttpHeaders.getContentLanguage();
+        if (shareFileHttpHeaders != null) {
+            contentLanguage = shareFileHttpHeaders.getContentLanguage();
         }
         String cacheControl = null;
-        if (fileHttpHeaders != null) {
-            cacheControl = fileHttpHeaders.getCacheControl();
+        if (shareFileHttpHeaders != null) {
+            cacheControl = shareFileHttpHeaders.getCacheControl();
         }
         byte[] contentMd5 = null;
-        if (fileHttpHeaders != null) {
-            contentMd5 = fileHttpHeaders.getContentMd5();
+        if (shareFileHttpHeaders != null) {
+            contentMd5 = shareFileHttpHeaders.getContentMd5();
         }
         String contentDisposition = null;
-        if (fileHttpHeaders != null) {
-            contentDisposition = fileHttpHeaders.getContentDisposition();
+        if (shareFileHttpHeaders != null) {
+            contentDisposition = shareFileHttpHeaders.getContentDisposition();
         }
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition, context);

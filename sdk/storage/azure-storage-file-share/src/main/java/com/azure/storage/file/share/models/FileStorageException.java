@@ -36,8 +36,8 @@ public final class FileStorageException extends HttpResponseException {
     /**
      * @return The error code returned by the service.
      */
-    public FileErrorCode getErrorCode() {
-        return FileErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE));
+    public ShareErrorCode getErrorCode() {
+        return ShareErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE));
     }
 
     /**

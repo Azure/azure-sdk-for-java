@@ -3,7 +3,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
-import com.azure.storage.file.share.models.FileServiceProperties;
+import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.FileStorageException;
 
 import java.util.UUID;
@@ -39,7 +39,7 @@ public class ShareServiceSample {
 
         // Get properties from the file service
         try {
-            FileServiceProperties properties = fileServiceClient.getProperties();
+            ShareServiceProperties properties = fileServiceClient.getProperties();
 
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
                 properties.getHourMetrics(), properties.getMinuteMetrics());

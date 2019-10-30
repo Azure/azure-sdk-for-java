@@ -35,7 +35,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,FileHttpHeaders,ShareItem,FileServiceProperties,FileCorsRule,ShareProperties,Range,CopyStatusType,FileSignedIdentifier,SourceModifiedAccessConditions,FileErrorCode,StorageServiceProperties,FileMetrics,FileAccessPolicy,FileDownloadHeaders
+custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,FileDownloadHeaders
 ```
 
 ### Query Parameters
@@ -526,56 +526,65 @@ directive:
         "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
 ```
 
-### FileErrorCode
+### ShareErrorCode
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions.ErrorCode
   transform: >
-    $["x-ms-enum"].name = "FileErrorCode";
+    $["x-ms-enum"].name = "ShareErrorCode";
 ```
 
-### FileServiceProperties, FileMetrics, FileCorsRule, and FileRetentionPolicy
+### Rename FileRangeWriteType to ShareFileRangeWriteType
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.FileRangeWrite
+  transform: >
+    $["x-ms-enum"].name = "ShareFileRangeWriteType";
+```
+
+### ShareServiceProperties, ShareMetrics, ShareCorsRule, and ShareRetentionPolicy
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.FileServiceProperties) {
-        $.FileServiceProperties = $.StorageServiceProperties;
+    if (!$.ShareServiceProperties) {
+        $.ShareServiceProperties = $.StorageServiceProperties;
         delete $.StorageServiceProperties;
-        $.FileServiceProperties.xml = { "name": "StorageServiceProperties" };
+        $.ShareServiceProperties.xml = { "name": "StorageServiceProperties" };
     }
-    if (!$.FileMetrics) {
-      $.FileMetrics = $.Metrics;
+    if (!$.ShareMetrics) {
+      $.ShareMetrics = $.Metrics;
       delete $.Metrics;
-      $.FileMetrics.xml = {"name": "Metrics"};
-      $.FileMetrics.properties.IncludeApis = $.FileMetrics.properties.IncludeAPIs;
-      delete $.FileMetrics.properties.IncludeAPIs;
-      $.FileMetrics.properties.IncludeApis.xml = {"name": "IncludeAPIs"};
-      $.FileServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/FileMetrics";
-      $.FileServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/FileMetrics";
+      $.ShareMetrics.xml = {"name": "Metrics"};
+      $.ShareMetrics.properties.IncludeApis = $.ShareMetrics.properties.IncludeAPIs;
+      delete $.ShareMetrics.properties.IncludeAPIs;
+      $.ShareMetrics.properties.IncludeApis.xml = {"name": "IncludeAPIs"};
+      $.ShareServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/ShareMetrics";
+      $.ShareServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/ShareMetrics";
     }
-    if (!$.FileCorsRule) {
-      $.FileCorsRule = $.CorsRule;
+    if (!$.ShareCorsRule) {
+      $.ShareCorsRule = $.CorsRule;
       delete $.CorsRule;
-      $.FileCorsRule.xml = {"name": "CorsRule"};
-      $.FileServiceProperties.properties.Cors.items["$ref"] = "#/definitions/FileCorsRule";
+      $.ShareCorsRule.xml = {"name": "CorsRule"};
+      $.ShareServiceProperties.properties.Cors.items["$ref"] = "#/definitions/ShareCorsRule";
     }
-    if (!$.FileRetentionPolicy) {
-      $.FileRetentionPolicy = $.RetentionPolicy;
+    if (!$.ShareRetentionPolicy) {
+      $.ShareRetentionPolicy = $.RetentionPolicy;
       delete $.RetentionPolicy;
-      $.FileRetentionPolicy.xml = {"name": "RetentionPolicy"};
-      $.FileMetrics.properties.RetentionPolicy["$ref"] = "#/definitions/FileRetentionPolicy";
+      $.ShareRetentionPolicy.xml = {"name": "RetentionPolicy"};
+      $.ShareMetrics.properties.RetentionPolicy["$ref"] = "#/definitions/ShareRetentionPolicy";
     }
 - from: swagger-document
   where: $.parameters
   transform: >
-    if (!$.FileServiceProperties) {
-        const props = $.FileServiceProperties = $.StorageServiceProperties;
-        props.name = "FileServiceProperties";
+    if (!$.ShareServiceProperties) {
+        const props = $.ShareServiceProperties = $.StorageServiceProperties;
+        props.name = "ShareServiceProperties";
         props.description = "The FileStorage properties.";
-        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/FileServiceProperties") };
+        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/ShareServiceProperties") };
         delete $.StorageServiceProperties;
     }
 - from: swagger-document
@@ -583,56 +592,56 @@ directive:
   transform: >
     const param = $.put.parameters[0];
     if (param && param["$ref"] && param["$ref"].endsWith("StorageServiceProperties")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/FileServiceProperties");
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareServiceProperties");
         $.put.parameters[0] = { "$ref": path };
     }
     const def = $.get.responses["200"].schema;
     if (def && def["$ref"] && def["$ref"].endsWith("StorageServiceProperties")) {
-        const path = def["$ref"].replace(/[#].*$/, "#/definitions/FileServiceProperties");
+        const path = def["$ref"].replace(/[#].*$/, "#/definitions/ShareServiceProperties");
         $.get.responses["200"].schema = { "$ref": path };
     }
 ```
 
-### FileAccessPolicy and FileSignedIdentifier
+### ShareAccessPolicy and ShareSignedIdentifier
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.FileSignedIdentifier) {
-      $.FileSignedIdentifier = $.SignedIdentifier;
+    if (!$.ShareSignedIdentifier) {
+      $.ShareSignedIdentifier = $.SignedIdentifier;
       delete $.SignedIdentifier;
-      $.FileSignedIdentifier.xml = {"name": "SignedIdentifier"};
-      $.SignedIdentifiers.items["$ref"] = "#/definitions/FileSignedIdentifier";
+      $.ShareSignedIdentifier.xml = {"name": "SignedIdentifier"};
+      $.SignedIdentifiers.items["$ref"] = "#/definitions/ShareSignedIdentifier";
     }
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.FileAccessPolicy) {
-      $.FileAccessPolicy = $.AccessPolicy;
+    if (!$.ShareAccessPolicy) {
+      $.ShareAccessPolicy = $.AccessPolicy;
       delete $.AccessPolicy;
-      $.FileAccessPolicy.xml = {"name": "AccessPolicy"};
-      $.FileAccessPolicy.properties.StartsOn = $.FileAccessPolicy.properties.Start;
-      $.FileAccessPolicy.properties.StartsOn.xml = {"name": "Start"};
-      delete $.FileAccessPolicy.properties.Start;
-      $.FileAccessPolicy.properties.ExpiresOn = $.FileAccessPolicy.properties.Expiry;
-      $.FileAccessPolicy.properties.ExpiresOn.xml = {"name": "Expiry"};
-      delete $.FileAccessPolicy.properties.Expiry;
-      $.FileAccessPolicy.properties.Permissions = $.FileAccessPolicy.properties.Permission;
-      $.FileAccessPolicy.properties.Permissions.xml = {"name": "Permission"};
-      delete $.FileAccessPolicy.properties.Permission;
+      $.ShareAccessPolicy.xml = {"name": "AccessPolicy"};
+      $.ShareAccessPolicy.properties.StartsOn = $.ShareAccessPolicy.properties.Start;
+      $.ShareAccessPolicy.properties.StartsOn.xml = {"name": "Start"};
+      delete $.ShareAccessPolicy.properties.Start;
+      $.ShareAccessPolicy.properties.ExpiresOn = $.ShareAccessPolicy.properties.Expiry;
+      $.ShareAccessPolicy.properties.ExpiresOn.xml = {"name": "Expiry"};
+      delete $.ShareAccessPolicy.properties.Expiry;
+      $.ShareAccessPolicy.properties.Permissions = $.ShareAccessPolicy.properties.Permission;
+      $.ShareAccessPolicy.properties.Permissions.xml = {"name": "Permission"};
+      delete $.ShareAccessPolicy.properties.Permission;
     }
-    $.FileSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/FileAccessPolicy";
+    $.ShareSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/ShareAccessPolicy";
 ```
 
-### FileServiceProperties Annotation Fix
+### ShareServiceProperties Annotation Fix
 ``` yaml
 directive:
-- from: FileServiceProperties.java
+- from: ShareServiceProperties.java
   where: $
   transform: >
-    return $.replace('@JsonProperty(value = "Metrics")\n    private FileMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private FileMetrics hourMetrics;').
-      replace('@JsonProperty(value = "Metrics")\n    private FileMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private FileMetrics minuteMetrics;');
+    return $.replace('@JsonProperty(value = "Metrics")\n    private ShareMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private ShareMetrics hourMetrics;').
+      replace('@JsonProperty(value = "Metrics")\n    private ShareMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private ShareMetrics minuteMetrics;');
 ```
 
 ### Rename FileHTTPHeaders to FileHttpHeader and remove file prefix from properties
@@ -641,17 +650,17 @@ directive:
 - from: swagger-document
   where: $.parameters
   transform: >
-    $.FileCacheControl["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileCacheControl["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileCacheControl["x-ms-client-name"] = "cacheControl";
-    $.FileContentDisposition["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentDisposition["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileContentDisposition["x-ms-client-name"] = "contentDisposition";
-    $.FileContentEncoding["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentEncoding["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileContentEncoding["x-ms-client-name"] = "contentEncoding";
-    $.FileContentLanguage["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentLanguage["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileContentLanguage["x-ms-client-name"] = "contentLanguage";
-    $.FileContentMD5["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentMD5["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileContentMD5["x-ms-client-name"] = "contentMd5";
-    $.FileContentType["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentType["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileContentType["x-ms-client-name"] = "contentType";
 ```
 

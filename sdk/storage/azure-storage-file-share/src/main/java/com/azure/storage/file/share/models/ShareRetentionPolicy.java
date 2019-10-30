@@ -13,7 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "RetentionPolicy")
 @Fluent
-public final class FileRetentionPolicy {
+public final class ShareRetentionPolicy {
     /*
      * Indicates whether a retention policy is enabled for the File service. If
      * false, metrics data is retained, and the user is responsible for
@@ -47,9 +47,9 @@ public final class FileRetentionPolicy {
      * the user is responsible for deleting it.
      *
      * @param enabled the enabled value to set.
-     * @return the FileRetentionPolicy object itself.
+     * @return the ShareRetentionPolicy object itself.
      */
-    public FileRetentionPolicy setEnabled(boolean enabled) {
+    public ShareRetentionPolicy setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -73,9 +73,9 @@ public final class FileRetentionPolicy {
      * period expires.
      *
      * @param days the days value to set.
-     * @return the FileRetentionPolicy object itself.
+     * @return the ShareRetentionPolicy object itself.
      */
-    public FileRetentionPolicy setDays(Integer days) {
+    public ShareRetentionPolicy setDays(Integer days) {
         this.days = days;
         return this;
     }
