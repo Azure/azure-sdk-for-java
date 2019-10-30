@@ -67,6 +67,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final String consumerGroup;
     private final EventPosition startingPosition;
     private final EventHubConsumerOptions consumerOptions;
+    private final Flux<PartitionEvent> allPartitionsFlux;
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
         MessageSerializer messageSerializer, String consumerGroup, EventPosition startingPosition,
@@ -78,6 +79,14 @@ public class EventHubConsumerAsyncClient implements Closeable {
         this.consumerGroup = consumerGroup;
         this.startingPosition = startingPosition;
         this.consumerOptions = consumerOptions;
+        this.allPartitionsFlux = Flux.defer(() -> {
+            return getPartitionIds().map(id -> {
+                final EventHubPartitionAsyncConsumer partitionConsumer = createPartitionConsumer(id);
+                logger.info("Creating receive-all-consumer for partition '{}'", id);
+                openPartitionConsumers.put("receive-all-" + id, partitionConsumer);
+                return partitionConsumer;
+            }).flatMap(consumer -> consumer.receive());
+        }).share();
     }
 
     /**
@@ -168,18 +177,21 @@ public class EventHubConsumerAsyncClient implements Closeable {
                 new IllegalArgumentException("'partitionId' cannot be an empty string.")));
         }
 
-        return openPartitionConsumers.computeIfAbsent(partitionId, id -> {
-            final String linkName = StringUtil.getRandomString("PR");
-            final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
-                getEventHubName(), consumerGroup, partitionId);
+        return openPartitionConsumers.computeIfAbsent(partitionId, id -> createPartitionConsumer(id)).receive();
+    }
 
-            final Mono<AmqpReceiveLink> receiveLinkMono =
-                linkProvider.createReceiveLink(linkName, entityPath, getStartingPosition(), consumerOptions)
-                    .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
-
-            return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer,
-                getEventHubName(), consumerGroup, partitionId, consumerOptions);
-        }).receive();
+    /**
+     * Begin consuming events from all partitions starting at {@link #getStartingPosition()} until there are no more
+     * subscribers.
+     *
+     * @return A stream of events for every partition in the Event Hub. Otherwise, events are read starting from
+     *     {@link #getStartingPosition()}.
+     *
+     * @throws NullPointerException if {@code partitionId} is null.
+     * @throws IllegalArgumentException if {@code partitionId} is an empty string.
+     */
+    public Flux<PartitionEvent> receive() {
+        return allPartitionsFlux;
     }
 
     /**
@@ -200,5 +212,18 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
             //TODO (conniey): Depending on whether or not shared connection, dispose of connection.
         }
+    }
+
+    private EventHubPartitionAsyncConsumer createPartitionConsumer(String partitionId) {
+        final String linkName = StringUtil.getRandomString("PR");
+        final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
+            getEventHubName(), consumerGroup, partitionId);
+
+        final Mono<AmqpReceiveLink> receiveLinkMono =
+            linkProvider.createReceiveLink(linkName, entityPath, getStartingPosition(), consumerOptions)
+                .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
+
+        return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer,
+            getEventHubName(), consumerGroup, partitionId, consumerOptions);
     }
 }
