@@ -45,7 +45,6 @@ import java.util.Objects;
  * @see EventHubClient See EventHubClient to communicate with an Event Hub using a synchronous client.
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
-@ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConnection implements Closeable {
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
 
@@ -91,7 +90,6 @@ public class EventHubConnection implements Closeable {
      *
      * @return The set of information for the Event Hub that this client is associated with.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EventHubProperties> getProperties() {
         return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
@@ -101,7 +99,6 @@ public class EventHubConnection implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
     }
@@ -113,7 +110,6 @@ public class EventHubConnection implements Closeable {
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PartitionProperties> getPartitionProperties(String partitionId) {
         return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }

@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
@@ -110,6 +111,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch}
  */
 @Immutable
+@ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubProducerAsyncClient implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
@@ -173,7 +175,6 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return The set of information for the Event Hub that this client is associated with.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getProperties() {
         return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
@@ -183,7 +184,6 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
     }
@@ -195,7 +195,6 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
         return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }

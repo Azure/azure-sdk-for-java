@@ -60,8 +60,8 @@ class EventHubClient implements Closeable {
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
     EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
-        final EventHubAsyncConsumer consumer = eventHubConnection.createConsumer(consumerGroup, partitionId, eventPosition);
-        return new EventHubConsumer(consumer, retry.getTryTimeout());
+        return new EventHubConsumer(eventHubConnection.createConsumer(consumerGroup, partitionId, eventPosition),
+            retry.getTryTimeout());
     }
 
     /**
