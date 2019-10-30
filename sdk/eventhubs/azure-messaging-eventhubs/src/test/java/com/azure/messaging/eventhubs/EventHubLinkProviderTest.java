@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.ExponentialRetryPolicy;
 import com.azure.core.amqp.FixedRetryPolicy;
 import com.azure.core.amqp.RetryMode;
 import com.azure.core.amqp.RetryOptions;
@@ -107,12 +108,7 @@ public class EventHubLinkProviderTest {
     @Test
     public void getReceiveLink() {
         // Arrange
-        final Duration timeout = Duration.ofSeconds(4);
         final AmqpReceiveLink receiveLink = mock(AmqpReceiveLink.class);
-        final RetryOptions retryOptions = new RetryOptions()
-            .setTryTimeout(timeout)
-            .setMaxRetries(2)
-            .setRetryMode(RetryMode.FIXED);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setIdentifier("foo");
 
@@ -122,9 +118,9 @@ public class EventHubLinkProviderTest {
 
         when(connection.createSession(entityPath)).thenReturn(Mono.just(session));
         when(session.createConsumer(
-            eq(linkName), eq(entityPath), eq(timeout),
+            eq(linkName), eq(entityPath), eq(retryOptions.getTryTimeout()),
             argThat(matcher -> retryOptions.getMaxRetries() == matcher.getMaxRetries()
-                && matcher instanceof FixedRetryPolicy),
+                && matcher instanceof ExponentialRetryPolicy),
             eq(position), eq(options)))
             .thenReturn(Mono.just(receiveLink));
 
