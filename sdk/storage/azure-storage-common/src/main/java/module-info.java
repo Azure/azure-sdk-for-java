@@ -12,24 +12,24 @@ module com.azure.storage.common {
         com.azure.storage.blob,
         com.azure.storage.blob.cryptography,
         com.azure.storage.blob.batch,
-        com.azure.storage.file,
+        com.azure.storage.file.share,
         com.azure.storage.queue;
 
     exports com.azure.storage.common.implementation.credentials to // FIXME this should not be a long-term solution
         com.azure.storage.blob,
         com.azure.storage.blob.cryptography,
-        com.azure.storage.file,
+        com.azure.storage.file.share,
         com.azure.storage.queue;
 
     exports com.azure.storage.common.implementation.policy to // FIXME this should not be a long-term solution
         com.azure.storage.blob,
         com.azure.storage.blob.cryptography,
-        com.azure.storage.file,
+        com.azure.storage.file.share,
         com.azure.storage.queue;
 
     exports com.azure.storage.common.implementation.connectionstring to // FIXME this should not be a long-term solution
         com.azure.storage.blob,
         com.azure.storage.blob.cryptography,
-        com.azure.storage.file,
+        com.azure.storage.file.share,
         com.azure.storage.queue;
 }

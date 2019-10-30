@@ -5,6 +5,9 @@ package com.azure.storage.queue;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.queue.sas.QueueSasPermission;
+import com.azure.storage.queue.sas.QueueServiceSasQueryParameters;
+import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;

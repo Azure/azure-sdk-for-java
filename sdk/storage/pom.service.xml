@@ -18,7 +18,7 @@
     <module>azure-storage-blob</module>
     <module>azure-storage-blob-batch</module>
     <module>azure-storage-blob-cryptography</module>
-    <module>azure-storage-file</module>
+    <module>azure-storage-file-share</module>
     <module>azure-storage-file-datalake</module>
     <module>azure-storage-queue</module>
     <module>azure-storage-queue-cryptography</module>

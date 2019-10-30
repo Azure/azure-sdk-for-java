@@ -185,7 +185,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<AppendBlobItem> appendBlock(Flux<ByteBuffer> data, long length) {
         try {
-            return appendBlockWithResponse(data, length, null).flatMap(FluxUtil::toMono);
+            return appendBlockWithResponse(data, length, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -199,32 +199,37 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobAccessConditions}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
+     * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during
+     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
+     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
+     * operation will fail.
      * @param appendBlobRequestConditions {@link AppendBlobRequestConditions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
      * blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
+    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
-            return withContext(context -> appendBlockWithResponse(data, length, appendBlobRequestConditions, context));
+            return withContext(context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
+    Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
         appendBlobRequestConditions = appendBlobRequestConditions == null ? new AppendBlobRequestConditions()
             : appendBlobRequestConditions;
 
         return this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
-            null, null, data, length, null, null, null, appendBlobRequestConditions.getLeaseId(),
+            null, null, data, length, null, contentMd5, null, appendBlobRequestConditions.getLeaseId(),
             appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(), null,

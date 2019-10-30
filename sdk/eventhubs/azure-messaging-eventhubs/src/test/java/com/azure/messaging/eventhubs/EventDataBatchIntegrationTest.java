@@ -34,7 +34,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
     private EventHubAsyncClient client;
-    private EventHubAsyncProducer producer;
+    private EventHubProducerAsyncClient producer;
 
     @Mock
     private ErrorContextProvider contextProvider;
@@ -70,7 +70,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendSmallEventsFullBatch() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, null, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -93,7 +93,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -118,7 +118,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         final String messageValue = UUID.randomUUID().toString();
 
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider);
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
@@ -186,9 +186,9 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     public void sendEventsFullBatchWithPartitionKey() {
         // Arrange
         final int maxMessageSize = 1024;
-        final EventDataBatch batch = new EventDataBatch(maxMessageSize, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(maxMessageSize, null, PARTITION_KEY, contextProvider);
         final Random random = new Random();
-        final SendOptions sendOptions = new SendOptions();
+        final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         int count = 0;
 
         while (true) {

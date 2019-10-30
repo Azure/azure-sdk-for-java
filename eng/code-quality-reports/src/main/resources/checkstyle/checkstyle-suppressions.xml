@@ -195,7 +195,7 @@
   <!-- Suppress the check on any implementation code and codegen classes -->
   <suppress checks="LineLength" files=".*[/\\]storage[/\\].*implementation[/\\].*"/>
   <suppress checks="LineLength" files="com.azure.storage.blob.models.BlobErrorCode.java"/>
-  <suppress checks="LineLength" files="com.azure.storage.file.models.FileErrorCode.java"/>
+  <suppress checks="LineLength" files="com.azure.storage.file.share.models.FileErrorCode.java"/>
   <suppress checks="LineLength" files="com.azure.storage.queue.models.QueueErrorCode.java"/>
 
   <!-- Suppress datalake for now as it is new development -->

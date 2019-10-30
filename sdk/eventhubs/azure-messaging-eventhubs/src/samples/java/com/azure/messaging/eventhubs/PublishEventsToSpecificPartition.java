@@ -3,10 +3,9 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.time.Duration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -36,21 +35,15 @@ public class PublishEventsToSpecificPartition {
             .connectionString(connectionString)
             .buildAsyncClient();
 
-        // To create a consumer, we need to know what partition to connect to. We take the first partition id.
+        // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
+        // first partition id.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
         // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
         // TimeoutException is thrown.
         String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+        SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
 
-        // When an Event Hub producer is associated with any specific partition, it can publish events only to that partition.
-        // The producer has no ability to ask for the service to route events, including by using a partition key.
-        //
-        // If you attempt to use a partition key with an Event Hub producer that is associated with a partition, an exception
-        // will occur. Otherwise, publishing to a specific partition is exactly the same as other publishing scenarios.
-        EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(firstPartition);
-
-        // Create a producer. Consequently, events sent from this producer will deliver to the specific partition ID Event Hub instance.
-        EventHubAsyncProducer producer = client.createProducer(producerOptions);
+        EventHubProducerAsyncClient producer = client.createProducer();
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(
@@ -61,7 +54,8 @@ public class PublishEventsToSpecificPartition {
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
-        producer.send(data).subscribe(
+        // We use the
+        producer.send(data, sendOptions).subscribe(
             (ignored) -> System.out.println("Events sent."),
             error -> {
                 System.err.println("There was an error sending the event: " + error.toString());
@@ -73,12 +67,7 @@ public class PublishEventsToSpecificPartition {
                 }
             }, () -> {
                 // Disposing of our producer and client.
-                try {
-                    producer.close();
-                } catch (IOException e) {
-                    System.err.println("Error encountered while closing producer: " + e.toString());
-                }
-
+                producer.close();
                 client.close();
             });
     }
