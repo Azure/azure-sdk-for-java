@@ -284,7 +284,7 @@ public class ShareFileClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#string-filerange-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#String-ShareFileRange-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
@@ -778,7 +778,7 @@ public class ShareFileClient {
      *
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileClient.listRanges#filerange-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileRange-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>

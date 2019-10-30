@@ -8,7 +8,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * This class contains the response information returned from the server when downloading a file.
  */
-public class ShareFileDownloadResponse extends ResponseBase<FileDownloadHeaders, Void> {
+public class ShareFileDownloadResponse extends ResponseBase<ShareFileDownloadHeaders, Void> {
     /**
      * Constructs a {@link ShareFileDownloadResponse}.
      *

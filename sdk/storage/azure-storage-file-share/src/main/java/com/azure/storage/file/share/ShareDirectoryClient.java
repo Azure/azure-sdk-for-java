@@ -332,8 +332,8 @@ public class ShareDirectoryClient {
      * @throws ShareStorageException If the directory doesn't exist or the metadata contains invalid keys
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareDirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
-        Context context) {
+    public Response<ShareDirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata,
+        Duration timeout, Context context) {
         Mono<Response<ShareDirectorySetMetadataInfo>> response = shareDirectoryAsyncClient
             .setMetadataWithResponse(metadata, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -614,7 +614,8 @@ public class ShareDirectoryClient {
     }
 
     /**
-     * Creates a file in this directory with specific name and returns a response of ShareDirectoryInfo to interact with it.
+     * Creates a file in this directory with specific name and returns a response of ShareDirectoryInfo to
+     * interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *

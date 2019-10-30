@@ -287,13 +287,13 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void downloadWithProperties() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#filerange-boolean
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileRange-Boolean
         shareFileAsyncClient.downloadWithResponse(new ShareFileRange(1024, 2047L), false)
             .subscribe(response ->
                     System.out.printf("Complete downloading the data with status code %d%n", response.getStatusCode()),
                 error -> System.err.println(error.getMessage())
             );
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#filerange-boolean
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileRange-Boolean
     }
 
     /**
@@ -319,7 +319,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void downloadFileAsyncMaxOverload() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.downloadToFileWithResponse#string-filerange
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.downloadToFileWithResponse#string-ShareFileRange
         shareFileAsyncClient.downloadToFileWithResponse("somelocalfilepath", new ShareFileRange(1024, 2047L))
             .subscribe(
                 response -> {
@@ -331,7 +331,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete downloading the file!")
             );
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.downloadToFileWithResponse#string-filerange
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.downloadToFileWithResponse#string-ShareFileRange
     }
 
     /**
@@ -525,11 +525,11 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void listRangesAsyncMaxOverload() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.listRanges#filerange
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.listRanges#ShareFileRange
         shareFileAsyncClient.listRanges(new ShareFileRange(1024, 2048L))
             .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
                 result.getStart(), result.getEnd()));
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.listRanges#filerange
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.listRanges#ShareFileRange
     }
 
     /**

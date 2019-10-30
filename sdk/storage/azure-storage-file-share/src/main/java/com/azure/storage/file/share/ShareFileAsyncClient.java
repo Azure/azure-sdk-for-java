@@ -421,7 +421,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.downloadToFileWithResponse#string-filerange}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.downloadToFileWithResponse#string-ShareFileRange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
@@ -520,7 +520,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Download the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#filerange-boolean}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileRange-Boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
@@ -1088,7 +1088,7 @@ public class ShareFileAsyncClient {
      *
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.listRanges#filerange}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.listRanges#ShareFileRange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>

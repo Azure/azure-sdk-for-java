@@ -301,14 +301,14 @@ public class ShareFileJavaDocCodeSamples {
      */
     public void downloadFileMaxOverload() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#string-filerange-duration-context
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#String-ShareFileRange-Duration-Context
         Response<ShareFileProperties> response =
             fileClient.downloadToFileWithResponse("somelocalfilepath", new ShareFileRange(1024, 2047L),
                 Duration.ofSeconds(1), Context.NONE);
         if (Files.exists(Paths.get("somelocalfilepath"))) {
             System.out.println("Complete downloading the file with status code " + response.getStatusCode());
         }
-        // END: com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#string-filerange-duration-context
+        // END: com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#String-ShareFileRange-Duration-Context
     }
 
     /**
@@ -520,12 +520,12 @@ public class ShareFileJavaDocCodeSamples {
      */
     public void listRangesMaxOverload() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.listRanges#filerange-duration-context
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileRange-Duration-Context
         Iterable<ShareFileRange> ranges = fileClient.listRanges(new ShareFileRange(1024, 2048L), Duration.ofSeconds(1),
             new Context(key1, value1));
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));
-        // END: com.azure.storage.file.share.ShareFileClient.listRanges#filerange-duration-context
+        // END: com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileRange-Duration-Context
     }
 
     /**

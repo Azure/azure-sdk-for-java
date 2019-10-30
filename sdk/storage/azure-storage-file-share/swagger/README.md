@@ -35,7 +35,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,FileDownloadHeaders
+custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders
 ```
 
 ### Query Parameters
@@ -707,4 +707,11 @@ directive:
         /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
         "@UnexpectedResponseExceptionType(ShareStorageException.class)"
       );
+```
+## Rename FileDownloadHeaders to ShareFileDownloadHeaders
+``` yaml
+directive: 
+  - from: code-model-v1
+    where: $..[?(@.serializedName=="File-Download-Headers")]
+    transform: $.name.raw = 'Share-File-Download-Headers'
 ```
