@@ -74,6 +74,6 @@ public class GoodLoggerCheckTests extends AbstractModuleTestSupport {
     }
 
     private String expectedErrorMessage(int line, int column, String errorMessage) {
-        return String.format("%d:%d: %s", line, column, errorMessage);
+        return TestUtils.expectedErrorMessage(line, column, errorMessage);
     }
 }

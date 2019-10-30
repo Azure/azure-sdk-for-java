@@ -82,10 +82,10 @@ public class JavadocThrowsChecksTests extends AbstractModuleTestSupport {
     }
 
     private String expectedDescriptionMessage(int line) {
-        return String.format("%d: %s", line, MISSING_DESCRIPTION_MESSAGE);
+        return TestUtils.expectedDescriptionMessage(line, MISSING_DESCRIPTION_MESSAGE);
     }
 
     private String expectedThrowsMessage(int line, int column) {
-        return String.format("%d:%d: %s", line, column, MISSING_THROWS_TAG_MESSAGE);
+        return TestUtils.expectedThrowsMessage(line, column, MISSING_THROWS_TAG_MESSAGE);
     }
 }

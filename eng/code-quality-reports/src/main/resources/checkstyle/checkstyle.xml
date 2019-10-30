@@ -384,7 +384,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
     4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
     <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
 
-
     <!-- CUSTOM CHECKS -->
     <!-- Invalid Method Checks:
       Math.random method that should not be used in the Azure SDK. Use SecureRandom instead -->

@@ -9,6 +9,9 @@ import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Invalid method that should not be used in the Azure SDK. Such as it could avoid inherently unsafe method.
@@ -18,7 +21,7 @@ public class InvalidMethodsCheck extends AbstractCheck {
     /**
      * Specified full name of invalid methods.
      */
-    private String[] methods;
+    private final Set<String> methods = new HashSet<>(Arrays.asList());
 
     /**
      * Specified message for the invalid methods
@@ -29,7 +32,9 @@ public class InvalidMethodsCheck extends AbstractCheck {
      * @param methods the specified full name of invalid methods.
      */
     public void setMethods(String... methods) {
-        this.methods = methods;
+        if (methods != null) {
+            Collections.addAll(this.methods, methods);
+        }
     }
 
     /**
@@ -61,7 +66,6 @@ public class InvalidMethodsCheck extends AbstractCheck {
     public void visitToken(DetailAST token) {
         if (token.getType() == TokenTypes.METHOD_CALL) {
             invalidMethodCall(token);
-            System.runFinalization();
         }
     }
 
@@ -71,10 +75,10 @@ public class InvalidMethodsCheck extends AbstractCheck {
         if (methodCallName.isEmpty()) {
             return;
         }
-        Arrays.stream(methods).forEach(fullMethodName -> {
-            if (methodCallName.startsWith(fullMethodName)) {
+        for (String fullMethodName : methods) {
+            if (methodCallName.equals(fullMethodName)) {
                 log(methodCallToken, String.format(message, methodCallName));
             }
-        });
+        }
     }
 }
