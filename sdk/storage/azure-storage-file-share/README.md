@@ -94,6 +94,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 - **SAS Token**
     * Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
+
         ```powershell
         az storage file generate-sas
             --name {account name}
@@ -111,6 +112,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
             --permission rpau
             --connection-string $CONNECTION_STRING
         ```
+
     * Alternatively, get the Account SAS Token from the Azure Portal.
         1. Go to your storage account.
         1. Click on "Shared access signature".
@@ -132,20 +134,26 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 ### URL format
 File Shares are addressable using the following URL format:
+
 ```
 https://<storage account>.file.core.windows.net/<share>
 ```
+
 The following URL addresses a queue in the diagram:
+
 ```
 https://myaccount.file.core.windows.net/images-to-download
 ```
 
 #### Resource URI Syntax
 For the storage account, the base URI for queue operations includes the name of the account only:
+
 ```
 https://myaccount.file.core.windows.net
 ```
+
 For file, the base URI includes the name of the account and the name of the directory/file:
+
 ```
 https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
 ```
@@ -221,6 +229,7 @@ String directoryURL = String.format("https://%s.file.core.windows.net/%s%s", acc
 ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(directoryURL)
     .sasToken(sasToken).shareName(shareName).directoryName(directoryPath).buildDirectoryClient();
 ```
+
 ### File
  The file resource includes the properties for that file. It allows the operations of creating, uploading, copying, downloading, deleting files or range of the files, getting properties, setting metadata, listing and force closing the handles.
  Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${directoryPath}`, `${fileName}`, `${sasToken}`
