@@ -120,9 +120,7 @@ public class PartitionPumpManager {
 
         EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().setOwnerLevel(0L);
         EventHubConsumerAsyncClient eventHubConsumer = eventHubAsyncClient
-            .createConsumer(claimedOwnership.getConsumerGroupName(), claimedOwnership.getPartitionId(),
-                startFromEventPosition,
-                eventHubConsumerOptions);
+            .createConsumer(claimedOwnership.getConsumerGroupName(), startFromEventPosition, eventHubConsumerOptions);
 
         partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
         eventHubConsumer.receive(claimedOwnership.getPartitionId()).subscribe(partitionEvent -> {

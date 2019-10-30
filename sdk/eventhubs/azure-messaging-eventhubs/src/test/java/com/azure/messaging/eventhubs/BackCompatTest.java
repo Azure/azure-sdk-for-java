@@ -64,7 +64,9 @@ public class BackCompatTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+        consumer = createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.latest())
+            .buildAsyncConsumer();
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         producer = client.createProducer();
@@ -105,9 +107,9 @@ public class BackCompatTest extends IntegrationTestBase {
         final EventData eventData = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
+        StepVerifier.create(consumer.receive(PARTITION_ID).filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
             .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
-            .assertNext(event -> validateAmqpProperties(applicationProperties, event))
+            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getEventData()))
             .verifyComplete();
     }
 

@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -66,7 +67,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
         }
 
-        consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,
             EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
     }
 
@@ -84,10 +85,10 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final int numberOfEvents = 5;
 
         // Act
-        final IterableStream<EventData> actual = consumer.receive(numberOfEvents, Duration.ofSeconds(10));
+        final IterableStream<PartitionEvent> actual = consumer.receive(PARTITION_ID, numberOfEvents, Duration.ofSeconds(10));
 
         // Assert
-        final List<EventData> asList = actual.stream().collect(Collectors.toList());
+        final List<PartitionEvent> asList = actual.stream().collect(Collectors.toList());
         Assert.assertEquals(numberOfEvents, asList.size());
     }
 
@@ -102,16 +103,16 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final Duration waitTime = Duration.ofSeconds(10);
 
         // Act
-        final IterableStream<EventData> actual = consumer.receive(numberOfEvents, waitTime);
-        final IterableStream<EventData> actual2 = consumer.receive(secondNumberOfEvents, waitTime);
+        final IterableStream<PartitionEvent> actual = consumer.receive(PARTITION_ID, numberOfEvents, waitTime);
+        final IterableStream<PartitionEvent> actual2 = consumer.receive(PARTITION_ID, secondNumberOfEvents, waitTime);
 
         // Assert
-        final Map<Long, EventData> asList = actual.stream()
-            .collect(Collectors.toMap(EventData::getSequenceNumber, Function.identity()));
+        final Map<Long, PartitionEvent> asList = actual.stream()
+            .collect(Collectors.toMap(e -> e.getEventData().getSequenceNumber(), Function.identity()));
         Assert.assertEquals(numberOfEvents, asList.size());
 
-        final Map<Long, EventData> asList2 = actual2.stream()
-            .collect(Collectors.toMap(EventData::getSequenceNumber, Function.identity()));
+        final Map<Long, PartitionEvent> asList2 = actual2.stream()
+            .collect(Collectors.toMap(e -> e.getEventData().getSequenceNumber(), Function.identity()));
         Assert.assertEquals(secondNumberOfEvents, asList2.size());
 
         final Long maximumSequence = Collections.max(asList.keySet());
@@ -132,7 +133,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, position);
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
         final EventHubProducerClient producer = client.createProducer();
 
@@ -140,10 +141,10 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             producer.send(events, sendOptions);
 
             // Act
-            final IterableStream<EventData> receive = consumer.receive(100, Duration.ofSeconds(5));
+            final IterableStream<PartitionEvent> receive = consumer.receive(partitionId, 100, Duration.ofSeconds(5));
 
             // Assert
-            final List<EventData> asList = receive.stream().collect(Collectors.toList());
+            final List<PartitionEvent> asList = receive.stream().collect(Collectors.toList());
             Assert.assertEquals(numberOfEvents, asList.size());
         } finally {
             dispose(producer, consumer);
@@ -164,7 +165,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
         final List<EventData> events2 = getEventsAsList(secondSetOfEvents);
 
-        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,
             EventPosition.fromEnqueuedTime(Instant.now()));
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
         final EventHubProducerClient producer = client.createProducer();
@@ -173,10 +174,10 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             producer.send(events, sendOptions);
 
             // Act
-            final IterableStream<EventData> receive = consumer.receive(receiveNumber, Duration.ofSeconds(5));
+            final IterableStream<PartitionEvent> receive = consumer.receive(partitionId, receiveNumber, Duration.ofSeconds(5));
 
             // Assert
-            final List<EventData> asList = receive.stream().collect(Collectors.toList());
+            final List<PartitionEvent> asList = receive.stream().collect(Collectors.toList());
             Assert.assertEquals(receiveNumber, asList.size());
 
             producer.send(events2);
@@ -197,8 +198,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
-        final EventHubConsumerClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, position);
+        final EventHubConsumerClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,  position);
         final EventHubProducerClient producer = client.createProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
 
@@ -206,12 +207,12 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             producer.send(events, sendOptions);
 
             // Act
-            final IterableStream<EventData> receive = consumer.receive(receiveNumber, Duration.ofSeconds(5));
-            final IterableStream<EventData> receive2 = consumer2.receive(receiveNumber, Duration.ofSeconds(5));
+            final IterableStream<PartitionEvent> receive = consumer.receive(partitionId, receiveNumber, Duration.ofSeconds(5));
+            final IterableStream<PartitionEvent> receive2 = consumer2.receive(partitionId, receiveNumber, Duration.ofSeconds(5));
 
             // Assert
-            final List<Long> asList = receive.stream().map(EventData::getSequenceNumber).collect(Collectors.toList());
-            final List<Long> asList2 = receive2.stream().map(EventData::getSequenceNumber).collect(Collectors.toList());
+            final List<Long> asList = receive.stream().map(e -> e.getEventData().getSequenceNumber()).collect(Collectors.toList());
+            final List<Long> asList2 = receive2.stream().map(e -> e.getEventData().getSequenceNumber()).collect(Collectors.toList());
 
             Assert.assertEquals(receiveNumber, asList.size());
             Assert.assertEquals(receiveNumber, asList2.size());
