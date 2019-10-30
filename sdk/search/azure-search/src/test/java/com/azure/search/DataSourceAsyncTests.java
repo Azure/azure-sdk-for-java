@@ -21,7 +21,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     public void createAndListDataSources() {
         client = getSearchServiceClientBuilder().buildAsyncClient();
 
-        DataSource dataSource1 = createTestBlobDataSource(null);
+        DataSource dataSource1 = createTestCosmosDbDataSource(null, false);
         DataSource dataSource2 = createTestSqlDataSource();
 
         client.createOrUpdateDataSource(dataSource1).block();

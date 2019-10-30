@@ -74,6 +74,21 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         );
     }
 
+    protected DataSource createTestCosmosDbDataSource(
+        DataDeletionDetectionPolicy deletionDetectionPolicy,
+        boolean useChangeDetection) {
+
+        return DataSources.cosmosDb(
+            "azs-java-test-cosmos",
+            "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase",
+            "faketable",
+            "SELECT ... FROM x where x._ts > @HighWaterMark",
+            useChangeDetection,
+            deletionDetectionPolicy,
+            FAKE_DESCRIPTION
+        );
+    }
+
     /**
      * Creates a new DataSource to connect to an Azure SQL database.
      *
@@ -90,7 +105,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         String tableOrViewName,
         DataDeletionDetectionPolicy deletionDetectionPolicy,
         String description) {
-        return DataSources.sqlDataSource(
+        return DataSources.azureSql(
             name,
             sqlConnectionString,
             tableOrViewName,
@@ -116,7 +131,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         DataChangeDetectionPolicy changeDetectionPolicy,
         String description) {
         Objects.requireNonNull(changeDetectionPolicy);
-        return DataSources.sqlDataSource(
+        return DataSources.azureSql(
             name,
             sqlConnectionString,
             tableOrViewName,
@@ -147,7 +162,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         String description) {
         Objects.requireNonNull(deletionDetectionPolicy);
         Objects.requireNonNull(changeDetectionPolicy);
-        return DataSources.sqlDataSource(
+        return DataSources.azureSql(
             name,
             sqlConnectionString,
             tableOrViewName,

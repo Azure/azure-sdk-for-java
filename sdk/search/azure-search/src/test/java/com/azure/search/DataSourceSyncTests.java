@@ -23,7 +23,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     public void createAndListDataSources() {
         client = getSearchServiceClientBuilder().buildClient();
 
-        DataSource dataSource1 = createTestBlobDataSource(null);
+        DataSource dataSource1 = createTestCosmosDbDataSource(null, false);
         DataSource dataSource2 = createTestSqlDataSource();
 
         client.createOrUpdateDataSource(dataSource1);
