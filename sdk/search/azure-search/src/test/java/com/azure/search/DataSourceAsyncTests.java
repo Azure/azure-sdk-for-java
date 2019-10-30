@@ -65,6 +65,22 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void canUpdateDataSource() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
+        DataSource initial = createTestBlobDataSource(null);
+
+        // Create the data source
+        client.createOrUpdateDataSource(initial).block();
+
+        DataSource expected = updateDatasource(initial);
+        DataSource actual = client.createOrUpdateDataSource(expected).block();
+
+        removeConnectionString(expected);
+
+        assertDataSourcesEqual(expected, actual);
+    }
+
+    @Override
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         client = getSearchServiceClientBuilder().buildAsyncClient();
 

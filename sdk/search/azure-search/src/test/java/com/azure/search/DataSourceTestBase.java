@@ -5,10 +5,11 @@ package com.azure.search;
 
 import com.azure.search.common.DataSources;
 import com.azure.search.models.*;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Objects;
+
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public abstract class DataSourceTestBase extends SearchServiceTestBase {
     private static final String FAKE_DESCRIPTION = "Some data source";
@@ -36,6 +37,9 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void deleteDataSourceIsIdempotent();
+
+    @Test
+    public abstract void canUpdateDataSource();
 
     protected DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureBlobStorage(
@@ -152,17 +156,37 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
             deletionDetectionPolicy);
     }
 
-    protected void assertDataSourcesEqual(DataSource expected, DataSource actual) {
-        Assert.assertEquals(expected.getName(), actual.getName());
-        Assert.assertEquals(expected.getType().toString(), actual.getType().toString());
-        Assert.assertEquals(expected.getContainer().getName(), actual.getContainer().getName());
-        Assert.assertEquals(expected.getContainer().getQuery(), actual.getContainer().getQuery());
-        Assert.assertEquals(expected.getCredentials().getConnectionString(),
-            actual.getCredentials().getConnectionString());
-        Assert.assertEquals(expected.getDataChangeDetectionPolicy(),
-            actual.getDataChangeDetectionPolicy());
-        Assert.assertEquals(expected.getDataDeletionDetectionPolicy(),
-            actual.getDataDeletionDetectionPolicy());
-        Assert.assertEquals(expected.getDescription(), actual.getDescription());
+    protected DataSource updateDatasource(DataSource initial) {
+        DataSource updatedExpected =
+            createTestBlobDataSource(null);
+
+        updatedExpected.setName(initial.getName());
+        DataContainer container = new DataContainer();
+        container.setName("somethingdifferent");
+        updatedExpected.setContainer(container);
+        updatedExpected.setDescription("somethingdifferent");
+        HighWaterMarkChangeDetectionPolicy policy = new HighWaterMarkChangeDetectionPolicy();
+        policy.setHighWaterMarkColumnName("rowversion");
+        SoftDeleteColumnDeletionDetectionPolicy policy2 = new SoftDeleteColumnDeletionDetectionPolicy();
+        policy2.setSoftDeleteMarkerValue("1");
+        policy2.setSoftDeleteColumnName("isDeleted");
+        updatedExpected.setDataDeletionDetectionPolicy(policy2);
+
+        return updatedExpected;
+    }
+
+    protected void removeConnectionString(DataSource datasource) {
+        DataSourceCredentials cred = new DataSourceCredentials();
+        cred.setConnectionString(null);
+        datasource.setCredentials(cred);
+    }
+
+    protected void assertDataSourcesEqual(DataSource updatedExpected, DataSource actualDataSource) {
+        // Using assertReflectionEquals also checks the etag, however we do not care
+        // for that value, hence, we change both to the same value to make sure it
+        // won't fail the assertion
+        updatedExpected.setETag("none");
+        actualDataSource.setETag("none");
+        assertReflectionEquals(updatedExpected, actualDataSource);
     }
 }

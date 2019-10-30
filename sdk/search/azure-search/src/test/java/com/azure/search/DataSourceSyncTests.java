@@ -79,6 +79,22 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void canUpdateDataSource() {
+        client = getSearchServiceClientBuilder().buildClient();
+        DataSource initial = createTestBlobDataSource(null);
+
+        // Create the data source
+        client.createOrUpdateDataSource(initial);
+
+        DataSource expected = updateDatasource(initial);
+        DataSource actual = client.createOrUpdateDataSource(expected);
+
+        removeConnectionString(expected);
+
+        assertDataSourcesEqual(expected, actual);
+    }
+
+    @Override
     public void createDataSourceReturnsCorrectDefinition() {
         client = getSearchServiceClientBuilder().buildClient();
         createAndValidateDataSource(createTestBlobDataSource(null));
