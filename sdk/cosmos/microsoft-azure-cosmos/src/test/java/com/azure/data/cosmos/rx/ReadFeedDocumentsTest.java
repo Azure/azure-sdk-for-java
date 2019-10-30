@@ -59,18 +59,21 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments_withoutEnableCrossPartitionQuery() {
+        // With introduction of queryplan, crosspartition need not be enabled anymore.
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
         Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options);
-        FailureValidator validator = FailureValidator.builder().instanceOf(CosmosClientException.class)
-                .statusCode(400)
-                .errorMessageContains("Cross partition query is required but disabled." +
-                                              " Please set x-ms-documentdb-query-enablecrosspartition to true," +
-                                              " specify x-ms-documentdb-partitionkey," +
-                                              " or revise your query to avoid this exception.")
-                .build();
-        validateQueryFailure(feedObservable, validator, FEED_TIMEOUT);
+        FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+                                                                        .totalSize(createdDocuments.size())
+                                                                        .numberOfPagesIsGreaterThanOrEqualTo(1)
+                                                                        .exactlyContainsInAnyOrder(createdDocuments.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                                                                        .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
+                                                                                             .requestChargeGreaterThanOrEqualTo(1.0)
+                                                                                             .pageSizeIsLessThanOrEqualTo(options.maxItemCount())
+                                                                                             .build())
+                                                                        .build();
+        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
