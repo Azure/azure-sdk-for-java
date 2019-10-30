@@ -66,7 +66,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
         client = createBuilder().buildAsyncClient();
         producer = client.createProducer();
-        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
     }
 
     @Override

@@ -11,10 +11,10 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
@@ -99,7 +99,7 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
             .connectionString(getConnectionString())
             .buildAsyncClient();
         final EventHubProducerAsyncClient producer = asyncClient.createProducer();
-        final EventHubConsumerClient receiver = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+        final EventHubConsumerClient receiver = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
             PARTITION_ID, EventPosition.earliest());
 
         producer.send(TestUtils.getEvents(numberOfEvents, messageId), sendOptions).block();

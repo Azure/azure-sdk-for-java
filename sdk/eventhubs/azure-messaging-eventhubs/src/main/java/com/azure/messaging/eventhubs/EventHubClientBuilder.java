@@ -27,6 +27,8 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -74,6 +76,11 @@ import java.util.ServiceLoader;
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class})
 public class EventHubClientBuilder {
+    /**
+     * The name of the default consumer group in the Event Hubs service.
+     */
+    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
+
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
@@ -88,6 +95,9 @@ public class EventHubClientBuilder {
     private TransportType transport;
     private String fullyQualifiedNamespace;
     private String eventHubName;
+    private EventHubConsumerOptions consumerOptions;
+    private EventPosition startingPosition;
+    private String consumerGroup;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
@@ -277,6 +287,43 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder retry(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Sets the position within the partition where the consumer should begin reading events.
+     *
+     * @param eventPosition Position within an Event Hub partition to begin consuming events.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder startingPosition(EventPosition eventPosition) {
+        this.startingPosition = eventPosition;
+        return this;
+    }
+
+    /**
+     * Sets the name of the consumer group this consumer is associated with. Events are read in the context of this
+     * group. The name of the consumer group that is created by default is
+     * {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     *
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     * context of this group. The name of the consumer group that is created by default is
+     * {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder consumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+        return this;
+    }
+
+    /**
+     * Sets the set of options to apply when creating the consumer.
+     *
+     * @param consumerOptions The set of options to apply when creating the consumer.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder consumerOptions(EventHubConsumerOptions consumerOptions) {
+        this.consumerOptions = consumerOptions;
         return this;
     }
 

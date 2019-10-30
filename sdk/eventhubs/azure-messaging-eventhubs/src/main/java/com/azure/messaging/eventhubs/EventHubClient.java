@@ -113,7 +113,7 @@ public class EventHubClient implements Closeable {
      *
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *     context of this group. The name of the consumer group that is created by default is {@link
-     *     EventHubAsyncClient#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubConsumerClient} that receives events from the partition at the given position.
@@ -146,7 +146,7 @@ public class EventHubClient implements Closeable {
      *
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *     context of this group. The name of the consumer group that is created by default is {@link
-     *     EventHubAsyncClient#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.

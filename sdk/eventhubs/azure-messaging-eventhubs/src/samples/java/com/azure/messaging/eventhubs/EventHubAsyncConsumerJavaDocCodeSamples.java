@@ -24,7 +24,7 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.latest());
 
         // Keep a reference to `subscription`. When the program is finished receiving events, call
@@ -44,7 +44,7 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+        EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
             partitionId, EventPosition.latest());
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#basesubscriber

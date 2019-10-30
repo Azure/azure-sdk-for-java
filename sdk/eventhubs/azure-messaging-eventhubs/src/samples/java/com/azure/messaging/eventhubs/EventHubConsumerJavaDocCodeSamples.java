@@ -43,7 +43,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubClient.getPartitionIds().
         String partitionId = "0";
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
-        EventHubConsumerClient consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        EventHubConsumerClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(twelveHoursAgo));
 
         IterableStream<EventData> events = consumer.receive(100, Duration.ofSeconds(30));
