@@ -14,6 +14,8 @@ resources:
 variables:
   DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false --settings eng/settings.xml'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 
 jobs:
   - job: 'Build'
@@ -33,6 +35,12 @@ jobs:
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
         condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
+
+      - task: CacheBeta@0
+        inputs:
+          key: maven
+          path: $(MAVEN_CACHE_FOLDER)
+        displayName: Cache Maven local repo
 
       - task: Maven@3
         displayName: 'Build and Package'
@@ -74,6 +82,12 @@ jobs:
         # builds should be sufficient.
         condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
         displayName: 'Component Detection'
+
+      - task: CacheBeta@0
+        inputs:
+          key: maven
+          path: $(MAVEN_CACHE_FOLDER)
+        displayName: Cache Maven local repo
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -231,6 +245,12 @@ jobs:
       - template: eng/pipelines/templates/scripts/verify-agent-os.yml@azure-sdk-tools
         parameters:
           OSName: $(OSVmImage)
+
+      - task: CacheBeta@0
+        inputs:
+            key: maven
+            path: $(MAVEN_CACHE_FOLDER)
+        displayName: Cache Maven local repo
 
       - task: Maven@3
         displayName: 'Compile all code and run tests'
