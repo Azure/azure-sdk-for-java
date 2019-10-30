@@ -22,6 +22,7 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
+import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.FilesAbortCopyResponse;
 import com.azure.storage.file.share.implementation.models.FilesCreateResponse;
 import com.azure.storage.file.share.implementation.models.FilesDeleteResponse;
@@ -107,7 +108,7 @@ public final class FilesImpl {
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(FileStorageException.class)
-        Mono<FilesUploadRangeResponse> uploadRange(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") FileRangeWriteType fileRangeWrite, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
+        Mono<FilesUploadRangeResponse> uploadRange(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") ShareFileRangeWriteType fileRangeWrite, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({201})
@@ -437,7 +438,7 @@ public final class FilesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String filePath, String range, FileRangeWriteType fileRangeWrite, long contentLength, Context context) {
+    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String filePath, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Context context) {
         final Flux<ByteBuffer> optionalbody = null;
         final Integer timeout = null;
         final String comp = "range";
@@ -461,7 +462,7 @@ public final class FilesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String filePath, String range, FileRangeWriteType fileRangeWrite, long contentLength, Flux<ByteBuffer> optionalbody, Integer timeout, byte[] contentMD5, Context context) {
+    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String filePath, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Flux<ByteBuffer> optionalbody, Integer timeout, byte[] contentMD5, Context context) {
         final String comp = "range";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service.uploadRange(shareName, filePath, this.client.getUrl(), optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), comp, context);

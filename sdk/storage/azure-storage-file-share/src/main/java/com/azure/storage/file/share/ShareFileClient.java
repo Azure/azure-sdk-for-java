@@ -177,8 +177,8 @@ public class ShareFileClient {
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public Response<FileInfo> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                 FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-                                                 Context context) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+        Context context) {
         Mono<Response<FileInfo>> response = shareFileAsyncClient
             .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -204,8 +204,7 @@ public class ShareFileClient {
      * @return A {@link SyncPoller} to poll the progress of copy operation.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl,
-                                                         Map<String, String> metadata,
+    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
                                                          Duration pollInterval) {
         return shareFileAsyncClient.beginCopy(sourceUrl, metadata, pollInterval)
                 .getSyncPoller();
@@ -511,7 +510,7 @@ public class ShareFileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileInfo> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
-                                                        FileSmbProperties smbProperties, String filePermission, Duration timeout, Context context) {
+        FileSmbProperties smbProperties, String filePermission, Duration timeout, Context context) {
         Mono<Response<FileInfo>> response = shareFileAsyncClient
             .setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -680,7 +679,7 @@ public class ShareFileClient {
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
-                                                                                    long sourceOffset, String sourceUrl, Duration timeout, Context context) {
+        long sourceOffset, String sourceUrl, Duration timeout, Context context) {
         Mono<Response<ShareFileUploadRangeFromUrlInfo>> response = shareFileAsyncClient.uploadRangeFromUrlWithResponse(
             length, destinationOffset, sourceOffset, sourceUrl, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

@@ -140,7 +140,7 @@ public class ShareDirectoryClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareDirectoryInfo> createWithResponse(FileSmbProperties smbProperties, String filePermission,
-                                                           Map<String, String> metadata, Duration timeout, Context context) {
+        Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<ShareDirectoryInfo>> response = shareDirectoryAsyncClient
             .createWithResponse(smbProperties, filePermission, metadata, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -532,8 +532,8 @@ public class ShareDirectoryClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareDirectoryClient> createSubDirectoryWithResponse(String subDirectoryName,
-                                                                         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-                                                                         Context context) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+        Context context) {
         ShareDirectoryClient shareDirectoryClient = getSubDirectoryClient(subDirectoryName);
         return new SimpleResponse<>(shareDirectoryClient
             .createWithResponse(smbProperties, filePermission, metadata, timeout, context), shareDirectoryClient);
@@ -639,8 +639,8 @@ public class ShareDirectoryClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                            FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-                                                            Context context) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+        Context context) {
         ShareFileClient shareFileClient = getFileClient(fileName);
         Response<FileInfo> response = shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
             filePermission, metadata, timeout, context);

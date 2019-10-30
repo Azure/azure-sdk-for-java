@@ -364,7 +364,6 @@ directive:
         delete $["/{shareName}/{directory}/{fileName}?comp=range"];
     }
 ```
-
 ### /{shareName}/{filePath}?comp=range&fromURL
 ``` yaml
 directive:
@@ -379,6 +378,7 @@ directive:
         delete $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
     }
 ```
+
 
 ### /{shareName}/{filePath}?comp=rangelist
 ``` yaml
@@ -533,15 +533,6 @@ directive:
   where: $.definitions.ErrorCode
   transform: >
     $["x-ms-enum"].name = "ShareErrorCode";
-```
-
-### Rename FileRangeWriteType to ShareFileRangeWriteType
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.FileRangeWrite
-  transform: >
-    $["x-ms-enum"].name = "ShareFileRangeWriteType";
 ```
 
 ### ShareServiceProperties, ShareMetrics, ShareCorsRule, and ShareRetentionPolicy

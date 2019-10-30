@@ -723,7 +723,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<ShareDirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
-                                                                             FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         ShareDirectoryAsyncClient createSubClient = getSubDirectoryClient(subDirectoryName);
         return createSubClient.createWithResponse(smbProperties, filePermission, metadata, context)
             .map(response -> new SimpleResponse<>(response, createSubClient));
@@ -835,8 +835,8 @@ public class ShareDirectoryAsyncClient {
      * name is an invalid resource name.
      */
     public Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
-                                                                       ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
-                                                                       Map<String, String> metadata) {
+        ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata) {
         try {
             return withContext(context ->
                 createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
@@ -847,8 +847,8 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
-                                                                ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
-                                                                Map<String, String> metadata, Context context) {
+        ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
             .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context)

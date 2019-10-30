@@ -547,8 +547,8 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareDirectoryClient> createDirectoryWithResponse(String directoryName,
-                                                                      FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-                                                                      Context context) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+        Context context) {
         ShareDirectoryClient shareDirectoryClient = getDirectoryClient(directoryName);
         return new SimpleResponse<>(shareDirectoryClient.createWithResponse(smbProperties, filePermission, metadata,
             timeout, context), shareDirectoryClient);
@@ -619,8 +619,8 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                            FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-                                                            Context context) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+        Context context) {
         ShareFileClient shareFileClient = getFileClient(fileName);
         return new SimpleResponse<>(shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
             filePermission, metadata, timeout, context), shareFileClient);

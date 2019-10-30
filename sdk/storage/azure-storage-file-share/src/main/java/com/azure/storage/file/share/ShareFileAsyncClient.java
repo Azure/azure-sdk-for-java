@@ -22,7 +22,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.FileStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FileUploadRangeFromURLHeaders;
 import com.azure.storage.file.share.implementation.models.FileUploadRangeHeaders;
@@ -32,6 +31,7 @@ import com.azure.storage.file.share.implementation.models.FilesSetHTTPHeadersRes
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
+import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.FileDownloadAsyncResponse;
@@ -167,7 +167,8 @@ public class ShareFileAsyncClient {
      */
     public Mono<FileInfo> create(long maxSize) {
         try {
-            return createWithResponse(maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
+            return createWithResponse(maxSize, null, null, null, null)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -195,7 +196,7 @@ public class ShareFileAsyncClient {
      * directory is an invalid resource name.
      */
     public Mono<Response<FileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                       FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
             return withContext(context ->
                 createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
@@ -205,7 +206,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<FileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
@@ -245,8 +246,7 @@ public class ShareFileAsyncClient {
      * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl,
-                                                         Map<String, String> metadata,
+    public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
                                                          Duration pollInterval) {
         final AtomicReference<String> copyId = new AtomicReference<>();
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
@@ -307,8 +307,8 @@ public class ShareFileAsyncClient {
         return getProperties()
             .map(response -> {
                 final CopyStatusType status = response.getCopyStatus();
-                final ShareFileCopyInfo result = new ShareFileCopyInfo(response.getCopySource(), response.getCopyId(), status,
-                    response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
+                final ShareFileCopyInfo result = new ShareFileCopyInfo(response.getCopySource(), response.getCopyId(),
+                    status, response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
 
                 LongRunningOperationStatus operationStatus;
                 switch (status) {
@@ -725,7 +725,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
-                                                       FileSmbProperties smbProperties, String filePermission, Context context) {
+        FileSmbProperties smbProperties, String filePermission, Context context) {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
@@ -930,7 +930,7 @@ public class ShareFileAsyncClient {
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
-                                                                                          long destinationOffset, long sourceOffset, String sourceUrl) {
+        long destinationOffset, long sourceOffset, String sourceUrl) {
         try {
             return withContext(context ->
                 uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceUrl, context));
@@ -940,7 +940,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
-                                                                                   long sourceOffset, String sourceUrl, Context context) {
+        long sourceOffset, String sourceUrl, Context context) {
         FileRange destinationRange = new FileRange(destinationOffset, destinationOffset + length - 1);
         FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
 
@@ -1363,9 +1363,10 @@ public class ShareFileAsyncClient {
         CopyStatusType copyStatus = headers.getCopyStatus();
         Boolean isServerEncrpted = headers.isServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        ShareFileProperties shareFileProperties = new ShareFileProperties(eTag, lastModified, metadata, fileType, contentLength,
-            contentType, contentMD5, contentEncoding, cacheControl, contentDisposition, copyCompletionTime,
-            copyStatusDescription, copyId, copyProgress, copySource, copyStatus, isServerEncrpted, smbProperties);
+        ShareFileProperties shareFileProperties = new ShareFileProperties(eTag, lastModified, metadata, fileType,
+            contentLength, contentType, contentMD5, contentEncoding, cacheControl, contentDisposition,
+            copyCompletionTime, copyStatusDescription, copyId, copyProgress, copySource, copyStatus, isServerEncrpted,
+            smbProperties);
         return new SimpleResponse<>(response, shareFileProperties);
     }
 
