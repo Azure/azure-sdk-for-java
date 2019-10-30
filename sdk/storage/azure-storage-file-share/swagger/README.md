@@ -358,6 +358,7 @@ directive:
   transform: >
     if (!$["/{shareName}/{filePath}?comp=range"]) {
         const op = $["/{shareName}/{filePath}?comp=range"] = $["/{shareName}/{directory}/{fileName}?comp=range"];
+        op.put.parameters[3]["x-ms-enum"].name = "ShareFileRangeWriteType";
         const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
         op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
