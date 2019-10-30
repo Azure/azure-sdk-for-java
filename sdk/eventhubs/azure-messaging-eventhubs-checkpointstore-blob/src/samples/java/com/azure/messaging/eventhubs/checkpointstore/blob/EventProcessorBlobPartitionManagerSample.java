@@ -5,17 +5,15 @@ package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.EventProcessorBuilder;
 import com.azure.messaging.eventhubs.PartitionEvent;
-import com.azure.messaging.eventhubs.PartitionProcessor;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import reactor.core.publisher.Mono;
 
 /**
@@ -26,11 +24,8 @@ public class EventProcessorBlobPartitionManagerSample {
     private static final String EH_CONNECTION_STRING = "";
     private static final String SAS_TOKEN_STRING = "";
     private static final String STORAGE_CONNECTION_STRING = "";
-    public static final PartitionProcessor PARTITION_PROCESSOR = new PartitionProcessor() {
 
-        @Override
-        public Mono<Void> processEvent(
-           PartitionEvent partitionEvent) {
+    public static final Function<PartitionEvent, Mono<Void>> PARTITION_PROCESSOR = partitionEvent -> {
             System.out.printf("Processing event from partition %s with sequence number %d %n",
                 partitionEvent.getPartitionContext().getPartitionId(), partitionEvent.getEventData().getSequenceNumber());
 
@@ -38,8 +33,7 @@ public class EventProcessorBlobPartitionManagerSample {
                 return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
             }
             return Mono.empty();
-        }
-    };
+        };
 
     /**
      * The main method to run the sample.
@@ -62,7 +56,7 @@ public class EventProcessorBlobPartitionManagerSample {
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
             .connectionString("")
             .consumerGroup("")
-            .partitionProcessorFactory(() -> PARTITION_PROCESSOR)
+            .processEvent(PARTITION_PROCESSOR)
             .eventProcessorStore(new BlobEventProcessorStore(blobContainerAsyncClient));
 
         EventProcessor ep1 = eventProcessorBuilder.buildEventProcessor();

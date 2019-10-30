@@ -43,28 +43,24 @@ public class EventProcessorBuilderTest {
     public void testEventProcessorBuilderMissingProperties() {
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .eventProcessorStore(new InMemoryEventProcessorStore())
-            .partitionProcessorFactory((() -> new PartitionProcessor() {
-                @Override
-                public Mono<Void> processEvent(PartitionEvent partitionEvent) {
-                    return Mono
-                        .fromRunnable(() -> System.out.println(partitionEvent.getEventData().getSequenceNumber()));
-                }
-            }))
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
             .buildEventProcessor();
     }
 
     @Test
-    public void testEventProcessorBuilderWithFactory() {
+    public void testEventProcessorBuilderWithProcessEvent() {
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .consumerGroup("consumer-group")
-            .partitionProcessorFactory((() -> new PartitionProcessor() {
-                @Override
-                public Mono<Void> processEvent(PartitionEvent partitionEvent) {
-                    return Mono
-                        .fromRunnable(() -> System.out.println(partitionEvent.getEventData().getSequenceNumber()));
-                }
-            }))
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
             .eventProcessorStore(new InMemoryEventProcessorStore())
             .buildEventProcessor();
         assertNotNull(eventProcessor);

@@ -90,11 +90,16 @@ events received from Event Hubs to console.
 ```java
 class Program {
     public static void main(String[] args) {
-        EventProcessor eventProcessor = new EventHubClientBuilder()
+        Function<PartitionEvent, Mono<Void>> processEvent = partitionEvent -> {
+            System.out.printf("Event received. Sequence number: %s%n.", partitionEvent.getEventData().sequenceNumber());
+            return partitionEvent.getPartitionContext().updateCheckpoint(eventData);
+          };                 
+
+        EventProcessor eventProcessor = new EventProcessorBuilder()
             .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
             .consumerGroupName("<< CONSUMER GROUP NAME>>")
-            .partitionProcessorFactory(SimplePartitionProcessor::new)
-            .eventProcessorStore(new BlobPartitionManager(blobContainerAsyncClient))
+            .processEvent(processEvent)
+            .eventProcessorStore(new BlobEventProcessorStore(blobContainerAsyncClient))
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
@@ -102,14 +107,6 @@ class Program {
 
         // When the user wishes to stop processing events, they can call `stop()`.
         eventProcessor.stop();
-    }
-}
-
-class SimplePartitionProcessor extends PartitionProcessor {
-    @Override
-    Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-        System.out.printf("Event received. Sequence number: %s%n.", eventData.sequenceNumber());
-        return partitionContext.updateCheckpoint(eventData);
     }
 }
 ```

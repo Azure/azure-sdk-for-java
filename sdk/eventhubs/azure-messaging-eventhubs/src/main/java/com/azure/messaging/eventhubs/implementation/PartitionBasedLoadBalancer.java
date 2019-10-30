@@ -32,8 +32,8 @@ import static java.util.stream.Collectors.toList;
  * This class is responsible for balancing the load of processing events from all partitions of an Event Hub by
  * distributing the number of partitions uniformly among all the  active {@link EventProcessor EventProcessors}.
  * <p>
- * This load balancer will retrieve partition ownership details from the {@link EventProcessorStore} to find the number of
- * active {@link EventProcessor EventProcessors}. It uses the last modified time to decide if an EventProcessor is
+ * This load balancer will retrieve partition ownership details from the {@link EventProcessorStore} to find the number
+ * of active {@link EventProcessor EventProcessors}. It uses the last modified time to decide if an EventProcessor is
  * active. If a partition ownership entry has not be updated for a specified duration of time, the owner of that
  * partition is considered inactive and the partition is available for other EventProcessors to own.
  * </p>
@@ -55,7 +55,8 @@ public final class PartitionBasedLoadBalancer {
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
      *
-     * @param eventProcessorStore The partition manager that this load balancer will use to read/update ownership details.
+     * @param eventProcessorStore The partition manager that this load balancer will use to read/update ownership
+     * details.
      * @param eventHubAsyncClient The asynchronous Event Hub client used to consume events.
      * @param eventHubName The Event Hub name the {@link EventProcessor} is associated with.
      * @param consumerGroupName The consumer group name the {@link EventProcessor} is associated with.

@@ -23,27 +23,14 @@ public class EventProcessorBuilderJavaDocCodeSamples {
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")
             .connectionString(connectionString)
-            .partitionProcessorFactory((PartitionProcessorImpl::new))
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
             .eventProcessorStore(new InMemoryEventProcessorStore())
             .buildEventProcessor();
         return eventProcessor;
-    }
-
-    /**
-     * A partition processor to demo creating an instance of {@link EventProcessor}.
-     */
-    public static final class PartitionProcessorImpl extends PartitionProcessor {
-
-        /**
-         * Processes the event data.
-         *
-         * @return a representation of deferred processing of events.
-         */
-        @Override
-        public Mono<Void> processEvent(PartitionEvent partitionEvent) {
-            System.out.println("Processing event with sequence number " + partitionEvent.getEventData().getSequenceNumber());
-            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
-        }
     }
     // END: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation
 

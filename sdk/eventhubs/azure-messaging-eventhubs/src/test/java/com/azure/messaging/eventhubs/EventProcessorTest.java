@@ -22,21 +22,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -55,16 +50,6 @@ import reactor.test.StepVerifier;
  * Unit tests for {@link EventProcessor}.
  */
 public class EventProcessorTest {
-
-    private static final String NAMESPACE_NAME = "dummyNamespaceName";
-    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
-    private static final String EVENT_HUB_NAME = "eventHubName";
-    private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
-    private static final String SHARED_ACCESS_KEY = "dummySasKey";
-    private static final String ENDPOINT = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
-
-    private static final String CORRECT_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;"
-            + "SharedAccessKey=%s;EntityPath=%s",ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
 
     @Mock
     private EventHubClientBuilder eventHubClientBuilder;
@@ -447,15 +432,6 @@ public class EventProcessorTest {
         @Override
         public Mono<Void> processEvent(PartitionEvent partitionEvent) {
             return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
-        }
-    }
-
-    private static URI getURI(String endpointFormat, String namespace, String domainName) {
-        try {
-            return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
-        } catch (URISyntaxException exception) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "Invalid namespace name: %s", namespace), exception);
         }
     }
 

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -10,7 +13,7 @@ import java.util.function.Function;
  */
 public class InitializationContext {
 
-    private PartitionContext partitionContext;
+    private final PartitionContext partitionContext;
     private EventPosition initialPosition;
 
     /**

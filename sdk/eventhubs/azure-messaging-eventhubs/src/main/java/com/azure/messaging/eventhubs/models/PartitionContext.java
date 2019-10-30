@@ -26,16 +26,16 @@ public class PartitionContext {
     private final EventProcessorStore eventProcessorStore;
 
     /**
-     * Creates an instance of PartitionContext that contains partition information available to each
-     * {@link PartitionProcessor}.
+     * Creates an instance of PartitionContext that contains partition information available to each {@link
+     * PartitionProcessor}.
      *
      * @param partitionId The partition id of the partition processed by the {@link PartitionProcessor}.
      * @param eventHubName The Event Hub name associated with the {@link EventProcessor}.
      * @param consumerGroup The consumer group name associated with the {@link EventProcessor}.
      * @param ownerId The unique identifier of the {@link EventProcessor} instance.
      * @param eTag The last known ETag stored in {@link EventProcessorStore} for this partition.
-     * @param eventProcessorStore A {@link EventProcessorStore} implementation to read and update partition ownership and
-     * checkpoint information.
+     * @param eventProcessorStore A {@link EventProcessorStore} implementation to read and update partition ownership
+     * and checkpoint information.
      */
     public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
         String ownerId, String eTag, EventProcessorStore eventProcessorStore) {

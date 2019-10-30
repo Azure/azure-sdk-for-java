@@ -33,11 +33,6 @@ import reactor.core.scheduler.Scheduler;
  * <li>{@link EventHubAsyncClient} - An asynchronous Event Hub client the {@link EventProcessor} will use for
  * consuming events.</li>
  * <li>{@link EventProcessorStore} - An instance of EventProcessorStore.</li>
- * <li>{@link #partitionProcessorFactory(Supplier) partitionProcessorFactory} - A user-defined {@link Function} that
- * creates
- * new instances of {@link PartitionProcessor} for processing events. Users should extend from
- * {@link PartitionProcessor} abstract class to implement
- * {@link PartitionProcessor#processEvent(PartitionEvent)}.</li>
  * </ul>
  *
  * <p><strong>Creating an {@link EventProcessor}</strong></p>
@@ -50,9 +45,9 @@ public class EventProcessorBuilder {
 
     private final ClientLogger logger = new ClientLogger(EventProcessorBuilder.class);
 
+    private final EventHubClientBuilder eventHubClientBuilder;
     private String consumerGroup;
     private EventProcessorStore eventProcessorStore;
-    private EventHubClientBuilder eventHubClientBuilder;
     private Function<PartitionEvent, Mono<Void>> processEvent;
     private Function<ErrorContext, Mono<Void>> processError;
     private Function<InitializationContext, Mono<Void>> initializePartition;
@@ -288,40 +283,35 @@ public class EventProcessorBuilder {
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {
-        return new Supplier<>() {
+        return () -> new PartitionProcessor() {
             @Override
-            public PartitionProcessor get() {
-                return new PartitionProcessor() {
-                    @Override
-                    public Mono<Void> processEvent(PartitionEvent partitionEvent) {
-                        return processEvent.apply(partitionEvent);
-                    }
+            public Mono<Void> processEvent(PartitionEvent partitionEvent) {
+                return processEvent.apply(partitionEvent);
+            }
 
-                    @Override
-                    public Mono<Void> initialize(InitializationContext initializationContext) {
-                        if (initializePartition != null) {
-                            return initializePartition.apply(initializationContext);
-                        }
-                        return super.initialize(initializationContext);
-                    }
+            @Override
+            public Mono<Void> initialize(InitializationContext initializationContext) {
+                if (initializePartition != null) {
+                    return initializePartition.apply(initializationContext);
+                }
+                return super.initialize(initializationContext);
+            }
 
-                    @Override
-                    public void processError(ErrorContext errorContext) {
-                        if (processError != null) {
-                            processError.apply(errorContext);
-                        }
-                        super.processError(errorContext);
-                    }
+            @Override
+            public void processError(ErrorContext errorContext) {
+                if (processError != null) {
+                    processError.apply(errorContext);
+                }
+                super.processError(errorContext);
+            }
 
-                    @Override
-                    public Mono<Void> close(CloseContext closeContext) {
-                        if (closePartition != null) {
-                            closePartition.apply(closeContext);
-                        }
+            @Override
+            public Mono<Void> close(CloseContext closeContext) {
+                if (closePartition != null) {
+                    closePartition.apply(closeContext);
+                }
 
-                        return super.close(closeContext);
-                    }
-                };
+                return super.close(closeContext);
             }
         };
     }

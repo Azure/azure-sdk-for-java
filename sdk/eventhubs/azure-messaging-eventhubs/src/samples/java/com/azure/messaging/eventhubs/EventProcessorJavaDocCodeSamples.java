@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.EventProcessorBuilderJavaDocCodeSamples.PartitionProcessorImpl;
+import reactor.core.publisher.Mono;
 
 /**
  * Code snippets for {@link EventProcessor}.
@@ -18,13 +18,17 @@ public final class EventProcessorJavaDocCodeSamples {
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .connectionString(connectionString)
-            .partitionProcessorFactory((PartitionProcessorImpl::new))
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
             .consumerGroup("consumer-group")
             .buildEventProcessor();
 
         // BEGIN: com.azure.messaging.eventhubs.eventprocessor.startstop
         eventProcessor.start();
-        // do other stuff while the event processor is running
+        // Continue to perform other tasks while the processor is running in the background.
         eventProcessor.stop();
         // END: com.azure.messaging.eventhubs.eventprocessor.startstop
     }
