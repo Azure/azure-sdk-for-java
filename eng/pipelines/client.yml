@@ -233,7 +233,7 @@ jobs:
           OSName: $(OSVmImage)
 
       - task: Maven@3
-        displayName: 'Run tests'
+        displayName: 'Compile all code and run tests'
         inputs:
           mavenPomFile: $(pomFile)
           options: '$(DefaultOptions) $(ProfileFlag) -Dinclude-non-shipping-modules'

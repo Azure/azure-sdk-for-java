@@ -657,6 +657,9 @@
                 <exclude>module-info.java</exclude>
               </excludes>
               <compilerArgs>
+                <!-- Turn off annotation processing -->
+                <arg>-proc:none</arg>
+
                 <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
                 <arg>-Xlint:cast</arg>
                 <arg>-Xlint:classfile</arg>

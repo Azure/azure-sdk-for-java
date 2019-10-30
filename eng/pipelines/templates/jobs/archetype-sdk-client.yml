@@ -19,17 +19,17 @@ parameters:
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       ProfileFlag: ''
-    Linux - Java LTS:
+    Linux - Java 11:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.11'
       ProfileFlag: ''
-    macOS - Java LTS:
+    macOS - Java 11:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.11'
       ProfileFlag: ''
-    Windows - Java LTS:
+    Windows - Java 11:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
@@ -68,7 +68,7 @@ jobs:
           TargetFolder: $(Build.SourcesDirectory)
           RootFolder: $(Build.SourcesDirectory)
           BuildSHA: $(Build.SourceVersion)
-          RepoId: 'Azure/azure-sdk-for-java'      
+          RepoId: 'Azure/azure-sdk-for-java'
 
       - task: Maven@3
         displayName: 'Build and Package'
@@ -138,7 +138,7 @@ jobs:
         displayName: 'Install all client libraries (for SpotBugs analysis)'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -151,7 +151,7 @@ jobs:
         displayName: 'Run SpotBugs and CheckStyle'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '-Djava-lts -DskipTests -Dgpg.skip'
+          options: '-DskipTests -Dgpg.skip'
           mavenOptions: ''
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -165,7 +165,7 @@ jobs:
         displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -179,7 +179,7 @@ jobs:
         displayName: 'Run SpotBugs'
         inputs:
           mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
-          options: '--batch-mode -Djava-lts -DskipTests -Dgpg.skip'
+          options: '--batch-mode -DskipTests -Dgpg.skip'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
