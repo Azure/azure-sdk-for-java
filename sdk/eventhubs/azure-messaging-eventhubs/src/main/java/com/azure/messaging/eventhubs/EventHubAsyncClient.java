@@ -3,10 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,7 +17,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -50,8 +47,6 @@ public class EventHubAsyncClient implements Closeable {
      * The name of the default consumer group in the Event Hubs service.
      */
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
-
-    private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
 
     private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
@@ -203,15 +198,8 @@ public class EventHubAsyncClient implements Closeable {
             clonedOptions.setRetry(connectionOptions.getRetry());
         }
 
-        final String linkName = StringUtil.getRandomString("PR");
-        final String entityPath =
-            String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubName, consumerGroup, partitionId);
-
-        final Mono<AmqpReceiveLink> receiveLinkMono =
-            linkProvider.createReceiveLink(linkName, entityPath, eventPosition, clonedOptions)
-                .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
-
-        return new EventHubConsumerAsyncClient(receiveLinkMono, messageSerializer, clonedOptions);
+        return new EventHubConsumerAsyncClient(connectionOptions.getHostname(), connectionOptions.getEntityPath(),
+            linkProvider, messageSerializer, consumerGroup, eventPosition, clonedOptions);
     }
 
     /**
