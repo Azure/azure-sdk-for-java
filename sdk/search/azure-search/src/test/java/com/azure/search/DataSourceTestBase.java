@@ -4,7 +4,14 @@
 package com.azure.search;
 
 import com.azure.search.common.DataSources;
-import com.azure.search.models.*;
+import com.azure.search.models.DataChangeDetectionPolicy;
+import com.azure.search.models.DataContainer;
+import com.azure.search.models.DataDeletionDetectionPolicy;
+import com.azure.search.models.DataSource;
+import com.azure.search.models.DataSourceCredentials;
+import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Objects;
@@ -40,6 +47,25 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void canUpdateDataSource();
+
+    @Test
+    public void canUpdateConnectionData() {
+        // Note: since connection string is not returned when queried from the service, actually saving the
+        // datasource, retrieving it and verifying the change, won't work.
+        // Hence, we only validate that the properties on the local items can change.
+
+        // Create an initial datasource
+        DataSource initial = createTestBlobDataSource(null);
+        Assert.assertEquals(initial.getCredentials().getConnectionString(),
+            "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;");
+
+        // tweak the connection string and verify it was changed
+        String newConnString =
+            "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
+        initial.setCredentials(new DataSourceCredentials().setConnectionString(newConnString));
+
+        Assert.assertEquals(initial.getCredentials().getConnectionString(), newConnString);
+    }
 
     protected DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureBlobStorage(
