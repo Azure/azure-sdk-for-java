@@ -19,7 +19,7 @@ public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerPropertie
      */
     CosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
                           CosmosTrigger syncTrigger) {
-        super(asyncResponse.getProperties());
+        super(asyncResponse.resourceResponseWrapper, asyncResponse.getProperties());
         this.asyncResponse = asyncResponse;
         this.syncTrigger = syncTrigger;
     }

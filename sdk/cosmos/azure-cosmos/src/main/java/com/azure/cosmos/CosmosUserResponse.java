@@ -17,7 +17,7 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
      * @param database the database
      */
     CosmosUserResponse(CosmosAsyncUserResponse response, CosmosDatabase database) {
-        super(response.getProperties());
+        super(response.resourceResponseWrapper, response.getProperties());
         this.asyncResponse = response;
         if (response.getUser() != null) {
             this.user = new CosmosUser(response.getUser(), database, response.getUser().getId());

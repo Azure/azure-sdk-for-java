@@ -8,7 +8,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -52,6 +51,7 @@ public class CosmosItemTest extends TestSuiteBase {
     public void createItem() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse itemResponse = container.createItem(properties);
+        assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         validateItemResponse(properties, itemResponse);
 
         properties = getDocumentDefinition(UUID.randomUUID().toString());

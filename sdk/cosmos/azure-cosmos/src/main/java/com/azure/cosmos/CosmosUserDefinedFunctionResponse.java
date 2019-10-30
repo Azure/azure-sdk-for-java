@@ -19,7 +19,7 @@ public class CosmosUserDefinedFunctionResponse extends CosmosResponse<CosmosUser
      */
     CosmosUserDefinedFunctionResponse(CosmosAsyncUserDefinedFunctionResponse resourceResponse,
                                       CosmosUserDefinedFunction userDefinedFunction) {
-        super(resourceResponse.getProperties());
+        super(resourceResponse.resourceResponseWrapper, resourceResponse.getProperties());
         this.asyncResponse = resourceResponse;
         this.userDefinedFunction = userDefinedFunction;
     }
