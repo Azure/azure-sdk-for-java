@@ -708,10 +708,3 @@ directive:
         "@UnexpectedResponseExceptionType(ShareStorageException.class)"
       );
 ```
-### Rename FileDownloadHeaders to ShareFileDownloadHeaders
-``` yaml
-directive: 
-  - rename-model: 
-      from: "File-Download-Headers"
-      to: "Share-File-Download-Headers"
-```
