@@ -8,7 +8,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -67,6 +66,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
     }
 
