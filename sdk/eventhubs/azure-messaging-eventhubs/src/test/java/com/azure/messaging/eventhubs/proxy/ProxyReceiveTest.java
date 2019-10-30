@@ -109,11 +109,10 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Test
     public void testReceiverStartOfStreamFilters() {
         // Arrange
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
-            PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().take(NUMBER_OF_EVENTS))
+        StepVerifier.create(consumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }

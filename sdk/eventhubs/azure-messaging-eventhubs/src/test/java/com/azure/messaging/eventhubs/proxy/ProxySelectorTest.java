@@ -80,10 +80,9 @@ public class ProxySelectorTest extends IntegrationTestBase {
             .retry(new RetryOptions().setTryTimeout(Duration.ofSeconds(10)))
             .buildAsyncClient();
 
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
-            "1", EventPosition.earliest());
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventPosition.earliest());
 
-        StepVerifier.create(consumer.receive().take(1))
+        StepVerifier.create(consumer.receive("1").take(1))
             .expectErrorSatisfies(error -> {
                 // The message can vary because it is returned from proton-j, so we don't want to compare against that.
                 // This is a transient error from ExceptionUtil.java: line 67.

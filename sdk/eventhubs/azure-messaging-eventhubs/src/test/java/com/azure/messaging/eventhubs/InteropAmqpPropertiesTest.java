@@ -66,7 +66,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
         client = createBuilder().buildAsyncClient();
         producer = client.createProducer();
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventPosition.latest());
     }
 
     @Override
@@ -120,7 +120,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         // Act & Assert
         // We're setting a tracking identifier because we don't want to receive some random operations. We want to
         // receive the event we sent.
-        StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1))
+        StepVerifier.create(consumer.receive(PARTITION_ID).filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(x -> x.getEventData()))
             .then(() -> producer.send(msgEvent, sendOptions).block(TIMEOUT))
             .assertNext(event -> {
                 validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
@@ -130,7 +130,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
         Assert.assertNotNull(receivedEventData.get());
 
-        StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1))
+        StepVerifier.create(consumer.receive(PARTITION_ID).filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(x -> x.getEventData()))
             .then(() -> producer.send(receivedEventData.get(), sendOptions).block(TIMEOUT))
             .assertNext(event -> validateAmqpProperties(message, expectedAnnotations, applicationProperties, event))
             .verifyComplete();

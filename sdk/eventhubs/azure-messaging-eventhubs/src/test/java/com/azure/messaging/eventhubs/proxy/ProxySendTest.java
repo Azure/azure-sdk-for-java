@@ -115,9 +115,9 @@ public class ProxySendTest extends IntegrationTestBase {
 
         // Assert
         final EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
-            PARTITION_ID, EventPosition.fromEnqueuedTime(sendTime));
+            EventPosition.fromEnqueuedTime(sendTime));
 
-        StepVerifier.create(consumer.receive().filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
+        StepVerifier.create(consumer.receive(PARTITION_ID).filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }

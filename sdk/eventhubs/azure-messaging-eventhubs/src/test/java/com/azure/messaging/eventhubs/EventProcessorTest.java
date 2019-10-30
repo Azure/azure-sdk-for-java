@@ -3,39 +3,14 @@
 
 package com.azure.messaging.eventhubs;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -46,6 +21,31 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.io.Closeable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link EventProcessor}.
@@ -92,9 +92,9 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
-        when(consumer1.receive()).thenReturn(Flux.just(eventData1, eventData2));
+        when(consumer1.receive(anyString())).thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData1.getOffset()).thenReturn(1L);
@@ -138,8 +138,8 @@ public class EventProcessorTest {
 
         verify(eventHubAsyncClient, atLeastOnce()).getPartitionIds();
         verify(eventHubAsyncClient, atLeastOnce())
-            .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class));
-        verify(consumer1, atLeastOnce()).receive();
+            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class));
+        verify(consumer1, atLeastOnce()).receive(anyString());
         verify(consumer1, atLeastOnce()).close();
     }
 
@@ -154,9 +154,9 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
-        when(consumer1.receive()).thenReturn(Flux.just(eventData1));
+        when(consumer1.receive(anyString())).thenReturn(Flux.just(getEvent(eventData1)));
 
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
         final FaultyPartitionProcessor faultyPartitionProcessor = new FaultyPartitionProcessor();
@@ -191,7 +191,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
@@ -203,7 +203,7 @@ public class EventProcessorTest {
         properties.put(DIAGNOSTIC_ID_KEY, diagnosticId);
 
         when(eventData1.getProperties()).thenReturn(properties);
-        when(consumer1.receive()).thenReturn(Flux.just(eventData1));
+        when(consumer1.receive(anyString())).thenReturn(Flux.just(getEvent(eventData1)));
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
@@ -249,7 +249,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
@@ -261,7 +261,7 @@ public class EventProcessorTest {
         properties.put(DIAGNOSTIC_ID_KEY, diagnosticId);
 
         when(eventData1.getProperties()).thenReturn(properties);
-        when(consumer1.receive()).thenReturn(Flux.just(eventData1));
+        when(consumer1.receive(anyString())).thenReturn(Flux.just(getEvent(eventData1)));
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
@@ -304,29 +304,25 @@ public class EventProcessorTest {
         // Arrange
         final CountDownLatch count = new CountDownLatch(1);
 
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .thenReturn(consumer1, consumer2, consumer3);
+
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
-        when(eventHubAsyncClient
-            .createConsumer(anyString(), eq("1"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
-            .thenReturn(consumer1);
-        when(consumer1.receive()).thenReturn(
-            Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(eventData1, eventData2)));
+
+        when(consumer1.receive(eq("1"))).thenReturn(
+            Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData1), getEvent(eventData2))));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData2.getOffset()).thenReturn(100L);
 
-        when(eventHubAsyncClient
-            .createConsumer(anyString(), eq("2"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
-            .thenReturn(consumer2);
-        when(consumer2.receive()).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(eventData3)));
+        when(consumer2.receive(eq("2"))).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData3))));
         when(eventData3.getSequenceNumber()).thenReturn(1L);
         when(eventData3.getOffset()).thenReturn(1L);
 
-        when(eventHubAsyncClient
-            .createConsumer(anyString(), eq("3"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
-            .thenReturn(consumer3);
-        when(consumer3.receive()).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(eventData4)));
+        when(consumer3.receive( eq("3"))).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData4))));
         when(eventData4.getSequenceNumber()).thenReturn(1L);
         when(eventData4.getOffset()).thenReturn(1L);
 
@@ -348,25 +344,26 @@ public class EventProcessorTest {
 
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, times(1))
-            .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class));
+            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class));
 
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .assertNext(po -> {
-                try {
-                    if (po.getPartitionId().equals("1")) {
-                        verify(consumer1, atLeastOnce()).receive();
-                        verify(consumer1, atLeastOnce()).close();
-                    } else if (po.getPartitionId().equals("2")) {
-                        verify(consumer2, atLeastOnce()).receive();
-                        verify(consumer2, atLeastOnce()).close();
-                    } else {
-                        verify(consumer3, atLeastOnce()).receive();
-                        verify(consumer3, atLeastOnce()).close();
-                    }
-                } catch (IOException ex) {
-                    fail("Failed to assert consumer close method invocation");
+                if (po.getPartitionId().equals("1")) {
+                    verify(consumer1, atLeastOnce()).receive("1");
+                    verify(consumer1, atLeastOnce()).close();
+                } else if (po.getPartitionId().equals("2")) {
+                    verify(consumer2, atLeastOnce()).receive("2");
+                    verify(consumer2, atLeastOnce()).close();
+                } else {
+                    verify(consumer3, atLeastOnce()).receive("3");
+                    verify(consumer3, atLeastOnce()).close();
                 }
             }).verifyComplete();
+    }
+
+    private PartitionEvent getEvent(EventData event) {
+        PartitionContext context = new PartitionContext("foo", "bar", "baz", null);
+        return new PartitionEvent(context, event);
     }
 
     private static final class FaultyPartitionProcessor extends PartitionProcessor {
