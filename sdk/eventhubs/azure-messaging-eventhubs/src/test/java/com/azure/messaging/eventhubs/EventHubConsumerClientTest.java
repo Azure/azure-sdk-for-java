@@ -72,7 +72,7 @@ public class EventHubConsumerClientTest {
             .setPrefetchCount(PREFETCH)
             .setRetry(new RetryOptions())
             .setScheduler(Schedulers.elastic());
-        EventHubAsyncConsumer asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, serializer, options);
+        EventHubConsumerAsyncClient asyncConsumer = new EventHubConsumerAsyncClient(receiveLinkMono, serializer, options);
         consumer = new EventHubConsumerClient(asyncConsumer, options.getRetry().getTryTimeout());
     }
 
@@ -98,7 +98,7 @@ public class EventHubConsumerClientTest {
     @Test
     public void lastEnqueuedEventInformationCreated() {
         // Arrange
-        final EventHubAsyncConsumer runtimeConsumer = new EventHubAsyncConsumer(
+        final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             Mono.just(amqpReceiveLink),
             serializer,
             new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));

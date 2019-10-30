@@ -132,7 +132,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         final CountDownLatch countDownLatch = new CountDownLatch(batch.getSize());
 
-        Flux<EventHubAsyncConsumer> consumers;
+        Flux<EventHubConsumerAsyncClient> consumers;
         Disposable.Composite subscriptions = Disposables.composite();
         try {
 

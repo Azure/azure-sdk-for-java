@@ -35,13 +35,13 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
  * Create an {@link EventHubConsumerClient} using {@link EventHubClient}.
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
  *
  * <p><strong>Consuming events from an Event Hub</strong></p>
  * Events can be consumed using {@link #receive(int)} or {@link #receive(int, Duration)}. The call to `receive`
  * completes and returns an {@link IterableStream} when either the number of events is reached, or the
  * timeout duration is reached.
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive#int-duration}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-duration}
  *
  * @see EventHubClient#createConsumer(String, String, EventPosition)
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
@@ -54,11 +54,11 @@ public class EventHubConsumerClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
     private final AtomicLong idGenerator = new AtomicLong();
 
-    private final EventHubAsyncConsumer consumer;
+    private final EventHubConsumerAsyncClient consumer;
     private final Duration timeout;
     private volatile SynchronousEventSubscriber eventSubscriber;
 
-    EventHubConsumerClient(EventHubAsyncConsumer consumer, Duration tryTimeout) {
+    EventHubConsumerClient(EventHubConsumerAsyncClient consumer, Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
 
         this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");

@@ -7,7 +7,7 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -80,7 +80,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
             .retry(new RetryOptions().setTryTimeout(Duration.ofSeconds(10)))
             .buildAsyncClient();
 
-        final EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             "1", EventPosition.earliest());
 
         StepVerifier.create(consumer.receive().take(1))

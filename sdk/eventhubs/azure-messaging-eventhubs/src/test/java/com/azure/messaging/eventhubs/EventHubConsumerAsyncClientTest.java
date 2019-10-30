@@ -49,15 +49,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests to verify functionality of {@link EventHubAsyncConsumer}.
+ * Unit tests to verify functionality of {@link EventHubConsumerAsyncClient}.
  */
-public class EventHubAsyncConsumerTest {
+public class EventHubConsumerAsyncClientTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
 
-    private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumerTest.class);
+    private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final Flux<Throwable> errorProcessor = Flux.never();
     private final Flux<AmqpEndpointState> endpointProcessor = Flux.never();
@@ -71,7 +71,7 @@ public class EventHubAsyncConsumerTest {
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
-    private EventHubAsyncConsumer consumer;
+    private EventHubConsumerAsyncClient consumer;
 
     @Before
     public void setup() {
@@ -88,7 +88,7 @@ public class EventHubAsyncConsumerTest {
             .setPrefetchCount(PREFETCH)
             .setRetry(new RetryOptions())
             .setScheduler(Schedulers.single());
-        consumer = new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, options);
+        consumer = new EventHubConsumerAsyncClient(receiveLinkMono, messageSerializer, options);
     }
 
     @After
@@ -113,7 +113,7 @@ public class EventHubAsyncConsumerTest {
     @Test
     public void lastEnqueuedEventInformationCreated() {
         // Arrange
-        final EventHubAsyncConsumer runtimeConsumer = new EventHubAsyncConsumer(
+        final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             Mono.just(amqpReceiveLink),
             messageSerializer,
             new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));

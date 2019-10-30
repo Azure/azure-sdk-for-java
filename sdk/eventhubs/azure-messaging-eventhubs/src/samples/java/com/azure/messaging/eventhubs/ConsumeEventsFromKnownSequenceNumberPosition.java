@@ -26,7 +26,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
      * @param args Unused arguments to the program.
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
      *         complete.
-     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubAsyncConsumer},
+     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubConsumerAsyncClient},
      *         or the {@link EventHubProducerAsyncClient}
      */
     public static void main(String[] args) throws InterruptedException, IOException {
@@ -74,7 +74,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
         // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
         // service we only want events that are sent to the partition after we begin listening.
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+        EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             lastEnqueuedSequencePartitionId, EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false));
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the

@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClient;
 
 import java.time.Instant;
@@ -67,7 +67,7 @@ public final class EventPosition {
 
     /**
      * Corresponds to the end of the partition, where no more events are currently enqueued. Use this position to begin
-     * receiving from the next event to be enqueued in the partition after an {@link EventHubAsyncConsumer} is created
+     * receiving from the next event to be enqueued in the partition after an {@link EventHubConsumerAsyncClient} is created
      * with this position.
      *
      * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.

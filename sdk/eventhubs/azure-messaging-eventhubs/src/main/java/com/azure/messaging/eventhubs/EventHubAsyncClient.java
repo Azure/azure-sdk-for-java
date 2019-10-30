@@ -141,12 +141,12 @@ public class EventHubAsyncClient implements Closeable {
      * #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
-     * @return A new {@link EventHubAsyncConsumer} that receives events from the partition at the given position.
+     * @return A new {@link EventHubConsumerAsyncClient} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
      * string.
      */
-    public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
+    public EventHubConsumerAsyncClient createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         return createConsumer(consumerGroup, partitionId, eventPosition, defaultConsumerOptions);
     }
 
@@ -174,13 +174,13 @@ public class EventHubAsyncClient implements Closeable {
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
-     * @return An new {@link EventHubAsyncConsumer} that receives events from the partition with all configured {@link
+     * @return An new {@link EventHubConsumerAsyncClient} that receives events from the partition with all configured {@link
      * EventHubConsumerOptions}.
      * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
      * {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
+    public EventHubConsumerAsyncClient createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
         EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
@@ -211,11 +211,11 @@ public class EventHubAsyncClient implements Closeable {
             linkProvider.createReceiveLink(linkName, entityPath, eventPosition, clonedOptions)
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
 
-        return new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, clonedOptions);
+        return new EventHubConsumerAsyncClient(receiveLinkMono, messageSerializer, clonedOptions);
     }
 
     /**
-     * Closes and disposes of connection to service. Any {@link EventHubAsyncConsumer EventHubConsumers} and {@link
+     * Closes and disposes of connection to service. Any {@link EventHubConsumerAsyncClient EventHubConsumers} and {@link
      * EventHubProducerAsyncClient EventHubProducers} created with this instance will have their connections closed.
      */
     @Override

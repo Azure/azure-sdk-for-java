@@ -38,13 +38,13 @@ import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEED
 import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
 
 /**
- * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubAsyncConsumer}
+ * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubConsumerAsyncClient}
  * in other scenarios.
  *
  * @see SetPrefetchCountTest
  * @see EventPositionIntegrationTest
  */
-public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
+public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     // The maximum number of receivers on a partition + consumer group is 5.
     private static final int MAX_NUMBER_OF_CONSUMERS = 5;
@@ -52,8 +52,8 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
     private EventHubAsyncClient client;
 
-    public EventHubAsyncConsumerIntegrationTest() {
-        super(new ClientLogger(EventHubAsyncConsumerIntegrationTest.class));
+    public EventHubConsumerAsyncClientIntegrationTest() {
+        super(new ClientLogger(EventHubConsumerAsyncClientIntegrationTest.class));
     }
 
     @Rule
@@ -89,13 +89,13 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         }
 
         final CountDownLatch countDownLatch = new CountDownLatch(partitionIds.size());
-        final EventHubAsyncConsumer[] consumers = new EventHubAsyncConsumer[partitionIds.size()];
+        final EventHubConsumerAsyncClient[] consumers = new EventHubConsumerAsyncClient[partitionIds.size()];
         final EventHubProducerAsyncClient[] producers = new EventHubProducerAsyncClient[partitionIds.size()];
         final Disposable.Composite subscriptions = Disposables.composite();
         try {
             for (int i = 0; i < partitionIds.size(); i++) {
                 final String partitionId = partitionIds.get(i);
-                final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+                final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
                     EventPosition.fromEnqueuedTime(Instant.now()));
                 consumers[i] = consumer;
 
@@ -149,7 +149,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(1)
             .setTrackLastEnqueuedEventProperties(false);
-        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
             position, options);
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
@@ -195,7 +195,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(1)
             .setTrackLastEnqueuedEventProperties(true);
-        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
             EventPosition.latest(), options);
         final AtomicReference<LastEnqueuedEventProperties> lastViewed = new AtomicReference<>(
             new LastEnqueuedEventProperties(null, null, null, null));
@@ -261,13 +261,13 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
             }
         };
 
-        final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
+        final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
-        EventHubAsyncConsumer exceededConsumer = null;
+        EventHubConsumerAsyncClient exceededConsumer = null;
         try {
             for (int i = 0; i < MAX_NUMBER_OF_CONSUMERS; i++) {
                 final EventHubConsumerOptions options = new EventHubConsumerOptions().setIdentifier(prefix + ":" + i);
-                final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.earliest(), options);
+                final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.earliest(), options);
                 consumers.add(consumer);
                 subscriptions.add(consumer.receive().take(TIMEOUT).subscribe(eventData -> {
                     // Received an event. We don't need to log it though.
@@ -287,7 +287,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         } finally {
             subscriptions.dispose();
             dispose(exceededConsumer);
-            dispose(consumers.toArray(new EventHubAsyncConsumer[0]));
+            dispose(consumers.toArray(new EventHubConsumerAsyncClient[0]));
         }
     }
 
@@ -303,7 +303,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setOwnerLevel(1L);
-        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
             position, options);
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
@@ -331,7 +331,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         Thread.sleep(2000);
 
         logger.info("STARTED CONSUMING FROM PARTITION 1 with C3");
-        final EventHubAsyncConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+        final EventHubConsumerAsyncClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
             position, options);
         subscriptions.add(consumer2.receive()
             .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))

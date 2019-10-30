@@ -20,7 +20,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.InMemoryPartitionManager;
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.PartitionProcessor;
@@ -64,7 +64,7 @@ public class PartitionBasedLoadBalancerTest {
     private EventHubAsyncClient eventHubAsyncClient;
 
     @Mock
-    private EventHubAsyncConsumer eventHubConsumer;
+    private EventHubConsumerAsyncClient eventHubConsumer;
 
     @Before
     public void setup() {

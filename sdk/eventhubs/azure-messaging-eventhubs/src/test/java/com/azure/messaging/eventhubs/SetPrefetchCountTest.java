@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
 /**
- * Verifies we can use various prefetch options with {@link EventHubAsyncConsumer}.
+ * Verifies we can use various prefetch options with {@link EventHubConsumerAsyncClient}.
  */
 @Ignore("Set prefetch tests do not work because they try to send very large number of events at once.")
 public class SetPrefetchCountTest extends IntegrationTestBase {
@@ -40,7 +40,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
-    private EventHubAsyncConsumer consumer;
+    private EventHubConsumerAsyncClient consumer;
 
     @Rule
     public TestName testName = new TestName();

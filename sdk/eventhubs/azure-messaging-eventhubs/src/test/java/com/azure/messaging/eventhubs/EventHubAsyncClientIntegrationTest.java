@@ -99,7 +99,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(2);
-        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
         // Act & Assert
@@ -135,12 +135,12 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         final EventHubProducerAsyncClient producer = clients[0].createProducer();
-        final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
+        final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
 
         try {
             for (final EventHubAsyncClient hubClient : clients) {
-                final EventHubAsyncConsumer consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+                final EventHubConsumerAsyncClient consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
                 consumers.add(consumer);
 
                 final Disposable subscription = consumer.receive().filter(event -> {
@@ -173,7 +173,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             subscriptions.dispose();
 
             dispose(producer);
-            dispose(consumers.toArray(new EventHubAsyncConsumer[0]));
+            dispose(consumers.toArray(new EventHubConsumerAsyncClient[0]));
             dispose(clients);
         }
     }

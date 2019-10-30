@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import reactor.core.scheduler.Scheduler;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 /**
  * The baseline set of options that can be specified when creating an {@link EventHubConsumerClient} or an
- * {@link EventHubAsyncConsumer} to configure its behavior.
+ * {@link EventHubConsumerAsyncClient} to configure its behavior.
  *
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
@@ -28,7 +28,7 @@ public class EventHubConsumerOptions implements Cloneable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
 
     /**
-     * The maximum length, in characters, for the identifier assigned to an {@link EventHubAsyncConsumer}.
+     * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumerAsyncClient}.
      */
     public static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
     /**

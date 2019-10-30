@@ -14,7 +14,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import com.azure.messaging.eventhubs.CloseReason;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
@@ -46,7 +46,7 @@ import reactor.core.publisher.Signal;
 public class PartitionPumpManager {
 
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
-    private final Map<String, EventHubAsyncConsumer> partitionPumps = new ConcurrentHashMap<>();
+    private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
     private final PartitionManager partitionManager;
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventPosition initialEventPosition;
@@ -117,7 +117,7 @@ public class PartitionPumpManager {
         }
 
         EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().setOwnerLevel(0L);
-        EventHubAsyncConsumer eventHubConsumer = eventHubAsyncClient
+        EventHubConsumerAsyncClient eventHubConsumer = eventHubAsyncClient
             .createConsumer(claimedOwnership.getConsumerGroupName(), claimedOwnership.getPartitionId(),
                 startFromEventPosition,
                 eventHubConsumerOptions);
@@ -142,7 +142,7 @@ public class PartitionPumpManager {
             () -> partitionProcessor.close(partitionContext, CloseReason.EVENT_PROCESSOR_SHUTDOWN));
     }
 
-    private void handleProcessingError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,
+    private void handleProcessingError(PartitionOwnership claimedOwnership, EventHubConsumerAsyncClient eventHubConsumer,
         PartitionProcessor partitionProcessor, Throwable error, PartitionContext partitionContext) {
         try {
             // There was an error in process event (user provided code), call process error and if that
@@ -153,7 +153,7 @@ public class PartitionPumpManager {
         }
     }
 
-    private void handleReceiveError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,
+    private void handleReceiveError(PartitionOwnership claimedOwnership, EventHubConsumerAsyncClient eventHubConsumer,
         PartitionProcessor partitionProcessor, Throwable error, PartitionContext partitionContext) {
         try {
             // if there was an error on receive, it also marks the end of the event data stream

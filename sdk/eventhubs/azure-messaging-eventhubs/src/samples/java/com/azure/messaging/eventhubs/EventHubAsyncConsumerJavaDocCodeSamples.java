@@ -11,7 +11,7 @@ import reactor.core.publisher.BaseSubscriber;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Code snippets demonstrating various {@link EventHubAsyncConsumer} scenarios.
+ * Code snippets demonstrating various {@link EventHubConsumerAsyncClient} scenarios.
  */
 public class EventHubAsyncConsumerJavaDocCodeSamples {
     private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
@@ -20,11 +20,11 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
      * Receives event data
      */
     public void receive() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.latest());
 
         // Keep a reference to `subscription`. When the program is finished receiving events, call
@@ -32,7 +32,7 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
         Disposable subscription = consumer.receive().subscribe(event -> {
             // process event
         }, error -> System.err.print(error.toString()));
-        // END: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive
 
         subscription.dispose();
     }
@@ -44,10 +44,10 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+        EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             partitionId, EventPosition.latest());
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#basesubscriber
         consumer.receive().subscribe(new BaseSubscriber<EventData>() {
             private static final int NUMBER_OF_EVENTS = 5;
             private final AtomicInteger currentNumberOfEvents = new AtomicInteger();
@@ -70,6 +70,6 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
                 }
             }
         });
-        // END: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#basesubscriber
     }
 }

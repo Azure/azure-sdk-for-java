@@ -22,7 +22,7 @@ public class EventHubConsumerJavaDocCodeSamples {
      * @throws IOException IO exception when the consumer cannot be disposed of.
      */
     public void instantiate() throws IOException {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.instantiation
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
         EventHubClient client = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
             .buildClient();
@@ -30,7 +30,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         String partitionId = "0";
         String consumerGroup = "$DEFAULT";
         EventHubConsumerClient consumer = client.createConsumer(consumerGroup, partitionId, EventPosition.latest());
-        // END: com.azure.messaging.eventhubs.eventhubconsumer.instantiation
+        // END: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
 
         consumer.close();
     }
@@ -39,7 +39,7 @@ public class EventHubConsumerJavaDocCodeSamples {
      * Receives event data
      */
     public void receive() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.receive#int-duration
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-duration
         // Obtain partitionId from EventHubClient.getPartitionIds().
         String partitionId = "0";
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
@@ -55,7 +55,7 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         // Gets the next set of events to consume and process.
         IterableStream<EventData> nextEvents = consumer.receive(100, Duration.ofSeconds(30));
-        // END: com.azure.messaging.eventhubs.eventhubconsumer.receive#int-duration
+        // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-duration
 
         for (EventData event : nextEvents) {
             // For each event, perform some sort of processing.

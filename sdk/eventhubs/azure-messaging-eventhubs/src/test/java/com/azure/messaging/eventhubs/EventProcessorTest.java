@@ -55,7 +55,7 @@ public class EventProcessorTest {
     private EventHubAsyncClient eventHubAsyncClient;
 
     @Mock
-    private EventHubAsyncConsumer consumer1, consumer2, consumer3;
+    private EventHubConsumerAsyncClient consumer1, consumer2, consumer3;
 
     @Mock
     private EventData eventData1, eventData2, eventData3, eventData4;
