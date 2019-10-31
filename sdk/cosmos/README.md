@@ -89,9 +89,9 @@ For example, using maven, you can add the following dependency to your maven pom
 
 ```xml
 <dependency>
-  <groupId>com.microsoft.azure</groupId>
+  <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>3.1.0</version>
+  <version>4.0.0-preview.1</version>
 </dependency>
 ```
 
@@ -151,16 +151,15 @@ readItemMono
 After result is received if you want to do CPU intensive work on the result you should avoid doing so on eventloop IO netty thread. You can instead provide your own Scheduler to provide your own thread for running your work.
 
 ```java
-import rx.schedulers;
 
 Mono<CosmosItemResponse> readItemMono = item.read();
 
 readItemMono
-  .subscribeOn(Schedulers.computation())
+  .subscribeOn(Schedulers.parallel())
   .subscribe(
   resourceResponse -> {
-    // this is executed on threads provided by Scheduler.computation()
-    // Schedulers.computation() should be used only the work is cpu intensive and you are not doing blocking IO, thread sleep, etc. in this thread against other resources.
+    // this is executed on threads provided by Scheduler.parallel()
+    // Schedulers.parallel() should be used only the work is cpu intensive and you are not doing blocking IO, thread sleep, etc. in this thread against other resources.
     veryCpuIntensiveWork();
   });
 
@@ -218,7 +217,7 @@ and add the following dependency to your project maven dependencies:
 <dependency>
   <groupId>io.netty</groupId>
   <artifactId>netty-tcnative</artifactId>
-  <version>2.0.25.Final</version>
+  <version>2.0.26.Final</version>
   <classifier>linux-x86_64</classifier>
 </dependency>
 ```
