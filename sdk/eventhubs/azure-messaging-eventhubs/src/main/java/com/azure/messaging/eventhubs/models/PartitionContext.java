@@ -37,6 +37,8 @@ public class PartitionContext {
      * @param eTag The last known ETag stored in {@link EventProcessorStore} for this partition.
      * @param eventProcessorStore A {@link EventProcessorStore} implementation to read and update partition ownership
      * and checkpoint information.
+     * @throws NullPointerException if {@code partitionId} or {@code eventHubName} or {@code consumerGroup}
+     * or {@code ownerId} or {@code eTag} or {@code eventProcessorStore} is {@code null}.
      */
     public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
         String ownerId, String eTag, EventProcessorStore eventProcessorStore) {

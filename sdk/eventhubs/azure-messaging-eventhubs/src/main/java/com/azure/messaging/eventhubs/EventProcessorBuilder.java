@@ -209,9 +209,10 @@ public class EventProcessorBuilder {
      *
      * @param consumerGroup The consumer group name this {@link EventProcessor} should consume events.
      * @return The updated {@link EventProcessorBuilder} instance.
+     * @throws NullPointerException if {@code consumerGroup} is {@code null}.
      */
     public EventProcessorBuilder consumerGroup(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
+        this.consumerGroup = Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");;
         return this;
     }
 
@@ -226,9 +227,10 @@ public class EventProcessorBuilder {
      *
      * @param eventProcessorStore Implementation of {@link EventProcessorStore}.
      * @return The updated {@link EventProcessorBuilder} instance.
+     * @throws NullPointerException if {@code eventProcessorStore} is {@code null}.
      */
     public EventProcessorBuilder eventProcessorStore(EventProcessorStore eventProcessorStore) {
-        this.eventProcessorStore = eventProcessorStore;
+        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "'eventProcessorStore' cannot be null");;
         return this;
     }
 
@@ -238,9 +240,10 @@ public class EventProcessorBuilder {
      *
      * @param processEvent The function to call when an event is received by this {@link EventProcessor}.
      * @return The updated {@link EventProcessorBuilder} instance.
+     * @throws NullPointerException if {@code processEvent} is {@code null}.
      */
     public EventProcessorBuilder processEvent(Function<PartitionEvent, Mono<Void>> processEvent) {
-        this.processEvent = processEvent;
+        this.processEvent = Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
         return this;
     }
 
@@ -292,11 +295,17 @@ public class EventProcessorBuilder {
      * EventPosition#earliest() earliest} available event in the respective partitions.
      * </p>
      *
+     * @throws NullPointerException if {@code processEvent} or {@code eventProcessorStore} or {@code consumerGroup} is
+     * {@code null}.
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
+     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      * @return A new instance of {@link EventProcessor}.
      */
     public EventProcessor buildEventProcessor() {
         Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
         Objects.requireNonNull(eventProcessorStore, "'eventProcessStore' cannot be null");
+        Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         return new EventProcessor(eventHubClientBuilder, this.consumerGroup,
