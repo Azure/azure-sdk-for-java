@@ -24,9 +24,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
     private String leaseId = "leaseId";
     private Duration timeout = Duration.ofSeconds(30);
     private String key1 = "key1";
-    private String key2 = "key2";
     private String value1 = "val1";
-    private String value2 = "val2";
     private String destinationPath = "destinationPath";
 
     /**
