@@ -113,7 +113,7 @@ public final class DataLakePathClientBuilder {
         to read and debug.
          */
         String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
-            ? FileSystemAsyncClient.ROOT_FILESYSTEM_NAME
+            ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
             : fileSystemName;
 
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
@@ -169,7 +169,7 @@ public final class DataLakePathClientBuilder {
         to read and debug.
          */
         String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
-            ? FileSystemAsyncClient.ROOT_FILESYSTEM_NAME
+            ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
             : fileSystemName;
 
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();

@@ -58,19 +58,19 @@ public class BasicExample {
          * FileSystem object that wraps the file system's endpoint, credential and a request pipeline (inherited from storageClient).
          * Note that file system names require lowercase.
          */
-        FileSystemClient fileSystemClient = storageClient.getFileSystemClient("myjavafilesystembasic" + System.currentTimeMillis());
+        DataLakeFileSystemClient dataLakeFileSystemClient = storageClient.getFileSystemClient("myjavafilesystembasic" + System.currentTimeMillis());
 
         /*
          * Create a file system in Storage datalake account.
          */
-        fileSystemClient.create();
+        dataLakeFileSystemClient.create();
 
         /*
          * Create a client that references a to-be-created file in your Azure Storage account's file system.
          * This returns a DataLakeFileClient object that wraps the file's endpoint, credential and a request pipeline
-         * (inherited from fileSystemClient). Note that file names can be mixed case.
+         * (inherited from dataLakeFileSystemClient). Note that file names can be mixed case.
          */
-        DataLakeFileClient fileClient = fileSystemClient.getFileClient("HelloWorld.txt");
+        DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("HelloWorld.txt");
 
         String data = "Hello world!";
         InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
@@ -105,18 +105,18 @@ public class BasicExample {
         for (int i = 0; i < 3; i++) {
             String sampleData = "Samples";
             InputStream dataInFiles = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
-            DataLakeFileClient fClient = fileSystemClient.getFileClient("myfilesforlisting" + System.currentTimeMillis());
+            DataLakeFileClient fClient = dataLakeFileSystemClient.getFileClient("myfilesforlisting" + System.currentTimeMillis());
             fClient.create();
             fClient.append(dataInFiles, 0, sampleData.length());
             fClient.flush(sampleData.length());
             dataInFiles.close();
-            fileSystemClient.getDirectoryClient("mydirsforlisting" + System.currentTimeMillis()).create();
+            dataLakeFileSystemClient.getDirectoryClient("mydirsforlisting" + System.currentTimeMillis()).create();
         }
 
         /*
          * List the path(s) in our file system.
          */
-        fileSystemClient.listPaths()
+        dataLakeFileSystemClient.listPaths()
             .forEach(pathItem -> System.out.println("Path name: " + pathItem.getName()));
 
         /*
@@ -127,6 +127,6 @@ public class BasicExample {
         /*
          * Delete the file system we created earlier.
          */
-        fileSystemClient.delete();
+        dataLakeFileSystemClient.delete();
     }
 }

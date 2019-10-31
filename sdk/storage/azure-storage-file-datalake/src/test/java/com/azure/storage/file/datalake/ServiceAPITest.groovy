@@ -79,7 +79,7 @@ class ServiceAPITest extends APISpec {
         def fileSystemName = generateFileSystemName()
         def fileSystemPrefix = fileSystemName.substring(0, Math.min(60, fileSystemName.length()))
 
-        def fileSystems = [] as Collection<FileSystemClient>
+        def fileSystems = [] as Collection<DataLakeFileSystemClient>
         for (i in (1..NUM_FILESYSTEMS)) {
             fileSystems << primaryDataLakeServiceClient.createFileSystem(fileSystemPrefix + i)
         }
@@ -107,7 +107,7 @@ class ServiceAPITest extends APISpec {
         def NUM_FILESYSTEMS = 5
         def PAGE_RESULTS = 3
 
-        def fileSystems = [] as Collection<FileSystemClient>
+        def fileSystems = [] as Collection<DataLakeFileSystemClient>
         for (i in (1..NUM_FILESYSTEMS)) {
             fileSystems << primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())
         }

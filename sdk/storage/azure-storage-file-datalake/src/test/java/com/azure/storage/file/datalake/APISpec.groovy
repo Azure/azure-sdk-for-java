@@ -39,13 +39,13 @@ class APISpec extends Specification {
 
     // both sync and async clients point to same container
     @Shared
-    FileSystemClient fsc
+    DataLakeFileSystemClient fsc
 
     @Shared
-    FileSystemClient fscPremium
+    DataLakeFileSystemClient fscPremium
 
     @Shared
-    FileSystemAsyncClient fscAsync
+    DataLakeFileSystemAsyncClient fscAsync
 
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
@@ -146,7 +146,7 @@ class APISpec extends Specification {
     def cleanup() {
         def options = new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName)
         for (FileSystemItem fileSystem : primaryDataLakeServiceClient.listFileSystems(options, Duration.ofSeconds(120))) {
-            FileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(fileSystem.getName())
+            DataLakeFileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(fileSystem.getName())
 
             if (fileSystem.getProperties().getLeaseState() == LeaseStateType.LEASED) {
                 createLeaseClient(fileSystemClient).breakLeaseWithResponse(0, null, null, null)
@@ -301,11 +301,11 @@ class APISpec extends Specification {
             .buildClient()
     }
 
-    static DataLakeLeaseClient createLeaseClient(FileSystemClient fileSystemClient) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileSystemClient fileSystemClient) {
         return createLeaseClient(fileSystemClient, null)
     }
 
-    static DataLakeLeaseClient createLeaseClient(FileSystemClient fileSystemClient, String leaseId) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileSystemClient fileSystemClient, String leaseId) {
         return new DataLakeLeaseClientBuilder()
             .fileSystemClient(fileSystemClient)
             .leaseId(leaseId)
@@ -357,8 +357,8 @@ class APISpec extends Specification {
         return builder.sasToken(sasToken).buildFileClient()
     }
 
-    FileSystemClient getFileSystemClient(String sasToken, String endpoint) {
-        FileSystemClientBuilder builder = new FileSystemClientBuilder()
+    DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
+        DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -442,7 +442,7 @@ class APISpec extends Specification {
             response.getHeaders().getValue("Content-Type") == contentType
     }
 
-    def setupFileSystemLeaseCondition(FileSystemClient fsc, String leaseID) {
+    def setupFileSystemLeaseCondition(DataLakeFileSystemClient fsc, String leaseID) {
         if (leaseID == receivedLeaseID) {
             return createLeaseClient(fsc).acquireLease(-1)
         } else {

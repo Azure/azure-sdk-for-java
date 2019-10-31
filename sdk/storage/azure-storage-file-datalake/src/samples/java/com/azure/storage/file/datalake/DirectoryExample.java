@@ -26,8 +26,8 @@ public class DirectoryExample {
      */
     public static void main(String[] args) {
         String fileSystemName = generateRandomName();
-        FileSystemClient fileSystemClient = new FileSystemClientBuilder().endpoint(ENDPOINT).fileSystemName(fileSystemName).buildClient();
-        fileSystemClient.create();
+        DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT).fileSystemName(fileSystemName).buildClient();
+        dataLakeFileSystemClient.create();
         // Build up a directory client
         DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder().endpoint(ENDPOINT)
             .pathName(generateRandomName())
@@ -94,7 +94,7 @@ public class DirectoryExample {
             System.out.println("Failed to delete the parent directory. Reasons: " + e.getMessage());
         }
 
-        fileSystemClient.delete();
+        dataLakeFileSystemClient.delete();
     }
 
 }

@@ -55,19 +55,19 @@ public class GetSetAccessControlExample {
          * FileSystem object that wraps the file system's endpoint, credential and a request pipeline (inherited from storageClient).
          * Note that file system names require lowercase.
          */
-        FileSystemClient fileSystemClient = storageClient.getFileSystemClient("myjavafilesystembasic" + System.currentTimeMillis());
+        DataLakeFileSystemClient dataLakeFileSystemClient = storageClient.getFileSystemClient("myjavafilesystembasic" + System.currentTimeMillis());
 
         /*
          * Create a file system in Storage datalake account.
          */
-        fileSystemClient.create();
+        dataLakeFileSystemClient.create();
 
         /*
          * Create a client that references a to-be-created file in your Azure Storage account's file system.
          * This returns a DataLakeFileClient object that wraps the file's endpoint, credential and a request pipeline
-         * (inherited from fileSystemClient). Note that file names can be mixed case.
+         * (inherited from dataLakeFileSystemClient). Note that file names can be mixed case.
          */
-        DataLakeFileClient fileClient = fileSystemClient.getFileClient("HelloWorld.txt");
+        DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("HelloWorld.txt");
 
         /*
          * Create the file.
@@ -102,6 +102,6 @@ public class GetSetAccessControlExample {
         /*
          * Delete the file system we created earlier.
          */
-        fileSystemClient.delete();
+        dataLakeFileSystemClient.delete();
     }
 }

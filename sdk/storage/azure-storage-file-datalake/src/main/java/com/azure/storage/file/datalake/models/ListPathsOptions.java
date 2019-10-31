@@ -4,12 +4,12 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.file.datalake.FileSystemAsyncClient;
-import com.azure.storage.file.datalake.FileSystemClient;
+import com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient;
+import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 
 /**
- * Defines options available to configure the behavior of a call to listContainersSegment on a {@link FileSystemClient}
- * or a {@link FileSystemAsyncClient} object. See the constructor for details on each of the options. Null may be
+ * Defines options available to configure the behavior of a call to listContainersSegment on a {@link DataLakeFileSystemClient}
+ * or a {@link DataLakeFileSystemAsyncClient} object. See the constructor for details on each of the options. Null may be
  * passed in place of an object of this type if no options are desirable.
  */
 public class ListPathsOptions {

@@ -24,10 +24,10 @@ import java.time.Duration;
 import java.util.Map;
 
 /**
- * Client to a file system. It may only be instantiated through a {@link FileSystemClientBuilder} or via the method
- * {@link DataLakeServiceClient#getFileSystemClient(String)}. This class does not hold any state about a particular
- * file system but is instead a convenient way of sending off appropriate requests to the resource on the service. It
- * may also be used to construct URLs to files/directories.
+ * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
+ * method {@link DataLakeServiceClient#getFileSystemClient(String)}. This class does not hold any state about a
+ * particular file system but is instead a convenient way of sending off appropriate requests to the resource on the
+ * service. It may also be used to construct URLs to files/directories.
  *
  * <p>
  * This client contains operations on a file system. Operations on a path are available on {@link DataLakeFileClient}
@@ -38,39 +38,41 @@ import java.util.Map;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>
  *     Azure Docs</a> for more information on file systems.
  */
-@ServiceClient(builder = FileSystemClientBuilder.class)
-public class FileSystemClient {
-    private final ClientLogger logger = new ClientLogger(FileSystemClient.class);
+@ServiceClient(builder = DataLakeFileSystemClientBuilder.class)
+public class DataLakeFileSystemClient {
+    private final ClientLogger logger = new ClientLogger(DataLakeFileSystemClient.class);
 
-    private final FileSystemAsyncClient fileSystemAsyncClient;
+    private final DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;
     private final BlobContainerClient blobContainerClient;
 
-    public static final String ROOT_FILESYSTEM_NAME = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
+    public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
-//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = FileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
+//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME =
+//    DataLakeFileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
 
-//    public static final String LOG_FILESYSTEM_NAME = FileSystemAsyncClient.LOG_FILESYSTEM_NAME;
+//    public static final String LOG_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.LOG_FILESYSTEM_NAME;
 
     /**
-     * Package-private constructor for use by {@link FileSystemClientBuilder}.
+     * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
      *
-     * @param fileSystemAsyncClient the async file system client.
+     * @param dataLakeFileSystemAsyncClient the async file system client.
      * @param blobContainerClient the sync blob container client.
      */
-    FileSystemClient(FileSystemAsyncClient fileSystemAsyncClient, BlobContainerClient blobContainerClient) {
-        this.fileSystemAsyncClient = fileSystemAsyncClient;
+    DataLakeFileSystemClient(DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient,
+        BlobContainerClient blobContainerClient) {
+        this.dataLakeFileSystemAsyncClient = dataLakeFileSystemAsyncClient;
         this.blobContainerClient = blobContainerClient;
     }
 
     /**
-     * Initializes a new DataLakeFileClient object by concatenating fileName to the end of FileSystemClient's URL. The
-     * new DataLakeFileClient uses the same request policy pipeline as the FileSystemClient.
+     * Initializes a new DataLakeFileClient object by concatenating fileName to the end of DataLakeFileSystemClient's
+     * URL. The new DataLakeFileClient uses the same request policy pipeline as the DataLakeFileSystemClient.
      *
      * @param fileName A {@code String} representing the name of the file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getFileClient#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getFileClient#String}
      *
      * @return A new {@link DataLakeFileClient} object which references the file with the specified name in this file
      * system.
@@ -79,25 +81,26 @@ public class FileSystemClient {
         if (ImplUtils.isNullOrEmpty(fileName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
         }
-        return new DataLakeFileClient(fileSystemAsyncClient.getFileAsyncClient(fileName),
+        return new DataLakeFileClient(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileName),
             blobContainerClient.getBlobClient(fileName).getBlockBlobClient());
     }
 
     /**
-     * Initializes a new DataLakeDirectoryClient object by concatenating directoryName to the end of FileSystemClient's
-     * URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the FileSystemClient.
+     * Initializes a new DataLakeDirectoryClient object by concatenating directoryName to the end of
+     * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
+     * DataLakeFileSystemClient.
      *
      * @param directoryName A {@code String} representing the name of the directory.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getDirectoryClient#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getDirectoryClient#String}
      *
      * @return A new {@link DataLakeDirectoryClient} object which references the directory with the specified name in
      * this file system.
      */
     public DataLakeDirectoryClient getDirectoryClient(String directoryName) {
-        return new DataLakeDirectoryClient(fileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
+        return new DataLakeDirectoryClient(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
             blobContainerClient.getBlobClient(directoryName).getBlockBlobClient());
     }
 
@@ -106,12 +109,12 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getFileSystemName}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getFileSystemName}
      *
      * @return The name of file system.
      */
     public String getFileSystemName() {
-        return fileSystemAsyncClient.getFileSystemName();
+        return dataLakeFileSystemAsyncClient.getFileSystemName();
     }
 
     /**
@@ -120,7 +123,7 @@ public class FileSystemClient {
      * @return the URL.
      */
     public String getFileSystemUrl() {
-        return fileSystemAsyncClient.getFileSystemUrl();
+        return dataLakeFileSystemAsyncClient.getFileSystemUrl();
     }
 
     /**
@@ -129,7 +132,7 @@ public class FileSystemClient {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return fileSystemAsyncClient.getAccountName();
+        return dataLakeFileSystemAsyncClient.getAccountName();
     }
 
     /**
@@ -138,7 +141,7 @@ public class FileSystemClient {
      * @return the service version the client is using.
      */
     public DataLakeServiceVersion getServiceVersion() {
-        return fileSystemAsyncClient.getServiceVersion();
+        return dataLakeFileSystemAsyncClient.getServiceVersion();
     }
 
 
@@ -148,7 +151,7 @@ public class FileSystemClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return fileSystemAsyncClient.getHttpPipeline();
+        return dataLakeFileSystemAsyncClient.getHttpPipeline();
     }
 
 
@@ -159,7 +162,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.create}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.create}
      */
     public void create() {
         createWithResponse(null, null, null, Context.NONE);
@@ -172,7 +175,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createWithResponse#Map-PublicAccessType-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createWithResponse#Map-PublicAccessType-Duration-Context}
      *
      * @param metadata Metadata to associate with the file system.
      * @param accessType Specifies how the data in this file system is available to the public. See the
@@ -194,7 +197,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.delete}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.delete}
      */
     public void delete() {
         deleteWithResponse(null, null, Context.NONE);
@@ -207,7 +210,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context}
      *
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -226,7 +229,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getProperties}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getProperties}
      *
      * @return The file system properties.
      */
@@ -240,7 +243,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.getPropertiesWithResponse#String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getPropertiesWithResponse#String-Duration-Context}
      *
      * @param leaseId The lease ID the active lease on the file system must match.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -259,7 +262,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.setMetadata#Map}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadata#Map}
      *
      * @param metadata Metadata to associate with the file system.
      */
@@ -273,7 +276,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context}
      * @param metadata Metadata to associate with the file system.
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -293,7 +296,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.listPaths}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths}
      *
      * @return The list of files/directories.
      */
@@ -308,14 +311,14 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.listPaths#ListPathsOptions-Duration}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration}
      *
      * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of files/directories.
      */
     public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
-        return new PagedIterable<>(fileSystemAsyncClient.listPathsWithOptionalTimeout(options, timeout));
+        return new PagedIterable<>(dataLakeFileSystemAsyncClient.listPathsWithOptionalTimeout(options, timeout));
     }
 
     /**
@@ -325,7 +328,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFile#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String}
      *
      * @param fileName Name of the file to create.
      * @return A {@link DataLakeFileClient} used to interact with the file created.
@@ -340,7 +343,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
      *
      * @param fileName Name of the file to create.
      * @param headers {@link PathHttpHeaders}
@@ -370,7 +373,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.deleteFile#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFile#String}
      *
      * @param fileName Name of the file to delete.
      */
@@ -385,7 +388,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context}
      *
      * @param fileName Name of the file to delete.
      * @param accessConditions {@link DataLakeRequestConditions}
@@ -405,7 +408,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createDirectory#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String}
      *
      * @param directoryName Name of the directory to create.
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
@@ -421,7 +424,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
      *
      * @param directoryName Name of the directory to create.
      * @param headers {@link PathHttpHeaders}
@@ -451,7 +454,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.deleteDirectory#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectory#String}
      *
      * @param directoryName Name of the directory to delete.
      */
@@ -466,7 +469,7 @@ public class FileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context}
      *
      * @param directoryName Name of the directory to delete.
      * @param recursive Whether or not to delete all paths beneath the directory.

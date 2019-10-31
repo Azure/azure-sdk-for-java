@@ -15,9 +15,9 @@ import java.net.URL;
 import java.time.Duration;
 
 /**
- * This class provides a client that contains all the leasing operations for {@link FileSystemClient file systems} and
- * {@link DataLakePathClient files and directories}. This client acts as a supplement to those clients and only handles
- * leasing operations.
+ * This class provides a client that contains all the leasing operations for {@link DataLakeFileSystemClient
+ * file systems} and {@link DataLakePathClient files and directories}. This client acts as a supplement to those
+ * clients and only handles leasing operations.
  *
  * <p><strong>Instantiating a DataLakeLeaseClient</strong></p>
  *

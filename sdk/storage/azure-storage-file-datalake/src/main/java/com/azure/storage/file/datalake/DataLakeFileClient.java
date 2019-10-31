@@ -39,7 +39,7 @@ import java.util.Objects;
  *
  * <p>
  * This client is instantiated through {@link DataLakePathClientBuilder} or retrieved via
- * {@link FileSystemClient#getFileClient(String) getFileClient}.
+ * {@link DataLakeFileSystemClient#getFileClient(String) getFileClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure

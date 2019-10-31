@@ -4,19 +4,19 @@
 package com.azure.storage.file.datalake;
 
 public class LeaseClientBuilderJavaDocCodeSnippets {
-    private FileSystemAsyncClient fileSystemAsyncClient = new FileSystemClientBuilder()
+    private DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient = new DataLakeFileSystemClientBuilder()
         .fileSystemName("fileSystemName")
         .buildAsyncClient();
 
-    private FileSystemClient fileSystemClient = new FileSystemClientBuilder()
+    private DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
         .fileSystemName("fileSystemName")
         .buildClient();
 
-    private DataLakeFileAsyncClient fileAsyncClient = fileSystemAsyncClient.getFileAsyncClient("file");
-    private DataLakeFileClient fileClient = fileSystemClient.getFileClient("file");
+    private DataLakeFileAsyncClient fileAsyncClient = dataLakeFileSystemAsyncClient.getFileAsyncClient("file");
+    private DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("file");
 
-    private DataLakeDirectoryAsyncClient directoryAsyncClient = fileSystemAsyncClient.getDirectoryAsyncClient("dir");
-    private DataLakeDirectoryClient directoryClient = fileSystemClient.getDirectoryClient("dir");
+    private DataLakeDirectoryAsyncClient directoryAsyncClient = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient("dir");
+    private DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("dir");
 
     private String leaseId = "leaseId";
 
@@ -72,7 +72,7 @@ public class LeaseClientBuilderJavaDocCodeSnippets {
     public void syncInstantiationWithFileSystem() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystem
         DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder()
-            .fileSystemClient(fileSystemClient)
+            .fileSystemClient(dataLakeFileSystemClient)
             .buildClient();
         // END: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystem
     }
@@ -83,7 +83,7 @@ public class LeaseClientBuilderJavaDocCodeSnippets {
     public void syncInstantiationWithFileSystemAndLeaseId() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystemAndLeaseId
         DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder()
-            .fileSystemClient(fileSystemClient)
+            .fileSystemClient(dataLakeFileSystemClient)
             .leaseId(leaseId)
             .buildClient();
         // END: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystemAndLeaseId
@@ -141,7 +141,7 @@ public class LeaseClientBuilderJavaDocCodeSnippets {
     public void asyncInstantiationWithFileSystem() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithFileSystem
         DataLakeLeaseAsyncClient dataLakeLeaseAsyncClient = new DataLakeLeaseClientBuilder()
-            .fileSystemAsyncClient(fileSystemAsyncClient)
+            .fileSystemAsyncClient(dataLakeFileSystemAsyncClient)
             .buildAsyncClient();
         // END: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithFileSystem
     }
@@ -152,7 +152,7 @@ public class LeaseClientBuilderJavaDocCodeSnippets {
     public void asyncInstantiationWithFileSystemAndLeaseId() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithFileSystemAndLeaseId
         DataLakeLeaseAsyncClient dataLakeLeaseAsyncClient = new DataLakeLeaseClientBuilder()
-            .fileSystemAsyncClient(fileSystemAsyncClient)
+            .fileSystemAsyncClient(dataLakeFileSystemAsyncClient)
             .leaseId(leaseId)
             .buildAsyncClient();
         // END: com.azure.storage.file.datalake.DataLakeLeaseClientBuilder.asyncInstantiationWithFileSystemAndLeaseId

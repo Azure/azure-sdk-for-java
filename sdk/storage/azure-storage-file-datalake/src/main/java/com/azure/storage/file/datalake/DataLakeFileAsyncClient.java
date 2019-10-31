@@ -39,7 +39,7 @@ import static com.azure.core.implementation.util.FluxUtil.fluxError;
  *
  * <p>
  * This client is instantiated through {@link DataLakePathClientBuilder} or retrieved via
- * {@link FileSystemAsyncClient#getFileAsyncClient(String)}.
+ * {@link DataLakeFileSystemAsyncClient#getFileAsyncClient(String)}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure

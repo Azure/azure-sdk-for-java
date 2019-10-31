@@ -7,12 +7,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 final class JavaDocCodeSnippetsHelpers {
-    static FileSystemAsyncClient getFileSystemAsyncClient() {
-        return new FileSystemClientBuilder().buildAsyncClient();
+    static DataLakeFileSystemAsyncClient getFileSystemAsyncClient() {
+        return new DataLakeFileSystemClientBuilder().buildAsyncClient();
     }
 
-    static FileSystemClient getFileSystemClient() {
-        return new FileSystemClientBuilder().buildClient();
+    static DataLakeFileSystemClient getFileSystemClient() {
+        return new DataLakeFileSystemClientBuilder().buildClient();
     }
 
     static DataLakeFileAsyncClient getFileAsyncClient(String fileName) {

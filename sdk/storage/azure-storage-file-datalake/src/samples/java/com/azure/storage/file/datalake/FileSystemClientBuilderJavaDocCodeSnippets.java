@@ -14,7 +14,7 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 /**
- * Code snippets for {@link FileSystemClientBuilder}
+ * Code snippets for {@link DataLakeFileSystemClientBuilder}
  */
 @SuppressWarnings({"unused"})
 public class FileSystemClientBuilderJavaDocCodeSnippets {
@@ -31,26 +31,26 @@ public class FileSystemClientBuilderJavaDocCodeSnippets {
         .build();
 
     /**
-     * Code snippet for {@link FileSystemClientBuilder#buildClient()} using credential and endpoint
+     * Code snippet for {@link DataLakeFileSystemClientBuilder#buildClient()} using credential and endpoint
      */
     public void fileSystemClientCredentialAndEndpoint() {
-        // BEGIN: com.azure.storage.file.datalake.FileSystemClientBuilder.buildClient
-        FileSystemClient client = new FileSystemClientBuilder()
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildClient
+        DataLakeFileSystemClient client = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .credential(storageSharedKeyCredential)
             .buildClient();
-        // END: com.azure.storage.file.datalake.FileSystemClientBuilder.buildClient
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildClient
     }
 
     /**
-     * Code snippet for {@link FileSystemClientBuilder#buildAsyncClient()} using credential and endpoint
+     * Code snippet for {@link DataLakeFileSystemClientBuilder#buildAsyncClient()} using credential and endpoint
      */
     public void fileSystemAsyncClientCredentialAndEndpoint() {
-        // BEGIN: com.azure.storage.file.datalake.FileSystemClientBuilder.buildAsyncClient
-        FileSystemAsyncClient client = new FileSystemClientBuilder()
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildAsyncClient
+        DataLakeFileSystemAsyncClient client = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .credential(storageSharedKeyCredential)
             .buildAsyncClient();
-        // END: com.azure.storage.file.datalake.FileSystemClientBuilder.buildAsyncClient
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildAsyncClient
     }
 }

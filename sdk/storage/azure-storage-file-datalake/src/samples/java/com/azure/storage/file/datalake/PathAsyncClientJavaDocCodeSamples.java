@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Code snippets for {@link FileSystemClient}
+ * Code snippets for {@link DataLakeFileSystemClient}
  */
 @SuppressWarnings({"unused"})
 public class PathAsyncClientJavaDocCodeSamples {

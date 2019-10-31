@@ -39,7 +39,7 @@ import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
  *
  * <p>
  * This client contains operations on the main data lake service account. Operations on a file system are available on
- * {@link FileSystemAsyncClient} through {@link #getFileSystemAsyncClient(String)}, and operations on a file or
+ * {@link DataLakeFileSystemAsyncClient} through {@link #getFileSystemAsyncClient(String)}, and operations on a file or
  * directory are available on {@link DataLakeFileAsyncClient} or {@link DataLakeDirectoryAsyncClient}.
  *
  * <p>
@@ -83,9 +83,9 @@ public class DataLakeServiceAsyncClient {
     }
 
     /**
-     * Initializes a {@link FileSystemAsyncClient} object pointing to the specified file system. This method does not
-     * create a file system. It simply constructs the URL to the file system and offers access to methods relevant to
-     * file systems.
+     * Initializes a {@link DataLakeFileSystemAsyncClient} object pointing to the specified file system. This method
+     * does not create a file system. It simply constructs the URL to the file system and offers access to methods
+     * relevant to file systems.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -93,13 +93,13 @@ public class DataLakeServiceAsyncClient {
      *
      * @param fileSystemName The name of the file system to point to. A value of null or empty string will be
      * interpreted as pointing to the root file system and will be replaced by "$root".
-     * @return A {@link FileSystemAsyncClient} object pointing to the specified file system
+     * @return A {@link DataLakeFileSystemAsyncClient} object pointing to the specified file system
      */
-    public FileSystemAsyncClient getFileSystemAsyncClient(String fileSystemName) {
+    public DataLakeFileSystemAsyncClient getFileSystemAsyncClient(String fileSystemName) {
         if (ImplUtils.isNullOrEmpty(fileSystemName)) {
-            fileSystemName = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
+            fileSystemName = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
         }
-        return new FileSystemAsyncClient(getHttpPipeline(),
+        return new DataLakeFileSystemAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getAccountUrl(), Utility.urlEncode(Utility.urlDecode(fileSystemName)))
                 .toString(), getServiceVersion(), getAccountName(), fileSystemName,
             blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName)
@@ -134,9 +134,10 @@ public class DataLakeServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystem#String}
      *
      * @param fileSystemName Name of the file system to create
-     * @return A {@link Mono} containing a {@link FileSystemAsyncClient} used to interact with the file system created.
+     * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used to interact with the file system
+     * created.
      */
-    public Mono<FileSystemAsyncClient> createFileSystem(String fileSystemName) {
+    public Mono<DataLakeFileSystemAsyncClient> createFileSystem(String fileSystemName) {
         try {
             return createFileSystemWithResponse(fileSystemName, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -158,15 +159,15 @@ public class DataLakeServiceAsyncClient {
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
-     * FileSystemAsyncClient} used to interact with the file system created.
+     * DataLakeFileSystemAsyncClient} used to interact with the file system created.
      */
-    public Mono<Response<FileSystemAsyncClient>> createFileSystemWithResponse(String fileSystemName,
+    public Mono<Response<DataLakeFileSystemAsyncClient>> createFileSystemWithResponse(String fileSystemName,
         Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            FileSystemAsyncClient fileSystemAsyncClient = getFileSystemAsyncClient(fileSystemName);
+            DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient = getFileSystemAsyncClient(fileSystemName);
 
-            return fileSystemAsyncClient.createWithResponse(metadata, accessType).
-                map(response -> new SimpleResponse<>(response, fileSystemAsyncClient));
+            return dataLakeFileSystemAsyncClient.createWithResponse(metadata, accessType).
+                map(response -> new SimpleResponse<>(response, dataLakeFileSystemAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

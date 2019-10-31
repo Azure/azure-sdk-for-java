@@ -24,7 +24,7 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
      */
     public void getFileSystemClient() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getFileSystemAsyncClient#String
-        FileSystemAsyncClient fileSystemAsyncClient = client.getFileSystemAsyncClient("fileSystemName");
+        DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient = client.getFileSystemAsyncClient("fileSystemName");
         // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getFileSystemAsyncClient#String
     }
 
@@ -33,7 +33,7 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
      */
     public void createFileSystem() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystem#String
-        FileSystemAsyncClient fileSystemAsyncClient =
+        DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient =
             client.createFileSystem("fileSystemName").block();
         // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystem#String
     }
@@ -45,7 +45,7 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystemWithResponse#String-Map-PublicAccessType
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
 
-        FileSystemAsyncClient fileSystemAsyncClient = client
+        DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient = client
             .createFileSystemWithResponse("fileSystemName", metadata, PublicAccessType.CONTAINER).block().getValue();
         // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystemWithResponse#String-Map-PublicAccessType
     }

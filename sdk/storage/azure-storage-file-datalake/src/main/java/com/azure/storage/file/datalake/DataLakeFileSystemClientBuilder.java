@@ -30,7 +30,7 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * FileSystemClient FileSystemClients} and {@link FileSystemAsyncClient FileSystemAsyncClients}, call
+ * DataLakeFileSystemClient FileSystemClients} and {@link DataLakeFileSystemAsyncClient FileSystemAsyncClients}, call
  * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an
  * instance of the desired client.
  *
@@ -44,9 +44,9 @@ import java.util.Objects;
  * accessible.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {FileSystemClient.class, FileSystemAsyncClient.class})
-public class FileSystemClientBuilder {
-    private final ClientLogger logger = new ClientLogger(FileSystemClientBuilder.class);
+@ServiceClientBuilder(serviceClients = {DataLakeFileSystemClient.class, DataLakeFileSystemAsyncClient.class})
+public class DataLakeFileSystemClientBuilder {
+    private final ClientLogger logger = new ClientLogger(DataLakeFileSystemClientBuilder.class);
 
     private final BlobContainerClientBuilder blobContainerClientBuilder;
 
@@ -68,10 +68,11 @@ public class FileSystemClientBuilder {
     private DataLakeServiceVersion version;
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link FileSystemClient FileSystemClients}
-     * and {@link FileSystemAsyncClient FileSystemAsyncClients}.
+     * Creates a builder instance that is able to configure and construct {@link DataLakeFileSystemClient
+     * FileSystemClients}
+     * and {@link DataLakeFileSystemAsyncClient FileSystemAsyncClients}.
      */
-    public FileSystemClientBuilder() {
+    public DataLakeFileSystemClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
         blobContainerClientBuilder = new BlobContainerClientBuilder();
     }
@@ -79,28 +80,28 @@ public class FileSystemClientBuilder {
     /**
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClientBuilder.buildClient}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildClient}
      *
-     * @return a {@link FileSystemClient} created from the configurations in this builder.
+     * @return a {@link DataLakeFileSystemClient} created from the configurations in this builder.
      */
-    public FileSystemClient buildClient() {
-        return new FileSystemClient(buildAsyncClient(), blobContainerClientBuilder.buildClient());
+    public DataLakeFileSystemClient buildClient() {
+        return new DataLakeFileSystemClient(buildAsyncClient(), blobContainerClientBuilder.buildClient());
     }
 
     /**
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemClientBuilder.buildAsyncClient}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildAsyncClient}
      *
-     * @return a {@link FileSystemAsyncClient} created from the configurations in this builder.
+     * @return a {@link DataLakeFileSystemAsyncClient} created from the configurations in this builder.
      */
-    public FileSystemAsyncClient buildAsyncClient() {
+    public DataLakeFileSystemAsyncClient buildAsyncClient() {
         /*
         Implicit and explicit root file system access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
         String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
-            ? FileSystemAsyncClient.ROOT_FILESYSTEM_NAME
+            ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
             : fileSystemName;
 
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
@@ -117,7 +118,7 @@ public class FileSystemClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new FileSystemAsyncClient(pipeline, String.format("%s/%s", endpoint, dataLakeFileSystemName),
+        return new DataLakeFileSystemAsyncClient(pipeline, String.format("%s/%s", endpoint, dataLakeFileSystemName),
             serviceVersion, accountName, dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient());
     }
 
@@ -125,10 +126,10 @@ public class FileSystemClientBuilder {
      * Sets the service endpoint, additionally parses it for information (SAS token, file system name)
      *
      * @param endpoint URL of the service
-     * @return the updated FileSystemClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
-    public FileSystemClientBuilder endpoint(String endpoint) {
+    public DataLakeFileSystemClientBuilder endpoint(String endpoint) {
         blobContainerClientBuilder.endpoint(Transforms.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
         try {
             URL url = new URL(endpoint);
@@ -154,10 +155,10 @@ public class FileSystemClientBuilder {
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
-     * @return the updated FileSystemClientBuilder
+     * @return the updated DataLakeFileSystemClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public FileSystemClientBuilder credential(StorageSharedKeyCredential credential) {
+    public DataLakeFileSystemClientBuilder credential(StorageSharedKeyCredential credential) {
         blobContainerClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
@@ -169,10 +170,10 @@ public class FileSystemClientBuilder {
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
-     * @return the updated FileSystemClientBuilder
+     * @return the updated DataLakeFileSystemClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public FileSystemClientBuilder credential(TokenCredential credential) {
+    public DataLakeFileSystemClientBuilder credential(TokenCredential credential) {
         blobContainerClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
@@ -184,10 +185,10 @@ public class FileSystemClientBuilder {
      * Sets the SAS token used to authorize requests sent to the service.
      *
      * @param sasToken The SAS token to use for authenticating requests.
-     * @return the updated FileSystemClientBuilder
+     * @return the updated DataLakeFileSystemClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
-    public FileSystemClientBuilder sasToken(String sasToken) {
+    public DataLakeFileSystemClientBuilder sasToken(String sasToken) {
         blobContainerClientBuilder.sasToken(sasToken);
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
@@ -201,9 +202,9 @@ public class FileSystemClientBuilder {
      *
      * <p>This is for file systems that are publicly accessible.</p>
      *
-     * @return the updated FileSystemClientBuilder
+     * @return the updated DataLakeFileSystemClientBuilder
      */
-    public FileSystemClientBuilder setAnonymousAccess() {
+    public DataLakeFileSystemClientBuilder setAnonymousAccess() {
         blobContainerClientBuilder.setAnonymousAccess();
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
@@ -216,9 +217,9 @@ public class FileSystemClientBuilder {
      *
      * @param fileSystemName Name of the file system. If the value {@code null} or empty the root file system,
      * {@code $root}, will be used.
-     * @return the updated FileSystemClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      */
-    public FileSystemClientBuilder fileSystemName(String fileSystemName) {
+    public DataLakeFileSystemClientBuilder fileSystemName(String fileSystemName) {
         blobContainerClientBuilder.containerName(fileSystemName);
         this.fileSystemName = fileSystemName;
         return this;
@@ -228,9 +229,9 @@ public class FileSystemClientBuilder {
      * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
      *
      * @param httpClient HttpClient to use for requests.
-     * @return the updated FileSystemClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      */
-    public FileSystemClientBuilder httpClient(HttpClient httpClient) {
+    public DataLakeFileSystemClientBuilder httpClient(HttpClient httpClient) {
         blobContainerClientBuilder.httpClient(httpClient);
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -253,10 +254,10 @@ public class FileSystemClientBuilder {
      * Adds a pipeline policy to apply on each request sent.
      *
      * @param pipelinePolicy a pipeline policy
-     * @return the updated FileSystemClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
-    public FileSystemClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public DataLakeFileSystemClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         blobContainerClientBuilder.addPolicy(pipelinePolicy);
         this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
         return this;
@@ -266,10 +267,10 @@ public class FileSystemClientBuilder {
      * Sets the {@link HttpLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     * @return the updated FileSystemClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public FileSystemClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public DataLakeFileSystemClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         blobContainerClientBuilder.httpLogOptions(logOptions);
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -279,9 +280,9 @@ public class FileSystemClientBuilder {
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
      * @param configuration Configuration store used to retrieve environment configurations.
-     * @return the updated FileSystemClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      */
-    public FileSystemClientBuilder configuration(Configuration configuration) {
+    public DataLakeFileSystemClientBuilder configuration(Configuration configuration) {
         blobContainerClientBuilder.configuration(configuration);
         this.configuration = configuration;
         return this;
@@ -291,10 +292,10 @@ public class FileSystemClientBuilder {
      * Sets the request retry options for all the requests made through the client.
      *
      * @param retryOptions The options used to configure retry behavior.
-     * @return the updated FileSystemClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
-    public FileSystemClientBuilder retryOptions(RequestRetryOptions retryOptions) {
+    public DataLakeFileSystemClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         blobContainerClientBuilder.retryOptions(retryOptions);
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         return this;
@@ -306,9 +307,9 @@ public class FileSystemClientBuilder {
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
      *
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
-     * @return the updated FileSystemClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      */
-    public FileSystemClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public DataLakeFileSystemClientBuilder pipeline(HttpPipeline httpPipeline) {
         blobContainerClientBuilder.pipeline(httpPipeline);
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -327,9 +328,9 @@ public class FileSystemClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link DataLakeServiceVersion} of the service to be used when making requests.
-     * @return the updated FileSystemClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      */
-    public FileSystemClientBuilder serviceVersion(DataLakeServiceVersion version) {
+    public DataLakeFileSystemClientBuilder serviceVersion(DataLakeServiceVersion version) {
         this.version = version;
         return this;
     }

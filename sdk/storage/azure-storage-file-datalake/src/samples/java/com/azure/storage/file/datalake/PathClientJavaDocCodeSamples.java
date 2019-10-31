@@ -16,7 +16,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 
 /**
- * Code snippets for {@link FileSystemClient}
+ * Code snippets for {@link DataLakeFileSystemClient}
  */
 @SuppressWarnings({"unused"})
 public class PathClientJavaDocCodeSamples {

@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * <p>
  * This client is instantiated through {@link DataLakePathClientBuilder} or retrieved via
- * {@link FileSystemClient#getDirectoryClient(String) getDirectoryClient}.
+ * {@link DataLakeFileSystemClient#getDirectoryClient(String) getDirectoryClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure

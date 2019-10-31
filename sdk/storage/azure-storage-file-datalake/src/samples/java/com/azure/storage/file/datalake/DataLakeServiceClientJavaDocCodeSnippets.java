@@ -28,7 +28,7 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
      */
     public void getFileSystemClient() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.getFileSystemClient#String
-        FileSystemClient fileSystemClient = client.getFileSystemClient("fileSystemName");
+        DataLakeFileSystemClient dataLakeFileSystemClient = client.getFileSystemClient("fileSystemName");
         // END: com.azure.storage.file.datalake.DataLakeServiceClient.getFileSystemClient#String
     }
 
@@ -37,7 +37,7 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
      */
     public void createFileSystem() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystem#String
-        FileSystemClient fileSystemClient = client.createFileSystem("fileSystemName");
+        DataLakeFileSystemClient dataLakeFileSystemClient = client.createFileSystem("fileSystemName");
         // END: com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystem#String
     }
 
@@ -49,7 +49,7 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Context context = new Context("Key", "Value");
 
-        FileSystemClient fileSystemClient = client.createFileSystemWithResponse(
+        DataLakeFileSystemClient dataLakeFileSystemClient = client.createFileSystemWithResponse(
             "fileSystemName",
             metadata,
             PublicAccessType.CONTAINER,

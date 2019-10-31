@@ -29,8 +29,8 @@ import java.util.Map;
  *
  * <p>
  * This client contains operations on a data lake service account. Operations on a file system are available on
- * {@link FileSystemClient} through {@link #getFileSystemClient(String)}, and operations on a file or directory are
- * available on {@link DataLakeFileClient} and {@link DataLakeDirectoryClient} respectively.
+ * {@link DataLakeFileSystemClient} through {@link #getFileSystemClient(String)}, and operations on a file or directory
+ * are available on {@link DataLakeFileClient} and {@link DataLakeDirectoryClient} respectively.
  */
 @ServiceClient(builder = DataLakeServiceClientBuilder.class)
 public class DataLakeServiceClient {
@@ -50,19 +50,19 @@ public class DataLakeServiceClient {
     }
 
     /**
-     * Initializes a {@link FileSystemClient} object pointing to the specified file system. This method does not create
-     * a file system. It simply constructs the URL to the file system and offers access to methods relevant to file
-     * systems.
+     * Initializes a {@link DataLakeFileSystemClient} object pointing to the specified file system. This method does
+     * not create a file system. It simply constructs the URL to the file system and offers access to methods relevant
+     * to file systems.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getFileSystemClient#String}
      *
      * @param fileSystemName The name of the file system to point to.
-     * @return A {@link FileSystemClient} object pointing to the specified file system
+     * @return A {@link DataLakeFileSystemClient} object pointing to the specified file system
      */
-    public FileSystemClient getFileSystemClient(String fileSystemName) {
-        return new FileSystemClient(dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName),
+    public DataLakeFileSystemClient getFileSystemClient(String fileSystemName) {
+        return new DataLakeFileSystemClient(dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName),
             blobServiceClient.getBlobContainerClient(fileSystemName));
     }
 
@@ -94,9 +94,9 @@ public class DataLakeServiceClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystem#String}
      *
      * @param fileSystemName Name of the file system to create
-     * @return The {@link FileSystemClient} used to interact with the file system created.
+     * @return The {@link DataLakeFileSystemClient} used to interact with the file system created.
      */
-    public FileSystemClient createFileSystem(String fileSystemName) {
+    public DataLakeFileSystemClient createFileSystem(String fileSystemName) {
         return createFileSystemWithResponse(fileSystemName, null, null, Context.NONE).getValue();
     }
 
@@ -114,12 +114,12 @@ public class DataLakeServiceClient {
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link FileSystemClient} used
-     * to interact with the file system created.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileSystemClient}
+     * used to interact with the file system created.
      */
-    public Response<FileSystemClient> createFileSystemWithResponse(String fileSystemName,
+    public Response<DataLakeFileSystemClient> createFileSystemWithResponse(String fileSystemName,
         Map<String, String> metadata, PublicAccessType accessType, Context context) {
-        FileSystemClient client = getFileSystemClient(fileSystemName);
+        DataLakeFileSystemClient client = getFileSystemClient(fileSystemName);
 
         return new SimpleResponse<>(client.createWithResponse(metadata, accessType, null, context), client);
     }

@@ -187,7 +187,7 @@ DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
 Create a `FileSystemClient` using a `DataLakeServiceClient`.
 
 ```java
-FileSystemClient fileSystemClient = dataLakeServiceClient.getFileSystemClient("myfilesystem");
+FileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient("myfilesystem");
 ```
 
 or
@@ -195,7 +195,7 @@ or
 Create a `FileSystemClient` from the builder [`sasToken`](#get-credentials) generated above.
 
 ```java
-FileSystemClient fileSystemClient = new FileSystemClientBuilder()
+FileSystemClient dataLakeFileSystemClient = new FileSystemClientBuilder()
         .endpoint("<your-storage-dfs-url>")
         .sasToken("<your-sasToken>")
         .containerName("myfilesystem")
@@ -207,7 +207,7 @@ FileSystemClient fileSystemClient = new FileSystemClientBuilder()
 Create a `FileClient` using a `FileSystemClient`.
 
 ```java
-FileClient fileClient = fileSystemClient.getFileClient("myfile");
+FileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 ```
 
 or
@@ -236,7 +236,7 @@ or
 Create a container using a `FileSystemClient`.
 
 ```java
-fileSystemClient.create();
+dataLakeFileSystemClient.create();
 ```
 
 ### Upload a file from a stream
@@ -244,7 +244,7 @@ fileSystemClient.create();
 Upload from an `InputStream` to a blob using a `DataLakeFileClient` generated from a `FileSystemClient`.
 
 ```java
-DataLakeFileClient fileClient = fileSystemClient.getFileClient("myfile");
+DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 fileClient.create();
 String dataSample = "samples";
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
@@ -268,7 +268,7 @@ try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 Enumerating all paths using a `FileSystemClient`.
 
 ```java
-fileSystemClient.listPaths()
+dataLakeFileSystemClient.listPaths()
         .forEach(
             pathItem -> System.out.println("This is the path name: " + pathItem.getName())
         );

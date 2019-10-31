@@ -34,7 +34,7 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  *
  * <p>
  * This client is instantiated through {@link DataLakePathClientBuilder} or retrieved via
- * {@link FileSystemAsyncClient#getDirectoryAsyncClient(String) getDirectoryAsyncClient}.
+ * {@link DataLakeFileSystemAsyncClient#getDirectoryAsyncClient(String) getDirectoryAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure

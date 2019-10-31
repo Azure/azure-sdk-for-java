@@ -93,28 +93,29 @@ public final class DataLakeLeaseClientBuilder {
     }
 
     /**
-     * Configures the builder based on the passed {@link FileSystemClient}. This will set the {@link HttpPipeline}
-     * and {@link URL} that are used to interact with the service.
+     * Configures the builder based on the passed {@link DataLakeFileSystemClient}. This will set the
+     * {@link HttpPipeline} and {@link URL} that are used to interact with the service.
      *
-     * @param fileSystemClient FileSystemClient used to configure the builder.
+     * @param dataLakeFileSystemClient DataLakeFileSystemClient used to configure the builder.
      * @return the updated DataLakeLeaseClientBuilder object
-     * @throws NullPointerException If {@code fileSystemClient} is {@code null}.
+     * @throws NullPointerException If {@code dataLakeFileSystemClient} is {@code null}.
      */
-    public DataLakeLeaseClientBuilder fileSystemClient(FileSystemClient fileSystemClient) {
-        blobLeaseClientBuilder.containerClient(fileSystemClient.getBlobContainerClient());
+    public DataLakeLeaseClientBuilder fileSystemClient(DataLakeFileSystemClient dataLakeFileSystemClient) {
+        blobLeaseClientBuilder.containerClient(dataLakeFileSystemClient.getBlobContainerClient());
         return this;
     }
 
     /**
-     * Configures the builder based on the passed {@link FileSystemAsyncClient}. This will set the {@link
+     * Configures the builder based on the passed {@link DataLakeFileSystemAsyncClient}. This will set the {@link
      * HttpPipeline} and {@link URL} that are used to interact with the service.
      *
-     * @param fileSystemAsyncClient FileSystemAsyncClient used to configure the builder.
+     * @param dataLakeFileSystemAsyncClient DataLakeFileSystemAsyncClient used to configure the builder.
      * @return the updated DataLakeLeaseClientBuilder object
-     * @throws NullPointerException If {@code fileSystemAsyncClient} is {@code null}.
+     * @throws NullPointerException If {@code dataLakeFileSystemAsyncClient} is {@code null}.
      */
-    public DataLakeLeaseClientBuilder fileSystemAsyncClient(FileSystemAsyncClient fileSystemAsyncClient) {
-        blobLeaseClientBuilder.containerAsyncClient(fileSystemAsyncClient.getBlobContainerAsyncClient());
+    public DataLakeLeaseClientBuilder fileSystemAsyncClient(
+        DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient) {
+        blobLeaseClientBuilder.containerAsyncClient(dataLakeFileSystemAsyncClient.getBlobContainerAsyncClient());
         return this;
     }
 
