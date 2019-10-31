@@ -21,6 +21,7 @@ public class CloseContext {
      *
      * @param partitionContext The partition information for which the processing stopped.
      * @param closeReason The reason for stopping the event processing.
+     * @throws NullPointerException if {@code partitionContext} or {@code closeReason} is {@code null}.
      */
     public CloseContext(final PartitionContext partitionContext, final CloseReason closeReason) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");

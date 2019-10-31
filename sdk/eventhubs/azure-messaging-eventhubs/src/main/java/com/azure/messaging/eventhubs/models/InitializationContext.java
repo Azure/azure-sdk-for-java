@@ -24,6 +24,7 @@ public class InitializationContext {
      * @param partitionContext The partition information for which the event processing is going to start.
      * @param initialPosition The default initial event position from which the processing will start in the absence of
      * a checkpoint in {@link EventProcessorStore}.
+     * @throws NullPointerException if {@code partitionContext} or {@code initialPosition}is {@code null}.
      */
     public InitializationContext(final PartitionContext partitionContext, final EventPosition initialPosition) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
@@ -56,6 +57,7 @@ public class InitializationContext {
      * priority and if there's a checkpoint in the store, that will be used regardless of what is set in this method.
      *
      * @param initialPosition The initial event position to start the event processing from.
+     * @throws NullPointerException if {@code initialPosition} is {@code null}.
      */
     public void setInitialPosition(final EventPosition initialPosition) {
         this.initialPosition = Objects.requireNonNull(initialPosition, "'initialPosition' cannot be null");

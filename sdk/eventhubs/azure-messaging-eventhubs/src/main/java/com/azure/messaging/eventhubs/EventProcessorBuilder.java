@@ -70,6 +70,9 @@ public class EventProcessorBuilder {
     private Function<InitializationContext, Mono<Void>> initializePartition;
     private Function<CloseContext, Mono<Void>> closePartition;
 
+    /**
+     * Creates a new instance of {@link EventProcessorBuilder}.
+     */
     public EventProcessorBuilder() {
         eventHubClientBuilder = new EventHubClientBuilder();
     }
@@ -91,7 +94,8 @@ public class EventProcessorBuilder {
      * @param connectionString The connection string to use for connecting to the Event Hub instance. It is expected
      * that the Event Hub name and the shared access key properties are contained in this connection string.
      * @return The updated {@link EventProcessorBuilder} object.
-     * @throws IllegalArgumentException if {@code connectionString} is null or empty. Or, the {@code connectionString}
+     * @throws NullPointerException if {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException if {@code connectionString} is empty. Or, the {@code connectionString}
      * does not contain the "EntityPath" key, which is the name of the Event Hub instance.
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      * string.

@@ -19,6 +19,7 @@ public class EventProcessingErrorContext {
      *
      * @param partitionContext The partition information where the error occurred.
      * @param throwable The {@link Throwable error} that occurred.
+     * @throws NullPointerException if {@code partitionContext} or {@code throwable} is {@code null}.
      */
     public EventProcessingErrorContext(final PartitionContext partitionContext, final Throwable throwable) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");

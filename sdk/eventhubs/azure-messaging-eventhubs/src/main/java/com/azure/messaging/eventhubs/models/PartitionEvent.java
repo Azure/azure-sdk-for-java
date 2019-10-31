@@ -20,6 +20,7 @@ public class PartitionEvent {
      *
      * @param partitionContext The partition information associated with the event data.
      * @param eventData The event data received from the Event Hub.
+     * @throws NullPointerException if {@code partitionContext} or {@code eventData} is {@code null}.
      */
     public PartitionEvent(final PartitionContext partitionContext, final EventData eventData) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
