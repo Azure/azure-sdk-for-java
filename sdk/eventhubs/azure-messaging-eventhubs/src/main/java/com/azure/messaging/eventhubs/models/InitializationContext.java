@@ -6,8 +6,6 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.EventProcessorBuilder;
 import com.azure.messaging.eventhubs.EventProcessorStore;
-import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import java.util.Objects;
 import java.util.function.Function;
 

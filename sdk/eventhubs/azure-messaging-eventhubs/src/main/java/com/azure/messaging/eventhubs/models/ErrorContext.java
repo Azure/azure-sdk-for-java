@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import java.util.Objects;
 
 /**

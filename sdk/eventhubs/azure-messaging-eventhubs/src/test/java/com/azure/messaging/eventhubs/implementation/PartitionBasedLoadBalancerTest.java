@@ -259,7 +259,7 @@ public class PartitionBasedLoadBalancerTest {
         // owner4 should not be in the list
         assertTrue(partitionOwnership.stream().noneMatch(po -> po.getOwnerId().equals("owner4")));
 
-        sleep(6);
+        sleep(10);
         IntStream.range(0, loadBalancers.size()).forEach(index -> {
             if (index != 1) {
                 // run all but 2nd load balancer
@@ -267,7 +267,7 @@ public class PartitionBasedLoadBalancerTest {
             }
         });
 
-        sleep(6);
+        sleep(10);
         partitionOwnership = eventProcessorStore.listOwnership(fqNamespace, eventHubName,
             consumerGroupName).collectList().block();
 

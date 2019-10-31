@@ -141,7 +141,7 @@ public class PartitionPumpManager {
                 }
                 partitionProcessor.processEvent(new PartitionEvent(partitionContext, eventData)).doOnEach(signal ->
                     endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
-                }, /* event processing returned error */ ex -> handleProcessingError(claimedOwnership,
+                    }, /* event processing returned error */ ex -> handleProcessingError(claimedOwnership,
                     eventHubConsumer, partitionProcessor, ex, partitionContext));
             } catch (Exception ex) {
                 /* event processing threw an exception */
