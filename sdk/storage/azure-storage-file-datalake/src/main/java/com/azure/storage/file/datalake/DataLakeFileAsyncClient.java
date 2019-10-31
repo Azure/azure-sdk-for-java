@@ -206,15 +206,15 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param data The data to write to the file.
-     * @param offset The position where the data is to be appended.
+     * @param fileOffset The position where the data is to be appended.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> append(Flux<ByteBuffer> data, long offset, long length) {
+    public Mono<Void> append(Flux<ByteBuffer> data, long fileOffset, long length) {
         try {
-            return appendWithResponse(data, offset, length, null, null).flatMap(FluxUtil::toMono);
+            return appendWithResponse(data, fileOffset, length, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -232,7 +232,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param data The data to write to the file.
-     * @param offset The position where the data is to be appended.
+     * @param fileOffset The position where the data is to be appended.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @param contentMd5 An MD5 hash of the content of the data. If specified, the service will calculate the MD5 of the
@@ -242,24 +242,24 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long offset, long length,
+    public Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         byte[] contentMd5, String leaseId) {
         try {
-            return withContext(context -> appendWithResponse(data, offset, length, contentMd5,
+            return withContext(context -> appendWithResponse(data, fileOffset, length, contentMd5,
                 leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long offset, long length,
+    Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         byte[] contentMd5, String leaseId, Context context) {
 
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
 
         PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(contentMd5);
 
-        return this.dataLakeStorage.paths().appendDataWithRestResponseAsync(data, offset, null, length, null,
+        return this.dataLakeStorage.paths().appendDataWithRestResponseAsync(data, fileOffset, null, length, null,
             headers, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -378,7 +378,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         try {
             return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
                 Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(accessConditions),
-                rangeGetContentMD5).map(response -> Transforms.toFileReadAsyncResponse(response));
+                rangeGetContentMD5).map(Transforms::toFileReadAsyncResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -395,6 +395,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.rename#String}
      *
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
+     * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
+     * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the new file created.
      */
     public Mono<DataLakeFileAsyncClient> rename(String destinationPath) {
@@ -414,6 +416,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
+     * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
+     * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
      * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link

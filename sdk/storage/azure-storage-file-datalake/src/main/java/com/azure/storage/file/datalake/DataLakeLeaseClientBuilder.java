@@ -80,8 +80,8 @@ public final class DataLakeLeaseClientBuilder {
     }
 
     /**
-     * Configures the builder based on the passed {@link DataLakePathAsyncClient}. This will set the {@link HttpPipeline} and
-     * {@link URL} that are used to interact with the service.
+     * Configures the builder based on the passed {@link DataLakePathAsyncClient}. This will set the
+     * {@link HttpPipeline} and {@link URL} that are used to interact with the service.
      *
      * @param dataLakePathAsyncClient DataLakePathAsyncClient used to configure the builder.
      * @return the updated DataLakeLeaseClientBuilder object

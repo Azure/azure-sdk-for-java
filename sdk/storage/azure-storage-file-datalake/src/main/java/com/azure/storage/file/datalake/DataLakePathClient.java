@@ -143,7 +143,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Changes a resources's HTTP header properties. if only one HTTP header is updated, the others will all be erased.
+     * Changes a resources's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
@@ -160,7 +160,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Changes a resources's HTTP header properties. if only one HTTP header is updated, the others will all be erased.
+     * Changes a resources's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
@@ -336,7 +336,8 @@ public class DataLakePathClient {
 
         DataLakePathClient dataLakePathClient = getPathClient(destinationPath);
 
-        String renameSource = "/" + dataLakePathAsyncClient.getFileSystemName() + "/" + dataLakePathAsyncClient.getObjectPath();
+        String renameSource = "/" + dataLakePathAsyncClient.getFileSystemName() + "/"
+            + dataLakePathAsyncClient.getObjectPath();
 
         return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(
             null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, renameSource,

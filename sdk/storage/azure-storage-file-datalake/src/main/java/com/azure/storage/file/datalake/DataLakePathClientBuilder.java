@@ -259,7 +259,8 @@ public final class DataLakePathClientBuilder {
      * path name as the file system name. With only one path element, it is impossible to distinguish between a file
      * system name and a path in the root file system, so it is assumed to be the file system name as this is much more
      * common. When working with paths in the root file system, it is best to set the endpoint to the account url and
-     * specify the path name separately using the {@link DataLakePathClientBuilder#pathName(String) pathName} method.</p>
+     * specify the path name separately using the {@link DataLakePathClientBuilder#pathName(String) pathName} method.
+     * </p>
      *
      * @param endpoint URL of the service
      * @return the updated DataLakePathClientBuilder object

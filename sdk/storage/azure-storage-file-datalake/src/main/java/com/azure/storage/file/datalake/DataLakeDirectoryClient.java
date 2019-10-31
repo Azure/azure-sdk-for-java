@@ -45,7 +45,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
 
     private DataLakeDirectoryClient(DataLakePathClient dataLakePathClient) {
         super(dataLakePathClient.dataLakePathAsyncClient, dataLakePathClient.blockBlobClient);
-        this.dataLakeDirectoryAsyncClient = new DataLakeDirectoryAsyncClient(dataLakePathClient.dataLakePathAsyncClient);
+        this.dataLakeDirectoryAsyncClient = new DataLakeDirectoryAsyncClient(
+            dataLakePathClient.dataLakePathAsyncClient);
     }
 
     /**
@@ -116,8 +117,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public Response<PathInfo> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions accessConditions, String permissions, String umask, Duration timeout,
         Context context) {
-        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(PathResourceType.DIRECTORY, headers,
-            metadata, accessConditions, permissions, umask, context);
+        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(PathResourceType.DIRECTORY,
+            headers, metadata, accessConditions, permissions, umask, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -158,7 +159,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public Response<Void> deleteWithResponse(boolean recursive, DataLakeRequestConditions accessConditions,
         Duration timeout, Context context) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
-        Mono<Response<Void>> response = dataLakePathAsyncClient.deleteWithResponse(recursive, accessConditions, context);
+        Mono<Response<Void>> response = dataLakePathAsyncClient.deleteWithResponse(recursive, accessConditions,
+            context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -335,7 +337,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     }
 
     /**
-     * Deletes the specified sub-directory in the directory. If the directory doesn't exist the operation fails.
+     * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist or is not empty the
+     * operation fails.
      * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
@@ -350,7 +353,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     }
 
     /**
-     * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist the operation fails.
+     * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist or is not empty the
+     * operation fails.
      * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
@@ -382,7 +386,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.rename#String}
      *
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
-     * name.
+     * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
+     * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
      * @return A {@link DataLakeDirectoryClient} used to interact with the new directory created.
      */
     public DataLakeDirectoryClient rename(String destinationPath) {
@@ -399,7 +404,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context}
      *
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
-     * name.
+     * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
+     * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
      * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

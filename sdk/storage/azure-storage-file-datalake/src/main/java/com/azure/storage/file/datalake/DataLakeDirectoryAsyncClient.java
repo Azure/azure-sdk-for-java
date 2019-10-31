@@ -61,9 +61,37 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
-        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getPathUrl(), dataLakePathAsyncClient.getServiceVersion(),
-            dataLakePathAsyncClient.getAccountName(), dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.getObjectPath(),
+        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getPathUrl(),
+            dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
+            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.getObjectPath(),
             dataLakePathAsyncClient.getBlockBlobAsyncClient());
+    }
+
+    /**
+     * Gets the URL of the directory represented by this client on the Data Lake service.
+     *
+     * @return the URL.
+     */
+    public String getDirectoryUrl() {
+        return getPathUrl();
+    }
+
+    /**
+     * Gets the path of this directory, not including the name of the resource itself.
+     *
+     * @return The path of the directory.
+     */
+    public String getDirectoryPath() {
+        return getObjectPath();
+    }
+
+    /**
+     * Gets the name of this directory, not including its full path.
+     *
+     * @return The name of the directory.
+     */
+    public String getDirectoryName() {
+        return getObjectName();
     }
 
     /**
@@ -361,7 +389,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist the operation fails.
+     * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist or is not empty the
+     * operation fails.
      * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
@@ -381,7 +410,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist the operation fails.
+     * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist or is not empty the
+     * operation fails.
      * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
@@ -414,7 +444,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String}
      *
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
-     * name.
+     * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
+     * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the new directory
      * created.
      */
@@ -436,7 +467,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
-     * name.
+     * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
+     * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
      * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link

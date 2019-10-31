@@ -32,7 +32,7 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
@@ -105,8 +105,8 @@ public class DataLakePathAsyncClient {
                 metadata.
                  */
                 sb.append(entry.getKey()).append('=')
-                    .append(new String(Base64.getEncoder().encode(entry.getValue().getBytes(Charset.forName("UTF-8"))),
-                        Charset.forName("UTF-8"))).append(',');
+                    .append(new String(Base64.getEncoder().encode(entry.getValue().getBytes(StandardCharsets.UTF_8)),
+                        StandardCharsets.UTF_8)).append(',');
             }
             sb.deleteCharAt(sb.length() - 1); // Remove the extraneous "," after the last element.
         }
@@ -282,7 +282,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Changes a resource's HTTP header properties. if only one HTTP header is updated, the others will all be erased.
+     * Changes a resource's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
@@ -304,7 +304,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Changes a resources's HTTP header properties. if only one HTTP header is updated, the others will all be erased.
+     * Changes a resources's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
@@ -554,8 +554,8 @@ public class DataLakePathAsyncClient {
         String newDfsEndpoint = BlobUrlParts.parse(getPathUrl())
             .setBlobName(destinationPath).toUrl().toString();
 
-        return new DataLakePathAsyncClient(getHttpPipeline(), newDfsEndpoint, serviceVersion, accountName, fileSystemName,
-            destinationPath, prepareBuilderReplacePath(destinationPath).buildBlockBlobAsyncClient());
+        return new DataLakePathAsyncClient(getHttpPipeline(), newDfsEndpoint, serviceVersion, accountName,
+            fileSystemName, destinationPath, prepareBuilderReplacePath(destinationPath).buildBlockBlobAsyncClient());
     }
 
     /**

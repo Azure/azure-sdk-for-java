@@ -128,8 +128,8 @@ public class DataLakeFileClient extends DataLakePathClient {
     public Response<PathInfo> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions accessConditions, String permissions, String umask, Duration timeout,
         Context context) {
-        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(PathResourceType.FILE, headers, metadata,
-            accessConditions, permissions, umask, context);
+        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(PathResourceType.FILE, headers,
+            metadata, accessConditions, permissions, umask, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -186,11 +186,11 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Docs</a></p>
      *
      * @param data The data to write to the file.
-     * @param offset The position where the data is to be appended.
+     * @param fileOffset The position where the data is to be appended.
      * @param length The exact length of the data.
      */
-    public void append(InputStream data, long offset, long length) {
-        appendWithResponse(data, offset, length, null, null, null, Context.NONE);
+    public void append(InputStream data, long fileOffset, long length) {
+        appendWithResponse(data, fileOffset, length, null, null, null, Context.NONE);
     }
 
     /**
@@ -205,7 +205,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Docs</a></p>
      *
      * @param data The data to write to the file.
-     * @param offset The position where the data is to be appended.
+     * @param fileOffset The position where the data is to be appended.
      * @param length The exact length of the data.
      * @param contentMd5 An MD5 hash of the content of the data. If specified, the service will calculate the MD5 of the
      * received data and fail the request if it does not match the provided MD5.
@@ -216,14 +216,14 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * @return A response signalling completion.
      */
-    public Response<Void> appendWithResponse(InputStream data, long offset, long length,
+    public Response<Void> appendWithResponse(InputStream data, long fileOffset, long length,
         byte[] contentMd5, String leaseId, Duration timeout, Context context) {
 
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
-            fbb.subscribeOn(Schedulers.elastic()), offset, length, contentMd5, leaseId, context);
+            fbb.subscribeOn(Schedulers.elastic()), fileOffset, length, contentMd5, leaseId, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -341,6 +341,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String}
      *
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
+     * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
+     * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @return A {@link DataLakeFileClient} used to interact with the new file created.
      */
     public DataLakeFileClient rename(String destinationPath) {
@@ -357,6 +359,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context}
      *
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
+     * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
+     * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
      * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
