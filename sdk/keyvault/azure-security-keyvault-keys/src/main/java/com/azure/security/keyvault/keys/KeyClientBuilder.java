@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -273,7 +273,7 @@ public final class KeyClientBuilder {
         }
 
         String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");
-        if (ImplUtils.isNullOrEmpty(configEndpoint)) {
+        if (GeneralUtils.isNullOrEmpty(configEndpoint)) {
             return null;
         }
 

@@ -19,9 +19,6 @@
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
-  <properties>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

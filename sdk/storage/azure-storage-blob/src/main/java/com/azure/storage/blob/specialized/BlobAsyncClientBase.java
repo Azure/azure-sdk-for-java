@@ -3,14 +3,14 @@
 
 package com.azure.storage.blob.specialized;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.withContext;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -66,8 +66,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.azure.core.implementation.util.FluxUtil.fluxError;
-import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -363,7 +363,7 @@ public class BlobAsyncClientBase {
                 }
                 final String copyIdentifier = firstResponse.getValue().getCopyId();
 
-                if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
+                if (!GeneralUtils.isNullOrEmpty(copyIdentifier)) {
                     logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
 
                     return abortCopyFromUrl(copyIdentifier).thenReturn(firstResponse.getValue());

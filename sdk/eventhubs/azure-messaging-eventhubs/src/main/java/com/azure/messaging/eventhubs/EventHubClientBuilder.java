@@ -20,7 +20,7 @@ import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -172,7 +172,7 @@ public class EventHubClientBuilder {
                 "Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
-        if (!ImplUtils.isNullOrEmpty(properties.getEntityPath())
+        if (!GeneralUtils.isNullOrEmpty(properties.getEntityPath())
             && !eventHubName.equals(properties.getEntityPath())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "'connectionString' contains an Event Hub name [%s] and it does not match the given "
@@ -221,9 +221,9 @@ public class EventHubClientBuilder {
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
-        if (ImplUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+        if (GeneralUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
-        } else if (ImplUtils.isNullOrEmpty(eventHubName)) {
+        } else if (GeneralUtils.isNullOrEmpty(eventHubName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
@@ -397,7 +397,7 @@ public class EventHubClientBuilder {
         if (credentials == null) {
             final String connectionString = configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
 
-            if (ImplUtils.isNullOrEmpty(connectionString)) {
+            if (GeneralUtils.isNullOrEmpty(connectionString)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
                     + "They can be set using: connectionString(String), connectionString(String, String), "
                     + "credentials(String, String, TokenCredential), or setting the environment variable '"
@@ -443,7 +443,7 @@ public class EventHubClientBuilder {
 
         String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
 
-        if (ImplUtils.isNullOrEmpty(proxyAddress)) {
+        if (GeneralUtils.isNullOrEmpty(proxyAddress)) {
             return ProxyConfiguration.SYSTEM_DEFAULTS;
         }
 

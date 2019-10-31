@@ -6,10 +6,10 @@ package com.azure.core.test.http;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.serializer.SerializerAdapter;
-import com.azure.core.implementation.serializer.SerializerEncoding;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.GeneralUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -71,7 +71,7 @@ public class MockHttpResponse extends HttpResponse {
         super(request);
         this.statusCode = statusCode;
         this.headers = headers;
-        this.bodyBytes = ImplUtils.clone(bodyBytes);
+        this.bodyBytes = GeneralUtils.clone(bodyBytes);
     }
 
     /**

@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.sas;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -557,7 +557,7 @@ public final class BlobServiceSasSignatureValues {
             version = BlobServiceVersion.getLatest().getVersion();
         }
 
-        if (ImplUtils.isNullOrEmpty(blobName)) {
+        if (GeneralUtils.isNullOrEmpty(blobName)) {
             resource = SAS_CONTAINER_CONSTANT;
         } else if (snapshotId != null) {
             resource = SAS_BLOB_SNAPSHOT_CONSTANT;
@@ -588,7 +588,7 @@ public final class BlobServiceSasSignatureValues {
     private String getCanonicalName(String account) {
         // Container: "/blob/account/containername"
         // Blob:      "/blob/account/containername/blobname"
-        return ImplUtils.isNullOrEmpty(blobName)
+        return GeneralUtils.isNullOrEmpty(blobName)
             ? String.format("/blob/%s/%s", account, containerName)
             : String.format("/blob/%s/%s/%s", account, containerName, blobName.replace("\\", "/"));
     }

@@ -5,7 +5,7 @@ package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -60,7 +60,7 @@ public class SettingSelector {
      * @return The expressions to filter ConfigurationSetting keys on.
      */
     public String[] getKeys() {
-        return keys == null ? new String[0] : ImplUtils.clone(keys);
+        return keys == null ? new String[0] : GeneralUtils.clone(keys);
     }
 
     /**
@@ -107,7 +107,7 @@ public class SettingSelector {
      * @return labels The labels used to filter GET requests from the service.
      */
     public String[] getLabels() {
-        return labels == null ? new String[0] : ImplUtils.clone(labels);
+        return labels == null ? new String[0] : GeneralUtils.clone(labels);
     }
 
     /**
@@ -163,7 +163,7 @@ public class SettingSelector {
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
     public SettingFields[] getFields() {
-        return fields == null ? new SettingFields[0] : ImplUtils.clone(fields);
+        return fields == null ? new SettingFields[0] : GeneralUtils.clone(fields);
     }
 
     /**
@@ -203,15 +203,15 @@ public class SettingSelector {
     @Override
     public String toString() {
         String fields;
-        if (ImplUtils.isNullOrEmpty(this.fields)) {
+        if (GeneralUtils.isNullOrEmpty(this.fields)) {
             fields = "ALL_FIELDS";
         } else {
-            fields = ImplUtils.arrayToString(this.fields, SettingFields::toStringMapper);
+            fields = GeneralUtils.arrayToString(this.fields, SettingFields::toStringMapper);
         }
 
         return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s, range=%s)",
-            ImplUtils.arrayToString(this.keys, key -> key),
-            ImplUtils.arrayToString(this.labels, label -> label),
+            GeneralUtils.arrayToString(this.keys, key -> key),
+            GeneralUtils.arrayToString(this.labels, label -> label),
             this.acceptDatetime,
             fields,
             this.range);

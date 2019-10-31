@@ -8,9 +8,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.http.PagedResponseBase;
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -31,9 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
@@ -478,7 +478,7 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot, Context context) {
         DeleteSnapshotsOptionType deleteSnapshots = null;
-        if (ImplUtils.isNullOrEmpty(snapshot)) {
+        if (GeneralUtils.isNullOrEmpty(snapshot)) {
             deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
         return azureFileStorageClient.shares()

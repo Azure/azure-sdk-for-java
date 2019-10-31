@@ -4,7 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 
 import java.time.OffsetDateTime;
 
@@ -37,7 +37,7 @@ public class AppendBlobItem {
         final Integer blobCommittedBlockCount) {
         this.eTag = eTag;
         this.lastModified = lastModified;
-        this.contentMd5 = ImplUtils.clone(contentMd5);
+        this.contentMd5 = GeneralUtils.clone(contentMd5);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.blobAppendOffset = blobAppendOffset;
@@ -76,7 +76,7 @@ public class AppendBlobItem {
      * @return the calculated MD5 of the append blob
      */
     public byte[] getContentMd5() {
-        return ImplUtils.clone(contentMd5);
+        return GeneralUtils.clone(contentMd5);
     }
 
     /**

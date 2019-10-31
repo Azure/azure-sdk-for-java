@@ -13,7 +13,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
@@ -64,7 +64,7 @@ public final class BuilderHelper {
                 // URL is using an IP pattern of http://127.0.0.1:10000/accountName/queueName
                 // or http://localhost:10000/accountName/queueName
                 String path = url.getPath();
-                if (!ImplUtils.isNullOrEmpty(path) && path.charAt(0) == '/') {
+                if (!GeneralUtils.isNullOrEmpty(path) && path.charAt(0) == '/') {
                     path = path.substring(1);
                 }
 
@@ -79,7 +79,7 @@ public final class BuilderHelper {
                 String host = url.getHost();
 
                 String accountName = null;
-                if (!ImplUtils.isNullOrEmpty(host)) {
+                if (!GeneralUtils.isNullOrEmpty(host)) {
                     int accountNameIndex = host.indexOf('.');
                     if (accountNameIndex == -1) {
                         accountName = host;
@@ -91,7 +91,7 @@ public final class BuilderHelper {
                 parts.setAccountName(accountName);
 
                 String[] pathSegments = url.getPath().split("/", 2);
-                if (pathSegments.length == 2 && !ImplUtils.isNullOrEmpty(pathSegments[1])) {
+                if (pathSegments.length == 2 && !GeneralUtils.isNullOrEmpty(pathSegments[1])) {
                     parts.setQueueName(pathSegments[1]);
                 }
             }
@@ -99,7 +99,7 @@ public final class BuilderHelper {
             // Attempt to get the SAS token from the URL passed
             String sasToken = new QueueServiceSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!GeneralUtils.isNullOrEmpty(sasToken)) {
                 parts.setQueueName(sasToken);
             }
 

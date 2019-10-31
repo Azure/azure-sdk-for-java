@@ -6,7 +6,7 @@ package com.azure.storage.blob.implementation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.RestProxy;
+import com.azure.core.http.swagger.RestProxy;
 import com.azure.storage.blob.models.PathRenameMode;
 
 /**

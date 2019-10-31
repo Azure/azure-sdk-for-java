@@ -6,8 +6,8 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.GeneralUtils;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
@@ -788,7 +788,7 @@ public final class BlobGetPropertiesHeaders {
      * @return the contentMD5 value.
      */
     public byte[] getContentMD5() {
-        return ImplUtils.clone(this.contentMD5);
+        return GeneralUtils.clone(this.contentMD5);
     }
 
     /**
@@ -800,7 +800,7 @@ public final class BlobGetPropertiesHeaders {
      * @return the BlobGetPropertiesHeaders object itself.
      */
     public BlobGetPropertiesHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.contentMD5 = GeneralUtils.clone(contentMD5);
         return this;
     }
 

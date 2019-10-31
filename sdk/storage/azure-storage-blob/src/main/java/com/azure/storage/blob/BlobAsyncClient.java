@@ -5,7 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -44,7 +44,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**

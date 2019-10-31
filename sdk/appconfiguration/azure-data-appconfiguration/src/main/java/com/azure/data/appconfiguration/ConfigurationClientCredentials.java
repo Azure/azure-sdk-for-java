@@ -3,7 +3,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -175,7 +175,7 @@ class ConfigurationClientCredentials {
         }
 
         CredentialInformation(String connectionString) {
-            if (ImplUtils.isNullOrEmpty(connectionString)) {
+            if (GeneralUtils.isNullOrEmpty(connectionString)) {
                 throw new IllegalArgumentException(connectionString);
             }
 

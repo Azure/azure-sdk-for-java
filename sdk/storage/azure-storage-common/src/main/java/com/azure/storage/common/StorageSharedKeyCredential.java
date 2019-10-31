@@ -5,7 +5,7 @@ package com.azure.storage.common;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
@@ -68,7 +68,7 @@ public final class StorageSharedKeyCredential {
         String accountName = connectionStringPieces.get(ACCOUNT_NAME);
         String accountKey = connectionStringPieces.get(ACCOUNT_KEY);
 
-        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
+        if (GeneralUtils.isNullOrEmpty(accountName) || GeneralUtils.isNullOrEmpty(accountKey)) {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
         }
 
@@ -227,5 +227,5 @@ public final class StorageSharedKeyCredential {
         }
         return null;
     }
-    
+
 }

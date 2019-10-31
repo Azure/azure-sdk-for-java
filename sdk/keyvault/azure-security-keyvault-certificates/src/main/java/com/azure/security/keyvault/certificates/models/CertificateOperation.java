@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -120,7 +120,7 @@ public final class CertificateOperation {
      * @return the csr.
      */
     public byte[] getCsr() {
-        return ImplUtils.clone(this.csr);
+        return GeneralUtils.clone(this.csr);
     }
 
     /**

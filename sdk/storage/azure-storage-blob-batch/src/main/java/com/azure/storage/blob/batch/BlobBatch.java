@@ -12,8 +12,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.http.UrlBuilder;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -410,7 +410,7 @@ public final class BlobBatch {
             String method = request.getHttpMethod().toString();
             String urlPath = request.getUrl().getPath();
             String urlQuery = request.getUrl().getQuery();
-            if (!ImplUtils.isNullOrEmpty(urlQuery)) {
+            if (!GeneralUtils.isNullOrEmpty(urlQuery)) {
                 urlPath = urlPath + "?" + urlQuery;
             }
             appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));

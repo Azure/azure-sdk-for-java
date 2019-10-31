@@ -6,7 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 

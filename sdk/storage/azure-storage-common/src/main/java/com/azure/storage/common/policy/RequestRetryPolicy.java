@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

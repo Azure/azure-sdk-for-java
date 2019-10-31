@@ -32,8 +32,7 @@
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
   </scm>
 
-  <properties>
-  </properties>
+
 
   <dependencies>
     <dependency>

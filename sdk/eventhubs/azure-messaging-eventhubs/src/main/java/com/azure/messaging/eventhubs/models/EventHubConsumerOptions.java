@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
@@ -66,7 +66,7 @@ public class EventHubConsumerOptions implements Cloneable {
      *     #MAXIMUM_IDENTIFIER_LENGTH}.
      */
     public EventHubConsumerOptions setIdentifier(String identifier) {
-        if (!ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
+        if (!GeneralUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH)));
         }

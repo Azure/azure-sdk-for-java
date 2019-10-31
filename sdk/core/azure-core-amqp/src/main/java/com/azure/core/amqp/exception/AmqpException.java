@@ -4,7 +4,7 @@
 package com.azure.core.amqp.exception;
 
 import com.azure.core.exception.AzureException;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 
 import java.util.Locale;
 
@@ -113,7 +113,7 @@ public class AmqpException extends AzureException {
             return super.getMessage();
         }
 
-        return !ImplUtils.isNullOrEmpty(baseMessage)
+        return !GeneralUtils.isNullOrEmpty(baseMessage)
             ? String.format(Locale.US, "%s, %s[%s]", baseMessage, "errorContext", errorContext.toString())
             : String.format(Locale.US, "%s[%s]", "errorContext", errorContext.toString());
     }

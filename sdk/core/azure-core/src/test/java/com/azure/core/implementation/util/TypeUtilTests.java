@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.TypeUtil;
 import org.junit.Assert;
 import org.junit.Test;
 

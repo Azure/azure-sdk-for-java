@@ -13,7 +13,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.Configuration;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -134,7 +134,7 @@ public final class BuilderHelper {
         if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
             // URL is using an IP pattern of http://127.0.0.1:10000/accountName or http://localhost:10000/accountName
             String path = url.getPath();
-            if (!ImplUtils.isNullOrEmpty(path) && path.charAt(0) == '/') {
+            if (!GeneralUtils.isNullOrEmpty(path) && path.charAt(0) == '/') {
                 path = path.substring(1);
             }
 
@@ -144,7 +144,7 @@ public final class BuilderHelper {
             // URL is using a pattern of http://accountName.blob.core.windows.net
             String host = url.getHost();
 
-            if (ImplUtils.isNullOrEmpty(host)) {
+            if (GeneralUtils.isNullOrEmpty(host)) {
                 return null;
             }
 

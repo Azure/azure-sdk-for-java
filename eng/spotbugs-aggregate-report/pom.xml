@@ -13,9 +13,6 @@
   <artifactId>spotbugs-reporting</artifactId>
   <version>1.0.0</version>
 
-  <properties>
-  </properties>
-
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>

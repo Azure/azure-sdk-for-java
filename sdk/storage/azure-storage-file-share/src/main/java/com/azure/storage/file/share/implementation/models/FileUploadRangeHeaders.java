@@ -5,8 +5,8 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.GeneralUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -140,7 +140,7 @@ public final class FileUploadRangeHeaders {
      * @return the contentMD5 value.
      */
     public byte[] getContentMD5() {
-        return ImplUtils.clone(this.contentMD5);
+        return GeneralUtils.clone(this.contentMD5);
     }
 
     /**
@@ -153,7 +153,7 @@ public final class FileUploadRangeHeaders {
      * @return the FileUploadRangeHeaders object itself.
      */
     public FileUploadRangeHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.contentMD5 = GeneralUtils.clone(contentMD5);
         return this;
     }
 

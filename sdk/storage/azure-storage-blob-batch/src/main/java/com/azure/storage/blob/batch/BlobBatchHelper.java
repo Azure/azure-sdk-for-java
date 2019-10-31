@@ -7,8 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -145,7 +145,7 @@ class BlobBatchHelper {
         HttpHeaders headers = new HttpHeaders();
 
         for (String line : responseMetadata.split(HTTP_NEWLINE)) {
-            if (ImplUtils.isNullOrEmpty(line) || (line.startsWith("HTTP") && !line.contains(":"))) {
+            if (GeneralUtils.isNullOrEmpty(line) || (line.startsWith("HTTP") && !line.contains(":"))) {
                 continue;
             }
 

@@ -8,7 +8,7 @@ import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.models.ProxyAuthenticationType;
 import com.azure.core.amqp.models.ProxyConfiguration;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -95,7 +95,7 @@ public abstract class IntegrationTestBase extends TestBase {
             return TestMode.PLAYBACK;
         }
 
-        return ImplUtils.isNullOrEmpty(CONNECTION_STRING) ? TestMode.PLAYBACK : TestMode.RECORD;
+        return GeneralUtils.isNullOrEmpty(CONNECTION_STRING) ? TestMode.PLAYBACK : TestMode.RECORD;
     }
 
     protected String getConnectionString() {
@@ -133,7 +133,7 @@ public abstract class IntegrationTestBase extends TestBase {
         final String password = System.getenv(PROXY_PASSWORD);
         final String authentication = System.getenv(PROXY_AUTHENTICATION_TYPE);
 
-        final ProxyAuthenticationType authenticationType = ImplUtils.isNullOrEmpty(authentication)
+        final ProxyAuthenticationType authenticationType = GeneralUtils.isNullOrEmpty(authentication)
             ? ProxyAuthenticationType.NONE
             : ProxyAuthenticationType.valueOf(authentication);
 

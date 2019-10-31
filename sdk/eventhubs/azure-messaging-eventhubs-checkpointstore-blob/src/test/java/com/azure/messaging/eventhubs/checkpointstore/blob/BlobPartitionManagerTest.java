@@ -8,7 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.http.PagedResponseBase;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;

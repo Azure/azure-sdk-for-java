@@ -8,7 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -192,7 +192,7 @@ public class ShareClientBuilder {
             // Attempt to get the SAS token from the URL passed
             String sasToken = new ShareServiceSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!GeneralUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {

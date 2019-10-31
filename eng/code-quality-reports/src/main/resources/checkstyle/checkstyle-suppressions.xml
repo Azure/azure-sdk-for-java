@@ -156,6 +156,10 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
 
+  <!-- Temporary suppressions -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.util.serializer.JacksonAdapter"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTag" files="com.azure.core.util.serializer.SerializerAdapter"/>
+
   <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck" files="com.azure.core.http.HttpResponse.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck" files="com.azure.security.keyvault.keys.KeyAsyncClient.java"/>

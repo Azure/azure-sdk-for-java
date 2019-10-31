@@ -5,7 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.implementation.util.FluxUtil
+import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.FileCopyInfo

@@ -4,7 +4,7 @@
 package com.azure.storage.common;
 
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,7 +54,7 @@ public final class Utility {
      * @throws RuntimeException If the UTF-8 charset isn't supported
      */
     public static String urlDecode(final String stringToDecode) {
-        if (ImplUtils.isNullOrEmpty(stringToDecode)) {
+        if (GeneralUtils.isNullOrEmpty(stringToDecode)) {
             return "";
         }
 
@@ -185,7 +185,7 @@ public final class Utility {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
         return LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime();
-    } 
+    }
 
     /**
      * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length

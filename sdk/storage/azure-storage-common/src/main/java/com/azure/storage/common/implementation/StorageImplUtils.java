@@ -3,8 +3,8 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.implementation.http.UrlBuilder;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import java.net.MalformedURLException;
@@ -65,7 +65,7 @@ public class StorageImplUtils {
                                                              Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
-        if (com.azure.core.implementation.util.ImplUtils.isNullOrEmpty(queryString)) {
+        if (GeneralUtils.isNullOrEmpty(queryString)) {
             return pieces;
         }
 
@@ -238,7 +238,7 @@ public class StorageImplUtils {
         String host = builder.getHost();
         //Parse host to get account name
         // host will look like this : <accountname>.blob.core.windows.net
-        if (!ImplUtils.isNullOrEmpty(host)) {
+        if (!GeneralUtils.isNullOrEmpty(host)) {
             int accountNameIndex = host.indexOf('.');
             if (accountNameIndex == -1) {
                 // host only contains account name

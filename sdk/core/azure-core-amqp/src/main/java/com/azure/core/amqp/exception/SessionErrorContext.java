@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.exception;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 
 import java.util.Locale;
 
@@ -23,7 +23,7 @@ public class SessionErrorContext extends ErrorContext {
      */
     public SessionErrorContext(String namespace, String entityPath) {
         super(namespace);
-        if (ImplUtils.isNullOrEmpty(entityPath)) {
+        if (GeneralUtils.isNullOrEmpty(entityPath)) {
             throw new IllegalArgumentException("'entityPath' cannot be null or empty");
         }
 

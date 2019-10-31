@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.azure.storage.blob.models.BlobRange;
 
 
@@ -36,7 +36,7 @@ final class EncryptedBlobRange {
 
     static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange) {
         // Null case
-        if (ImplUtils.isNullOrEmpty(stringRange)) {
+        if (GeneralUtils.isNullOrEmpty(stringRange)) {
             return new EncryptedBlobRange(null);
         }
         // Non-null case

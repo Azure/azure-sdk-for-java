@@ -27,9 +27,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
-  <properties>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

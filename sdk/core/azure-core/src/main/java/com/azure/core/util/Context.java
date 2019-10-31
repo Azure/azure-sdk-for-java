@@ -4,7 +4,6 @@
 package com.azure.core.util;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Map;
@@ -90,7 +89,7 @@ public class Context {
      * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty
      */
     public static Context of(Map<Object, Object> keyValues) {
-        if (ImplUtils.isNullOrEmpty(keyValues)) {
+        if (GeneralUtils.isNullOrEmpty(keyValues)) {
             throw new IllegalArgumentException("Key value map cannot be null or empty");
         }
 

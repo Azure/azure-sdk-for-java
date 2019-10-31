@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.GeneralUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -36,7 +36,7 @@ public final class SourceModifiedAccessConditions {
      * @return the sourceIfMatchCrc64 value.
      */
     public byte[] getSourceIfMatchCrc64() {
-        return ImplUtils.clone(this.sourceIfMatchCrc64);
+        return GeneralUtils.clone(this.sourceIfMatchCrc64);
     }
 
     /**
@@ -47,7 +47,7 @@ public final class SourceModifiedAccessConditions {
      * @return the SourceModifiedAccessConditions object itself.
      */
     public SourceModifiedAccessConditions setSourceIfMatchCrc64(byte[] sourceIfMatchCrc64) {
-        this.sourceIfMatchCrc64 = ImplUtils.clone(sourceIfMatchCrc64);
+        this.sourceIfMatchCrc64 = GeneralUtils.clone(sourceIfMatchCrc64);
         return this;
     }
 
@@ -58,7 +58,7 @@ public final class SourceModifiedAccessConditions {
      * @return the sourceIfNoneMatchCrc64 value.
      */
     public byte[] getSourceIfNoneMatchCrc64() {
-        return ImplUtils.clone(this.sourceIfNoneMatchCrc64);
+        return GeneralUtils.clone(this.sourceIfNoneMatchCrc64);
     }
 
     /**
@@ -69,7 +69,7 @@ public final class SourceModifiedAccessConditions {
      * @return the SourceModifiedAccessConditions object itself.
      */
     public SourceModifiedAccessConditions setSourceIfNoneMatchCrc64(byte[] sourceIfNoneMatchCrc64) {
-        this.sourceIfNoneMatchCrc64 = ImplUtils.clone(sourceIfNoneMatchCrc64);
+        this.sourceIfNoneMatchCrc64 = GeneralUtils.clone(sourceIfNoneMatchCrc64);
         return this;
     }
 }

@@ -22,9 +22,6 @@
   <description>Package for generating test coverage report for Azure Client Libraries</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-  <properties>
-  </properties>
-
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>

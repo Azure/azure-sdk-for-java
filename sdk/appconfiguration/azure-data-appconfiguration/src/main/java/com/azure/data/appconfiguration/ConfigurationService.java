@@ -21,7 +21,7 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.http.ContentType;
+import com.azure.core.http.ContentType;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
@@ -54,7 +54,7 @@ interface ConfigurationService {
         @HostParam("url") String url,
         @PathParam("key") String key,
         @QueryParam("label") String label,
-        @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
+        @BodyParam("application/json") ConfigurationSetting keyValueParameters,
         @HeaderParam("If-Match") String ifMatch,
         @HeaderParam("If-None-Match") String ifNoneMatch,
         Context context);

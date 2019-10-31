@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import reactor.core.Disposable;

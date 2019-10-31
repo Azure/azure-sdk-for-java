@@ -32,9 +32,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
