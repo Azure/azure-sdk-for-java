@@ -9,7 +9,7 @@ import com.azure.core.amqp.RetryMode;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -41,7 +41,7 @@ public class EventHubLinkProviderTest {
         .setMaxRetries(0);
 
     @Mock
-    private EventHubConnection connection;
+    private EventHubAmqpConnection connection;
     @Mock
     private EventHubSession session;
 

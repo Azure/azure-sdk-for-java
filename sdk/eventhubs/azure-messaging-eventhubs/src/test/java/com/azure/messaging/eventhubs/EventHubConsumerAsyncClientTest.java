@@ -9,7 +9,7 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -76,7 +76,7 @@ public class EventHubConsumerAsyncClientTest {
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
     @Mock
-    private EventHubConnection connection;
+    private EventHubAmqpConnection connection;
     @Mock
     private EventHubSession session;
 

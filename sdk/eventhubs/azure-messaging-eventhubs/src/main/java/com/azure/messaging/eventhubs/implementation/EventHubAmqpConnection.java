@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 /**
  * A connection to a specific Event Hub resource in Azure Event Hubs.
  */
-public interface EventHubConnection extends AmqpConnection {
+public interface EventHubAmqpConnection extends AmqpConnection {
     /**
      * Gets the management node for fetching metadata about the Event Hub and performing management operations.
      *

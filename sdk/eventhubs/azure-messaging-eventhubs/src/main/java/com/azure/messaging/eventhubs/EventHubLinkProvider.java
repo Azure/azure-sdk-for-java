@@ -12,7 +12,7 @@ import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 class EventHubLinkProvider implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubLinkProvider.class);
-    private final Mono<EventHubConnection> connectionMono;
+    private final Mono<EventHubAmqpConnection> connectionMono;
     private final String hostname;
     private final RetryOptions retryOptions;
     private final AtomicBoolean hasConnection = new AtomicBoolean();
@@ -42,7 +42,7 @@ class EventHubLinkProvider implements Closeable {
      * @param retryOptions Retry options to use when creating the link.
      * @throws NullPointerException if {@code connection}, {@code hostname}, or {@code retryOptions} is null.
      */
-    EventHubLinkProvider(Mono<EventHubConnection> connection, String hostname, RetryOptions retryOptions) {
+    EventHubLinkProvider(Mono<EventHubAmqpConnection> connection, String hostname, RetryOptions retryOptions) {
         this.connectionMono = Objects.requireNonNull(connection, "'connection' cannot be null.")
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
@@ -56,7 +56,7 @@ class EventHubLinkProvider implements Closeable {
      * @return The Event Hub management node.
      */
     Mono<EventHubManagementNode> getManagementNode() {
-        return connectionMono.flatMap(EventHubConnection::getManagementNode);
+        return connectionMono.flatMap(EventHubAmqpConnection::getManagementNode);
     }
 
     /**

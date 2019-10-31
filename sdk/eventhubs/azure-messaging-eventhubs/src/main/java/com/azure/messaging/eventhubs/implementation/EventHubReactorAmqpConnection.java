@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 /**
  * A proton-j AMQP connection to an Azure Event Hub instance. Adds additional support for management operations.
  */
-public class EventHubReactorConnection extends ReactorConnection implements EventHubConnection {
+public class EventHubReactorAmqpConnection extends ReactorConnection implements EventHubAmqpConnection {
     private static final String MANAGEMENT_SESSION_NAME = "mgmt-session";
     private static final String MANAGEMENT_LINK_NAME = "mgmt";
     private static final String MANAGEMENT_ADDRESS = "$management";
@@ -41,7 +41,7 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
-    public EventHubReactorConnection(String connectionId, ConnectionOptions connectionOptions,
+    public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
                                      ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
                                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,

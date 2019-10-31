@@ -25,8 +25,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Mono;
@@ -451,13 +451,13 @@ public class EventHubClientBuilder {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
+        final Mono<EventHubAmqpConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
             final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                 connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
-            return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
+            return new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
                 tokenManagerProvider, messageSerializer);
         });
         final EventHubLinkProvider linkProvider = new EventHubLinkProvider(connectionMono,
