@@ -9,16 +9,16 @@ parameters:
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.8'
       ProfileFlag: ''
-    # macOS - Java 8:
-    #   OSName: 'macOS'
-    #   OSVmImage: 'macOS-10.13'
-    #   JavaVersion: '1.8'
-    #   ProfileFlag: ''
-    # Windows - Java 8:
-    #   OSName: 'Windows'
-    #   OSVmImage: 'windows-2019'
-    #   JavaVersion: '1.8'
-    #   ProfileFlag: ''
+    macOS - Java 8:
+      OSName: 'macOS'
+      OSVmImage: 'macOS-10.13'
+      JavaVersion: '1.8'
+      ProfileFlag: ''
+    Windows - Java 8:
+      OSName: 'Windows'
+      OSVmImage: 'windows-2019'
+      JavaVersion: '1.8'
+      ProfileFlag: ''
     # Linux - Java LTS:
     #   OSName: 'Linux'
     #   OSVmImage: 'ubuntu-16.04'

@@ -21,6 +21,8 @@
 
   <properties>
     <project.automatic.module.name>com.azure.search</project.automatic.module.name>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
 
@@ -36,6 +38,14 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <failOnWarning>false</failOnWarning>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <encoding>UTF-8</encoding> <!--This should be enough but doesn't work so added the next line-->
+          <argLine>-Dfile.encoding=UTF-8</argLine>
         </configuration>
       </plugin>
     </plugins>
@@ -83,6 +93,12 @@
       <artifactId>azure-client-runtime</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.unitils</groupId>
+      <artifactId>unitils-core</artifactId>
+      <version>3.4.2</version>
+      <scope>test</scope>
+    </dependency>
 
     <!-- Test dependencies for creating search resources -->
     <dependency>
@@ -105,12 +121,6 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.unitils</groupId>
-      <artifactId>unitils-core</artifactId>
-      <version>3.4.2</version>
       <scope>test</scope>
     </dependency>
 
