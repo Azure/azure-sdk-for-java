@@ -65,7 +65,7 @@ public class EventProcessor {
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
         Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null.");
 
-        this.eventProcessorStore = eventProcessorStore == null ? findEventProcessorStore() : eventProcessorStore;
+        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "eventProcessorStore cannot be null");
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(eventProcessorStore, partitionProcessorFactory,
@@ -75,37 +75,6 @@ public class EventProcessor {
             new PartitionBasedLoadBalancer(this.eventProcessorStore, eventHubAsyncClient,
                 eventHubAsyncClient.getFullyQualifiedNamespace(), eventHubAsyncClient.getEventHubName(),
                 consumerGroup, identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
-    }
-
-    /**
-     * Looks for a user-defined {@link EventProcessorStore} implementation in classpath.
-     * <p>
-     * If there are more than one user-defined PartitionManagers, this method will throw an exception. User has to
-     * specify a PartitionManager explicitly in {@link EventProcessorBuilder}.
-     * </p>
-     *
-     * @return A {@link EventProcessorStore} implementation found in classpath
-     */
-    private EventProcessorStore findEventProcessorStore() {
-        ServiceLoader<EventProcessorStore> partitionManagers = ServiceLoader.load(EventProcessorStore.class);
-        EventProcessorStore eventProcessorStore = null;
-
-        for (EventProcessorStore eventProcessorStoreInClassPath : partitionManagers) {
-            if (eventProcessorStore != null) {
-                // If more than one PartitionManager is found in classpath, throw an exception
-                // User has to specify which opne to use.
-                throw logger.logExceptionAsWarning(
-                    new IllegalStateException("Found multiple PartitionManagers in classpath. Specify one in "
-                        + "EventProcessorOptions"));
-            }
-        }
-
-        if (eventProcessorStore == null) {
-            // No PartitionManagers found in classpath.
-            throw logger.logExceptionAsWarning(
-                new IllegalStateException("No PartitionManager implementation found in classpath."));
-        }
-        return eventProcessorStore;
     }
 
     /**
