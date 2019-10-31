@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.appconfiguration;
+package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -42,7 +42,7 @@ AppConfiguration to use Netty HTTP client.
 ```
 [//]: # ({x-version-update-end})
 
-### Alternate HTTP client
+### Alternate HTTP Client
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
@@ -104,7 +104,7 @@ az appconfig create --name <config-store-name> --resource-group <resource-group-
 
 In order to interact with the App Configuration service you'll need to create an instance of the Configuration Client class. To make this possible you'll need the connection string of the Configuration Store.
 
-#### Get Credentials
+#### Get credentials
 
 Use the [Azure CLI][azure_cli] snippet below to get the connection string from the Configuration Store.
 
@@ -114,7 +114,7 @@ az appconfig credential list --name <config-store-name>
 
 Alternatively, get the connection string from the Azure Portal.
 
-#### Create Client
+#### Create a Configuration Client
 
 Once you have the value of the connection string you can create the configuration client:
 
@@ -136,9 +136,9 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
 
 ### Configuration Setting
 
-A configuration setting is the fundamental resource within a Configuration Store. In its simplest form it is a key and a value. However, there are additional properties such as the modifiable content type and tags fields that allow the value to be interpreted or associated in different ways.
+A configuration setting is the fundamental resource within a configuration store. In its simplest form it is a key and a value. However, there are additional properties such as the modifiable content type and tags fields that allow the value to be interpreted or associated in different ways.
 
-The Label property of a Configuration Setting provides a way to separate Configuration Settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions. For example, MaxRequests may be 100 in "NorthAmerica", and 200 in "WestEurope". By creating a Configuration Setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, in the "WestEurope" label, a solution can be achieved that allows the application to seamlessly retrieve Configuration Settings as it runs in these two dimensions.
+The Label property of a configuration setting provides a way to separate configuration settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions. For example, MaxRequests may be 100 in "NorthAmerica", and 200 in "WestEurope". By creating a configuration setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, in the "WestEurope" label, a solution can be achieved that allows the application to seamlessly retrieve Configuration Settings as it runs in these two dimensions.
 
 ### Configuration Client
 
@@ -152,7 +152,7 @@ ConfigurationClient client = new ConfigurationClientBuilder()
         .buildClient();
 
 // urlLabel is optional
-String url = client.getSetting(urlKey, urlLabel).getValue();
+String url = client.getConfigurationSetting(urlKey, urlLabel).getValue();
 Connection conn;
 try {
     conn = DriverManager.getConnection(url);
@@ -169,87 +169,138 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .connectionString(appConfigConnectionString)
         .buildAsyncClient();
 
-client.listSettings(new SettingSelector().setLabels(periodicUpdateLabel))
+client.listConfigurationSettings(new SettingSelector().setLabels(periodicUpdateLabel))
     .subscribe(setting -> updateConfiguration(setting));
 ```
 
 ## Examples
 
-The following sections provide several code snippets covering some of the most common Configuration Service tasks, including:
-- [Create a Configuration Setting](#create-a-Configuration-Setting)
-- [Retrieve a Configuration Setting](#retrieve-a-Configuration-Setting)
-- [Update an existing Configuration Setting](#update-an-existing-Configuration-Setting)
-- [Delete a Configuration Setting](#delete-a-Configuration-Setting)
+The following sections provide several code snippets covering some of the most common configuration service tasks, including:
 
-### Create a Configuration Setting
+### Create a Configuration Client
 
-Create a Configuration Setting to be stored in the Configuration Store. There are two ways to store a Configuration Setting:
-
-- addSetting creates a setting only if the setting does not already exist in the store.
-- setSetting creates a setting if it doesn't exist or overrides an existing setting.
-
+Create a configuration client by using `ConfigurationClientBuilder` by passing connection string.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
         .connectionString(connectionString)
         .buildClient();
-ConfigurationSetting setting = client.setSetting("some_key", "some_label", "some_value");
+```
+
+### Create a Configuration Setting
+
+Create a configuration setting to be stored in the configuration store. There are two ways to store a configuration setting:
+
+- `addConfigurationSetting` creates a setting only if the setting does not already exist in the store.
+```Java
+ConfigurationSetting setting = configurationClient.addConfigurationSetting("new_key", "new_label", "new_value");
+```
+Or
+- `setConfigurationSetting` creates a setting if it doesn't exist or overrides an existing setting.
+```Java
+ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
 ```
 
 ### Retrieve a Configuration Setting
 
-Retrieve a previously stored Configuration Setting by calling getSetting.
-
+Retrieve a previously stored configuration setting by calling `getConfigurationSetting`.
 ```Java
-ConfigurationClient client = new ConfigurationClientBuilder()
-        .connectionString(connectionString)
-        .buildClient();
-client.setSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.getSetting("some_key", "some_label");
+ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
+ConfigurationSetting retrievedSetting = client.getConfigurationSetting("some_key", "some_label");
+```
+For conditional request, if you want to conditionally fetch a configuration setting, set `ifChanged` to true. 
+When `ifChanged` is true, the configuration setting is only retrieved if it is different than the given `setting`. 
+This is determined by comparing the ETag of the `setting` to the one in the service to see if they are the same or not.
+If the ETags are not the same, it means the configuration setting is different, and its value is retrieved.
+```Java
+Response<ConfigurationSetting> settingResponse = client.getConfigurationSettingWithResponse(setting, null, true, Context.NONE);
 ```
 
 ### Update an existing Configuration Setting
 
-Update an existing Configuration Setting by calling setSetting.
-
+Update an existing configuration setting by calling `setConfigurationSetting`.
 ```Java
-ConfigurationClient client = new ConfigurationClientBuilder()
-        .connectionString(connectionString)
-        .buildClient();
-client.setSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.setSetting("some_key", "some_label", "new_value");
+ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
+ConfigurationSetting updatedSetting = client.setConfigurationSetting("some_key", "some_label", "new_value");
+```
+For conditional request, if you want to conditionally update a configuration setting, set the `ifUnchanged` parameter to
+true. When `ifUnchanged` is true, the configuration setting is only updated if it is same as the given `setting`.
+This is determined by comparing the ETag of the `setting` to the one in the service to see if they are the same or not.
+If the ETag are the same, it means the configuration setting is same, and its value is updated.
+```Java
+Response<ConfigurationSetting> settingResponse = client.setConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
 
 ### Delete a Configuration Setting
 
-Delete an existing Configuration Setting by calling deleteSetting.
-
+Delete an existing configuration setting by calling `deleteConfigurationSetting`.
 ```Java
-ConfigurationClient client = new ConfigurationClientBuilder()
-        .connectionString(connectionString)
-        .buildClient();
-client.setSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.deleteSetting("some_key", "some_label");
+ConfigurationSetting setting = client.setConfigurationSetting("some_key", "some_label", "some_value");
+ConfigurationSetting deletedSetting = client.deleteConfigurationSetting("some_key", "some_label");
+```
+For conditional request, if you want to conditionally delete a configuration setting, set the `ifUnchanged` parameter 
+to true. When `ifUnchanged` parameter to true. When `ifUnchanged` is true, the configuration setting is only deleted if 
+it is same as the given `setting`. This is determined by comparing the ETag of the `setting` to the one in the service 
+to see if they are the same or not. If the ETag are same, it means the configuration setting is same, and its value is deleted.
+```Java
+Response<ConfigurationSetting> settingResponse = client.deleteConfigurationSettingWithResponse(setting, true, Context.NONE);
+```
+
+### List Configuration Settings with multiple keys
+
+List multiple configuration settings by calling `listConfigurationSettings`.
+Pass a null `SettingSelector` into the method if you want to fetch all the configuration settings and their fields.
+```Java
+String key = "some_key";
+String key2 = "new_key";
+client.setConfigurationSetting(key, "some_label", "some_value");
+client.setConfigurationSetting(key2, "new_label", "new_value");
+SettingSelector selector = new SettingSelector().setKeys(key, key2);
+PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(selector);
+```
+
+### List revisions of multiple Configuration Settings
+
+List all revisions of a configuration setting by calling `listRevisions`.
+```Java
+String key = "revisionKey";
+client.setConfigurationSetting(key, "some_label", "some_value");
+client.setConfigurationSetting(key, "new_label", "new_value");
+SettingSelector selector = new SettingSelector().setKeys(key);
+PagedIterable<ConfigurationSetting> settings = client.listRevisions(selector);
+``` 
+
+### Set a Configuration Setting to read only
+
+Set a configuration setting to read-only status.
+```Java
+client.setConfigurationSetting("some_key", "some_label", "some_value");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label");
+```
+### Clear read only from a Configuration Setting
+
+Clear read-only from a configuration setting.
+```Java
+ConfigurationSetting setting = client.clearReadOnly("some_key", "some_label");
 ```
 
 ## Troubleshooting
 
 ### General
 
-When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a Configuration Setting that doesn't exist in your Configuration Store, a `404` error is returned, indicating `Not Found`.
+When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a configuration setting that doesn't exist in your configuration store, a `404` error is returned, indicating `Not Found`.
 
 ## Next steps
 
-[Quickstart: Create a Java Spring app with App Configuration][spring_quickstart]
+- Samples are explained in detail [here][samples_readme].
+- [Quickstart: Create a Java Spring app with App Configuration][spring_quickstart]
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
 [api_documentation]: https://aka.ms/java-docs
@@ -257,10 +308,15 @@ If you would like to become an active contributor to this project please follow 
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_subscription]: https://azure.microsoft.com/free
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
 [maven]: https://maven.apache.org/
 [package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [samples]: src/samples/java/com/azure/data/appconfiguration
+[samples_readme]: src/samples/README.md
 [source_code]: src
 [spring_quickstart]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 
