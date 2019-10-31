@@ -34,7 +34,6 @@ import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,12 +103,12 @@ public class EventHubConsumerClientTest {
             .setIdentifier("an-identifier")
             .setPrefetchCount(PREFETCH);
         EventHubConsumerAsyncClient asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(), options);
+            linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(), options, false);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
     @After
-    public void teardown() throws IOException {
+    public void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
         service.shutdown();
@@ -124,7 +123,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(),
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false));
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false), false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
         sendMessages(numberOfEvents);
@@ -149,7 +148,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(),
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true), false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
         final int numberOfEvents = 10;

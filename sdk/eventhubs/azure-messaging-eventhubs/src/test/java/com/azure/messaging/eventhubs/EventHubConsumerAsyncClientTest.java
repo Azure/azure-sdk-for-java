@@ -116,7 +116,7 @@ public class EventHubConsumerAsyncClientTest {
             .setIdentifier("an-identifier")
             .setPrefetchCount(PREFETCH);
         consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer,
-            CONSUMER_GROUP, EventPosition.earliest(), options);
+            CONSUMER_GROUP, EventPosition.earliest(), options, false);
     }
 
     @After
@@ -133,7 +133,7 @@ public class EventHubConsumerAsyncClientTest {
     public void lastEnqueuedEventInformationIsNull() {
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(),
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false));
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false), false);
         final int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
         final int numberToReceive = 3;
@@ -155,7 +155,7 @@ public class EventHubConsumerAsyncClientTest {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(),
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true), false);
         final int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 

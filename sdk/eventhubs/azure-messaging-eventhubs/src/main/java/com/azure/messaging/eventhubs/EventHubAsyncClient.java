@@ -87,7 +87,7 @@ class EventHubAsyncClient implements Closeable {
      */
     EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connection.getFullyQualifiedDomainName(), getEventHubName(), connection,
-            connection.getRetryOptions(), tracerProvider, messageSerializer);
+            connection.getRetryOptions(), tracerProvider, messageSerializer, isSharedConnection);
     }
 
     /**
@@ -154,7 +154,7 @@ class EventHubAsyncClient implements Closeable {
         final EventHubConsumerOptions clonedOptions = options.clone();
 
         return new EventHubConsumerAsyncClient(connection.getFullyQualifiedDomainName(), getEventHubName(),
-            connection, messageSerializer, consumerGroup, eventPosition, clonedOptions);
+            connection, messageSerializer, consumerGroup, eventPosition, clonedOptions, isSharedConnection);
     }
 
     /**
