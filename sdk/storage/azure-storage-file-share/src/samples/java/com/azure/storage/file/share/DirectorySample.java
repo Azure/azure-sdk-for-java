@@ -3,8 +3,8 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
-import com.azure.storage.file.share.models.DirectoryProperties;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareDirectoryProperties;
+import com.azure.storage.file.share.models.ShareStorageException;
 
 import java.util.UUID;
 
@@ -35,7 +35,7 @@ public class DirectorySample {
         // Create a parent directory
         try {
             directoryClient.create();
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to create a directory. Reasons: " + e.getMessage());
         }
 
@@ -43,7 +43,7 @@ public class DirectorySample {
         String childDirectoryName = generateRandomName();
         try {
             directoryClient.createSubDirectory(childDirectoryName);
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to create sub directory. Reasons: " + e.getMessage());
         }
 
@@ -52,14 +52,14 @@ public class DirectorySample {
         String fileName = generateRandomName();
         try {
             childDirClient.createFile(fileName, 1024);
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to create a file under the child directory. Reasons: " + e.getMessage());
         }
 
         // Delete the child directory. The operation will fail because storage service only allowed to delete the empty directory.
         try {
             childDirClient.delete();
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("This is expected as the child directory is not empty.");
         }
 
@@ -68,36 +68,36 @@ public class DirectorySample {
             directoryClient.listFilesAndDirectories().forEach(
                 fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s%n",
                     fileRef.isDirectory(), fileRef.getName()));
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to list all the subdirectories and files. Reasons: " + e.getMessage());
         }
 
         // Get the parent directory properties.
         try {
-            DirectoryProperties propertiesResponse = directoryClient.getProperties();
+            ShareDirectoryProperties propertiesResponse = directoryClient.getProperties();
             System.out.printf("This is the eTag of the directory: %s%n", propertiesResponse.getETag());
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to get the properties of the parent directory");
         }
 
         // Delete the file.
         try {
             childDirClient.deleteFile(fileName);
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to delete the file. Reasons: " + e.getMessage());
         }
 
         // Delete the child folder
         try {
             directoryClient.deleteSubDirectory(childDirectoryName);
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to delete the child directory. Reasons: " + e.getMessage());
         }
 
         // Delete the parent folder
         try {
             directoryClient.delete();
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to delete the parent directory. Reasons: " + e.getMessage());
         }
 

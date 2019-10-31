@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * Contains file or directory reference information in the storage File service.
  */
 @Immutable
-public final class StorageFileItem {
+public final class ShareFileItem {
     private final String name;
     private final boolean isDirectory;
     private final Long fileSize;
@@ -21,7 +21,7 @@ public final class StorageFileItem {
      * @param isDirectory A boolean set to true if the reference is a directory, false if the reference is a file.
      * @param fileSize Size of a file. Pass {@code null} if the reference is a directory.
      */
-    public StorageFileItem(final String name, final boolean isDirectory, final Long fileSize) {
+    public ShareFileItem(final String name, final boolean isDirectory, final Long fileSize) {
         this.name = name;
         this.isDirectory = isDirectory;
         this.fileSize = fileSize;

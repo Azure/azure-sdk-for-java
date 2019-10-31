@@ -21,7 +21,7 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  * <p>For more samples, please see the <a href="https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java">sample
  * file</a></p>
  */
-public final class FileStorageException extends HttpResponseException {
+public final class ShareStorageException extends HttpResponseException {
     /**
      * Constructs a {@code StorageException}.
      *
@@ -29,15 +29,15 @@ public final class FileStorageException extends HttpResponseException {
      * @param response the HTTP response.
      * @param value the error code of the exception.
      */
-    public FileStorageException(String message, HttpResponse response, Object value) {
+    public ShareStorageException(String message, HttpResponse response, Object value) {
         super(message, response, value);
     }
 
     /**
      * @return The error code returned by the service.
      */
-    public FileErrorCode getErrorCode() {
-        return FileErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE));
+    public ShareErrorCode getErrorCode() {
+        return ShareErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE));
     }
 
     /**

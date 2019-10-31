@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "AccessPolicy")
 @Fluent
-public final class FileAccessPolicy {
+public final class ShareAccessPolicy {
     /*
      * The date-time the policy is active.
      */
@@ -46,9 +46,9 @@ public final class FileAccessPolicy {
      * Set the startsOn property: The date-time the policy is active.
      *
      * @param startsOn the startsOn value to set.
-     * @return the FileAccessPolicy object itself.
+     * @return the ShareAccessPolicy object itself.
      */
-    public FileAccessPolicy setStartsOn(OffsetDateTime startsOn) {
+    public ShareAccessPolicy setStartsOn(OffsetDateTime startsOn) {
         this.startsOn = startsOn;
         return this;
     }
@@ -66,9 +66,9 @@ public final class FileAccessPolicy {
      * Set the expiresOn property: The date-time the policy expires.
      *
      * @param expiresOn the expiresOn value to set.
-     * @return the FileAccessPolicy object itself.
+     * @return the ShareAccessPolicy object itself.
      */
-    public FileAccessPolicy setExpiresOn(OffsetDateTime expiresOn) {
+    public ShareAccessPolicy setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
         return this;
     }
@@ -86,9 +86,9 @@ public final class FileAccessPolicy {
      * Set the permissions property: The permissions for the ACL policy.
      *
      * @param permissions the permissions value to set.
-     * @return the FileAccessPolicy object itself.
+     * @return the ShareAccessPolicy object itself.
      */
-    public FileAccessPolicy setPermissions(String permissions) {
+    public ShareAccessPolicy setPermissions(String permissions) {
         this.permissions = permissions;
         return this;
     }

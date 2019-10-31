@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 
-public class ShareFileSmbProperties {
+public class FileSmbProperties {
 
     private String filePermissionKey;
     private EnumSet<NtfsFileAttributes> ntfsFileAttributes;
@@ -23,7 +23,7 @@ public class ShareFileSmbProperties {
     /**
      * Default constructor
      */
-    public ShareFileSmbProperties() {
+    public FileSmbProperties() {
         // Non user-settable properties
         fileChangeTime = null;
         fileId = null;
@@ -85,7 +85,7 @@ public class ShareFileSmbProperties {
      * @param filePermissionKey The file permission key.
      * @return the updated FileSmbProperties object.
      */
-    public ShareFileSmbProperties setFilePermissionKey(String filePermissionKey) {
+    public FileSmbProperties setFilePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
         return this;
     }
@@ -96,7 +96,7 @@ public class ShareFileSmbProperties {
      * @param ntfsFileAttributes An enum set of the ntfs file attributes.
      * @return the updated FileSmbProperties object.
      */
-    public ShareFileSmbProperties setNtfsFileAttributes(EnumSet<NtfsFileAttributes> ntfsFileAttributes) {
+    public FileSmbProperties setNtfsFileAttributes(EnumSet<NtfsFileAttributes> ntfsFileAttributes) {
         this.ntfsFileAttributes = ntfsFileAttributes;
         return this;
     }
@@ -107,7 +107,7 @@ public class ShareFileSmbProperties {
      * @param fileCreationTime The file creation time.
      * @return the updated FileSmbProperties object..
      */
-    public ShareFileSmbProperties setFileCreationTime(OffsetDateTime fileCreationTime) {
+    public FileSmbProperties setFileCreationTime(OffsetDateTime fileCreationTime) {
         this.fileCreationTime = fileCreationTime;
         return this;
     }
@@ -118,7 +118,7 @@ public class ShareFileSmbProperties {
      * @param fileLastWriteTime The file last write time.
      * @return the updated FileSmbProperties object.
      */
-    public ShareFileSmbProperties setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+    public FileSmbProperties setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
         return this;
     }
@@ -190,7 +190,7 @@ public class ShareFileSmbProperties {
      *
      * @param httpHeaders The headers to construct FileSmbProperties from
      */
-    ShareFileSmbProperties(HttpHeaders httpHeaders) {
+    FileSmbProperties(HttpHeaders httpHeaders) {
         this.filePermissionKey = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
         this.ntfsFileAttributes = NtfsFileAttributes
             .toAttributes(httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ATTRIBUTES));
