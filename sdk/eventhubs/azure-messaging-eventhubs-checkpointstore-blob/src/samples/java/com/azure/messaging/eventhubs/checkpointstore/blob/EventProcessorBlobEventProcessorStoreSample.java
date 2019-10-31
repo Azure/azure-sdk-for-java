@@ -5,8 +5,6 @@ package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.EventProcessorBuilder;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -42,10 +40,6 @@ public class EventProcessorBlobEventProcessorStoreSample {
      * @throws Exception if there are any errors while running the sample program.
      */
     public static void main(String[] args) throws Exception {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(EH_CONNECTION_STRING)
-            .buildAsyncClient();
-
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(STORAGE_CONNECTION_STRING)
             .containerName("")
