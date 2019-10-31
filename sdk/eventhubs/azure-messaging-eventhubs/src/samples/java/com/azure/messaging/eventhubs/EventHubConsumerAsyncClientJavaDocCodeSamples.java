@@ -15,8 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Code snippets demonstrating various {@link EventHubConsumerAsyncClient} scenarios.
  */
 public class EventHubConsumerAsyncClientJavaDocCodeSamples {
-    private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
-
     /**
      * Receives event data
      */

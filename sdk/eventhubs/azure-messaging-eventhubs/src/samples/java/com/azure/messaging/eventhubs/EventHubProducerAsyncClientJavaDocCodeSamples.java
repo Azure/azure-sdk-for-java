@@ -16,7 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains code snippets when generating javadocs through doclets for {@link EventHubProducerAsyncClient}.
  */
 public class EventHubProducerAsyncClientJavaDocCodeSamples {
-    private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
+    private final EventHubClientBuilder builder = new EventHubClientBuilder();
 
     /**
      * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient} that automatically routes events to any
@@ -25,11 +25,9 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
      */
     public void instantiate() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
-            .buildAsyncClient();
-
-        EventHubProducerAsyncClient producer = client.createProducer();
+            .buildAsyncProducer();
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
 
         producer.close();
@@ -47,7 +45,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
         SendOptions options = new SendOptions()
             .setPartitionId("foo");
 
-        EventHubProducerAsyncClient producer = client.createProducer();
+        EventHubProducerAsyncClient producer = builder.buildAsyncProducer();
         producer.send(eventData, options);
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation#partitionId
 
@@ -65,7 +63,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
             new EventData("wheat".getBytes(UTF_8))
         );
 
-        EventHubProducerAsyncClient producer = client.createProducer();
+        EventHubProducerAsyncClient producer = builder.buildAsyncProducer();
         SendOptions options = new SendOptions()
             .setPartitionKey("bread");
 
@@ -79,7 +77,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
      * Code snippet demonstrating how to create an {@link EventDataBatch} and send it.
      */
     public void sendEventDataBatch() {
-        final EventHubProducerAsyncClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducer();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch
         final Flux<EventData> telemetryEvents = Flux.just(

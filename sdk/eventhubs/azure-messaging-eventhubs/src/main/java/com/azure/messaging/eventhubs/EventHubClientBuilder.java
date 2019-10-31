@@ -415,7 +415,7 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    EventHubAsyncClient buildAsyncClient() {
+    public EventHubAsyncClient buildAsyncClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         return buildAsyncClient(connectionOptions);
     }
@@ -445,7 +445,7 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    EventHubClient buildClient() {
+    public EventHubClient buildClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final EventHubAsyncClient client = buildAsyncClient(connectionOptions);
 

@@ -15,8 +15,6 @@ import java.time.Instant;
  * Code snippets demonstrating various {@link EventHubConsumerClient} scenarios.
  */
 public class EventHubConsumerJavaDocCodeSamples {
-    private final EventHubClient client = new EventHubClientBuilder().connectionString("fake-string").buildClient();
-
     /**
      * Code snippet for creating an EventHubConsumer
      *
