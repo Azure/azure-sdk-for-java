@@ -664,7 +664,7 @@ class APISpec extends Specification {
             response.getValue().getContentEncoding() == contentEncoding &&
             response.getValue().getContentLanguage() == contentLanguage &&
             response.getValue().getContentMd5() == contentMD5 &&
-            response.getHeaders().getValue("Content-Type") == contentType
+            response.getValue().getContentType() == contentType
     }
 
     def enableSoftDelete() {

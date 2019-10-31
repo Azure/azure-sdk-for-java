@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.core.util.GeneralUtils;
+import com.azure.data.appconfiguration.ConfigurationClient;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -180,10 +181,12 @@ public class SettingSelector {
     }
 
     /**
-     * Gets the {@link Range} used to select a specific range of revisions with {@code listSettingRevisions}. If
+     * Gets the {@link Range} used to select a specific range of revisions with {@code listRevisions}. If
      * {@code null}, the service returns all revisions.
      *
      * @return The {@link Range} used to select a range of revisions.
+     * @see ConfigurationAsyncClient#listRevisions(SettingSelector)
+     * @see ConfigurationClient#listRevisions(SettingSelector)
      */
     public Range getRange() {
         return range;

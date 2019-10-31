@@ -7,28 +7,27 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
-import com.azure.messaging.eventhubs.EventHubClient;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
+import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.Locale;
 import java.util.Optional;
 
 /**
- * The baseline set of options that can be specified when creating an {@link EventHubConsumer} or an
- * {@link EventHubAsyncConsumer} to configure its behavior.
+ * The baseline set of options that can be specified when creating an {@link EventHubConsumerClient} or an
+ * {@link EventHubConsumerAsyncClient} to configure its behavior.
  *
- * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
- * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
+ * @see EventHubClientBuilder#buildAsyncConsumer()
+ * @see EventHubClientBuilder#buildClient()
  */
 @Fluent
 public class EventHubConsumerOptions implements Cloneable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
 
     /**
-     * The maximum length, in characters, for the identifier assigned to an {@link EventHubAsyncConsumer}.
+     * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumerAsyncClient}.
      */
     public static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
     /**
@@ -104,18 +103,6 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Sets the retry policy used to govern retry attempts for receiving events. If not specified, the retry policy
-     * configured on the associated {@link EventHubAsyncClient} is used.
-     *
-     * @param retry The retry policy to use when receiving events.
-     * @return The updated {@link EventHubConsumerOptions} object.
-     */
-    public EventHubConsumerOptions setRetry(RetryOptions retry) {
-        this.retry = retry;
-        return this;
-    }
-
-    /**
      * Sets the count used by the receiver to control the number of events this receiver will actively receive and queue
      * locally without regard to whether a receive operation is currently active.
      *
@@ -136,18 +123,6 @@ public class EventHubConsumerOptions implements Cloneable {
         }
 
         this.prefetchCount = prefetchCount;
-        return this;
-    }
-
-    /**
-     * Sets the scheduler for receiving events from Event Hubs. If not specified, the scheduler configured with the
-     * associated {@link EventHubAsyncClient} is used.
-     *
-     * @param scheduler The scheduler for receiving events.
-     * @return The updated {@link EventHubConsumerOptions} object.
-     */
-    public EventHubConsumerOptions setScheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
         return this;
     }
 
@@ -181,16 +156,6 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Gets the retry options when receiving events. If not specified, the retry options configured on the associated
-     * {@link EventHubAsyncClient} is used.
-     *
-     * @return The retry options when receiving events.
-     */
-    public RetryOptions getRetry() {
-        return retry;
-    }
-
-    /**
      * Gets the owner level for this consumer. If {@link Optional#isPresent()} is {@code false}, then this is not an
      * exclusive consumer. Otherwise, it is an exclusive consumer, and there can only be one active consumer for each
      * partition and consumer group combination.
@@ -199,16 +164,6 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public Long getOwnerLevel() {
         return ownerLevel;
-    }
-
-    /**
-     * Gets the scheduler for reading events from Event Hubs. If not specified, the scheduler configured with the
-     * associated {@link EventHubAsyncClient} is used.
-     *
-     * @return The scheduler for reading events.
-     */
-    public Scheduler getScheduler() {
-        return scheduler;
     }
 
     /**
@@ -247,14 +202,10 @@ public class EventHubConsumerOptions implements Cloneable {
             clone = new EventHubConsumerOptions();
         }
 
-        clone.setScheduler(this.getScheduler())
+        clone
             .setIdentifier(this.getIdentifier())
             .setPrefetchCount(this.getPrefetchCount())
             .setOwnerLevel(this.getOwnerLevel());
-
-        if (retry != null) {
-            clone.setRetry(retry.clone());
-        }
 
         return clone;
     }

@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.0.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.

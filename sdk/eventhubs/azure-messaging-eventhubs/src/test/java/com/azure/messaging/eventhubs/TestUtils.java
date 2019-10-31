@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.GeneralUtils;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -131,6 +132,13 @@ public final class TestUtils {
         eventData.addProperty(MESSAGE_TRACKING_ID, messageTrackingValue);
         eventData.addProperty(MESSAGE_POSITION_ID, position);
         return eventData;
+    }
+
+    /**
+     * Checks the {@link #MESSAGE_TRACKING_ID} to see if it matches the {@code expectedValue}.
+     */
+    public static boolean isMatchingEvent(PartitionEvent partitionEvent, String expectedValue) {
+        return isMatchingEvent(partitionEvent.getEventData(), expectedValue);
     }
 
     /**
