@@ -42,24 +42,21 @@ public class EventProcessorBlobEventProcessorStoreSample {
     public static void main(String[] args) throws Exception {
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(STORAGE_CONNECTION_STRING)
-            .containerName("")
+            .containerName("<< CONTAINER NAME >>")
             .sasToken(SAS_TOKEN_STRING)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
-            .connectionString("")
-            .consumerGroup("")
+            .connectionString(EH_CONNECTION_STRING)
+            .consumerGroup("<< CONSUMER GROUP NAME >>")
             .processEvent(PARTITION_PROCESSOR)
             .eventProcessorStore(new BlobEventProcessorStore(blobContainerAsyncClient));
 
-        EventProcessor ep1 = eventProcessorBuilder.buildEventProcessor();
-        EventProcessor ep2 = eventProcessorBuilder.buildEventProcessor();
-        ep1.start();
-        ep2.start();
+        EventProcessor eventProcessor = eventProcessorBuilder.buildEventProcessor();
+        eventProcessor.start();
         TimeUnit.MINUTES.sleep(5);
-        ep1.stop();
-        ep2.stop();
+        eventProcessor.stop();
     }
 
 }

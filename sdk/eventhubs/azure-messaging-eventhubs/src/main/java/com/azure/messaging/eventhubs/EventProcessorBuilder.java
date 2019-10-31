@@ -212,7 +212,7 @@ public class EventProcessorBuilder {
      * @throws NullPointerException if {@code consumerGroup} is {@code null}.
      */
     public EventProcessorBuilder consumerGroup(String consumerGroup) {
-        this.consumerGroup = Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");;
+        this.consumerGroup = Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");
         return this;
     }
 
@@ -230,7 +230,7 @@ public class EventProcessorBuilder {
      * @throws NullPointerException if {@code eventProcessorStore} is {@code null}.
      */
     public EventProcessorBuilder eventProcessorStore(EventProcessorStore eventProcessorStore) {
-        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "'eventProcessorStore' cannot be null");;
+        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "'eventProcessorStore' cannot be null");
         return this;
     }
 
