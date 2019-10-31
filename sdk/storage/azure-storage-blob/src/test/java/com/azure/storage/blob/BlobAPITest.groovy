@@ -86,7 +86,7 @@ class BlobAPITest extends APISpec {
 
     def "Download empty file"() {
         setup:
-        bc = cc.getBlobClient("emptyAppendBlob").getAppendBlobClient()
+        def bc = cc.getBlobClient("emptyAppendBlob").getAppendBlobClient()
         bc.create()
 
         when:
@@ -225,7 +225,7 @@ class BlobAPITest extends APISpec {
 
     def "Download error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.download(null)
@@ -699,7 +699,7 @@ class BlobAPITest extends APISpec {
 
     def "Get properties error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.getProperties()
@@ -812,7 +812,7 @@ class BlobAPITest extends APISpec {
 
     def "Set HTTP headers error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.setHttpHeaders(null)
@@ -920,7 +920,7 @@ class BlobAPITest extends APISpec {
 
     def "Set metadata error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.setMetadata(null)
@@ -1021,7 +1021,7 @@ class BlobAPITest extends APISpec {
 
     def "Snapshot error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.createSnapshot()
@@ -1344,7 +1344,7 @@ class BlobAPITest extends APISpec {
 
     def "Copy error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.copyFromUrl("http://www.error.com")
@@ -1355,7 +1355,7 @@ class BlobAPITest extends APISpec {
 
     def "Abort copy error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.abortCopyFromUrl("id")
@@ -1623,7 +1623,7 @@ class BlobAPITest extends APISpec {
 
     def "Blob delete error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.delete()
@@ -1860,7 +1860,7 @@ class BlobAPITest extends APISpec {
     }
 
     def "Undelete error"() {
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.undelete()
