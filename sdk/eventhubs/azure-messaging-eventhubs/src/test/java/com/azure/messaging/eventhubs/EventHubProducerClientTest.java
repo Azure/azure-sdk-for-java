@@ -5,12 +5,17 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
@@ -31,6 +36,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -73,6 +79,8 @@ public class EventHubProducerClientTest {
     private RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(30));
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConnection linkProvider;
+    @Mock
+    private TokenCredential tokenCredential;
 
     @Before
     public void setup() {
@@ -83,7 +91,11 @@ public class EventHubProducerClientTest {
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-        linkProvider = new EventHubConnection(Mono.just(connection), HOSTNAME, retryOptions);
+
+        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
+            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+        linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions,
             tracerProvider, messageSerializer);
     }

@@ -54,22 +54,16 @@ public class EventHubConnectionTest {
     private EventHubSession session;
     @Mock
     private TokenCredential tokenCredential;
-    @Mock
-    private TokenManagerProvider tokenManagerProvider;
-    @Mock
-    private MessageSerializer messageSerializer;
 
     private EventHubConnection provider;
-
-    private ConnectionOptions connectionOptions;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        connectionOptions = new ConnectionOptions(HOST_NAME, "event-hub-path", tokenCredential,
+        ConnectionOptions connectionOptions = new ConnectionOptions(HOST_NAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
-        provider = new EventHubConnection(connectionOptions, tokenManagerProvider, messageSerializer);
+        provider = new EventHubConnection(Mono.just(connection), connectionOptions);
     }
 
     @Test
