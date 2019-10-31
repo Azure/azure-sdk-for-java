@@ -40,4 +40,4 @@ stages:
       Artifacts:
         - name: azure-cosmos
           safeName: azurecosmos
-          stagingProfileId: 534d15ee3800f4
+          stagingProfileId: 88192f04117501
