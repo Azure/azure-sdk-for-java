@@ -10,8 +10,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
@@ -41,7 +39,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class ProxyIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
 
-    private EventHubClient client;
     private EventHubProducerClient sender;
     private SendOptions sendOptions;
 
@@ -64,20 +61,19 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
         Assume.assumeTrue("Cannot run proxy integration tests without setting proxy configuration.",
             proxyConfiguration != null);
 
-        client = new EventHubClientBuilder()
+        sender = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(new RetryOptions().setMaxRetries(0))
             .proxyConfiguration(proxyConfiguration)
             .transportType(TransportType.AMQP_WEB_SOCKETS)
-            .buildClient();
+            .buildProducer();
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
-        sender = client.createProducer();
     }
 
     @Override
     protected void afterTest() {
-        dispose(sender, client);
+        dispose(sender);
     }
 
     /**
@@ -96,12 +92,13 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int numberOfEvents = 15;
         final String messageId = UUID.randomUUID().toString();
-        final EventHubAsyncClient asyncClient = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .buildAsyncClient();
-        final EventHubProducerAsyncClient producer = asyncClient.createProducer();
-        final EventHubConsumerClient receiver = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
-            EventPosition.earliest());
+        final EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .connectionString(getConnectionString()).buildAsyncProducer();
+        final EventHubConsumerClient receiver = new EventHubClientBuilder()
+                .connectionString(getConnectionString())
+                .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .startingPosition(EventPosition.earliest())
+                .buildConsumer();
 
         producer.send(TestUtils.getEvents(numberOfEvents, messageId), sendOptions).block();
 
