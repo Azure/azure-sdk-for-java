@@ -6,11 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 /**

@@ -62,10 +62,8 @@ public class PathAsyncClientJavaDocCodeSamples {
 
         client.setHttpHeadersWithResponse(new PathHttpHeaders()
             .setContentLanguage("en-US")
-            .setContentType("binary"), accessConditions).subscribe(
-            response ->
-                System.out.printf("Set HTTP headers completed with status %d%n",
-                    response.getStatusCode()));
+            .setContentType("binary"), accessConditions).subscribe(response ->
+            System.out.printf("Set HTTP headers completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions
     }
 

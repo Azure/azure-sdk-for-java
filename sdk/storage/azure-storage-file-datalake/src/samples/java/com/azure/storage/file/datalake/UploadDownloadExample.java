@@ -9,10 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
-import java.util.Random;
 
 /**
  * This example shows how to upload and download using the Azure Storage Data Lake SDK for Java.

@@ -101,6 +101,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     /**
      * Code snippets for {@link DataLakeFileAsyncClient#read()} and
      * {@link DataLakeFileAsyncClient#readWithResponse(FileRange, DownloadRetryOptions, DataLakeRequestConditions, boolean)}
+     * @throws UncheckedIOException if the read fails.
      */
     public void readCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.read
