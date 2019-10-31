@@ -3,7 +3,7 @@
 
 package com.azure.storage.common.implementation.credentials;
 
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public final class SasTokenCredential {
      * @return a SAS token credential if {@code sasToken} is not {@code null} or empty, otherwise null.
      */
     public static SasTokenCredential fromSasTokenString(String sasToken) {
-        if (GeneralUtils.isNullOrEmpty(sasToken)) {
+        if (CoreUtils.isNullOrEmpty(sasToken)) {
             return null;
         }
 
@@ -66,7 +66,7 @@ public final class SasTokenCredential {
      * the signature ("sig") query parameter, otherwise returns {@code null}.
      */
     public static SasTokenCredential fromQueryParameters(Map<String, String> queryParameters) {
-        if (GeneralUtils.isNullOrEmpty(queryParameters) || !queryParameters.containsKey(SIGNATURE)) {
+        if (CoreUtils.isNullOrEmpty(queryParameters) || !queryParameters.containsKey(SIGNATURE)) {
             return null;
         }
 

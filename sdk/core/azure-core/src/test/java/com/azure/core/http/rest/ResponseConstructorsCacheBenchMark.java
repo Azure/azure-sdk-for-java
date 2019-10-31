@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.swagger;
+package com.azure.core.http.rest;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.TypeUtil;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;

@@ -7,12 +7,12 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.swagger.RestProxy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
@@ -582,7 +582,7 @@ public class CryptographyAsyncClient {
     }
 
     private void unpackAndValidateId(String keyId) {
-        if (GeneralUtils.isNullOrEmpty(keyId)) {
+        if (CoreUtils.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Key Id is invalid"));
         }
         try {

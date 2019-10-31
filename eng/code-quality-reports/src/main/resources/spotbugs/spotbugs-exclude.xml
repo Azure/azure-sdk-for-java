@@ -199,7 +199,7 @@
 
   <!-- TEMPORARY -->
   <Match>
-    <Class name="com.azure.core.util.GeneralUtils"/>
+    <Class name="com.azure.core.util.CoreUtils"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -292,7 +292,7 @@
 
   <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
   <Match>
-    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.GeneralUtils|serializer\.HttpResponseDecodeData)"/>
+    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.CoreUtils|serializer\.HttpResponseDecodeData)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -447,7 +447,7 @@
 
   <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
   <Match>
-    <Class name="com.azure.core.http.swagger.RestProxy"/>
+    <Class name="com.azure.core.http.rest.RestProxy"/>
     <Method name="endTracingSpan"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>

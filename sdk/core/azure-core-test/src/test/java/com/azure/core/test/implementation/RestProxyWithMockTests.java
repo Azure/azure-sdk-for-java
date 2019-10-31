@@ -30,7 +30,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.http.swagger.RestProxy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;

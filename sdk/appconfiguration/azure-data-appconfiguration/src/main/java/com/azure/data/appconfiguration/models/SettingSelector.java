@@ -5,7 +5,7 @@ package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.ConfigurationClient;
 
 import java.time.OffsetDateTime;
@@ -61,7 +61,7 @@ public class SettingSelector {
      * @return The expressions to filter ConfigurationSetting keys on.
      */
     public String[] getKeys() {
-        return keys == null ? new String[0] : GeneralUtils.clone(keys);
+        return keys == null ? new String[0] : CoreUtils.clone(keys);
     }
 
     /**
@@ -108,7 +108,7 @@ public class SettingSelector {
      * @return labels The labels used to filter GET requests from the service.
      */
     public String[] getLabels() {
-        return labels == null ? new String[0] : GeneralUtils.clone(labels);
+        return labels == null ? new String[0] : CoreUtils.clone(labels);
     }
 
     /**
@@ -164,7 +164,7 @@ public class SettingSelector {
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
     public SettingFields[] getFields() {
-        return fields == null ? new SettingFields[0] : GeneralUtils.clone(fields);
+        return fields == null ? new SettingFields[0] : CoreUtils.clone(fields);
     }
 
     /**
@@ -206,15 +206,15 @@ public class SettingSelector {
     @Override
     public String toString() {
         String fields;
-        if (GeneralUtils.isNullOrEmpty(this.fields)) {
+        if (CoreUtils.isNullOrEmpty(this.fields)) {
             fields = "ALL_FIELDS";
         } else {
-            fields = GeneralUtils.arrayToString(this.fields, SettingFields::toStringMapper);
+            fields = CoreUtils.arrayToString(this.fields, SettingFields::toStringMapper);
         }
 
         return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s, range=%s)",
-            GeneralUtils.arrayToString(this.keys, key -> key),
-            GeneralUtils.arrayToString(this.labels, label -> label),
+            CoreUtils.arrayToString(this.keys, key -> key),
+            CoreUtils.arrayToString(this.labels, label -> label),
             this.acceptDatetime,
             fields,
             this.range);

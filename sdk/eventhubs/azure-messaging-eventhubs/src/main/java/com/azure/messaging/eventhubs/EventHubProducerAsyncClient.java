@@ -15,7 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
@@ -220,13 +220,13 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         final BatchOptions clone = options.clone();
 
-        if (!GeneralUtils.isNullOrEmpty(clone.getPartitionKey())
-                && !GeneralUtils.isNullOrEmpty(clone.getPartitionId())) {
+        if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
+                && !CoreUtils.isNullOrEmpty(clone.getPartitionId())) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
                 clone.getPartitionKey(), clone.getPartitionId())));
-        } else if (!GeneralUtils.isNullOrEmpty(clone.getPartitionKey())
+        } else if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
             && clone.getPartitionKey().length() > MAX_PARTITION_KEY_LENGTH) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", clone.getPartitionKey(),
@@ -396,9 +396,9 @@ public class EventHubProducerAsyncClient implements Closeable {
             return Mono.empty();
         }
 
-        if (!GeneralUtils.isNullOrEmpty(batch.getPartitionId())) {
+        if (!CoreUtils.isNullOrEmpty(batch.getPartitionId())) {
             logger.info("Sending batch with size[{}] to partitionId[{}].", batch.getSize(), batch.getPartitionId());
-        } else if (!GeneralUtils.isNullOrEmpty(batch.getPartitionKey())) {
+        } else if (!CoreUtils.isNullOrEmpty(batch.getPartitionKey())) {
             logger.info("Sending batch with size[{}] with partitionKey[{}].", batch.getSize(), batch.getPartitionKey());
         } else {
             logger.info("Sending batch with size[{}] to be distributed round-robin in service.", batch.getSize());
@@ -408,7 +408,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final List<Message> messages = batch.getEvents().stream().map(event -> {
             final Message message = messageSerializer.serialize(event);
 
-            if (!GeneralUtils.isNullOrEmpty(partitionKey)) {
+            if (!CoreUtils.isNullOrEmpty(partitionKey)) {
                 final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
                     ? new MessageAnnotations(new HashMap<>())
                     : message.getMessageAnnotations();
@@ -429,8 +429,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         final SendOptions clone = options.clone();
         final boolean isTracingEnabled = tracerProvider.isEnabled();
 
-        if (!GeneralUtils.isNullOrEmpty(clone.getPartitionKey())
-                && !GeneralUtils.isNullOrEmpty(clone.getPartitionId())) {
+        if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
+                && !CoreUtils.isNullOrEmpty(clone.getPartitionId())) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
@@ -518,13 +518,13 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     private String getEntityPath(String partitionId) {
-        return GeneralUtils.isNullOrEmpty(partitionId)
+        return CoreUtils.isNullOrEmpty(partitionId)
             ? eventHubName
             : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
     }
 
     private String getLinkName(String partitionId) {
-        return GeneralUtils.isNullOrEmpty(partitionId)
+        return CoreUtils.isNullOrEmpty(partitionId)
             ? StringUtil.getRandomString("EC")
             : StringUtil.getRandomString("PS");
     }

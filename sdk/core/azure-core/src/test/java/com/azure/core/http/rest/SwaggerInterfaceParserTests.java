@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.swagger;
+package com.azure.core.http.rest;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -63,7 +63,7 @@ public class SwaggerInterfaceParserTests {
 
         final SwaggerMethodParser methodParser = interfaceParser.getMethodParser(testMethod3);
         assertNotNull(methodParser);
-        assertEquals("com.azure.core.implementation.SwaggerInterfaceParserTests$TestInterface4.testMethod4", methodParser.getFullyQualifiedMethodName());
+        assertEquals("com.azure.core.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4", methodParser.getFullyQualifiedMethodName());
 
         final SwaggerMethodParser methodDetails2 = interfaceParser.getMethodParser(testMethod3);
         assertSame(methodParser, methodDetails2);

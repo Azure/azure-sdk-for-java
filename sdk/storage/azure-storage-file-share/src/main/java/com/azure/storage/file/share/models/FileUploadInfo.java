@@ -4,7 +4,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
 
@@ -30,7 +30,7 @@ public final class FileUploadInfo {
         final Boolean isServerEncrypted) {
         this.eTag = eTag;
         this.lastModified = lastModified;
-        this.contentMd5 = GeneralUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         this.isServerEncrypted = isServerEncrypted;
     }
 
@@ -52,7 +52,7 @@ public final class FileUploadInfo {
      * @return the MD5 of the file's content.
      */
     public byte[] getContentMd5() {
-        return GeneralUtils.clone(contentMd5);
+        return CoreUtils.clone(contentMd5);
     }
 
     /**

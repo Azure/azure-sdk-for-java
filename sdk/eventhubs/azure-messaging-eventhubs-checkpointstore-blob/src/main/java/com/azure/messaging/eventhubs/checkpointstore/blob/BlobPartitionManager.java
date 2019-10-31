@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
@@ -109,7 +109,7 @@ public class BlobPartitionManager implements PartitionManager {
             Long sequenceNumber = partitionOwnership.getSequenceNumber();
             metadata.put(SEQUENCE_NUMBER, sequenceNumber == null ? null : String.valueOf(sequenceNumber));
             BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            if (GeneralUtils.isNullOrEmpty(partitionOwnership.getETag())) {
+            if (CoreUtils.isNullOrEmpty(partitionOwnership.getETag())) {
                 // New blob should be created
                 blobRequestConditions.setIfNoneMatch("*");
                 return blobAsyncClient.getBlockBlobAsyncClient()
@@ -186,7 +186,7 @@ public class BlobPartitionManager implements PartitionManager {
         partitionOwnership.setConsumerGroupName(names[1]);
         partitionOwnership.setPartitionId(names[2]);
 
-        if (GeneralUtils.isNullOrEmpty(blobItem.getMetadata())) {
+        if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
             logger.warning("No metadata available for blob {}", blobItem.getName());
             return partitionOwnership;
         }

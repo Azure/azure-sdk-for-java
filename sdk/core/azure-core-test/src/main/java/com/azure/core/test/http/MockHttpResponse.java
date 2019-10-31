@@ -9,7 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -71,7 +71,7 @@ public class MockHttpResponse extends HttpResponse {
         super(request);
         this.statusCode = statusCode;
         this.headers = headers;
-        this.bodyBytes = GeneralUtils.clone(bodyBytes);
+        this.bodyBytes = CoreUtils.clone(bodyBytes);
     }
 
     /**

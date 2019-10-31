@@ -17,7 +17,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.swagger.RestProxy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;

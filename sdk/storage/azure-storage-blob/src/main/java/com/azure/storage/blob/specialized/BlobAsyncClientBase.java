@@ -10,7 +10,7 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -363,7 +363,7 @@ public class BlobAsyncClientBase {
                 }
                 final String copyIdentifier = firstResponse.getValue().getCopyId();
 
-                if (!GeneralUtils.isNullOrEmpty(copyIdentifier)) {
+                if (!CoreUtils.isNullOrEmpty(copyIdentifier)) {
                     logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
 
                     return abortCopyFromUrl(copyIdentifier).thenReturn(firstResponse.getValue());

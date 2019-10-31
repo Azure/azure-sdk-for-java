@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.swagger;
+package com.azure.core.http.rest;
 
 import com.azure.core.MyOtherRestException;
 import com.azure.core.MyRestException;
@@ -45,7 +45,7 @@ public class SwaggerMethodParserTests {
         assertEquals("testMethod2", testMethod2.getName());
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, "https://raw.host.com");
-        assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.getFullyQualifiedMethodName());
+        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.getFullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
         assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).getExceptionType());
@@ -68,7 +68,7 @@ public class SwaggerMethodParserTests {
         assertEquals("testMethod3", testMethod3.getName());
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, "https://raw.host.com");
-        assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.getFullyQualifiedMethodName());
+        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.getFullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
         assertEquals(MyRestException.class, methodParser.getUnexpectedException(-1).getExceptionType());
@@ -92,7 +92,7 @@ public class SwaggerMethodParserTests {
         assertEquals("testMethod4", testMethod4.getName());
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod4, "https://raw.host.com");
-        assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface4.testMethod4", methodParser.getFullyQualifiedMethodName());
+        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface4.testMethod4", methodParser.getFullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
         assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(400).getExceptionType());
@@ -117,7 +117,7 @@ public class SwaggerMethodParserTests {
         assertEquals("testMethod5", testMethod5.getName());
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod5, "https://raw.host.com");
-        assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface5.testMethod5", methodParser.getFullyQualifiedMethodName());
+        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface5.testMethod5", methodParser.getFullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
         assertEquals(MyRestException.class, methodParser.getUnexpectedException(400).getExceptionType());
@@ -144,7 +144,7 @@ public class SwaggerMethodParserTests {
         assertEquals("testMethod6", testMethod6.getName());
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod6, "https://raw.host.com");
-        assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface6.testMethod6", methodParser.getFullyQualifiedMethodName());
+        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface6.testMethod6", methodParser.getFullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
         assertEquals(MyRestException.class, methodParser.getUnexpectedException(400).getExceptionType());
@@ -175,7 +175,7 @@ public class SwaggerMethodParserTests {
         assertEquals("testMethod7", testMethod7.getName());
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod7, "https://raw.host.com");
-        assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface7.testMethod7", methodParser.getFullyQualifiedMethodName());
+        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface7.testMethod7", methodParser.getFullyQualifiedMethodName());
         assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).getExceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(-1).getExceptionBodyType());
         assertEquals(false, methodParser.setHeaders(null).iterator().hasNext());
@@ -196,7 +196,7 @@ public class SwaggerMethodParserTests {
         assertEquals("testMethod8", testMethod8.getName());
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod8, "https://raw.host.com");
-        assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface8.testMethod8", methodParser.getFullyQualifiedMethodName());
+        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface8.testMethod8", methodParser.getFullyQualifiedMethodName());
         assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(404).getExceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(404).getExceptionBodyType());
         assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).getExceptionType());

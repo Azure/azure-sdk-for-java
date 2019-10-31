@@ -79,7 +79,7 @@ public final class Base64Url {
      * @return The underlying encoded byte array.
      */
     public byte[] encodedBytes() {
-        return GeneralUtils.clone(bytes);
+        return CoreUtils.clone(bytes);
     }
 
     /**

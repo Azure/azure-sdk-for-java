@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 
 /**
  * Represents the details of encrypt operation result.
@@ -33,7 +33,7 @@ public final class EncryptResult {
      * @param keyId The identifier of the key usd for the encryption operation.
      */
     public EncryptResult(byte[] cipherText, EncryptionAlgorithm algorithm, String keyId) {
-        this.cipherText = GeneralUtils.clone(cipherText);
+        this.cipherText = CoreUtils.clone(cipherText);
         this.algorithm = algorithm;
         this.keyId = keyId;
     }
@@ -51,7 +51,7 @@ public final class EncryptResult {
      * @return The encrypted content.
      */
     public byte[] getCipherText() {
-        return GeneralUtils.clone(cipherText);
+        return CoreUtils.clone(cipherText);
     }
 
     /**

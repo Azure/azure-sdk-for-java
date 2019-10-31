@@ -11,7 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -282,7 +282,7 @@ public class ShareFileAsyncClient {
                             new IllegalArgumentException("Cannot cancel a poll response that never started.")));
                 }
                 final String copyIdentifier = firstResponse.getValue().getCopyId();
-                if (!GeneralUtils.isNullOrEmpty(copyIdentifier)) {
+                if (!CoreUtils.isNullOrEmpty(copyIdentifier)) {
                     logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
                     return abortCopy(copyIdentifier).thenReturn(firstResponse.getValue());
                 }

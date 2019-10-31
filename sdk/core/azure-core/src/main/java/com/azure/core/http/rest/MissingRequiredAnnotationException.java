@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.swagger;
+package com.azure.core.http.rest;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -11,14 +11,14 @@ import java.util.List;
  * An exception thrown when a Swagger interface is parsed and it is missing required
  * annotations.
  */
-public class MissingRequiredAnnotationException extends RuntimeException {
+class MissingRequiredAnnotationException extends RuntimeException {
     /**
      * Create a new MissingRequiredAnnotationException for the provided missing required annotation
      * on the provided swaggerInterface.
      * @param requiredAnnotation The annotation that is required.
      * @param swaggerInterface The swagger interface that is missing the required annotation.
      */
-    public MissingRequiredAnnotationException(Class<? extends Annotation> requiredAnnotation,
+    MissingRequiredAnnotationException(Class<? extends Annotation> requiredAnnotation,
                                               Class<?> swaggerInterface) {
         super("A " + getAnnotationName(requiredAnnotation) + " annotation must be defined on "
             + swaggerInterface.getName() + ".");
@@ -30,7 +30,7 @@ public class MissingRequiredAnnotationException extends RuntimeException {
      * @param requiredAnnotation The annotation that is required.
      * @param swaggerInterfaceMethod The swagger interface method that is missing the required annotation.
      */
-    public MissingRequiredAnnotationException(Class<? extends Annotation> requiredAnnotation,
+    MissingRequiredAnnotationException(Class<? extends Annotation> requiredAnnotation,
                                               Method swaggerInterfaceMethod) {
         super("A " + getAnnotationName(requiredAnnotation) + " annotation must be defined on the method "
             + methodFullName(swaggerInterfaceMethod) + ".");
@@ -42,7 +42,7 @@ public class MissingRequiredAnnotationException extends RuntimeException {
      * @param requiredAnnotationOptions The options for the annotation that is required.
      * @param swaggerInterfaceMethod The swagger interface method that is missing the required annotation.
      */
-    public MissingRequiredAnnotationException(List<Class<? extends Annotation>> requiredAnnotationOptions,
+    MissingRequiredAnnotationException(List<Class<? extends Annotation>> requiredAnnotationOptions,
                                               Method swaggerInterfaceMethod) {
         super("Either " + optionsToString(requiredAnnotationOptions) + " annotation must be defined on the method "
             + methodFullName(swaggerInterfaceMethod) + ".");

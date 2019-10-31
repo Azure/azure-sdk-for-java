@@ -189,7 +189,7 @@ public class Configuration implements Cloneable {
      */
     public <T> T get(String name, Function<String, T> converter) {
         String value = getOrLoad(name);
-        if (GeneralUtils.isNullOrEmpty(value)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             return null;
         }
 
@@ -300,7 +300,7 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("unchecked")
     private <T> T convertOrDefault(String value, T defaultValue) {
         // Value is null or empty, return the default.
-        if (GeneralUtils.isNullOrEmpty(value)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             return defaultValue;
         }
 

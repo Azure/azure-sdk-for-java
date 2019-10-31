@@ -4,7 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.sas.BlobServiceSasQueryParameters;
 import com.azure.storage.common.Utility;
@@ -347,7 +347,7 @@ public final class BlobUrlParts {
 
         //Parse host to get account name
         // host will look like this : <accountname>.blob.core.windows.net
-        if (!GeneralUtils.isNullOrEmpty(host)) {
+        if (!CoreUtils.isNullOrEmpty(host)) {
             int accountNameIndex = host.indexOf('.');
             if (accountNameIndex == -1) {
                 // host only contains account name
@@ -360,7 +360,7 @@ public final class BlobUrlParts {
 
         // find the container & blob names (if any)
         String path = url.getPath();
-        if (!GeneralUtils.isNullOrEmpty(path)) {
+        if (!CoreUtils.isNullOrEmpty(path)) {
             // if the path starts with a slash remove it
             if (path.charAt(0) == '/') {
                 path = path.substring(1);
@@ -389,7 +389,7 @@ public final class BlobUrlParts {
     private static TreeMap<String, String[]> parseQueryString(String queryParams) {
         final TreeMap<String, String[]> retVals = new TreeMap<>(Comparator.naturalOrder());
 
-        if (GeneralUtils.isNullOrEmpty(queryParams)) {
+        if (CoreUtils.isNullOrEmpty(queryParams)) {
             return retVals;
         }
 

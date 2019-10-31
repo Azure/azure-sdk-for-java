@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
@@ -124,7 +124,7 @@ public final class PartitionBasedLoadBalancer {
 
             List<String> partitionIds = tuple.getT2();
 
-            if (GeneralUtils.isNullOrEmpty(partitionIds)) {
+            if (CoreUtils.isNullOrEmpty(partitionIds)) {
                 // This may be due to an error when getting Event Hub metadata.
                 throw logger.logExceptionAsError(Exceptions.propagate(
                     new IllegalStateException("There are no partitions in Event Hub " + eventHubName)));
@@ -148,7 +148,7 @@ public final class PartitionBasedLoadBalancer {
                 partitionOwnershipMap);
             logger.info("Number of active ownership records {}", activePartitionOwnershipMap.size());
 
-            if (GeneralUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
+            if (CoreUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
                 /*
                  * If the active partition ownership map is empty, this is the first time an event processor is
                  * running or all Event Processors are down for this Event Hub, consumer group combination. All
@@ -318,7 +318,7 @@ public final class PartitionBasedLoadBalancer {
             .filter(entry -> {
                 return (System.currentTimeMillis() - entry.getValue().getLastModifiedTime() < TimeUnit.SECONDS
                     .toMillis(inactiveTimeLimitInSeconds))
-                           && !GeneralUtils.isNullOrEmpty(entry.getValue().getOwnerId());
+                           && !CoreUtils.isNullOrEmpty(entry.getValue().getOwnerId());
             }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 

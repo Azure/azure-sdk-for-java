@@ -23,7 +23,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -326,7 +326,7 @@ public final class ConfigurationClientBuilder {
 
     private ConfigurationClientCredentials getConfigurationCredentials(Configuration configuration) {
         String connectionString = configuration.get("AZURE_APPCONFIG_CONNECTION_STRING");
-        if (GeneralUtils.isNullOrEmpty(connectionString)) {
+        if (CoreUtils.isNullOrEmpty(connectionString)) {
             return credential;
         }
 

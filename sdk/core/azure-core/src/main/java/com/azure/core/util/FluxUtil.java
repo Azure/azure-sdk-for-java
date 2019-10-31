@@ -180,7 +180,7 @@ public final class FluxUtil {
      */
     private static Context toAzureContext(reactor.util.context.Context context) {
         Map<Object, Object> keyValues = context.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-        if (GeneralUtils.isNullOrEmpty(keyValues)) {
+        if (CoreUtils.isNullOrEmpty(keyValues)) {
             return Context.NONE;
         }
         return Context.of(keyValues);

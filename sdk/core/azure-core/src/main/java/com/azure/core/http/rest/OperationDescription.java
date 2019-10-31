@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.swagger;
+package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpRequest;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * Type that holds composes data from an originating operation
  * that can be used to resume the polling of the original operation.
  */
-public class OperationDescription implements Serializable {
+class OperationDescription implements Serializable {
     private static final long serialVersionUID = 1L;
     private final Serializable pollStrategyData;
     private final Map<String, String> headers;
@@ -24,7 +24,7 @@ public class OperationDescription implements Serializable {
     /**
      * Create OperationDescription.
      */
-    public OperationDescription() {
+    OperationDescription() {
         this.fullyQualifiedMethodName = null;
         this.pollStrategyData = null;
         this.headers = null;
@@ -39,7 +39,7 @@ public class OperationDescription implements Serializable {
      * @param pollStrategyData the data for the originating methods polling strategy
      * @param originalHttpRequest the initial http request from the originating call
      */
-    public OperationDescription(String fullyQualifiedMethodName,
+    OperationDescription(String fullyQualifiedMethodName,
                                 Serializable pollStrategyData,
                                 HttpRequest originalHttpRequest) {
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;

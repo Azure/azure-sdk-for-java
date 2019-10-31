@@ -11,7 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.tracing.opencensus.implementation.HttpTraceUtil;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
@@ -96,7 +96,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
         // AttributeValue will throw an error if the value is null.
-        if (!GeneralUtils.isNullOrEmpty(value)) {
+        if (!CoreUtils.isNullOrEmpty(value)) {
             span.putAttribute(key, AttributeValue.stringAttributeValue(value));
         }
     }

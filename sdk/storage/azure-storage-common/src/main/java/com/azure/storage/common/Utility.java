@@ -4,7 +4,7 @@
 package com.azure.storage.common;
 
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,7 +54,7 @@ public final class Utility {
      * @throws RuntimeException If the UTF-8 charset isn't supported
      */
     public static String urlDecode(final String stringToDecode) {
-        if (GeneralUtils.isNullOrEmpty(stringToDecode)) {
+        if (CoreUtils.isNullOrEmpty(stringToDecode)) {
             return "";
         }
 

@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.swagger;
+package com.azure.core.http.rest;
 
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * The type responsible for creating individual Swagger interface method parsers from a Swagger
  * interface.
  */
-public class SwaggerInterfaceParser {
+class SwaggerInterfaceParser {
     private final String host;
     private final String serviceName;
     private static final Map<Method, SwaggerMethodParser> METHOD_PARSERS = new ConcurrentHashMap<>();
@@ -27,7 +27,7 @@ public class SwaggerInterfaceParser {
      * @param swaggerInterface The interface that will be parsed.
      * @param serializer The serializer that will be used to serialize non-String header values and query values.
      */
-    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer) {
+    SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer) {
         this(swaggerInterface, serializer, null);
     }
 
@@ -39,8 +39,8 @@ public class SwaggerInterfaceParser {
      * @param host The host of URLs that this Swagger interface targets.
      * @throws MissingRequiredAnnotationException When an expected annotation on the interface is not provided.
      */
-    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
-        if (!GeneralUtils.isNullOrEmpty(host)) {
+    SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
+        if (!CoreUtils.isNullOrEmpty(host)) {
             this.host = host;
         } else {
             final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
@@ -66,7 +66,7 @@ public class SwaggerInterfaceParser {
      * @param swaggerMethod the method to generate a parser for
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
-    public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
+    SwaggerMethodParser getMethodParser(Method swaggerMethod) {
         SwaggerMethodParser result = METHOD_PARSERS.get(swaggerMethod);
         if (result == null) {
             result = new SwaggerMethodParser(swaggerMethod, getHost());

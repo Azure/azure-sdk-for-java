@@ -3,8 +3,6 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.core.implementation.util.Foo;
-import com.azure.core.implementation.util.FooChild;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 
 /**
  * Represents the details of wrap operation result.
@@ -35,7 +35,7 @@ public final class WrapResult {
      * @param keyId The identifier of the key usd for the key wrap operation.
      */
     public WrapResult(byte[] encryptedKey, KeyWrapAlgorithm algorithm, String keyId) {
-        this.encryptedKey = GeneralUtils.clone(encryptedKey);
+        this.encryptedKey = CoreUtils.clone(encryptedKey);
         this.keyId = keyId;
         this.algorithm = algorithm;
     }
@@ -45,7 +45,7 @@ public final class WrapResult {
      * @return The encrypted key.
      */
     public byte[] getEncryptedKey() {
-        return GeneralUtils.clone(encryptedKey);
+        return CoreUtils.clone(encryptedKey);
     }
 
     /**

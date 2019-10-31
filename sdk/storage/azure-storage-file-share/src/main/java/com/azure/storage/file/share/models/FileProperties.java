@@ -4,7 +4,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.share.ShareFileSmbProperties;
 
 import java.time.OffsetDateTime;
@@ -83,7 +83,7 @@ public final class FileProperties {
         this.fileType = fileType;
         this.contentLength = contentLength;
         this.contentType = contentType;
-        this.contentMd5 = GeneralUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         this.contentEncoding = contentEncoding;
         this.cacheControl = cacheControl;
         this.contentDisposition = contentDisposition;
@@ -143,7 +143,7 @@ public final class FileProperties {
      * @return The MD5 hash of the file.
      */
     public byte[] getContentMd5() {
-        return GeneralUtils.clone(contentMd5);
+        return CoreUtils.clone(contentMd5);
     }
 
     /**

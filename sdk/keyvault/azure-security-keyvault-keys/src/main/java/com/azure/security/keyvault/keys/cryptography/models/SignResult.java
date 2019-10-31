@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 
 /**
  * Represents the details of sign operation result.
@@ -33,7 +33,7 @@ public final class SignResult {
      * @param keyId The identifier of the key usd for the sign operation.
      */
     public SignResult(byte[] signature, SignatureAlgorithm algorithm, String keyId) {
-        this.signature = GeneralUtils.clone(signature);
+        this.signature = CoreUtils.clone(signature);
         this.algorithm = algorithm;
         this.keyId = keyId;
     }
@@ -52,7 +52,7 @@ public final class SignResult {
      * @return The signature.
      */
     public byte[] getSignature() {
-        return GeneralUtils.clone(signature);
+        return CoreUtils.clone(signature);
     }
 
     /**

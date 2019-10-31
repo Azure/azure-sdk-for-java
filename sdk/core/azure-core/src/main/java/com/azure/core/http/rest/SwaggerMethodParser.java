@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.swagger;
+package com.azure.core.http.rest;
 
 import com.azure.core.implementation.UnixTime;
+import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.annotation.BodyParam;
@@ -28,12 +29,10 @@ import com.azure.core.util.Context;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.ContentType;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.implementation.TypeUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ import java.util.stream.Collectors;
  * The type to parse details of a specific Swagger REST API call from a provided Swagger interface
  * method.
  */
-public class SwaggerMethodParser implements HttpResponseDecodeData {
+class SwaggerMethodParser implements HttpResponseDecodeData {
     private final SerializerAdapter serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
@@ -236,7 +235,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public int[] getExpectedStatusCodes() {
-        return GeneralUtils.clone(expectedStatusCodes);
+        return CoreUtils.clone(expectedStatusCodes);
     }
 
     /**
@@ -361,7 +360,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return the context, or {@link Context#NONE} if no context was provided
      */
     public Context setContext(Object[] swaggerMethodArguments) {
-        Context context = GeneralUtils.findFirstOfType(swaggerMethodArguments, Context.class);
+        Context context = CoreUtils.findFirstOfType(swaggerMethodArguments, Context.class);
 
         return (context != null) ? context : Context.NONE;
     }

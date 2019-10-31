@@ -4,7 +4,6 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.implementation.util.Foo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Assert;
 import org.junit.Test;

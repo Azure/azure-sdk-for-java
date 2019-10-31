@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -113,7 +113,7 @@ public final class BlobHttpHeaders {
      * @return the contentMd5 value.
      */
     public byte[] getContentMd5() {
-        return GeneralUtils.clone(this.contentMd5);
+        return CoreUtils.clone(this.contentMd5);
     }
 
     /**
@@ -125,7 +125,7 @@ public final class BlobHttpHeaders {
      * @return the BlobHttpHeaders object itself.
      */
     public BlobHttpHeaders setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = GeneralUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 

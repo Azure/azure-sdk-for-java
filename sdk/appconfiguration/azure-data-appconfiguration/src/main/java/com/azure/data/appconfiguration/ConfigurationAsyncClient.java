@@ -19,8 +19,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.swagger.RestProxy;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
@@ -635,9 +635,9 @@ public final class ConfigurationAsyncClient {
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
             }
 
-            String fields = GeneralUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-            String keys = GeneralUtils.arrayToString(selector.getKeys(), key -> key);
-            String labels = GeneralUtils.arrayToString(selector.getLabels(), label -> label);
+            String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+            String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
+            String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
 
             return service.listKeyValues(serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), context)
                 .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
@@ -682,9 +682,9 @@ public final class ConfigurationAsyncClient {
             Mono<PagedResponse<ConfigurationSetting>> result;
 
             if (selector != null) {
-                String fields = GeneralUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-                String keys = GeneralUtils.arrayToString(selector.getKeys(), key -> key);
-                String labels = GeneralUtils.arrayToString(selector.getLabels(), label -> label);
+                String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+                String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
+                String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
                 String range = selector.getRange() != null ? String.format(RANGE_QUERY, selector.getRange()) : null;
 
                 result = service.listKeyValueRevisions(
@@ -740,7 +740,7 @@ public final class ConfigurationAsyncClient {
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(
         PagedResponse<ConfigurationSetting> page, Context context) {
-        return GeneralUtils.extractAndFetch(page, context, this::listConfigurationSettings);
+        return CoreUtils.extractAndFetch(page, context, this::listConfigurationSettings);
     }
 
     /*

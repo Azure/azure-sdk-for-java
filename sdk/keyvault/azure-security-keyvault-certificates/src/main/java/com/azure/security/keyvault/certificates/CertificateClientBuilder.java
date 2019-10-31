@@ -15,7 +15,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import java.net.MalformedURLException;
@@ -260,7 +260,7 @@ public final class CertificateClientBuilder {
         }
 
         String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");
-        if (GeneralUtils.isNullOrEmpty(configEndpoint)) {
+        if (CoreUtils.isNullOrEmpty(configEndpoint)) {
             return null;
         }
 

@@ -12,7 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -108,7 +108,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link BlobContainerAsyncClient} object pointing to the specified container
      */
     public BlobContainerAsyncClient getBlobContainerAsyncClient(String containerName) {
-        if (GeneralUtils.isNullOrEmpty(containerName)) {
+        if (CoreUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 

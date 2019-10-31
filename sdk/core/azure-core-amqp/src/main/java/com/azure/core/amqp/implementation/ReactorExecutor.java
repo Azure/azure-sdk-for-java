@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.HandlerException;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -113,9 +113,9 @@ class ReactorExecutor implements Closeable {
             logger.warning(LOG_MESSAGE, connectionId, StringUtil.toStackTraceString(handlerException,
                 "Unhandled exception while processing events in reactor, report this error."));
 
-            final String message = !GeneralUtils.isNullOrEmpty(cause.getMessage())
+            final String message = !CoreUtils.isNullOrEmpty(cause.getMessage())
                 ? cause.getMessage()
-                : !GeneralUtils.isNullOrEmpty(handlerException.getMessage())
+                : !CoreUtils.isNullOrEmpty(handlerException.getMessage())
                 ? handlerException.getMessage()
                 : "Reactor encountered unrecoverable error";
 

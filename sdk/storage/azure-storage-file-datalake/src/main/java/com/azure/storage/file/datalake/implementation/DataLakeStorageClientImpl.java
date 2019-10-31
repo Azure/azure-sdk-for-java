@@ -5,7 +5,10 @@
 package com.azure.storage.file.datalake.implementation;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.swagger.RestProxy;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 
 /**
  * Initializes a new instance of the DataLakeStorageClient type.
@@ -129,7 +132,12 @@ public final class DataLakeStorageClientImpl {
      * Initializes an instance of DataLakeStorageClient client.
      */
     public DataLakeStorageClientImpl() {
-        this(RestProxy.createDefaultPipeline());
+        this(new HttpPipelineBuilder()
+                 .policies(
+                     new UserAgentPolicy(),
+                     new RetryPolicy(),
+                     new CookiePolicy())
+                 .build());
     }
 
     /**

@@ -19,7 +19,7 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.http.swagger.RestProxy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;

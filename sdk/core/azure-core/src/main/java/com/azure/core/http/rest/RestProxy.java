@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.swagger;
+package com.azure.core.http.rest;
 
+import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.util.Base64Url;
 import com.azure.core.annotation.ResumeOperation;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpMethod;
@@ -16,15 +16,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.ContentType;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
@@ -33,7 +27,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -63,7 +57,7 @@ import java.util.function.Supplier;
  * deserialized Java objects as well as asynchronous Single objects that resolve to a
  * deserialized Java object.
  */
-public class RestProxy implements InvocationHandler {
+public final class RestProxy implements InvocationHandler {
     private final ClientLogger logger = new ClientLogger(RestProxy.class);
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
@@ -81,7 +75,7 @@ public class RestProxy implements InvocationHandler {
      * @param interfaceParser the parser that contains information about the interface describing REST API methods
      *     that this RestProxy "implements".
      */
-    public RestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
+    private RestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
@@ -101,15 +95,6 @@ public class RestProxy implements InvocationHandler {
     }
 
     /**
-     * Get the SerializerAdapter used by this RestProxy.
-     *
-     * @return The SerializerAdapter used by this RestProxy
-     */
-    public SerializerAdapter getSerializer() {
-        return serializer;
-    }
-
-    /**
      * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
      *
      * @param request the HTTP request to send
@@ -126,7 +111,7 @@ public class RestProxy implements InvocationHandler {
             final SwaggerMethodParser methodParser;
             final HttpRequest request;
             if (method.isAnnotationPresent(ResumeOperation.class)) {
-                OperationDescription opDesc = GeneralUtils.findFirstOfType(args, OperationDescription.class);
+                OperationDescription opDesc = CoreUtils.findFirstOfType(args, OperationDescription.class);
                 Method resumeMethod = determineResumeMethod(method, opDesc.getMethodName());
 
                 methodParser = getMethodParser(resumeMethod);
@@ -635,18 +620,8 @@ public class RestProxy implements InvocationHandler {
      *
      * @return the default HttpPipeline
      */
-    public static HttpPipeline createDefaultPipeline() {
+    private static HttpPipeline createDefaultPipeline() {
         return createDefaultPipeline((HttpPipelinePolicy) null);
-    }
-
-    /**
-     * Create the default HttpPipeline.
-     *
-     * @param credentials the credentials to use to apply authentication to the pipeline
-     * @return the default HttpPipeline
-     */
-    public static HttpPipeline createDefaultPipeline(TokenCredential credentials) {
-        return createDefaultPipeline(new BearerTokenAuthenticationPolicy(credentials));
     }
 
     /**
@@ -655,7 +630,7 @@ public class RestProxy implements InvocationHandler {
      *     pipeline
      * @return the default HttpPipeline
      */
-    public static HttpPipeline createDefaultPipeline(HttpPipelinePolicy credentialsPolicy) {
+    private static HttpPipeline createDefaultPipeline(HttpPipelinePolicy credentialsPolicy) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy());
         policies.add(new RetryPolicy());

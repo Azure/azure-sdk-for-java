@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 /**
  *  The util class is a helper class for clone operation.
  */
-public final class GeneralUtils {
+public final class CoreUtils {
     private static final String COMMA = ",";
 
-    private GeneralUtils() {
+    private CoreUtils() {
         // Exists only to defeat instantiation.
     }
 

@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.Base64Url;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -114,7 +114,7 @@ public class Certificate {
      * @return the cer content.
      */
     public byte[] getCer() {
-        return GeneralUtils.clone(cer);
+        return CoreUtils.clone(cer);
     }
 
     /**

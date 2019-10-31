@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.share.sas;
 
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -397,7 +397,7 @@ public final class ShareServiceSasSignatureValues {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         final String resource;
-        if (GeneralUtils.isNullOrEmpty(filePath)) {
+        if (CoreUtils.isNullOrEmpty(filePath)) {
             resource = SAS_SHARE_CONSTANT;
 
             // Make sure the permission characters are in the correct order
@@ -413,7 +413,7 @@ public final class ShareServiceSasSignatureValues {
             }
         }
 
-        if (GeneralUtils.isNullOrEmpty(version)) {
+        if (CoreUtils.isNullOrEmpty(version)) {
             version = ShareServiceVersion.getLatest().getVersion();
         }
 
@@ -439,7 +439,7 @@ public final class ShareServiceSasSignatureValues {
      * @return The canonical resource name.
      */
     private static String getCanonicalName(String account, String shareName, String filePath) {
-        return !GeneralUtils.isNullOrEmpty(filePath)
+        return !CoreUtils.isNullOrEmpty(filePath)
             ? String.format("/file/%s/%s/%s", account, shareName, filePath.replace("\\", "/"))
             : String.format("/file/%s/%s", account, shareName);
     }

@@ -7,7 +7,7 @@ import com.azure.core.annotation.HeaderCollection;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.swagger.UnexpectedExceptionInformation;
+import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.TypeUtil;
 import reactor.core.publisher.Mono;
 

@@ -11,7 +11,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -68,7 +68,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
-        if (GeneralUtils.isNullOrEmpty(connectionString)) {
+        if (CoreUtils.isNullOrEmpty(connectionString)) {
             connectionString = interceptorManager.isPlaybackMode()
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
                 : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
@@ -532,11 +532,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             || !Objects.equals(o1.getLastModified(), o2.getLastModified())
             || !Objects.equals(o1.isReadOnly(), o2.isReadOnly())
             || !Objects.equals(o1.getContentType(), o2.getContentType())
-            || GeneralUtils.isNullOrEmpty(o1.getTags()) != GeneralUtils.isNullOrEmpty(o2.getTags())) {
+            || CoreUtils.isNullOrEmpty(o1.getTags()) != CoreUtils.isNullOrEmpty(o2.getTags())) {
             return false;
         }
 
-        if (!GeneralUtils.isNullOrEmpty(o1.getTags())) {
+        if (!CoreUtils.isNullOrEmpty(o1.getTags())) {
             return Objects.equals(o1.getTags(), o2.getTags());
         }
 

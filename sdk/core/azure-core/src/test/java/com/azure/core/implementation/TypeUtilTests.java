@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.util;
+package com.azure.core.implementation;
 
-import com.azure.core.implementation.TypeUtil;
 import org.junit.Assert;
 import org.junit.Test;
 

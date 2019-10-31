@@ -4,7 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
 
@@ -34,7 +34,7 @@ public class PageBlobItem {
         final Boolean isServerEncrypted, final String encryptionKeySha256, final Long blobSequenceNumber) {
         this.eTag = eTag;
         this.lastModified = lastModified;
-        this.contentMd5 = GeneralUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.blobSequenceNumber = blobSequenceNumber;
@@ -72,7 +72,7 @@ public class PageBlobItem {
      * @return the MD5 of the page blob's content
      */
     public byte[] getContentMd5() {
-        return GeneralUtils.clone(contentMd5);
+        return CoreUtils.clone(contentMd5);
     }
 
     /**

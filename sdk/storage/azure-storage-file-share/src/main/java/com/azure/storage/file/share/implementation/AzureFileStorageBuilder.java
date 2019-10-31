@@ -6,7 +6,10 @@ package com.azure.storage.file.share.implementation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.swagger.RestProxy;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 
 /**
  * A builder for creating a new instance of the AzureFileStorage type.
@@ -68,7 +71,12 @@ public final class AzureFileStorageBuilder {
      */
     public AzureFileStorageImpl build() {
         if (pipeline == null) {
-            this.pipeline = RestProxy.createDefaultPipeline();
+            this.pipeline = new HttpPipelineBuilder()
+                                .policies(
+                                    new UserAgentPolicy(),
+                                    new RetryPolicy(),
+                                    new CookiePolicy())
+                                .build();
         }
         AzureFileStorageImpl client = new AzureFileStorageImpl(pipeline);
         if (this.version != null) {

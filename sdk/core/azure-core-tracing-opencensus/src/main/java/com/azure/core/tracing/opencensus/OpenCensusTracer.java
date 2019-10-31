@@ -4,7 +4,7 @@
 package com.azure.core.tracing.opencensus;
 
 import com.azure.core.util.tracing.ProcessKind;
-import com.azure.core.util.GeneralUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.tracing.opencensus.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.tracing.opencensus.implementation.AmqpTraceUtil;
 import com.azure.core.tracing.opencensus.implementation.HttpTraceUtil;
@@ -113,7 +113,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void setAttribute(String key, String value, Context context) {
-        if (GeneralUtils.isNullOrEmpty(value)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             logger.info("Failed to set span attribute since value is null or empty.");
             return;
         }

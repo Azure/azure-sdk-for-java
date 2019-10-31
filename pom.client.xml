@@ -801,6 +801,7 @@
 
                 <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
                 --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
+                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
               </argLine>
               <useSystemClassLoader>false</useSystemClassLoader>
               <forkCount>1</forkCount>
