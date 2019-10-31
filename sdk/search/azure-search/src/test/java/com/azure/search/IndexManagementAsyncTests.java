@@ -463,7 +463,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition()).block();
+        Index createdResource = client.createOrUpdateIndex(index).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
 
         StepVerifier
@@ -488,7 +488,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition()).block();
+        Index createdResource = client.createOrUpdateIndex(index).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
         Mono<Index> updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfExistsAccessCondition());
 
@@ -519,7 +519,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition()).block();
+        Index createdResource = client.createOrUpdateIndex(index).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
         Mono<Index> updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
 
@@ -536,9 +536,9 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition()).block();
+        Index createdResource = client.createOrUpdateIndex(index).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateEmptyAccessCondition()).block();
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource).block();
 
         StepVerifier
             .create(client.createOrUpdateIndex(updatedResource, generateIfMatchAccessCondition(createdResource.getETag())))

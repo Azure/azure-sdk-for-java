@@ -149,11 +149,27 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
     @Override
     public void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource() {
         SynonymMap synonymMap = createTestSynonymMap();
-        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap, generateEmptyAccessCondition()).block();
+        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap).block();
         SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
 
         StepVerifier
             .create(client.createOrUpdateSynonymMap(mutatedResource, generateIfNotExistsAccessCondition()))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+            });
+
+        StepVerifier
+            .create(client.createOrUpdateSynonymMap(mutatedResource, generateIfNotExistsAccessCondition(), requestOptions))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+            });
+
+        StepVerifier
+            .create(client.createOrUpdateSynonymMapWithResponse(mutatedResource, generateIfNotExistsAccessCondition(), requestOptions))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
@@ -163,18 +179,29 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
     @Override
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource() {
         SynonymMap resource = createTestSynonymMap();
-        Mono<SynonymMap> updatedResource = client.createOrUpdateSynonymMap(resource, generateIfNotExistsAccessCondition());
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
 
         StepVerifier
-            .create(updatedResource)
+            .create(client.createOrUpdateSynonymMap(resource, generateIfNotExistsAccessCondition()))
             .assertNext(res -> Assert.assertFalse(res.getETag().isEmpty()))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createOrUpdateSynonymMap(resource.setName("test-synonym1"), generateIfNotExistsAccessCondition(), requestOptions))
+            .assertNext(res -> Assert.assertFalse(res.getETag().isEmpty()))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createOrUpdateSynonymMapWithResponse(resource.setName("test-synonym2"), generateIfNotExistsAccessCondition(), requestOptions))
+            .assertNext(res -> Assert.assertFalse(res.getValue().getETag().isEmpty()))
             .verifyComplete();
     }
 
     @Override
     public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
         SynonymMap synonymMap = createTestSynonymMap();
-        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap, generateEmptyAccessCondition()).block();
+        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap).block();
         SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
         Mono<SynonymMap> updatedResource = client.createOrUpdateSynonymMap(mutatedResource, generateIfExistsAccessCondition());
 
@@ -204,12 +231,37 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
     @Override
     public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap).block();
+        SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
+        Mono<SynonymMap> updatedResource = client.createOrUpdateSynonymMap(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
 
+        StepVerifier
+            .create(updatedResource)
+            .assertNext(res -> {
+                Assert.assertFalse(createdResource.getETag().isEmpty());
+                Assert.assertFalse(res.getETag().isEmpty());
+                Assert.assertNotEquals(createdResource.getETag(), res.getETag());
+            })
+            .verifyComplete();
     }
 
     @Override
     public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap).block();
+        SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
+        SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource).block();
 
+        StepVerifier
+            .create(client.createOrUpdateSynonymMap(updatedResource, generateIfMatchAccessCondition(createdResource.getETag())))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+            });
+        Assert.assertFalse(createdResource.getETag().isEmpty());
+        Assert.assertFalse(updatedResource.getETag().isEmpty());
+        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
     }
 
     @Override

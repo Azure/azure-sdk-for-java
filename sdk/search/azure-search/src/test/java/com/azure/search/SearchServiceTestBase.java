@@ -172,12 +172,4 @@ public abstract class SearchServiceTestBase extends TestBase {
         // Setting this access condition modifies the request to include the HTTP If-Match conditional header set to "*"
         return new AccessCondition().setIfMatch("*");
     }
-
-    /**
-     * Constructs an empty access condition.
-     * @return an empty AccessCondition object
-     */
-    protected AccessCondition generateEmptyAccessCondition() {
-        return new AccessCondition();
-    }
 }

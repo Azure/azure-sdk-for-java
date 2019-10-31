@@ -404,7 +404,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition());
+        Index createdResource = client.createOrUpdateIndex(index);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
 
         try {
@@ -427,7 +427,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition());
+        Index createdResource = client.createOrUpdateIndex(index);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
         Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfExistsAccessCondition());
 
@@ -453,7 +453,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition());
+        Index createdResource = client.createOrUpdateIndex(index);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
         Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
 
@@ -465,9 +465,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index, generateEmptyAccessCondition());
+        Index createdResource = client.createOrUpdateIndex(index);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateEmptyAccessCondition());
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource);
 
         try {
             client.createOrUpdateIndex(updatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
