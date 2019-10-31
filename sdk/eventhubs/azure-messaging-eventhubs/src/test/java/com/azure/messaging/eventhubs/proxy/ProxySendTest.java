@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.proxy;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
@@ -41,7 +40,7 @@ public class ProxySendTest extends IntegrationTestBase {
 
     private static ProxyServer proxyServer;
     private static ProxySelector defaultProxySelector;
-    private EventHubAsyncClient client;
+    private EventHubClientBuilder builder;
 
     public ProxySendTest() {
         super(new ClientLogger(ProxySendTest.class));
@@ -86,15 +85,14 @@ public class ProxySendTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = new EventHubClientBuilder()
+        builder = new EventHubClientBuilder()
             .transportType(TransportType.AMQP_WEB_SOCKETS)
-            .connectionString(getConnectionString())
-            .buildAsyncClient();
+            .connectionString(getConnectionString());
     }
 
     @Override
     protected void afterTest() {
-        dispose(client);
+
     }
 
     /**
@@ -105,20 +103,25 @@ public class ProxySendTest extends IntegrationTestBase {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubProducerAsyncClient producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducer();
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
         final Instant sendTime = Instant.now();
+        final EventHubConsumerAsyncClient consumer = builder
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.fromEnqueuedTime(sendTime))
+            .buildAsyncConsumer();
 
-        // Act
-        StepVerifier.create(producer.send(events, options))
-            .verifyComplete();
+        try {
+            // Act
+            StepVerifier.create(producer.send(events, options))
+                .verifyComplete();
 
-        // Assert
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
-            EventPosition.fromEnqueuedTime(sendTime));
-
-        StepVerifier.create(consumer.receive(PARTITION_ID).filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
+            // Assert
+            StepVerifier.create(consumer.receive(PARTITION_ID).filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
+                .expectNextCount(NUMBER_OF_EVENTS)
+                .verifyComplete();
+        } finally {
+            dispose(producer, consumer);
+        }
     }
 }

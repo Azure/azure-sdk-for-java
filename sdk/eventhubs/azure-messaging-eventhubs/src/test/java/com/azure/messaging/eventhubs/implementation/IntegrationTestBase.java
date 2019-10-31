@@ -14,10 +14,8 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -159,13 +157,12 @@ public abstract class IntegrationTestBase extends TestBase {
     /**
      * Pushes a set of {@link EventData} to Event Hubs.
      */
-    protected IntegrationTestEventData setupEventTestData(EventHubAsyncClient client, int numberOfEvents,
+    protected IntegrationTestEventData setupEventTestData(EventHubProducerAsyncClient producer, int numberOfEvents,
             SendOptions options) {
         final String messageId = UUID.randomUUID().toString();
 
         logger.info("Pushing events to partition. Message tracking value: {}", messageId);
 
-        final EventHubProducerAsyncClient producer = client.createProducer();
         final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
         final Instant datePushed = Instant.now();
 
@@ -181,13 +178,12 @@ public abstract class IntegrationTestBase extends TestBase {
     /**
      * Pushes a set of {@link EventData} to Event Hubs.
      */
-    protected IntegrationTestEventData setupEventTestData(EventHubClient client, int numberOfEvents,
+    protected IntegrationTestEventData setupEventTestData(EventHubProducerClient producer, int numberOfEvents,
             SendOptions options) {
         final String messageId = UUID.randomUUID().toString();
 
         logger.info("Pushing events to partition. Message tracking value: {}", messageId);
 
-        final EventHubProducerClient producer = client.createProducer();
         final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
         final Instant datePushed = Instant.now();
 
