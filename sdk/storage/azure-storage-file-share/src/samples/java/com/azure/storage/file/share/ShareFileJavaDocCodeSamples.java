@@ -7,14 +7,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.models.FileCopyInfo;
-import com.azure.storage.file.share.models.FileHttpHeaders;
-import com.azure.storage.file.share.models.FileInfo;
-import com.azure.storage.file.share.models.FileMetadataInfo;
-import com.azure.storage.file.share.models.FileProperties;
-import com.azure.storage.file.share.models.FileRange;
-import com.azure.storage.file.share.models.FileUploadInfo;
-import com.azure.storage.file.share.models.FileUploadRangeFromUrlInfo;
+import com.azure.storage.file.share.models.ShareFileCopyInfo;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileInfo;
+import com.azure.storage.file.share.models.ShareFileMetadataInfo;
+import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 
 import java.io.ByteArrayInputStream;
@@ -110,35 +110,35 @@ public class ShareFileJavaDocCodeSamples {
     public void createFile() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.create
-        FileInfo response = fileClient.create(1024);
+        ShareFileInfo response = fileClient.create(1024);
         System.out.println("Complete creating the file.");
         // END: com.azure.storage.file.share.ShareFileClient.create
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#createWithResponse(long, FileHttpHeaders, ShareFileSmbProperties,
+     * Generates a code sample for using {@link ShareFileClient#createWithResponse(long, ShareFileHttpHeaders, FileSmbProperties,
      * String, Map, Duration, Context)}
      */
     public void createWithResponse() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-FileHttpHeaders-ShareFileSmbProperties-String-Map-Duration-Context
-        FileHttpHeaders httpHeaders = new FileHttpHeaders()
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
             .setContentLanguage("en")
             .setCacheControl("no-transform")
             .setContentDisposition("attachment");
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties()
+        FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
             .setFileLastWriteTime(OffsetDateTime.now())
             .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
-        Response<FileInfo> response = fileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
+        Response<ShareFileInfo> response = fileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-FileHttpHeaders-ShareFileSmbProperties-String-Map-Duration-Context
+        // END: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context
     }
 
     /**
@@ -147,12 +147,12 @@ public class ShareFileJavaDocCodeSamples {
     public void beginCopy() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.beginCopy#string-map-duration
-        SyncPoller<FileCopyInfo, Void> poller = fileClient.beginCopy(
+        SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
 
-        final PollResponse<FileCopyInfo> pollResponse = poller.poll();
-        final FileCopyInfo value = pollResponse.getValue();
+        final PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
+        final ShareFileCopyInfo value = pollResponse.getValue();
         System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
 
         // END: com.azure.storage.file.share.ShareFileClient.beginCopy#string-map-duration
@@ -190,7 +190,7 @@ public class ShareFileJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.file.share.ShareFileClient.upload#InputStream-long
         InputStream uploadData = new ByteArrayInputStream(data);
-        FileUploadInfo response = fileClient.upload(uploadData, data.length);
+        ShareFileUploadInfo response = fileClient.upload(uploadData, data.length);
         System.out.println("Complete uploading the data with eTag: " + response.getETag());
         // END: com.azure.storage.file.share.ShareFileClient.upload#InputStream-long
     }
@@ -204,7 +204,7 @@ public class ShareFileJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadWithResponse#InputStream-long-Long-Duration-Context
         InputStream uploadData = new ByteArrayInputStream(data);
-        Response<FileUploadInfo> response = fileClient.uploadWithResponse(uploadData, data.length, 0L,
+        Response<ShareFileUploadInfo> response = fileClient.uploadWithResponse(uploadData, data.length, 0L,
             Duration.ofSeconds(30), null);
         System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
         System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
@@ -217,7 +217,7 @@ public class ShareFileJavaDocCodeSamples {
     public void clearRange() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.clearRange#long
-        FileUploadInfo response = fileClient.clearRange(1024);
+        ShareFileUploadInfo response = fileClient.clearRange(1024);
         System.out.println("Complete clearing the range with eTag: " + response.getETag());
         // END: com.azure.storage.file.share.ShareFileClient.clearRange#long
     }
@@ -228,7 +228,7 @@ public class ShareFileJavaDocCodeSamples {
     public void clearRangeMaxOverload() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.clearRangeWithResponse#long-long-Duration-Context
-        Response<FileUploadInfo> response = fileClient.clearRangeWithResponse(1024, 1024,
+        Response<ShareFileUploadInfo> response = fileClient.clearRangeWithResponse(1024, 1024,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete clearing the range with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.share.ShareFileClient.clearRangeWithResponse#long-long-Duration-Context
@@ -262,15 +262,15 @@ public class ShareFileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#downloadWithResponse(OutputStream, FileRange, Boolean,
+     * Generates a code sample for using {@link ShareFileClient#downloadWithResponse(OutputStream, ShareFileRange, Boolean,
      * Duration, Context)}
      */
     public void downloadWithPropertiesWithResponse() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.downloadWithResponse#OutputStream-FileRange-Boolean-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.downloadWithResponse#OutputStream-ShareFileRange-Boolean-Duration-Context
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            Response<Void> response = fileClient.downloadWithResponse(stream, new FileRange(1024, 2047L), false,
+            Response<Void> response = fileClient.downloadWithResponse(stream, new ShareFileRange(1024, 2047L), false,
                 Duration.ofSeconds(30), new Context(key1, value1));
 
             System.out.printf("Completed downloading file with status code %d%n", response.getStatusCode());
@@ -279,7 +279,7 @@ public class ShareFileJavaDocCodeSamples {
         } catch (Throwable throwable) {
             System.err.printf("Downloading failed with exception. Message: %s%n", throwable.getMessage());
         }
-        // END: com.azure.storage.file.share.ShareFileClient.downloadWithResponse#OutputStream-FileRange-Boolean-Duration-Context
+        // END: com.azure.storage.file.share.ShareFileClient.downloadWithResponse#OutputStream-ShareFileRange-Boolean-Duration-Context
     }
 
     /**
@@ -296,19 +296,19 @@ public class ShareFileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#downloadToFileWithResponse(String, FileRange, Duration,
+     * Generates a code sample for using {@link ShareFileClient#downloadToFileWithResponse(String, ShareFileRange, Duration,
      * Context)}
      */
     public void downloadFileMaxOverload() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#string-filerange-duration-context
-        Response<FileProperties> response =
-            fileClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L),
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#String-ShareFileRange-Duration-Context
+        Response<ShareFileProperties> response =
+            fileClient.downloadToFileWithResponse("somelocalfilepath", new ShareFileRange(1024, 2047L),
                 Duration.ofSeconds(1), Context.NONE);
         if (Files.exists(Paths.get("somelocalfilepath"))) {
             System.out.println("Complete downloading the file with status code " + response.getStatusCode());
         }
-        // END: com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#string-filerange-duration-context
+        // END: com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#String-ShareFileRange-Duration-Context
     }
 
     /**
@@ -317,7 +317,7 @@ public class ShareFileJavaDocCodeSamples {
     public void uploadFileFromURLAsync() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrl#long-long-long-String
-        FileUploadRangeFromUrlInfo response = fileClient.uploadRangeFromUrl(6, 8, 0, "sourceUrl");
+        ShareFileUploadRangeFromUrlInfo response = fileClient.uploadRangeFromUrl(6, 8, 0, "sourceUrl");
         System.out.println("Completed upload range from url!");
         // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrl#long-long-long-String
     }
@@ -329,7 +329,7 @@ public class ShareFileJavaDocCodeSamples {
     public void uploadFileFromURLWithResponseAsync() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context
-        Response<FileUploadRangeFromUrlInfo> response = fileClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl",
+        Response<ShareFileUploadRangeFromUrlInfo> response = fileClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl",
             Duration.ofSeconds(1), Context.NONE);
         System.out.println("Completed upload range from url!");
         // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context
@@ -363,7 +363,7 @@ public class ShareFileJavaDocCodeSamples {
     public void getProperties() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.getProperties
-        FileProperties properties = fileClient.getProperties();
+        ShareFileProperties properties = fileClient.getProperties();
         System.out.printf("File latest modified date is %s.", properties.getLastModified());
         // END: com.azure.storage.file.share.ShareFileClient.getProperties
     }
@@ -374,7 +374,7 @@ public class ShareFileJavaDocCodeSamples {
     public void getPropertiesWithResponse() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.getPropertiesWithResponse#duration-context
-        Response<FileProperties> response = fileClient.getPropertiesWithResponse(
+        Response<ShareFileProperties> response = fileClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("File latest modified date is %s.", response.getValue().getLastModified());
         // END: com.azure.storage.file.share.ShareFileClient.getPropertiesWithResponse#duration-context
@@ -397,7 +397,7 @@ public class ShareFileJavaDocCodeSamples {
     public void setMetadataWithResponse() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.setMetadataWithResponse#map-duration-context
-        Response<FileMetadataInfo> response = fileClient.setMetadataWithResponse(
+        Response<ShareFileMetadataInfo> response = fileClient.setMetadataWithResponse(
             Collections.singletonMap("file", "updatedMetadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file metadata completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareFileClient.setMetadataWithResponse#map-duration-context
@@ -410,7 +410,7 @@ public class ShareFileJavaDocCodeSamples {
     public void clearMetadataWithResponse() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.setMetadataWithResponse#map-duration-context.clearMetadata
-        Response<FileMetadataInfo> response = fileClient.setMetadataWithResponse(null,
+        Response<ShareFileMetadataInfo> response = fileClient.setMetadataWithResponse(null,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file metadata completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareFileClient.setMetadataWithResponse#map-duration-context.clearMetadata
@@ -428,19 +428,19 @@ public class ShareFileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#setProperties(long, FileHttpHeaders, ShareFileSmbProperties,
+     * Generates a code sample for using {@link ShareFileClient#setProperties(long, ShareFileHttpHeaders, FileSmbProperties,
      * String)}
      */
     public void setHTTPHeaders() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setProperties#long-FileHttpHeaders-ShareFileSmbProperties-String
-        FileHttpHeaders httpHeaders = new FileHttpHeaders()
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
             .setContentLanguage("en")
             .setCacheControl("no-transform")
             .setContentDisposition("attachment");
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties()
+        FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
             .setFileLastWriteTime(OffsetDateTime.now())
@@ -449,58 +449,58 @@ public class ShareFileJavaDocCodeSamples {
         // NOTE: filePermission and filePermissionKey should never be both set
         fileClient.setProperties(1024, httpHeaders, smbProperties, filePermission);
         System.out.println("Setting the file httpHeaders completed.");
-        // END: com.azure.storage.file.share.ShareFileClient.setProperties#long-FileHttpHeaders-ShareFileSmbProperties-String
+        // END: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#setProperties(long, FileHttpHeaders, ShareFileSmbProperties,
+     * Generates a code sample for using {@link ShareFileClient#setProperties(long, ShareFileHttpHeaders, FileSmbProperties,
      * String)} to clear httpHeaders and preserve SMB properties.
      */
     public void clearSyncHTTPHeaders() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setProperties#long-FileHttpHeaders-ShareFileSmbProperties-String.clearHttpHeaderspreserveSMBProperties
-        FileInfo response = fileClient.setProperties(1024, null, null, null);
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String.clearHttpHeaderspreserveSMBProperties
+        ShareFileInfo response = fileClient.setProperties(1024, null, null, null);
         System.out.println("Setting the file httpHeaders completed.");
-        // END: com.azure.storage.file.share.ShareFileClient.setProperties#long-FileHttpHeaders-ShareFileSmbProperties-String.clearHttpHeaderspreserveSMBProperties
+        // END: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String.clearHttpHeaderspreserveSMBProperties
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#setPropertiesWithResponse(long, FileHttpHeaders,
-     * ShareFileSmbProperties, String, Duration, Context)}
+     * Generates a code sample for using {@link ShareFileClient#setPropertiesWithResponse(long, ShareFileHttpHeaders,
+     * FileSmbProperties, String, Duration, Context)}
      */
     public void setHttpHeadersWithResponse() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-FileHttpHeaders-ShareFileSmbProperties-String-Duration-Context
-        FileHttpHeaders httpHeaders = new FileHttpHeaders()
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Duration-Context
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
             .setContentLanguage("en")
             .setCacheControl("no-transform")
             .setContentDisposition("attachment");
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties()
+        FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
             .setFileLastWriteTime(OffsetDateTime.now())
             .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
-        Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties,
+        Response<ShareFileInfo> response = fileClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties,
             filePermission, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-FileHttpHeaders-ShareFileSmbProperties-String-Duration-Context
+        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Duration-Context
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#setPropertiesWithResponse(long, FileHttpHeaders,
-     * ShareFileSmbProperties, String, Duration, Context)} (long, FileHTTPHeaders)} to clear httpHeaders.
+     * Generates a code sample for using {@link ShareFileClient#setPropertiesWithResponse(long, ShareFileHttpHeaders,
+     * FileSmbProperties, String, Duration, Context)} (long, FileHTTPHeaders)} to clear httpHeaders.
      */
     public void clearHTTPHeaders() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-FileHttpHeaders-ShareFileSmbProperties-String-Duration-Context.clearHttpHeaderspreserveSMBProperties
-        Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, null, null, null,
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Duration-Context.clearHttpHeaderspreserveSMBProperties
+        Response<ShareFileInfo> response = fileClient.setPropertiesWithResponse(1024, null, null, null,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-FileHttpHeaders-ShareFileSmbProperties-String-Duration-Context.clearHttpHeaderspreserveSMBProperties
+        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Duration-Context.clearHttpHeaderspreserveSMBProperties
     }
 
     /**
@@ -509,23 +509,23 @@ public class ShareFileJavaDocCodeSamples {
     public void listRanges() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.listRanges
-        Iterable<FileRange> ranges = fileClient.listRanges();
+        Iterable<ShareFileRange> ranges = fileClient.listRanges();
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));
         // END: com.azure.storage.file.share.ShareFileClient.listRanges
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#listRanges(FileRange, Duration, Context)}
+     * Generates a code sample for using {@link ShareFileClient#listRanges(ShareFileRange, Duration, Context)}
      */
     public void listRangesMaxOverload() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.listRanges#filerange-duration-context
-        Iterable<FileRange> ranges = fileClient.listRanges(new FileRange(1024, 2048L), Duration.ofSeconds(1),
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileRange-Duration-Context
+        Iterable<ShareFileRange> ranges = fileClient.listRanges(new ShareFileRange(1024, 2048L), Duration.ofSeconds(1),
             new Context(key1, value1));
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));
-        // END: com.azure.storage.file.share.ShareFileClient.listRanges#filerange-duration-context
+        // END: com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileRange-Duration-Context
     }
 
     /**

@@ -7,8 +7,8 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageInputStream;
-import com.azure.storage.file.share.models.FileRange;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareStorageException;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -26,10 +26,10 @@ public class StorageFileInputStream extends StorageInputStream {
      *
      * @param shareFileAsyncClient A {@link ShareFileClient} object which represents the blob that this stream is
      * associated with.
-     * @throws FileStorageException An exception representing any error which occurred during the operation.
+     * @throws ShareStorageException An exception representing any error which occurred during the operation.
      */
     StorageFileInputStream(final ShareFileAsyncClient shareFileAsyncClient)
-        throws FileStorageException {
+        throws ShareStorageException {
         this(shareFileAsyncClient, 0, null);
     }
 
@@ -41,10 +41,10 @@ public class StorageFileInputStream extends StorageInputStream {
      * associated with.
      * @param fileRangeOffset The offset of file range data to begin stream.
      * @param fileRangeLength How much data the stream should return after fileRangeOffset.
-     * @throws FileStorageException An exception representing any error which occurred during the operation.
+     * @throws ShareStorageException An exception representing any error which occurred during the operation.
      */
     StorageFileInputStream(final ShareFileAsyncClient shareFileAsyncClient, long fileRangeOffset, Long fileRangeLength)
-        throws FileStorageException {
+        throws ShareStorageException {
         super(fileRangeOffset, fileRangeLength, 4 * Constants.MB,
             shareFileAsyncClient.getProperties().block().getContentLength());
         this.shareFileAsyncClient = shareFileAsyncClient;
@@ -59,7 +59,7 @@ public class StorageFileInputStream extends StorageInputStream {
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) {
         try {
             ByteBuffer currentBuffer = this.shareFileAsyncClient
-                .downloadWithResponse(new FileRange(offset, offset + readLength - 1), false)
+                .downloadWithResponse(new ShareFileRange(offset, offset + readLength - 1), false)
                 .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
                     .map(ByteBuffer::wrap))
                 .block();
@@ -67,7 +67,7 @@ public class StorageFileInputStream extends StorageInputStream {
             this.bufferSize = readLength;
             this.bufferStartOffset = offset;
             return currentBuffer;
-        } catch (final FileStorageException e) {
+        } catch (final ShareStorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
             throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));

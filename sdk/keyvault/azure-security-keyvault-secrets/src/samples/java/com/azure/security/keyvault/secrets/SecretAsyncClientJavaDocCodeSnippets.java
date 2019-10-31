@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -64,9 +65,10 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
      * @return An instance of {@link SecretAsyncClient}
      */
     public SecretAsyncClient createAsyncClientWithPipeline() {
+        TokenCredential credential = null; // link to some identity samples
         // BEGIN: com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
+            .policies(new KeyVaultCredentialPolicy(credential), new RetryPolicy())
             .build();
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .pipeline(pipeline)
