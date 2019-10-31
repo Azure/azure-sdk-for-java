@@ -281,7 +281,7 @@ provide, allowing you to focus on the logic needed to provide value while the pr
 managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
-[`InMemoryPartitionManager`][source_inmemorypartitionmanager] available in samples, and a callback function that 
+[`InMemoryEventProcessorStore`][source_inmemoryeventprocessorstore] available in samples, and a callback function that 
 processes events received from the Event Hub and writes to console.
 
 ```java
@@ -290,7 +290,7 @@ class Program {
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .connectionString("<< EVENT HUB CONNECTION STRING >>")
-            .eventProcessorStore(new InMemoryPartitionManager())
+            .eventProcessorStore(new InMemoryEventProcessorStore())
             .processEvent(partitionEvent -> {
                 System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
@@ -433,7 +433,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
 [source_sendOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/SendOptions.java
 [source_batchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/BatchOptions.java
-[source_inmemorypartitionmanager]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryPartitionManager.java
+[source_inmemoryeventprocessorstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryEventProcessorStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
 

@@ -62,7 +62,7 @@ public class BlobEventProcessorStoreTest {
 
     @Test
     public void testListOwnerShip() {
-        BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
+        BlobEventProcessorStore blobEventProcessorStore = new BlobEventProcessorStore(blobContainerAsyncClient);
         BlobItem blobItem = getBlobItem("owner1", "1", "230", "etag", "eh/cg/0");
         PagedFlux<BlobItem> response = new PagedFlux<BlobItem>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
             BlobItem>(null, 200, null,
@@ -70,7 +70,7 @@ public class BlobEventProcessorStoreTest {
             null)));
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
 
-        StepVerifier.create(blobPartitionManager.listOwnership("ns", "eh", "cg"))
+        StepVerifier.create(blobEventProcessorStore.listOwnership("ns", "eh", "cg"))
             .assertNext(partitionOwnership -> {
                 assertEquals("owner1", partitionOwnership.getOwnerId());
                 assertEquals("0", partitionOwnership.getPartitionId());
@@ -100,8 +100,8 @@ public class BlobEventProcessorStoreTest {
             .setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.just(new SimpleResponse<>(null, 200, new HttpHeaders(headers), null)));
 
-        BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
-        StepVerifier.create(blobPartitionManager.updateCheckpoint(checkpoint))
+        BlobEventProcessorStore blobEventProcessorStore = new BlobEventProcessorStore(blobContainerAsyncClient);
+        StepVerifier.create(blobEventProcessorStore.updateCheckpoint(checkpoint))
             .assertNext(etag -> assertEquals("etag2", etag)).verifyComplete();
     }
 
@@ -120,8 +120,8 @@ public class BlobEventProcessorStoreTest {
             isNull(), any(Map.class), isNull(), isNull(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
 
-        BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
-        StepVerifier.create(blobPartitionManager.claimOwnership(po))
+        BlobEventProcessorStore blobEventProcessorStore = new BlobEventProcessorStore(blobContainerAsyncClient);
+        StepVerifier.create(blobEventProcessorStore.claimOwnership(po))
             .assertNext(partitionOwnership -> {
                 assertEquals("owner1", partitionOwnership.getOwnerId());
                 assertEquals("0", partitionOwnership.getPartitionId());
@@ -136,11 +136,11 @@ public class BlobEventProcessorStoreTest {
 
     @Test
     public void testListOwnershipError() {
-        BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
+        BlobEventProcessorStore blobEventProcessorStore = new BlobEventProcessorStore(blobContainerAsyncClient);
         PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.error(new SocketTimeoutException()));
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
 
-        StepVerifier.create(blobPartitionManager.listOwnership("ns", "eh", "cg"))
+        StepVerifier.create(blobEventProcessorStore.listOwnership("ns", "eh", "cg"))
             .expectError(SocketTimeoutException.class).verify();
     }
 
@@ -162,8 +162,8 @@ public class BlobEventProcessorStoreTest {
             .setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.error(new SocketTimeoutException()));
 
-        BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
-        StepVerifier.create(blobPartitionManager.updateCheckpoint(checkpoint))
+        BlobEventProcessorStore blobEventProcessorStore = new BlobEventProcessorStore(blobContainerAsyncClient);
+        StepVerifier.create(blobEventProcessorStore.updateCheckpoint(checkpoint))
             .expectError(SocketTimeoutException.class).verify();
     }
 
@@ -179,8 +179,8 @@ public class BlobEventProcessorStoreTest {
             isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), isNull(),
             any(BlobRequestConditions.class)))
             .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
-        BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
-        StepVerifier.create(blobPartitionManager.claimOwnership(po)).verifyComplete();
+        BlobEventProcessorStore blobEventProcessorStore = new BlobEventProcessorStore(blobContainerAsyncClient);
+        StepVerifier.create(blobEventProcessorStore.claimOwnership(po)).verifyComplete();
     }
 
     private PartitionOwnership createPartitionOwnership(String eventHubName, String consumerGroupName,

@@ -328,7 +328,7 @@ public class PartitionBasedLoadBalancerTest {
     }
 
     @Test
-    public void testPartitionManagerFailure() throws Exception {
+    public void testEventProcessorStoreFailure() throws Exception {
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Arrays.asList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);

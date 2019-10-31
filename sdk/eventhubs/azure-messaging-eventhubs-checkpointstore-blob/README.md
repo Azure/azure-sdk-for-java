@@ -2,7 +2,7 @@
 
 Azure Event Hubs Checkpoint Store can be used for storing checkpoints while processing events from Azure Event Hubs. 
 This package uses Storage Blobs as a persistent store for maintaining checkpoints and partition ownership information. 
-The `BlobPartitionManager` provided in this package can be plugged in to `EventProcessor`.
+The `BlobEventProcessorStore` provided in this package can be plugged in to `EventProcessor`.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
 documentation][event_hubs_product_docs] | [Samples][sample_examples]
@@ -33,7 +33,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 [//]: # ({x-version-update-end})
 
 ### Authenticate the storage container client
-In order to create an instance of `BlobPartitionManager`, a `ContainerAsyncClient` should first be created with 
+In order to create an instance of `BlobEventProcessorStore`, a `ContainerAsyncClient` should first be created with 
 appropriate SAS token with write access and connection string. To make this possible you'll need the Account SAS 
 (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token].
 
@@ -85,8 +85,8 @@ provide, allowing your application to focus on the business logic needed to prov
 holds responsibility for managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
-[`BlobPartitionManager`][source_blobpartitionmanager], and a simple callback function to process the events received 
- from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
+[`BlobEventProcessorStore`][source_blobeventprocessorstore], and a simple callback function to process the events 
+received from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
 ```java
 class Program {
@@ -123,7 +123,7 @@ be found here: [log levels][source_loglevels].
 ## Next steps
 Get started by exploring the following samples:
 
-1. [Blob Partition Manager samples][sample_examples]
+1. [Blob Event Processor Store samples][sample_examples]
 1. [Event Hubs and Event Processor samples][sample_event_hubs]
 
 ## Contributing
@@ -136,14 +136,14 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [event_hubs_product_docs]: https://docs.microsoft.com/azure/event-hubs/
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [maven]: https://maven.apache.org/
-[sample_container_client]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobPartitionManagerSample.java
+[sample_container_client]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobEventProcessorStoreSample.java
 [sample_event_hubs]: ./src/samples/java/com/azure/messaging/eventhubs
-[sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobPartitionManagerSample.java
+[sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobEventProcessorStoreSample.java
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [source_code]: ./
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
-[source_blobpartitionmanager]: ./src/main/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobPartitionManager.java
+[source_blobeventprocessorstore]: ./src/main/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobEventProcessorStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal

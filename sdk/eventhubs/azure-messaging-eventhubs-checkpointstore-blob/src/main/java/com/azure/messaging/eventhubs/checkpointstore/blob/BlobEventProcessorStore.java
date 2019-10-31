@@ -52,7 +52,7 @@ public class BlobEventProcessorStore implements EventProcessorStore {
     private final Map<String, BlobAsyncClient> blobClients = new ConcurrentHashMap<>();
 
     /**
-     * Creates an instance of BlobPartitionManager.
+     * Creates an instance of BlobEventProcessorStore.
      *
      * @param blobContainerAsyncClient The {@link BlobContainerAsyncClient} this instance will use to read and update
      * blobs in the storage container.

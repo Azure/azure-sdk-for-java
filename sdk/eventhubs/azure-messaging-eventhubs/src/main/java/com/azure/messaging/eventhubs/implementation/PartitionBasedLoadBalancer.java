@@ -139,7 +139,7 @@ public final class PartitionBasedLoadBalancer {
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
                 throw logger.logExceptionAsError(Exceptions.propagate(
-                    new IllegalStateException("Invalid partitionOwnership data from PartitionManager")));
+                    new IllegalStateException("Invalid partitionOwnership data from EventProcessorStore")));
             }
 
             /*
@@ -309,7 +309,7 @@ public final class PartitionBasedLoadBalancer {
 
     /*
      * This method will create a new map of partition id and PartitionOwnership containing only those partitions
-     * that are actively owned. All entries in the original map returned by PartitionManager that haven't been
+     * that are actively owned. All entries in the original map returned by EventProcessorStore that haven't been
      * modified for a duration of time greater than the allowed inactivity time limit are assumed to be owned by
      * dead event processors. These will not be included in the map returned by this method.
      */
