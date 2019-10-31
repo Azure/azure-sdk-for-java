@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.EventProcessor;
+import java.util.Objects;
 
 /**
  * This class contains information about a partition for which this {@link EventProcessor} stopped processing.
@@ -22,8 +23,8 @@ public class CloseContext {
      * @param closeReason The reason for stopping the event processing.
      */
     public CloseContext(final PartitionContext partitionContext, final CloseReason closeReason) {
-        this.partitionContext = partitionContext;
-        this.closeReason = closeReason;
+        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
+        this.closeReason = Objects.requireNonNull(closeReason, "'closeReason' cannot be null");
     }
 
     /**

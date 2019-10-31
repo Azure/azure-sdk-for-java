@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import java.util.Objects;
 
 /**
  * This class contains information about an error that occurred while processing events.
@@ -21,8 +22,8 @@ public class ErrorContext {
      * @param throwable The {@link Throwable error} that occurred.
      */
     public ErrorContext(final PartitionContext partitionContext, final Throwable throwable) {
-        this.partitionContext = partitionContext;
-        this.throwable = throwable;
+        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");;
+        this.throwable = Objects.requireNonNull(throwable, "'throwable' cannot be null");;
     }
 
     /**

@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import java.util.Objects;
 
 /**
  * A container for {@link EventData} along with the partition information for this event data.
@@ -22,8 +24,8 @@ public class PartitionEvent {
      * @param eventData The event data received from the Event Hub.
      */
     public PartitionEvent(final PartitionContext partitionContext, final EventData eventData) {
-        this.partitionContext = partitionContext;
-        this.eventData = eventData;
+        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");;
+        this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null");;
     }
 
     /**

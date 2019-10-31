@@ -1,10 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
+import com.azure.messaging.eventhubs.EventProcessor;
+import com.azure.messaging.eventhubs.EventProcessorBuilder;
+import com.azure.messaging.eventhubs.EventProcessorStore;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -23,10 +27,9 @@ public class InitializationContext {
      * @param initialPosition The default initial event position from which the processing will start in the absence of
      * a checkpoint in {@link EventProcessorStore}.
      */
-    public InitializationContext(final PartitionContext partitionContext,
-        final EventPosition initialPosition) {
-        this.partitionContext = partitionContext;
-        this.initialPosition = initialPosition;
+    public InitializationContext(final PartitionContext partitionContext, final EventPosition initialPosition) {
+        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
+        this.initialPosition = Objects.requireNonNull(initialPosition, "'initialPosition' cannot be null");
     }
 
     /**
@@ -57,6 +60,6 @@ public class InitializationContext {
      * @param initialPosition The initial event position to start the event processing from.
      */
     public void setInitialPosition(final EventPosition initialPosition) {
-        this.initialPosition = initialPosition;
+        this.initialPosition = Objects.requireNonNull(initialPosition, "'initialPosition' cannot be null");;
     }
 }

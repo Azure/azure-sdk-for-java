@@ -4,7 +4,12 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.CloseReason;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.InitializationContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.Mono;
 
 /**

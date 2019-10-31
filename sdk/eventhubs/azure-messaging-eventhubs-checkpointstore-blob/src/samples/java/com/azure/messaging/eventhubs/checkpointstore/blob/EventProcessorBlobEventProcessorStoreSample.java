@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.EventProcessorBuilder;
-import com.azure.messaging.eventhubs.PartitionEvent;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.concurrent.TimeUnit;
