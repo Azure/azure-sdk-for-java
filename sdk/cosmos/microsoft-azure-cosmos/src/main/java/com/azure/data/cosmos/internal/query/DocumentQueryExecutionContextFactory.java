@@ -4,9 +4,9 @@ package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.CommonsBridgeInternal;
 import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
@@ -19,6 +19,7 @@ import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.routing.Range;
+import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -95,7 +96,7 @@ public class DocumentQueryExecutionContextFactory {
                               // while pipelined queries can only serve
                               // SELECT VALUE <AGGREGATE>. So we send the query down the old
                               // pipeline to avoid a breaking change.
-                              // We will skip this in V3 SDK
+                              // Should be fixed by adding support for nonvalueaggregates
                               if (queryInfo.hasAggregates() && !queryInfo.hasSelectValue()) {
                                   if (feedOptions != null && feedOptions.enableCrossPartitionQuery()) {
                                       return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
@@ -106,21 +107,27 @@ public class DocumentQueryExecutionContextFactory {
                               }
 
                               Mono<List<PartitionKeyRange>> partitionKeyRanges;
+                              // The partitionKeyRangeIdInternal is no more a public API on FeedOptions, but have the below condition
+                              // for handling ParallelDocumentQueryTest#partitionKeyRangeId
+                              if (feedOptions != null && !StringUtils.isEmpty(CommonsBridgeInternal.partitionKeyRangeIdInternal(feedOptions))) {
+                                  partitionKeyRanges = queryExecutionContext.getTargetPartitionKeyRangesById(collection.resourceId(),
+                                      CommonsBridgeInternal.partitionKeyRangeIdInternal(feedOptions));
+                              } else {
+                                  List<Range<String>> queryRanges =
+                                      partitionedQueryExecutionInfo.getQueryRanges();
 
-                              List<Range<String>> queryRanges =
-                                  partitionedQueryExecutionInfo.getQueryRanges();
-
-                              if (feedOptions != null && feedOptions.partitionKey() != null) {
-                                  PartitionKeyInternal internalPartitionKey =
-                                      feedOptions.partitionKey()
-                                          .getInternalPartitionKey();
-                                  Range<String> range = Range.getPointRange(internalPartitionKey
-                                                                                .getEffectivePartitionKeyString(internalPartitionKey,
-                                                                                    collection.getPartitionKey()));
-                                  queryRanges = Collections.singletonList(range);
+                                  if (feedOptions != null && feedOptions.partitionKey() != null) {
+                                      PartitionKeyInternal internalPartitionKey =
+                                          feedOptions.partitionKey()
+                                              .getInternalPartitionKey();
+                                      Range<String> range = Range.getPointRange(internalPartitionKey
+                                                                                    .getEffectivePartitionKeyString(internalPartitionKey,
+                                                                                        collection.getPartitionKey()));
+                                      queryRanges = Collections.singletonList(range);
+                                  }
+                                  partitionKeyRanges = queryExecutionContext
+                                                           .getTargetPartitionKeyRanges(collection.resourceId(), queryRanges);
                               }
-                              partitionKeyRanges = queryExecutionContext
-                                                       .getTargetPartitionKeyRanges(collection.resourceId(), queryRanges);
                               return partitionKeyRanges
                                          .flatMap(pkranges -> createSpecializedDocumentQueryExecutionContextAsync(client,
                                              resourceTypeEnum,

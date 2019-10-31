@@ -395,25 +395,19 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        System.out.println("OrderbyDocumentQueryTest.beforeClass");
         client = clientBuilder().build();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        System.out.println("bef: truncate collection");
         truncateCollection(createdCollection);
-        System.out.println("after: truncate collection");
 
         List<Map<String, Object>> keyValuePropsList = new ArrayList<>();
         Map<String, Object> props;
-        System.out.println("bef: create 30 docs");
         for(int i = 0; i < 30; i++) {
             props = new HashMap<>();
             props.put("propInt", i);
             props.put("propStr", String.valueOf(i));
             keyValuePropsList.add(props);
         }
-
-        System.out.println("OrderbyDocumentQueryTest.beforeClass : created 30 docs");
 
         //undefined values
         props = new HashMap<>();
@@ -431,13 +425,9 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         }
 
-        System.out.println("OrderbyDocumentQueryTest.beforeClass : created 10 docs");
-
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client)
                 .readPartitionKeyRanges("dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id(), null)
                 .flatMap(p -> Flux.fromIterable(p.results())).collectList().single().block().size();
-
-        System.out.println("numberOfPartitions = " + numberOfPartitions);
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
     }
