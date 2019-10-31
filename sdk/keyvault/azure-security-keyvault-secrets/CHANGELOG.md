@@ -6,10 +6,10 @@
 - endpoint method on SecretClientBuilder has been renamed to vaultUrl.
 - On SecretProperties, expires, created, and updated have been renamed to expiresOn, createdOn, and updatedOn respectively.
 - On DeletedSecret, deletedDate has been renamed to deletedOn.
-- SecretClient.listSecrets and SecretClient.listSecretVersions have been renamed to SecretClient.listPropertiesOfSecrets and SecretClient.listPropertiesOfSecretVersions respectively.
-- SecretClient.restoreSecret has been renamed to SecretClient.restoreSecretBackup to better associate it with SecretClient.backupSecret.
-- SecretClient.deleteSecret has been renamed to SecretClient.beginDeleteSecret and now returns a Poller to track this long-running operation.
-- SecretClient.recoverDeletedSecret has been renamed to SecretClient.beginRecoverDeletedSecret and now returns a Poller to track this long-running operation.
+- listSecrets and listSecretVersions methods have been renamed to listPropertiesOfSecrets and listPropertiesOfSecretVersions in `SecretClient` and `SecretAsyncClient` respectively.
+- restoreSecret method has been renamed to restoreSecretBackup in `SecretClient` and `SecretAsyncClient` to better associate it with SecretClient.backupSecret.
+- deleteSecret method has been renamed to beginDeleteSecret and now returns a SyncPoller in `SecretClient` and PollerFlux in `SecretAsyncClient` to track this long-running operation.
+- recoverDeletedSecret method has been renamed to beginRecoverDeletedSecret and now returns a SyncPoller in `SecretClient` and PollerFlux in `SecretAsyncClient` to track this long-running operation.
 
 ### Major changes
 - SecretClient.vaultUrl has been added with the original value pass to SecretClient.

@@ -11,10 +11,10 @@
 - hsm properties and parameters have been renamed to hardwareProtected.
 - On KeyProperties, expires, created, and updated have been renamed to expiresOn, createdOn, and updatedOn respectively.
 - On DeletedKey, deletedDate has been renamed to DeletedOn.
-- KeyClient.listKeys and KeyClient.listKeyVersions have been renamed to KeyClient.listPropertiesOfKeys and KeyClient.listPropertiesOfKeyVersions respectively.
-- KeyClient.restoreKey has been renamed to KeyClient.restoreKeyBackup to better associate it with KeyClient.backupKey.
-- KeyClient.deleteKey has been renamed to KeyClient.beginDeleteKey and now returns a Poller to track this long-running operation.
-- KeyClient.recoverDeletedKey has been renamed to KeyClient.beginRecoverDeletedKey and now returns a Poller to track this long-running operation.
+- listKeys and listKeyVersions methods have been renamed to listPropertiesOfKeys and listPropertiesOfKeyVersions respectively in `KeyClient` and `KeyAsyncClient`.
+- restoreKey method has been renamed to restoreKeyBackup in `KeyClient` and `KeyAsyncClient` to better associate it with KeyClient.backupKey.
+- deleteKey method has been renamed to beginDeleteKey and now returns a SyncPoller in `KeyClient` and PollerFlux in `KeyAsyncClient` to track this long-running operation.
+- recoverDeletedKey method has been renamed to beginRecoverDeletedKey and now returns a SyncPoller in `KeyClient` and PollerFlux in `KeyAsyncClient` to track this long-running operation.
 - KeyCreateOptions has been renamed to CreateKeyOptions.
 - EcCreateKeyOptions has been renamed to CreateEcKeyOptions.
 - CreateEcKeyOptions.curve has been renamed to curveName to be consistent.
