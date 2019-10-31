@@ -24,6 +24,7 @@ class QueryPlanRetriever {
                                                                QueryFeature.CompositeAggregate.name() + ", " +
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
                                                                QueryFeature.OrderBy.name() + ", " +
+                                                               QueryFeature.OffsetAndLimit.name() + ", " +
                                                                QueryFeature.Top.name();
 
     static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(IDocumentQueryClient queryClient,
