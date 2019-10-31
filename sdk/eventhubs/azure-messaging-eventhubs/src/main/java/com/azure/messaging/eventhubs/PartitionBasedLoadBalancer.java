@@ -62,7 +62,7 @@ final class PartitionBasedLoadBalancer {
      * @param partitionPumpManager The partition pump manager that keeps track of all EventHubConsumers and partitions
      * that this {@link EventProcessor} is processing.
      */
-    public PartitionBasedLoadBalancer(final EventProcessorStore eventProcessorStore,
+    PartitionBasedLoadBalancer(final EventProcessorStore eventProcessorStore,
         final EventHubAsyncClient eventHubAsyncClient, final String fullyQualifiedNamespace,
         final String eventHubName, final String consumerGroupName, final String ownerId,
         final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager) {
