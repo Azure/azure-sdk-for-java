@@ -212,7 +212,7 @@ public class EventHubClientBuilder {
 
     /**
      * Sets the Event Hub connection to use when interacting with Event Hubs. If not set, a new connection will be
-     * constructed and used.
+     * constructed and used. If a connection is provided, end users are responsible for disposing of it.
      *
      * @param eventHubConnection Event Hub connection to use.
      * @return The updated {@link EventHubClientBuilder} object.
@@ -421,7 +421,7 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubAsyncClient buildAsyncClient() {
+    EventHubAsyncClient buildAsyncClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         return buildAsyncClient(connectionOptions);
     }
@@ -451,7 +451,7 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubClient buildClient() {
+    EventHubClient buildClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final EventHubAsyncClient client = buildAsyncClient(connectionOptions);
 

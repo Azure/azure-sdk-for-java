@@ -3,30 +3,19 @@
 
 package com.azure.messaging.eventhubs;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.core.util.tracing.ProcessKind;
-import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.azure.messaging.eventhubs.EventHubConsumerClient;
-import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.EventProcessorStore;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
-import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
-import com.azure.messaging.eventhubs.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
+import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.publisher.Signal;
 
@@ -37,6 +26,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
+
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
