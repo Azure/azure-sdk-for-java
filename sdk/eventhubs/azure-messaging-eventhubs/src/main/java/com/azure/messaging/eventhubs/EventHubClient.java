@@ -35,21 +35,12 @@ class EventHubClient implements Closeable {
     }
 
     /**
-     * Gets the Event Hub name this client interacts with.
-     *
-     * @return The Event Hub name this client interacts with.
-     */
-    public String getEventHubName() {
-        return client.getEventHubName();
-    }
-
-    /**
      * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
      *
      * @return The set of information for the Event Hub that this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventHubProperties getProperties() {
+    EventHubProperties getProperties() {
         return client.getProperties().block(retry.getTryTimeout());
     }
 
@@ -59,7 +50,7 @@ class EventHubClient implements Closeable {
      * @return The identifiers for all partitions of an Event Hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<String> getPartitionIds() {
+    IterableStream<String> getPartitionIds() {
         return new IterableStream<>(client.getPartitionIds());
     }
 
@@ -71,7 +62,7 @@ class EventHubClient implements Closeable {
      * @return The information for the requested partition under the Event Hub this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartitionProperties getPartitionProperties(String partitionId) {
+    PartitionProperties getPartitionProperties(String partitionId) {
         return client.getPartitionProperties(partitionId).block(retry.getTryTimeout());
     }
 
@@ -81,7 +72,7 @@ class EventHubClient implements Closeable {
      *
      * @return A new {@link EventHubProducerClient}.
      */
-    public EventHubProducerClient createProducer() {
+    EventHubProducerClient createProducer() {
         final EventHubProducerAsyncClient producer = client.createProducer();
         return new EventHubProducerClient(producer, retry.getTryTimeout());
     }
@@ -103,7 +94,7 @@ class EventHubClient implements Closeable {
      *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition) {
+    EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition) {
         final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, eventPosition);
         return new EventHubConsumerClient(consumer, retry.getTryTimeout());
     }
@@ -137,7 +128,7 @@ class EventHubClient implements Closeable {
      *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition,
+    EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition,
             EventHubConsumerOptions options) {
         final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, eventPosition, options);
 
