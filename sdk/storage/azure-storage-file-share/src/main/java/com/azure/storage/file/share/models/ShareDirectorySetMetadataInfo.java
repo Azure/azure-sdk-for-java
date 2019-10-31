@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * Contains metadata information about a Directory in the storage File service.
  */
 @Immutable
-public class DirectorySetMetadataInfo {
+public class ShareDirectorySetMetadataInfo {
     private final String eTag;
     private final boolean isServerEncrypted;
 
@@ -20,7 +20,7 @@ public class DirectorySetMetadataInfo {
      * @param isServerEncrypted The value of this header is set to true if the directory metadata is completely
      * encrypted using the specified algorithm. Otherwise, the value is set to false.
      */
-    public DirectorySetMetadataInfo(final String eTag, final boolean isServerEncrypted) {
+    public ShareDirectorySetMetadataInfo(final String eTag, final boolean isServerEncrypted) {
         this.eTag = eTag;
         this.isServerEncrypted = isServerEncrypted;
     }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Metrics")
 @Fluent
-public final class FileMetrics {
+public final class ShareMetrics {
     /*
      * The version of Storage Analytics to configure.
      */
@@ -30,7 +30,7 @@ public final class FileMetrics {
      * The retentionPolicy property.
      */
     @JsonProperty(value = "RetentionPolicy")
-    private FileRetentionPolicy retentionPolicy;
+    private ShareRetentionPolicy retentionPolicy;
 
     /*
      * Indicates whether metrics should generate summary statistics for called
@@ -52,9 +52,9 @@ public final class FileMetrics {
      * Set the version property: The version of Storage Analytics to configure.
      *
      * @param version the version value to set.
-     * @return the FileMetrics object itself.
+     * @return the ShareMetrics object itself.
      */
-    public FileMetrics setVersion(String version) {
+    public ShareMetrics setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -74,9 +74,9 @@ public final class FileMetrics {
      * File service.
      *
      * @param enabled the enabled value to set.
-     * @return the FileMetrics object itself.
+     * @return the ShareMetrics object itself.
      */
-    public FileMetrics setEnabled(boolean enabled) {
+    public ShareMetrics setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -86,7 +86,7 @@ public final class FileMetrics {
      *
      * @return the retentionPolicy value.
      */
-    public FileRetentionPolicy getRetentionPolicy() {
+    public ShareRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
 
@@ -94,9 +94,9 @@ public final class FileMetrics {
      * Set the retentionPolicy property: The retentionPolicy property.
      *
      * @param retentionPolicy the retentionPolicy value to set.
-     * @return the FileMetrics object itself.
+     * @return the ShareMetrics object itself.
      */
-    public FileMetrics setRetentionPolicy(FileRetentionPolicy retentionPolicy) {
+    public ShareMetrics setRetentionPolicy(ShareRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }
@@ -116,9 +116,9 @@ public final class FileMetrics {
      * summary statistics for called API operations.
      *
      * @param includeApis the includeApis value to set.
-     * @return the FileMetrics object itself.
+     * @return the ShareMetrics object itself.
      */
-    public FileMetrics setIncludeApis(Boolean includeApis) {
+    public ShareMetrics setIncludeApis(Boolean includeApis) {
         this.includeApis = includeApis;
         return this;
     }

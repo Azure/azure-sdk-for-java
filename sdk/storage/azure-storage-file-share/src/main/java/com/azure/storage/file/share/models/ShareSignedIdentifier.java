@@ -13,7 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "SignedIdentifier")
 @Fluent
-public final class FileSignedIdentifier {
+public final class ShareSignedIdentifier {
     /*
      * A unique id.
      */
@@ -24,7 +24,7 @@ public final class FileSignedIdentifier {
      * The access policy.
      */
     @JsonProperty(value = "AccessPolicy")
-    private FileAccessPolicy accessPolicy;
+    private ShareAccessPolicy accessPolicy;
 
     /**
      * Get the id property: A unique id.
@@ -39,9 +39,9 @@ public final class FileSignedIdentifier {
      * Set the id property: A unique id.
      *
      * @param id the id value to set.
-     * @return the FileSignedIdentifier object itself.
+     * @return the ShareSignedIdentifier object itself.
      */
-    public FileSignedIdentifier setId(String id) {
+    public ShareSignedIdentifier setId(String id) {
         this.id = id;
         return this;
     }
@@ -51,7 +51,7 @@ public final class FileSignedIdentifier {
      *
      * @return the accessPolicy value.
      */
-    public FileAccessPolicy getAccessPolicy() {
+    public ShareAccessPolicy getAccessPolicy() {
         return this.accessPolicy;
     }
 
@@ -59,9 +59,9 @@ public final class FileSignedIdentifier {
      * Set the accessPolicy property: The access policy.
      *
      * @param accessPolicy the accessPolicy value to set.
-     * @return the FileSignedIdentifier object itself.
+     * @return the ShareSignedIdentifier object itself.
      */
-    public FileSignedIdentifier setAccessPolicy(FileAccessPolicy accessPolicy) {
+    public ShareSignedIdentifier setAccessPolicy(ShareAccessPolicy accessPolicy) {
         this.accessPolicy = accessPolicy;
         return this;
     }

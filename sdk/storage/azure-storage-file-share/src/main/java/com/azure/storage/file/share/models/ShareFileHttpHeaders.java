@@ -13,9 +13,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * Additional parameters for a set of operations, such as: Files_create,
  * Files_setHTTPHeaders.
  */
-@JacksonXmlRootElement(localName = "file-http-headers")
+@JacksonXmlRootElement(localName = "share-file-http-headers")
 @Fluent
-public final class FileHttpHeaders {
+public final class ShareFileHttpHeaders {
     /*
      * Sets the MIME content type of the file. The default type is
      * 'application/octet-stream'.
@@ -69,9 +69,9 @@ public final class FileHttpHeaders {
      * The default type is 'application/octet-stream'.
      *
      * @param contentType the contentType value to set.
-     * @return the FileHttpHeaders object itself.
+     * @return the ShareFileHttpHeaders object itself.
      */
-    public FileHttpHeaders setContentType(String contentType) {
+    public ShareFileHttpHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -91,9 +91,9 @@ public final class FileHttpHeaders {
      * been applied to the file.
      *
      * @param contentEncoding the contentEncoding value to set.
-     * @return the FileHttpHeaders object itself.
+     * @return the ShareFileHttpHeaders object itself.
      */
-    public FileHttpHeaders setContentEncoding(String contentEncoding) {
+    public ShareFileHttpHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -113,9 +113,9 @@ public final class FileHttpHeaders {
      * by this resource.
      *
      * @param contentLanguage the contentLanguage value to set.
-     * @return the FileHttpHeaders object itself.
+     * @return the ShareFileHttpHeaders object itself.
      */
-    public FileHttpHeaders setContentLanguage(String contentLanguage) {
+    public ShareFileHttpHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -135,9 +135,9 @@ public final class FileHttpHeaders {
      * service stores this value but does not use or modify it.
      *
      * @param cacheControl the cacheControl value to set.
-     * @return the FileHttpHeaders object itself.
+     * @return the ShareFileHttpHeaders object itself.
      */
-    public FileHttpHeaders setCacheControl(String cacheControl) {
+    public ShareFileHttpHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -155,9 +155,9 @@ public final class FileHttpHeaders {
      * Set the contentMd5 property: Sets the file's MD5 hash.
      *
      * @param contentMd5 the contentMd5 value to set.
-     * @return the FileHttpHeaders object itself.
+     * @return the ShareFileHttpHeaders object itself.
      */
-    public FileHttpHeaders setContentMd5(byte[] contentMd5) {
+    public ShareFileHttpHeaders setContentMd5(byte[] contentMd5) {
         this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
@@ -177,9 +177,9 @@ public final class FileHttpHeaders {
      * header.
      *
      * @param contentDisposition the contentDisposition value to set.
-     * @return the FileHttpHeaders object itself.
+     * @return the ShareFileHttpHeaders object itself.
      */
-    public FileHttpHeaders setContentDisposition(String contentDisposition) {
+    public ShareFileHttpHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }

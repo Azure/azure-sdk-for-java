@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for FileRangeWriteType.
+ * Defines values for ShareFileRangeWriteType.
  */
-public enum FileRangeWriteType {
+public enum ShareFileRangeWriteType {
     /**
      * Enum value update.
      */
@@ -22,24 +22,24 @@ public enum FileRangeWriteType {
     CLEAR("clear");
 
     /**
-     * The actual serialized value for a FileRangeWriteType instance.
+     * The actual serialized value for a ShareFileRangeWriteType instance.
      */
     private final String value;
 
-    FileRangeWriteType(String value) {
+    ShareFileRangeWriteType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a FileRangeWriteType instance.
+     * Parses a serialized value to a ShareFileRangeWriteType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed FileRangeWriteType object, or null if unable to parse.
+     * @return the parsed ShareFileRangeWriteType object, or null if unable to parse.
      */
     @JsonCreator
-    public static FileRangeWriteType fromString(String value) {
-        FileRangeWriteType[] items = FileRangeWriteType.values();
-        for (FileRangeWriteType item : items) {
+    public static ShareFileRangeWriteType fromString(String value) {
+        ShareFileRangeWriteType[] items = ShareFileRangeWriteType.values();
+        for (ShareFileRangeWriteType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

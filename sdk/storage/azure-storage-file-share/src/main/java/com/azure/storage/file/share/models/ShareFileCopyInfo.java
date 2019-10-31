@@ -16,7 +16,7 @@ import java.util.Map;
  * @see ShareFileAsyncClient#beginCopy(String, Map, Duration)
  */
 @Immutable
-public final class FileCopyInfo {
+public final class ShareFileCopyInfo {
     private final String copySource;
     private final String eTag;
     private final OffsetDateTime lastModified;
@@ -39,8 +39,8 @@ public final class FileCopyInfo {
      * @param copySource The url of the source file.
      * @param error An error message for the copy operation. {@code null} if there are no errors.
      */
-    public FileCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
-                        OffsetDateTime lastModified, String error) {
+    public ShareFileCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
+                             OffsetDateTime lastModified, String error) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.copyId = copyId;
