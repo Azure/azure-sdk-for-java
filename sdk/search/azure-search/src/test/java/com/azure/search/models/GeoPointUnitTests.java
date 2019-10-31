@@ -87,4 +87,11 @@ public class GeoPointUnitTests {
 
         Assert.assertFalse(geoPoint.isValid());
     }
+
+    @Test
+    public void canFormatWithToString() {
+        GeoPoint point = GeoPoint.create(7.678581, -122.131577);
+
+        Assert.assertEquals("+7.678581-122.131577CRSEPSG:4326/", point.toString());
+    }
 }

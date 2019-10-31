@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Fluent
@@ -69,6 +70,17 @@ public final class GeoPoint {
     @Override
     public int hashCode() {
         return Objects.hash(coordinates, coordinateSystem);
+    }
+
+    @Override
+    public String toString() {
+        if (isValid()) {
+            return String.format(
+                Locale.US,
+                "%+02f%+02f%s/",
+                coordinates.get(1), coordinates.get(0), coordinateSystem.toString());
+        }
+        return "";
     }
 
     public List<Double> getCoordinates() {

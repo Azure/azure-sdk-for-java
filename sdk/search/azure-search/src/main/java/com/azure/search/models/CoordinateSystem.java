@@ -13,6 +13,8 @@ import java.util.Objects;
 
 @Fluent
 public class CoordinateSystem {
+    public static final String NAME_PROPERTY = "name";
+
     @JsonProperty
     private String type;
 
@@ -27,9 +29,9 @@ public class CoordinateSystem {
      */
     public static CoordinateSystem create() {
         Map<String, String> props = new HashMap<>();
-        props.put("name", "EPSG:4326");
+        props.put(NAME_PROPERTY, "EPSG:4326");
         return new CoordinateSystem()
-            .setType("name")
+            .setType(NAME_PROPERTY)
             .setProperties(props);
     }
 
@@ -40,11 +42,19 @@ public class CoordinateSystem {
      * @return true if valid, false if invalid
      */
     public boolean isValid() {
-        return StringUtils.equals("name", type)
+        return StringUtils.equals(NAME_PROPERTY, type)
             && properties != null
             && properties.keySet().size() == 1
-            && properties.containsKey("name")
-            && properties.get("name").startsWith("EPSG");
+            && properties.containsKey(NAME_PROPERTY)
+            && properties.get(NAME_PROPERTY).startsWith("EPSG");
+    }
+
+    @Override
+    public String toString() {
+        if (isValid()) {
+            return String.format("CRS%s", properties == null ? "" : properties.get(NAME_PROPERTY));
+        }
+        return "";
     }
 
     @Override
