@@ -23,8 +23,8 @@ public class PartitionEvent {
      * @param eventData The event data received from the Event Hub.
      */
     public PartitionEvent(final PartitionContext partitionContext, final EventData eventData) {
-        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");;
-        this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null");;
+        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
+        this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null");
     }
 
     /**

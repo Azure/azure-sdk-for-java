@@ -13,7 +13,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.models.CloseContext;
-import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -66,7 +66,7 @@ public class EventProcessorBuilder {
     private String consumerGroup;
     private EventProcessorStore eventProcessorStore;
     private Function<PartitionEvent, Mono<Void>> processEvent;
-    private Function<ErrorContext, Mono<Void>> processError;
+    private Function<EventProcessingErrorContext, Mono<Void>> processError;
     private Function<InitializationContext, Mono<Void>> initializePartition;
     private Function<CloseContext, Mono<Void>> closePartition;
 
@@ -247,7 +247,7 @@ public class EventProcessorBuilder {
      * @param processError The function to call when an error occurs while processing events.
      * @return The updated {@link EventProcessorBuilder} instance.
      */
-    public EventProcessorBuilder processError(Function<ErrorContext, Mono<Void>> processError) {
+    public EventProcessorBuilder processError(Function<EventProcessingErrorContext, Mono<Void>> processError) {
         this.processError = processError;
         return this;
     }
@@ -291,8 +291,8 @@ public class EventProcessorBuilder {
      * @return A new instance of {@link EventProcessor}.
      */
     public EventProcessor buildEventProcessor() {
-        Objects.requireNonNull(processEvent);
-        Objects.requireNonNull(eventProcessorStore);
+        Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
+        Objects.requireNonNull(eventProcessorStore, "'eventProcessStore' cannot be null");
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         return new EventProcessor(eventHubClientBuilder, this.consumerGroup,
@@ -315,12 +315,13 @@ public class EventProcessorBuilder {
             }
 
             @Override
-            public void processError(ErrorContext errorContext) {
+            public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
                 if (processError != null) {
-                    processError.apply(errorContext);
-                    return;
+                    processError.apply(eventProcessingErrorContext);
+                } else {
+                    super.processError(eventProcessingErrorContext);
                 }
-                super.processError(errorContext);
+
             }
 
             @Override
@@ -328,7 +329,6 @@ public class EventProcessorBuilder {
                 if (closePartition != null) {
                     return closePartition.apply(closeContext);
                 }
-
                 return super.close(closeContext);
             }
         };

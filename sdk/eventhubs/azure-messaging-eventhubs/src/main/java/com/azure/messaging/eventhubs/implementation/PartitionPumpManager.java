@@ -20,7 +20,7 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumer;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.EventProcessorStore;
-import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.PartitionProcessor;
@@ -157,7 +157,7 @@ public class PartitionPumpManager {
         try {
             // There was an error in process event (user provided code), call process error and if that
             // also fails just log and continue
-            partitionProcessor.processError(new ErrorContext(partitionContext, error));
+            partitionProcessor.processError(new EventProcessingErrorContext(partitionContext, error));
         } catch (Exception ex) {
             logger.warning("Failed while processing error {}", claimedOwnership.getPartitionId(), ex);
         }
@@ -167,7 +167,7 @@ public class PartitionPumpManager {
         PartitionProcessor partitionProcessor, Throwable error, PartitionContext partitionContext) {
         try {
             // if there was an error on receive, it also marks the end of the event data stream
-            partitionProcessor.processError(new ErrorContext(partitionContext, error));
+            partitionProcessor.processError(new EventProcessingErrorContext(partitionContext, error));
             CloseReason closeReason = CloseReason.EVENT_HUB_EXCEPTION;
             // If the exception indicates that the partition was stolen (i.e some other consumer with same ownerlevel
             // started consuming the partition), update the closeReason

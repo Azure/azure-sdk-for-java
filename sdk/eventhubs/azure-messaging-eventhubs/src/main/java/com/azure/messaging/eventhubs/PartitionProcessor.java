@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
-import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
  * <ul>
  *     <li>{@link #initialize(InitializationContext)} - This method is called before at the beginning of processing a
  *     partition.</li>
- *     <li>{@link #processError(ErrorContext)} - This method is called if there is an error while
+ *     <li>{@link #processError(EventProcessingErrorContext)} - This method is called if there is an error while
  *     processing events</li>
  *     <li>{@link #close(CloseContext)} - This method is called at the end of processing a partition.
  *     The {@link CloseReason} specifies why the processing of a partition stopped.</li>
@@ -61,12 +61,12 @@ public abstract class PartitionProcessor {
      * This method is called when an error occurs while receiving events from Event Hub. An error also marks the end of
      * event data stream.
      *
-     * @param errorContext The error details and partition information where the error occurred.
+     * @param eventProcessingErrorContext The error details and partition information where the error occurred.
      */
-    public void processError(ErrorContext errorContext) {
+    public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
         logger.warning("Error occurred in partition processor for partition {}",
-            errorContext.getPartitionContext().getPartitionId(),
-            errorContext.getThrowable());
+            eventProcessingErrorContext.getPartitionContext().getPartitionId(),
+            eventProcessingErrorContext.getThrowable());
     }
 
     /**

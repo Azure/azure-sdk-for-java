@@ -58,6 +58,6 @@ public class InitializationContext {
      * @param initialPosition The initial event position to start the event processing from.
      */
     public void setInitialPosition(final EventPosition initialPosition) {
-        this.initialPosition = Objects.requireNonNull(initialPosition, "'initialPosition' cannot be null");;
+        this.initialPosition = Objects.requireNonNull(initialPosition, "'initialPosition' cannot be null");
     }
 }

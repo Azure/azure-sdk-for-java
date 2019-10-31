@@ -25,7 +25,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -419,7 +419,7 @@ public class EventProcessorTest {
         boolean error;
 
         @Override
-        public void processError(ErrorContext errorContext) {
+        public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
             error = true;
         }
 

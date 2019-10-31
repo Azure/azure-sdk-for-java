@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
@@ -304,7 +304,7 @@ public class PartitionBasedLoadBalancerTest {
         loadBalancer.loadBalance();
         sleep(2);
         verify(partitionProcessor, never()).processEvent(any(PartitionEvent.class));
-        verify(partitionProcessor, times(1)).processError(any(ErrorContext.class));
+        verify(partitionProcessor, times(1)).processError(any(EventProcessingErrorContext.class));
         verify(eventHubConsumer, times(1)).close();
     }
 
@@ -332,7 +332,7 @@ public class PartitionBasedLoadBalancerTest {
         verify(eventHubAsyncClient, never()).createConsumer(any(), any(), any());
         verify(eventHubConsumer, never()).receive();
         verify(partitionProcessor, never()).processEvent(any(PartitionEvent.class));
-        verify(partitionProcessor, never()).processError(any(ErrorContext.class));
+        verify(partitionProcessor, never()).processError(any(EventProcessingErrorContext.class));
         verify(eventHubConsumer, never()).close();
     }
 
@@ -357,7 +357,7 @@ public class PartitionBasedLoadBalancerTest {
         verify(eventHubAsyncClient, never()).createConsumer(any(), any(), any());
         verify(eventHubConsumer, never()).receive();
         verify(partitionProcessor, never()).processEvent(any(PartitionEvent.class));
-        verify(partitionProcessor, never()).processError(any(ErrorContext.class));
+        verify(partitionProcessor, never()).processError(any(EventProcessingErrorContext.class));
         verify(eventHubConsumer, never()).close();
     }
 
