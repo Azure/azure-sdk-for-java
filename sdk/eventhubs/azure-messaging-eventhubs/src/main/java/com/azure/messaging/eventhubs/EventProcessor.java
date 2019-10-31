@@ -5,9 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.PartitionBasedLoadBalancer;
-import com.azure.messaging.eventhubs.implementation.PartitionPumpManager;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import reactor.core.Disposable;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.UUID;
@@ -15,9 +17,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
-import reactor.core.Disposable;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * Event Processor provides a convenient mechanism to consume events from all partitions of an Event Hub in the context
