@@ -96,7 +96,8 @@ public class BlobEventProcessorStoreTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
-        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
+        when(blobAsyncClient
+            .setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.just(new SimpleResponse<>(null, 200, new HttpHeaders(headers), null)));
 
         BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
@@ -157,12 +158,13 @@ public class BlobEventProcessorStoreTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
-        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
+        when(blobAsyncClient
+            .setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.error(new SocketTimeoutException()));
 
         BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
         StepVerifier.create(blobPartitionManager.updateCheckpoint(checkpoint))
-                .expectError(SocketTimeoutException.class).verify();
+            .expectError(SocketTimeoutException.class).verify();
     }
 
     @Test
@@ -174,7 +176,8 @@ public class BlobEventProcessorStoreTest {
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
-            isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), isNull(), any(BlobRequestConditions.class)))
+            isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), isNull(),
+            any(BlobRequestConditions.class)))
             .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
         BlobEventProcessorStore blobPartitionManager = new BlobEventProcessorStore(blobContainerAsyncClient);
         StepVerifier.create(blobPartitionManager.claimOwnership(po)).verifyComplete();

@@ -26,14 +26,14 @@ public class EventProcessorBlobEventProcessorStoreSample {
     private static final String STORAGE_CONNECTION_STRING = "";
 
     public static final Function<PartitionEvent, Mono<Void>> PARTITION_PROCESSOR = partitionEvent -> {
-            System.out.printf("Processing event from partition %s with sequence number %d %n",
-                partitionEvent.getPartitionContext().getPartitionId(), partitionEvent.getEventData().getSequenceNumber());
+        System.out.printf("Processing event from partition %s with sequence number %d %n",
+            partitionEvent.getPartitionContext().getPartitionId(), partitionEvent.getEventData().getSequenceNumber());
 
-            if (partitionEvent.getEventData().getSequenceNumber() % 10 == 0) {
-                return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
-            }
-            return Mono.empty();
-        };
+        if (partitionEvent.getEventData().getSequenceNumber() % 10 == 0) {
+            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
+        }
+        return Mono.empty();
+    };
 
     /**
      * The main method to run the sample.

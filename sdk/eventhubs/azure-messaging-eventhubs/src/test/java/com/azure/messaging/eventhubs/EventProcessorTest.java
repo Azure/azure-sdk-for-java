@@ -340,8 +340,7 @@ public class EventProcessorTest {
     }
 
     /**
-     * Tests {@link EventProcessor} that processes events from an Event Hub configured with multiple
-     * partitions.
+     * Tests {@link EventProcessor} that processes events from an Event Hub configured with multiple partitions.
      *
      * @throws Exception if an error occurs while running the test.
      */
@@ -367,7 +366,8 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
 
         when(consumer1.receive(argThat(arg -> identifiers.remove(arg))))
-            .thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData1), getEvent(eventData2))));
+            .thenReturn(Mono.fromRunnable(() -> count.countDown())
+                .thenMany(Flux.just(getEvent(eventData1), getEvent(eventData2))));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData1.getOffset()).thenReturn(1L);
@@ -414,7 +414,8 @@ public class EventProcessorTest {
     }
 
     private PartitionEvent getEvent(EventData event) {
-        PartitionContext context = new PartitionContext("foo", "bar", "baz", null, null, null);
+        PartitionContext context = new PartitionContext("foo", "bar", "baz", "0", null,
+            new InMemoryEventProcessorStore());
         return new PartitionEvent(context, event);
     }
 

@@ -12,8 +12,8 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.StringJoiner;
 
 /**
- * Sample that demonstrates the use {@link BlobEventProcessorStore} for storing and updating partition ownership records in
- * Storage Blobs.
+ * Sample that demonstrates the use {@link BlobEventProcessorStore} for storing and updating partition ownership records
+ * in Storage Blobs.
  */
 public class BlobEventProcessorStoreSample {
 
