@@ -11,16 +11,10 @@ import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ReactorHandlerProvider;
-import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.RetryUtil;
-import com.azure.core.amqp.implementation.StringUtil;
-import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
-import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -37,23 +31,14 @@ public class EventHubConnection implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConnection.class);
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final ConnectionOptions connectionOptions;
-    private final TokenManagerProvider tokenManagerProvider;
-    private final MessageSerializer messageSerializer;
-    private final ReactorHandlerProvider handlerProvider;
-    private final ReactorProvider provider;
     private final Mono<EventHubAmqpConnection> currentConnection;
 
     /**
      * Creates a new instance of {@link EventHubConnection}.
      */
-    EventHubConnection(ConnectionOptions connectionOptions, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer) {
+    EventHubConnection(Mono<EventHubAmqpConnection> createConnectionMono, ConnectionOptions connectionOptions) {
         this.connectionOptions = connectionOptions;
-        this.tokenManagerProvider = tokenManagerProvider;
-        this.messageSerializer = messageSerializer;
-        this.provider = new ReactorProvider();
-        this.handlerProvider = new ReactorHandlerProvider(provider);
-        this.currentConnection = createConnection()
+        this.currentConnection = createConnectionMono
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
     }
@@ -119,15 +104,6 @@ public class EventHubConnection implements Closeable {
                 return session.createConsumer(linkName, entityPath, connectionOptions.getRetry().getTryTimeout(),
                     retryPolicy, eventPosition, options);
             });
-    }
-
-    private Mono<EventHubAmqpConnection> createConnection() {
-        return Mono.fromCallable(() -> {
-            final String connectionId = StringUtil.getRandomString("MF");
-
-            return new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, messageSerializer);
-        });
     }
 
     /**
