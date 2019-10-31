@@ -58,7 +58,7 @@ known_content_issues:
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
-  - ['eventhubs/data-plane/readme.md', '#3113']
+  - ['sdk/eventhubs/README.md', '#3113']
   - ['eventhubs/data-plane/azure-eventhubs-eph/Readme.md', '#3113']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/readme.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
@@ -66,6 +66,7 @@ known_content_issues:
   - ['sdk/servicebus/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-common/README.md', '#3113']
   - ['sdk/core/README.md', '#3113']
   - ['cosmosdb/data-plane/README.md', '#3113']
   - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
@@ -78,7 +79,7 @@ known_content_issues:
   - ['sdk/storage/azure-storage-blob/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-file-datalake/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-queue/swagger/README.md', '#3113']
-  - ['sdk/storage/azure-storage-file/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-file-share/swagger/README.md', '#3113']
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
   - azure-applicationinsights-query-sample

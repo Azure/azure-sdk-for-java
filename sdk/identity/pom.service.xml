@@ -9,7 +9,9 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>../core/azure-core</module> <!-- NOTE: We need to build core so we can build against the version in the repo. -->
+    <!-- NOTE: Commenting out becuase we are now binary composed.
+    -->
+      <module>../core/azure-core</module>
     <module>azure-identity</module>
   </modules>
 </project>

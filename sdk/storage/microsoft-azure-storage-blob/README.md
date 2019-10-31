@@ -159,6 +159,7 @@ public class Sample {
     }
 }
 ```
+
 ## Building
 
 If building from sources, run mvn compile to build. No build steps are necessary if including the package as a maven dependency.
@@ -166,8 +167,6 @@ If building from sources, run mvn compile to build. No build steps are necessary
 ## Running tests
 
 Please refer to CONTRIBUTING.md for information on how to run the tests.
-
-
 
 # Need Help?
 

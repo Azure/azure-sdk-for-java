@@ -4,23 +4,25 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.messaging.eventhubs.EventDataBatch;
-import com.azure.messaging.eventhubs.EventHubAsyncProducer;
-import com.azure.messaging.eventhubs.EventHubProducer;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
+import com.azure.messaging.eventhubs.EventHubProducerClient;
 
 /**
  * The set of options that can be specified when creating an {@link EventDataBatch}.
  *
- * @see EventHubProducer#createBatch(BatchOptions)
- * @see EventHubAsyncProducer#createBatch(BatchOptions)
+ * @see EventHubProducerClient#createBatch(BatchOptions)
+ * @see EventHubProducerAsyncClient#createBatch(BatchOptions)
  */
 public class BatchOptions implements Cloneable {
     private int maximumSizeInBytes;
     private String partitionKey;
+    private String partitionId;
 
     /**
      * Sets the maximum size for the {@link EventDataBatch batch of events}, in bytes.
      *
      * @param maximumSizeInBytes The maximum size to allow for the {@link EventDataBatch batch of events}.
+     *
      * @return The updated {@link BatchOptions} object.
      */
     public BatchOptions setMaximumSizeInBytes(int maximumSizeInBytes) {
@@ -42,6 +44,7 @@ public class BatchOptions implements Cloneable {
      * and sent to the same partition.
      *
      * @param partitionKey The partition hashing key to associate with the event or batch of events.
+     *
      * @return The updated {@link BatchOptions} object.
      */
     public BatchOptions setPartitionKey(String partitionKey) {
@@ -60,6 +63,33 @@ public class BatchOptions implements Cloneable {
     }
 
     /**
+     * Gets the identifier of the Event Hub partition that the events in the {@link EventDataBatch} will be sent to. If
+     * the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent to
+     * an available partition.
+     *
+     * @return The identifier of the Event Hub partition that the {@link EventDataBatch} will be set to. {@code null} or
+     *     an empty string if Event Hubs service is responsible for routing events.
+     */
+    public String getPartitionId() {
+        return partitionId;
+    }
+
+    /**
+     * Sets the identifier of the Event Hub partition that the events in the {@link EventDataBatch} will be sent to. If
+     * the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent to
+     * an available partition.
+     *
+     * @param partitionId The identifier of the Event Hub partition that the {@link EventDataBatch batch's} events
+     *     will be sent to. {@code null} or an empty string if Event Hubs service is responsible for routing events.
+     *
+     * @return The updated {@link BatchOptions} object.
+     */
+    public BatchOptions setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
+        return this;
+    }
+
+    /**
      * Creates a shallow clone of this instance.
      *
      * @return A shallow clone of this object.
@@ -74,6 +104,7 @@ public class BatchOptions implements Cloneable {
         }
 
         return clone.setPartitionKey(partitionKey)
+            .setPartitionId(partitionId)
             .setMaximumSizeInBytes(maximumSizeInBytes);
     }
 }

@@ -8,6 +8,7 @@ module com.azure.storage.queue {
 
     exports com.azure.storage.queue;
     exports com.azure.storage.queue.models;
+    exports com.azure.storage.queue.sas;
 
     opens com.azure.storage.queue.models to
         com.fasterxml.jackson.databind,

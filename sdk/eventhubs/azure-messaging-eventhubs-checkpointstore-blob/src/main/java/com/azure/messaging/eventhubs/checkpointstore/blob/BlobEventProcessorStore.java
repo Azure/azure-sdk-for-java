@@ -114,7 +114,7 @@ public class BlobEventProcessorStore implements EventProcessorStore {
                 // New blob should be created
                 blobRequestConditions.setIfNoneMatch("*");
                 return blobAsyncClient.getBlockBlobAsyncClient()
-                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, blobRequestConditions)
+                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null, blobRequestConditions)
                     .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                         logger.info(CLAIM_ERROR, partitionId, error.getMessage());
                         return Mono.empty();

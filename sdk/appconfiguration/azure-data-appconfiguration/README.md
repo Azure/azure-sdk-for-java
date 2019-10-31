@@ -89,11 +89,13 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
 To create a Configuration Store you can use the Azure Portal or [Azure CLI][azure_cli].
 
 You need to install the Azure App Configuration CLI extension first by executing the following command:
+
 ```Powershell
 az extension add -n appconfig
 ```
 
 After that, create the Configuration Store:
+
 ```Powershell
 az appconfig create --name <config-store-name> --resource-group <resource-group-name> --location eastus
 ```
@@ -182,8 +184,10 @@ The following sections provide several code snippets covering some of the most c
 ### Create a Configuration Setting
 
 Create a Configuration Setting to be stored in the Configuration Store. There are two ways to store a Configuration Setting:
+
 - addSetting creates a setting only if the setting does not already exist in the store.
 - setSetting creates a setting if it doesn't exist or overrides an existing setting.
+
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
         .connectionString(connectionString)
@@ -194,6 +198,7 @@ ConfigurationSetting setting = client.setSetting("some_key", "some_label", "some
 ### Retrieve a Configuration Setting
 
 Retrieve a previously stored Configuration Setting by calling getSetting.
+
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
         .connectionString(connectionString)
@@ -205,6 +210,7 @@ ConfigurationSetting setting = client.getSetting("some_key", "some_label");
 ### Update an existing Configuration Setting
 
 Update an existing Configuration Setting by calling setSetting.
+
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
         .connectionString(connectionString)
@@ -216,6 +222,7 @@ ConfigurationSetting setting = client.setSetting("some_key", "some_label", "new_
 ### Delete a Configuration Setting
 
 Delete an existing Configuration Setting by calling deleteSetting.
+
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
         .connectionString(connectionString)

@@ -24,8 +24,9 @@ import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import reactor.test.StepVerifier
 import spock.lang.Unroll
@@ -1482,7 +1483,7 @@ class BlobAPITest extends APISpec {
         setup:
         def blobName = generateBlobName()
         def bc = cc.getBlobClient(blobName).getBlockBlobClient()
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tier1, null, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tier1, null, null, null, null)
         def bcCopy = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:

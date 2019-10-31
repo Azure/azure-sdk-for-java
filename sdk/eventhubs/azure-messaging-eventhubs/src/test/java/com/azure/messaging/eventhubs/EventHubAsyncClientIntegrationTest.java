@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -22,6 +22,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,10 +75,13 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         client = builder.buildAsyncClient();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.info("Already pushed events to partition. Skipping.");
+            logger.warning("Already pushed events to partition. Skipping.");
         } else {
-            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+            logger.warning("Pushing... events to partition.");
+
+            final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
             testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            logger.warning("Pushed events to partition.");
         }
     }
 
@@ -102,7 +106,8 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(consumer.receive().filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofMinutes(1));
     }
 
     /**
@@ -128,7 +133,8 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             clients[i] = builder.buildAsyncClient();
         }
 
-        final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().setPartitionId(PARTITION_ID));
+        final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubProducerAsyncClient producer = clients[0].createProducer();
         final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
 
@@ -154,7 +160,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             }
 
             // Act
-            producer.send(events).block(TIMEOUT);
+            producer.send(events, sendOptions).block(TIMEOUT);
 
             // Assert
             // Wait for all the events we sent to be received by each of the consumers.

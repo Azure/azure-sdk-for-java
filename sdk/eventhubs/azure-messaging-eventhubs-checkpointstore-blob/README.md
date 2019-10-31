@@ -65,13 +65,14 @@ sequence number and the timestamp of when it was enqueued.
 - [Consume events from all Event Hub partitions][sample_event_processor]
 
 ### Create an instance of Storage container with SAS token
+
 ```java
 BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
     .containerName("<CONTAINER_NAME>")
     .sasToken("<SAS_TOKEN>")
     .buildAsyncClient();
-``` 
+```
 
 ### Consume events using an Event Processor
 
@@ -79,13 +80,13 @@ To consume events for all partitions of an Event Hub, you'll create an [`EventPr
 specific consumer group. When an Event Hub is created, it provides a default consumer group that can be used to get
 started.
 
-The [`EventProcessor`][source_eventprocessor] will delegate processing of events to a
-[`PartitionProcessor`][source_partition_processor] implementation that you provide, allowing your application to focus on the
-business logic needed to provide value while the processor holds responsibility for managing the underlying consumer operations.
+The [`EventProcessor`][source_eventprocessor] will delegate processing of events to a callback function that you 
+provide, allowing your application to focus on the business logic needed to provide value while the processor 
+holds responsibility for managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
-[`BlobPartitionManager`][source_blobpartitionmanager], and a  simple `PartitionProcessor` implementation that logs
-events received from Event Hubs to console.
+[`BlobPartitionManager`][source_blobpartitionmanager], and a simple callback function to process the events received 
+ from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
 ```java
 class Program {
@@ -97,7 +98,7 @@ class Program {
 
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
-            .consumerGroupName("<< CONSUMER GROUP NAME>>")
+            .consumerGroupName("<< CONSUMER GROUP NAME >>")
             .processEvent(processEvent)
             .eventProcessorStore(new BlobEventProcessorStore(blobContainerAsyncClient))
             .buildEventProcessor();
@@ -131,7 +132,7 @@ If you would like to become an active contributor to this project please refer t
 Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
-[api_documentation]: http://azure.github.io/azure-sdk-for-java/track2reports/index.html
+[api_documentation]: http://azure.github.io/azure-sdk-for-java
 [event_hubs_product_docs]: https://docs.microsoft.com/azure/event-hubs/
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [maven]: https://maven.apache.org/
