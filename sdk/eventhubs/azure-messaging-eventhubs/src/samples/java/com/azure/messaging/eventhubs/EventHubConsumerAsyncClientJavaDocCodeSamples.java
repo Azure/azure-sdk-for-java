@@ -15,18 +15,31 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Code snippets demonstrating various {@link EventHubConsumerAsyncClient} scenarios.
  */
 public class EventHubConsumerAsyncClientJavaDocCodeSamples {
+
+    public void initialization() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
+        // The required parameters are startingPosition, consumerGroup, and a way to authenticate with Event Hubs
+        // using credentials.
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+            .connectionString("fake-string")
+            .startingPosition(EventPosition.latest())
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .buildAsyncConsumer();
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
+    }
     /**
      * Receives event data
      */
     public void receive() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive
-        // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
-        String partitionId = "0";
-
-        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder().connectionString("fake-string")
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+            .connectionString("fake-string")
             .startingPosition(EventPosition.latest())
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumer();
+
+        // Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds()
+        String partitionId = "0";
 
         // Keep a reference to `subscription`. When the program is finished receiving events, call
         // subscription.dispose(). This will stop fetching events from the Event Hub.

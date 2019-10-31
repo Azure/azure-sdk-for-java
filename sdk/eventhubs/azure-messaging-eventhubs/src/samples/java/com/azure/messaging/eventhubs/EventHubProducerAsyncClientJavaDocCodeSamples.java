@@ -7,7 +7,6 @@ import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -25,6 +24,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
      */
     public void instantiate() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
+        // The required parameters is a way to authenticate with Event Hubs using credentials.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
             .buildAsyncProducer();
@@ -37,9 +37,8 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
      * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient} that routes events to a single
      * partition.
      *
-     * @throws IOException if the producer cannot be disposed.
      */
-    public void instantiatePartitionProducer() throws IOException {
+    public void instantiatePartitionProducer() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation#partitionId
         EventData eventData = new EventData("data-to-partition-foo");
         SendOptions options = new SendOptions()

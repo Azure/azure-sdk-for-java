@@ -59,6 +59,23 @@ import java.util.ServiceLoader;
  * </li>
  * </ul>
  *
+ * <p>
+ * <strong>Starting position</strong>, <strong>consumer group</strong>, and <strong>credentials</strong> are
+ * <strong>required</strong> when creating an {@link EventHubConsumerAsyncClient} or {@link EventHubConsumerClient}.
+ * {@link EventHubClientBuilder#consumerOptions(EventHubConsumerOptions) Consumer options} can be supplied for
+ * optional consumer customizations.
+ * </p>
+ *
+ * <p>strong>Creating an asynchronous {@link EventHubProducerAsyncClient} using Event Hubs namespace connection string
+ * </strong></p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}
+ *
+ * <p><strong>Creating a synchronous {@link EventHubConsumerClient} using an Event Hub instance connection string
+ * </strong></p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
+ *
  * @see EventHubClient
  * @see EventHubAsyncClient
  */

@@ -22,11 +22,11 @@ public class EventHubConsumerJavaDocCodeSamples {
      */
     public void instantiate() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
-        String consumerGroup = "$DEFAULT";
-
+        // The required parameters are startingPosition, consumerGroup, and a way to authenticate with Event Hubs
+        // using credentials.
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
-            .consumerGroup(consumerGroup)
+            .consumerGroup("$DEFAULT")
             .startingPosition(EventPosition.latest())
             .buildConsumer();
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
@@ -38,7 +38,7 @@ public class EventHubConsumerJavaDocCodeSamples {
      * Receives event data
      */
     public void receive() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-duration
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-duration
         // Obtain partitionId from EventHubClient.getPartitionIds().
         String partitionId = "0";
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
@@ -57,7 +57,7 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         // Gets the next set of events to consume and process.
         IterableStream<PartitionEvent> nextEvents = consumer.receive(partitionId, 100, Duration.ofSeconds(30));
-        // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-duration
+        // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-duration
 
         for (PartitionEvent partitionEvent : nextEvents) {
             // For each event, perform some sort of processing.
