@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
@@ -18,7 +17,6 @@ import com.azure.core.util.polling.PollResponse.OperationStatus;
 import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
-import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -28,7 +26,6 @@ import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobCopyInfo;
-import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -64,8 +61,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
@@ -73,7 +68,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static com.azure.core.implementation.util.FluxUtil.fluxError;
 import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.toMono;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static java.lang.StrictMath.toIntExact;
 
@@ -681,7 +675,7 @@ public class BlobAsyncClientBase {
      */
     public Mono<BlobProperties> downloadToFile(String filePath) {
         try {
-            return downloadToFileWithResponse(filePath, null, null, null, null).flatMap(FluxUtil::toMono);
+            return downloadToFileWithResponse(filePath, null, null, null, null, false).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -712,16 +706,17 @@ public class BlobAsyncClientBase {
      * transfers parameter is ignored.
      * @param options {@link ReliableDownloadOptions}
      * @param requestConditions {@link BlobRequestConditions}
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob properties and metadata.
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
-        BlobRequestConditions requestConditions) {
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5) {
         try {
             return withContext(context -> downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
-                requestConditions, context));
+                requestConditions, rangeGetContentMd5, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -729,7 +724,7 @@ public class BlobAsyncClientBase {
 
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions reliableDownloadOptions,
-        BlobRequestConditions requestConditions, Context context) {
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
         BlobRange rangeReal = range == null ? new BlobRange(0) : range;
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
             ? new ParallelTransferOptions() : parallelTransferOptions;
@@ -739,7 +734,7 @@ public class BlobAsyncClientBase {
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(filePath);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, rangeReal, finalParallelTransferOptions,
-                reliableDownloadOptions, conditionsReal, context))
+                reliableDownloadOptions, conditionsReal, rangeGetContentMd5, context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, filePath, signalType));
     }
 
@@ -754,7 +749,7 @@ public class BlobAsyncClientBase {
 
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange rangeReal,
         ParallelTransferOptions finalParallelTransferOptions, ReliableDownloadOptions reliableDownloadOptions,
-        BlobRequestConditions requestConditions, Context context) {
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         Lock progressLock = new ReentrantLock();
         AtomicLong totalProgress = new AtomicLong(0);
@@ -762,7 +757,8 @@ public class BlobAsyncClientBase {
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
-       return getSetupMono(rangeReal, finalParallelTransferOptions, reliableDownloadOptions, requestConditions, context)
+       return getSetupMono(rangeReal, finalParallelTransferOptions, reliableDownloadOptions, requestConditions,
+           rangeGetContentMd5, context)
         .flatMap(setupTuple3 -> {
             long newCount = setupTuple3.getT1();
             BlobRequestConditions realConditions = setupTuple3.getT2();
@@ -789,7 +785,8 @@ public class BlobAsyncClientBase {
                         chunkSizeActual);
 
                     // Make the download call.
-                    return this.downloadWithResponse(chunkRange, reliableDownloadOptions, realConditions, false, null)
+                    return this.downloadWithResponse(chunkRange, reliableDownloadOptions, realConditions,
+                        rangeGetContentMd5, null)
                         .subscribeOn(Schedulers.elastic())
                         .flatMap(response ->
                             writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
@@ -816,13 +813,13 @@ public class BlobAsyncClientBase {
      */
     private Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> getSetupMono(BlobRange r,
         ParallelTransferOptions o, ReliableDownloadOptions reliableDownloadOptions,
-        BlobRequestConditions requestConditions, Context context) {
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
         // We will scope our initial download to either be one chunk or the total size.
         long initialChunkSize = r.getCount() != null && r.getCount() < o.getBlockSize()
             ? r.getCount() : o.getBlockSize();
 
         return this.downloadWithResponse(new BlobRange(r.getOffset(), initialChunkSize), reliableDownloadOptions,
-            requestConditions, false, context)
+            requestConditions, rangeGetContentMd5, context)
             .subscribeOn(Schedulers.elastic())
             .flatMap(response -> {
                 /*
@@ -859,7 +856,7 @@ public class BlobAsyncClientBase {
                     .getHeaders().getValue("Content-Range")) == 0) {
 
                     return this.downloadWithResponse(new BlobRange(0, 0L), reliableDownloadOptions, requestConditions,
-                        false, context)
+                        rangeGetContentMd5, context)
                         .subscribeOn(Schedulers.elastic())
                         .flatMap(response -> {
                             /*

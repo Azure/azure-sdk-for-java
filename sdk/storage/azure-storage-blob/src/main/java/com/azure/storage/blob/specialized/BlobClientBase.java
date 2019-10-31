@@ -436,7 +436,7 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public BlobProperties downloadToFile(String filePath) {
-        return downloadToFileWithResponse(filePath, null, null, null, null, null, Context.NONE).getValue();
+        return downloadToFileWithResponse(filePath, null, null, null, null, false, null, Context.NONE).getValue();
     }
 
     /**
@@ -464,6 +464,7 @@ public class BlobClientBase {
      *        transfers parameter is ignored.
      * @param options {@link ReliableDownloadOptions}
      * @param requestConditions {@link BlobRequestConditions}
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the blob properties and metadata.
@@ -471,9 +472,9 @@ public class BlobClientBase {
      */
     public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
-        BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Duration timeout, Context context) {
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, options, requestConditions, context);
+            parallelTransferOptions, options, requestConditions, rangeGetContentMd5, context);
         return blockWithOptionalTimeout(download, timeout);
     }
 

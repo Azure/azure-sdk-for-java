@@ -27,7 +27,6 @@ import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import reactor.test.StepVerifier
 import spock.lang.Requires
@@ -300,7 +299,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def properties = bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSize(4 * 1024 * 1024), null, null, null, null)
+            new ParallelTransferOptions().setBlockSize(4 * 1024 * 1024), null, null, false, null, null)
 
         and:
         def stream1 = new FileInputStream(file)
@@ -363,7 +362,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        bc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, null, null)
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, false, null, null)
 
         and:
         def stream1 = new FileInputStream(file)
@@ -406,7 +405,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(defaultDataSize + 1), null, null, null,
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(defaultDataSize + 1), null, null, null, false,
             null, null)
 
         then:
@@ -426,7 +425,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, null, null)
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, false, null, null)
 
         and:
         def stream1 = new FileInputStream(file)
@@ -458,7 +457,7 @@ class BlobAPITest extends APISpec {
             .setLeaseId(leaseID)
 
         when:
-        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, null, null)
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -493,7 +492,7 @@ class BlobAPITest extends APISpec {
             .setLeaseId(leaseID)
 
         when:
-        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, null, null)
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -527,7 +526,7 @@ class BlobAPITest extends APISpec {
         def bac = new BlobClientBuilder().pipeline(bc.getHttpPipeline()).endpoint(bc.getBlobUrl()).buildAsyncClient()
             .getBlockBlobAsyncClient()
         bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSize(1024), null, null)
+            new ParallelTransferOptions().setBlockSize(1024), null, null, false)
             .subscribe(
             new Consumer<Response<BlobProperties>>() {
                 @Override
@@ -575,7 +574,7 @@ class BlobAPITest extends APISpec {
         when:
         bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
             new ParallelTransferOptions().setProgressReceiver(mockReceiver),
-            new ReliableDownloadOptions().maxRetryRequests(3), null, null, null)
+            new ReliableDownloadOptions().maxRetryRequests(3), null, false, null, null)
 
         then:
         // We should receive exactly one notification of the completed progress.
