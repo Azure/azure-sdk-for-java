@@ -46,7 +46,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
             Assert.assertTrue(ex.getMessage().contains("Syntax error in line 1: 'a => b => c'. "
-                    + "Only one explicit mapping (=>) can be specified in a synonym rule."));
+                + "Only one explicit mapping (=>) can be specified in a synonym rule."));
         }
     }
 
@@ -280,8 +280,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         try {
             getSynonymMapAction.run();
             Assert.fail("the action did not throw an exception");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
                 ((HttpResponseException) ex).getResponse().getStatusCode());

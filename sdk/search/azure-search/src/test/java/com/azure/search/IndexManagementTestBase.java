@@ -13,7 +13,6 @@ import com.azure.search.models.FreshnessScoringParameters;
 import com.azure.search.models.Index;
 import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.MagnitudeScoringParameters;
-import com.azure.search.models.ScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
@@ -21,8 +20,6 @@ import com.azure.search.models.Suggester;
 import com.azure.search.models.TagScoringFunction;
 import com.azure.search.models.TagScoringParameters;
 import com.azure.search.models.TextWeights;
-import com.azure.search.test.environment.models.ModelComparer;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -32,7 +29,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public abstract class IndexManagementTestBase extends SearchServiceTestBase {
 
@@ -111,134 +110,13 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged();
 
-    protected void assertFieldsEqual(Field expected, Field actual) {
-        Assert.assertEquals(expected.getName(), actual.getName());
-
-        // ONLY verify the properties we set explicitly.
-        if (expected.isKey() != null) {
-            Assert.assertEquals(expected.isKey(), actual.isKey());
-        }
-        if (expected.isSearchable() != null) {
-            Assert.assertEquals(expected.isSearchable(), actual.isSearchable());
-        }
-        if (expected.isFilterable() != null) {
-            Assert.assertEquals(expected.isFilterable(), actual.isFilterable());
-        }
-        if (expected.isSortable() != null) {
-            Assert.assertEquals(expected.isSortable(), actual.isSortable());
-        }
-        if (expected.isFacetable() != null) {
-            Assert.assertEquals(expected.isFacetable(), actual.isFacetable());
-        }
-        if (expected.isRetrievable() != null) {
-            Assert.assertEquals(expected.isRetrievable(), actual.isRetrievable());
-        }
-        if (expected.getSynonymMaps() != null) {
-            Assert.assertTrue(ModelComparer.collectionEquals(expected.getSynonymMaps(), actual.getSynonymMaps()));
-        }
-    }
-
     protected void assertIndexesEqual(Index expected, Index actual) {
-        Double delta = 0.0;
+        expected.setETag("none");
+        actual.setETag("none");
 
-        // Name
-        Assert.assertEquals(expected.getName(), actual.getName());
-
-        // Fields
-        List<Field> expectedFields = expected.getFields();
-        List<Field> actualFields = actual.getFields();
-        if (expectedFields != null && actualFields != null) {
-            Assert.assertEquals(expectedFields.size(), actualFields.size());
-            for (int i = 0; i < expectedFields.size(); i++) {
-                Field expectedField = expectedFields.get(i);
-                Field actualField = actualFields.get(i);
-
-                assertFieldsEqual(expectedField, actualField);
-
-                // (Secondary) fields
-                List<Field> expectedSecondaryFields = expectedField.getFields();
-                List<Field> actualSecondaryFields = actualField.getFields();
-                if (expectedSecondaryFields != null && actualSecondaryFields != null) {
-                    Assert.assertEquals(expectedSecondaryFields.size(), actualSecondaryFields.size());
-                    for (int j = 0; j < expectedSecondaryFields.size(); j++) {
-                        // Per setup in createTestIndex(), Field property has depth up to 2.
-                        // Assert that 3rd level Field property doesn't exist to guard against future improper usage.
-                        Assert.assertNull(expectedSecondaryFields.get(j).getFields());
-                        assertFieldsEqual(expectedSecondaryFields.get(j), actualSecondaryFields.get(j));
-                    }
-                }
-            }
-        }
-
-        // Scoring profiles
-        Assert.assertEquals(expected.getScoringProfiles().size(), actual.getScoringProfiles().size());
-        for (int i = 0; i < expected.getScoringProfiles().size(); i++) {
-            ScoringProfile expectedScoringProfile = expected.getScoringProfiles().get(i);
-            ScoringProfile actualScoringProfile = actual.getScoringProfiles().get(i);
-
-            Assert.assertEquals(expectedScoringProfile.getName(), actualScoringProfile.getName());
-            Assert.assertTrue(Objects.equals(expectedScoringProfile.getFunctionAggregation(), actualScoringProfile.getFunctionAggregation()));
-
-            // Scoring functions
-            Assert.assertEquals(expectedScoringProfile.getFunctions().size(), actualScoringProfile.getFunctions().size());
-            for (int j = 0; j < expectedScoringProfile.getFunctions().size(); j++) {
-                ScoringFunction expectedFunction = expectedScoringProfile.getFunctions().get(j);
-                ScoringFunction actualFunction = expectedScoringProfile.getFunctions().get(j);
-                Assert.assertEquals(expectedFunction.getFieldName(), actualFunction.getFieldName());
-                Assert.assertEquals(expectedFunction.getBoost(), actualFunction.getBoost(), delta);
-                Assert.assertEquals(expectedFunction.getInterpolation(), actualFunction.getInterpolation());
-
-                if (expectedFunction instanceof MagnitudeScoringFunction) {
-                    MagnitudeScoringFunction expectedMsf = (MagnitudeScoringFunction) expectedFunction;
-                    MagnitudeScoringFunction actualMsf = (MagnitudeScoringFunction) actualFunction;
-                    MagnitudeScoringParameters expectedParams = expectedMsf.getParameters();
-                    MagnitudeScoringParameters actualParams = actualMsf.getParameters();
-                    Assert.assertEquals(expectedParams.getBoostingRangeStart(), actualParams.getBoostingRangeStart(), delta);
-                    Assert.assertEquals(expectedParams.getBoostingRangeEnd(), actualParams.getBoostingRangeEnd(), delta);
-                }
-
-                if (expectedFunction instanceof DistanceScoringFunction) {
-                    DistanceScoringFunction expectedDsf = (DistanceScoringFunction) expectedFunction;
-                    DistanceScoringFunction actualDsf = (DistanceScoringFunction) actualFunction;
-                    DistanceScoringParameters expectedParams = expectedDsf.getParameters();
-                    DistanceScoringParameters actualParams = actualDsf.getParameters();
-                    Assert.assertEquals(expectedParams.getBoostingDistance(), actualParams.getBoostingDistance(), delta);
-                    Assert.assertEquals(expectedParams.getReferencePointParameter(), actualParams.getReferencePointParameter());
-                }
-
-                if (expectedFunction instanceof FreshnessScoringFunction) {
-                    Assert.assertEquals(((FreshnessScoringFunction) expectedFunction).getParameters().getBoostingDuration(),
-                        ((FreshnessScoringFunction) actualFunction).getParameters().getBoostingDuration());
-                }
-
-                if (expectedFunction instanceof TagScoringFunction) {
-                    Assert.assertEquals(((TagScoringFunction) expectedFunction).getParameters().getTagsParameter(),
-                        ((TagScoringFunction) actualFunction).getParameters().getTagsParameter());
-                }
-
-            }
-            if (expectedScoringProfile.getTextWeights() != null && actualScoringProfile.getTextWeights().getWeights() != null) {
-                Assert.assertEquals(expectedScoringProfile.getTextWeights().getWeights().size(), actualScoringProfile.getTextWeights().getWeights().size());
-            }
-        }
-
-        // Default scoring profile
-        Assert.assertEquals(expected.getDefaultScoringProfile(), actual.getDefaultScoringProfile());
-
-        // Cors options
-        ModelComparer.collectionEquals(expected.getCorsOptions().getAllowedOrigins(), actual.getCorsOptions().getAllowedOrigins());
-        Assert.assertEquals(expected.getCorsOptions().getMaxAgeInSeconds(), actual.getCorsOptions().getMaxAgeInSeconds());
-
-        // Suggesters
-        List<Suggester> expectedSuggesters = expected.getSuggesters();
-        List<Suggester> actualSuggesters = expected.getSuggesters();
-        Assert.assertEquals(expectedSuggesters.size(), actualSuggesters.size());
-        for (int i = 0; i < expectedSuggesters.size(); i++) {
-            Suggester expectedSuggester = expectedSuggesters.get(i);
-            Suggester actualSuggester = actualSuggesters.get(i);
-            Assert.assertEquals(expectedSuggester.getName(), actualSuggester.getName());
-            ModelComparer.collectionEquals(expectedSuggester.getSourceFields(), actualSuggester.getSourceFields());
-        }
+        // we ignore defaults as when properties are not set they are returned from the service with
+        // default values
+        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
     protected Index createTestIndex() {
