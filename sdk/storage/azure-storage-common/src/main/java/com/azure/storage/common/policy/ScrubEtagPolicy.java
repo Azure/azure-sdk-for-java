@@ -20,9 +20,6 @@ import reactor.core.publisher.Mono;
 public class ScrubEtagPolicy implements HttpPipelinePolicy {
     private static final String ETAG = "eTag";
 
-    private HttpResponse innerHttpResponse;
-    private HttpHeaders headers;
-
     /**
      * Wraps any potential error responses from the service and applies post processing of the response's eTag header to
      * standardize the value.
@@ -49,15 +46,18 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
         String eTag = eTagHeader.getValue();
 
         eTag = eTag.replace("\"", "");
-        headers = unprocessedResponse.getHeaders();
+        HttpHeaders headers = unprocessedResponse.getHeaders();
         headers.put(eTagHeader.getName(), eTag);
-        innerHttpResponse = unprocessedResponse;
-        return new InnerHttpResponse(unprocessedResponse.getRequest());
+        return new InnerHttpResponse(unprocessedResponse, headers, unprocessedResponse.getRequest());
     }
 
     private final class InnerHttpResponse extends HttpResponse {
-        protected InnerHttpResponse(HttpRequest request) {
+        private final HttpResponse innerHttpResponse;
+        private final HttpHeaders headers;
+        protected InnerHttpResponse(HttpResponse innerHttpResponse, HttpHeaders headers, HttpRequest request) {
             super(request);
+            this.innerHttpResponse = innerHttpResponse;
+            this.headers = headers;
         }
 
         @Override

@@ -528,12 +528,13 @@ class BlobAPITest extends APISpec {
             .getBlockBlobAsyncClient()
         bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
             new ParallelTransferOptions().setBlockSize(1024), null, null)
-            .subscribe(new Consumer<Response<BlobProperties>>() {
-            @Override
-            void accept(Response<BlobProperties> headers) throws Exception {
-                etagConflict = false
-            }
-        },
+            .subscribe(
+            new Consumer<Response<BlobProperties>>() {
+                @Override
+                void accept(Response<BlobProperties> headers) throws Exception {
+                    etagConflict = false
+                }
+            },
             new Consumer<Throwable>() {
                 @Override
                 void accept(Throwable throwable) throws Exception {
@@ -543,6 +544,7 @@ class BlobAPITest extends APISpec {
                         return
                     }
                     etagConflict = false
+                    throw throwable
                 }
             })
 
