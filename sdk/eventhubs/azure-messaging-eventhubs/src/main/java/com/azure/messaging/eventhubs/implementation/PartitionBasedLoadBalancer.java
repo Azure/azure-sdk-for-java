@@ -317,7 +317,8 @@ public final class PartitionBasedLoadBalancer {
             .stream()
             .filter(entry -> {
                 return (System.currentTimeMillis() - entry.getValue().getLastModifiedTime() < TimeUnit.SECONDS
-                    .toMillis(inactiveTimeLimitInSeconds)) && !GeneralUtils.isNullOrEmpty(entry.getValue().getOwnerId());
+                    .toMillis(inactiveTimeLimitInSeconds))
+                           && !GeneralUtils.isNullOrEmpty(entry.getValue().getOwnerId());
             }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 

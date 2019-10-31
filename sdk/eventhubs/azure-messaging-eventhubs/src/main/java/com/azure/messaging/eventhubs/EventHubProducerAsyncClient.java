@@ -220,7 +220,8 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         final BatchOptions clone = options.clone();
 
-        if (!GeneralUtils.isNullOrEmpty(clone.getPartitionKey()) && !GeneralUtils.isNullOrEmpty(clone.getPartitionId())) {
+        if (!GeneralUtils.isNullOrEmpty(clone.getPartitionKey())
+                && !GeneralUtils.isNullOrEmpty(clone.getPartitionId())) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
@@ -428,7 +429,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         final SendOptions clone = options.clone();
         final boolean isTracingEnabled = tracerProvider.isEnabled();
 
-        if (!GeneralUtils.isNullOrEmpty(clone.getPartitionKey()) && !GeneralUtils.isNullOrEmpty(clone.getPartitionId())) {
+        if (!GeneralUtils.isNullOrEmpty(clone.getPartitionKey())
+                && !GeneralUtils.isNullOrEmpty(clone.getPartitionId())) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",

@@ -199,7 +199,7 @@
 
   <!-- TEMPORARY -->
   <Match>
-    <Class name="com.azure.core.util.ImplUtils"/>
+    <Class name="com.azure.core.util.GeneralUtils"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -292,7 +292,7 @@
 
   <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
   <Match>
-    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
+    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.GeneralUtils|serializer\.HttpResponseDecodeData)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -306,7 +306,7 @@
 
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
-    <Class name="com.azure.core.implementation.util.TypeUtil"/>
+    <Class name="com.azure.core.implementation.TypeUtil"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 

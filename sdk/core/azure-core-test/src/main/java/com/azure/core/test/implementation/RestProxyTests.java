@@ -28,6 +28,7 @@ import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.ContentType;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;

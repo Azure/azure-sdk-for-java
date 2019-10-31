@@ -54,7 +54,7 @@ interface ConfigurationService {
         @HostParam("url") String url,
         @PathParam("key") String key,
         @QueryParam("label") String label,
-        @BodyParam("application/json") ConfigurationSetting keyValueParameters,
+        @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
         @HeaderParam("If-Match") String ifMatch,
         @HeaderParam("If-None-Match") String ifNoneMatch,
         Context context);
