@@ -5,13 +5,8 @@ package com.azure.data.appconfiguration;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.IgnoreRecording;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
@@ -37,42 +32,27 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                    .connectionString(connectionString)
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                    .buildAsyncClient());
-        } else {
-            client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                    .connectionString(connectionString)
-                    .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .addPolicy(new RetryPolicy())
-                    .buildAsyncClient());
-        }
+        client = clientBuilder.buildAsyncClient();
     }
 
     @Override
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
         client.listConfigurationSettings(new SettingSelector().setKeys(keyPrefix + "*"))
-                .flatMap(configurationSetting -> {
-                    logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
-                    Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.clearReadOnlyWithResponse(configurationSetting) : Mono.empty();
-                    return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
-                })
-                .blockLast();
+            .flatMap(configurationSetting -> {
+                logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
+                Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.clearReadOnlyWithResponse(configurationSetting) : Mono.empty();
+                return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
+            })
+            .blockLast();
 
         logger.info("Finished cleaning up values.");
     }
 
     /**
-     * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
+     * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label
+     * identifier.
      */
-    @IgnoreRecording
     public void addConfigurationSetting() {
         addConfigurationSettingRunner((expected) ->
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -126,14 +106,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that a configuration is able to be added or updated with set.
-     * When the configuration is read-only updates cannot happen, this will result in a 409.
+     * Tests that a configuration is able to be added or updated with set. When the configuration is read-only updates
+     * cannot happen, this will result in a 409.
      */
     public void setConfigurationSetting() {
         setConfigurationSettingRunner((expected, update) ->
             StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete());
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete());
     }
 
     /**
@@ -150,15 +130,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             final String etag = client.addConfigurationSettingWithResponse(initial).block().getValue().getETag();
 
             StepVerifier.create(client.setConfigurationSettingWithResponse(update.setETag(etag), true))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
 
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial, true))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(update, null, false))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
         });
     }
 
@@ -171,8 +151,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that we can set configuration settings when value is not null or an empty string.
-     * Value is not a required property.
+     * Tests that we can set configuration settings when value is not null or an empty string. Value is not a required
+     * property.
      */
     public void setConfigurationSettingEmptyValue() {
         setConfigurationSettingEmptyValueRunner((setting) -> {
@@ -228,9 +208,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that configurations are able to be deleted when they exist.
-     * After the configuration has been deleted attempting to get it will result in a 404, the same as if the
-     * configuration never existed.
+     * Tests that configurations are able to be deleted when they exist. After the configuration has been deleted
+     * attempting to get it will result in a 404, the same as if the configuration never existed.
      */
     public void deleteConfigurationSetting() {
         deleteConfigurationSettingRunner((expected) -> {
@@ -272,8 +251,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has the ETag.
-     * If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
+     * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has
+     * the ETag. If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
      */
     public void deleteConfigurationSettingWithETag() {
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
@@ -297,7 +276,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
+     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be
+     * thrown.
      */
     public void deleteConfigurationSettingNullKey() {
         StepVerifier.create(client.deleteConfigurationSetting(null, null))
@@ -460,8 +440,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
-     * from the service when filtering by their labels.
+     * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those
+     * ConfigurationSettings from the service when filtering by their labels.
      */
     public void listWithMultipleLabels() {
         String key = getKey();
@@ -522,14 +502,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false).delayElement(Duration.ofSeconds(2)))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Gets all versions of this value so we can get the one we want at that particular date.
         List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(keyName)).collectList().block();
@@ -540,8 +520,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // We want to fetch the configuration setting when we first updated its value.
         SettingSelector options = new SettingSelector().setKeys(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         StepVerifier.create(client.listConfigurationSettings(options))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
     }
 
     /**
@@ -556,28 +536,28 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Get all revisions for a key, they are listed in descending order.
         StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(keyName)))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
 
         // Verifies that we can select specific fields.
         StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)))
-                .assertNext(response -> validateListRevisions(updated2, response))
-                .assertNext(response -> validateListRevisions(updated, response))
-                .assertNext(response -> validateListRevisions(original, response))
-                .verifyComplete();
+            .assertNext(response -> validateListRevisions(updated2, response))
+            .assertNext(response -> validateListRevisions(updated, response))
+            .assertNext(response -> validateListRevisions(original, response))
+            .verifyComplete();
     }
 
     /**
@@ -708,14 +688,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false).delayElement(Duration.ofSeconds(2)))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Gets all versions of this value.
         List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(keyName)).collectList().block();
@@ -727,14 +707,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // Revisions are returned in descending order from creation date.
         SettingSelector options = new SettingSelector().setKeys(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         StepVerifier.create(client.listRevisions(options))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination (ie.
+     * where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPagination() {
         final int numberExpected = 50;
@@ -757,8 +737,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and
+     * stream is invoked multiple times. (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatStream() {
         final int numberExpected = 50;
@@ -786,8 +766,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and
+     * stream is invoked multiple times. (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatIterator() {
         final int numberExpected = 50;
@@ -813,9 +793,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList2.size());
     }
+
     /**
-     * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.
+     * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination (ie.
+     * where 'nextLink' has a URL pointing to the next page of results.
      */
     public void listConfigurationSettingsWithPagination() {
         final int numberExpected = 50;

@@ -29,7 +29,7 @@ public abstract class TestBase {
     protected TestResourceNamer testResourceNamer;
 
     @Rule
-    public PlaybackAllowed playbackAllowed = new PlaybackAllowed();
+    public TestRunVerifier testRunVerifier = new TestRunVerifier();
 
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
@@ -46,7 +46,7 @@ public abstract class TestBase {
      */
     @Before
     public void setupTest() {
-        playbackAllowed.assertPlaybackIsAllowed(testMode);
+        testRunVerifier.verifyTestCanRun(testMode);
         final String testName = getTestName();
         logger.info("Test Mode: {}, Name: {}", testMode, testName);
 
@@ -66,8 +66,10 @@ public abstract class TestBase {
      */
     @After
     public void teardownTest() {
-        afterTest();
-        interceptorManager.close();
+        if (testRunVerifier.wasTestRan()) {
+            afterTest();
+            interceptorManager.close();
+        }
     }
 
     /**

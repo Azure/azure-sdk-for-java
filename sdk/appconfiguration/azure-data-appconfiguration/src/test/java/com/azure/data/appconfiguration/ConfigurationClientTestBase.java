@@ -2,25 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.Response;
-
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.test.TestBase;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
 import java.lang.reflect.Field;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,10 +35,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
@@ -51,6 +51,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
 
+    ConfigurationClientBuilder clientBuilder;
     String keyPrefix;
     String labelPrefix;
 
@@ -65,27 +66,26 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     void beforeTestSetup() {
         keyPrefix = testResourceNamer.randomName(KEY_PREFIX, PREFIX_LENGTH);
         labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
-    }
 
-    <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
+        TestMode testMode = getTestMode();
         if (ImplUtils.isNullOrEmpty(connectionString)) {
-            connectionString = interceptorManager.isPlaybackMode()
+            connectionString = (testMode == TestMode.PLAYBACK)
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
                 : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
         }
 
         Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");
 
-        T client;
-        try {
-            client = clientBuilder.apply(new ConfigurationClientCredentials(connectionString));
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            logger.error("Could not create an configuration client credentials.", e);
-            fail();
-            client = null;
-        }
+        clientBuilder = new ConfigurationClientBuilder()
+            .connectionString(connectionString)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        return Objects.requireNonNull(client);
+        if (testMode == TestMode.PLAYBACK) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (testMode == TestMode.RECORD) {
+            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
     }
 
     String getKey() {

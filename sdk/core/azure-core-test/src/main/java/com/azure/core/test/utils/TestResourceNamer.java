@@ -28,7 +28,12 @@ public class TestResourceNamer extends ResourceNamer {
      */
     public TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
         super(name);
-        Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
+
+        // Only need recordedData if the test is running in playback or record.
+        if (testMode != TestMode.LIVE) {
+            Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
+        }
+
         this.recordedData = recordedData;
         this.testMode = testMode;
     }

@@ -4,27 +4,22 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.net.HttpURLConnection;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ConfigurationClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTest.class);
@@ -34,22 +29,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .buildClient());
-        } else {
-            client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .buildClient());
-        }
+        client = clientBuilder.buildClient();
     }
 
     @Override
@@ -67,7 +47,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
+     * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label
+     * identifier.
      */
     public void addConfigurationSetting() {
         addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected, client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
@@ -110,8 +91,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that a configuration is able to be added or updated with set.
-     * When the configuration is read-only updates cannot happen, this will result in a 409.
+     * Tests that a configuration is able to be added or updated with set. When the configuration is read-only updates
+     * cannot happen, this will result in a 409.
      */
     public void setConfigurationSetting() {
         setConfigurationSettingRunner((expected, update) -> assertConfigurationEquals(expected, client.setConfigurationSettingWithResponse(expected, false, Context.NONE).getValue()));
@@ -143,8 +124,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that we can set configuration settings when value is not null or an empty string.
-     * Value is not a required property.
+     * Tests that we can set configuration settings when value is not null or an empty string. Value is not a required
+     * property.
      */
     public void setConfigurationSettingEmptyValue() {
         setConfigurationSettingEmptyValueRunner((setting) -> {
@@ -186,9 +167,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that configurations are able to be deleted when they exist.
-     * After the configuration has been deleted attempting to get it will result in a 404, the same as if the
-     * configuration never existed.
+     * Tests that configurations are able to be deleted when they exist. After the configuration has been deleted
+     * attempting to get it will result in a 404, the same as if the configuration never existed.
      */
     public void deleteConfigurationSetting() {
         deleteConfigurationSettingRunner((expected) -> {
@@ -217,8 +197,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has the ETag.
-     * If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
+     * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has
+     * the ETag. If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
      */
     public void deleteConfigurationSettingWithETag() {
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
@@ -233,7 +213,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
+     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be
+     * thrown.
      */
     public void deleteConfigurationSettingNullKey() {
         assertRunnableThrowsException(() -> client.deleteConfigurationSetting(null, null), IllegalArgumentException.class);
@@ -252,7 +233,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             // unsuccessfully delete
             assertRestException(() ->
-                client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
+                    client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
                 HttpResponseException.class, 409);
         });
     }
@@ -268,7 +249,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             // unsuccessfully delete
             assertRestException(() ->
-                client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
+                    client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
                 HttpResponseException.class, 409);
 
             // clear read-only setting and delete
@@ -291,7 +272,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             // unsuccessfully delete
             assertRestException(() ->
-                client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
+                    client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
                 HttpResponseException.class, 409);
         });
     }
@@ -308,7 +289,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             // unsuccessfully deleted
             assertRestException(() ->
-                client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
+                    client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
                 HttpResponseException.class, 409);
 
             // unlock setting and delete
@@ -353,8 +334,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
-     * from the service when filtering by their labels.
+     * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those
+     * ConfigurationSettings from the service when filtering by their labels.
      */
     public void listWithMultipleLabels() {
         String key = getKey();
@@ -539,8 +520,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination (ie.
+     * where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPagination() {
         final int numberExpected = 50;
@@ -553,8 +534,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can process {@link java.util.stream.Stream} multiple time and get same result.
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of revisions, we can process {@link java.util.stream.Stream} multiple time and get
+     * same result. (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatStream() {
         final int numberExpected = 50;
@@ -570,8 +551,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can iterate over multiple time and get same result.
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of revisions, we can iterate over multiple time and get same result. (ie. where
+     * 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatIterator() {
         final int numberExpected = 50;
@@ -595,8 +576,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination (ie.
+     * where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listConfigurationSettingsWithPagination() {
         final int numberExpected = 50;
