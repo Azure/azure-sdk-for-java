@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.time.Instant;
 import java.util.Arrays;
