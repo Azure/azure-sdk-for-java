@@ -37,7 +37,7 @@ public class EventProcessorSample {
         };
 
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
-            .consumerGroup(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .connectionString(EH_CONNECTION_STRING)
             .processEvent(processEvent)
             .eventProcessorStore(new InMemoryEventProcessorStore());

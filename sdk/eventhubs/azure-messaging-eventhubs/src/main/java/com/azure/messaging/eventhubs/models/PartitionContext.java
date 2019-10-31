@@ -21,6 +21,7 @@ public class PartitionContext {
     private final String partitionId;
     private final String eventHubName;
     private final String consumerGroup;
+    private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
     private final String ownerId;
     private final AtomicReference<String> eTag;
     private final EventProcessorStore eventProcessorStore;
@@ -44,7 +45,8 @@ public class PartitionContext {
         this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null.");
         this.eTag = new AtomicReference<>(eTag);
-        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "partitionManager cannot be null.");
+        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "eventProcessorStore cannot be null.");
+        this.lastEnqueuedEventProperties = null;
     }
 
     /**
@@ -72,6 +74,18 @@ public class PartitionContext {
      */
     public String getConsumerGroup() {
         return consumerGroup;
+    }
+
+    /**
+     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
+     * received from the Event Hubs service.
+     *
+     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
+     *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
+     *     partition.
+     */
+    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
+        return lastEnqueuedEventProperties;
     }
 
     /**

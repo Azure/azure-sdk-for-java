@@ -11,11 +11,11 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,7 +24,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
 
-    private EventHubAsyncClient client;
+    private EventHubProducerAsyncClient producer;
 
     public EventHubProducerAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerAsyncClientIntegrationTest.class));
@@ -40,16 +40,16 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
     @Override
     protected void beforeTest() {
-        client = new EventHubClientBuilder()
+        producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
             .scheduler(Schedulers.parallel())
-            .buildAsyncClient();
+            .buildAsyncProducer();
     }
 
     @Override
     protected void afterTest() {
-        dispose(client);
+        dispose(producer);
     }
 
     /**
@@ -65,15 +65,13 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducerAsyncClient producer = client.createProducer()) {
-            StepVerifier.create(producer.send(events, sendOptions))
-                .verifyComplete();
-        }
+        StepVerifier.create(producer.send(events, sendOptions))
+            .verifyComplete();
     }
 
     /**
-     * Verifies that we can create an {@link EventHubProducerAsyncClient} that does not care about partitions and lets the service
-     * distribute the events.
+     * Verifies that we can create an {@link EventHubProducerAsyncClient} that does not care about partitions and lets
+     * the service distribute the events.
      */
     @Test
     public void sendMessage() {
@@ -84,25 +82,50 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducerAsyncClient producer = client.createProducer()) {
-            StepVerifier.create(producer.send(events))
-                .verifyComplete();
-        }
+        StepVerifier.create(producer.send(events))
+            .verifyComplete();
     }
 
     /**
      * Verifies we can create an {@link EventDataBatch} and send it using our EventHubProducer.
      */
     @Test
-    public void sendBatch() throws IOException {
+    public void sendBatch() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
-        try (EventHubProducerAsyncClient producer = client.createProducer()) {
-            final Mono<EventDataBatch> createBatch = producer.createBatch().map(batch -> {
+        final Mono<EventDataBatch> createBatch = producer.createBatch().map(batch -> {
+            events.forEach(event -> {
+                Assert.assertTrue(batch.tryAdd(event));
+            });
+
+            return batch;
+        });
+
+        // Act & Assert
+        StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch)))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies we can create an {@link EventDataBatch} with a partition key and send it using our EventHubProducer.
+     */
+    @Test
+    public void sendBatchWithPartitionKey() {
+        // Arrange
+        final List<EventData> events = Arrays.asList(
+            new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)),
+            new EventData("Event 3".getBytes(UTF_8)));
+
+        final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
+        final Mono<EventDataBatch> createBatch = producer.createBatch(options)
+            .map(batch -> {
+                Assert.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
+
                 events.forEach(event -> {
                     Assert.assertTrue(batch.tryAdd(event));
                 });
@@ -110,39 +133,31 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
                 return batch;
             });
 
-            // Act & Assert
-            StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch)))
-                .verifyComplete();
-        }
+        // Act & Assert
+        StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch)))
+            .verifyComplete();
     }
 
     /**
-     * Verifies we can create an {@link EventDataBatch} with a partition key and send it using our EventHubProducer.
+     * Verify that we can send to multiple partitions, round-robin, and with a partition key, using the same producer.
      */
     @Test
-    public void sendBatchWithPartitionKey() throws IOException {
+    public void sendEventsWithKeyAndPartition() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
-        try (EventHubProducerAsyncClient producer = client.createProducer()) {
-            final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
-            final Mono<EventDataBatch> createBatch = producer.createBatch(options)
-                .map(batch -> {
-                    Assert.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
+        // Act
+        final Mono<Void> onComplete = Mono.when(producer.send(events),
+            producer.send(Flux.just(events.get(0))),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("1")),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("0")),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionKey("sandwiches")));
 
-                    events.forEach(event -> {
-                        Assert.assertTrue(batch.tryAdd(event));
-                    });
-
-                    return batch;
-                });
-
-            // Act & Assert
-            StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch)))
-                .verifyComplete();
-        }
+        // Assert
+        StepVerifier.create(onComplete)
+            .verifyComplete();
     }
 }

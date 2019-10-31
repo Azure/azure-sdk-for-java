@@ -56,7 +56,7 @@ import reactor.core.scheduler.Scheduler;
  * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation}
  *
  * @see EventProcessor
- * @see EventHubConsumer
+ * @see EventHubConsumerClient
  */
 public class EventProcessorBuilder {
 

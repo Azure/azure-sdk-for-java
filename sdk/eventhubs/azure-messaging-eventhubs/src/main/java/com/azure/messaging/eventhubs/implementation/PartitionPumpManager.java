@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
@@ -15,9 +14,10 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
+import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.EventProcessorStore;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
@@ -28,6 +28,8 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import reactor.core.publisher.Signal;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Locale;
@@ -35,12 +37,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-import reactor.core.publisher.Signal;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
- * partition pump is an {@link EventHubConsumer} that is receiving events from partitions this {@link EventProcessor}
- * has claimed ownership of.
+ * partition pump is an {@link EventHubConsumerClient} that is receiving events from partitions this
+ * {@link EventProcessor} has claimed ownership of.
  *
  * <p>
  * New partition pumps are created when this {@link EventProcessor} claims ownership of a new partition. When the {@link
@@ -51,8 +52,8 @@ import reactor.core.publisher.Signal;
 public class PartitionPumpManager {
 
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
-    private final Map<String, EventHubAsyncConsumer> partitionPumps = new ConcurrentHashMap<>();
     private final EventProcessorStore eventProcessorStore;
+    private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventPosition initialEventPosition;
     private final EventHubClientBuilder eventHubClientBuilder;
@@ -127,13 +128,12 @@ public class PartitionPumpManager {
         }
 
         EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().setOwnerLevel(0L);
-        EventHubAsyncConsumer eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
-            .createConsumer(claimedOwnership.getConsumerGroupName(), claimedOwnership.getPartitionId(),
-                startFromEventPosition,
-                eventHubConsumerOptions);
+        EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
+            .createConsumer(claimedOwnership.getConsumerGroupName(), startFromEventPosition, eventHubConsumerOptions);
 
         partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
-        eventHubConsumer.receive().subscribe(eventData -> {
+        eventHubConsumer.receive(claimedOwnership.getPartitionId()).subscribe(partitionEvent -> {
+            EventData eventData = partitionEvent.getEventData();
             try {
                 Context processSpanContext = startProcessTracingSpan(eventData);
                 if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
@@ -152,8 +152,9 @@ public class PartitionPumpManager {
             () -> partitionProcessor.close(new CloseContext(partitionContext, CloseReason.EVENT_PROCESSOR_SHUTDOWN)));
     }
 
-    private void handleProcessingError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,
-        PartitionProcessor partitionProcessor, Throwable error, PartitionContext partitionContext) {
+    private void handleProcessingError(PartitionOwnership claimedOwnership,
+            EventHubConsumerAsyncClient eventHubConsumer, PartitionProcessor partitionProcessor, Throwable error,
+            PartitionContext partitionContext) {
         try {
             // There was an error in process event (user provided code), call process error and if that
             // also fails just log and continue
@@ -163,7 +164,7 @@ public class PartitionPumpManager {
         }
     }
 
-    private void handleReceiveError(PartitionOwnership claimedOwnership, EventHubAsyncConsumer eventHubConsumer,
+    private void handleReceiveError(PartitionOwnership claimedOwnership, EventHubConsumerAsyncClient eventHubConsumer,
         PartitionProcessor partitionProcessor, Throwable error, PartitionContext partitionContext) {
         try {
             // if there was an error on receive, it also marks the end of the event data stream
@@ -182,9 +183,6 @@ public class PartitionPumpManager {
             try {
                 // close the consumer
                 eventHubConsumer.close();
-            } catch (IOException ex) {
-                logger.warning("Failed to close EventHubConsumer for partition {}", claimedOwnership.getPartitionId(),
-                    ex);
             } finally {
                 // finally, remove the partition from partitionPumps map
                 partitionPumps.remove(claimedOwnership.getPartitionId());

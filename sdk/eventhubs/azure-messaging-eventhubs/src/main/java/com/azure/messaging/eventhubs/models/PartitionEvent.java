@@ -12,12 +12,11 @@ import java.util.Objects;
  */
 @Immutable
 public class PartitionEvent {
-
     private final PartitionContext partitionContext;
     private final EventData eventData;
 
     /**
-     * Creates an instance of PartitionEvent
+     * Creates an instance of PartitionEvent.
      *
      * @param partitionContext The partition information associated with the event data.
      * @param eventData The event data received from the Event Hub.
@@ -37,9 +36,9 @@ public class PartitionEvent {
     }
 
     /**
-     * Returns the event data received from the Event Hub.
+     * Gets the event received from the partition.
      *
-     * @return The event data received from the Event Hub.
+     * @return Event received from the partition.
      */
     public EventData getEventData() {
         return eventData;
