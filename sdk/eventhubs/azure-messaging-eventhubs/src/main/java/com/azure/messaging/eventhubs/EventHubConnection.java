@@ -58,6 +58,18 @@ public class EventHubConnection implements Closeable {
             .cache();
     }
 
+    String getFullyQualifiedDomainName() {
+        return connectionOptions.getHostname();
+    }
+
+    String getEventHubName() {
+        return connectionOptions.getEntityPath();
+    }
+
+    RetryOptions getRetryOptions() {
+        return connectionOptions.getRetry();
+    }
+
     /**
      * Gets the Event Hub management node.
      *

@@ -3,12 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -18,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An <strong>asynchronous</strong> client that is the main point of interaction with Azure Event Hubs. It connects to a
@@ -41,27 +36,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @see EventHubClient See EventHubClient to communicate with an Event Hub using a synchronous client.
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
-@ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
-public class EventHubAsyncClient implements Closeable {
-
+class EventHubAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
-    private final EventHubConnection linkProvider;
-    private final AtomicBoolean hasConnection = new AtomicBoolean(false);
-    private final ConnectionOptions connectionOptions;
-    private final String eventHubName;
+    private final EventHubConnection connection;
     private final EventHubConsumerOptions defaultConsumerOptions;
     private final TracerProvider tracerProvider;
 
-    EventHubAsyncClient(ConnectionOptions connectionOptions, TracerProvider tracerProvider,
-                        MessageSerializer messageSerializer, EventHubConnection linkProvider) {
-
-        this.connectionOptions = Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
+    EventHubAsyncClient(EventHubConnection connection, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
-        this.eventHubName = connectionOptions.getEntityPath();
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.linkProvider = Objects.requireNonNull(linkProvider, "'linkProvider' cannot be null.");
-
+        this.connection = Objects.requireNonNull(connection, "'connection' cannot be null.");
         this.defaultConsumerOptions = new EventHubConsumerOptions();
     }
 
@@ -70,8 +56,8 @@ public class EventHubAsyncClient implements Closeable {
      *
      * @return The Event Hub name this client interacts with.
      */
-    public String getEventHubName() {
-        return eventHubName;
+    String getEventHubName() {
+        return connection.getEventHubName();
     }
 
     /**
@@ -79,9 +65,8 @@ public class EventHubAsyncClient implements Closeable {
      *
      * @return The set of information for the Event Hub that this client is associated with.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EventHubProperties> getProperties() {
-        return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
+    Mono<EventHubProperties> getProperties() {
+        return connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
     /**
@@ -89,8 +74,7 @@ public class EventHubAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<String> getPartitionIds() {
+    Flux<String> getPartitionIds() {
         return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
     }
 
@@ -101,9 +85,8 @@ public class EventHubAsyncClient implements Closeable {
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
+    Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+        return connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
@@ -112,9 +95,9 @@ public class EventHubAsyncClient implements Closeable {
      *
      * @return A new {@link EventHubProducerAsyncClient}.
      */
-    public EventHubProducerAsyncClient createProducer() {
-        return new EventHubProducerAsyncClient(connectionOptions.getHostname(), getEventHubName(), linkProvider,
-            connectionOptions.getRetry(), tracerProvider, messageSerializer);
+    EventHubProducerAsyncClient createProducer() {
+        return new EventHubProducerAsyncClient(connection.getFullyQualifiedDomainName(), getEventHubName(), connection,
+            connection.getRetryOptions(), tracerProvider, messageSerializer);
     }
 
     /**
@@ -134,7 +117,7 @@ public class EventHubAsyncClient implements Closeable {
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
      * string.
      */
-    public EventHubConsumerAsyncClient createConsumer(String consumerGroup, EventPosition eventPosition) {
+    EventHubConsumerAsyncClient createConsumer(String consumerGroup, EventPosition eventPosition) {
         return createConsumer(consumerGroup, eventPosition, defaultConsumerOptions);
     }
 
@@ -167,7 +150,7 @@ public class EventHubAsyncClient implements Closeable {
      * {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    public EventHubConsumerAsyncClient createConsumer(String consumerGroup, EventPosition eventPosition,
+    EventHubConsumerAsyncClient createConsumer(String consumerGroup, EventPosition eventPosition,
         EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
@@ -180,8 +163,8 @@ public class EventHubAsyncClient implements Closeable {
 
         final EventHubConsumerOptions clonedOptions = options.clone();
 
-        return new EventHubConsumerAsyncClient(connectionOptions.getHostname(), connectionOptions.getEntityPath(),
-            linkProvider, messageSerializer, consumerGroup, eventPosition, clonedOptions);
+        return new EventHubConsumerAsyncClient(connection.getFullyQualifiedDomainName(), getEventHubName(),
+            connection, messageSerializer, consumerGroup, eventPosition, clonedOptions);
     }
 
     /**
@@ -191,6 +174,6 @@ public class EventHubAsyncClient implements Closeable {
      */
     @Override
     public void close() {
-        linkProvider.close();
+        connection.close();
     }
 }
