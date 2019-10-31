@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import static org.junit.Assert.assertNotNull;
 
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
@@ -43,32 +42,26 @@ public class EventProcessorBuilderTest {
     @Test(expected = NullPointerException.class)
     public void testEventProcessorBuilderMissingProperties() {
         EventProcessor eventProcessor = new EventProcessorBuilder()
-            .partitionManager(new InMemoryPartitionManager())
-            .partitionProcessorFactory((() -> new PartitionProcessor() {
-                    @Override
-                    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-                        return Mono.fromRunnable(() -> System.out.println(eventData.getSequenceNumber()));
-                    }
-                }))
+            .eventProcessorStore(new InMemoryEventProcessorStore())
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
             .buildEventProcessor();
     }
 
     @Test
-    public void testEventProcessorBuilderWithFactory() {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(CORRECT_CONNECTION_STRING)
-            .buildAsyncClient();
-
+    public void testEventProcessorBuilderWithProcessEvent() {
         EventProcessor eventProcessor = new EventProcessorBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING)
             .consumerGroup("consumer-group")
-            .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory((() -> new PartitionProcessor() {
-                    @Override
-                    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-                        return Mono.fromRunnable(() -> System.out.println(eventData.getSequenceNumber()));
-                    }
-                }))
-            .partitionManager(new InMemoryPartitionManager())
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
+            .eventProcessorStore(new InMemoryEventProcessorStore())
             .buildEventProcessor();
         assertNotNull(eventProcessor);
     }

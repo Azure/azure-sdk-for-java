@@ -7,7 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.PartitionManager;
+import com.azure.messaging.eventhubs.EventProcessorStore;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -29,14 +29,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Implementation of {@link PartitionManager} that uses
+ * Implementation of {@link EventProcessorStore} that uses
  * <a href="https://docs.microsoft.com/en-us/azure/storage/common/storage-introduction#blob-storage">Storage Blobs</a>
  * for persisting partition ownership and checkpoint information. {@link EventProcessor EventProcessors} can use this
  * implementation to load balance and update checkpoints.
  *
  * @see EventProcessor
  */
-public class BlobPartitionManager implements PartitionManager {
+public class BlobEventProcessorStore implements EventProcessorStore {
 
     private static final String SEQUENCE_NUMBER = "SequenceNumber";
     private static final String OFFSET = "Offset";
@@ -48,16 +48,16 @@ public class BlobPartitionManager implements PartitionManager {
     private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("".getBytes(UTF_8));
 
     private final BlobContainerAsyncClient blobContainerAsyncClient;
-    private final ClientLogger logger = new ClientLogger(BlobPartitionManager.class);
+    private final ClientLogger logger = new ClientLogger(BlobEventProcessorStore.class);
     private final Map<String, BlobAsyncClient> blobClients = new ConcurrentHashMap<>();
 
     /**
-     * Creates an instance of BlobPartitionManager.
+     * Creates an instance of BlobEventProcessorStore.
      *
      * @param blobContainerAsyncClient The {@link BlobContainerAsyncClient} this instance will use to read and update
      * blobs in the storage container.
      */
-    public BlobPartitionManager(BlobContainerAsyncClient blobContainerAsyncClient) {
+    public BlobEventProcessorStore(BlobContainerAsyncClient blobContainerAsyncClient) {
         this.blobContainerAsyncClient = blobContainerAsyncClient;
     }
 
@@ -70,7 +70,8 @@ public class BlobPartitionManager implements PartitionManager {
      * @return A flux of partition ownership details of all the partitions that have/had an owner.
      */
     @Override
-    public Flux<PartitionOwnership> listOwnership(String eventHubName, String consumerGroupName) {
+    public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
+        String consumerGroupName) {
         String prefix = getBlobPrefix(eventHubName, consumerGroupName);
         BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);

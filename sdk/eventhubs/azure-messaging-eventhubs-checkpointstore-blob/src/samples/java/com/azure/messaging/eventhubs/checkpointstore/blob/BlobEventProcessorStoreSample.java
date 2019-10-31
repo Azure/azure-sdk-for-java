@@ -12,10 +12,10 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.StringJoiner;
 
 /**
- * Sample that demonstrates the use {@link BlobPartitionManager} for storing and updating partition ownership records in
- * Storage Blobs.
+ * Sample that demonstrates the use {@link BlobEventProcessorStore} for storing and updating partition ownership records
+ * in Storage Blobs.
  */
-public class BlobPartitionManagerSample {
+public class BlobEventProcessorStoreSample {
 
     /**
      * The main method to run the sample.
@@ -32,9 +32,9 @@ public class BlobPartitionManagerSample {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
-        BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
-        blobPartitionManager.listOwnership("abc", "xyz")
-            .subscribe(BlobPartitionManagerSample::printPartitionOwnership);
+        BlobEventProcessorStore blobEventProcessorStore = new BlobEventProcessorStore(blobContainerAsyncClient);
+        blobEventProcessorStore.listOwnership("namespace", "abc", "xyz")
+            .subscribe(BlobEventProcessorStoreSample::printPartitionOwnership);
 
         System.out.println("Updating checkpoint");
         Checkpoint checkpoint = new Checkpoint()
@@ -45,7 +45,7 @@ public class BlobPartitionManagerSample {
             .setETag("")
             .setSequenceNumber(2L)
             .setOffset(250L);
-        blobPartitionManager.updateCheckpoint(checkpoint)
+        blobEventProcessorStore.updateCheckpoint(checkpoint)
             .subscribe(etag -> System.out.println(etag), error -> System.out
                 .println(error.getMessage()));
 
@@ -59,7 +59,7 @@ public class BlobPartitionManagerSample {
                 .setOwnerLevel(0);
             pos[i] = po;
         }
-        blobPartitionManager.claimOwnership(pos).subscribe(BlobPartitionManagerSample::printPartitionOwnership,
+        blobEventProcessorStore.claimOwnership(pos).subscribe(BlobEventProcessorStoreSample::printPartitionOwnership,
             System.out::println);
     }
 

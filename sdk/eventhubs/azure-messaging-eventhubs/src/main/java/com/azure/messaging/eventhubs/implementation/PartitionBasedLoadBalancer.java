@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.PartitionManager;
+import com.azure.messaging.eventhubs.EventProcessorStore;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -32,8 +32,8 @@ import static java.util.stream.Collectors.toList;
  * This class is responsible for balancing the load of processing events from all partitions of an Event Hub by
  * distributing the number of partitions uniformly among all the  active {@link EventProcessor EventProcessors}.
  * <p>
- * This load balancer will retrieve partition ownership details from the {@link PartitionManager} to find the number of
- * active {@link EventProcessor EventProcessors}. It uses the last modified time to decide if an EventProcessor is
+ * This load balancer will retrieve partition ownership details from the {@link EventProcessorStore} to find the number
+ * of active {@link EventProcessor EventProcessors}. It uses the last modified time to decide if an EventProcessor is
  * active. If a partition ownership entry has not be updated for a specified duration of time, the owner of that
  * partition is considered inactive and the partition is available for other EventProcessors to own.
  * </p>
@@ -45,16 +45,18 @@ public final class PartitionBasedLoadBalancer {
 
     private final String eventHubName;
     private final String consumerGroupName;
-    private final PartitionManager partitionManager;
+    private final EventProcessorStore eventProcessorStore;
     private final EventHubAsyncClient eventHubAsyncClient;
     private final String ownerId;
     private final long inactiveTimeLimitInSeconds;
     private final PartitionPumpManager partitionPumpManager;
+    private final String fullyQualifiedNamespace;
 
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
      *
-     * @param partitionManager The partition manager that this load balancer will use to read/update ownership details.
+     * @param eventProcessorStore The partition manager that this load balancer will use to read/update ownership
+     * details.
      * @param eventHubAsyncClient The asynchronous Event Hub client used to consume events.
      * @param eventHubName The Event Hub name the {@link EventProcessor} is associated with.
      * @param consumerGroupName The consumer group name the {@link EventProcessor} is associated with.
@@ -64,12 +66,13 @@ public final class PartitionBasedLoadBalancer {
      * @param partitionPumpManager The partition pump manager that keeps track of all EventHubConsumers and partitions
      * that this {@link EventProcessor} is processing.
      */
-    public PartitionBasedLoadBalancer(final PartitionManager partitionManager,
-        final EventHubAsyncClient eventHubAsyncClient,
+    public PartitionBasedLoadBalancer(final EventProcessorStore eventProcessorStore,
+        final EventHubAsyncClient eventHubAsyncClient, final String fullyQualifiedNamespace,
         final String eventHubName, final String consumerGroupName, final String ownerId,
         final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager) {
-        this.partitionManager = partitionManager;
+        this.eventProcessorStore = eventProcessorStore;
         this.eventHubAsyncClient = eventHubAsyncClient;
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.consumerGroupName = consumerGroupName;
         this.ownerId = ownerId;
@@ -93,9 +96,9 @@ public final class PartitionBasedLoadBalancer {
         /*
          * Retrieve current partition ownership details from the datastore.
          */
-        final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = partitionManager
-            .listOwnership(eventHubName, consumerGroupName)
-            .timeout(Duration.ofSeconds(1)) // TODO: configurable by the user
+        final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = eventProcessorStore
+            .listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroupName)
+            .timeout(Duration.ofSeconds(2)) // TODO: configurable by the user
             .collectMap(PartitionOwnership::getPartitionId, Function.identity());
 
         /*
@@ -103,7 +106,7 @@ public final class PartitionBasedLoadBalancer {
          */
         final Mono<List<String>> partitionsMono = eventHubAsyncClient
             .getPartitionIds()
-            .timeout(Duration.ofSeconds(1)) // TODO: configurable
+            .timeout(Duration.ofSeconds(5)) // TODO: configurable
             .collectList();
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
@@ -136,7 +139,7 @@ public final class PartitionBasedLoadBalancer {
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
                 throw logger.logExceptionAsError(Exceptions.propagate(
-                    new IllegalStateException("Invalid partitionOwnership data from PartitionManager")));
+                    new IllegalStateException("Invalid partitionOwnership data from EventProcessorStore")));
             }
 
             /*
@@ -306,7 +309,7 @@ public final class PartitionBasedLoadBalancer {
 
     /*
      * This method will create a new map of partition id and PartitionOwnership containing only those partitions
-     * that are actively owned. All entries in the original map returned by PartitionManager that haven't been
+     * that are actively owned. All entries in the original map returned by EventProcessorStore that haven't been
      * modified for a duration of time greater than the allowed inactivity time limit are assumed to be owned by
      * dead event processors. These will not be included in the map returned by this method.
      */
@@ -327,7 +330,7 @@ public final class PartitionBasedLoadBalancer {
         PartitionOwnership ownershipRequest = createPartitionOwnershipRequest(partitionOwnershipMap,
             partitionIdToClaim);
 
-        partitionManager
+        eventProcessorStore
             .claimOwnership(ownershipRequest)
             .timeout(Duration.ofSeconds(1)) // TODO: configurable
             .doOnNext(partitionOwnership -> logger.info("Successfully claimed ownership of partition {}",
