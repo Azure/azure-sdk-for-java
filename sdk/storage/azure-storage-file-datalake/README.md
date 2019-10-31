@@ -18,12 +18,13 @@ efficient data access.
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-file-datalake;current})
+Add a dependency on Azure Storage Blob
+[//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.0.0-preview.5</version>
+    <artifactId>azure-storage-blob</artifactId>
+    <version>12.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -162,9 +163,8 @@ HNS enabled accounts in ADLS Gen2 can also now leverage all of the operations av
 The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:
 
 - [Create a `DataLakeServiceClient`](#create-a-datalakeserviceclient)
-- [Create a `FileSystemClient`](#create-a-filesystemclient)
-- [Create a `FileClient`](#create-a-fileclient)
-- [Create a `DirectoryClient`](#create-a-directoryclient)
+- [Create a `DataLakeFileSystemClient`](#create-a-filesystemclient)
+- [Create a `DataLakeFileClient`](#create-a-fileclient)
 - [Create a file system](#create-a-filesystem)
 - [Upload a file from a stream](#upload-a-file-from-a-stream)
 - [Read a file to a stream](#read-a-file-to-a-stream)
@@ -182,32 +182,32 @@ DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
         .buildClient();
 ```
 
-### Create a `FileSystemClient`
+### Create a `DataLakeFileSystemClient`
 
-Create a `FileSystemClient` using a `DataLakeServiceClient`.
+Create a `DataLakeFileSystemClient` using a `DataLakeServiceClient`.
 
 ```java
-FileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient("myfilesystem");
+DataLakeFileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient("myfilesystem");
 ```
 
 or
 
-Create a `FileSystemClient` from the builder [`sasToken`](#get-credentials) generated above.
+Create a `DataLakeFileSystemClient` from the builder [`sasToken`](#get-credentials) generated above.
 
 ```java
-FileSystemClient dataLakeFileSystemClient = new FileSystemClientBuilder()
+DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
         .endpoint("<your-storage-dfs-url>")
         .sasToken("<your-sasToken>")
         .containerName("myfilesystem")
         .buildClient();
 ```
 
-### Create a `FileClient`
+### Create a `DataLakeFileClient`
 
-Create a `FileClient` using a `FileSystemClient`.
+Create a `DataLakeFileClient` using a `DataLakeFileSystemClient`.
 
 ```java
-FileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
+DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 ```
 
 or
@@ -233,7 +233,7 @@ dataLakeServiceClient.createFileSystem("myfilesystem");
 
 or
 
-Create a container using a `FileSystemClient`.
+Create a container using a `DataLakeFileSystemClient`.
 
 ```java
 dataLakeFileSystemClient.create();
@@ -241,7 +241,7 @@ dataLakeFileSystemClient.create();
 
 ### Upload a file from a stream
 
-Upload from an `InputStream` to a blob using a `DataLakeFileClient` generated from a `FileSystemClient`.
+Upload from an `InputStream` to a blob using a `DataLakeFileClient` generated from a `DataLakeFileSystemClient`.
 
 ```java
 DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
@@ -255,7 +255,7 @@ fileClient.flush(dataSample.length());
 
 ### Download a file to a stream
 
-Download a file to an `OutputStream` using a `FileClient`.
+Download a file to an `OutputStream` using a `DataLakeFileClient`.
 
 ```java
 try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -265,7 +265,7 @@ try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
 ### Enumerate paths
 
-Enumerating all paths using a `FileSystemClient`.
+Enumerating all paths using a `DataLakeFileSystemClient`.
 
 ```java
 dataLakeFileSystemClient.listPaths()
