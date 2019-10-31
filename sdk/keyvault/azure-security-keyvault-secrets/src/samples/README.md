@@ -58,7 +58,7 @@ try {
 ```
 
 ## Next steps
-Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README] [SECRETS_SDK_README]. 
+Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README][SECRETS_SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].

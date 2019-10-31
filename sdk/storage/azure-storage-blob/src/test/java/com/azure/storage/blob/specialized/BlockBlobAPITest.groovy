@@ -23,11 +23,11 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
-
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -644,12 +644,12 @@ class BlockBlobAPITest extends APISpec {
 
         where:
         fileSize                                       | blockSize       || commitedBlockCount
-        0                                              | null            || 0  // Size it too small to trigger stage block uploading
-        10                                             | null            || 0  // Size it too small to trigger stage block uploading
-        10 * 1024                                      | null            || 0  // Size it too small to trigger stage block uploading
-        50 * 1024 * 1024                               | null            || 0  // Size it too small to trigger stage block uploading
+        0                                              | null            || 0  // Size is too small to trigger stage block uploading
+        10                                             | null            || 0  // Size is too small to trigger stage block uploading
+        10 * 1024                                      | null            || 0  // Size is too small to trigger stage block uploading
+        50 * 1024 * 1024                               | null            || 0  // Size is too small to trigger stage block uploading
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null            || Math.ceil((BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1) / BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // HTBB optimizations should trigger when file size is >100MB and defaults are used.
-        101 * 1024 * 1024                              | 4 * 1024 * 1024 || 0 // Size it too small to trigger stage block uploading
+        101 * 1024 * 1024                              | 4 * 1024 * 1024 || 0  // Size is too small to trigger stage block uploading
     }
 
     def compareFiles(File file1, File file2) {
@@ -931,15 +931,15 @@ class BlockBlobAPITest extends APISpec {
         bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
 
         where:
-        dataSize          | bufferSize        | numBuffs || blockCount
-        350               | 50                | 2        || 7 // Requires cycling through the same buffers multiple times.
-        350               | 50                | 5        || 7 // Most buffers may only be used once.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 2        || 10 // Larger data set.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10 // Larger number of Buffs.
-        10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10 // Exactly enough buffer space to hold all the data.
-        500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5 // Larger data.
-        100 * 1024 * 1024 | 20 * 1024 * 1024  | 4        || 5
-        10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7 // Data does not squarely fit in buffers.
+        dataSize           | bufferSize        | numBuffs || blockCount
+        35 * Constants.MB  | 5 * Constants.MB  | 2        || 7 // Requires cycling through the same buffers multiple times.
+        35 * Constants.MB  | 5 * Constants.MB  | 5        || 7 // Most buffers may only be used once.
+        100 * Constants.MB | 10 * Constants.MB | 2        || 10 // Larger data set.
+        100 * Constants.MB | 10 * Constants.MB | 5        || 10 // Larger number of Buffs.
+        10 * Constants.MB  | 1 * Constants.MB  | 10       || 10 // Exactly enough buffer space to hold all the data.
+        50 * Constants.MB  | 10 * Constants.MB | 2        || 5 // Larger data.
+        10 * Constants.MB  | 2 * Constants.MB  | 4        || 5
+        10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -995,11 +995,11 @@ class BlockBlobAPITest extends APISpec {
         uploadReporter.getReportingCount() == (long) (size / blockSize)
 
         where:
-        size        | blockSize | bufferCount
-        10          | 10        | 8
-        20          | 1         | 5
-        100         | 50        | 2
-        1024 * 1024 | 1024      | 100
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -1011,9 +1011,9 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffers, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize * Constants.MB, numBuffers, null)
         def dataList = [] as List
-        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
         blobac.upload(Flux.fromIterable(dataList), parallelTransferOptions, true).block()
 
         expect:
@@ -1027,6 +1027,46 @@ class BlockBlobAPITest extends APISpec {
         [10, 10]              | 10         | 2          || 2 // Data fits exactly and does not need chunking.
         [50, 51, 49]          | 10         | 2          || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
         // The case of one large buffer needing to be broken up is tested in the previous test.
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload handle pathing"() {
+        setup:
+        def dataList = [] as List<ByteBuffer>
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        blobac.upload(Flux.fromIterable(dataList), null, true).block()
+
+        expect:
+        compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
+        bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSizeList                         | blockCount
+        [4 * Constants.MB + 1, 10]           | 2
+        [4 * Constants.MB]                   | 0
+        [10, 100, 1000, 10000]               | 0
+        [4 * Constants.MB, 4 * Constants.MB] | 2
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload handle pathing hot flux"() {
+        setup:
+        def dataList = [] as List<ByteBuffer>
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        blobac.upload(Flux.fromIterable(dataList).publish().autoConnect(), null, true).block()
+
+        expect:
+        compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
+        bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSizeList                         | blockCount
+        [4 * Constants.MB + 1, 10]           | 2
+        [4 * Constants.MB]                   | 0
+        [10, 100, 1000, 10000]               | 0
+        [4 * Constants.MB, 4 * Constants.MB] | 2
     }
 
     def "Buffered upload illegal arguments null"() {
@@ -1059,8 +1099,9 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload headers"() {
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, null, null)
-        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHttpHeaders()
+        def data = getRandomByteArray(dataSize)
+        def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(data) : null
+        blobac.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), null, new BlobHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -1075,10 +1116,13 @@ class BlockBlobAPITest extends APISpec {
         // HTTP default content type is application/octet-stream.
 
         where:
-        // The MD5 is simply set on the blob for commitBlockList, not validated.
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        // Depending on the size of the stream either Put Blob or Put Block List will be used.
+        // Put Blob will implicitly calculate the MD5 whereas Put Block List won't.
+        dataSize         | cacheControl | contentDisposition | contentEncoding | contentLanguage | validateContentMD5 | contentType
+        defaultDataSize  | null         | null               | null            | null            | true               | null
+        defaultDataSize  | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
+        6 * Constants.MB | null         | null               | null            | null            | false              | null
+        6 * Constants.MB | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -1305,11 +1349,11 @@ class BlockBlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                 | "斑點"
+        "斑點"                   | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "BlobClient overwrite false"() {
         setup:
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
@@ -1321,7 +1365,7 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "BlobClient overwrite true"() {
         setup:
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())

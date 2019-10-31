@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs.proxy;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.jproxy.ProxyServer;
@@ -109,11 +109,10 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Test
     public void testReceiverStartOfStreamFilters() {
         // Arrange
-        final EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
-            PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().take(NUMBER_OF_EVENTS))
+        StepVerifier.create(consumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }

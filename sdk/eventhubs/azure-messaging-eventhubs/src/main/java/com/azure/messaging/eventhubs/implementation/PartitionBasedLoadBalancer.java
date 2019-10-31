@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.util.GeneralUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
@@ -87,7 +87,7 @@ public final class PartitionBasedLoadBalancer {
      * this algorithm converges gradually towards a steady state.
      * </p>
      * When a new partition is claimed, this method is also responsible for starting a partition pump that creates an
-     * {@link EventHubAsyncConsumer} for processing events from that partition.
+     * {@link EventHubConsumerAsyncClient} for processing events from that partition.
      */
     public void loadBalance() {
         /*
