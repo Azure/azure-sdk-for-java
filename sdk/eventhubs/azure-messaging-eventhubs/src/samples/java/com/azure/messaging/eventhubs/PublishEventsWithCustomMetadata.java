@@ -3,9 +3,9 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.time.Duration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -35,10 +35,10 @@ public class PublishEventsWithCustomMetadata {
             .buildAsyncClient();
 
         // Create a producer. This overload of `createProducer` does not accept any arguments
-        EventHubAsyncProducer producer = client.createProducer();
+        EventHubProducerAsyncClient producer = client.createProducer();
 
-        // Because an event consists mainly of an opaque set of bytes, it may be difficult for consumers of those events to
-        // make informed decisions about how to process them.
+        // Because an event consists mainly of an opaque set of bytes, it may be difficult for consumers of those events
+        // to make informed decisions about how to process them.
         //
         // In order to allow event publishers to offer better context for consumers, event data may also contain custom metadata,
         // in the form of a set of key/value pairs. This metadata is not used by, or in any way meaningful to, the Event Hubs
@@ -62,17 +62,23 @@ public class PublishEventsWithCustomMetadata {
 
         final Flux<EventData> data = Flux.just(firstEvent, secEvent);
 
-        // To create a consumer, we need to know what partition to connect to. We take the first partition id.
+        // We want to send events to the a specific partition. For the sake of this sample, we take the first partition
+        // identifier.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
         // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
         // TimeoutException is thrown.
         String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+        SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
-        producer.send(data).subscribe(
-            (ignored) -> System.out.println("Event sent to specific partition, ID = " + firstPartition),
+        // .subscribe() is a non-blocking call. The program will immediately move to the next line after setting up
+        // the callbacks for each event in the observable.
+        producer.send(data, sendOptions).subscribe(
+            ignored -> {
+                System.out.println("Sent.");
+            },
             error -> {
                 System.err.println("There was an error sending the event batch: " + error.toString());
 
@@ -84,12 +90,7 @@ public class PublishEventsWithCustomMetadata {
                 }
             }, () -> {
                 // Disposing of our producer and client.
-                try {
-                    producer.close();
-                } catch (IOException e) {
-                    System.err.println("Error encountered while closing producer: " + e.toString());
-                }
-
+                producer.close();
                 client.close();
             });
     }

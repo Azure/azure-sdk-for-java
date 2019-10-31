@@ -14,6 +14,8 @@ import com.azure.storage.file.share.models.FileHttpHeaders
 import com.azure.storage.file.share.models.FileRange
 import com.azure.storage.file.share.models.FileStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.sas.ShareFileSasPermission
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Ignore

@@ -23,7 +23,7 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 
-import com.azure.storage.queue.QueueServiceSasQueryParameters;
+import com.azure.storage.queue.sas.QueueServiceSasQueryParameters;
 import com.azure.storage.queue.QueueServiceVersion;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
     // {x-version-update-start;com.azure:azure-storage-queue;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0";
     // {x-version-update-end}
 
     private static final Pattern IP_URL_PATTERN = Pattern

@@ -3,6 +3,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.util.Configuration;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -96,9 +97,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void addSetting();
+    public abstract void addConfigurationSetting();
 
-    void addSettingRunner(Consumer<ConfigurationSetting> testRunner) {
+    void addConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         final Map<String, String> tags = new HashMap<>();
         tags.put("MyTag", "TagValue");
         tags.put("AnotherTag", "AnotherTagValue");
@@ -114,12 +115,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void addSettingEmptyKey();
+    public abstract void addConfigurationSettingEmptyKey();
 
     @Test
-    public abstract void addSettingEmptyValue();
+    public abstract void addConfigurationSettingEmptyValue();
 
-    void addSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
+    void addConfigurationSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
         ConfigurationSetting setting = new ConfigurationSetting().setKey(key);
         ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key + "-1").setValue("");
@@ -129,7 +130,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void addSettingNullKey();
+    public abstract void addConfigurationSettingNullKey();
 
     @Test
     public abstract void addExistingSetting();
@@ -142,9 +143,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setSetting();
+    public abstract void setConfigurationSetting();
 
-    void setSettingRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
+    void setConfigurationSettingRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
         String label = getLabel();
 
@@ -156,9 +157,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setSettingIfEtag();
+    public abstract void setConfigurationSettingIfETag();
 
-    void setSettingIfEtagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
+    void setConfigurationSettingIfETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
         String label = getLabel();
 
@@ -170,12 +171,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setSettingEmptyKey();
+    public abstract void setConfigurationSettingEmptyKey();
 
     @Test
-    public abstract void setSettingEmptyValue();
+    public abstract void setConfigurationSettingEmptyValue();
 
-    void setSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
+    void setConfigurationSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
 
         ConfigurationSetting setting = new ConfigurationSetting().setKey(key);
@@ -185,12 +186,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(setting2);
     }
 
-    @Test public abstract void setSettingNullKey();
+    @Test public abstract void setConfigurationSettingNullKey();
 
     @Test
-    public abstract void getSetting();
+    public abstract void getConfigurationSetting();
 
-    void getSettingRunner(Consumer<ConfigurationSetting> testRunner) {
+    void getConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
 
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(key).setValue("myNewValue");
@@ -200,12 +201,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getSettingNotFound();
+    public abstract void getConfigurationSettingNotFound();
 
     @Test
-    public abstract void deleteSetting();
+    public abstract void deleteConfigurationSetting();
 
-    void deleteSettingRunner(Consumer<ConfigurationSetting> testRunner) {
+    void deleteConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
         String label = getLabel();
 
@@ -216,12 +217,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void deleteSettingNotFound();
+    public abstract void deleteConfigurationSettingNotFound();
 
     @Test
-    public abstract void deleteSettingWithETag();
+    public abstract void deleteConfigurationSettingWithETag();
 
-    void deleteSettingWithETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
+    void deleteConfigurationSettingWithETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
         String label = getLabel();
 
@@ -233,7 +234,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void deleteSettingNullKey();
+    public abstract void deleteConfigurationSettingNullKey();
 
     @Test
     public abstract void setReadOnly();
@@ -284,9 +285,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listSettingsSelectFields();
+    public abstract void listConfigurationSettingsSelectFields();
 
-    void listSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, Iterable<ConfigurationSetting>> testRunner) {
+    void listConfigurationSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, Iterable<ConfigurationSetting>> testRunner) {
         final String label = "my-first-mylabel";
         final String label2 = "my-second-mylabel";
         final int numberToCreate = 8;
@@ -320,7 +321,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listSettingsAcceptDateTime();
+    public abstract void listConfigurationSettingsAcceptDateTime();
 
     @Test
     public abstract void listRevisions();
@@ -382,7 +383,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void listRevisionsWithPagination();
 
     @Test
-    public abstract void listSettingsWithPagination();
+    public abstract void listConfigurationSettingsWithPagination();
 
     @Test
     public abstract void listRevisionsWithPaginationAndRepeatStream();
@@ -391,7 +392,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void listRevisionsWithPaginationAndRepeatIterator();
 
     @Test
-    public abstract void getSettingWhenValueNotUpdated();
+    public abstract void getConfigurationSettingWhenValueNotUpdated();
 
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test

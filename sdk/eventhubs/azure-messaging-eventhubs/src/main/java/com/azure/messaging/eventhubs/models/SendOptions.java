@@ -5,23 +5,24 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncProducer;
-import com.azure.messaging.eventhubs.EventHubProducer;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
+import com.azure.messaging.eventhubs.EventHubProducerClient;
 import reactor.core.publisher.Flux;
 
 /**
  * The set of options that can be specified when sending a set of events to influence the way in which events are sent
  * to the Event Hubs service.
  *
- * @see EventHubProducer#send(EventData, SendOptions)
- * @see EventHubProducer#send(Iterable, SendOptions)
- * @see EventHubAsyncProducer#send(EventData, SendOptions)
- * @see EventHubAsyncProducer#send(Iterable, SendOptions)
- * @see EventHubAsyncProducer#send(Flux, SendOptions)
+ * @see EventHubProducerClient#send(EventData, SendOptions)
+ * @see EventHubProducerClient#send(Iterable, SendOptions)
+ * @see EventHubProducerAsyncClient#send(EventData, SendOptions)
+ * @see EventHubProducerAsyncClient#send(Iterable, SendOptions)
+ * @see EventHubProducerAsyncClient#send(Flux, SendOptions)
  */
 @Fluent
 public class SendOptions implements Cloneable {
     private String partitionKey;
+    private String partitionId;
 
     /**
      * Sets a hashing key to be provided for the batch of events, which instructs the Event Hubs service map this key to
@@ -37,6 +38,7 @@ public class SendOptions implements Cloneable {
      * recommended that the identifier of the position be specified directly when sending the batch.
      *
      * @param partitionKey The partition hashing key to associate with the event or batch of events.
+     *
      * @return The updated {@link SendOptions} object.
      */
     public SendOptions setPartitionKey(String partitionKey) {
@@ -52,6 +54,33 @@ public class SendOptions implements Cloneable {
      */
     public String getPartitionKey() {
         return partitionKey;
+    }
+
+    /**
+     * Gets the identifier of the Event Hub partition that the {@link EventData events} will be sent to. If the
+     * identifier is not specified, the Event Hubs service will be responsible for routing events that are sent to an
+     * available partition.
+     *
+     * @return The identifier of the Event Hub partition that the {@link EventData events} will be set to. {@code null}
+     *     or an empty string if Event Hubs service is responsible for routing events.
+     */
+    public String getPartitionId() {
+        return partitionId;
+    }
+
+    /**
+     * Sets the identifier of the Event Hub partition that the {@link EventData events} will be sent to. If the
+     * identifier is not specified, the Event Hubs service will be responsible for routing events that are sent to an
+     * available partition.
+     *
+     * @param partitionId The identifier of the Event Hub partition that the {@link EventData events} will be set
+     *     to. {@code null} or an empty string if Event Hubs service is responsible for routing events.
+     *
+     * @return The updated {@link SendOptions} object.
+     */
+    public SendOptions setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
+        return this;
     }
 
     /**

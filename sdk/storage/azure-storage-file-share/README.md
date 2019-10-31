@@ -19,11 +19,11 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-file;current})
+[//]: # ({x-version-update-start;com.azure:azure-storage-file-share;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-storage-file</artifactId>
+  <artifactId>azure-storage-file-share</artifactId>
   <version>12.0.0-preview.5</version>
 </dependency>
 ```
@@ -37,12 +37,12 @@ Storage File Share to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-file;current})
+[//]: # ({x-version-update-start;com.azure:azure-storage-file-share;current})
 ```xml
 <!-- Add Storage File Share dependency without Netty HTTP client -->
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-storage-file</artifactId>
+    <artifactId>azure-storage-file-share</artifactId>
       <version>12.0.0-preview.5</version>
     <exclusions>
       <exclusion>
@@ -94,6 +94,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 - **SAS Token**
     * Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
+
         ```powershell
         az storage file generate-sas
             --name {account name}
@@ -111,6 +112,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
             --permission rpau
             --connection-string $CONNECTION_STRING
         ```
+
     * Alternatively, get the Account SAS Token from the Azure Portal.
         1. Go to your storage account.
         1. Click on "Shared access signature".
@@ -132,20 +134,26 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 ### URL format
 File Shares are addressable using the following URL format:
+
 ```
 https://<storage account>.file.core.windows.net/<share>
 ```
+
 The following URL addresses a queue in the diagram:
+
 ```
 https://myaccount.file.core.windows.net/images-to-download
 ```
 
 #### Resource URI Syntax
 For the storage account, the base URI for queue operations includes the name of the account only:
+
 ```
 https://myaccount.file.core.windows.net
 ```
+
 For file, the base URI includes the name of the account and the name of the directory/file:
+
 ```
 https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
 ```
@@ -221,6 +229,7 @@ String directoryURL = String.format("https://%s.file.core.windows.net/%s%s", acc
 ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(directoryURL)
     .sasToken(sasToken).shareName(shareName).directoryName(directoryPath).buildDirectoryClient();
 ```
+
 ### File
  The file resource includes the properties for that file. It allows the operations of creating, uploading, copying, downloading, deleting files or range of the files, getting properties, setting metadata, listing and force closing the handles.
  Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${directoryPath}`, `${fileName}`, `${sasToken}`
@@ -526,4 +535,4 @@ If you would like to become an active contributor to this project please follow 
 [storage_file_rest]: https://docs.microsoft.com/rest/api/storageservices/file-service-error-codes
 [samples]: src/samples
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file-share/README.png)
