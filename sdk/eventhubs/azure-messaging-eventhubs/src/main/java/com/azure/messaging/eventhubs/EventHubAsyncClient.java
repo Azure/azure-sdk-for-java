@@ -66,6 +66,16 @@ public class EventHubAsyncClient implements Closeable {
     }
 
     /**
+     * Returns the fully qualified namespace of this Event Hub.
+     *
+     * @return The fully qualified namespace of this Event Hub.
+     */
+    public String getFullyQualifiedNamespace() {
+        // to be implemented
+        return null;
+    }
+
+    /**
      * Gets the Event Hub name this client interacts with.
      *
      * @return The Event Hub name this client interacts with.

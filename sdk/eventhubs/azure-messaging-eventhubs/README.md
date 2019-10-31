@@ -276,26 +276,26 @@ To consume events for all partitions of an Event Hub, you'll create an [`EventPr
 specific consumer group. When an Event Hub is created, it provides a default consumer group that can be used to get
 started.
 
-The [`EventProcessor`][source_eventprocessor] will delegate processing of events to a
-[`PartitionProcessor`][source_partition_processor] implementation that you provide, allowing your logic to focus on the
-logic needed to provide value while the processor holds responsibility for managing the underlying consumer operations.
+The [`EventProcessor`][source_eventprocessor] will delegate processing of events to a callback function that you 
+provide, allowing you to focus on the logic needed to provide value while the processor holds responsibility for 
+managing the underlying consumer operations.
 
-In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the built-in
-[`InMemoryPartitionManager`][source_inmemorypartitionmanager], and a `PartitionProcessor` implementation that logs
-events received to console.
+In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
+[`InMemoryEventProcessorStore`][source_inmemoryeventprocessorstore] available in samples, and a callback function that 
+processes events received from the Event Hub and writes to console.
 
 ```java
 class Program {
     public static void main(String[] args) {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
-            .buildAsyncClient();
-
         EventProcessor eventProcessor = new EventProcessorBuilder()
-            .consumerGroup("<< CONSUMER GROUP NAME>>")
-            .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory((SimplePartitionProcessor::new))
-            .partitionManager(new InMemoryPartitionManager())
+            .consumerGroup("<< CONSUMER GROUP NAME >>")
+            .connectionString("<< EVENT HUB CONNECTION STRING >>")
+            .eventProcessorStore(new InMemoryEventProcessorStore())
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
@@ -306,17 +306,6 @@ class Program {
 
         // When the user wishes to stop processing events, they can call `stop()`.
         eventProcessor.stop();
-    }
-}
-
-class SimplePartitionProcessor extends PartitionProcessor {
-    /**
-     * Processes the event data.
-     */
-    // @Override
-    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-        System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
-        return partitionContext.updateCheckpoint(eventData);
     }
 }
 ```
@@ -444,7 +433,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
 [source_sendOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/SendOptions.java
 [source_batchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/BatchOptions.java
-[source_inmemorypartitionmanager]: ./src/main/java/com/azure/messaging/eventhubs/InMemoryPartitionManager.java
+[source_inmemoryeventprocessorstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryEventProcessorStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
 
