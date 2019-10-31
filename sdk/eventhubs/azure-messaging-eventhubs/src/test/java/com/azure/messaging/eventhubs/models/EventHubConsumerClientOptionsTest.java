@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.models;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class EventHubConsumerOptionsTest {
+public class EventHubConsumerClientOptionsTest {
     /**
      * Verifies we set the correct defaults.
      */

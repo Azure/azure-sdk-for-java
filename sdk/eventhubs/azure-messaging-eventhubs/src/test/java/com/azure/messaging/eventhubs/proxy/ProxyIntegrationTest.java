@@ -11,14 +11,15 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubConsumer;
+import com.azure.messaging.eventhubs.EventHubConsumerClient;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -99,17 +100,17 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
             .connectionString(getConnectionString())
             .buildAsyncClient();
         final EventHubProducerAsyncClient producer = asyncClient.createProducer();
-        final EventHubConsumer receiver = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
-            PARTITION_ID, EventPosition.earliest());
+        final EventHubConsumerClient receiver = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
+            EventPosition.earliest());
 
         producer.send(TestUtils.getEvents(numberOfEvents, messageId), sendOptions).block();
 
         // Act
-        final IterableStream<EventData> receive = receiver.receive(15, Duration.ofSeconds(30));
+        final IterableStream<PartitionEvent> receive = receiver.receive(PARTITION_ID, 15, Duration.ofSeconds(30));
 
         // Assert
         Assert.assertNotNull(receive);
-        final List<EventData> results = receive.stream().collect(Collectors.toList());
+        final List<PartitionEvent> results = receive.stream().collect(Collectors.toList());
         Assert.assertEquals(numberOfEvents, results.size());
     }
 }

@@ -15,12 +15,10 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import reactor.core.Disposable;
-import reactor.core.Disposables;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -87,8 +85,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Test for sending a message batch that is {@link ClientConstants#MAX_MESSAGE_LENGTH_BYTES} with partition
-     * key.
+     * Test for sending a message batch that is {@link ClientConstants#MAX_MESSAGE_LENGTH_BYTES} with partition key.
      */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
@@ -131,17 +128,19 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         }
 
         final CountDownLatch countDownLatch = new CountDownLatch(batch.getSize());
-
-        Flux<EventHubAsyncConsumer> consumers;
-        Disposable.Composite subscriptions = Disposables.composite();
+        final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
         try {
-
             // Creating consumers on all the partitions and subscribing to the receive event.
-            consumers = client.getPartitionIds()
-                .map(id -> client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, id, EventPosition.latest()));
+            final List<String> partitionIds = client.getPartitionIds().collectList().block(TIMEOUT);
+            Assert.assertNotNull(partitionIds);
 
-            final List<Disposable> consumerSubscriptions = consumers.map(consumer -> {
-                return consumer.receive().subscribe(event -> {
+            for (String id : partitionIds) {
+                final EventHubConsumerAsyncClient consumer =
+                    client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventPosition.latest());
+
+                consumers.add(consumer);
+                consumer.receive(id).subscribe(partitionEvent -> {
+                    EventData event = partitionEvent.getEventData();
                     if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                         return;
                     }
@@ -153,17 +152,13 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                         logger.warning(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
                             event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_TRACKING_ID)));
                     }
-                }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
-                    () -> {
+                }, error -> {
+                        Assert.fail("An error should not have occurred:" + error.toString());
+                    }, () -> {
                         logger.info("Disposing of consumer now that the receive is complete.");
                         dispose(consumer);
                     });
-            }).collectList().block(TIMEOUT);
-
-            Assert.assertNotNull(consumerSubscriptions);
-            Assert.assertFalse(consumerSubscriptions.isEmpty());
-
-            subscriptions.addAll(consumerSubscriptions);
+            }
 
             // Act
             producer.send(batch.getEvents(), sendOptions).block();
@@ -173,7 +168,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
             countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
         } finally {
             logger.info("Disposing of subscriptions.");
-            subscriptions.dispose();
+            dispose(consumers.toArray(new EventHubConsumerAsyncClient[0]));
         }
 
         Assert.assertEquals(0, countDownLatch.getCount());
