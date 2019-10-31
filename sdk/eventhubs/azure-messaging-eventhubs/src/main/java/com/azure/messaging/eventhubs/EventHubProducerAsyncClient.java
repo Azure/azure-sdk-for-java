@@ -126,7 +126,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final EventHubLinkProvider linkProvider;
+    private final EventHubConnection linkProvider;
     private final RetryOptions retryOptions;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
@@ -136,7 +136,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * when {@link BatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to load
      * balance the messages amongst available partitions.
      */
-    EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
+    EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection linkProvider,
         RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;

@@ -73,7 +73,7 @@ public class EventHubConsumerClientTest {
     private EventHubSession session;
 
     private EventHubConsumerClient consumer;
-    private EventHubLinkProvider linkProvider;
+    private EventHubConnection linkProvider;
 
     @Before
     public void setup() {
@@ -84,7 +84,7 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
-        linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, new RetryOptions());
+        linkProvider = new EventHubConnection(Mono.just(connection), HOSTNAME, new RetryOptions());
         when(connection.createSession(any())).thenReturn(Mono.fromCallable(() -> session));
         when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
             .thenReturn(Mono.fromCallable(() -> amqpReceiveLink));

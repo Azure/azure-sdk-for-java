@@ -33,7 +33,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class EventHubLinkProviderTest {
+public class EventHubConnectionTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(2);
     private static final String HOST_NAME = "Some-host-name";
     private final RetryOptions retryOptions = new RetryOptions()
@@ -45,27 +45,27 @@ public class EventHubLinkProviderTest {
     @Mock
     private EventHubSession session;
 
-    private EventHubLinkProvider provider;
+    private EventHubConnection provider;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        provider = new EventHubLinkProvider(Mono.fromCallable(() -> connection), HOST_NAME, retryOptions);
+        provider = new EventHubConnection(Mono.fromCallable(() -> connection), HOST_NAME, retryOptions);
     }
 
     @Test(expected = NullPointerException.class)
     public void nullConnection() {
-        new EventHubLinkProvider(null, HOST_NAME, new RetryOptions());
+        new EventHubConnection(null, HOST_NAME, new RetryOptions());
     }
 
     @Test(expected = NullPointerException.class)
     public void nullHostname() {
-        new EventHubLinkProvider(Mono.just(connection), null, new RetryOptions());
+        new EventHubConnection(Mono.just(connection), null, new RetryOptions());
     }
 
     @Test(expected = NullPointerException.class)
     public void nullRetry() {
-        new EventHubLinkProvider(Mono.just(connection), HOST_NAME, null);
+        new EventHubConnection(Mono.just(connection), HOST_NAME, null);
     }
 
     @Test

@@ -72,14 +72,14 @@ public class EventHubProducerAsyncClientTest {
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(10));
     private EventHubProducerAsyncClient producer;
-    private EventHubLinkProvider linkProvider;
+    private EventHubConnection linkProvider;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-        linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, retryOptions);
+        linkProvider = new EventHubConnection(Mono.just(connection), HOSTNAME, retryOptions);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
             messageSerializer);
 

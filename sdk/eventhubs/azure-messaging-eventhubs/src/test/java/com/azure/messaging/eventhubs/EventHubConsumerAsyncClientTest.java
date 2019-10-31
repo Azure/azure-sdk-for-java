@@ -83,7 +83,7 @@ public class EventHubConsumerAsyncClientTest {
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
-    private EventHubLinkProvider linkProvider;
+    private EventHubConnection linkProvider;
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConsumerAsyncClient consumer;
 
@@ -96,7 +96,7 @@ public class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
-        linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, new RetryOptions());
+        linkProvider = new EventHubConnection(Mono.just(connection), HOSTNAME, new RetryOptions());
         when(connection.createSession(any())).thenReturn(Mono.just(session));
         when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
             .thenReturn(Mono.just(amqpReceiveLink));

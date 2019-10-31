@@ -10,9 +10,6 @@ import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ReactorHandlerProvider;
-import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.ProxyAuthenticationType;
@@ -25,11 +22,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -446,22 +440,13 @@ public class EventHubClientBuilder {
     }
 
     private static EventHubAsyncClient buildAsyncClient(ConnectionOptions connectionOptions) {
-        final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+        final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+            connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
+            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-
-        final Mono<EventHubAmqpConnection> connectionMono = Mono.fromCallable(() -> {
-            final String connectionId = StringUtil.getRandomString("MF");
-            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
-                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-
-            return new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, messageSerializer);
-        });
-        final EventHubLinkProvider linkProvider = new EventHubLinkProvider(connectionMono,
-            connectionOptions.getHostname(), connectionOptions.getRetry());
+        final EventHubConnection linkProvider = new EventHubConnection(connectionOptions, tokenManagerProvider,
+            messageSerializer);
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, linkProvider);
     }

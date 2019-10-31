@@ -59,14 +59,14 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final EventHubLinkProvider linkProvider;
+    private final EventHubConnection linkProvider;
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final EventPosition startingPosition;
     private final EventHubConsumerOptions consumerOptions;
     private final Flux<PartitionEvent> allPartitionsFlux;
 
-    EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
+    EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection linkProvider,
         MessageSerializer messageSerializer, String consumerGroup, EventPosition startingPosition,
         EventHubConsumerOptions consumerOptions) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;

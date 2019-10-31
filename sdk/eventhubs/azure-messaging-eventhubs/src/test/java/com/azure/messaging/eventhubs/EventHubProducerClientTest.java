@@ -72,7 +72,7 @@ public class EventHubProducerClientTest {
     private EventHubProducerAsyncClient asyncProducer;
     private RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(30));
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
-    private EventHubLinkProvider linkProvider;
+    private EventHubConnection linkProvider;
 
     @Before
     public void setup() {
@@ -83,7 +83,7 @@ public class EventHubProducerClientTest {
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-        linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, retryOptions);
+        linkProvider = new EventHubConnection(Mono.just(connection), HOSTNAME, retryOptions);
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions,
             tracerProvider, messageSerializer);
     }
