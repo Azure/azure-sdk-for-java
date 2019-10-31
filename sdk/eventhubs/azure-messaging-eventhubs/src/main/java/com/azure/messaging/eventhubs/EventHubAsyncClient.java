@@ -40,14 +40,16 @@ class EventHubAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
     private final EventHubConnection connection;
+    private final boolean isSharedConnection;
     private final EventHubConsumerOptions defaultConsumerOptions;
     private final TracerProvider tracerProvider;
 
     EventHubAsyncClient(EventHubConnection connection, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer) {
+        MessageSerializer messageSerializer, boolean isSharedConnection) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connection = Objects.requireNonNull(connection, "'connection' cannot be null.");
+        this.isSharedConnection = isSharedConnection;
         this.defaultConsumerOptions = new EventHubConsumerOptions();
     }
 

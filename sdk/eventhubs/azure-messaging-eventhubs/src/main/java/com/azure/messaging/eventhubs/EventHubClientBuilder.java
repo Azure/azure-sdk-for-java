@@ -92,6 +92,7 @@ public class EventHubClientBuilder {
     private EventHubConsumerOptions consumerOptions;
     private EventPosition startingPosition;
     private String consumerGroup;
+    private EventHubConnection eventHubConnection;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
@@ -200,6 +201,18 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the Event Hub connection to use when interacting with Event Hubs. If not set, a new connection will be
+     * constructed and used.
+     *
+     * @param eventHubConnection Event Hub connection to use.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder connection(EventHubConnection eventHubConnection) {
+        this.eventHubConnection = eventHubConnection;
         return this;
     }
 
@@ -402,7 +415,7 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubAsyncClient buildAsyncClient() {
+    EventHubAsyncClient buildAsyncClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         return buildAsyncClient(connectionOptions);
     }
@@ -432,23 +445,26 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubClient buildClient() {
+    EventHubClient buildClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final EventHubAsyncClient client = buildAsyncClient(connectionOptions);
 
         return new EventHubClient(client, connectionOptions);
     }
 
-    private static EventHubAsyncClient buildAsyncClient(ConnectionOptions connectionOptions) {
+    private EventHubAsyncClient buildAsyncClient(ConnectionOptions connectionOptions) {
         final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
             connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
             ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-        final EventHubConnection linkProvider = new EventHubConnection(connectionOptions, tokenManagerProvider,
-            messageSerializer);
+        final boolean isSharedConnection = eventHubConnection != null;
+        final EventHubConnection connection = isSharedConnection
+            ? eventHubConnection
+            : new EventHubConnection(connectionOptions, tokenManagerProvider, messageSerializer);
+
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, linkProvider);
+        return new EventHubAsyncClient(connection, tracerProvider, messageSerializer, isSharedConnection);
     }
 
     private ConnectionOptions getConnectionOptions() {
