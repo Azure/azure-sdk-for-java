@@ -3,13 +3,13 @@
 
 package com.azure.core.util;
 
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
  * Code snippets for {@link Context}
@@ -89,5 +89,33 @@ public class ContextJavaDocCodeSnippets {
             System.out.println("Key1 does not exist or have data.");
         }
         // END: com.azure.core.util.context.getData#object
+    }
+
+    /**
+     * Code snippet for {@link Context#getValues()}
+     */
+    public void getValues() {
+        // BEGIN: com.azure.core.util.Context.getValues
+        final String key1 = "Key1";
+        final String value1 = "first-value";
+        final String key2 = "Key2";
+        final String value2 = "second-value";
+
+        Context context = new Context(key1, value1)
+            .addData(key2, value2);
+
+        Map<Object, Object> contextValues = context.getValues();
+        if (contextValues.containsKey(key1)) {
+            System.out.printf("Key1 value: %s%n", contextValues.get(key1));
+        } else {
+            System.out.println("Key1 does not exist.");
+        }
+
+        if (contextValues.containsKey(key2)) {
+            System.out.printf("Key2 value: %s%n", contextValues.get(key2));
+        } else {
+            System.out.println("Key2 does not exist.");
+        }
+        // END: com.azure.core.util.Context.getValues
     }
 }

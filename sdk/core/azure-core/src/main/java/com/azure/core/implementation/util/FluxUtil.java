@@ -178,11 +178,31 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(reactor.util.context.Context context) {
-        Map<Object, Object> keyValues = context.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-        if (ImplUtils.isNullOrEmpty(keyValues)) {
+        if (context == null) {
             return Context.NONE;
         }
-        return Context.of(keyValues);
+
+        Map<Object, Object> keyValues = context.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        return ImplUtils.isNullOrEmpty(keyValues) ? Context.NONE : Context.of(keyValues);
+    }
+
+    /**
+     * Converts an Azure context to Reactor context. If the Azure context is {@code null} or empty, {@link
+     * reactor.util.context.Context#empty()} will be returned.
+     *
+     * @param context The Azure context.
+     * @return The Reactor context.
+     */
+    public static reactor.util.context.Context toReactorContext(Context context) {
+        if (context == null) {
+            return reactor.util.context.Context.empty();
+        }
+
+        Map<Object, Object> contextValues = context.getValues();
+
+        return ImplUtils.isNullOrEmpty(contextValues)
+            ? reactor.util.context.Context.empty()
+            : reactor.util.context.Context.of(contextValues);
     }
 
     /**
