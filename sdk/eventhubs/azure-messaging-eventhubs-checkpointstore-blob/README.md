@@ -65,13 +65,14 @@ sequence number and the timestamp of when it was enqueued.
 - [Consume events from all Event Hub partitions][sample_event_processor]
 
 ### Create an instance of Storage container with SAS token
+
 ```java
 BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
     .containerName("<CONTAINER_NAME>")
     .sasToken("<SAS_TOKEN>")
     .buildAsyncClient();
-``` 
+```
 
 ### Consume events using an Event Processor
 
@@ -106,7 +107,7 @@ class Program {
 }
 
 class SimplePartitionProcessor extends PartitionProcessor {
-    @Override
+    // @Override
     Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
         System.out.printf("Event received. Sequence number: %s%n.", eventData.sequenceNumber());
         return partitionContext.updateCheckpoint(eventData);
@@ -134,7 +135,7 @@ If you would like to become an active contributor to this project please refer t
 Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
-[api_documentation]: http://azure.github.io/azure-sdk-for-java/track2reports/index.html
+[api_documentation]: http://azure.github.io/azure-sdk-for-java
 [event_hubs_product_docs]: https://docs.microsoft.com/azure/event-hubs/
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [maven]: https://maven.apache.org/

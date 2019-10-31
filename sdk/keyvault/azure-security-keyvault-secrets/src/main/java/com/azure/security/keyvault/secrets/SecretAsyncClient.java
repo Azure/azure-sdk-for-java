@@ -16,8 +16,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -30,7 +32,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.ResourceModifiedException;
@@ -376,35 +377,42 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecret#string}
      *
      * @param name The name of the secret to be deleted.
-     * @return A {@link Poller} to poll on and retrieve {@link DeletedSecret deleted secret}.
+     * @return A {@link PollerFlux} to poll on and retrieve {@link DeletedSecret deleted secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Poller<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), () -> Mono.empty(), activationOperation(name), null);
+    public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name) {
+        return new PollerFlux<>(Duration.ofSeconds(1),
+            activationOperation(name),
+            createPollOperation(name),
+            (pollingContext, firstResponse) -> Mono.empty(),
+            (pollingContext) -> Mono.empty());
     }
 
-    private Supplier<Mono<DeletedSecret>> activationOperation(String name) {
-        return () -> withContext(context -> deleteSecretWithResponse(name, context)
+    private Function<PollingContext<DeletedSecret>, Mono<DeletedSecret>> activationOperation(String name) {
+        return (pollingContext) -> withContext(context -> deleteSecretWithResponse(name, context)
             .flatMap(deletedSecretResponse -> Mono.just(deletedSecretResponse.getValue())));
     }
 
     /*
     Polling operation to poll on create delete key operation status.
     */
-    private Function<PollResponse<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> createPollOperation(String keyName) {
-        return prePollResponse ->
+    private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> createPollOperation(String keyName) {
+        return pollingContext ->
             withContext(context -> service.getDeletedSecretPoller(vaultUrl, keyName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .flatMap(deletedSecretResponse -> {
                     if (deletedSecretResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, prePollResponse.getValue())));
+                        return Mono.defer(() -> Mono.just(new PollResponse<DeletedSecret>(LongRunningOperationStatus.IN_PROGRESS,
+                                pollingContext.getLatestResponse().getValue())));
                     }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, deletedSecretResponse.getValue())));
-                }))
+                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                            deletedSecretResponse.getValue())));
+                })
                 // This means either vault has soft-delete disabled or permission is not granted for the get deleted key operation.
                 // In both cases deletion operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, prePollResponse.getValue()));
+                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    pollingContext.getLatestResponse().getValue())));
     }
 
     Mono<Response<DeletedSecret>> deleteSecretWithResponse(String name, Context context) {
@@ -538,35 +546,40 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string}
      *
      * @param name The name of the deleted secret to be recovered.
-     * @return A {@link Poller} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
+     * @return A {@link PollerFlux} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Poller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return new Poller<>(Duration.ofSeconds(1), createRecoverPollOperation(name), () -> Mono.empty(), recoverActivationOperation(name), null);
+    public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
+        return new PollerFlux<>(Duration.ofSeconds(1),
+            recoverActivationOperation(name),
+            createRecoverPollOperation(name),
+            (pollerContext, firstResponse) -> Mono.empty(),
+            (pollingContext) -> Mono.empty());
     }
 
-    private Supplier<Mono<KeyVaultSecret>> recoverActivationOperation(String name) {
-        return () -> withContext(context -> recoverDeletedSecretWithResponse(name, context)
+    private Function<PollingContext<KeyVaultSecret>, Mono<KeyVaultSecret>> recoverActivationOperation(String name) {
+        return (pollingContext) -> withContext(context -> recoverDeletedSecretWithResponse(name, context)
             .flatMap(keyResponse -> Mono.just(keyResponse.getValue())));
     }
 
     /*
     Polling operation to poll on create delete key operation status.
     */
-    private Function<PollResponse<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> createRecoverPollOperation(String secretName) {
-        return prePollResponse ->
+    private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> createRecoverPollOperation(String secretName) {
+        return pollingContext ->
             withContext(context -> service.getSecretPoller(vaultUrl, secretName, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .flatMap(secretResponse -> {
+                    PollResponse<KeyVaultSecret> prePollResponse = pollingContext.getLatestResponse();
                     if (secretResponse.getStatusCode() == 404) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, prePollResponse.getValue())));
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, prePollResponse.getValue())));
                     }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, secretResponse.getValue())));
+                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, secretResponse.getValue())));
                 }))
                 // This means permission is not granted for the get deleted key operation.
                 // In both cases deletion operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, prePollResponse.getValue()));
+                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollingContext.getLatestResponse().getValue()));
     }
 
     Mono<Response<KeyVaultSecret>> recoverDeletedSecretWithResponse(String name, Context context) {

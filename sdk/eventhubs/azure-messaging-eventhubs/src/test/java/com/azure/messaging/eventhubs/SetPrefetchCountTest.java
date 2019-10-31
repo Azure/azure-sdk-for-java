@@ -7,8 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -59,7 +59,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         client = createBuilder().buildAsyncClient();
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
-            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+            final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
             testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
         }
     }

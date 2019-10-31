@@ -4,8 +4,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 
-import java.io.IOException;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -32,7 +30,7 @@ public class PublishEvent {
 
         // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
         // sent from this producer are load balanced between all available partitions in the Event Hub instance.
-        EventHubAsyncProducer producer = client.createProducer();
+        EventHubProducerAsyncClient producer = client.createProducer();
 
         // Create an event to send.
         EventData data = new EventData("Hello world!".getBytes(UTF_8));
@@ -53,12 +51,7 @@ public class PublishEvent {
                 }
             }, () -> {
                 // Disposing of our producer and client.
-                try {
-                    producer.close();
-                } catch (IOException e) {
-                    System.err.println("Error encountered while closing producer: " + e.toString());
-                }
-
+                producer.close();
                 client.close();
             });
     }

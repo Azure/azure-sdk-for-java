@@ -588,7 +588,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
               <doclint>all</doclint>
@@ -868,10 +868,10 @@
       <activation>
         <property>
           <name>generate-overview</name>
-        </property>      
-      </activation>      
+        </property>
+      </activation>
       <build>
-        <plugins>  
+        <plugins>
           <plugin>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>exec-maven-plugin</artifactId>
@@ -891,7 +891,7 @@
                       <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
                       <argument>--rf</argument>
                       <argument>${project.basedir}/README.md</argument>
-                </arguments>    
+                </arguments>
               </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->
@@ -905,7 +905,7 @@
           </plugin>
          </plugins>
       </build>
-    </profile> 
+    </profile>
   </profiles>
 
   <modules>
@@ -927,7 +927,7 @@
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
     <module>sdk/storage/azure-storage-common</module>
-    <module>sdk/storage/azure-storage-file</module>
+    <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/azure-storage-queue-cryptography</module>

@@ -72,7 +72,7 @@ import java.util.ServiceLoader;
  * @see EventHubClient
  * @see EventHubAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventHubClient.class})
+@ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class})
 public class EventHubClientBuilder {
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
@@ -281,6 +281,34 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Creates a new {@link EventHubProducerAsyncClient} based on options set on this builder. Every time
+     * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubProducerAsyncClient} is created.
+     *
+     * @return A new {@link EventHubProducerAsyncClient} instance with all the configured options.
+     *
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
+     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubProducerAsyncClient buildAsyncProducer() {
+        return buildAsyncClient().createProducer();
+    }
+
+    /**
+     * Creates a new {@link EventHubProducerClient} based on options set on this builder. Every time
+     * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubProducerClient} is created.
+     *
+     * @return A new {@link EventHubProducerClient} instance with all the configured options.
+     *
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
+     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubProducerClient buildProducer() {
+        return buildClient().createProducer();
+    }
+
+    /**
      * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time
      * {@code buildAsyncClient()} is invoked, a new instance of {@link EventHubAsyncClient} is created.
      *
@@ -357,8 +385,10 @@ public class EventHubClientBuilder {
             return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
                 tokenManagerProvider, messageSerializer);
         });
+        final EventHubLinkProvider linkProvider = new EventHubLinkProvider(connectionMono,
+            connectionOptions.getHostname(), connectionOptions.getRetry());
 
-        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, connectionMono);
+        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, linkProvider);
     }
 
     private ConnectionOptions getConnectionOptions() {
