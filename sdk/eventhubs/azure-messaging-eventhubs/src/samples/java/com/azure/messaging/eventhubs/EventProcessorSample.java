@@ -24,7 +24,7 @@ public class EventProcessorSample {
             .buildAsyncClient();
 
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
-            .consumerGroup(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .eventHubClient(eventHubAsyncClient)
             .partitionProcessorFactory(LogPartitionProcessor::new)
             .partitionManager(new InMemoryPartitionManager());

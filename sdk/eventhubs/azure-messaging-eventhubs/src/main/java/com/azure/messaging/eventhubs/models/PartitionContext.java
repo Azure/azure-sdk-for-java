@@ -21,6 +21,7 @@ public class PartitionContext {
     private final String partitionId;
     private final String eventHubName;
     private final String consumerGroup;
+    private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
     private final String ownerId;
     private final AtomicReference<String> eTag;
     private final PartitionManager partitionManager;
@@ -45,6 +46,27 @@ public class PartitionContext {
         this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null.");
         this.eTag = new AtomicReference<>(eTag);
         this.partitionManager = Objects.requireNonNull(partitionManager, "partitionManager cannot be null.");
+
+        this.lastEnqueuedEventProperties = null;
+    }
+
+    /**
+     * Creates an instance of PartitionContext that contains partition information available for each event.
+     *
+     * @param partitionId The partition id of the partition.
+     * @param eventHubName The Event Hub name that the event originated from.
+     * @param consumerGroup The consumer group name the event originated from.
+     * @param lastEnqueuedEventProperties Set of information about the last enqueued event of a partition.
+     */
+    public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
+        LastEnqueuedEventProperties lastEnqueuedEventProperties) {
+        this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");
+        this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null.");
+        this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
+        this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;
+        this.ownerId = null;
+        this.eTag = new AtomicReference<>();
+        this.partitionManager = null;
     }
 
     /**
@@ -72,6 +94,18 @@ public class PartitionContext {
      */
     public String getConsumerGroup() {
         return consumerGroup;
+    }
+
+    /**
+     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
+     * received from the Event Hubs service.
+     *
+     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
+     *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
+     *     partition.
+     */
+    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
+        return lastEnqueuedEventProperties;
     }
 
     /**

@@ -5,57 +5,31 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
+import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.message.Message;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
- * consumer group.
- *
- * <ul>
- * <li>If {@link EventHubAsyncConsumer} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
- * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
- * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
- * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#getOwnerLevel()} when creating consumers. This non-exclusive consumer is sometimes
- * referred to as a "Non-Epoch Consumer."</li>
- * </ul>
- *
- * <p><strong>Consuming events from Event Hub</strong></p>
- *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive}
- *
- * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
- *
- * For event consumers that need to limit the number of events they receive at a given time, they can use {@link
- * BaseSubscriber#request(long)}.
- *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber}
- *
- * @see EventHubAsyncClient#createConsumer(String, String, EventPosition)
- * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
+ * A package-private consumer responsible for reading {@link EventData} from a specific Event Hub partition in the
+ * context of a specific consumer group.
  */
-@Immutable
-public class EventHubAsyncConsumer implements Closeable {
-    private static final AtomicReferenceFieldUpdater<EventHubAsyncConsumer, AmqpReceiveLink>
-        RECEIVE_LINK_FIELD_UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(EventHubAsyncConsumer.class, AmqpReceiveLink.class, "receiveLink");
+class EventHubPartitionAsyncConsumer implements Closeable {
+    private static final AtomicReferenceFieldUpdater<EventHubPartitionAsyncConsumer, AmqpReceiveLink>
+        RECEIVE_LINK_FIELD_UPDATER = AtomicReferenceFieldUpdater.newUpdater(
+        EventHubPartitionAsyncConsumer.class, AmqpReceiveLink.class, "receiveLink");
 
     // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
     private static final int MINIMUM_REQUEST = 0;
@@ -64,17 +38,23 @@ public class EventHubAsyncConsumer implements Closeable {
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
-    private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumer.class);
+    private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final MessageSerializer messageSerializer;
-    private final EmitterProcessor<EventData> emitterProcessor;
-    private final Flux<EventData> messageFlux;
+    private final String eventHubName;
+    private final String consumerGroup;
+    private final String partitionId;
+    private final EmitterProcessor<PartitionEvent> emitterProcessor;
+    private final Flux<PartitionEvent> messageFlux;
     private final boolean trackLastEnqueuedEventProperties;
 
     private volatile AmqpReceiveLink receiveLink;
 
-    EventHubAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
-                          EventHubConsumerOptions options) {
-        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+    EventHubPartitionAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
+        String eventHubName, String consumerGroup, String partitionId, EventHubConsumerOptions options) {
+        this.messageSerializer = messageSerializer;
+        this.eventHubName = eventHubName;
+        this.consumerGroup = consumerGroup;
+        this.partitionId = partitionId;
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
         this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
 
@@ -165,29 +145,12 @@ public class EventHubAsyncConsumer implements Closeable {
     }
 
     /**
-     * Begin consuming events until there are no longer any subscribers, or the parent {@link
-     * EventHubAsyncClient#close() EventHubAsyncClient.close()} is called.
+     * Begin consuming events until there are no longer any subscribers.
      *
-     * <p><strong>Consuming events from Event Hub</strong></p>
-     *
-     * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncconsumer.receive}
-     *
-     * @return A stream of events for this consumer.
+     * @return A stream of events received from the partition.
      */
-    public Flux<EventData> receive() {
+    Flux<PartitionEvent> receive() {
         return messageFlux;
-    }
-
-    /**
-     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
-     * received from the Event Hubs service.
-     *
-     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
-     *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
-     *     partition.
-     */
-    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
-        return lastEnqueuedEventProperties.get();
     }
 
     /**
@@ -198,9 +161,9 @@ public class EventHubAsyncConsumer implements Closeable {
      *
      * @param message AMQP message to deserialize.
      *
-     * @return The deserialized {@link EventData}.
+     * @return The deserialized {@link EventData} with partition information.
      */
-    private EventData onMessageReceived(Message message) {
+    private PartitionEvent onMessageReceived(Message message) {
         final EventData event = messageSerializer.deserialize(message, EventData.class);
 
         if (trackLastEnqueuedEventProperties) {
@@ -215,6 +178,9 @@ public class EventHubAsyncConsumer implements Closeable {
             }
         }
 
-        return event;
+        final PartitionContext partitionContext = new PartitionContext(partitionId, eventHubName, consumerGroup,
+            lastEnqueuedEventProperties.get());
+
+        return new PartitionEvent(partitionContext, event);
     }
 }

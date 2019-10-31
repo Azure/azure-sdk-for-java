@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
@@ -11,28 +12,30 @@ import reactor.core.publisher.BaseSubscriber;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Code snippets demonstrating various {@link EventHubAsyncConsumer} scenarios.
+ * Code snippets demonstrating various {@link EventHubConsumerAsyncClient} scenarios.
  */
-public class EventHubAsyncConsumerJavaDocCodeSamples {
+public class EventHubConsumerAsyncClientJavaDocCodeSamples {
     private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
 
     /**
      * Receives event data
      */
     public void receive() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-            EventPosition.latest());
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder().connectionString("fake-string")
+            .startingPosition(EventPosition.latest())
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .buildAsyncConsumer();
 
         // Keep a reference to `subscription`. When the program is finished receiving events, call
         // subscription.dispose(). This will stop fetching events from the Event Hub.
-        Disposable subscription = consumer.receive().subscribe(event -> {
+        Disposable subscription = consumer.receive(partitionId).subscribe(event -> {
             // process event
         }, error -> System.err.print(error.toString()));
-        // END: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive
 
         subscription.dispose();
     }
@@ -44,11 +47,14 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
         // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
-            partitionId, EventPosition.latest());
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+            .connectionString("fake-string")
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.latest())
+            .buildAsyncConsumer();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber
-        consumer.receive().subscribe(new BaseSubscriber<EventData>() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#basesubscriber
+        consumer.receive(partitionId).subscribe(new BaseSubscriber<PartitionEvent>() {
             private static final int NUMBER_OF_EVENTS = 5;
             private final AtomicInteger currentNumberOfEvents = new AtomicInteger();
 
@@ -59,7 +65,7 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
             }
 
             @Override
-            protected void hookOnNext(EventData value) {
+            protected void hookOnNext(PartitionEvent value) {
                 // Process the EventData
 
                 // If the number of events we have currently received is a multiple of 5, that means we have reached the
@@ -70,6 +76,6 @@ public class EventHubAsyncConsumerJavaDocCodeSamples {
                 }
             }
         });
-        // END: com.azure.messaging.eventhubs.eventhubasyncconsumer.receive#basesubscriber
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#basesubscriber
     }
 }

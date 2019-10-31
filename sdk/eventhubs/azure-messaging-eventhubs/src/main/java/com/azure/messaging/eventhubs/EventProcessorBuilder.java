@@ -38,7 +38,7 @@ import java.util.function.Supplier;
  * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation}
  *
  * @see EventProcessor
- * @see EventHubConsumer
+ * @see EventHubConsumerClient
  */
 public class EventProcessorBuilder {
 
