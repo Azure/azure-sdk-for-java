@@ -37,7 +37,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  * all connections to the Event Hub.
  * </p>
  */
-public class PartitionPumpManager {
+class PartitionPumpManager {
 
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
     private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
@@ -57,7 +57,7 @@ public class PartitionPumpManager {
      * checkpoint for the partition is available.
      * @param eventHubAsyncClient The client used to receive events from the Event Hub.
      */
-    public PartitionPumpManager(PartitionManager partitionManager,
+    PartitionPumpManager(PartitionManager partitionManager,
         Supplier<PartitionProcessor> partitionProcessorFactory,
         EventPosition initialEventPosition, EventHubAsyncClient eventHubAsyncClient, TracerProvider tracerProvider) {
         this.partitionManager = partitionManager;
@@ -71,7 +71,7 @@ public class PartitionPumpManager {
      * Stops all partition pumps that are actively consuming events. This method is invoked when the {@link
      * EventProcessor} is requested to stop.
      */
-    public void stopAllPartitionPumps() {
+    void stopAllPartitionPumps() {
         this.partitionPumps.forEach((partitionId, eventHubConsumer) -> {
             try {
                 eventHubConsumer.close();
@@ -89,7 +89,7 @@ public class PartitionPumpManager {
      *
      * @param claimedOwnership The details of partition ownership for which new partition pump is requested to start.
      */
-    public void startPartitionPump(PartitionOwnership claimedOwnership) {
+    void startPartitionPump(PartitionOwnership claimedOwnership) {
         if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
             logger.info("Consumer is already running for this partition  {}", claimedOwnership.getPartitionId());
             return;

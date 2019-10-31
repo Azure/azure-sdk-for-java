@@ -34,7 +34,7 @@ import static java.util.stream.Collectors.toList;
  * partition is considered inactive and the partition is available for other EventProcessors to own.
  * </p>
  */
-public final class PartitionBasedLoadBalancer {
+final class PartitionBasedLoadBalancer {
 
     private static final Random RANDOM = new Random();
     private final ClientLogger logger = new ClientLogger(PartitionBasedLoadBalancer.class);
@@ -60,7 +60,7 @@ public final class PartitionBasedLoadBalancer {
      * @param partitionPumpManager The partition pump manager that keeps track of all EventHubConsumers and partitions
      * that this {@link EventProcessor} is processing.
      */
-    public PartitionBasedLoadBalancer(final PartitionManager partitionManager,
+    PartitionBasedLoadBalancer(final PartitionManager partitionManager,
         final EventHubAsyncClient eventHubAsyncClient,
         final String eventHubName, final String consumerGroupName, final String ownerId,
         final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager) {
@@ -85,7 +85,7 @@ public final class PartitionBasedLoadBalancer {
      * When a new partition is claimed, this method is also responsible for starting a partition pump that creates an
      * {@link EventHubConsumerAsyncClient} for processing events from that partition.
      */
-    public void loadBalance() {
+    void loadBalance() {
         /*
          * Retrieve current partition ownership details from the datastore.
          */
