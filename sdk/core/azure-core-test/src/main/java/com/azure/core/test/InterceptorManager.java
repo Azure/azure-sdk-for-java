@@ -21,8 +21,8 @@ import java.util.Objects;
 
 /**
  * A class that keeps track of network calls by either reading the data from an existing test session record or
- * recording the network calls in memory. Test session records are saved or read from:
- * "<i>session-records/{@code testName}.json</i>"
+ * recording the network calls in memory. Test session records are saved or read from: "<i>session-records/{@code
+ * testName}.json</i>"
  *
  * <ul>
  *     <li>If the {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
@@ -54,6 +54,8 @@ public class InterceptorManager implements AutoCloseable {
      *     record to read network calls from.</li>
      *     <li>If {@code testMode} is {@link TestMode#RECORD}, the manager creates a new test session record and saves
      *     all the network calls to it.</li>
+     *     <li>If {@code testMode} is {@link TestMode#LIVE}, the manager won't create a new test session record or
+     *     attempt to find one; all network calls will go unrecorded.</li>
      * </ul>
      *
      * The test session records are persisted in the path: "<i>session-records/{@code testName}.json</i>"
@@ -71,21 +73,25 @@ public class InterceptorManager implements AutoCloseable {
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
 
-        this.recordedData = testMode == TestMode.PLAYBACK
-            ? readDataFromFile()
-            : new RecordedData();
+        if (testMode == TestMode.PLAYBACK) {
+            this.recordedData = readDataFromFile();
+        } else if (testMode == TestMode.RECORD) {
+            this.recordedData = new RecordedData();
+        } else {
+            this.recordedData = null;
+        }
     }
 
     /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of
-     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
-     * {@link NetworkCallRecord#getResponse()}.
+     * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
+     * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
+     * NetworkCallRecord#getResponse()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
      *
      * @param testName Name of the test session record.
-     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when playing
-     * back network calls.
+     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when
+     * playing back network calls.
      * @throws IOException An existing test session record could not be located or the data could not be deserialized
      * into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
@@ -120,7 +126,8 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Gets a new HTTP pipeline policy that records network calls and its data is managed by {@link InterceptorManager}.
+     * Gets a new HTTP pipeline policy that records network calls and its data is managed by {@link
+     * InterceptorManager}.
      *
      * @return HttpPipelinePolicy to record network calls.
      */
@@ -153,6 +160,7 @@ public class InterceptorManager implements AutoCloseable {
                     logger.error("Unable to write data to playback file.", e);
                 }
                 break;
+            case LIVE:
             case PLAYBACK:
                 // Do nothing
                 break;
@@ -197,7 +205,8 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Add text replacement rule (regex as key, the replacement text as value) into {@link InterceptorManager#textReplacementRules}
+     * Add text replacement rule (regex as key, the replacement text as value) into {@link
+     * InterceptorManager#textReplacementRules}
      *
      * @param regex the pattern to locate the position of replacement
      * @param replacement the replacement text

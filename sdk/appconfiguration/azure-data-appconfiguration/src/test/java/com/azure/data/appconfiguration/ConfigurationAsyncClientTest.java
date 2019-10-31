@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.IgnoreRecording;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
@@ -71,6 +72,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
      */
+    @IgnoreRecording
     public void addConfigurationSetting() {
         addConfigurationSettingRunner((expected) ->
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))

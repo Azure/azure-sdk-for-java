@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
-import com.azure.core.util.Configuration;
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.rules.TestName;
 
 import java.io.IOException;
@@ -27,6 +28,9 @@ public abstract class TestBase {
     protected InterceptorManager interceptorManager;
     protected TestResourceNamer testResourceNamer;
 
+    @Rule
+    public PlaybackAllowed playbackAllowed = new PlaybackAllowed();
+
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
      * variable. If it is not set, {@link TestMode#PLAYBACK}
@@ -42,6 +46,7 @@ public abstract class TestBase {
      */
     @Before
     public void setupTest() {
+        playbackAllowed.assertPlaybackIsAllowed(testMode);
         final String testName = getTestName();
         logger.info("Test Mode: {}, Name: {}", testMode, testName);
 

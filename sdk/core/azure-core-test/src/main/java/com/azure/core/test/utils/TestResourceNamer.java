@@ -46,7 +46,11 @@ public class TestResourceNamer extends ResourceNamer {
             return recordedData.removeVariable();
         } else {
             String name = super.randomName(prefix, maxLen);
-            recordedData.addVariable(name);
+
+            if (testMode == TestMode.RECORD) {
+                recordedData.addVariable(name);
+            }
+
             return name;
         }
     }
@@ -62,7 +66,11 @@ public class TestResourceNamer extends ResourceNamer {
             return recordedData.removeVariable();
         } else {
             String uuid = super.randomUuid();
-            recordedData.addVariable(uuid);
+
+            if (testMode == TestMode.RECORD) {
+                recordedData.addVariable(uuid);
+            }
+
             return uuid;
         }
     }
@@ -77,7 +85,11 @@ public class TestResourceNamer extends ResourceNamer {
             return OffsetDateTime.parse(recordedData.removeVariable());
         } else {
             OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-            recordedData.addVariable(now.toString());
+
+            if (testMode == TestMode.RECORD) {
+                recordedData.addVariable(now.toString());
+            }
+
             return now;
         }
     }
@@ -92,7 +104,10 @@ public class TestResourceNamer extends ResourceNamer {
         if (testMode == TestMode.PLAYBACK) {
             return recordedData.removeVariable();
         } else {
-            recordedData.addVariable(value);
+            if (testMode == TestMode.RECORD) {
+                recordedData.addVariable(value);
+            }
+
             return value;
         }
     }
