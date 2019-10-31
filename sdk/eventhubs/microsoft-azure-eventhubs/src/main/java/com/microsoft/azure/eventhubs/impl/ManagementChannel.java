@@ -14,12 +14,13 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ScheduledExecutorService;
 
 final class ManagementChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
 
-    ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection, final String clientId) {
+    ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection, final String clientId, final ScheduledExecutorService executor) {
 
         final RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
@@ -29,7 +30,8 @@ final class ManagementChannel {
                         "mgmt-session",
                         "mgmt",
                         ClientConstants.MANAGEMENT_ADDRESS,
-                        connection),
+                        connection,
+                        executor),
                 closer);
         closer.setInnerChannel(this.innerChannel);
     }

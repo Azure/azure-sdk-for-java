@@ -97,6 +97,7 @@ public class ConnectionHandler extends BaseHandler {
         }
 
         connection.setProperties(connectionProperties);
+
         connection.open();
     }
 
@@ -151,6 +152,9 @@ public class ConnectionHandler extends BaseHandler {
 
         final Transport transport = event.getTransport();
 
+        // Set IdleTimeout to 60 seconds to automatically detect and abort dead TCP sockets
+        transport.setIdleTimeout(AmqpConstants.TRANSPORT_IDLE_TIMEOUT_MILLIS);
+
         this.addTransportLayers(event, (TransportInternal) transport);
     }
 
@@ -163,10 +167,9 @@ public class ConnectionHandler extends BaseHandler {
                     connection.getHostname(), this.connectionId, connection.getLocalState(), connection.getRemoteState()));
         }
 
-        // if failure happened while establishing transport - nothing to free up.
-        if (connection.getRemoteState() != EndpointState.UNINITIALIZED) {
-            connection.free();
-        }
+        // It is important to call free even if connection is uninitialized, because that
+        // triggers the onLinkFinal handler on half-open links that cleans them up.
+        connection.free();
     }
 
     @Override
