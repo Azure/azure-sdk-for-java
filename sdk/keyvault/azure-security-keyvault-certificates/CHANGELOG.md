@@ -12,11 +12,12 @@ For details on the Azure SDK for Java (November 2019 Preview) release refer to t
 - Contact class has been renamed to CertificateContact.
 - Issuer class has been renamed to CertificateIssuer.
 - getCertificate method has been renamed to getCertificateVersion in `CertificateClient` and `CertificateAsyncClient`
-- getCertificateWithPolicy method has been renamed to getCertificate in `CertificateClient` and `CertificateAsyncClient`
+- getCertificateWithPolicy method has been renamed to getCertificate and now returns KeyVaultCertificateWithPolicy in `CertificateClient` and `CertificateAsyncClient`
 - getPendingCertificateSigningRequest method has been removed from `CertificateClient` and `CertificateAsyncClient`
 
 ### Major changes
 - CertificateClient.vaultUrl has been added with the original value pass to CertificateClient.
+- KeyVaultCertificateWithPolicy has been added and is returned by getCertificate method in `CertificateClient` and `CertificateAsyncClient`
 
 
 ## 4.0.0-preview.4 (2019-10-08)
