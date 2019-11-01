@@ -42,17 +42,36 @@ jobs:
           Copy-Item "$(Build.SourcesDirectory)/eng/docgeneration/docfx.json" -Destination "$(Build.SourcesDirectory)/docfx_project/" -Force
         displayName: Copy over docfx.json
       - pwsh: |
-          # Right now the ServiceList is only going to include Client/Data. Management is still
-          # in the process of being moved into the unified pipelines and is not yet in the sdk
-          # directory/pipelines.
+
+          # The service mapper is used to map the directory names to the service names to produce
+          # a more friendly index. If something isn't in the mapper then the default will just be
+          # the service name in all caps
+          $serviceMapHash = Get-Content -Path "$(Build.SourcesDirectory)/eng/docgeneration/service-mapper.json" | ConvertFrom-Json -AsHashtable
+
+          # The list of services is being constructed from the directory list under the sdk folder
+          # which, right now, only contains client/data directories. When management is moved to
+          # the under sdk it'll automatically get picked up.
           $ServiceListData = Get-ChildItem "$(Build.SourcesDirectory)/sdk" -Directory
           $YmlPath = "$(Build.SourcesDirectory)/docfx_project/api"
           New-Item -Path $YmlPath -Name "toc.yml" -Force
           foreach ($Dir in $ServiceListData)
           {   
-              New-Item -Path $YmlPath -Name "$($Dir.Name).md" -Force
-              Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($Dir.Name.ToUpper())`r`n  href: $($Dir.Name).md"
-              Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# CLIENT"
+              $mappedDir = ""
+              if ($serviceMapHash.ContainsKey($Dir.Name)) 
+              {
+                  $mappedDir = $serviceMapHash[$Dir.Name]
+              }
+              else
+              {
+                  $mappedDir = $Dir.Name.ToUpper()
+              }
+
+              # Store the list of artifacts into the arrays and write them into the .md file
+              # after processing the list of subdirectories. This will allow the correct 
+              # division of the artifacts under the Client or Management headings
+              $clientArr = @()
+              $mgmtArr = @()
+
               $PkgList = Get-ChildItem $Dir.FullName -Directory -Exclude changelog, faq, .github, build
               if (($PkgList | Measure-Object).count -eq 0)
               {
@@ -60,17 +79,80 @@ jobs:
               }
               foreach ($Pkg in $PkgList)
               {
-                  $PkgName = $Pkg.BaseName
-                  $IndexofAzure = $PkgName.IndexOf('azure')
-                  $PkgName = $PkgName.Substring($IndexofAzure)
-                  if ($Dir.BaseName -eq 'cognitiveservices')
+                  # Load the pom file to pull the artifact name and grab the
+                  # parent's relative path to see which parent pom is being
+                  # used to determine whether or not the artifact is client 
+                  # or management.
+                  $PomPath = Join-Path -Path $Pkg -ChildPath "pom.xml"
+
+                  # no pom file = nothing to process
+                  if (Test-Path -path $PomPath) 
                   {
-                      $PkgName = $PkgName.Replace('-cs-', '-cognitiveservices-')
+                      $xml = New-Object xml
+                      $xml.Load($PomPath)
+
+                      # Get the artifactId from the POM
+                      $artifactId = $xml.project.artifactId
+
+                      $parent = $xml.project.parent.relativePath
+
+                      # If the parent is null or empty then the pom isn't directly including 
+                      # one of the pom.[client|data|management].xml and needs to be specially
+                      # handled
+                      if (("" -eq $parent) -or ($null -eq $parent))
+                      {
+                          # Cosmos has a root pom which includes pom.client.xml that won't
+                          # be detected by this logic. It's easier to deal with specially
+                          # than it is to try and climb the pom chain here.
+                          if ($Dir.BaseName -eq 'cosmos') 
+                          {
+                              $clientArr += $artifactId
+                          } 
+                          else 
+                          {
+                              Write-Host "*snowflake* Pom $PomPath, has a null or empty relative path."
+                          }
+                      } 
+                      else 
+                      {
+                          if (($parent.IndexOf('pom.client.xml') -ne -1) -or ($parent.IndexOf('pom.data.xml') -ne -1))
+                          {
+                              $clientArr += $artifactId
+                          } 
+                          else 
+                          {
+                              $mgmtArr += $artifactId
+                          }
+                      }
                   }
-                  Write-Host "Write $($PkgName) to $($Dir.Name).md"
-                  Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $PkgName"
+              }
+              # Only create this if there's something to create
+              if (($clientArr.Count -gt 0) -or ($mgmtArr.Count -gt 0))
+              {
+                New-Item -Path $YmlPath -Name "$($Dir.Name).md" -Force
+                Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($mappedDir)`r`n  href: $($Dir.Name).md"
+                # loop through the arrays and add the appropriate artifacts under the appropriate headings
+                if ($clientArr.Count -gt 0)
+                {
+                    Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# Client Libraries"
+                    foreach($lib in $clientArr) 
+                    {
+                        Write-Host "Write $($lib) to $($Dir.Name).md"
+                        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $PkgName"
+                    }
+                }
+                if ($mgmtArr.Count -gt 0) 
+                {
+                    Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# Management Libraries"
+                    foreach($lib in $clientArr) 
+                    {
+                        Write-Output "Write $($lib) to $($Dir.Name).md"
+                        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $PkgName"
+                    }
+                }
               }
           }
+
           New-Item -Path "$(Build.SourcesDirectory)/docfx_project" -Name "toc.yml" -Force
           Add-Content -Path "$(Build.SourcesDirectory)/docfx_project/toc.yml" -Value "- name: Azure SDK for Java Apis`r`n  href: api/`r`n  homepage: api/index.md"
           Copy-Item "$(Build.SourcesDirectory)/README.md" -Destination "$(Build.SourcesDirectory)/docfx_project/api/index.md" -Force
