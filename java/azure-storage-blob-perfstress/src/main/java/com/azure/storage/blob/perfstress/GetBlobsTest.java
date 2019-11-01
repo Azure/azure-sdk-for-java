@@ -18,17 +18,17 @@ public class GetBlobsTest extends ContainerTest<CountOptions> {
         return super.GlobalSetupAsync().then(
             Flux.range(0, Options.Count)
                 .map(i -> "getblobstest-" + UUID.randomUUID())
-                .flatMap(b -> BlobContainerAsyncClient.getBlobAsyncClient(b).upload(Flux.empty(), new ParallelTransferOptions()))
+                .flatMap(b -> BlobContainerAsyncClient.getBlobAsyncClient(b).upload(Flux.empty(), null))
                 .then());
     }
 
     @Override
     public void Run() {
-        BlobContainerClient.listBlobsFlat().forEach(b -> {});
+        BlobContainerClient.listBlobs().forEach(b -> {});
     }
 
     @Override
     public Mono<Void> RunAsync() {
-        return BlobContainerAsyncClient.listBlobsFlat().then();
+        return BlobContainerAsyncClient.listBlobs().then();
     }
 }

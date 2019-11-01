@@ -57,15 +57,11 @@ public class UploadFromFileTest extends RandomBlobTest<SizeOptions> {
 
     @Override
     public void Run() {
-        try {
-            _blobClient.uploadFromFile(tempFile.toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        _blobClient.uploadFromFile(tempFile.toString(), true);
     }
 
     @Override
     public Mono<Void> RunAsync() {
-        return _blobAsyncClient.uploadFromFile(tempFile.toString());
+        return _blobAsyncClient.uploadFromFile(tempFile.toString(), true);
     }
 }

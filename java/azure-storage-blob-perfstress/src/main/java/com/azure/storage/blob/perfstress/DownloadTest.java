@@ -25,7 +25,7 @@ public class DownloadTest extends ContainerTest<SizeOptions> {
 
     public Mono<Void> GlobalSetupAsync() {
         return super.GlobalSetupAsync()
-            .then(_blobAsyncClient.upload(RandomFlux.create(Options.Size), new ParallelTransferOptions()))
+            .then(_blobAsyncClient.upload(RandomFlux.create(Options.Size), null))
             .then();
     }
 

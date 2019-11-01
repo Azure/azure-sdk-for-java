@@ -19,6 +19,6 @@ public class UploadTest extends RandomBlobTest<SizeOptions> {
 
     @Override
     public Mono<Void> RunAsync() {
-        return _blobAsyncClient.upload(RandomFlux.create(Options.Size), null).then();
+        return _blobAsyncClient.upload(RandomFlux.create(Options.Size), null, true).then();
     }
 }

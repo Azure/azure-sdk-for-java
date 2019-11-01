@@ -16,15 +16,11 @@ public class UploadBlockBlobTest extends RandomBlobTest<SizeOptions> {
 
     @Override
     public void Run() {
-        try {
-            _blockBlobClient.upload(RandomStream.create(Options.Size), Options.Size);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        _blockBlobClient.upload(RandomStream.create(Options.Size), Options.Size, true);
     }
 
     @Override
     public Mono<Void> RunAsync() {
-        return _blockBlobAsyncClient.upload(RandomFlux.create(Options.Size), Options.Size).then();
+        return _blockBlobAsyncClient.upload(RandomFlux.create(Options.Size), Options.Size, true).then();
     }
 }
