@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The Certificate Management policy for the {@link Certificate certificate}.
+ * The Certificate Management policy for the {@link KeyVaultCertificate certificate}.
  */
 public final class CertificatePolicy {
 

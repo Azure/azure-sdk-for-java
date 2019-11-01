@@ -6,13 +6,8 @@ package com.azure.security.keyvault.certificates;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.CertificateProperties;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
-import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,7 +29,7 @@ public class ListOperations {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -44,10 +39,10 @@ public class ListOperations {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-        Certificate cert = certificatePoller.getFinalResult();
+        KeyVaultCertificate cert = certificatePoller.getFinalResult();
 
         //Let's create a certificate issuer.
         Issuer issuer = new Issuer("myIssuer", "Test");
@@ -62,14 +57,14 @@ public class ListOperations {
 
         // Let's list all the certificates in the key vault.
         for (CertificateProperties certificate : certificateClient.listCertificates()) {
-            Certificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
+            KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
             System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.getProperties().getName(),
                 certificateWithAllProperties.getSecretId());
         }
 
         // Let's list all certificate versions of the certificate.
         for (CertificateProperties certificate : certificateClient.listCertificateVersions("myCertificate")) {
-            Certificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
+            KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
             System.out.printf("Received certificate with name %s and version %s", certificateWithAllProperties.getProperties().getName(),
                 certificateWithAllProperties.getProperties().getVersion());
         }

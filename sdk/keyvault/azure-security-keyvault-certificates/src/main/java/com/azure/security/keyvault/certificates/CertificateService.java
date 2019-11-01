@@ -28,14 +28,7 @@ import com.azure.security.keyvault.certificates.implementation.CertificateProper
 import com.azure.security.keyvault.certificates.implementation.ContactPage;
 import com.azure.security.keyvault.certificates.implementation.DeletedCertificatePage;
 import com.azure.security.keyvault.certificates.implementation.IssuerPropertiesPage;
-import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.Contact;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.CertificateProperties;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.*;
 import reactor.core.publisher.Mono;
 
 /**
@@ -98,13 +91,26 @@ interface CertificateService {
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Certificate>> getCertificate(@HostParam("url") String url,
-                                               @PathParam("certificate-name") String certificateName,
-                                               @PathParam("certificate-version") String certificateVersion,
-                                               @QueryParam("api-version") String apiVersion,
-                                               @HeaderParam("accept-language") String acceptLanguage,
-                                               @HeaderParam("Content-Type") String type,
-                                               Context context);
+    Mono<Response<KeyVaultCertificate>> getCertificate(@HostParam("url") String url,
+                                                       @PathParam("certificate-name") String certificateName,
+                                                       @PathParam("certificate-version") String certificateVersion,
+                                                       @QueryParam("api-version") String apiVersion,
+                                                       @HeaderParam("accept-language") String acceptLanguage,
+                                                       @HeaderParam("Content-Type") String type,
+                                                       Context context);
+
+    @Get("certificates/{certificate-name}/{certificate-version}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithPolicy(@HostParam("url") String url,
+                                                                           @PathParam("certificate-name") String certificateName,
+                                                                           @PathParam("certificate-version") String certificateVersion,
+                                                                           @QueryParam("api-version") String apiVersion,
+                                                                           @HeaderParam("accept-language") String acceptLanguage,
+                                                                           @HeaderParam("Content-Type") String type,
+                                                                           Context context);
 
 
 
@@ -147,13 +153,13 @@ interface CertificateService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {500}, value = HttpResponseException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Certificate>> updateCertificate(@HostParam("url") String url,
-                                                  @PathParam("certificate-name") String certificateName,
-                                                  @QueryParam("api-version") String apiVersion,
-                                                  @HeaderParam("accept-language") String acceptLanguage,
-                                                  @BodyParam("body") CertificateUpdateParameters properties,
-                                                  @HeaderParam("Content-Type") String type,
-                                                  Context context);
+    Mono<Response<KeyVaultCertificate>> updateCertificate(@HostParam("url") String url,
+                                                          @PathParam("certificate-name") String certificateName,
+                                                          @QueryParam("api-version") String apiVersion,
+                                                          @HeaderParam("accept-language") String acceptLanguage,
+                                                          @BodyParam("body") CertificateUpdateParameters properties,
+                                                          @HeaderParam("Content-Type") String type,
+                                                          Context context);
 
 
     @Get("deletedcertificates/{certificate-name}")
@@ -182,12 +188,12 @@ interface CertificateService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Certificate>> recoverDeletedCertificate(@HostParam("url") String url,
-                                                @PathParam("certificate-name") String certificateName,
-                                                @QueryParam("api-version") String apiVersion,
-                                                @HeaderParam("accept-language") String acceptLanguage,
-                                                @HeaderParam("Content-Type") String type,
-                                                Context context);
+    Mono<Response<KeyVaultCertificate>> recoverDeletedCertificate(@HostParam("url") String url,
+                                                                  @PathParam("certificate-name") String certificateName,
+                                                                  @QueryParam("api-version") String apiVersion,
+                                                                  @HeaderParam("accept-language") String acceptLanguage,
+                                                                  @HeaderParam("Content-Type") String type,
+                                                                  Context context);
 
 
     @Post("certificates/{certificate-name}/backup")
@@ -206,12 +212,12 @@ interface CertificateService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Certificate>> restoreCertificate(@HostParam("url") String url,
-                                         @QueryParam("api-version") String apiVersion,
-                                         @HeaderParam("accept-language") String acceptLanguage,
-                                         @BodyParam("application/json") CertificateRestoreParameters parameters,
-                                         @HeaderParam("Content-Type") String type,
-                                         Context context);
+    Mono<Response<KeyVaultCertificate>> restoreCertificate(@HostParam("url") String url,
+                                                           @QueryParam("api-version") String apiVersion,
+                                                           @HeaderParam("accept-language") String acceptLanguage,
+                                                           @BodyParam("application/json") CertificateRestoreParameters parameters,
+                                                           @HeaderParam("Content-Type") String type,
+                                                           Context context);
 
     @Get("deletedcertificates")
     @ExpectedResponses({200})
@@ -350,24 +356,24 @@ interface CertificateService {
     @Post("certificates/{certificate-name}/import")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Certificate>> importCertificate(@HostParam("url") String url,
-                                                                @PathParam("certificate-name") String certificateName,
-                                                                @QueryParam("api-version") String apiVersion,
-                                                                @HeaderParam("accept-language") String acceptLanguage,
-                                                                @BodyParam("application/json") CertificateImportParameters parameters,
-                                                                @HeaderParam("Content-Type") String type,
-                                                                Context context);
+    Mono<Response<KeyVaultCertificate>> importCertificate(@HostParam("url") String url,
+                                                          @PathParam("certificate-name") String certificateName,
+                                                          @QueryParam("api-version") String apiVersion,
+                                                          @HeaderParam("accept-language") String acceptLanguage,
+                                                          @BodyParam("application/json") CertificateImportParameters parameters,
+                                                          @HeaderParam("Content-Type") String type,
+                                                          Context context);
 
     @Post("certificates/{certificate-name}/pending/merge")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Certificate>> mergeCertificate(@HostParam("url") String url,
-                                                       @PathParam("certificate-name") String certificateName,
-                                                       @QueryParam("api-version") String apiVersion,
-                                                       @HeaderParam("accept-language") String acceptLanguage,
-                                                       @BodyParam("application/json") CertificateMergeParameters parameters,
-                                                       @HeaderParam("Content-Type") String type,
-                                                       Context context);
+    Mono<Response<KeyVaultCertificate>> mergeCertificate(@HostParam("url") String url,
+                                                         @PathParam("certificate-name") String certificateName,
+                                                         @QueryParam("api-version") String apiVersion,
+                                                         @HeaderParam("accept-language") String acceptLanguage,
+                                                         @BodyParam("application/json") CertificateMergeParameters parameters,
+                                                         @HeaderParam("Content-Type") String type,
+                                                         Context context);
 
     @Get("certificates/{certificate-name}/policy")
     @ExpectedResponses({200})

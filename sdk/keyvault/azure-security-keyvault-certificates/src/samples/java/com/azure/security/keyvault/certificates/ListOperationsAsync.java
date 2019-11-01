@@ -30,7 +30,7 @@ public class ListOperationsAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
@@ -73,7 +73,7 @@ public class ListOperationsAsync {
         Thread.sleep(22000);
 
         // Let's list all the certificates in the key vault.
-        certificateAsyncClient.listCertificates()
+        certificateAsyncClient.listPropertiesOfCertificates()
             .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s \n",
                     certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
@@ -81,7 +81,7 @@ public class ListOperationsAsync {
         Thread.sleep(5000);
 
         // Let's list all certificate versions of the certificate.
-        certificateAsyncClient.listCertificateVersions("myCertificate")
+        certificateAsyncClient.listPropertiesOfCertificateVersions("myCertificate")
             .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s\n",
                     certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));

@@ -6,12 +6,8 @@ package com.azure.security.keyvault.certificates;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
 import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
 
@@ -37,7 +33,7 @@ public class HelloWorld {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CertificateClient certificateClient = new CertificateClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
@@ -52,20 +48,20 @@ public class HelloWorld {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName92", policy, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName92", policy, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-        Certificate cert = certificatePoller.getFinalResult();
+        KeyVaultCertificate cert = certificatePoller.getFinalResult();
 
         // Let's Get the latest version of the certificate from the key vault.
-        Certificate certificate = certificateClient.getCertificateWithPolicy("certificateName");
+        KeyVaultCertificate certificate = certificateClient.getCertificate("certificateName");
         System.out.printf("Certificate is returned with name %s and secret id %s \n", certificate.getProperties().getName(),
             certificate.getSecretId());
 
         // After some time, we need to disable the certificate temporarily, so we update the enabled status of the certificate.
         // The update method can be used to update the enabled status of the certificate.
         certificate.getProperties().setEnabled(false);
-        Certificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
+        KeyVaultCertificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
         System.out.printf("Certificate's updated enabled status is %s \n", updatedCertificate.getProperties().isEnabled());
 
 
@@ -85,7 +81,7 @@ public class HelloWorld {
             .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         // Let's Get the latest version of our certificate from the key vault.
-        Certificate myCert = certificateClient.getCertificateWithPolicy("myCertificate");
+        KeyVaultCertificate myCert = certificateClient.getCertificate("myCertificate");
         System.out.printf("Certificate is returned with name %s and secret id %s \n", myCert.getProperties().getName(),
             myCert.getSecretId());
 
