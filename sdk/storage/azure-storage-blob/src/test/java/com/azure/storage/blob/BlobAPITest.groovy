@@ -394,7 +394,6 @@ class BlobAPITest extends APISpec {
     /*
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
-
     @Requires({ liveMode() })
     @Unroll
     def "Download file range fail"() {
@@ -417,6 +416,7 @@ class BlobAPITest extends APISpec {
         outFile.delete()
     }
 
+    @Requires({ liveMode() })
     def "Download file count null"() {
         setup:
         def file = getRandomFile(defaultDataSize)
@@ -442,6 +442,7 @@ class BlobAPITest extends APISpec {
         outFile.delete()
     }
 
+    @Requires({ liveMode() })
     @Unroll
     def "Download file AC"() {
         setup:
@@ -477,6 +478,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
+    @Requires({ liveMode() })
     @Unroll
     def "Download file AC fail"() {
         setup:
@@ -510,6 +512,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    @Requires({ liveMode() })
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(1 * 1024 * 1024)
@@ -559,6 +562,7 @@ class BlobAPITest extends APISpec {
         !outFile.exists() // We should delete the file we tried to create
     }
 
+    @Requires({ liveMode() })
     @Unroll
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
