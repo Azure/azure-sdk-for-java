@@ -5,7 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.file.share.ShareFileSmbProperties;
+import com.azure.storage.file.share.FileSmbProperties;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
  * Contains property information about a File in the storage File service.
  */
 @Immutable
-public final class FileProperties {
+public final class ShareFileProperties {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final Map<String, String> metadata;
@@ -32,7 +32,7 @@ public final class FileProperties {
     private final String copySource;
     private final CopyStatusType copyStatus;
     private final Boolean isServerEncrypted;
-    private final ShareFileSmbProperties smbProperties;
+    private final FileSmbProperties smbProperties;
 
     /**
      * Creates an instance of property information about a specific File.
@@ -71,12 +71,12 @@ public final class FileProperties {
      * completely encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the file.
      */
-    public FileProperties(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata,
+    public ShareFileProperties(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata,
         final String fileType, final Long contentLength, final String contentType, final byte[] contentMd5,
         final String contentEncoding, final String cacheControl, final String contentDisposition,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final String copyId,
         final String copyProgress, final String copySource, final CopyStatusType copyStatus,
-        final Boolean isServerEncrypted, final ShareFileSmbProperties smbProperties) {
+        final Boolean isServerEncrypted, final FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.metadata = metadata;
@@ -226,7 +226,7 @@ public final class FileProperties {
     /**
      * @return The SMB properties of the file.
      */
-    public ShareFileSmbProperties getSmbProperties() {
+    public FileSmbProperties getSmbProperties() {
         return smbProperties;
     }
 }

@@ -11,8 +11,8 @@ import java.util.Locale;
  * The range of a file in the storage file service.
  */
 @Immutable
-public final class FileRange {
-    final ClientLogger logger = new ClientLogger(FileRange.class);
+public final class ShareFileRange {
+    final ClientLogger logger = new ClientLogger(ShareFileRange.class);
     private static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
     private static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
     private final long start;
@@ -23,7 +23,7 @@ public final class FileRange {
      * and the end defaults to the length of the file.
      * @param start Specifies the start of bytes to be written.
      */
-    public FileRange(final long start) {
+    public ShareFileRange(final long start) {
         this(start, null);
     }
 
@@ -32,16 +32,16 @@ public final class FileRange {
      * @param start Specifies the start of bytes to be written.
      * @param end Specifies the end of bytes to be written
      */
-    public FileRange(final long start, final Long end) {
+    public ShareFileRange(final long start, final Long end) {
         if (start < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "FileRange offset must be greater than or equal to 0."));
+                "ShareFileRange offset must be greater than or equal to 0."));
         }
         this.start = start;
 
         if (end != null && end < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(new IllegalArgumentException(
-                "FileRange end must be greater than or equal to 0 if specified.")));
+                "ShareFileRange end must be greater than or equal to 0 if specified.")));
         }
         this.end = end;
     }
@@ -51,7 +51,7 @@ public final class FileRange {
      *
      * @param range Range object containing start and end of the file.
      */
-    public FileRange(final Range range) {
+    public ShareFileRange(final Range range) {
         this.start = range.getStart();
         this.end = range.getEnd();
     }
@@ -71,7 +71,7 @@ public final class FileRange {
     }
 
     /**
-     * @return The string format of the FileRange written into request.
+     * @return The string format of the ShareFileRange written into request.
      */
     @Override
     public String toString() {
@@ -83,8 +83,8 @@ public final class FileRange {
     }
 
     /**
-     * @return {@link FileRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise
-     * null.
+     * @return {@link ShareFileRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0,
+     * otherwise null.
      */
     public String toHeaderValue() {
         // The default values of a BlobRange

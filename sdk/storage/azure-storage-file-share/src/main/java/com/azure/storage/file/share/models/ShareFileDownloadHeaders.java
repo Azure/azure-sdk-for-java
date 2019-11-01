@@ -16,9 +16,9 @@ import java.util.Map;
 /**
  * Defines headers for Download operation.
  */
-@JacksonXmlRootElement(localName = "File-Download-Headers")
+@JacksonXmlRootElement(localName = "Share-File-Download-Headers")
 @Fluent
-public final class FileDownloadHeaders {
+public final class ShareFileDownloadHeaders {
     /*
      * Returns the date and time the file was last modified. Any operation that
      * modifies the file or its properties updates the last modified time.
@@ -255,9 +255,9 @@ public final class FileDownloadHeaders {
      * updates the last modified time.
      *
      * @param lastModified the lastModified value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setLastModified(OffsetDateTime lastModified) {
+    public ShareFileDownloadHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -279,9 +279,9 @@ public final class FileDownloadHeaders {
      * Set the metadata property: The metadata property.
      *
      * @param metadata the metadata value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setMetadata(Map<String, String> metadata) {
+    public ShareFileDownloadHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -301,9 +301,9 @@ public final class FileDownloadHeaders {
      * response body.
      *
      * @param contentLength the contentLength value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setContentLength(Long contentLength) {
+    public ShareFileDownloadHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -323,9 +323,9 @@ public final class FileDownloadHeaders {
      * The default content type is 'application/octet-stream'.
      *
      * @param contentType the contentType value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setContentType(String contentType) {
+    public ShareFileDownloadHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -347,9 +347,9 @@ public final class FileDownloadHeaders {
      * header.
      *
      * @param contentRange the contentRange value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setContentRange(String contentRange) {
+    public ShareFileDownloadHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
     }
@@ -369,9 +369,9 @@ public final class FileDownloadHeaders {
      * perform operations conditionally, in quotes.
      *
      * @param eTag the eTag value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setETag(String eTag) {
+    public ShareFileDownloadHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -403,9 +403,9 @@ public final class FileDownloadHeaders {
      * header.
      *
      * @param contentMd5 the contentMd5 value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setContentMd5(byte[] contentMd5) {
+    public ShareFileDownloadHeaders setContentMd5(byte[] contentMd5) {
         this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
@@ -425,9 +425,9 @@ public final class FileDownloadHeaders {
      * for the Content-Encoding request header.
      *
      * @param contentEncoding the contentEncoding value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setContentEncoding(String contentEncoding) {
+    public ShareFileDownloadHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -447,9 +447,9 @@ public final class FileDownloadHeaders {
      * for the file.
      *
      * @param cacheControl the cacheControl value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setCacheControl(String cacheControl) {
+    public ShareFileDownloadHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -471,9 +471,9 @@ public final class FileDownloadHeaders {
      * process the response.
      *
      * @param contentDisposition the contentDisposition value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setContentDisposition(String contentDisposition) {
+    public ShareFileDownloadHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -493,9 +493,9 @@ public final class FileDownloadHeaders {
      * for the Content-Language request header.
      *
      * @param contentLanguage the contentLanguage value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setContentLanguage(String contentLanguage) {
+    public ShareFileDownloadHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -515,9 +515,9 @@ public final class FileDownloadHeaders {
      * that was made and can be used for troubleshooting the request.
      *
      * @param requestId the requestId value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setRequestId(String requestId) {
+    public ShareFileDownloadHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -537,9 +537,9 @@ public final class FileDownloadHeaders {
      * to execute the request.
      *
      * @param version the version value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setVersion(String version) {
+    public ShareFileDownloadHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -559,9 +559,9 @@ public final class FileDownloadHeaders {
      * requests for partial file content.
      *
      * @param acceptRanges the acceptRanges value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setAcceptRanges(String acceptRanges) {
+    public ShareFileDownloadHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
     }
@@ -584,9 +584,9 @@ public final class FileDownloadHeaders {
      * service that indicates the time at which the response was initiated.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public ShareFileDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -617,9 +617,9 @@ public final class FileDownloadHeaders {
      * attempt.
      *
      * @param copyCompletionTime the copyCompletionTime value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
+    public ShareFileDownloadHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
         if (copyCompletionTime == null) {
             this.copyCompletionTime = null;
         } else {
@@ -645,9 +645,9 @@ public final class FileDownloadHeaders {
      * non-fatal copy operation failure.
      *
      * @param copyStatusDescription the copyStatusDescription value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setCopyStatusDescription(String copyStatusDescription) {
+    public ShareFileDownloadHeaders setCopyStatusDescription(String copyStatusDescription) {
         this.copyStatusDescription = copyStatusDescription;
         return this;
     }
@@ -667,9 +667,9 @@ public final class FileDownloadHeaders {
      * File operation where this file was the destination file.
      *
      * @param copyId the copyId value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setCopyId(String copyId) {
+    public ShareFileDownloadHeaders setCopyId(String copyId) {
         this.copyId = copyId;
         return this;
     }
@@ -693,9 +693,9 @@ public final class FileDownloadHeaders {
      * Content-Length bytes copied.
      *
      * @param copyProgress the copyProgress value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setCopyProgress(String copyProgress) {
+    public ShareFileDownloadHeaders setCopyProgress(String copyProgress) {
         this.copyProgress = copyProgress;
         return this;
     }
@@ -717,9 +717,9 @@ public final class FileDownloadHeaders {
      * file was the destination file.
      *
      * @param copySource the copySource value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setCopySource(String copySource) {
+    public ShareFileDownloadHeaders setCopySource(String copySource) {
         this.copySource = copySource;
         return this;
     }
@@ -741,9 +741,9 @@ public final class FileDownloadHeaders {
      * 'aborted', 'failed'.
      *
      * @param copyStatus the copyStatus value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setCopyStatus(CopyStatusType copyStatus) {
+    public ShareFileDownloadHeaders setCopyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
     }
@@ -769,9 +769,9 @@ public final class FileDownloadHeaders {
      * header, with the latter calculated from the requested range.
      *
      * @param fileContentMD5 the fileContentMD5 value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setFileContentMD5(byte[] fileContentMD5) {
+    public ShareFileDownloadHeaders setFileContentMD5(byte[] fileContentMD5) {
         this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
         return this;
     }
@@ -797,9 +797,9 @@ public final class FileDownloadHeaders {
      * metadata are encrypted).
      *
      * @param isServerEncrypted the isServerEncrypted value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
+    public ShareFileDownloadHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -817,9 +817,9 @@ public final class FileDownloadHeaders {
      * Set the fileAttributes property: Attributes set for the file.
      *
      * @param fileAttributes the fileAttributes value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setFileAttributes(String fileAttributes) {
+    public ShareFileDownloadHeaders setFileAttributes(String fileAttributes) {
         this.fileAttributes = fileAttributes;
         return this;
     }
@@ -837,9 +837,9 @@ public final class FileDownloadHeaders {
      * Set the fileCreationTime property: Creation time for the file.
      *
      * @param fileCreationTime the fileCreationTime value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setFileCreationTime(OffsetDateTime fileCreationTime) {
+    public ShareFileDownloadHeaders setFileCreationTime(OffsetDateTime fileCreationTime) {
         this.fileCreationTime = fileCreationTime;
         return this;
     }
@@ -857,9 +857,9 @@ public final class FileDownloadHeaders {
      * Set the fileLastWriteTime property: Last write time for the file.
      *
      * @param fileLastWriteTime the fileLastWriteTime value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+    public ShareFileDownloadHeaders setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
         return this;
     }
@@ -877,9 +877,9 @@ public final class FileDownloadHeaders {
      * Set the fileChangeTime property: Change time for the file.
      *
      * @param fileChangeTime the fileChangeTime value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setFileChangeTime(OffsetDateTime fileChangeTime) {
+    public ShareFileDownloadHeaders setFileChangeTime(OffsetDateTime fileChangeTime) {
         this.fileChangeTime = fileChangeTime;
         return this;
     }
@@ -899,9 +899,9 @@ public final class FileDownloadHeaders {
      * file.
      *
      * @param filePermissionKey the filePermissionKey value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setFilePermissionKey(String filePermissionKey) {
+    public ShareFileDownloadHeaders setFilePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
         return this;
     }
@@ -919,9 +919,9 @@ public final class FileDownloadHeaders {
      * Set the fileId property: The fileId of the file.
      *
      * @param fileId the fileId value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setFileId(String fileId) {
+    public ShareFileDownloadHeaders setFileId(String fileId) {
         this.fileId = fileId;
         return this;
     }
@@ -939,9 +939,9 @@ public final class FileDownloadHeaders {
      * Set the fileParentId property: The parent fileId of the file.
      *
      * @param fileParentId the fileParentId value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setFileParentId(String fileParentId) {
+    public ShareFileDownloadHeaders setFileParentId(String fileParentId) {
         this.fileParentId = fileParentId;
         return this;
     }
@@ -959,9 +959,9 @@ public final class FileDownloadHeaders {
      * Set the errorCode property: The errorCode property.
      *
      * @param errorCode the errorCode value to set.
-     * @return the FileDownloadHeaders object itself.
+     * @return the ShareFileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders setErrorCode(String errorCode) {
+    public ShareFileDownloadHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -18,9 +18,9 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
-import com.azure.storage.file.share.models.FileCorsRule;
-import com.azure.storage.file.share.models.FileServiceProperties;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareCorsRule;
+import com.azure.storage.file.share.models.ShareServiceProperties;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
 import reactor.core.publisher.Mono;
@@ -228,9 +228,9 @@ public final class ShareServiceAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure
      * Docs</a>.</p>
      *
-     * @return Storage account {@link FileServiceProperties File service properties}
+     * @return Storage account {@link ShareServiceProperties File service properties}
      */
-    public Mono<FileServiceProperties> getProperties() {
+    public Mono<ShareServiceProperties> getProperties() {
         try {
             return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -252,9 +252,9 @@ public final class ShareServiceAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure
      * Docs</a>.</p>
      *
-     * @return A response containing the Storage account {@link FileServiceProperties File service properties}
+     * @return A response containing the Storage account {@link ShareServiceProperties File service properties}
      */
-    public Mono<Response<FileServiceProperties>> getPropertiesWithResponse() {
+    public Mono<Response<ShareServiceProperties>> getPropertiesWithResponse() {
         try {
             return withContext(this::getPropertiesWithResponse);
         } catch (RuntimeException ex) {
@@ -262,7 +262,7 @@ public final class ShareServiceAsyncClient {
         }
     }
 
-    Mono<Response<FileServiceProperties>> getPropertiesWithResponse(Context context) {
+    Mono<Response<ShareServiceProperties>> getPropertiesWithResponse(Context context) {
         return azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -271,8 +271,8 @@ public final class ShareServiceAsyncClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#getCors()
-     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#getCors()
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link ShareServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link ShareServiceProperties#getCors()
      * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
@@ -287,20 +287,20 @@ public final class ShareServiceAsyncClient {
      *
      * @param properties Storage account File service properties
      * @return An empty response
-     * @throws FileStorageException When one of the following is true
+     * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
-     * Length of {@link FileCorsRule#getAllowedHeaders() allowed headers}, {@link FileCorsRule#getExposedHeaders()
-     * exposed headers}, or {@link FileCorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * Length of {@link ShareCorsRule#getAllowedHeaders() allowed headers}, {@link ShareCorsRule#getExposedHeaders()
+     * exposed headers}, or {@link ShareCorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      * </li>
-     * <li>{@link FileCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * <li>{@link ShareCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
      * PUT</li>
      * </ul>
      */
-    public Mono<Void> setProperties(FileServiceProperties properties) {
+    public Mono<Void> setProperties(ShareServiceProperties properties) {
         try {
             return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -312,8 +312,8 @@ public final class ShareServiceAsyncClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#getCors()
-     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#getCors()
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link ShareServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link ShareServiceProperties#getCors()
      * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
@@ -332,20 +332,20 @@ public final class ShareServiceAsyncClient {
      *
      * @param properties Storage account File service properties
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException When one of the following is true
+     * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
-     * Length of {@link FileCorsRule#getAllowedHeaders() allowed headers}, {@link FileCorsRule#getExposedHeaders()
-     * exposed headers}, or {@link FileCorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * Length of {@link ShareCorsRule#getAllowedHeaders() allowed headers}, {@link ShareCorsRule#getExposedHeaders()
+     * exposed headers}, or {@link ShareCorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      * </li>
-     * <li>{@link FileCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * <li>{@link ShareCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
      * PUT</li>
      * </ul>
      */
-    public Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties) {
+    public Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties) {
         try {
             return withContext(context -> setPropertiesWithResponse(properties, context));
         } catch (RuntimeException ex) {
@@ -353,7 +353,7 @@ public final class ShareServiceAsyncClient {
         }
     }
 
-    Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties, Context context) {
+    Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties, Context context) {
         return azureFileStorageClient.services().setPropertiesWithRestResponseAsync(properties, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -373,7 +373,7 @@ public final class ShareServiceAsyncClient {
      *
      * @param shareName Name of the share
      * @return The {@link ShareAsyncClient ShareAsyncClient}
-     * @throws FileStorageException If a share with the same name already exists
+     * @throws ShareStorageException If a share with the same name already exists
      */
     public Mono<ShareAsyncClient> createShare(String shareName) {
         try {
@@ -405,7 +405,7 @@ public final class ShareServiceAsyncClient {
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
      * @return A response containing the {@link ShareAsyncClient ShareAsyncClient} and the status of creating the share.
-     * @throws FileStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
+     * @throws ShareStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
      * allowed range.
      */
     public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
@@ -440,7 +440,7 @@ public final class ShareServiceAsyncClient {
      *
      * @param shareName Name of the share
      * @return An empty response
-     * @throws FileStorageException If the share doesn't exist
+     * @throws ShareStorageException If the share doesn't exist
      */
     public Mono<Void> deleteShare(String shareName) {
         try {
@@ -466,7 +466,7 @@ public final class ShareServiceAsyncClient {
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
      * @return A response that only contains headers and response status code
-     * @throws FileStorageException If the share doesn't exist or the snapshot doesn't exist
+     * @throws ShareStorageException If the share doesn't exist or the snapshot doesn't exist
      */
     public Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot) {
         try {

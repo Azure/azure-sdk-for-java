@@ -17,27 +17,27 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
-public final class FileServiceProperties {
+public final class ShareServiceProperties {
     /*
      * A summary of request statistics grouped by API in hourly aggregates for
      * files.
      */
     @JsonProperty(value = "HourMetrics")
-    private FileMetrics hourMetrics;
+    private ShareMetrics hourMetrics;
 
     /*
      * A summary of request statistics grouped by API in minute aggregates for
      * files.
      */
     @JsonProperty(value = "MinuteMetrics")
-    private FileMetrics minuteMetrics;
+    private ShareMetrics minuteMetrics;
 
     private static final class CorsWrapper {
         @JacksonXmlProperty(localName = "CorsRule")
-        private final List<FileCorsRule> items;
+        private final List<ShareCorsRule> items;
 
         @JsonCreator
-        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<FileCorsRule> items) {
+        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<ShareCorsRule> items) {
             this.items = items;
         }
     }
@@ -54,7 +54,7 @@ public final class FileServiceProperties {
      *
      * @return the hourMetrics value.
      */
-    public FileMetrics getHourMetrics() {
+    public ShareMetrics getHourMetrics() {
         return this.hourMetrics;
     }
 
@@ -63,9 +63,9 @@ public final class FileServiceProperties {
      * API in hourly aggregates for files.
      *
      * @param hourMetrics the hourMetrics value to set.
-     * @return the FileServiceProperties object itself.
+     * @return the ShareServiceProperties object itself.
      */
-    public FileServiceProperties setHourMetrics(FileMetrics hourMetrics) {
+    public ShareServiceProperties setHourMetrics(ShareMetrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
     }
@@ -76,7 +76,7 @@ public final class FileServiceProperties {
      *
      * @return the minuteMetrics value.
      */
-    public FileMetrics getMinuteMetrics() {
+    public ShareMetrics getMinuteMetrics() {
         return this.minuteMetrics;
     }
 
@@ -85,9 +85,9 @@ public final class FileServiceProperties {
      * by API in minute aggregates for files.
      *
      * @param minuteMetrics the minuteMetrics value to set.
-     * @return the FileServiceProperties object itself.
+     * @return the ShareServiceProperties object itself.
      */
-    public FileServiceProperties setMinuteMetrics(FileMetrics minuteMetrics) {
+    public ShareServiceProperties setMinuteMetrics(ShareMetrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
     }
@@ -97,9 +97,9 @@ public final class FileServiceProperties {
      *
      * @return the cors value.
      */
-    public List<FileCorsRule> getCors() {
+    public List<ShareCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new CorsWrapper(new ArrayList<FileCorsRule>());
+            this.cors = new CorsWrapper(new ArrayList<ShareCorsRule>());
         }
         return this.cors.items;
     }
@@ -108,9 +108,9 @@ public final class FileServiceProperties {
      * Set the cors property: The set of CORS rules.
      *
      * @param cors the cors value to set.
-     * @return the FileServiceProperties object itself.
+     * @return the ShareServiceProperties object itself.
      */
-    public FileServiceProperties setCors(List<FileCorsRule> cors) {
+    public ShareServiceProperties setCors(List<ShareCorsRule> cors) {
         this.cors = new CorsWrapper(cors);
         return this;
     }

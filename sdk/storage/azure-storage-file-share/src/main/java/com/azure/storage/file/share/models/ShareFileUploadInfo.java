@@ -12,21 +12,21 @@ import java.time.OffsetDateTime;
  * This class contains the response information returned from the service when the file is uploaded.
  */
 @Immutable
-public final class FileUploadInfo {
+public final class ShareFileUploadInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final byte[] contentMd5;
     private final Boolean isServerEncrypted;
 
     /**
-     * Constructs a {@link FileUploadInfo}.
+     * Constructs a {@link ShareFileUploadInfo}.
      *
      * @param eTag ETag of the file.
      * @param lastModified Datetime when the file was last modified.
      * @param contentMd5 MD5 of the file's content.
      * @param isServerEncrypted Flag indicating the encryption status of the file's content on the server.
      */
-    public FileUploadInfo(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
+    public ShareFileUploadInfo(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final Boolean isServerEncrypted) {
         this.eTag = eTag;
         this.lastModified = lastModified;
