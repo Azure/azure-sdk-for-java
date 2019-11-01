@@ -216,26 +216,26 @@ public class DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
+     * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
+     * @param umask Restricts permissions of the resource to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the resource.
      * @param accessConditions {@link DataLakeRequestConditions}
-     * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
-     * @param umask Restricts permissions of the resource to be created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
-    public Mono<Response<PathInfo>> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions, String permissions, String umask) {
+    public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
+        Map<String, String> metadata, DataLakeRequestConditions accessConditions) {
         try {
-            return withContext(context -> createWithResponse(pathResourceType, headers, metadata,
-                accessConditions, permissions, umask, context));
+            return withContext(context -> createWithResponse(permissions, umask, pathResourceType, headers, metadata,
+                accessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PathInfo>> createWithResponse(PathResourceType resourceType, PathHttpHeaders headers,
-        Map<String, String> metadata, DataLakeRequestConditions accessConditions, String permissions, String umask,
+    Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathResourceType resourceType,
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
         Context context) {
         accessConditions = accessConditions == null ? new DataLakeRequestConditions() : accessConditions;
 

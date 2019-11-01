@@ -66,7 +66,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryClient#createFile(String)} and
-     * {@link DataLakeDirectoryClient#createFileWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
+     * {@link DataLakeDirectoryClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String
@@ -81,9 +81,9 @@ public class DataLakeDirectoryClientJavaDocSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, httpHeaders,
+        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, permissions, umask, httpHeaders,
             Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask, timeout, new Context(key1, value1));
+            timeout, new Context(key1, value1));
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
     }
 

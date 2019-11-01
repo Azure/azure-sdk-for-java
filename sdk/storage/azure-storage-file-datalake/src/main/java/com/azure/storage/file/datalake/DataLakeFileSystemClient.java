@@ -346,24 +346,24 @@ public class DataLakeFileSystemClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
      *
      * @param fileName Name of the file to create.
+     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
+     * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the file.
      * @param accessConditions {@link DataLakeRequestConditions}
-     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
-     * @param umask Restricts permissions of the file to be created.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
      * to interact with the file created.
      */
-    public Response<DataLakeFileClient> createFileWithResponse(String fileName,
+    public Response<DataLakeFileClient> createFileWithResponse(String fileName, String permissions, String umask,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
-        String permissions, String umask, Duration timeout, Context context) {
+        Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
 
-        return new SimpleResponse<>(dataLakeFileClient.createWithResponse(headers, metadata, accessConditions,
-            permissions, umask, timeout, context), dataLakeFileClient);
+        return new SimpleResponse<>(dataLakeFileClient.createWithResponse(permissions, umask, headers, metadata, accessConditions,
+            timeout, context), dataLakeFileClient);
     }
 
     /**
@@ -427,24 +427,24 @@ public class DataLakeFileSystemClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
      *
      * @param directoryName Name of the directory to create.
+     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
+     * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the directory.
      * @param accessConditions {@link DataLakeRequestConditions}
-     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
-     * @param umask Restricts permissions of the directory to be created.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient}
      * used to interact with the directory created.
      */
-    public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName,
-        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
-        String permissions, String umask, Duration timeout, Context context) {
+    public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName, String permissions,
+        String umask, PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
+        Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
 
-        return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(headers, metadata, accessConditions,
-            permissions, umask, timeout, context), dataLakeDirectoryClient);
+        return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata, accessConditions,
+            timeout, context), dataLakeDirectoryClient);
     }
 
     /**

@@ -185,7 +185,7 @@ public class FileSystemClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakeFileSystemClient#createFile(String)} and
-     * {@link DataLakeFileSystemClient#createFileWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
+     * {@link DataLakeFileSystemClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String
@@ -200,9 +200,9 @@ public class FileSystemClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, httpHeaders,
+        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, permissions, umask, httpHeaders,
             Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask, timeout, new Context(key1, value1));
+            timeout, new Context(key1, value1));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
     }
 
@@ -227,7 +227,7 @@ public class FileSystemClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakeFileSystemClient#createDirectory(String)} and
-     * {@link DataLakeFileSystemClient#createDirectoryWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
+     * {@link DataLakeFileSystemClient#createDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String
@@ -243,8 +243,8 @@ public class FileSystemClientJavaDocCodeSamples {
         String permissions = "permissions";
         String umask = "umask";
         Response<DataLakeDirectoryClient> newDirectoryClient = client.createDirectoryWithResponse(directoryName,
-            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask, timeout, new Context(key1, value1));
+            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
+            timeout, new Context(key1, value1));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
     }
 

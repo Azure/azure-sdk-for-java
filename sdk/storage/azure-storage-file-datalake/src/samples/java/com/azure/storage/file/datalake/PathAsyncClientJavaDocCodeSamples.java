@@ -21,7 +21,7 @@ public class PathAsyncClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakePathAsyncClient#create()} and
-     * {@link DataLakePathAsyncClient#createWithResponse(PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
+     * {@link DataLakePathAsyncClient#createWithResponse(String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.create
@@ -38,8 +38,8 @@ public class PathAsyncClientJavaDocCodeSamples {
         String permissions = "permissions";
         String umask = "umask";
 
-        client.createWithResponse(httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask)
+        client.createWithResponse(permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions
+        )
             .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String
     }

@@ -44,7 +44,7 @@ class DirectoryAPITest extends APISpec {
         dc = fsc.getDirectoryClient(generatePathName())
 
         when:
-        dc.createWithResponse(null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null, null, null,
+        dc.createWithResponse(null, null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null,
             Context.NONE)
 
         then:
@@ -63,7 +63,7 @@ class DirectoryAPITest extends APISpec {
         dc = fsc.getDirectoryClient(generatePathName())
 
         when:
-        dc.createWithResponse(headers, null, null, null, null, null, null)
+        dc.createWithResponse(null, null, headers, null, null, null, null)
         def response = dc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -90,7 +90,7 @@ class DirectoryAPITest extends APISpec {
         }
 
         when:
-        dc.createWithResponse(null, metadata, null, null, null, null, Context.NONE)
+        dc.createWithResponse(null, null, null, metadata, null, null, Context.NONE)
         def response = dc.getProperties()
 
         then:
@@ -119,7 +119,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.createWithResponse(null, null, drc, null, null, null, null).getStatusCode() == 201
+        dc.createWithResponse(null, null, null, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -144,7 +144,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.createWithResponse(null, null, drc, null, null, null, Context.NONE)
+        dc.createWithResponse(null, null, null, null, drc, null, Context.NONE)
 
         then:
         thrown(Exception)
@@ -164,7 +164,7 @@ class DirectoryAPITest extends APISpec {
         def umask = "0057"
 
         expect:
-        dc.createWithResponse(null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+        dc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete min"() {
@@ -914,8 +914,7 @@ class DirectoryAPITest extends APISpec {
 
     def "Create file error"() {
         when:
-        dc.createFileWithResponse(generatePathName(), null, null, new DataLakeRequestConditions().setIfMatch("garbage"),
-            null, null, null,
+        dc.createFileWithResponse(generatePathName(), null, null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null,
             Context.NONE)
 
         then:
@@ -933,7 +932,7 @@ class DirectoryAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        def client = dc.createFileWithResponse(generatePathName(), headers, null, null, null, null, null, null).getValue()
+        def client = dc.createFileWithResponse(generatePathName(), null, null, headers, null, null, null, null).getValue()
         def response = client.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -960,7 +959,7 @@ class DirectoryAPITest extends APISpec {
         }
 
         when:
-        def client = dc.createFileWithResponse(generatePathName(), null, metadata, null, null, null, null, null).getValue()
+        def client = dc.createFileWithResponse(generatePathName(), null, null, null, metadata, null, null, null).getValue()
         def response = client.getProperties()
 
         then:
@@ -989,7 +988,7 @@ class DirectoryAPITest extends APISpec {
 
 
         expect:
-        dc.createFileWithResponse(pathName, null, null, drc, null, null, null, null).getStatusCode() == 201
+        dc.createFileWithResponse(pathName, null, null, null, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1017,7 +1016,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.createFileWithResponse(pathName, null, null, drc, null, null, null, Context.NONE)
+        dc.createFileWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
         thrown(StorageErrorException)
@@ -1037,7 +1036,7 @@ class DirectoryAPITest extends APISpec {
         def umask = "0057"
 
         expect:
-        dc.createFileWithResponse(generatePathName(), null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+        dc.createFileWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete file min"() {

@@ -51,7 +51,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
 
         when:
-        fc.createWithResponse(null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null, null, null,
+        fc.createWithResponse(null, null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null,
             Context.NONE)
 
         then:
@@ -70,7 +70,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
 
         when:
-        fc.createWithResponse(headers, null, null, null, null, null, null)
+        fc.createWithResponse(null, null, headers, null, null, null, null)
         def response = fc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -97,7 +97,7 @@ class FileAPITest extends APISpec {
         }
 
         when:
-        fc.createWithResponse(null, metadata, null, null, null, null, Context.NONE)
+        fc.createWithResponse(null, null, null, metadata, null, null, Context.NONE)
         def response = fc.getProperties()
 
         then:
@@ -123,7 +123,7 @@ class FileAPITest extends APISpec {
 
 
         expect:
-        fc.createWithResponse(null, null, drc, null, null, null, null).getStatusCode() == 201
+        fc.createWithResponse(null, null, null, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -148,7 +148,7 @@ class FileAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.createWithResponse(null, null, drc, null, null, null, Context.NONE)
+        fc.createWithResponse(null, null, null, null, drc, null, Context.NONE)
 
         then:
         thrown(StorageErrorException)
@@ -168,7 +168,7 @@ class FileAPITest extends APISpec {
         def umask = "0057"
 
         expect:
-        fc.createWithResponse(null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+        fc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete min"() {

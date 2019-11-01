@@ -60,7 +60,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#createFile(String)} and
-     * {@link DataLakeDirectoryAsyncClient#createFileWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
+     * {@link DataLakeDirectoryAsyncClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String
@@ -76,8 +76,8 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         String permissions = "permissions";
         String umask = "umask";
         DataLakeFileAsyncClient newFileClient = client.createFileWithResponse(fileName,
-            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions,
-            umask).block().getValue();
+            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions
+        ).block().getValue();
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
     }
 
@@ -102,7 +102,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#createSubDirectory(String)} and
-     * {@link DataLakeDirectoryAsyncClient#createSubDirectoryWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
+     * {@link DataLakeDirectoryAsyncClient#createSubDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createSubDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectory#String
@@ -118,8 +118,8 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         String permissions = "permissions";
         String umask = "umask";
         DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubDirectoryWithResponse(
-            fileName, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions,
-            umask).block().getValue();
+            fileName, permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions
+        ).block().getValue();
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
     }
 

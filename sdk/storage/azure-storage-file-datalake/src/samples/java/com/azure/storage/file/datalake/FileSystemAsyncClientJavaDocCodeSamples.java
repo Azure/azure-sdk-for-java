@@ -159,7 +159,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakeFileSystemAsyncClient#createFile(String)} and
-     * {@link DataLakeFileSystemAsyncClient#createFileWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
+     * {@link DataLakeFileSystemAsyncClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String
@@ -174,8 +174,8 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Mono<Response<DataLakeFileAsyncClient>> newFileClient = client.createFileWithResponse(fileName, httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask);
+        Mono<Response<DataLakeFileAsyncClient>> newFileClient = client.createFileWithResponse(fileName, permissions, umask, httpHeaders,
+            Collections.singletonMap("metadata", "value"), requestConditions);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
     }
 
@@ -200,7 +200,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakeFileSystemAsyncClient#createDirectory(String)} and
-     * {@link DataLakeFileSystemAsyncClient#createDirectoryWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
+     * {@link DataLakeFileSystemAsyncClient#createDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String
@@ -216,7 +216,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         String permissions = "permissions";
         String umask = "umask";
         Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createDirectoryWithResponse(fileName,
-            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask);
+            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
     }
 

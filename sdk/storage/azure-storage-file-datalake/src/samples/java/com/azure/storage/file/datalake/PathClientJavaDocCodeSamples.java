@@ -32,7 +32,7 @@ public class PathClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakePathClient#create()} and
-     * {@link DataLakePathClient#createWithResponse(PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
+     * {@link DataLakePathClient#createWithResponse(String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.create
@@ -48,8 +48,8 @@ public class PathClientJavaDocCodeSamples {
         String permissions = "permissions";
         String umask = "umask";
 
-        Response<PathInfo> response = client.createWithResponse(httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask, timeout,
+        Response<PathInfo> response = client.createWithResponse(permissions, umask, httpHeaders,
+            Collections.singletonMap("metadata", "value"), requestConditions, timeout,
             new Context(key1, value1));
         System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
         // END: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
