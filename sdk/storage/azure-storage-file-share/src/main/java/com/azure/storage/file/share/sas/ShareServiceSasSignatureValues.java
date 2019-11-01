@@ -177,7 +177,7 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
-     * Sets the permissions allowed by the SAS. File SASs are created when both a
+     * Sets the permissions allowed by the SAS. Share file SASs are created when both a
      * {@link #setShareName(String) share name} and {@link #setFilePath(String) file path} are set on the builder.
      *
      * @param permissions Permissions for the SAS.
