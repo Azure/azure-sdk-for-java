@@ -2,7 +2,7 @@
 ## 4.0.0 (2019-10-31)
 
 ### Breaking changes
-- Key has been renamed to KeyVaultKey to avoid ambiquity with other libraries and to yield better search results.
+- Key has been renamed to KeyVaultKey to avoid ambiguity with other libraries and to yield better search results.
 - Key.keyMaterial has been renamed to KeyVaultKey.key.
 - The setters of JsonWebKey properties have been removed.
 - JsonWebKey methods fromRsa, fromEc and fromAes now take an optional collection of key operations.

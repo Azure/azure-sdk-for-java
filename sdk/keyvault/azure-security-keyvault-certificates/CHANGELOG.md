@@ -4,6 +4,19 @@ For details on the Azure SDK for Java (November 2019 Preview) release refer to t
 
 ### Breaking changes
 - `beginCreateCertificate` method now returns a SyncPoller in `CertificateClient` and a PollerFlux in`CertificateAsyncClient`
+- Certificate has been renamed to KeyVaultCertificate to avoid ambiguity with other libraries and to yield better search results.
+- endpoint method on CertificateClientBuilder has been renamed to vaultUrl.
+- listCertificates and listCertificateVersions methods have been renamed to listPropertiesOfCertificates and listPropertiesOfCertificateVersions respectively in `CertificateClient` and `CertificateAsyncClient`.
+- restoreCertificate method has been renamed to restoreCertificateBackup in `CertificateClient` and `CertificatAsyncClient` to better associate it with CertificateClient.backupCertificate.
+- LifetimeActionType class has been renamed to CertificatePolicyAction.
+- Contact class has been renamed to CertificateContact.
+- Issuer class has been renamed to CertificateIssuer.
+- getCertificate method has been renamed to getCertificateVersion in `CertificateClient` and `CertificateAsyncClient`
+- getCertificateWithPolicy method has been renamed to getCertificate in `CertificateClient` and `CertificateAsyncClient`
+- getPendingCertificateSigningRequest method has been removed from `CertificateClient` and `CertificateAsyncClient`
+
+### Major changes
+- CertificateClient.vaultUrl has been added with the original value pass to CertificateClient.
 
 
 ## 4.0.0-preview.4 (2019-10-08)

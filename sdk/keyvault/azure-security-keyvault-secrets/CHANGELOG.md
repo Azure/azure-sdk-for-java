@@ -2,7 +2,7 @@
 ## 4.0.0 (2019-10-31)
 ### Breaking changes
 
-- Secret has been renamed to KeyVaultSecret to avoid ambiquity with other libraries and to yield better search results.
+- Secret has been renamed to KeyVaultSecret to avoid ambiguity with other libraries and to yield better search results.
 - endpoint method on SecretClientBuilder has been renamed to vaultUrl.
 - On SecretProperties, expires, created, and updated have been renamed to expiresOn, createdOn, and updatedOn respectively.
 - On DeletedSecret, deletedDate has been renamed to deletedOn.
