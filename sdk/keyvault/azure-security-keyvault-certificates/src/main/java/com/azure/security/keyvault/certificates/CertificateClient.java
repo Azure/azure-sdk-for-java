@@ -13,8 +13,19 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.certificates.models.*;
-
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.Issuer;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.security.keyvault.certificates.models.LifetimeActionType;
+import com.azure.security.keyvault.certificates.models.LifetimeAction;
+import com.azure.security.keyvault.certificates.models.CertificateImportOptions;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -160,7 +171,7 @@ public class CertificateClient {
      * Gets information about the certificate which represents the {@link CertificateProperties} from the key vault. This
      * operation requires the certificates/get permission.
      *
-     * <p>The list operations {@link CertificateClient#listCertificates()} and {@link CertificateClient#listCertificateVersions(String)} return
+     * <p>The list operations {@link CertificateClient#listPropertiesOfCertificates()} and {@link CertificateClient#listPropertiesOfCertificateVersions(String)} return
      * the {@link PagedIterable} containing {@link CertificateProperties} as output excluding the properties like secretId and keyId of the certificate.
      * This operation can then be used to get the full certificate with its properties excluding the policy from {@code certificateProperties}.</p>
      *
@@ -525,7 +536,7 @@ public class CertificateClient {
      * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} for all the certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listCertificates() {
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificates() {
         return new PagedIterable<>(client.listPropertiesOfCertificates(false, Context.NONE));
     }
 
@@ -546,7 +557,7 @@ public class CertificateClient {
      * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} for all the certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listCertificates(boolean includePending, Context context) {
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
         return new PagedIterable<>(client.listPropertiesOfCertificates(includePending, context));
     }
 
@@ -605,8 +616,8 @@ public class CertificateClient {
      * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} of all the versions of the specified certificate in the vault. Paged Iterable is empty if certificate with {@code name} does not exist in key vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listCertificateVersions(String name) {
-        return listCertificateVersions(name, Context.NONE);
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String name) {
+        return listPropertiesOfCertificateVersions(name, Context.NONE);
     }
 
     /**
@@ -627,7 +638,7 @@ public class CertificateClient {
      * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} of all the versions of the specified certificate in the vault. Iterable is empty if certificate with {@code name} does not exist in key vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listCertificateVersions(String name, Context context) {
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String name, Context context) {
         return new PagedIterable<>(client.listPropertiesOfCertificateVersions(name, context));
     }
 

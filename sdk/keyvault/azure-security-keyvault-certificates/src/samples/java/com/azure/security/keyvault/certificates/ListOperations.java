@@ -6,8 +6,13 @@ package com.azure.security.keyvault.certificates;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.Issuer;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -56,14 +61,14 @@ public class ListOperations {
 
 
         // Let's list all the certificates in the key vault.
-        for (CertificateProperties certificate : certificateClient.listCertificates()) {
+        for (CertificateProperties certificate : certificateClient.listPropertiesOfCertificates()) {
             KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
             System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.getProperties().getName(),
                 certificateWithAllProperties.getSecretId());
         }
 
         // Let's list all certificate versions of the certificate.
-        for (CertificateProperties certificate : certificateClient.listCertificateVersions("myCertificate")) {
+        for (CertificateProperties certificate : certificateClient.listPropertiesOfCertificateVersions("myCertificate")) {
             KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
             System.out.printf("Received certificate with name %s and version %s", certificateWithAllProperties.getProperties().getName(),
                 certificateWithAllProperties.getProperties().getVersion());
