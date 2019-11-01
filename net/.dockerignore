@@ -1,0 +1,12 @@
+# Docker
+**/Dockerfile
+.dockerignore
+
+# Build Outputs
+**/bin
+**/obj
+**/out
+
+# Misc
+**/.vs
+**/*.ps1
