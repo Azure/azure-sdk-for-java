@@ -178,11 +178,8 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(reactor.util.context.Context context) {
-        if (context == null) {
-            return Context.NONE;
-        }
-
         Map<Object, Object> keyValues = context.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
         return ImplUtils.isNullOrEmpty(keyValues) ? Context.NONE : Context.of(keyValues);
     }
 

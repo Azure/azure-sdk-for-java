@@ -4,12 +4,38 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.Context;
+import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class FluxUtilTest {
+    @Test
+    public void testCallWithContextGetSingle() {
+        String response = getSingle()
+            .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
+            .block();
+        Assert.assertEquals("Hello, Foo Bar", response);
+    }
+
+    @Test
+    public void testCallWithContextGetCollection() {
+        List<String> expectedLines = Arrays.asList("Hello,", "Foo", "Bar");
+        List<String> actualLines = new ArrayList<>();
+        getCollection()
+            .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
+            .doOnNext(actualLines::add)
+            .subscribe();
+        Assert.assertEquals(expectedLines, actualLines);
+    }
+
     @Test
     public void toReactorContextEmpty() {
         reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(null);
@@ -34,5 +60,31 @@ public class FluxUtilTest {
         assertEquals("value3", reactorContext.get("key1"));
         assertTrue(reactorContext.hasKey("key2"));
         assertEquals("value2", reactorContext.get("key2"));
+    }
+
+    private Mono<String> getSingle() {
+        return FluxUtil.withContext(this::serviceCallSingle);
+    }
+
+    private Flux<String> getCollection() {
+        return FluxUtil
+            .fluxContext(this::serviceCallCollection);
+    }
+
+    private Mono<String> serviceCallSingle(Context context) {
+        String msg = "Hello, "
+            + context.getData("FirstName").orElse("Stranger")
+            + " "
+            + context.getData("LastName").orElse("");
+        return Mono.just(msg);
+    }
+
+    private Flux<String> serviceCallCollection(Context context) {
+        String msg = "Hello, "
+            + context.getData("FirstName").orElse("Stranger")
+            + " "
+            + context.getData("LastName").orElse("");
+
+        return Flux.just(msg.split(" "));
     }
 }

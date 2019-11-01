@@ -20,7 +20,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -36,8 +35,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -57,26 +54,23 @@ public class NettyFluxTests {
 
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = NettyFluxTestUtils.byteBufStreamFromFile(channel, 1, 3)
-                    .map(bb -> {
-                        byte[] bt = toBytes(bb);
-                        ReferenceCountUtil.release(bb);
-                        return bt;
+                .map(bb -> {
+                    byte[] bt = toBytes(bb);
+                    ReferenceCountUtil.release(bb);
+                    return bt;
+                })
+                .collect(ByteArrayOutputStream::new,
+                    (bos, b) -> {
+                        try {
+                            bos.write(b);
+                        } catch (IOException ioe) {
+                            throw Exceptions.propagate(ioe);
+                        }
                     })
-                    .collect(() -> new ByteArrayOutputStream(),
-                        (bos, b) -> {
-                            try {
-                                bos.write(b);
-                            } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
-                            }
-                        })
-                    .block()
-                    .toByteArray();
+                .block()
+                .toByteArray();
             assertEquals("ell", new String(bytes, StandardCharsets.UTF_8));
-        } catch (IOException ioe) {
-
         }
-
     }
 
     @Test
@@ -85,51 +79,52 @@ public class NettyFluxTests {
 
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = NettyFluxTestUtils.byteBufStreamFromFile(channel, 1, 3)
-                    .map(bb -> {
-                        byte[] bt = bb.array();
-                        ReferenceCountUtil.release(bb);
-                        return bt;
+                .map(bb -> {
+                    byte[] bt = bb.array();
+                    ReferenceCountUtil.release(bb);
+                    return bt;
+                })
+                .collect(ByteArrayOutputStream::new,
+                    (bos, b) -> {
+                        try {
+                            bos.write(b);
+                        } catch (IOException ioe) {
+                            throw Exceptions.propagate(ioe);
+                        }
                     })
-                    .collect(() -> new ByteArrayOutputStream(),
-                        (bos, b) -> {
-                            try {
-                                bos.write(b);
-                            } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
-                            }
-                        })
-                    .block().toByteArray();
+                .block()
+                .toByteArray();
             assertEquals(0, bytes.length);
         }
         assertTrue(file.delete());
     }
 
     @Test
-    public void testAsynchronyShortInput() throws IOException {
+    public void testAsynchronousShortInput() throws IOException {
         File file = createFileIfNotExist("target/test3");
         FileOutputStream stream = new FileOutputStream(file);
         stream.write("hello there".getBytes(StandardCharsets.UTF_8));
         stream.close();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.readFile(channel)
-                    .map(bb -> {
-                        byte[] bt = new byte[bb.remaining()];
-                        bb.get(bt);
-                        return bt;
+                .map(bb -> {
+                    byte[] bt = new byte[bb.remaining()];
+                    bb.get(bt);
+                    return bt;
+                })
+                .limitRequest(1)
+                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .collect(ByteArrayOutputStream::new,
+                    (bos, b) -> {
+                        try {
+                            bos.write(b);
+                        } catch (IOException ioe) {
+                            throw Exceptions.propagate(ioe);
+                        }
                     })
-                    .limitRequest(1)
-                    .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .collect(() -> new ByteArrayOutputStream(),
-                        (bos, b) -> {
-                            try {
-                                bos.write(b);
-                            } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
-                            }
-                        })
-                    .block()
-                    .toByteArray();
+                .block()
+                .toByteArray();
             assertEquals("hello there", new String(bytes, StandardCharsets.UTF_8));
         }
         assertTrue(file.delete());
@@ -138,7 +133,7 @@ public class NettyFluxTests {
     private static final int NUM_CHUNKS_IN_LONG_INPUT = 10_000_000;
 
     @Test
-    public void testAsynchronyLongInput() throws IOException, NoSuchAlgorithmException {
+    public void testAsynchronousLongInput() throws IOException, NoSuchAlgorithmException {
         File file = createFileIfNotExist("target/test4");
         byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
         MessageDigest digest = MessageDigest.getInstance("MD5");
@@ -153,9 +148,9 @@ public class NettyFluxTests {
         digest.reset();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             FluxUtil.readFile(channel)
-                    .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .toIterable().forEach(digest::update);
+                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .toIterable().forEach(digest::update);
 
             assertArrayEquals(expected, digest.digest());
         }
@@ -241,9 +236,9 @@ public class NettyFluxTests {
         try {
             bb = Unpooled.directBuffer(16);
             StepVerifier.create(NettyFluxTestUtils.split(bb, 3))
-                    .expectNextCount(0)
-                    .expectComplete()
-                    .verify();
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
         } finally {
             if (bb != null) {
                 bb.release();
@@ -284,25 +279,6 @@ public class NettyFluxTests {
 //        Assert.assertEquals(getMonoRestResponse(value).flatMap(FluxUtil::toMono).block(), value);
 //        Assert.assertEquals(getMonoRestResponse("").flatMap(FluxUtil::toMono).block(), "");
 //    }
-
-    @Test
-    public void testCallWithContextGetSingle() {
-        String response = getSingle("Hello, ")
-            .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
-            .block();
-        Assert.assertEquals("Hello, Foo Bar", response);
-    }
-
-    @Test
-    public void testCallWithContextGetCollection() {
-        List<String> expectedLines = Arrays.asList("Hello,", "Foo", "Bar");
-        List<String> actualLines = new ArrayList<>();
-        getCollection("Hello, ")
-            .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
-            .doOnNext(line -> actualLines.add(line))
-            .subscribe();
-        Assert.assertEquals(expectedLines, actualLines);
-    }
 
     @Test
     public void testCallWithContextGetPagedCollection() throws Exception {
@@ -350,7 +326,7 @@ public class NettyFluxTests {
         if (continuationToken == null || continuationToken.isEmpty()) {
             return Mono.empty();
         }
-        return Mono.just(pagedResponses.get(Integer.valueOf(continuationToken)));
+        return Mono.just(pagedResponses.get(Integer.parseInt(continuationToken)));
     }
 
     private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest,
@@ -366,33 +342,7 @@ public class NettyFluxTests {
         return IntStream.range(i * 3, i * 3 + 3).boxed().collect(Collectors.toList());
     }
 
-
-    private Mono<String> getSingle(String prefix) {
-        return FluxUtil.withContext(context -> serviceCallSingle(prefix, context));
-    }
-
-    private Flux<String> getCollection(String prefix) {
-        return FluxUtil
-            .fluxContext(context -> serviceCallCollection(prefix, context));
-    }
-
-    private Mono<String> serviceCallSingle(String prefix, Context context) {
-        String msg = prefix
-            + context.getData("FirstName").orElse("Stranger")
-            + " "
-            + context.getData("LastName").orElse("");
-        return Mono.just(msg);
-    }
-
-    private Flux<String> serviceCallCollection(String prefix, Context context) {
-        String msg = prefix
-            + context.getData("FirstName").orElse("Stranger")
-            + " "
-            + context.getData("LastName").orElse("");
-
-        return Flux.just(msg.split(" "));
-    }
-//
+    //
     private static byte[] toBytes(ByteBuf bb) {
         byte[] bytes = new byte[bb.readableBytes()];
         bb.readBytes(bytes);
