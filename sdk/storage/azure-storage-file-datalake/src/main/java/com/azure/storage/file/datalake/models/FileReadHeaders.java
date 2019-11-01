@@ -41,7 +41,7 @@ public final class FileReadHeaders {
     private DateTimeRfc1123 dateProperty;
     private Boolean isServerEncrypted;
     private String encryptionKeySha256;
-    private byte[] fileContentMd5;
+    private byte[] fileContentMD5;
     private byte[] contentCrc64;
     private String errorCode;
 
@@ -735,30 +735,30 @@ public final class FileReadHeaders {
     }
 
     /**
-     * Get the fileContentMd5 property: If the file has a MD5 hash, and if
+     * Get the fileContentMD5 property: If the file has a MD5 hash, and if
      * request contains range header (Range or x-ms-range), this response
      * header is returned with the value of the whole file's MD5 value. This
      * value may or may not be equal to the value returned in Content-MD5
      * header, with the latter calculated from the requested range.
      *
-     * @return the fileContentMd5 value.
+     * @return the fileContentMD5 value.
      */
-    public byte[] getFileContentMd5() {
-        return ImplUtils.clone(this.fileContentMd5);
+    public byte[] getFileContentMD5() {
+        return ImplUtils.clone(this.fileContentMD5);
     }
 
     /**
-     * Set the fileContentMd5 property: If the file has a MD5 hash, and if
+     * Set the fileContentMD5 property: If the file has a MD5 hash, and if
      * request contains range header (Range or x-ms-range), this response
      * header is returned with the value of the whole file's MD5 value. This
      * value may or may not be equal to the value returned in Content-MD5
      * header, with the latter calculated from the requested range.
      *
-     * @param fileContentMd5 the fileContentMd5 value to set.
+     * @param fileContentMD5 the fileContentMD5 value to set.
      * @return the FileReadHeaders object itself.
      */
-    public FileReadHeaders setFileContentMd5(byte[] fileContentMd5) {
-        this.fileContentMd5 = ImplUtils.clone(fileContentMd5);
+    public FileReadHeaders setFileContentMD5(byte[] fileContentMD5) {
+        this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
         return this;
     }
 

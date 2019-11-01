@@ -303,7 +303,7 @@ class Transforms {
             .setDateProperty(h.getDateProperty())
             .setIsServerEncrypted(h.isServerEncrypted())
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
-            .setFileContentMd5(h.getBlobContentMD5())
+            .setFileContentMD5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode());
     }
