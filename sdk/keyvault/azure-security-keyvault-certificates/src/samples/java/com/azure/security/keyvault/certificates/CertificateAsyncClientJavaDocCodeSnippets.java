@@ -126,7 +126,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponse ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n",
-                    certificateResponse.getValue().getProperties().getName(), certificateResponse.getValue().getSecretId()));
+                    certificateResponse.getValue().getProperties().getName(),
+                    certificateResponse.getValue().getSecretId()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#String
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersionWithResponse#string-string

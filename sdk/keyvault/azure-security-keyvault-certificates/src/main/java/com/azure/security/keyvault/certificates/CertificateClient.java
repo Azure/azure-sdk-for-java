@@ -134,7 +134,7 @@ public class CertificateClient {
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the returned certificate details when a response has been received.</p>
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificate#String}
      *
@@ -152,7 +152,7 @@ public class CertificateClient {
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the returned certificate details when a response has been received.</p>
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String}
      *
@@ -191,12 +191,12 @@ public class CertificateClient {
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the returned certificate details when a response has been received.</p>
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateVersionWithResponse#String-String-Context}
      *
      * @param name The name of the certificate to retrieve, cannot be null
-     * @param version The version of the certificate to retrieve. If this is an empty String or null, this call is equivalent to calling {@link CertificateClient#getCertificate(String)}, with the latest version being retrieved.
+     * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version of the certificate is retrieved.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
@@ -211,12 +211,12 @@ public class CertificateClient {
      * Gets information about the specified version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the returned certificate details when a response has been received.</p>
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateVersion#String-String}
      *
      * @param name The name of the certificate to retrieve, cannot be null
-     * @param version The version of the certificate to retrieve. If this is an empty String or null, this call is equivalent to calling {@link CertificateClient#getCertificate(String)}, with the latest version being retrieved.
+     * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version of the certificate is retrieved.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
      * @return The requested {@link KeyVaultCertificate certificate}.

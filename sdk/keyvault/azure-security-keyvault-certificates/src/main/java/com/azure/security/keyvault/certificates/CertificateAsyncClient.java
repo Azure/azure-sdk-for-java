@@ -247,7 +247,7 @@ public class CertificateAsyncClient {
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String}
@@ -270,7 +270,7 @@ public class CertificateAsyncClient {
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#String}
@@ -307,7 +307,7 @@ public class CertificateAsyncClient {
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersionWithResponse#string-string}
@@ -331,7 +331,7 @@ public class CertificateAsyncClient {
      * Gets information about the specified version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Prints out the
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersion#String-String}

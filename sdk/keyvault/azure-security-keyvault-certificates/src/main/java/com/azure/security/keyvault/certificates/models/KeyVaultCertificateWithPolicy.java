@@ -22,7 +22,7 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
      * Create the certificate
      * @param name the name of the certificate.
      */
-    public KeyVaultCertificateWithPolicy(String name) {
+    KeyVaultCertificateWithPolicy(String name) {
         super(name);
     }
 
@@ -47,46 +47,6 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
     public KeyVaultCertificateWithPolicy setProperties(CertificateProperties properties) {
         super.setProperties(properties);
         return this;
-    }
-
-    /**
-     * Get the certificate identifier
-     * @return the certificate identifier
-     */
-    public String getId() {
-        return properties.getId();
-    }
-
-    /**
-     * Get the certificate name
-     * @return the certificate name
-     */
-    public String getName() {
-        return properties.getName();
-    }
-
-    /**
-     * Get the key id of the certificate
-     * @return the key Id.
-     */
-    public String getKeyId() {
-        return this.keyId;
-    }
-
-    /**
-     * Get the secret id of the certificate
-     * @return the key Id.
-     */
-    public String getSecretId() {
-        return this.secretId;
-    }
-
-    /**
-     * Get the cer content of the certificate
-     * @return the cer content.
-     */
-    public byte[] getCer() {
-        return ImplUtils.clone(cer);
     }
 
     /**

@@ -42,7 +42,7 @@ public class KeyVaultCertificate {
      * Create the certificate
      * @param name the name of the certificate.
      */
-    public KeyVaultCertificate(String name) {
+    KeyVaultCertificate(String name) {
         properties = new CertificateProperties(name);
     }
 
