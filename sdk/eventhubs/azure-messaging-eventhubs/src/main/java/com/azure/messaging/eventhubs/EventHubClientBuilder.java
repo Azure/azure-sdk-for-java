@@ -66,7 +66,7 @@ import java.util.ServiceLoader;
  * optional consumer customizations.
  * </p>
  *
- * <p>strong>Creating an asynchronous {@link EventHubProducerAsyncClient} using Event Hubs namespace connection string
+ * <p><strong>Creating an asynchronous {@link EventHubProducerAsyncClient} using Event Hubs namespace connection string
  * </strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}

@@ -39,8 +39,6 @@ public class EventHubConsumerJavaDocCodeSamples {
      */
     public void receive() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-duration
-        // Obtain partitionId from EventHubClient.getPartitionIds().
-        String partitionId = "0";
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
@@ -48,6 +46,8 @@ public class EventHubConsumerJavaDocCodeSamples {
             .startingPosition(EventPosition.fromEnqueuedTime(twelveHoursAgo))
             .buildConsumer();
 
+        // Obtain partitionId from EventHubConsumerClient.getPartitionIds().
+        String partitionId = "0";
         IterableStream<PartitionEvent> events = consumer.receive(partitionId, 100, Duration.ofSeconds(30));
 
         for (PartitionEvent partitionEvent : events) {
