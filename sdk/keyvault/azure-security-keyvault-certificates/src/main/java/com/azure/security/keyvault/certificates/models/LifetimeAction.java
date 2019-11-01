@@ -33,7 +33,10 @@ public final class LifetimeAction {
 
     LifetimeAction() { }
 
-
+    /**
+     * Creates a new LifetimeAction instance, with the provided {@link LifetimeActionType}.
+     * @param lifetimeActionType The action type of this LifetimeAction.
+     */
     public LifetimeAction(LifetimeActionType lifetimeActionType) {
         this.lifetimeActionType = lifetimeActionType;
     }

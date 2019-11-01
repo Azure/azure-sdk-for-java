@@ -15,7 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- *  The util class is a helper class for clone operation.
+ * This class contains utility methods useful for building client libraries.
  */
 public final class CoreUtils {
     private static final String COMMA = ",";
@@ -24,7 +24,7 @@ public final class CoreUtils {
         // Exists only to defeat instantiation.
     }
 
-    /*
+    /**
      * Creates a copy of the source byte array.
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
@@ -38,7 +38,7 @@ public final class CoreUtils {
         return copy;
     }
 
-    /*
+    /**
      * Creates a copy of the source int array.
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
@@ -52,7 +52,7 @@ public final class CoreUtils {
         return copy;
     }
 
-    /*
+    /**
      * Creates a copy of the source array.
      * @param source Array being copied.
      * @param <T> Generic representing the type of the source array.
@@ -66,7 +66,7 @@ public final class CoreUtils {
         return Arrays.copyOf(source, source.length);
     }
 
-    /*
+    /**
      * Checks if the array is null or empty.
      * @param array Array being checked for nullness or emptiness.
      * @return True if the array is null or empty, false otherwise.
@@ -75,7 +75,7 @@ public final class CoreUtils {
         return array == null || array.length == 0;
     }
 
-    /*
+    /**
      * Checks if the collection is null or empty.
      * @param collection Collection being checked for nullness or emptiness.
      * @return True if the collection is null or empty, false otherwise.
@@ -84,7 +84,7 @@ public final class CoreUtils {
         return collection == null || collection.isEmpty();
     }
 
-    /*
+    /**
      * Checks if the map is null or empty.
      * @param map Map being checked for nullness or emptiness.
      * @return True if the map is null or empty, false otherwise.
@@ -93,7 +93,7 @@ public final class CoreUtils {
         return map == null || map.isEmpty();
     }
 
-    /*
+    /**
      * Checks if the character sequence is null or empty.
      * @param charSequence Character sequence being checked for nullness or emptiness.
      * @return True if the character sequence is null or empty, false otherwise.
@@ -102,7 +102,7 @@ public final class CoreUtils {
         return charSequence == null || charSequence.length() == 0;
     }
 
-    /*
+    /**
      * Turns an array into a string mapping each element to a string and delimits them using a coma.
      * @param array Array being formatted to a string.
      * @param mapper Function that maps each element to a string.
@@ -117,7 +117,7 @@ public final class CoreUtils {
         return Arrays.stream(array).map(mapper).collect(Collectors.joining(COMMA));
     }
 
-    /*
+    /**
      * Returns the first instance of the given class from an array of Objects.
      * @param args Array of objects to search through to find the first instance of the given `clazz` type.
      * @param clazz The type trying to be found.
@@ -138,7 +138,7 @@ public final class CoreUtils {
         return null;
     }
 
-    /*
+    /**
      * Extracts and combines the generic items from all the pages linked together.
      * @param page The paged response from server holding generic items.
      * @param context Metadata that is passed into the function that fetches the items from the next page.

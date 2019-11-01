@@ -22,6 +22,11 @@
   <suppress checks="Javadoc" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
   <suppress checks="Header" files=".*package-info.java"/>
 
+  <!-- ignore missing javadoc in samples -->
+  <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>
+  <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>
+  <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
+
   <!-- Files licensed with alternate license in the header -->
   <suppress checks="Header" files=".*AesKwBCProviderTest.java"/>
   <suppress checks="Header" files=".*AesKwTest.java"/>

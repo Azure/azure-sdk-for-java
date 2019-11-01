@@ -166,7 +166,11 @@ public final class UrlBuilder {
         return query;
     }
 
-    public String queryString() {
+    /**
+     * Returns the query string currently configured in this UrlBuilder instance.
+     * @return A String containing the currently configured query string.
+     */
+    public String getQueryString() {
         if (query.isEmpty()) {
             return "";
         }
@@ -243,7 +247,7 @@ public final class UrlBuilder {
      * @return The URL that is being built.
      * @throws MalformedURLException if the URL is not fully formed.
      */
-    public URL toURL() throws MalformedURLException {
+    public URL toUrl() throws MalformedURLException {
         return new URL(toString());
     }
 
@@ -283,7 +287,7 @@ public final class UrlBuilder {
             result.append(path);
         }
 
-        result.append(queryString());
+        result.append(getQueryString());
 
         return result.toString();
     }

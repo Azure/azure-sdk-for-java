@@ -148,6 +148,6 @@ public final class PlaybackClient implements HttpClient {
             urlBuilder.setQueryParameter("sig", "REDACTED");
         }
 
-        return String.format("%s%s", urlBuilder.getPath(), urlBuilder.queryString());
+        return String.format("%s%s", urlBuilder.getPath(), urlBuilder.getQueryString());
     }
 }

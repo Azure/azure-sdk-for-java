@@ -250,7 +250,7 @@ public final class BlobUrlParts {
         }
 
         try {
-            return url.toURL();
+            return url.toUrl();
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalStateException("The URL parts created a malformed URL.", ex));
         }

@@ -216,7 +216,7 @@ class RequestRetryTestFactory {
             UrlBuilder builder = UrlBuilder.parse(request.getUrl());
             builder.setQueryParameter(RETRY_TEST_QUERY_PARAM, "testquery");
             try {
-                request.setUrl(builder.toURL());
+                request.setUrl(builder.toUrl());
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("The URL has been mangled");
             }

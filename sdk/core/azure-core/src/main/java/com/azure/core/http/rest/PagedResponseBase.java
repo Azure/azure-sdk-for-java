@@ -23,11 +23,31 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
     private final List<T> items;
     private final String continuationToken;
 
+    /**
+     * Creates a new instance of the PagedResponseBase type.
+     *
+     * @param request The HttpRequest that was sent to the service whose response resulted in this response.
+     * @param statusCode The status code from the response.
+     * @param headers The headers from the response.
+     * @param page The page of content returned from the service within the response.
+     * @param deserializedHeaders The headers, deserialized into an instance of type H.
+     */
     public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page,
                              H deserializedHeaders) {
         this(request, statusCode, headers, page.getItems(), page.getContinuationToken(), deserializedHeaders);
     }
 
+    /**
+     * Creates a new instance of the PagedResponseBase type.
+     *
+     * @param request The HttpRequest that was sent to the service whose response resulted in this response.
+     * @param statusCode The status code from the response.
+     * @param headers The headers from the response.
+     * @param items The items returned from the service within the response.
+     * @param continuationToken The continuation token returned from the service, to enable future requests to pick up
+     *      from the same place in the paged iteration.
+     * @param deserializedHeaders The headers, deserialized into an instance of type H.
+     */
     public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items,
                              String continuationToken, H deserializedHeaders) {
         this.request = request;

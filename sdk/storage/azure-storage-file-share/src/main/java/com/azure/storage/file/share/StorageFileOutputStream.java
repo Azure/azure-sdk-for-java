@@ -12,6 +12,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+/**
+ * Provides an output stream to write a given storage file resource.
+ */
 public class StorageFileOutputStream extends StorageOutputStream {
     private long offsetPos;
 

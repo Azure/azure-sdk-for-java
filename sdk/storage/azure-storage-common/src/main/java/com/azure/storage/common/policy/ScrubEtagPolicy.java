@@ -17,6 +17,10 @@ import java.nio.charset.Charset;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Wraps any potential error responses from the service and applies post processing of the response's eTag header to
+ * standardize the value.
+ */
 public class ScrubEtagPolicy implements HttpPipelinePolicy {
     private static final String ETAG = "eTag";
 

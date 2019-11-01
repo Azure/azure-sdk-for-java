@@ -824,7 +824,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
         URL url;
         try {
-            url = builder.toURL();
+            url = builder.toUrl();
         } catch (MalformedURLException e) {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw logger.logExceptionAsError(new IllegalArgumentException(e));

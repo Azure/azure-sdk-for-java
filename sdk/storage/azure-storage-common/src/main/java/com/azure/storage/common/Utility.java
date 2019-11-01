@@ -21,6 +21,9 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+/**
+ * Utility methods for storage client libraries.
+ */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     private static final String UTF8_CHARSET = "UTF-8";

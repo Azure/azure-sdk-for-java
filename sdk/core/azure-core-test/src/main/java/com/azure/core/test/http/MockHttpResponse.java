@@ -54,6 +54,13 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, new HttpHeaders(), bodyBytes);
     }
 
+    /**
+     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and http headers.
+     *
+     * @param request HttpRequest associated with the response.
+     * @param statusCode Status code of the response.
+     * @param headers Headers of the response.
+     */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
         this(request, statusCode, headers, new byte[0]);
     }
@@ -87,6 +94,14 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, headers, serialize(serializable));
     }
 
+    /**
+     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and response body
+     * that is JSON serialized from {@code serializable}.
+     *
+     * @param request HttpRequest associated with the response.
+     * @param statusCode Status code of the response.
+     * @param serializable Contents to be serialized into JSON for the response.
+     */
     public MockHttpResponse(HttpRequest request, int statusCode, Object serializable) {
         this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
