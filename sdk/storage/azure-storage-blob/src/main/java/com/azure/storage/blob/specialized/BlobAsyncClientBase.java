@@ -772,9 +772,7 @@ public class BlobAsyncClientBase {
                     // The first chunk was retrieved during setup.
                     if (chunkNum == 0) {
                         return writeBodyToFile(initialResponse, file, 0, finalParallelTransferOptions, progressLock,
-                            totalProgress)
-                            // Build the object to return only on the first download to save extra object creation.
-                            .map(v -> buildBlobPropertiesResponse(initialResponse));
+                            totalProgress);
                     }
 
                     // Calculate whether we need a full chunk or something smaller because we are at the end.
@@ -790,11 +788,10 @@ public class BlobAsyncClientBase {
                         .subscribeOn(Schedulers.elastic())
                         .flatMap(response ->
                             writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
-                                totalProgress)
-                                .flatMap(v -> Mono.empty()));
+                                totalProgress));
                 })
                 // Only the first download call returns a value.
-                .elementAt(0);
+                .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
         });
     }
 
