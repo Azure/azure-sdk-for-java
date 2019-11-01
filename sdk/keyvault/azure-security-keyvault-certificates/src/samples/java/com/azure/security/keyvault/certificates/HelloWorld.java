@@ -6,12 +6,8 @@ package com.azure.security.keyvault.certificates;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
 import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
 
@@ -70,8 +66,8 @@ public class HelloWorld {
 
 
         //Let's create a certificate issuer.
-        Issuer issuer = new Issuer("myIssuer", "Test");
-        Issuer myIssuer = certificateClient.createIssuer(issuer);
+        CertificateIssuer issuer = new CertificateIssuer("myIssuer", "Test");
+        CertificateIssuer myIssuer = certificateClient.createIssuer(issuer);
         System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(), myIssuer.getProperties().getProvider());
 
         // Let's fetch the issuer we just created from the key vault.
@@ -96,7 +92,7 @@ public class HelloWorld {
         deletedCertificate = certificateClient.deleteCertificate("myCertificate");
         System.out.printf("Certificate is deleted with name %s and its recovery id is %s \n", deletedCertificate.getName(), deletedCertificate.getRecoveryId());
 
-        Issuer deleteCertificateIssuer = certificateClient.deleteIssuer("myIssuer");
+        CertificateIssuer deleteCertificateIssuer = certificateClient.deleteIssuer("myIssuer");
         System.out.printf("Certificate issuer is permanently deleted with name %s and provider is %s \n", deleteCertificateIssuer.getName(), deleteCertificateIssuer.getProperties().getProvider());
 
         // To ensure certificate is deleted on server side.

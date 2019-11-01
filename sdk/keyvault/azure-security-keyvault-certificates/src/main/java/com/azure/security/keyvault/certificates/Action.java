@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.security.keyvault.certificates.models.LifetimeActionType;
+import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,25 +15,25 @@ class Action {
      * 'AutoRenew'.
      */
     @JsonProperty(value = "action_type")
-    private LifetimeActionType lifetimeActionType;
+    private CertificatePolicyAction certificatePolicyAction;
 
     /**
      * Get the lifetimeActionType value.
      *
      * @return the updated lifetimeActionType value
      */
-    LifetimeActionType getActionType() {
-        return this.lifetimeActionType;
+    CertificatePolicyAction getActionType() {
+        return this.certificatePolicyAction;
     }
 
     /**
      * Set the lifetimeActionType value.
      *
-     * @param lifetimeActionType the lifetimeActionType value to set
+     * @param certificatePolicyAction the lifetimeActionType value to set
      * @return the Action object itself.
      */
-    Action setActionType(LifetimeActionType lifetimeActionType) {
-        this.lifetimeActionType = lifetimeActionType;
+    Action setActionType(CertificatePolicyAction certificatePolicyAction) {
+        this.certificatePolicyAction = certificatePolicyAction;
         return this;
     }
 }

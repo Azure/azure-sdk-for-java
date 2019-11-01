@@ -82,7 +82,7 @@ public class BackupAndRestoreOperations {
 
         // After sometime, the certificate is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
-        KeyVaultCertificate restoredCertificate = certificateClient.restoreCertificate(backupFromFile);
+        KeyVaultCertificate restoredCertificate = certificateClient.restoreCertificateBackup(backupFromFile);
         System.out.printf(" Restored certificate with name %s and id %s", restoredCertificate.getProperties().getName(), restoredCertificate.getProperties().getId());
 
     }

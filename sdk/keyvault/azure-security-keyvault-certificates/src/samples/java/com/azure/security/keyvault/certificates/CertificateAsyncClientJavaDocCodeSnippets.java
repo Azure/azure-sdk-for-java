@@ -11,12 +11,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.Contact;
-import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
-import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
 import reactor.util.context.Context;
 
 import java.util.ArrayList;
@@ -203,7 +199,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#String-String
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#issuer
-        Issuer issuer = new Issuer("issuerName", "providerName")
+        CertificateIssuer issuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")
             .setPassword("temp2");
         certificateAsyncClient.createIssuer(issuer)
@@ -215,7 +211,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#issuer
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#issuer
-        Issuer newIssuer = new Issuer("issuerName", "providerName")
+        CertificateIssuer newIssuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")
             .setPassword("temp2");
         certificateAsyncClient.createIssuerWithResponse(newIssuer)
@@ -293,7 +289,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#updateIssuer(Issuer)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#updateIssuer(CertificateIssuer)}
      */
     public void updateCertificateIssuerCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
@@ -301,7 +297,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         certificateAsyncClient.getIssuer("issuerName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponseValue -> {
-                Issuer issuer = issuerResponseValue;
+                CertificateIssuer issuer = issuerResponseValue;
                 //Update the enabled status of the issuer.
                 issuer.setEnabled(false);
                 certificateAsyncClient.updateIssuer(issuer)
@@ -315,7 +311,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         certificateAsyncClient.getIssuer("issuerName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponseValue -> {
-                Issuer issuer = issuerResponseValue;
+                CertificateIssuer issuer = issuerResponseValue;
                 //Update the enabled status of the issuer.
                 issuer.setEnabled(false);
                 certificateAsyncClient.updateIssuerWithResponse(issuer)
@@ -513,13 +509,13 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#restoreCertificate(byte[])}
+     * Method to insert code snippets for {@link CertificateAsyncClient#restoreCertificateBackup(byte[])}
      */
     public void restoreCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificate#byte
         byte[] certificateBackupByteArray = {};
-        certificateAsyncClient.restoreCertificate(certificateBackupByteArray)
+        certificateAsyncClient.restoreCertificateBackup(certificateBackupByteArray)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s %n",
                 certificateResponse.getProperties().getName(), certificateResponse.getKeyId()));
@@ -527,7 +523,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificateWithResponse#byte
         byte[] certificateBackup = {};
-        certificateAsyncClient.restoreCertificate(certificateBackup)
+        certificateAsyncClient.restoreCertificateBackup(certificateBackup)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s %n",
                 certificateResponse.getProperties().getName(), certificateResponse.getKeyId()));
@@ -595,7 +591,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     public void contactsOperationsCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
-        Contact oontactToAdd = new Contact("user", "useremail@exmaple.com");
+        CertificateContact oontactToAdd = new CertificateContact("user", "useremail@exmaple.com");
         certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
             System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmailAddress())
         );

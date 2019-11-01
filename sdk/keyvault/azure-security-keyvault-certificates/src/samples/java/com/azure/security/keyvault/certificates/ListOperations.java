@@ -6,13 +6,8 @@ package com.azure.security.keyvault.certificates;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.CertificateProperties;
-import com.azure.security.keyvault.certificates.models.Contact;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,8 +45,8 @@ public class ListOperations {
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
 
         //Let's create a certificate issuer.
-        Issuer issuer = new Issuer("myIssuer", "Test");
-        Issuer myIssuer = certificateClient.createIssuer(issuer);
+        CertificateIssuer issuer = new CertificateIssuer("myIssuer", "Test");
+        CertificateIssuer myIssuer = certificateClient.createIssuer(issuer);
         System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(), myIssuer.getProperties().getProvider());
 
         //Let's create a certificate signed by our issuer.
@@ -76,26 +71,26 @@ public class ListOperations {
 
         //Let's list all certificate issuers in the key vault.
         for (IssuerProperties certIssuer : certificateClient.listIssuers()) {
-            Issuer retrievedIssuer = certificateClient.getIssuer(certIssuer);
+            CertificateIssuer retrievedIssuer = certificateClient.getIssuer(certIssuer);
             System.out.printf("Received issuer with name %s and provider %s", retrievedIssuer.getName(),
                 retrievedIssuer.getProperties().getProvider());
         }
 
         // Let's set certificate contacts on the Key vault.
-        Contact contactToAdd = new Contact("user", "useremail@exmaple.com");
-        for (Contact contact : certificateClient.setContacts(Arrays.asList(contactToAdd))) {
+        CertificateContact contactToAdd = new CertificateContact("user", "useremail@exmaple.com");
+        for (CertificateContact contact : certificateClient.setContacts(Arrays.asList(contactToAdd))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
                 contact.getEmailAddress());
         }
 
         // Let's list all certificate contacts in the key vault.
-        for (Contact contact : certificateClient.listContacts()) {
+        for (CertificateContact contact : certificateClient.listContacts()) {
             System.out.printf("Retrieved contact with name %s and email %s from the key vault", contact.getName(),
                 contact.getEmailAddress());
         }
 
         // Let's delete all certificate contacts in the key vault.
-        for (Contact contact : certificateClient.deleteContacts()) {
+        for (CertificateContact contact : certificateClient.deleteContacts()) {
             System.out.printf("Deleted contact with name %s and email %s from key vault", contact.getName(),
                 contact.getEmailAddress());
         }

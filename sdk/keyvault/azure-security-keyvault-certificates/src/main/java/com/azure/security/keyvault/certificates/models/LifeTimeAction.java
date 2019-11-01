@@ -10,13 +10,13 @@ import java.util.Map;
 /**
  * Represents a LifeTimeAction in {@link CertificatePolicy}
  */
-public final class LifetimeAction {
+public final class LifeTimeAction {
 
     /**
      * The type of the action. Possible values include: 'EmailContacts',
      * 'AutoRenew'.
      */
-    private LifetimeActionType lifetimeActionType;
+    private CertificatePolicyAction certificatePolicyAction;
 
     /**
      * Percentage of lifetime at which to trigger. Value should be between 1
@@ -31,11 +31,11 @@ public final class LifetimeAction {
      */
     private Integer daysBeforeExpiry;
 
-    LifetimeAction() { }
+    LifeTimeAction() { }
 
 
-    public LifetimeAction(LifetimeActionType lifetimeActionType) {
-        this.lifetimeActionType = lifetimeActionType;
+    public LifeTimeAction(CertificatePolicyAction certificatePolicyAction) {
+        this.certificatePolicyAction = certificatePolicyAction;
     }
 
     /**
@@ -53,7 +53,7 @@ public final class LifetimeAction {
      * @param lifetimePercentage The lifetimePercentage value to set
      * @return the LifeTimeAction object itself.
      */
-    public LifetimeAction setLifetimePercentage(Integer lifetimePercentage) {
+    public LifeTimeAction setLifetimePercentage(Integer lifetimePercentage) {
         this.lifetimePercentage = lifetimePercentage;
         return this;
     }
@@ -73,7 +73,7 @@ public final class LifetimeAction {
      * @param daysBeforeExpiry The daysBeforeExpiry value to set
      * @return the LifeTimeAction object itself.
      */
-    public LifetimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
+    public LifeTimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
         this.daysBeforeExpiry = daysBeforeExpiry;
         return this;
     }
@@ -83,14 +83,14 @@ public final class LifetimeAction {
      *
      * @return the lifetimeActionType value
      */
-    public LifetimeActionType getActionType() {
-        return this.lifetimeActionType;
+    public CertificatePolicyAction getActionType() {
+        return this.certificatePolicyAction;
     }
 
 
     @JsonProperty(value = "action")
     private void unpackAction(Map<String, Object> action) {
-        lifetimeActionType = LifetimeActionType.fromString((String) action.get("action_type"));
+        certificatePolicyAction = CertificatePolicyAction.fromString((String) action.get("action_type"));
     }
 
     @JsonProperty(value = "trigger")

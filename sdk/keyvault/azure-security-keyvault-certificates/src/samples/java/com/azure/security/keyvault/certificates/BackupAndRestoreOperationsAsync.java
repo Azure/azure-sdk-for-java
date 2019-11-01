@@ -88,7 +88,7 @@ public class BackupAndRestoreOperationsAsync {
 
         // After sometime, the certificate is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
-        certificateAsyncClient.restoreCertificate(backupFromFile)
+        certificateAsyncClient.restoreCertificateBackup(backupFromFile)
             .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s %n",
                 certificateResponse.getProperties().getName(), certificateResponse.getKeyId()));
 

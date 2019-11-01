@@ -20,6 +20,8 @@ import java.util.Map;
  */
 public final class CertificatePolicy {
 
+    public static final CertificatePolicy DEFAULT = new CertificatePolicy("Self", "CN=DefaultPolicy");
+
     /**
      * The subject name. Should be a valid X509 distinguished Name.
      */
@@ -42,7 +44,7 @@ public final class CertificatePolicy {
      * Actions that will be performed by Key Vault over the lifetime of a
      * certificate.
      */
-    private List<LifetimeAction> lifetimeActions;
+    private List<LifeTimeAction> lifeTimeActions;
 
     /**
      * Name of the referenced issuer object or reserved names; for example,
@@ -136,6 +138,16 @@ public final class CertificatePolicy {
     public CertificatePolicy(String issuerName, String subjectName) {
         this.issuerName = issuerName;
         this.subjectName = subjectName;
+    }
+
+    /**
+     * Creates certificate policy.
+     * @param issuerName The issuer name to set.
+     * @param subjectAlternativeNames The subject alternative names to set.
+     */
+    public CertificatePolicy(String issuerName, SubjectAlternativeNames subjectAlternativeNames) {
+        this.issuerName = issuerName;
+        this.subjectAlternativeNames = subjectAlternativeNames;
     }
 
     CertificatePolicy() {
@@ -466,8 +478,8 @@ public final class CertificatePolicy {
      * @param actions the lifetime actions to set.
      * @return the updated certificate policy object itself.
      */
-    public CertificatePolicy setLifetimeActions(LifetimeAction... actions) {
-        this.lifetimeActions = Arrays.asList(actions);
+    public CertificatePolicy setLifeTimeActions(LifeTimeAction... actions) {
+        this.lifeTimeActions = Arrays.asList(actions);
         return this;
     }
 
@@ -475,8 +487,8 @@ public final class CertificatePolicy {
      * Get the lifetime actions
      * @return the lifetime actions
      */
-    public List<LifetimeAction> getLifetimeActions() {
-        return this.lifetimeActions;
+    public List<LifeTimeAction> getLifeTimeActions() {
+        return this.lifeTimeActions;
     }
 
 
@@ -537,13 +549,13 @@ public final class CertificatePolicy {
     @JsonProperty("lifetime_actions")
     @SuppressWarnings("unchecked")
     private void unpackLifeTimeActions(List<Object> lifetimeActions) {
-        List<LifetimeAction> actions = new ArrayList<>();
+        List<LifeTimeAction> actions = new ArrayList<>();
 
         for (Object action: lifetimeActions) {
             Map<String, Object> map = (Map<String, Object>) action;
             Integer lifetimePercentageTrigger = null;
             Integer daysBeforeExpiryTrigger = null;
-            LifetimeActionType actionType = null;
+            CertificatePolicyAction actionType = null;
             if (map.containsKey("trigger")) {
                 Map<String, Object> trigger = (Map<String, Object>) map.get("trigger");
                 lifetimePercentageTrigger = trigger.containsKey("lifetime_percentage") ? (Integer) trigger.get("lifetime_percentage") : null;
@@ -552,12 +564,12 @@ public final class CertificatePolicy {
 
             if (map.containsKey("action")) {
                 Map<String, Object> lifetimeAction = (Map<String, Object>) map.get("action");
-                actionType = lifetimeAction.containsKey("action_type") ? LifetimeActionType.fromString((String) lifetimeAction.get("action_type")) : null;
+                actionType = lifetimeAction.containsKey("action_type") ? CertificatePolicyAction.fromString((String) lifetimeAction.get("action_type")) : null;
             }
-            actions.add(new LifetimeAction(actionType).setLifetimePercentage(lifetimePercentageTrigger).setDaysBeforeExpiry(daysBeforeExpiryTrigger));
+            actions.add(new LifeTimeAction(actionType).setLifetimePercentage(lifetimePercentageTrigger).setDaysBeforeExpiry(daysBeforeExpiryTrigger));
         }
 
-        this.lifetimeActions = actions;
+        this.lifeTimeActions = actions;
     }
 
 

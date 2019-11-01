@@ -7,7 +7,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
-import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -97,7 +97,7 @@ public class ListOperationsAsync {
         Thread.sleep(5000);
 
         // Let's set certificate contacts on the Key vault.
-        Contact oontactToAdd = new Contact("user", "useremail@exmaple.com");
+        CertificateContact oontactToAdd = new CertificateContact("user", "useremail@exmaple.com");
         certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
             System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmailAddress())
         );

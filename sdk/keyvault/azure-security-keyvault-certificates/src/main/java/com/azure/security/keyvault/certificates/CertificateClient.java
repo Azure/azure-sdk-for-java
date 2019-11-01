@@ -13,19 +13,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.Contact;
-import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
-import com.azure.security.keyvault.certificates.models.CertificateProperties;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-import com.azure.security.keyvault.certificates.models.LifetimeActionType;
-import com.azure.security.keyvault.certificates.models.LifetimeAction;
-import com.azure.security.keyvault.certificates.models.CertificateImportOptions;
+import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,8 +27,8 @@ import java.util.Objects;
  * {@link KeyVaultCertificate certificates}. The client also supports listing {@link DeletedCertificate deleted certificates} for
  * a soft-delete enabled Azure Key Vault.
  *
- * <p>The client further allows creating, retrieving, updating, deleting and listing the {@link Issuer certificate issuers}. The client also supports
- * creating, listing and deleting {@link Contact certificate contacts}</p>
+ * <p>The client further allows creating, retrieving, updating, deleting and listing the {@link CertificateIssuer certificate issuers}. The client also supports
+ * creating, listing and deleting {@link CertificateContact certificate contacts}</p>
  *
  * <p><strong>Samples to construct the sync client</strong></p>
  *
@@ -109,25 +99,6 @@ public class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String name, CertificatePolicy policy) {
         return client.beginCreateCertificate(name, policy).getSyncPoller();
-    }
-
-    /**
-     * Creates a new certificate with the default policy. If this is the first version, the certificate resource
-     * is created. This operation requires the certificates/create permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
-     * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy}
-     *
-     * @param name The name of the certificate to be created.
-     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link SyncPoller} polling on the create certificate operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String name) {
-        return client.beginCreateCertificate(name).getSyncPoller();
     }
 
     /**
@@ -497,8 +468,8 @@ public class CertificateClient {
      * @return The {@link KeyVaultCertificate restored certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultCertificate restoreCertificate(byte[] backup) {
-        return restoreCertificateWithResponse(backup, Context.NONE).getValue();
+    public KeyVaultCertificate restoreCertificateBackup(byte[] backup) {
+        return restoreCertificateBackupWithResponse(backup, Context.NONE).getValue();
     }
 
     /**
@@ -517,8 +488,8 @@ public class CertificateClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate restored certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificate> restoreCertificateWithResponse(byte[] backup, Context context) {
-        return client.restoreCertificateWithResponse(backup, context).block();
+    public Response<KeyVaultCertificate> restoreCertificateBackupWithResponse(byte[] backup, Context context) {
+        return client.restoreCertificateBackupWithResponse(backup, context).block();
     }
 
     /**
@@ -739,11 +710,11 @@ public class CertificateClient {
      * @param provider The provider of the certificate issuer to be created.
      * @throws ResourceModifiedException when invalid certificate issuer {@code name} or {@code provider} configuration is provided.
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
-     * @return The created {@link Issuer certificate issuer}.
+     * @return The created {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Issuer createIssuer(String name, String provider) {
-        return createIssuerWithResponse(new Issuer(name, provider), Context.NONE).getValue();
+    public CertificateIssuer createIssuer(String name, String provider) {
+        return createIssuerWithResponse(new CertificateIssuer(name, provider), Context.NONE).getValue();
     }
 
     /**
@@ -759,10 +730,10 @@ public class CertificateClient {
      * @param issuer The configuration of the certificate issuer to be created.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
-     * @return The created {@link Issuer certificate issuer}.
+     * @return The created {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Issuer createIssuer(Issuer issuer) {
+    public CertificateIssuer createIssuer(CertificateIssuer issuer) {
         return createIssuerWithResponse(issuer, Context.NONE).getValue();
     }
 
@@ -780,10 +751,10 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the created {@link Issuer certificate issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the created {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Issuer> createIssuerWithResponse(Issuer issuer, Context context) {
+    public Response<CertificateIssuer> createIssuerWithResponse(CertificateIssuer issuer, Context context) {
         return client.createIssuerWithResponse(issuer, context).block();
     }
 
@@ -800,10 +771,10 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Issuer certificate issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Issuer> getIssuerWithResponse(String name, Context context) {
+    public Response<CertificateIssuer> getIssuerWithResponse(String name, Context context) {
         return client.getIssuerWithResponse(name, context).block();
     }
 
@@ -819,10 +790,10 @@ public class CertificateClient {
      * @param name The name of the certificate to retrieve, cannot be null
      * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
-     * @return The requested {@link Issuer certificate issuer}.
+     * @return The requested {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Issuer getIssuer(String name) {
+    public CertificateIssuer getIssuer(String name) {
         return getIssuerWithResponse(name, Context.NONE).getValue();
     }
 
@@ -839,10 +810,10 @@ public class CertificateClient {
      * @param issuerProperties The {@link IssuerProperties issuerProperties} holding attributes of the certificate issuer being requested.
      * @throws ResourceNotFoundException when a certificate with {@link IssuerProperties#getName() name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link IssuerProperties#getName() name} is empty string.
-     * @return The requested {@link Issuer certificate issuer}.
+     * @return The requested {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Issuer getIssuer(IssuerProperties issuerProperties) {
+    public CertificateIssuer getIssuer(IssuerProperties issuerProperties) {
         return getIssuerWithResponse(issuerProperties, Context.NONE).getValue();
     }
 
@@ -860,10 +831,10 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@link IssuerProperties#getName() name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link IssuerProperties#getName() name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Issuer certificate issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Issuer> getIssuerWithResponse(IssuerProperties issuerProperties, Context context) {
+    public Response<CertificateIssuer> getIssuerWithResponse(IssuerProperties issuerProperties, Context context) {
         return client.getIssuerWithResponse(issuerProperties.getName(), context).block();
     }
 
@@ -881,10 +852,10 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Issuer deleted issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateIssuer deleted issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Issuer> deleteIssuerWithResponse(String name, Context context) {
+    public Response<CertificateIssuer> deleteIssuerWithResponse(String name, Context context) {
         return client.deleteIssuerWithResponse(name, context).block();
     }
 
@@ -901,10 +872,10 @@ public class CertificateClient {
      * @param name The name of the certificate issuer to be deleted.
      * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
-     * @return The {@link Issuer deleted issuer}.
+     * @return The {@link CertificateIssuer deleted issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Issuer deleteIssuer(String name) {
+    public CertificateIssuer deleteIssuer(String name) {
         return deleteIssuerWithResponse(name, Context.NONE).getValue();
     }
 
@@ -914,7 +885,7 @@ public class CertificateClient {
      * {@code certificates/manageissuers/getissuers} permission.
      *
      * <p>It is possible to get the certificate issuer with all of its properties from this information. Loop over the {@link IssuerProperties issuerProperties} and
-     * call {@link CertificateClient#getIssuer(IssuerProperties issuerProperties)} . This will return the {@link Issuer issuer}
+     * call {@link CertificateClient#getIssuer(IssuerProperties issuerProperties)} . This will return the {@link CertificateIssuer issuer}
      * with all its properties.</p>.
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.listIssuers}
@@ -932,7 +903,7 @@ public class CertificateClient {
      * {@code certificates/manageissuers/getissuers} permission.
      *
      * <p>It is possible to get the certificate issuer with all of its properties from this information. Loop over the {@link IssuerProperties issuerProperties} and
-     * call {@link CertificateClient#getIssuer(IssuerProperties issuerProperties)} . This will return the {@link Issuer issuer}
+     * call {@link CertificateClient#getIssuer(IssuerProperties issuerProperties)} . This will return the {@link CertificateIssuer issuer}
      * with all its properties.</p>.
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.listIssuers#context}
@@ -955,14 +926,14 @@ public class CertificateClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateIssuer#issuer}
      *
-     * @param issuer The {@link Issuer issuer} with updated properties.
+     * @param issuer The {@link CertificateIssuer issuer} with updated properties.
      * @throws NullPointerException if {@code issuer} is {@code null}.
-     * @throws ResourceNotFoundException when a certificate issuer with {@link Issuer#getName() name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link Issuer#getName() name} is empty string.
-     * @return The {@link Issuer updated issuer}.
+     * @throws ResourceNotFoundException when a certificate issuer with {@link CertificateIssuer#getName() name} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link CertificateIssuer#getName() name} is empty string.
+     * @return The {@link CertificateIssuer updated issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Issuer updateIssuer(Issuer issuer) {
+    public CertificateIssuer updateIssuer(CertificateIssuer issuer) {
         return updateIssuerWithResponse(issuer, Context.NONE).getValue();
     }
 
@@ -976,15 +947,15 @@ public class CertificateClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#Issuer-Context}
      *
-     * @param issuer The {@link Issuer issuer} with updated properties.
+     * @param issuer The {@link CertificateIssuer issuer} with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws NullPointerException if {@code issuer} is {@code null}.
-     * @throws ResourceNotFoundException when a certificate issuer with {@link Issuer#getName() name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link Issuer#getName() name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Issuer updated issuer}.
+     * @throws ResourceNotFoundException when a certificate issuer with {@link CertificateIssuer#getName() name} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link CertificateIssuer#getName() name} is empty string.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateIssuer updated issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Issuer> updateIssuerWithResponse(Issuer issuer, Context context) {
+    public Response<CertificateIssuer> updateIssuerWithResponse(CertificateIssuer issuer, Context context) {
         return client.updateIssuerWithResponse(issuer, context).block();
     }
 
@@ -992,7 +963,7 @@ public class CertificateClient {
     /**
      * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
-     *<p>The {@link LifetimeAction} of type {@link LifetimeActionType#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
+     *<p>The {@link LifeTimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the certificate contacts in the Azure Key Vault. Prints out the returned contacts details.</p>
@@ -1001,17 +972,17 @@ public class CertificateClient {
      *
      * @param contacts The list of contacts to set on the vault.
      * @throws HttpRequestException when a contact information provided is invalid/incomplete.
-     * @return A {@link PagedIterable} containing all of the {@link Contact certificate contacts} in the vault.
+     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Contact> setContacts(List<Contact> contacts) {
+    public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts) {
         return setContacts(contacts, Context.NONE);
     }
 
     /**
      * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
-     *<p>The {@link LifetimeAction} of type {@link LifetimeActionType#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
+     *<p>The {@link LifeTimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the certificate contacts in the Azure Key Vault. Prints out the returned contacts details.</p>
@@ -1021,10 +992,10 @@ public class CertificateClient {
      * @param contacts The list of contacts to set on the vault.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws HttpRequestException when a contact information provided is invalid/incomplete.
-     * @return A {@link PagedIterable} containing all of the {@link Contact certificate contacts} in the vault.
+     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Contact> setContacts(List<Contact> contacts, Context context) {
+    public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts, Context context) {
         return new PagedIterable<>(client.setContacts(contacts, context));
     }
 
@@ -1036,10 +1007,10 @@ public class CertificateClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.listContacts}
      *
-     * @return A {@link PagedIterable} containing all of the {@link Contact certificate contacts} in the vault.
+     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Contact> listContacts() {
+    public PagedIterable<CertificateContact> listContacts() {
         return listContacts(Context.NONE);
     }
 
@@ -1053,10 +1024,10 @@ public class CertificateClient {
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.listContacts#context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} containing all of the {@link Contact certificate contacts} in the vault.
+     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Contact> listContacts(Context context) {
+    public PagedIterable<CertificateContact> listContacts(Context context) {
         return new PagedIterable<>(client.listContacts(context));
     }
 
@@ -1069,10 +1040,10 @@ public class CertificateClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.deleteContacts}
      *
-     * @return A {@link PagedIterable} containing all of the deleted {@link Contact certificate contacts} in the vault.
+     * @return A {@link PagedIterable} containing all of the deleted {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Contact> deleteContacts() {
+    public PagedIterable<CertificateContact> deleteContacts() {
         return deleteContacts(Context.NONE);
     }
 
@@ -1085,10 +1056,10 @@ public class CertificateClient {
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.deleteContacts#context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} containing all of the deleted {@link Contact certificate contacts} in the vault.
+     * @return A {@link PagedIterable} containing all of the deleted {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Contact> deleteContacts(Context context) {
+    public PagedIterable<CertificateContact> deleteContacts(Context context) {
         return new PagedIterable<>(client.deleteContacts(context));
     }
 

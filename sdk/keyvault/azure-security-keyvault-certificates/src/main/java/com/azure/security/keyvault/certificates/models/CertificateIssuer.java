@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Represents certificate Issuer with all of its properties.
  */
-public final class Issuer {
+public final class CertificateIssuer {
 
     /**
      * The user name/account name/account id.
@@ -64,11 +64,11 @@ public final class Issuer {
      * @param name The name of the issuer.
      * @param provider The provider of the issuer.
      */
-    public Issuer(String name, String provider) {
+    public CertificateIssuer(String name, String provider) {
         properties = new IssuerProperties(name, provider);
     }
 
-    Issuer() {
+    CertificateIssuer() {
         properties = new IssuerProperties();
     }
 
@@ -109,7 +109,7 @@ public final class Issuer {
      * @param accountId the account id to set.
      * @return the Issuer object itself.
      */
-    public Issuer setAccountId(String accountId) {
+    public CertificateIssuer setAccountId(String accountId) {
         this.accountId = accountId;
         return this;
     }
@@ -127,7 +127,7 @@ public final class Issuer {
      * @param password the password set.
      * @return the Issuer object itself.
      */
-    public Issuer setPassword(String password) {
+    public CertificateIssuer setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -145,7 +145,7 @@ public final class Issuer {
      * @param organizationId the org id to set.
      * @return the Issuer object itself.
      */
-    public Issuer setOrganizationId(String organizationId) {
+    public CertificateIssuer setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
         return this;
     }
@@ -163,7 +163,7 @@ public final class Issuer {
      * @param administrators the administrators to set.
      * @return the Issuer object itself.
      */
-    public Issuer setAdministrators(List<Administrator> administrators) {
+    public CertificateIssuer setAdministrators(List<Administrator> administrators) {
         this.administrators = administrators;
         return this;
     }
@@ -181,7 +181,7 @@ public final class Issuer {
      * @param enabled the enabled status to set
      * @return the Issuer object itself.
      */
-    public Issuer setEnabled(Boolean enabled) {
+    public CertificateIssuer setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
