@@ -4,9 +4,9 @@ package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.storage.file.share.models.FileCopyInfo;
-import com.azure.storage.file.share.models.FileProperties;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareFileCopyInfo;
+import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareStorageException;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -50,7 +50,7 @@ public class FileSample {
         // Create a source file
         try {
             srcFileClient.create(1024);
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to create source client. Reasons: " + e.getMessage());
         }
 
@@ -59,7 +59,7 @@ public class FileSample {
         InputStream uploadData = new ByteArrayInputStream(data);
         try {
             srcFileClient.upload(uploadData, data.length);
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to upload the data. Reasons: " + e.getMessage());
         }
         // Create a destination file client.
@@ -73,7 +73,7 @@ public class FileSample {
 
         String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
         Duration pollInterval = Duration.ofSeconds(2);
-        SyncPoller<FileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null, pollInterval);
+        SyncPoller<ShareFileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null, pollInterval);
 
         try {
             poller.waitForCompletion(Duration.ofMinutes(15));
@@ -81,7 +81,7 @@ public class FileSample {
             if (re.getCause() != null && re.getCause() instanceof TimeoutException) {
                 try {
                     poller.cancelOperation();
-                } catch (FileStorageException e) {
+                } catch (ShareStorageException e) {
                     System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
                 }
             }
@@ -93,7 +93,7 @@ public class FileSample {
 
         try {
             srcFileClient.uploadFromFile(uploadPath);
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to upload file to storage. Reasons: " + e.getMessage());
         }
 
@@ -109,7 +109,7 @@ public class FileSample {
         }
         try {
             srcFileClient.downloadToFile(downloadPath);
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to download file from storage. Reasons: " + e.getMessage());
         }
 
@@ -119,16 +119,16 @@ public class FileSample {
 
         // Get the file properties
         try {
-            FileProperties propertiesResponse = srcFileClient.getProperties();
+            ShareFileProperties propertiesResponse = srcFileClient.getProperties();
             System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.getETag(), propertiesResponse.getFileType());
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to get file properties. Reasons: " + e.getMessage());
         }
 
         // Delete the source file.
         try {
             srcFileClient.delete();
-        } catch (FileStorageException e) {
+        } catch (ShareStorageException e) {
             System.out.println("Failed to delete the src file. Reasons: " + e.getMessage());
         }
 

@@ -5,11 +5,10 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
-
 import java.util.Objects;
 
 /**
- * An event received within the context of an Event Hub partition.
+ * A container for {@link EventData} along with the partition information for this event data.
  */
 @Immutable
 public class PartitionEvent {
@@ -17,21 +16,21 @@ public class PartitionEvent {
     private final EventData eventData;
 
     /**
-     * Creates a new instance with the context and event data set.
+     * Creates an instance of PartitionEvent.
      *
-     * @param partitionContext Information about the partition the event was in.
-     * @param eventData Event received from the partition.
-     * @throws NullPointerException if {@code partitionContext} or {@code eventData} is null.
+     * @param partitionContext The partition information associated with the event data.
+     * @param eventData The event data received from the Event Hub.
+     * @throws NullPointerException if {@code partitionContext} or {@code eventData} is {@code null}.
      */
-    public PartitionEvent(PartitionContext partitionContext, EventData eventData) {
-        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null.");
-        this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null.");
+    public PartitionEvent(final PartitionContext partitionContext, final EventData eventData) {
+        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
+        this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null");
     }
 
     /**
-     * Gets information about the partition the received event was in.
+     * Returns the partition information associated with the event data.
      *
-     * @return Information about the partition the received event was in.
+     * @return The partition information associated with the event data.
      */
     public PartitionContext getPartitionContext() {
         return partitionContext;

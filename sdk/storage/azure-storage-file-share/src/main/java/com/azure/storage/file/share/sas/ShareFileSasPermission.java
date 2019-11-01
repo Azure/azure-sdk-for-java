@@ -32,17 +32,17 @@ public final class ShareFileSasPermission {
     private boolean deletePermission;
 
     /**
-     * Initializes an {@link FileSasPermission} object with all fields set to false.
+     * Initializes an {@code ShareFileSasPermission} object with all fields set to false.
      */
     public ShareFileSasPermission() {
     }
 
     /**
-     * Creates an {@code FileSasPermission} from the specified permissions string. This method will throw an
-     * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     * Creates an {@code ShareFileSasPermission} from the specified permissions string. This method will throw an
+     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@link String} which represents the {@link FileSasPermission}.
-     * @return A {@link FileSasPermission} generated from the given {@link String}.
+     * @param permString A {@code String} which represents the {@code ShareFileSasPermission}.
+     * @return A {@code ShareFileSasPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, c, w, or d.
      */
     public static ShareFileSasPermission parse(String permString) {
@@ -87,7 +87,7 @@ public final class ShareFileSasPermission {
      *
      * @param hasReadPermission {@code true} if the SAS can read the content, properties, and metadata for a file. Can
      * use the file as the source of a copy operation. {@code false}, otherwise.
-     * @return the updated FileSasPermission object
+     * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setReadPermission(boolean hasReadPermission) {
         this.readPermission = hasReadPermission;
@@ -108,7 +108,7 @@ public final class ShareFileSasPermission {
      *
      * @param hasCreatePermission {@code true} if SAS can create a new file or copy a file to a new file. {@code false},
      * otherwise.
-     * @return the updated FileSasPermission object
+     * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setCreatePermission(boolean hasCreatePermission) {
         this.createPermission = hasCreatePermission;
@@ -130,7 +130,7 @@ public final class ShareFileSasPermission {
      *
      * @param hasWritePermission {@code true} if SAS can write content, properties, or metadata to the file. Or, use the
      * file as the destination of a copy operation. {@code false}, otherwise.
-     * @return the updated FileSasPermission object
+     * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setWritePermission(boolean hasWritePermission) {
         this.writePermission = hasWritePermission;
@@ -150,7 +150,7 @@ public final class ShareFileSasPermission {
      * Sets the delete permission status.
      *
      * @param hasDeletePermission {@code true} if SAS can delete a file. {@code false}, otherwise.
-     * @return the updated FileSasPermission object
+     * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setDeletePermission(boolean hasDeletePermission) {
         this.deletePermission = hasDeletePermission;
@@ -161,7 +161,7 @@ public final class ShareFileSasPermission {
      * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@link String} which represents the {@link FileSasPermission}.
+     * @return A {@code String} which represents the {@code ShareFileSasPermission}.
      */
     @Override
     public String toString() {

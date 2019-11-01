@@ -9,7 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Represents base properties of an {@link Issuer}.
+ * Represents base properties of an {@link CertificateIssuer}.
  */
 public class IssuerProperties {
     /**
