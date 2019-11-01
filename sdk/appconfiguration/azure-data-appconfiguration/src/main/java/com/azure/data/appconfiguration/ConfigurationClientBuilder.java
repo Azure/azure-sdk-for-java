@@ -155,7 +155,7 @@ public final class ConfigurationClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration,
+        policies.add(new UserAgentPolicy(AzureConfiguration.getName(), AzureConfiguration.getVersion(), buildConfiguration,
             serviceVersion));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));

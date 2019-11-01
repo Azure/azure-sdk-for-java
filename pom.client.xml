@@ -632,6 +632,12 @@
         <jdk>[1.8,9)</jdk>
       </activation>
       <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
         <plugins>
           <!-- Don't compile module-info.java, see java 9+ profile -->
           <plugin>
@@ -691,6 +697,12 @@
         <jdk>[9,)</jdk>
       </activation>
       <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
