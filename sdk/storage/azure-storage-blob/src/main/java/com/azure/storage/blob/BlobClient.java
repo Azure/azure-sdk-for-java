@@ -43,6 +43,16 @@ import java.util.Map;
 @ServiceClient(builder = BlobClientBuilder.class)
 public class BlobClient extends BlobClientBase {
     private final ClientLogger logger = new ClientLogger(BlobClient.class);
+
+    public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+    public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+    /**
+     * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
+     * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
+     * value will be used.
+     */
+    public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
+
     private final BlobAsyncClient client;
 
     /**
