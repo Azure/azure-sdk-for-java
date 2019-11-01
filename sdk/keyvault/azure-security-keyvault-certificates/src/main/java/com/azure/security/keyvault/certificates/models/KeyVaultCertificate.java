@@ -13,46 +13,40 @@ import java.util.Objects;
 /**
  * Represents a certificate with all of its properties.
  */
-public class Certificate {
+public class KeyVaultCertificate {
 
     /**
      * CER contents of x509 certificate.
      */
     @JsonProperty(value = "cer")
-    private byte[] cer;
+    byte[] cer;
 
     /**
      * The key id.
      */
     @JsonProperty(value = "kid", access = JsonProperty.Access.WRITE_ONLY)
-    private String keyId;
+    String keyId;
 
     /**
      * The secret id.
      */
     @JsonProperty(value = "sid", access = JsonProperty.Access.WRITE_ONLY)
-    private String secretId;
-
-    /**
-     * The Certificate policy.
-     */
-    @JsonProperty("policy")
-    private CertificatePolicy certificatePolicy;
+    String secretId;
 
     /**
      * The certificate properties
      */
-    private CertificateProperties properties;
+    CertificateProperties properties;
 
     /**
      * Create the certificate
      * @param name the name of the certificate.
      */
-    public Certificate(String name) {
+    KeyVaultCertificate(String name) {
         properties = new CertificateProperties(name);
     }
 
-    Certificate() {
+    KeyVaultCertificate() {
         properties = new CertificateProperties();
     }
 
@@ -70,7 +64,7 @@ public class Certificate {
      * @throws NullPointerException if {@code certificateProperties} is null
      * @return the updated certificate object itself.
      */
-    public Certificate setProperties(CertificateProperties properties) {
+    public KeyVaultCertificate setProperties(CertificateProperties properties) {
         Objects.requireNonNull(properties, "The certificate properties cannot be null");
         properties.name = this.properties.name;
         this.properties = properties;
@@ -117,43 +111,24 @@ public class Certificate {
         return ImplUtils.clone(cer);
     }
 
-    /**
-     * Get the certificate policy of the certificate
-     * @return the cer content.
-     */
-    public CertificatePolicy getCertificatePolicy() {
-        return this.certificatePolicy;
-    }
-
-    /**
-     * Set the certificate policy of the certificate
-     *
-     * @param certificatePolicy the policy to set.
-     * @return the certificate object itself.
-     */
-    public Certificate setCertificatePolicy(CertificatePolicy certificatePolicy) {
-        this.certificatePolicy = certificatePolicy;
-        return this;
-    }
-
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
-    private void unpackBaseAttributes(Map<String, Object> attributes) {
+    void unpackBaseAttributes(Map<String, Object> attributes) {
         properties.unpackBaseAttributes(attributes);
     }
 
     @JsonProperty(value = "id")
-    private void unpackId(String id) {
+    void unpackId(String id) {
         properties.unpackId(id);
     }
 
     @JsonProperty(value = "tags")
-    private void unpackTags(Map<String, String> tags) {
+    void unpackTags(Map<String, String> tags) {
         properties.tags = tags;
     }
 
     @JsonProperty(value = "x5t")
-    private void unpackX5t(Base64Url base64Url) {
+    void unpackX5t(Base64Url base64Url) {
         properties.x509Thumbprint = base64Url;
     }
 }

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The contact information for the vault certificates.
  */
-public final class Contact {
+public final class CertificateContact {
     /**
      * Email addresss.
      */
@@ -35,7 +35,7 @@ public final class Contact {
      * @param emailAddress The email address of the contact
      * @param phone The phone number of the contact.
      */
-    public Contact(String name, String emailAddress, String phone) {
+    public CertificateContact(String name, String emailAddress, String phone) {
         this.name = name;
         this.emailAddress = emailAddress;
         this.phone = phone;
@@ -47,12 +47,12 @@ public final class Contact {
      * @param name The name of the contact
      * @param emailAddress The email address of the contact
      */
-    public Contact(String name, String emailAddress) {
+    public CertificateContact(String name, String emailAddress) {
         this.name = name;
         this.emailAddress = emailAddress;
     }
 
-    Contact() { }
+    CertificateContact() { }
 
     /**
      * Get the emailAddress.

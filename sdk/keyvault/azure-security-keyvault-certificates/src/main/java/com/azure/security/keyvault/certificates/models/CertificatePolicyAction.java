@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines action values for type of {@link LifetimeAction} in {@link CertificatePolicy}.
+ * Defines action values for type of {@link LifeTimeAction} in {@link CertificatePolicy}.
  */
-public enum LifetimeActionType {
+public enum CertificatePolicyAction {
 
     /** Enum value EmailContacts. */
     EMAIL_CONTACTS("EmailContacts"),
@@ -20,7 +20,7 @@ public enum LifetimeActionType {
     /** The actual serialized value for a LifetimeActionType instance. */
     private String value;
 
-    LifetimeActionType(String value) {
+    CertificatePolicyAction(String value) {
         this.value = value;
     }
 
@@ -31,9 +31,9 @@ public enum LifetimeActionType {
      * @return the parsed LifetimeActionType object, or null if unable to parse.
      */
     @JsonCreator
-    public static LifetimeActionType fromString(String value) {
-        LifetimeActionType[] items = LifetimeActionType.values();
-        for (LifetimeActionType item : items) {
+    public static CertificatePolicyAction fromString(String value) {
+        CertificatePolicyAction[] items = CertificatePolicyAction.values();
+        for (CertificatePolicyAction item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

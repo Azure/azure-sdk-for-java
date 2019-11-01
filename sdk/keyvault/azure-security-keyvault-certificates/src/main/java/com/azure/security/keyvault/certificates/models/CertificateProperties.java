@@ -203,7 +203,10 @@ public class CertificateProperties {
      * @return the x509Thumbprint.
      */
     public byte[] getX509Thumbprint() {
-        return this.x509Thumbprint.decodedBytes();
+        if (x509Thumbprint != null) {
+            return this.x509Thumbprint.decodedBytes();
+        }
+        return null;
     }
 
     @JsonProperty("attributes")

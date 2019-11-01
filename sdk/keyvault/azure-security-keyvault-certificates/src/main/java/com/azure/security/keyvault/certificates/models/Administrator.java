@@ -6,7 +6,7 @@ package com.azure.security.keyvault.certificates.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents an administrator in {@link Issuer}
+ * Represents an administrator in {@link CertificateIssuer}
  */
 public final class Administrator {
     /**
