@@ -159,7 +159,7 @@ readItemMono
   .subscribe(
   resourceResponse -> {
     // this is executed on threads provided by Scheduler.parallel()
-    // Schedulers.parallel() should be used only the work is cpu intensive and you are not doing blocking IO, thread sleep, etc. in this thread against other resources.
+    // Schedulers.parallel() should be used only when the work is cpu intensive and you are not doing blocking IO, thread sleep, etc. in this thread against other resources.
     veryCpuIntensiveWork();
   });
 
