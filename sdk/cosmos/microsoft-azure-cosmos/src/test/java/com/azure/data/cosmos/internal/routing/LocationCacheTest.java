@@ -305,7 +305,7 @@ public class LocationCacheTest {
 
         mockedClient.reset();
         List<Mono<Void>> list = IntStream.range(0, 10)
-                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
+                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
 
         Flux.merge(list).then().block();
@@ -314,7 +314,7 @@ public class LocationCacheTest {
         mockedClient.reset();
 
         IntStream.range(0, 10)
-                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
+                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
         for (Mono completable : list) {
             completable.block();
