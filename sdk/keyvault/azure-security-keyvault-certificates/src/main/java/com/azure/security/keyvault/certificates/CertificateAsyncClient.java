@@ -1018,7 +1018,7 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificate#config}
      *
-     * @param mergeCertificateOptions the merge certificate configuration holding the x509 certificates.
+     * @param mergeCertificateOptions the merge certificate options holding the x509 certificates.
      *
      * @throws NullPointerException when {@code mergeCertificateConfig} is null.
      * @throws HttpRequestException if {@code mergeCertificateConfig} is invalid/corrupt.
@@ -1042,7 +1042,7 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificateWithResponse#config}
      *
-     * @param mergeCertificateOptions the merge certificate configuration holding the x509 certificates.
+     * @param mergeCertificateOptions the merge certificate options holding the x509 certificates.
      *
      * @throws NullPointerException when {@code mergeCertificateConfig} is null.
      * @throws HttpRequestException if {@code mergeCertificateConfig} is invalid/corrupt.

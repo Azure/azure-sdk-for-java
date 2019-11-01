@@ -18,18 +18,18 @@ class Action {
     private CertificatePolicyAction certificatePolicyAction;
 
     /**
-     * Get the lifetimeActionType value.
+     * Get the certificatePolicyAction value.
      *
-     * @return the updated lifetimeActionType value
+     * @return the updated certificatePolicyAction value
      */
     CertificatePolicyAction getActionType() {
         return this.certificatePolicyAction;
     }
 
     /**
-     * Set the lifetimeActionType value.
+     * Set the certificatePolicyAction value.
      *
-     * @param certificatePolicyAction the lifetimeActionType value to set
+     * @param certificatePolicyAction the certificatePolicyAction value to set
      * @return the Action object itself.
      */
     Action setActionType(CertificatePolicyAction certificatePolicyAction) {

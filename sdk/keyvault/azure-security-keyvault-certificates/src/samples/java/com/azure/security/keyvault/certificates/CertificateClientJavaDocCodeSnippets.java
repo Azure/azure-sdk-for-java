@@ -159,7 +159,7 @@ public final class CertificateClientJavaDocCodeSnippets {
             createdIssuer.getProperties().getProvider());
         // END: com.azure.security.keyvault.certificates.CertificateClient.createIssuer#String-String
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createIssuer#issuer
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createIssuer#CertificateIssuer
         CertificateIssuer issuerToCreate = new CertificateIssuer("myissuer", "myProvider")
             .setAccountId("testAccount")
             .setAdministrators(Arrays.asList(new Administrator("test", "name",
@@ -167,9 +167,9 @@ public final class CertificateClientJavaDocCodeSnippets {
         CertificateIssuer returnedIssuer = certificateClient.createIssuer(issuerToCreate);
         System.out.printf("Created Issuer with name %s provider %s", returnedIssuer.getName(),
             returnedIssuer.getProperties().getProvider());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.createIssuer#issuer
+        // END: com.azure.security.keyvault.certificates.CertificateClient.createIssuer#CertificateIssuer
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#Issuer-Context
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-Context
         CertificateIssuer issuer = new CertificateIssuer("issuerName", "myProvider")
             .setAccountId("testAccount")
             .setAdministrators(Arrays.asList(new Administrator("test", "name",
@@ -178,7 +178,7 @@ public final class CertificateClientJavaDocCodeSnippets {
             new Context(key1, value1));
         System.out.printf("Created Issuer with name %s provider %s", issuerResponse.getValue().getName(),
             issuerResponse.getValue().getProperties().getProvider());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#Issuer-Context
+        // END: com.azure.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-Context
     }
 
     /**
@@ -251,15 +251,15 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void updateCertificateIssuerCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.updateIssuer#issuer
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer
         CertificateIssuer returnedIssuer = certificateClient.getIssuer("issuerName");
         returnedIssuer.setAccountId("newAccountId");
         CertificateIssuer updatedIssuer = certificateClient.updateIssuer(returnedIssuer);
         System.out.printf("Updated issuer with name %s, provider %s and account Id %s", updatedIssuer.getName(),
             updatedIssuer.getProperties().getProvider(), updatedIssuer.getAccountId());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.updateIssuer#issuer
+        // END: com.azure.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#Issuer-Context
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#CertificateIssuer-Context
         CertificateIssuer issuer = certificateClient.getIssuer("issuerName");
         returnedIssuer.setAccountId("newAccountId");
         Response<CertificateIssuer> updatedIssuerWithResponse = certificateClient.updateIssuerWithResponse(issuer,
@@ -268,7 +268,7 @@ public final class CertificateClientJavaDocCodeSnippets {
             updatedIssuerWithResponse.getValue().getName(),
             updatedIssuerWithResponse.getValue().getProperties().getProvider(),
             updatedIssuerWithResponse.getValue().getAccountId());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#Issuer-Context
+        // END: com.azure.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#CertificateIssuer-Context
     }
 
     /**
