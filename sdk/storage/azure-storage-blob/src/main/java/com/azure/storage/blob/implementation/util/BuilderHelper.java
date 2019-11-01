@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-blob";
     // {x-version-update-start;com.azure:azure-storage-blob;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0";
     // {x-version-update-end}
 
     /**
@@ -82,6 +82,18 @@ public final class BuilderHelper {
             .build();
     }
 
+    /**
+     * Gets the default http log option for Storage Blob.
+     *
+     * @return the default http log options.
+     */
+    public static HttpLogOptions getDefaultHttpLogOptions() {
+        HttpLogOptions defaultOptions = new HttpLogOptions();
+        BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
+        BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
+        return defaultOptions;
+    }
+
     /*
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
@@ -107,4 +119,6 @@ public final class BuilderHelper {
             .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
             .build();
     }
+
+
 }

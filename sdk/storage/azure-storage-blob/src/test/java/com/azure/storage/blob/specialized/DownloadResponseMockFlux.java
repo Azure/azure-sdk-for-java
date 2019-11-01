@@ -10,7 +10,7 @@ import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.ReliableDownloadOptions;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -33,7 +33,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
     private int tryNumber;
     private HttpGetterInfo info;
     private ByteBuffer scenarioData;
-    private ReliableDownloadOptions options;
+    private DownloadRetryOptions options;
 
     DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
         this.scenario = scenario;
@@ -64,7 +64,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
         return this.tryNumber;
     }
 
-    DownloadResponseMockFlux setOptions(ReliableDownloadOptions options) {
+    DownloadResponseMockFlux setOptions(DownloadRetryOptions options) {
         this.options = options;
         return this;
     }

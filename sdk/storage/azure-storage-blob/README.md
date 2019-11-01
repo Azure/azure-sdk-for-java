@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.0.0-preview.5</version>
+    <version>12.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.0.0-preview.5</version>
+    <version>12.0.0</version>
     <exclusions>
         <exclusion>
             <groupId>com.azure</groupId>
@@ -57,7 +57,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.0.0-preview.7</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -279,7 +279,7 @@ blobClient.downloadToFile("downloaded-file.jpg");
 Enumerating all blobs using a `BlobContainerClient`.
 
 ```java
-blobContainerClient.listBlobsFlat()
+blobContainerClient.listBlobs()
         .forEach(
             blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
         );
@@ -304,14 +304,10 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 
 ## Next steps
 
-Get started with our [Blob samples][samples]:
+Several Storage blob Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-1. [Basic Examples][samples_basic]: Create storage, container and blob clients. Upload, download and list blobs.
-2. [File Transfer Examples][samples_file_transfer]: Upload and download a large file through blobs.
-3. [Storage Error Examples][samples_storage_error]: Handle the exceptions thrown from the Storage Blob service side.
-4. [List Container Examples][samples_list_containers]: Create, list and delete containers.
-5. [Set Metadata and HTTPHeaders Examples][samples_metadata]: Set metadata for containers and blobs, and set HTTPHeaders for blobs.
-6. [Azure Identity Examples][samples_identity]: Use `DefaultAzureCredential` to do the authentication.
+## Next steps Samples
+Samples are explained in detail [here][samples_readme].
 
 ## Contributing
 
@@ -323,6 +319,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [source]: src
+[samples_readme]: src/samples/README.md
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
@@ -335,12 +332,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [samples]: src/samples
-[samples_basic]: src/samples/java/com/azure/storage/blob/BasicExample.java
-[samples_file_transfer]: src/samples/java/com/azure/storage/blob/FileTransferExample.java
-[samples_storage_error]: src/samples/java/com/azure/storage/blob/StorageErrorHandlingExample.java
-[samples_list_containers]: src/samples/java/com/azure/storage/blob/ListContainersExample.java
-[samples_metadata]: src/samples/java/com/azure/storage/blob/SetMetadataAndHTTPHeadersExample.java
-[samples_identity]: src/samples/java/com/azure/storage/blob/AzureIdentityExample.java
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

@@ -19,7 +19,7 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.keys.models.Key;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
 /**
@@ -123,11 +123,11 @@ interface CryptographyService {
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Key>> getKey(@HostParam("url") String url,
-                               @PathParam("key-name") String keyName,
-                               @PathParam("key-version") String keyVersion,
-                               @QueryParam("api-version") String apiVersion,
-                               @HeaderParam("accept-language") String acceptLanguage,
-                               @HeaderParam("Content-Type") String type,
-                               Context context);
+    Mono<Response<KeyVaultKey>> getKey(@HostParam("url") String url,
+                                       @PathParam("key-name") String keyName,
+                                       @PathParam("key-version") String keyVersion,
+                                       @QueryParam("api-version") String apiVersion,
+                                       @HeaderParam("accept-language") String acceptLanguage,
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
 }

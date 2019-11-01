@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.Disposable;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class ConsumeEventsFromKnownSequenceNumberPosition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     private static long lastEnqueuedSequenceNumber = -1;
-    private static String lastEnqueuedSequencePartitionID = null;
+    private static String lastEnqueuedSequencePartitionId = null;
 
     /**
      * Main method to invoke this demo about how to receive event from a known sequence number position in an Azure Event Hub instance.
@@ -26,8 +26,8 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
      * @param args Unused arguments to the program.
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
      *         complete.
-     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubAsyncConsumer},
-     *         or the {@link EventHubAsyncProducer}
+     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubConsumerAsyncClient},
+     *         or the {@link EventHubProducerAsyncClient}
      */
     public static void main(String[] args) throws InterruptedException, IOException {
         Semaphore semaphore = new Semaphore(0);
@@ -49,7 +49,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
                 properties -> {
                     if (!properties.isEmpty()) {
                         lastEnqueuedSequenceNumber = properties.getLastEnqueuedSequenceNumber();
-                        lastEnqueuedSequencePartitionID = properties.getId();
+                        lastEnqueuedSequencePartitionId = properties.getId();
                     }
                 },
                 error -> System.err.println("Error occurred while fetching partition properties: " + error.toString()),
@@ -65,7 +65,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
 
         // Make sure to have at least one non-empty event hub in order to continue the sample execution
         // if you don't have an non-empty event hub, try with another example 'SendEvent' in the same directory.
-        if (lastEnqueuedSequenceNumber == -1 || lastEnqueuedSequencePartitionID == null) {
+        if (lastEnqueuedSequenceNumber == -1 || lastEnqueuedSequencePartitionId == null) {
             System.err.println("All event hubs are empty");
             System.exit(0);
         }
@@ -74,12 +74,16 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
         // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
         // service we only want events that are sent to the partition after we begin listening.
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
-            lastEnqueuedSequencePartitionID, EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false));
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+            .connectionString("fake-string")
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false))
+            .buildAsyncConsumer();
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
-        Disposable subscription = consumer.receive().subscribe(event -> {
+        Disposable subscription = consumer.receive(lastEnqueuedSequencePartitionId).subscribe(partitionEvent -> {
+            EventData event = partitionEvent.getEventData();
             String contents = UTF_8.decode(event.getBody()).toString();
             // ex. The last enqueued sequence number is 99. If isInclusive is true, the received event starting from the same
             // event with sequence number of '99'. Otherwise, the event with sequence number of '100' will be the first
@@ -90,12 +94,13 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
             semaphore.release();
         });
 
-        // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
-        // This creates a producer that only sends events to `lastEnqueuedSequencePartitionID`.
-        EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(lastEnqueuedSequencePartitionID);
-        EventHubAsyncProducer producer = client.createProducer(producerOptions);
+        EventHubProducerAsyncClient producer = client.createProducer();
 
-        producer.send(new EventData("Hello world!".getBytes(UTF_8))).block(OPERATION_TIMEOUT);
+        // Because the consumer is only listening to new events, we need to send some events to that partition.
+        // This sends the events to `lastEnqueuedSequencePartitionId`.
+        SendOptions sendOptions = new SendOptions().setPartitionId(lastEnqueuedSequencePartitionId);
+
+        producer.send(new EventData("Hello world!".getBytes(UTF_8)), sendOptions).block(OPERATION_TIMEOUT);
         // Acquiring the semaphore so that this sample does not end before all events are fetched.
         semaphore.acquire();
 

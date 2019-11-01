@@ -3,7 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 /**
  * Sample code to demonstrate how a customer might use {@link EventProcessor}.
@@ -19,22 +24,30 @@ public class EventProcessorSample {
      * @throws Exception If there are any errors while running the {@link EventProcessor}.
      */
     public static void main(String[] args) throws Exception {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(EH_CONNECTION_STRING)
-            .buildAsyncClient();
+
+        Logger logger = LoggerFactory.getLogger(EventProcessorSample.class);
+        Function<PartitionEvent, Mono<Void>> processEvent = partitionEvent -> {
+            logger.info(
+                "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
+                partitionEvent.getPartitionContext().getEventHubName(),
+                partitionEvent.getPartitionContext().getConsumerGroup(),
+                partitionEvent.getPartitionContext().getPartitionId(),
+                partitionEvent.getEventData().getSequenceNumber());
+            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
+        };
 
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
-            .consumerGroup(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
-            .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory(LogPartitionProcessor::new)
-            .partitionManager(new InMemoryPartitionManager());
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .connectionString(EH_CONNECTION_STRING)
+            .processEvent(processEvent)
+            .eventProcessorStore(new InMemoryEventProcessorStore());
 
         EventProcessor eventProcessor = eventProcessorBuilder.buildEventProcessor();
         System.out.println("Starting event processor");
         eventProcessor.start();
         eventProcessor.start(); // should be a no-op
 
-        // do other stuff
+        // Continue to perform other tasks while the processor is running in the background.
         Thread.sleep(TimeUnit.MINUTES.toMillis(1));
 
         System.out.println("Stopping event processor");
@@ -44,7 +57,7 @@ public class EventProcessorSample {
         System.out.println("Starting a new instance of event processor");
         eventProcessor = eventProcessorBuilder.buildEventProcessor();
         eventProcessor.start();
-        // do other stuff
+        // Continue to perform other tasks while the processor is running in the background.
         Thread.sleep(TimeUnit.MINUTES.toMillis(1));
         System.out.println("Stopping event processor");
         eventProcessor.stop();

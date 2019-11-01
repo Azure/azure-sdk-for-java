@@ -41,6 +41,13 @@ public interface PartitionReceiver {
     void setReceiveTimeout(Duration value);
 
     /**
+     * Determine the current state of the receiver.
+     *
+     * @return false if the receiver is closing or has been closed, true if the receiver is open and ready to use.
+     */
+    boolean getIsOpen();
+
+    /**
      * Get the epoch value that this receiver is currently using for partition ownership.
      * <p>
      * A value of 0 means this receiver is not an epoch-based receiver.

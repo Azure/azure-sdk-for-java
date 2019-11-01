@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -41,7 +40,7 @@ public class PublishEventDataBatch {
 
         // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
         // sent from this producer are load balanced between all available partitions in the Event Hub instance.
-        final EventHubAsyncProducer producer = client.createProducer();
+        final EventHubProducerAsyncClient producer = client.createProducer();
 
         // Creating a batch where we want the events ending up in the same partition by setting the partition key.
         final BatchOptions options = new BatchOptions()
@@ -67,12 +66,7 @@ public class PublishEventDataBatch {
                 }
 
                 // Disposing of our producer and client.
-                try {
-                    producer.close();
-                } catch (IOException e) {
-                    System.err.println("Error encountered while closing producer: " + e.toString());
-                }
-
+                producer.close();
                 client.close();
             });
     }

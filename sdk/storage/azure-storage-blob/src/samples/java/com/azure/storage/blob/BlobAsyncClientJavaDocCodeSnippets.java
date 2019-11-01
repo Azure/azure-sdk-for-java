@@ -9,9 +9,9 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import reactor.core.publisher.Flux;
 
@@ -87,15 +87,15 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions,
+     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, DownloadRetryOptions,
      * BlobRequestConditions, boolean)}
      *
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void downloadWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
         client.downloadWithResponse(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
@@ -107,26 +107,25 @@ public class BlobAsyncClientJavaDocCodeSnippets {
                 }
             });
         });
-        // END: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // END: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#downloadToFile(String)} and {@link BlobAsyncClientBase
-     * #downloadToFileWithResponse(String, BlobRange, ParallelTransferOptions, ReliableDownloadOptions,
-     * BlobRequestConditions, boolean)}
+     * Code snippets for {@link BlobAsyncClient#downloadToFile(String)} and {@link BlobAsyncClient#downloadToFileWithResponse(
+     * String, BlobRange, ParallelTransferOptions, DownloadRetryOptions, BlobRequestConditions, boolean)}
      */
     public void downloadToFileCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
         client.downloadToFile(file).subscribe(response -> System.out.println("Completed download to file"));
         // END: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
         client.downloadToFileWithResponse(file, range, null, options, null, false)
             .subscribe(response -> System.out.println("Completed download to file"));
-        // END: com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobAccessConditions-boolean
     }
 
     /**
@@ -246,15 +245,15 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions,
+     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, DownloadRetryOptions,
      * BlobRequestConditions, boolean)}
      *
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void downloadWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, (long) 2048);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
         client.downloadWithResponse(range, options, null, false).subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
@@ -266,7 +265,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
                 }
             });
         });
-        // END: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // END: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean
     }
 
     /**
@@ -394,9 +393,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      */
     public void upload3() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize)
-            .setNumBuffers(numBuffers);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, numBuffers, null);
         client.upload(data, parallelTransferOptions).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getContentMd5())));
@@ -408,9 +405,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      */
     public void uploadOverwrite() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize)
-            .setNumBuffers(numBuffers);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, numBuffers, null);
         boolean overwrite = false; // Default behavior
         client.upload(data, parallelTransferOptions, overwrite).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
@@ -433,9 +428,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize)
-            .setNumBuffers(numBuffers);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, numBuffers, null);
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
@@ -458,11 +451,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(blockSize)
-            .setNumBuffers(numBuffers)
-            .setProgressReceiver(bytesTransferred -> System.out.printf(
-                "Upload progress: %s bytes sent", bytesTransferred));
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, numBuffers,
+            bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
@@ -509,7 +499,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.uploadFromFile(filePath,
-            new ParallelTransferOptions().setBlockSize(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE),
+            new ParallelTransferOptions(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE, null, null),
             headers, metadata, AccessTier.HOT, accessConditions)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));

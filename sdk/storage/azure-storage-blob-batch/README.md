@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.0.0-preview.5</version>
+  <version>12.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-batch</artifactId>
-    <version>12.0.0-preview.5</version>
+    <version>12.0.0</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -57,7 +57,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.7</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -107,6 +107,7 @@ The following sections provide several code snippets covering some of the most c
 ### Creating BlobBatchClient
 
 Create a BlobBatchClient from a [`BlobServiceClient`]().
+
 ```java
 BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
 ```
@@ -130,6 +131,7 @@ blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
 ### Advanced Batching
 
 Deleting blobs in a batch that have different pre-requisites.
+
 ```java
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
@@ -143,7 +145,7 @@ Response<Void> deleteSnapshotResponse =
 // Delete a blob that has a lease.
 Response<Void> deleteWithLeaseResponse =
     blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobAccessConditions()
-        .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+        .setLeaseId("leaseId"));
 
 blobBatchClient.submitBatch(blobBatch);
 System.out.printf("Deleting blob completed with status code %d%n", deleteResponse.getStatusCode());
@@ -154,6 +156,7 @@ System.out.printf("Deleting blob with lease completed with status code %d%n",
 ```
 
 Setting `AccessTier` on blobs in batch that have different pre-requisites. 
+
 ```java
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
@@ -165,7 +168,7 @@ Response<Void> setTierResponse2 = blobBatch.setBlobAccessTier(blobUrl2, AccessTi
 
 // Set AccessTier on a blob that has a lease.
 Response<Void> setTierWithLeaseResponse = blobBatch.setBlobAccessTier(blobUrlWithLease, AccessTier.HOT, 
-    new LeaseAccessConditions().setLeaseId("leaseId"));
+    .setLeaseId("leaseId");
 
 blobBatchClient.submitBatch(blobBatch);
 System.out.printf("Set AccessTier on blob completed with status code %d%n", setTierResponse.getStatusCode());
@@ -182,8 +185,7 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 
 ## Next steps
 
-Get started with our [Blob Batch samples][samples]:
-
+Get started with our [Blob Batch samples][blob_samples]:
 
 ## Contributing
 
@@ -194,7 +196,6 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
-[source]: src
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
@@ -202,7 +203,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
-[samples]: src/samples
+[blob_samples]: src/samples/README.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

@@ -42,16 +42,14 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public CertificateAsyncClient createAsyncClientWithHttpclient() {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).build();
-        CertificateAsyncClient keyClient = new CertificateClientBuilder()
-            .pipeline(pipeline)
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .endpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation
-        return keyClient;
+        return certificateAsyncClient;
     }
 
     /**
@@ -60,13 +58,13 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     private CertificateAsyncClient getCertificateAsyncClient() {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation
-        CertificateAsyncClient secretAsyncClient = new CertificateClientBuilder()
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("https://myvault.vault.azure.net/")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation
-        return secretAsyncClient;
+        return certificateAsyncClient;
     }
 
     /**
@@ -75,14 +73,15 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public CertificateAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder().build();
-        CertificateAsyncClient secretAsyncClient = new CertificateClientBuilder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
+            .build();
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .pipeline(pipeline)
             .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation
-        return secretAsyncClient;
+        return certificateAsyncClient;
     }
 
     /**
@@ -160,7 +159,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
         certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
-            .getObserver().subscribe(pollResponse -> {
+            .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());
@@ -171,7 +170,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy
         CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
         certificateAsyncClient.beginCreateCertificate("certificateName", certPolicy)
-            .getObserver().subscribe(pollResponse -> {
+            .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());

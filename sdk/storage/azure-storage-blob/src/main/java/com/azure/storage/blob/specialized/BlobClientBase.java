@@ -10,7 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -22,10 +22,10 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
@@ -229,11 +229,15 @@ public class BlobClientBase {
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
-     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
-     *     cancelled.
+     * @return A {@link SyncPoller} to poll the progress of blob copy operation.
      */
-    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
-        return beginCopy(sourceUrl, null, null, null, null, null, pollInterval);
+    public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
+        return beginCopy(sourceUrl,
+                null,
+                null,
+                null,
+                null,
+                null, pollInterval);
     }
 
     /**
@@ -257,15 +261,14 @@ public class BlobClientBase {
      * @param destAccessConditions {@link BlobRequestConditions} against the destination.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
-     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
-     *     cancelled.
+     * @return A {@link SyncPoller} to poll the progress of blob copy operation.
      */
-    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
+    public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, RequestConditions sourceModifiedAccessConditions,
             BlobRequestConditions destAccessConditions, Duration pollInterval) {
 
         return client.beginCopy(sourceUrl, metadata, tier, priority, sourceModifiedAccessConditions,
-                destAccessConditions, pollInterval);
+                destAccessConditions, pollInterval).getSyncPoller();
     }
 
     /**
@@ -381,14 +384,14 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadWithResponse#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
-     * @param options {@link ReliableDownloadOptions}
+     * @param options {@link DownloadRetryOptions}
      * @param accessConditions {@link BlobRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -398,7 +401,7 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null
      */
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
-        ReliableDownloadOptions options, BlobRequestConditions accessConditions, boolean rangeGetContentMD5,
+        DownloadRetryOptions options, BlobRequestConditions accessConditions, boolean rangeGetContentMD5,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
@@ -453,7 +456,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -462,7 +465,7 @@ public class BlobClientBase {
      * @param range {@link BlobRange}
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      *        transfers parameter is ignored.
-     * @param options {@link ReliableDownloadOptions}
+     * @param downloadRetryOptions {@link DownloadRetryOptions}
      * @param requestConditions {@link BlobRequestConditions}
      * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -471,10 +474,10 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Duration timeout, Context context) {
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, options, requestConditions, rangeGetContentMd5, context);
+            parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, context);
         return blockWithOptionalTimeout(download, timeout);
     }
 

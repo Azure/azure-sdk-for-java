@@ -3,10 +3,13 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.time.OffsetDateTime;
 
@@ -31,42 +34,70 @@ public class ManagingDeletedKeys {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyClient keyClient = new KeyClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .setExpires(OffsetDateTime.now().plusYears(1))
+        keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048));
 
-        keyClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-                .setExpires(OffsetDateTime.now().plusYears(1)));
+        keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1)));
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
-        keyClient.deleteKey("CloudEcKey");
+        SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
 
-        //To ensure key is deleted on server side.
-        Thread.sleep(30000);
+        PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
+
+
+        DeletedKey deletedKey = deletedKeyPollResponse.getValue();
+        System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
+        System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());
+
+        // Key is being deleted on server.
+        deletedKeyPoller.waitForCompletion();
 
         // We accidentally Cloud Ec key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
-        keyClient.recoverDeletedKey("CloudEcKey");
+        SyncPoller<KeyVaultKey, Void> recoverEcKeyPoller = keyClient.beginRecoverDeletedKey("CloudEcKey");
 
-        //To ensure key is recovered on server side.
-        Thread.sleep(30000);
+        PollResponse<KeyVaultKey> recoveryEcKeyPollResponse = recoverEcKeyPoller.poll();
+        KeyVaultKey recoveredKey = recoveryEcKeyPollResponse.getValue();
+        System.out.println("Recovered Key Name %s" + recoveredKey.getName());
+        System.out.printf("Recovered Key's Id %s", recoveredKey.getId());
+
+        // Key is being recovered on server.
+        recoverEcKeyPoller.waitForCompletion();
 
         // The Cloud Ec and Rsa keys are no longer needed, need to delete them from the key vault.
-        keyClient.deleteKey("CloudEcKey");
-        keyClient.deleteKey("CloudRsaKey");
+        SyncPoller<DeletedKey, Void> ecDeletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
 
-        //To ensure key is deleted on server side.
-        Thread.sleep(30000);
+        PollResponse<DeletedKey> ecDeletedKeyPollResponse = ecDeletedKeyPoller.poll();
+
+        DeletedKey ecDeletedKey = ecDeletedKeyPollResponse.getValue();
+        System.out.println("Deleted Date  %s" + ecDeletedKey.getDeletedOn().toString());
+        System.out.printf("Deleted Key's Recovery Id %s", ecDeletedKey.getRecoveryId());
+
+        // Key is being deleted on server.
+        ecDeletedKeyPoller.waitForCompletion();
+
+        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
+
+        PollResponse<DeletedKey> rsaDeletedKeyPollResponse = rsaDeletedKeyPoller.poll();
+
+        DeletedKey rsaDeletedKey = rsaDeletedKeyPollResponse.getValue();
+        System.out.println("Deleted Date  %s" + rsaDeletedKey.getDeletedOn().toString());
+        System.out.printf("Deleted Key's Recovery Id %s", rsaDeletedKey.getRecoveryId());
+
+        // Key is being deleted on server.
+        rsaDeletedKeyPoller.waitForCompletion();
 
         // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
-        for (DeletedKey deletedKey : keyClient.listDeletedKeys()) {
-            System.out.printf("Deleted key's recovery Id %s", deletedKey.getRecoveryId());
+        for (DeletedKey delKey : keyClient.listDeletedKeys()) {
+            System.out.printf("Deleted key's recovery Id %s", delKey.getRecoveryId());
         }
 
         // If the keyvault is soft-delete enabled, then for permanent deletion deleted keys need to be purged.

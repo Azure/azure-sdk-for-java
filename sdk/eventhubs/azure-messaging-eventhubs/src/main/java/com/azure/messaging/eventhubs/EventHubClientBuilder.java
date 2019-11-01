@@ -27,6 +27,8 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -72,8 +74,13 @@ import java.util.ServiceLoader;
  * @see EventHubClient
  * @see EventHubAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {EventHubAsyncClient.class, EventHubClient.class})
+@ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class})
 public class EventHubClientBuilder {
+    /**
+     * The name of the default consumer group in the Event Hubs service.
+     */
+    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
+
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
@@ -88,6 +95,9 @@ public class EventHubClientBuilder {
     private TransportType transport;
     private String fullyQualifiedNamespace;
     private String eventHubName;
+    private EventHubConsumerOptions consumerOptions;
+    private EventPosition startingPosition;
+    private String consumerGroup;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
@@ -281,6 +291,99 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Sets the position within the partition where the consumer should begin reading events.
+     *
+     * @param eventPosition Position within an Event Hub partition to begin consuming events.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder startingPosition(EventPosition eventPosition) {
+        this.startingPosition = eventPosition;
+        return this;
+    }
+
+    /**
+     * Sets the name of the consumer group this consumer is associated with. Events are read in the context of this
+     * group. The name of the consumer group that is created by default is
+     * {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     *
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     * context of this group. The name of the consumer group that is created by default is
+     * {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder consumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+        return this;
+    }
+
+    /**
+     * Sets the set of options to apply when creating the consumer.
+     *
+     * @param consumerOptions The set of options to apply when creating the consumer.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder consumerOptions(EventHubConsumerOptions consumerOptions) {
+        this.consumerOptions = consumerOptions;
+        return this;
+    }
+
+    /**
+     * Creates a new {@link EventHubConsumerAsyncClient} based on the options set on this builder. Every time
+     * {@code buildAsyncConsumer()} is invoked, a new instance of {@link EventHubConsumerAsyncClient} is created.
+     *
+     * @return A new {@link EventHubConsumerAsyncClient} with the configured options.
+     */
+    public EventHubConsumerAsyncClient buildAsyncConsumer() {
+        final EventHubConsumerOptions options = consumerOptions != null
+            ? consumerOptions
+            : new EventHubConsumerOptions();
+
+        return buildAsyncClient().createConsumer(consumerGroup, startingPosition, options);
+    }
+
+    /**
+     * Creates a new {@link EventHubConsumerClient} based on the options set on this builder. Every time
+     * {@code buildConsumer()} is invoked, a new instance of {@link EventHubConsumerClient} is created.
+     *
+     * @return A new {@link EventHubConsumerClient} with the configured options.
+     */
+    public EventHubConsumerClient buildConsumer() {
+        final EventHubConsumerOptions options = consumerOptions != null
+            ? consumerOptions
+            : new EventHubConsumerOptions();
+
+        return buildClient().createConsumer(consumerGroup, startingPosition, options);
+    }
+
+    /**
+     * Creates a new {@link EventHubProducerAsyncClient} based on options set on this builder. Every time
+     * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubProducerAsyncClient} is created.
+     *
+     * @return A new {@link EventHubProducerAsyncClient} instance with all the configured options.
+     *
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
+     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubProducerAsyncClient buildAsyncProducer() {
+        return buildAsyncClient().createProducer();
+    }
+
+    /**
+     * Creates a new {@link EventHubProducerClient} based on options set on this builder. Every time
+     * {@code buildAsyncProducer()} is invoked, a new instance of {@link EventHubProducerClient} is created.
+     *
+     * @return A new {@link EventHubProducerClient} instance with all the configured options.
+     *
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
+     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     */
+    public EventHubProducerClient buildProducer() {
+        return buildClient().createProducer();
+    }
+
+    /**
      * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time
      * {@code buildAsyncClient()} is invoked, a new instance of {@link EventHubAsyncClient} is created.
      *
@@ -357,8 +460,10 @@ public class EventHubClientBuilder {
             return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
                 tokenManagerProvider, messageSerializer);
         });
+        final EventHubLinkProvider linkProvider = new EventHubLinkProvider(connectionMono,
+            connectionOptions.getHostname(), connectionOptions.getRetry());
 
-        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, connectionMono);
+        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, linkProvider);
     }
 
     private ConnectionOptions getConnectionOptions() {

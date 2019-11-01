@@ -47,7 +47,6 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
  * @see ConfigurationClientBuilder
- * @see ConfigurationClientCredentials
  */
 @ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true,
     serviceInterfaces = ConfigurationService.class)
@@ -80,7 +79,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string-string}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#string-string-string}
      *
      * @param key The key of the configuration setting to add.
      * @param label The label of the configuration setting to add, or optionally, null if a setting with
@@ -93,10 +92,10 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> addSetting(String key, String label, String value) {
+    public Mono<ConfigurationSetting> addConfigurationSetting(String key, String label, String value) {
         try {
-            return withContext(
-                context -> addSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), context))
+            return withContext(context -> addConfigurationSetting(
+                new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -111,7 +110,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSettingWithResponse#ConfigurationSetting}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to add based on its key and optional label combination.
      * @return A REST response containing the {@link ConfigurationSetting} that was created, if a key collision occurs
@@ -122,20 +121,21 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> addSettingWithResponse(ConfigurationSetting setting) {
+    public Mono<Response<ConfigurationSetting>> addConfigurationSettingWithResponse(ConfigurationSetting setting) {
         try {
-            return withContext(context -> addSetting(setting, context));
+            return withContext(context -> addConfigurationSetting(setting, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> addConfigurationSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
-        // finds any existing configuration settings, then its e-tag will match and the service will return an error.
+        // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
+        // If the service finds any existing configuration settings, then its e-tag will match and the service will
+        // return an error.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, null,
             getETagValue(ETAG_ANY), context)
             .onErrorResume(HttpResponseException.class,
@@ -151,7 +151,7 @@ public final class ConfigurationAsyncClient {
                 })
             .doOnSubscribe(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
-            .onErrorMap(ConfigurationAsyncClient::addSettingExceptionMapper)
+            .onErrorMap(ConfigurationAsyncClient::addConfigurationSettingExceptionMapper)
             .doOnError(error -> logger.warning("Failed to add ConfigurationSetting - {}", setting, error));
     }
 
@@ -163,7 +163,7 @@ public final class ConfigurationAsyncClient {
      * <p>Add a setting with the key "prodDBConnection", "westUS" and value "db_connection"</p>
      * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string-string}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSetting#string-string-string}
      *
      * @param key The key of the configuration setting to create or update.
      * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
@@ -176,11 +176,10 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> setSetting(String key, String label, String value) {
+    public Mono<ConfigurationSetting> setConfigurationSetting(String key, String label, String value) {
         try {
-            return withContext(
-                context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
-                    false, context))
+            return withContext(context -> setConfigurationSetting(
+                new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), false, context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -191,8 +190,8 @@ public final class ConfigurationAsyncClient {
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
      *
-     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is updated if the current
-     * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting will
+     * If {@link ConfigurationSetting#getETag() ETag} is specified, the configuration value is updated if the current
+     * setting's ETag matches. If the ETag's value is equal to the wildcard character ({@code "*"}), the setting will
      * always be updated.
      *
      * <p><strong>Code Samples</strong></p>
@@ -200,43 +199,44 @@ public final class ConfigurationAsyncClient {
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting-boolean}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean}
      *
      * @param setting The setting to create or update based on its key, optional label and optional ETag combination.
      * @param ifUnchanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * IF-MATCH header.
      * @return A REST response containing the {@link ConfigurationSetting} that was created or updated, if the key is an
-     * invalid value, the setting is read-only, or an etag was provided but does not match the service's current etag
+     * invalid value, the setting is read-only, or an ETag was provided but does not match the service's current ETag
      * value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceModifiedException If the {@link ConfigurationSetting#getETag() etag} was specified, is not the
-     * wildcard character, and the current configuration value's etag does not match, or the setting exists and is
+     * @throws ResourceModifiedException If the {@link ConfigurationSetting#getETag() ETag} was specified, is not the
+     * wildcard character, and the current configuration value's ETag does not match, or the setting exists and is
      * read-only.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> setSettingWithResponse(ConfigurationSetting setting,
+    public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                        boolean ifUnchanged) {
         try {
-            return withContext(context -> setSetting(setting, ifUnchanged, context));
+            return withContext(context -> setConfigurationSetting(setting, ifUnchanged, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, boolean ifUnchanged,
+    Mono<Response<ConfigurationSetting>> setConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
                                                     Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
-        // This service method call is similar to addSetting except it will create or update a configuration setting.
-        // If the user provides an etag value, it is passed in as If-Match = "{etag value}". If the current value in the
-        // service has a matching etag then it matches, then its value is updated with what the user passed in.
+        // This service method call is similar to addConfigurationSetting except it will create or update a
+        // configuration setting.
+        // If the user provides an ETag value, it is passed in as If-Match = "{ETag value}". If the current value in the
+        // service has a matching ETag then it matches, then its value is updated with what the user passed in.
         // Otherwise, the service throws an exception because the current configuration value was updated and we have an
         // old value locally.
-        // If no etag value was passed in, then the value is always added or updated.
+        // If no ETag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting,
             ifMatchETag, null, context)
             .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
@@ -251,7 +251,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string}
 
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
@@ -263,9 +263,9 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> getSetting(String key, String label) {
+    public Mono<ConfigurationSetting> getConfigurationSetting(String key, String label) {
         try {
-            return getSetting(key, label, null);
+            return getConfigurationSetting(key, label, null);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -279,7 +279,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection" and a time that one minute before now at UTC-Zone</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
@@ -293,11 +293,10 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime acceptDateTime) {
+    public Mono<ConfigurationSetting> getConfigurationSetting(String key, String label, OffsetDateTime acceptDateTime) {
         try {
-            return withContext(
-                context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime,
-                    false, context))
+            return withContext(context -> getConfigurationSetting(
+                new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime, false, context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -312,7 +311,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean}
      *
      * @param setting The setting to retrieve.
      * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
@@ -328,18 +327,20 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If the {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> getSettingWithResponse(ConfigurationSetting setting,
+    public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                        OffsetDateTime acceptDateTime,
                                                                        boolean ifChanged) {
         try {
-            return withContext(context -> getSetting(setting, acceptDateTime, ifChanged, context));
+            return withContext(context -> getConfigurationSetting(setting, acceptDateTime, ifChanged, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, OffsetDateTime acceptDateTime,
-                                                    boolean onlyIfChanged, Context context) {
+    Mono<Response<ConfigurationSetting>> getConfigurationSetting(ConfigurationSetting setting,
+                                                                 OffsetDateTime acceptDateTime,
+                                                                 boolean onlyIfChanged,
+                                                                 Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -371,7 +372,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string-string}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#string-string}
      *
      * @param key The key of configuration setting to delete.
      * @param label The label of configuration setting to delete, or optionally, null if a setting with
@@ -383,10 +384,10 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> deleteSetting(String key, String label) {
+    public Mono<ConfigurationSetting> deleteConfigurationSetting(String key, String label) {
         try {
-            return withContext(
-                context -> deleteSetting(new ConfigurationSetting().setKey(key).setLabel(label), false, context))
+            return withContext(context -> deleteConfigurationSetting(
+                new ConfigurationSetting().setKey(key).setLabel(label), false, context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -395,43 +396,43 @@ public final class ConfigurationAsyncClient {
 
     /**
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
-     * {@link ConfigurationSetting#getLabel() label} and optional ETag combination.
+     * {@link ConfigurationSetting#getLabel() label} and optional ETag combination from the service.
      *
-     * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}), then
-     * the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated the
+     * If {@link ConfigurationSetting#getETag() ETag} is specified and is not the wildcard character ({@code "*"}), then
+     * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
      * ConfigurationSetting yet.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the setting with the key-label "prodDBConnection"-"westUS"</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting-boolean}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean}
      *
      * @param setting The setting to delete based on its key, optional label and optional ETag combination.
      * @param ifUnchanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * IF-MATCH header.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
      * is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value or
-     * {@link ConfigurationSetting#getETag() etag} is set but does not match the current etag
+     * {@link ConfigurationSetting#getETag() ETag} is set but does not match the current ETag
      * (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If {@code setting} is read-only.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
-     * character, and does not match the current etag value.
+     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() ETag} is specified, not the wildcard
+     * character, and does not match the current ETag value.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(ConfigurationSetting setting,
+    public Mono<Response<ConfigurationSetting>> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                           boolean ifUnchanged) {
         try {
-            return withContext(context -> deleteSetting(setting, ifUnchanged, context));
+            return withContext(context -> deleteConfigurationSetting(setting, ifUnchanged, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, boolean ifUnchanged,
+    Mono<Response<ConfigurationSetting>> deleteConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
                                                        Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
@@ -579,7 +580,7 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
+     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
      * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
      *
      * <p><strong>Code Samples</strong></p>
@@ -589,11 +590,11 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.listsettings}
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
-     * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
+     * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSetting> listSettings(SettingSelector selector) {
+    public PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
         try {
             return new PagedFlux<>(() -> withContext(context -> listFirstPageSettings(selector, context)),
                 continuationToken -> withContext(context -> listNextPageSettings(context, continuationToken)));
@@ -602,7 +603,7 @@ public final class ConfigurationAsyncClient {
         }
     }
 
-    PagedFlux<ConfigurationSetting> listSettings(SettingSelector selector, Context context) {
+    PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
         return new PagedFlux<>(() -> listFirstPageSettings(selector, context),
             continuationToken -> listNextPageSettings(context, continuationToken));
     }
@@ -653,8 +654,8 @@ public final class ConfigurationAsyncClient {
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date. Revisions expire
      * after a period of time. The service maintains change history for up to 7 days.
      *
-     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
-     * in their current state. Otherwise, the results returned match the parameters given in {@code options}.
+     * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
+     * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -666,17 +667,17 @@ public final class ConfigurationAsyncClient {
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+    public PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listSettingRevisionsFirstPage(selector, context)),
-                continuationToken -> withContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
+                withContext(context -> listRevisionsFirstPage(selector, context)),
+                continuationToken -> withContext(context -> listRevisionsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
-    Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsFirstPage(SettingSelector selector, Context context) {
+    Mono<PagedResponse<ConfigurationSetting>> listRevisionsFirstPage(SettingSelector selector, Context context) {
         try {
             Mono<PagedResponse<ConfigurationSetting>> result;
 
@@ -706,7 +707,7 @@ public final class ConfigurationAsyncClient {
         }
     }
 
-    Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsNextPage(String nextPageLink, Context context) {
+    Mono<PagedResponse<ConfigurationSetting>> listRevisionsNextPage(String nextPageLink, Context context) {
         try {
             Mono<PagedResponse<ConfigurationSetting>> result = service
                 .listKeyValues(serviceEndpoint, nextPageLink, context)
@@ -721,13 +722,13 @@ public final class ConfigurationAsyncClient {
 
     }
 
-    PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+    PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         return new PagedFlux<>(() ->
-            listSettingRevisionsFirstPage(selector, context),
-            continuationToken -> listSettingRevisionsNextPage(continuationToken, context));
+            listRevisionsFirstPage(selector, context),
+            continuationToken -> listRevisionsNextPage(continuationToken, context));
     }
 
-    private Flux<ConfigurationSetting> listSettings(String nextPageLink, Context context) {
+    private Flux<ConfigurationSetting> listConfigurationSettings(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
@@ -739,14 +740,14 @@ public final class ConfigurationAsyncClient {
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(
         PagedResponse<ConfigurationSetting> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listSettings);
+        return ImplUtils.extractAndFetch(page, context, this::listConfigurationSettings);
     }
 
     /*
-     * Azure Configuration service requires that the etag value is surrounded in quotation marks.
+     * Azure Configuration service requires that the ETag value is surrounded in quotation marks.
      *
-     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
-     * @return The etag surrounded by quotations. (ex. "etag")
+     * @param ETag The ETag to get the value for. If null is pass in, an empty string is returned.
+     * @return The ETag surrounded by quotations. (ex. "ETag")
      */
     private static String getETagValue(String etag) {
         return (etag == null || etag.equals("*")) ? etag : "\"" + etag + "\"";
@@ -773,7 +774,7 @@ public final class ConfigurationAsyncClient {
      * @return Exception remapped to a ResourceModifiedException if the throwable was a ResourceNotFoundException,
      * otherwise the throwable is returned unmodified.
      */
-    private static Throwable addSettingExceptionMapper(Throwable throwable) {
+    private static Throwable addConfigurationSettingExceptionMapper(Throwable throwable) {
         if (!(throwable instanceof ResourceNotFoundException)) {
             return throwable;
         }

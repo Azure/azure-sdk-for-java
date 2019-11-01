@@ -11,6 +11,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -316,12 +317,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         BlobRequestConditions accessConditions) {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
-            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-                ? new ParallelTransferOptions()
-                : parallelTransferOptions;
 
             return Mono.using(() -> super.uploadFileResourceSupplier(filePath),
-                channel -> this.uploadWithResponse(FluxUtil.readFile(channel), finalParallelTransferOptions, headers,
+                channel -> this.uploadWithResponse(FluxUtil.readFile(channel), parallelTransferOptions, headers,
                     metadataFinal, tier, accessConditions)
                     .then()
                     .doOnTerminate(() -> {
