@@ -36,6 +36,7 @@ public final class BlobUrlParts {
     private String blobName;
     private String snapshot;
     private String accountName;
+    private boolean isIpUrl;
     private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -209,6 +210,19 @@ public final class BlobUrlParts {
     }
 
     /**
+     * Indicates whether the URL is using an IP-style endpoint.
+     *
+     * <p>
+     * {@code http://127.0.0.1:10000/myaccount/mycontainer/myblob.txt} is an example of an IP-style endpoint whereas
+     * {@code https://myaccount.blob.core.windows.net/mycontainer/myblob.txt} is not.
+     *
+     * @return Flag indicating whether the URL is an IP-style endpoint.
+     */
+    public boolean isIpUrl() {
+        return isIpUrl;
+    }
+
+    /**
      * Converts the blob URL parts to a {@link URL}.
      *
      * @return A {@code URL} to the blob resource composed of all the elements in this object.
@@ -336,6 +350,8 @@ public final class BlobUrlParts {
         } else if (pathPieces.length == 2) {
             parts.setContainerName(pathPieces[1]);
         }
+
+        parts.isIpUrl = true;
     }
 
     /*
@@ -377,7 +393,7 @@ public final class BlobUrlParts {
             }
         }
 
-
+        parts.isIpUrl = false;
     }
 
     /**
