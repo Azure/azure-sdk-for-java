@@ -5,7 +5,7 @@ WORKDIR /app
 COPY Azure.Test.PerfStress/*.csproj Azure.Test.PerfStress/
 COPY Azure.Storage.Blobs.V11.PerfStress/*.csproj Azure.Storage.Blobs.V11.PerfStress/
 
-WORKDIR /app/Azure.Storage.Blobs.PerfStress
+WORKDIR /app/Azure.Storage.Blobs.V11.PerfStress
 RUN dotnet restore
 
 # Copy code and publish
