@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Core" Version="1.0.0-dev.20191025.1" />
+    <PackageReference Include="Azure.Core" Version="1.0.0" />
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="System.Reflection.Emit" Version="4.6.0" />
     <PackageReference Include="System.Text.Json" Version="4.6.0" />
