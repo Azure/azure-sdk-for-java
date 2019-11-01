@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Rule condition of type network.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleConditionType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleConditionType", defaultImpl = NetworkRuleCondition.class)
 @JsonTypeName("NetworkRuleCondition")
 public class NetworkRuleCondition extends FirewallPolicyRuleCondition {
     /**
