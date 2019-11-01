@@ -11,10 +11,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.Certificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.Contact;
-import com.azure.security.keyvault.certificates.models.Issuer;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import reactor.util.context.Context;
@@ -42,16 +42,14 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public CertificateAsyncClient createAsyncClientWithHttpclient() {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).build();
-        CertificateAsyncClient keyClient = new CertificateClientBuilder()
-            .pipeline(pipeline)
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .endpoint("https://myvault.azure.net/")
+            .vaultUrl("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation
-        return keyClient;
+        return certificateAsyncClient;
     }
 
     /**
@@ -60,13 +58,13 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     private CertificateAsyncClient getCertificateAsyncClient() {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation
-        CertificateAsyncClient secretAsyncClient = new CertificateClientBuilder()
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("https://myvault.vault.azure.net/")
+            .vaultUrl("https://myvault.vault.azure.net/")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation
-        return secretAsyncClient;
+        return certificateAsyncClient;
     }
 
     /**
@@ -75,14 +73,15 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public CertificateAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder().build();
-        CertificateAsyncClient secretAsyncClient = new CertificateClientBuilder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
+            .build();
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .pipeline(pipeline)
-            .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .vaultUrl("https://myvault.azure.net/")
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation
-        return secretAsyncClient;
+        return certificateAsyncClient;
     }
 
     /**
@@ -110,38 +109,47 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
 
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#getCertificateWithPolicy(String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#getCertificate(String)}
      */
     public void getCertificateWithResponseCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithPolicy#String
-        certificateAsyncClient.getCertificateWithPolicy("certificateName")
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String
+        certificateAsyncClient.getCertificate("certificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponse ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n",
                     certificateResponse.getProperties().getName(), certificateResponse.getSecretId()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithPolicy#String
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#string-string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#String
+        certificateAsyncClient.getCertificateWithResponse("certificateName")
+            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .subscribe(certificateResponse ->
+                System.out.printf("Certificate is returned with name %s and secretId %s %n",
+                    certificateResponse.getValue().getProperties().getName(),
+                    certificateResponse.getValue().getSecretId()));
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#String
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersionWithResponse#string-string
         String certificateVersion = "6A385B124DEF4096AF1361A85B16C204";
-        certificateAsyncClient.getCertificateWithResponse("certificateName", certificateVersion)
+        certificateAsyncClient.getCertificateVersionWithResponse("certificateName", certificateVersion)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateWithVersion ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n",
                     certificateWithVersion.getValue().getProperties().getName(),
                     certificateWithVersion.getValue().getSecretId()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#string-string
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersionWithResponse#string-string
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String-String
-        certificateAsyncClient.getCertificate("certificateName", certificateVersion)
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersion#String-String
+        certificateAsyncClient.getCertificateVersion("certificateName", certificateVersion)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateWithVersion ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n",
                     certificateWithVersion.getProperties().getName(), certificateWithVersion.getSecretId()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String-String
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersion#String-String
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#CertificateProperties
-        certificateAsyncClient.getCertificateWithPolicy("certificateName")
+        certificateAsyncClient.getCertificate("certificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificate -> certificateAsyncClient.getCertificate(certificate.getProperties())
             .subscribe(certificateResponse ->
@@ -160,7 +168,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
         certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
-            .getObserver().subscribe(pollResponse -> {
+            .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());
@@ -171,7 +179,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy
         CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
         certificateAsyncClient.beginCreateCertificate("certificateName", certPolicy)
-            .getObserver().subscribe(pollResponse -> {
+            .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());
@@ -194,8 +202,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#String-String
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#issuer
-        Issuer issuer = new Issuer("issuerName", "providerName")
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer
+        CertificateIssuer issuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")
             .setPassword("temp2");
         certificateAsyncClient.createIssuer(issuer)
@@ -204,10 +212,10 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Issuer created with %s and %s", issuerResponse.getName(),
                     issuerResponse.getProperties().getProvider());
             });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#issuer
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#issuer
-        Issuer newIssuer = new Issuer("issuerName", "providerName")
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#CertificateIssuer
+        CertificateIssuer newIssuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")
             .setPassword("temp2");
         certificateAsyncClient.createIssuerWithResponse(newIssuer)
@@ -216,7 +224,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Issuer created with %s and %s", issuerResponse.getValue().getName(),
                     issuerResponse.getValue().getProperties().getProvider());
             });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#issuer
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#CertificateIssuer
     }
 
     /**
@@ -270,10 +278,10 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     public void updateCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificateProperties#CertificateProperties
-        certificateAsyncClient.getCertificateWithPolicy("certificateName")
+        certificateAsyncClient.getCertificate("certificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponseValue -> {
-                Certificate certificate = certificateResponseValue;
+                KeyVaultCertificate certificate = certificateResponseValue;
                 //Update enabled status of the certificate
                 certificate.getProperties().setEnabled(false);
                 certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
@@ -285,15 +293,15 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#updateIssuer(Issuer)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#updateIssuer(CertificateIssuer)}
      */
     public void updateCertificateIssuerCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#IssuerProperties
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer
         certificateAsyncClient.getIssuer("issuerName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponseValue -> {
-                Issuer issuer = issuerResponseValue;
+                CertificateIssuer issuer = issuerResponseValue;
                 //Update the enabled status of the issuer.
                 issuer.setEnabled(false);
                 certificateAsyncClient.updateIssuer(issuer)
@@ -301,13 +309,13 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Issuer's enabled status %s %n",
                             issuerResponse.isEnabled().toString()));
             });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#IssuerProperties
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuerWithResponse#IssuerProperties
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuerWithResponse#CertificateIssuer
         certificateAsyncClient.getIssuer("issuerName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponseValue -> {
-                Issuer issuer = issuerResponseValue;
+                CertificateIssuer issuer = issuerResponseValue;
                 //Update the enabled status of the issuer.
                 issuer.setEnabled(false);
                 certificateAsyncClient.updateIssuerWithResponse(issuer)
@@ -315,7 +323,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Issuer's enabled status %s %n",
                             issuerResponse.getValue().isEnabled().toString()));
             });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuerWithResponse#IssuerProperties
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuerWithResponse#CertificateIssuer
     }
 
     /**
@@ -360,10 +368,10 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     public void updateCertificateWithResponseCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePropertiesWithResponse#CertificateProperties
-        certificateAsyncClient.getCertificateWithPolicy("certificateName")
+        certificateAsyncClient.getCertificate("certificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponseValue -> {
-                Certificate certificate = certificateResponseValue;
+                KeyVaultCertificate certificate = certificateResponseValue;
                 //Update the enabled status of the certificate.
                 certificate.getProperties().setEnabled(false);
                 certificateAsyncClient.updateCertificatePropertiesWithResponse(certificate.getProperties())
@@ -505,13 +513,13 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#restoreCertificate(byte[])}
+     * Method to insert code snippets for {@link CertificateAsyncClient#restoreCertificateBackup(byte[])}
      */
     public void restoreCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificate#byte
         byte[] certificateBackupByteArray = {};
-        certificateAsyncClient.restoreCertificate(certificateBackupByteArray)
+        certificateAsyncClient.restoreCertificateBackup(certificateBackupByteArray)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s %n",
                 certificateResponse.getProperties().getName(), certificateResponse.getKeyId()));
@@ -519,7 +527,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificateWithResponse#byte
         byte[] certificateBackup = {};
-        certificateAsyncClient.restoreCertificate(certificateBackup)
+        certificateAsyncClient.restoreCertificateBackup(certificateBackup)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s %n",
                 certificateResponse.getProperties().getName(), certificateResponse.getKeyId()));
@@ -527,12 +535,12 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#listCertificates()}
+     * Method to insert code snippets for {@link CertificateAsyncClient#listPropertiesOfCertificates()}
      */
     public void listCertificatesCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates
-        certificateAsyncClient.listCertificates()
+        certificateAsyncClient.listPropertiesOfCertificates()
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
@@ -568,12 +576,12 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#listCertificateVersions(String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#listPropertiesOfCertificateVersions(String)}
      */
     public void listCertificateVersionsCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificateVersions
-        certificateAsyncClient.listCertificateVersions("certificateName")
+        certificateAsyncClient.listPropertiesOfCertificateVersions("certificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
@@ -587,7 +595,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     public void contactsOperationsCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
-        Contact oontactToAdd = new Contact("user", "useremail@exmaple.com");
+        CertificateContact oontactToAdd = new CertificateContact("user", "useremail@exmaple.com");
         certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
             System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmailAddress())
         );
@@ -635,25 +643,6 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscribe(certificateOperation -> System.out.printf("Deleted Certificate operation last status %s",
                 certificateOperation.getStatus()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperation#string
-    }
-
-    /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#getPendingCertificateSigningRequest(String)}
-     * and {@link CertificateAsyncClient#getPendingCertificateSigningRequestWithResponse(String)}
-     */
-    public void getPendingCertificateSigningRequestCodeSnippets() {
-        CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getPendingCertificateSigningRequest#string
-        certificateAsyncClient.getPendingCertificateSigningRequest("certificateName")
-            .subscribe(signingRequest -> System.out.printf("Received Signing request blob of length %s",
-                signingRequest.length));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getPendingCertificateSigningRequest#string
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getPendingCertificateSigningRequestWithResponse#string
-        certificateAsyncClient.getPendingCertificateSigningRequestWithResponse("certificateName")
-            .subscribe(signingRequestResponse -> System.out.printf("Received Signing request blob of length %s",
-                signingRequestResponse.getValue().length));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getPendingCertificateSigningRequestWithResponse#string
     }
 
     /**

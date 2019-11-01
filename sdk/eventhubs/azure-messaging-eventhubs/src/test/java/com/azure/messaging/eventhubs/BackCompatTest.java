@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -45,8 +45,9 @@ public class BackCompatTest extends IntegrationTestBase {
 
     private MessageSerializer serializer = new EventHubMessageSerializer();
     private EventHubAsyncClient client;
-    private EventHubAsyncProducer producer;
-    private EventHubAsyncConsumer consumer;
+    private EventHubProducerAsyncClient producer;
+    private EventHubConsumerAsyncClient consumer;
+    private SendOptions sendOptions;
 
     public BackCompatTest() {
         super(new ClientLogger(BackCompatTest.class));
@@ -63,11 +64,12 @@ public class BackCompatTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
-        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+        consumer = createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.latest())
+            .buildAsyncConsumer();
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .setPartitionId(PARTITION_ID);
-        producer = client.createProducer(producerOptions);
+        sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
+        producer = client.createProducer();
     }
 
     @Override
@@ -105,9 +107,9 @@ public class BackCompatTest extends IntegrationTestBase {
         final EventData eventData = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
-            .then(() -> producer.send(eventData).block(TIMEOUT))
-            .assertNext(event -> validateAmqpProperties(applicationProperties, event))
+        StepVerifier.create(consumer.receive(PARTITION_ID).filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
+            .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
+            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getEventData()))
             .verifyComplete();
     }
 

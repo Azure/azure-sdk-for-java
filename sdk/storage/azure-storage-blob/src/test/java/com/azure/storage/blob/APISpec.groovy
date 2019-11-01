@@ -475,6 +475,18 @@ class APISpec extends Specification {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
 
+    /*
+    We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
+     */
+    File getRandomFile(int size) {
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
+        fos.write(getRandomData(size).array())
+        fos.close()
+        return file
+    }
+
     /**
      * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
      * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
@@ -652,7 +664,7 @@ class APISpec extends Specification {
             response.getValue().getContentEncoding() == contentEncoding &&
             response.getValue().getContentLanguage() == contentLanguage &&
             response.getValue().getContentMd5() == contentMD5 &&
-            response.getHeaders().getValue("Content-Type") == contentType
+            response.getValue().getContentType() == contentType
     }
 
     def enableSoftDelete() {

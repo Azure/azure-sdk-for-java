@@ -5,6 +5,6 @@ package com.azure.storage.blob.specialized.cryptography;
 class BlobCryptographyConfiguration {
     static final String NAME = "azure-storage-blob-cryptography";
     // {x-version-update-start;com.azure:azure-storage-blob-cryptography;current}
-    static final String VERSION = "12.0.0-preview.5";
+    static final String VERSION = "12.0.0";
     // {x-version-update-end}
 }

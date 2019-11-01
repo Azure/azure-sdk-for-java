@@ -3,9 +3,12 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.Key;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,14 +35,14 @@ public class BackupAndRestoreOperations {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyClient keyClient = new KeyClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create a Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .setExpires(OffsetDateTime.now().plusYears(1))
+        keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048));
 
         // Backups are good to have, if in case keys get accidentally deleted by you.
@@ -49,7 +52,15 @@ public class BackupAndRestoreOperations {
         writeBackupToFile(keyBackup, backupFilePath);
 
         // The Cloud Rsa key is no longer in use, so you delete it.
-        keyClient.deleteKey("CloudRsaKey");
+        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
+
+        PollResponse<DeletedKey> pollResponse = rsaDeletedKeyPoller.poll();
+        DeletedKey rsaDeletedKey = pollResponse.getValue();
+        System.out.println("Deleted Date  %s" + rsaDeletedKey.getDeletedOn().toString());
+        System.out.printf("Deleted Key's Recovery Id %s", rsaDeletedKey.getRecoveryId());
+
+        // Key is being deleted on server.
+        rsaDeletedKeyPoller.waitForCompletion();
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);
@@ -62,7 +73,7 @@ public class BackupAndRestoreOperations {
 
         // After sometime, the key is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
-        Key restoredKey = keyClient.restoreKey(backupFromFile);
+        KeyVaultKey restoredKey = keyClient.restoreKeyBackup(backupFromFile);
     }
 
     private static void writeBackupToFile(byte[] bytes, String filePath) {

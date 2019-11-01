@@ -36,7 +36,7 @@ public class BackupAndRestoreOperationsAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
@@ -50,7 +50,7 @@ public class BackupAndRestoreOperationsAsync {
         tags.put("foo", "bar");
 
         certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
-            .getObserver().subscribe(pollResponse -> {
+            .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());
@@ -88,7 +88,7 @@ public class BackupAndRestoreOperationsAsync {
 
         // After sometime, the certificate is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
-        certificateAsyncClient.restoreCertificate(backupFromFile)
+        certificateAsyncClient.restoreCertificateBackup(backupFromFile)
             .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s %n",
                 certificateResponse.getProperties().getName(), certificateResponse.getKeyId()));
 

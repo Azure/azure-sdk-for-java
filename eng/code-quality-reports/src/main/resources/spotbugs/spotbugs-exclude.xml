@@ -380,7 +380,7 @@
       <Class name="com.azure.storage.blob.HttpGetterInfo"/>
       <Class name="com.azure.storage.blob.BlobProperties"/>
       <Class name="com.azure.storage.blob.BlobContainerProperties"/>
-      <Class name="com.azure.storage.file.implementation.models.DirectoryCreateHeaders"/>
+      <Class name="com.azure.storage.file.share.implementation.models.DirectoryCreateHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -450,7 +450,7 @@
   <Match>
     <Or>
       <Class name="com.azure.storage.blob.specialized.BlobInputStream"/>
-      <Class name="com.azure.storage.file.StorageFileInputStream"/>
+      <Class name="com.azure.storage.file.share.StorageFileInputStream"/>
       <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
     </Or>
@@ -474,18 +474,18 @@
   <Match>
     <Or>
       <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.Secret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.SecretBase"/>
+      <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
+      <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.models.Key"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyBase"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateBase"/>
-      <Class name="com.azure.security.keyvault.certificates.models.IssuerBase"/>
-      <Class name="com.azure.security.keyvault.certificates.models.Issuer"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
+      <Class name="com.azure.security.keyvault.certificates.models.IssuerProperties"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateIssuer"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
+      <Class name="com.azure.security.keyvault.certificates.models.LifeTimeAction"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
@@ -509,11 +509,11 @@
   <Match>
     <Or>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
+        <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
         <Method name="deserialize"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.webkey.ByteExtensions"/>
+        <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
         <Method name="clone"/>
       </And>
     </Or>
@@ -531,6 +531,10 @@
       <And>
         <Class name="com.azure.security.keyvault.certificates.models.webkey.ByteExtensions"/>
         <Method name="clone"/>
+      </And>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
+        <Method name="getX509Thumbprint"/>
       </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
@@ -617,7 +621,7 @@
 
   <!-- The field is read by parent class StorageOutputStream methods. -->
   <Match>
-    <Class name="com.azure.storage.file.StorageFileOutputStream"/>
+    <Class name="com.azure.storage.file.share.StorageFileOutputStream"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -638,8 +642,44 @@
     <Or>
       <Class name="com.azure.core.implementation.http.UrlBuilder"/>
       <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
-      <Class name="com.azure.storage.file.implementation.models.FileGetPropertiesHeaders"/>
+      <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
+
+    <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="getFinalResult"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="poll"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="waitForCompletion"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Method name="waitUntil"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+    <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
+  <Match>
+    <Class name="com.azure.core.util.polling.PollingContext"/>
+    <Method name="clone"/>
+    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+  </Match>
+
 </FindBugsFilter>

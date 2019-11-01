@@ -11,8 +11,8 @@ import com.azure.data.appconfiguration.implementation.ConfigurationSettingPage;
  * A configuration for selecting a range of revisions that will be returned in a single
  * {@link ConfigurationSettingPage response page} when retrieving revisions from the App Configuration service.
  *
- * @see ConfigurationAsyncClient#listSettingRevisions(SettingSelector)
- * @see ConfigurationClient#listSettingRevisions(SettingSelector)
+ * @see ConfigurationAsyncClient#listRevisions(SettingSelector)
+ * @see ConfigurationClient#listRevisions(SettingSelector)
  * @see SettingSelector#setRange(Range)
  */
 @Immutable

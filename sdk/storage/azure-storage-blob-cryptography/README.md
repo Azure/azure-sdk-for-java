@@ -21,7 +21,7 @@ This package supports client side encryption for blob storage.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.0.0-preview.5</version>
+  <version>12.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,7 +40,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.0.0-preview.5</version>
+    <version>12.0.0</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -56,7 +56,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.7</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -113,7 +113,9 @@ az storage blob generate-sas
     --permission rpau
     --connection-string $CONNECTION_STRING
 ```
+
 b. Alternatively, get the Account SAS Token from the Azure Portal.
+
 ```
 Go to your storage account -> Shared access signature -> Click on Generate SAS and connection string (after setup)
 ```
@@ -121,11 +123,14 @@ Go to your storage account -> Shared access signature -> Click on Generate SAS a
 - **Shared Key Credential**
 
 a. Use account name and account key. Account name is your storage account name.
+
 ```
 // Here is where we get the key
 Go to your storage account -> Access keys -> Key 1/ Key 2 -> Key
 ```
+
 b. Use the connection string
+
 ```
 // Here is where we get the key
 Go to your storage account -> Access Keys -> Keys 1/ Key 2 -> Connection string
