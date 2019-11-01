@@ -185,20 +185,19 @@ public class InterceptorManager implements AutoCloseable {
     private File getRecordFile(String testName) {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
         File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
-
         if (!folderFile.exists()) {
             if (folderFile.mkdir()) {
                 logger.verbose("Created directory: {}", folderFile.getPath());
             }
         }
 
-        String filePath = folderFile.getPath() + "/" + testName + ".json";
-        if (Files.notExists(Paths.get(filePath))) {
+        File playbackFile = new File(folderFile, testName + ".json");
+        if (!playbackFile.exists()) {
             throw  logger.logExceptionAsError(new RuntimeException(String.format(
-                "Missing playback file. File path:  %s. ", filePath)));
+                "Missing playback file. File path:  %s. ", playbackFile)));
         }
-        logger.info("==> Playback file path: " + filePath);
-        return new File(filePath);
+        logger.info("==> Playback file path: " + playbackFile);
+        return playbackFile;
     }
 
     /**
