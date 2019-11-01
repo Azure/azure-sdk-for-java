@@ -13,8 +13,19 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
+import com.azure.security.keyvault.certificates.models.LifeTimeAction;
+import com.azure.security.keyvault.certificates.models.CertificateImportOptions;
 
 import java.util.List;
 import java.util.Map;
@@ -725,7 +736,7 @@ public class CertificateClient {
      * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate issuer details when a
      * response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createIssuer#issuer}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createIssuer#CertificateIssuer}
      *
      * @param issuer The configuration of the certificate issuer to be created.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
@@ -745,7 +756,7 @@ public class CertificateClient {
      * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate
      * issuer details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#Issuer-Context}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-Context}
      *
      * @param issuer The configuration of the certificate issuer to be created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -924,7 +935,7 @@ public class CertificateClient {
      * <p>Gets the certificate issuer, changes its attributes/properties then updates it in the Azure Key Vault. Prints out the
      * returned certificate issuer details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateIssuer#issuer}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer}
      *
      * @param issuer The {@link CertificateIssuer issuer} with updated properties.
      * @throws NullPointerException if {@code issuer} is {@code null}.
@@ -945,7 +956,7 @@ public class CertificateClient {
      * <p>Gets the certificate issuer, changes its attributes/properties then updates it in the Azure Key Vault. Prints out the
      * returned certificate issuer details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#Issuer-Context}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#CertificateIssuer-Context}
      *
      * @param issuer The {@link CertificateIssuer issuer} with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.

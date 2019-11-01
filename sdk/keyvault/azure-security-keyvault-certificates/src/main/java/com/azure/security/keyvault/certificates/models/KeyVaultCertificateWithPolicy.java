@@ -3,9 +3,7 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 
 /**
  * Represents a certificate with all of its properties including {@link CertificatePolicy}.

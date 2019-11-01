@@ -482,10 +482,10 @@
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
-      <Class name="com.azure.security.keyvault.certificates.models.IssuerBase"/>
-      <Class name="com.azure.security.keyvault.certificates.models.Issuer"/>
+      <Class name="com.azure.security.keyvault.certificates.models.IssuerProperties"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateIssuer"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
+      <Class name="com.azure.security.keyvault.certificates.models.LifeTimeAction"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
@@ -516,10 +516,6 @@
         <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
         <Method name="clone"/>
       </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
-        <Method name="getX509Thumbprint"/>
-      </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -535,6 +531,10 @@
       <And>
         <Class name="com.azure.security.keyvault.certificates.models.webkey.ByteExtensions"/>
         <Method name="clone"/>
+      </And>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
+        <Method name="getX509Thumbprint"/>
       </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
