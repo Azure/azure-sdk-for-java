@@ -71,7 +71,7 @@ public class EventProcessor {
         EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.eventProcessorStore, eventHubAsyncClient,
-                eventHubAsyncClient.getFullyQualifiedNamespace(), eventHubAsyncClient.getEventHubName(),
+                eventHubAsyncClient.getFullyQualifiedDomainName(), eventHubAsyncClient.getEventHubName(),
                 consumerGroup, identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
     }
 

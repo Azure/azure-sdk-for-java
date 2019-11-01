@@ -42,11 +42,11 @@ class EventHubAsyncClient implements Closeable {
     }
 
     /**
-     * Returns the fully qualified namespace of this Event Hub.
+     * Returns the fully qualified domain name (FQDN) of this Event Hub.
      *
-     * @return The fully qualified namespace of this Event Hub.
+     * @return The fully qualified domain name (FQDN) of this Event Hub.
      */
-    public String getFullyQualifiedNamespace() {
+    String getFullyQualifiedDomainName() {
         return connection.getFullyQualifiedDomainName();
     }
 
