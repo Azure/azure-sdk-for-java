@@ -126,7 +126,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
-    public void queryDocumentsWithTopContinuationTokens() {
+    public void queryDocumentsWithOffsetContinuationTokens() {
         int skipCount = 3;
         int takeCount = 10;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
@@ -159,9 +159,8 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
             Flux<FeedResponse<CosmosItemProperties>> queryObservable =
                 createdCollection.queryItems(query, options);
 
-            Flux<FeedResponse<CosmosItemProperties>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
-            firstPageObservable.subscribe(testSubscriber);
+            queryObservable.subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
