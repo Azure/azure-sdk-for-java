@@ -11,7 +11,6 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -47,9 +46,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
-    static String connectionString;
-
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
+    private static String connectionString;
 
     ConfigurationClientBuilder clientBuilder;
     String keyPrefix;

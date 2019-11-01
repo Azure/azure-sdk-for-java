@@ -4,49 +4,39 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
-import java.security.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.security.Security;
 import java.security.spec.ECGenParameterSpec;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CryptographyClientTest extends CryptographyClientTestBase {
-
     private KeyClient client;
-    private HttpPipeline pipeline;
 
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(pipeline -> {
-                this.pipeline = pipeline;
-                return new KeyClientBuilder()
-                    .pipeline(pipeline)
-                    .vaultUrl(getEndpoint())
-                    .buildClient();
-            });
-        } else {
-            client = clientSetup(pipeline -> {
-                this.pipeline = pipeline;
-                return new KeyClientBuilder()
-                    .pipeline(pipeline)
-                    .vaultUrl(getEndpoint())
-                    .buildClient();
-            });
-        }
+        client = clientBuilder.buildClient();
     }
 
     @Override
@@ -56,7 +46,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             String keyName = "testRsaKey";
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
+                .pipeline(httpPipeline)
                 .keyIdentifier(importedKey.getId())
                 .buildClient();
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
@@ -92,7 +82,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             String keyName = "testRsaKeyWrapUnwrap";
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
+                .pipeline(httpPipeline)
                 .keyIdentifier(importedKey.getId())
                 .buildClient();
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
@@ -129,7 +119,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             String keyName = "testRsaKeySignVerify";
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
+                .pipeline(httpPipeline)
                 .keyIdentifier(importedKey.getId())
                 .buildClient();
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
@@ -172,7 +162,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         curveToSpec.put(KeyCurveName.P_521, "secp521r1");
         curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
 
-        List<KeyCurveName> curveList =  Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
+        List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
         Provider provider = Security.getProvider("SunEC");
         for (KeyCurveName crv : curveList) {
 
@@ -185,7 +175,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             String keyName = "testEcKey" + crv.toString();
             KeyVaultKey imported = client.importKey(keyName, key);
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
+                .pipeline(httpPipeline)
                 .keyIdentifier(imported.getId())
                 .buildClient();
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();

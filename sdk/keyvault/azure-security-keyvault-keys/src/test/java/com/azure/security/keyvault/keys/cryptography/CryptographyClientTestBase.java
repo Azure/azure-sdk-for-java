@@ -10,11 +10,19 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,13 +40,21 @@ import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public abstract class CryptographyClientTestBase extends TestBase {
+
+    KeyClientBuilder clientBuilder;
+    HttpPipeline httpPipeline;
+
     @Rule
     public TestName testName = new TestName();
 
@@ -48,58 +64,55 @@ public abstract class CryptographyClientTestBase extends TestBase {
     }
 
     void beforeTestSetup() {
-    }
+        TestMode testMode = getTestMode();
 
-    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
-
+        String endpoint;
         TokenCredential credential;
-        HttpClient httpClient;
 
-        String tenantId = System.getenv("AZURE_TENANT_ID");
-        String clientId = System.getenv("AZURE_CLIENT_ID");
-        String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
-        if (!interceptorManager.isPlaybackMode()) {
-            assertNotNull(tenantId);
-            assertNotNull(clientId);
-            assertNotNull(clientSecret);
-        }
-
-        if (interceptorManager.isPlaybackMode()) {
-            credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
+        if (testMode == TestMode.PLAYBACK) {
+            endpoint = "http://localhost:8080";
+            credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC)
+                .plus(Duration.ofMinutes(30))));
         } else {
+            endpoint = System.getenv("AZURE_KEYVAULT_ENDPOINT");
             credential = new DefaultAzureCredentialBuilder().build();
         }
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), CryptographyServiceVersion.getLatest()));
+        Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(credential);
+
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+            Configuration.getGlobalConfiguration().clone(), CryptographyServiceVersion.getLatest()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
-        policies.addAll(policies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-            policies.add(interceptorManager.getRecordPolicy());
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
+        if (testMode == TestMode.RECORD) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+
+        HttpClient httpClient;
+
+        if (testMode == TestMode.RECORD) {
+            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
+        } else if (testMode == TestMode.PLAYBACK) {
+            httpClient = interceptorManager.getPlaybackClient();
+        } else {
+            httpClient = new NettyAsyncHttpClientBuilder().build();
+        }
+
+        httpPipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
 
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
+        clientBuilder = new KeyClientBuilder()
+            .vaultUrl(endpoint)
+            .pipeline(httpPipeline);
     }
 
     @Test
@@ -140,9 +153,9 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : "https://cameravault.vault.azure.net";
-            //    : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+            ? "http://localhost:8080"
+            : "https://cameravault.vault.azure.net";
+        //    : System.getenv("AZURE_KEYVAULT_ENDPOINT");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }

@@ -6,17 +6,12 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.*;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.test.TestBase;
-import com.azure.core.util.Configuration;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.core.test.TestMode;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,14 +28,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 public abstract class SecretClientTestBase extends TestBase {
 
     private static final String SECRET_NAME = "javaSecretTemp";
     private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
+
+    SecretClientBuilder clientBuilder;
 
     @Rule
     public TestName testName = new TestName();
@@ -51,45 +49,32 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     void beforeTestSetup() {
-    }
+        TestMode testMode = getTestMode();
 
-    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
+        String endpoint;
         TokenCredential credential;
-
-        if (interceptorManager.isPlaybackMode()) {
-            credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
+        if (testMode == TestMode.PLAYBACK) {
+            endpoint = "http://localhost:8080";
+            credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC)
+                .plus(Duration.ofMinutes(30))));
         } else {
+            endpoint = System.getenv("AZURE_KEYVAULT_ENDPOINT");
             credential = new DefaultAzureCredentialBuilder().build();
         }
 
-        HttpClient httpClient;
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), SecretServiceVersion.getLatest()));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RetryPolicy());
-        policies.add(new BearerTokenAuthenticationPolicy(credential, SecretAsyncClient.KEY_VAULT_SCOPE));
-        policies.addAll(policies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+        Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(credential);
 
-        if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-            policies.add(interceptorManager.getRecordPolicy());
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
-            policies.add(interceptorManager.getRecordPolicy());
+        clientBuilder = new SecretClientBuilder()
+            .vaultUrl(endpoint)
+            .credential(credential);
+
+        if (testMode == TestMode.PLAYBACK) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (testMode == TestMode.RECORD) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build());
         }
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
     }
 
     @Test
@@ -121,7 +106,8 @@ public abstract class SecretClientTestBase extends TestBase {
         testRunner.accept(secret);
     }
 
-    @Test public abstract void setSecretNull();
+    @Test
+    public abstract void setSecretNull();
 
 
     @Test
@@ -133,9 +119,9 @@ public abstract class SecretClientTestBase extends TestBase {
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
         final KeyVaultSecret originalSecret = new KeyVaultSecret("testSecretUpdate", "testSecretVal")
-                .setProperties(new SecretProperties()
-                    .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                    .setTags(tags));
+            .setProperties(new SecretProperties()
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setTags(tags));
 
         final KeyVaultSecret updatedSecret = new KeyVaultSecret("testSecretUpdate", "testSecretVal")
             .setProperties(new SecretProperties()
@@ -150,8 +136,6 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void updateDisabledSecret();
 
     void updateDisabledSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
-        final Map<String, String> tags = new HashMap<>();
-
         final KeyVaultSecret originalSecret = new KeyVaultSecret("testUpdateOfDisabledSecret", "testSecretUpdateDisabledVal")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
@@ -267,7 +251,7 @@ public abstract class SecretClientTestBase extends TestBase {
         for (int i = 0; i < 30; i++) {
             secretName = "listSecret" + i;
             secretVal = "listSecretVal" + i;
-            KeyVaultSecret secret =  new KeyVaultSecret(secretName, secretVal)
+            KeyVaultSecret secret = new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
                     .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
             secrets.put(secretName, secret);
@@ -311,7 +295,8 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify that the Response matches what was expected. This method assumes a response status of 200.
+     * Helper method to verify that the Response matches what was expected. This method assumes a response status of
+     * 200.
      *
      * @param expected Secret expected to be returned by the service
      * @param response Response returned by the service, the body should contain a Secret
@@ -345,14 +330,6 @@ public abstract class SecretClientTestBase extends TestBase {
         assertEquals(expected.getValue(), actual.getValue());
         assertEquals(expected.getProperties().getExpiresOn(), actual.getProperties().getExpiresOn());
         assertEquals(expected.getProperties().getNotBefore(), actual.getProperties().getNotBefore());
-    }
-
-    public String getEndpoint() {
-        final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
-        Objects.requireNonNull(endpoint);
-        return endpoint;
     }
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {

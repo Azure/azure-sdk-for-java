@@ -5,7 +5,7 @@ jobs:
     parameters:
       ServiceDirectory: keyvault
       EnvVars:
-        AZURE_TEST_MODE: RECORD
+        AZURE_TEST_MODE: LIVE
         ARM_CLIENTID: $(java-keyvault-test-arm-client-id)
         ARM_CLIENTKEY: $(java-keyvault-test-arm-client-key)
         AZURE_KEYVAULT_ENDPOINT: $(java-azure-keyvault-sdk-endpoint)

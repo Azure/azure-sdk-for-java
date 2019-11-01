@@ -10,16 +10,18 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class KeyAsyncClientTest extends KeyClientTestBase {
 
@@ -28,18 +30,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(pipeline -> new KeyClientBuilder()
-                .vaultUrl(getEndpoint())
-                .pipeline(pipeline)
-                .buildAsyncClient());
-        } else {
-            client = clientSetup(pipeline -> new KeyClientBuilder()
-                .pipeline(pipeline)
-                .vaultUrl(getEndpoint())
-                .buildAsyncClient());
-        }
+        client = clientBuilder.buildAsyncClient();
     }
 
     /**
@@ -56,7 +47,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void setKeyEmptyName() {
         StepVerifier.create(client.createKey("", KeyType.RSA))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
     /**
@@ -66,7 +57,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         setKeyEmptyValueRunner((key) -> {
 
             StepVerifier.create(client.createKey(key))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
 
         });
     }
@@ -159,7 +150,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void getKeyNotFound() {
         StepVerifier.create(client.getKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
 
@@ -173,8 +164,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(keyToDelete.getName());
             AsyncPollResponse<DeletedKey, Void> deletedKeyPollResponse = poller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .blockLast();
+                .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
             DeletedKey deletedKeyResponse = deletedKeyPollResponse.getValue();
             assertNotNull(deletedKeyResponse.getDeletedOn());
             assertNotNull(deletedKeyResponse.getRecoveryId());
@@ -182,9 +173,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             assertEquals(keyToDelete.getName(), deletedKeyResponse.getName());
 
             StepVerifier.create(client.purgeDeletedKeyWithResponse(keyToDelete.getName()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
+                .assertNext(voidResponse -> {
+                    assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
+                }).verifyComplete();
             sleepInRecordMode(15000);
         });
     }
@@ -199,7 +190,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void getDeletedKeyNotFound() {
         StepVerifier.create(client.getDeletedKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -212,15 +203,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndRecover.getName());
             AsyncPollResponse<DeletedKey, Void> deleteKeyPollResponse
-                    = poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                            .blockLast();
+                = poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
 
             assertNotNull(deleteKeyPollResponse.getValue());
 
             PollerFlux<KeyVaultKey, Void> recoverPoller = client.beginRecoverDeletedKey(keyToDeleteAndRecover.getName());
 
             AsyncPollResponse<KeyVaultKey, Void> recoverKeyPollResponse
-                    = recoverPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                = recoverPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                 .blockLast();
 
             KeyVaultKey keyResponse = recoverKeyPollResponse.getValue();
@@ -259,7 +250,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void backupKeyNotFound() {
         StepVerifier.create(client.backupKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -273,14 +264,14 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(keyToBackupAndRestore.getName());
             AsyncPollResponse<DeletedKey, Void> pollResponse = poller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .blockLast();
+                .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
             assertNotNull(pollResponse.getValue());
 
             StepVerifier.create(client.purgeDeletedKeyWithResponse(keyToBackupAndRestore.getName()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
+                .assertNext(voidResponse -> {
+                    assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
+                }).verifyComplete();
             pollOnKeyPurge(keyToBackupAndRestore.getName());
 
             sleepInRecordMode(60000);
@@ -300,7 +291,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void restoreKeyFromMalformedBackup() {
         byte[] keyBackupBytes = "non-existing".getBytes();
         StepVerifier.create(client.restoreKeyBackup(keyBackupBytes))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
     /**
@@ -314,8 +305,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndGet.getName());
             AsyncPollResponse<DeletedKey, Void> pollResponse = poller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .blockLast();
+                .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
             assertNotNull(pollResponse.getValue());
 
             StepVerifier.create(client.getDeletedKey(keyToDeleteAndGet.getName()))
@@ -327,14 +318,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 }).verifyComplete();
 
             StepVerifier.create(client.purgeDeletedKeyWithResponse(keyToDeleteAndGet.getName()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
+                .assertNext(voidResponse -> {
+                    assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
+                }).verifyComplete();
             pollOnKeyPurge(keyToDeleteAndGet.getName());
             sleepInRecordMode(15000);
         });
     }
 //
+
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
@@ -372,9 +364,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             for (DeletedKey deletedKey : deletedKeys) {
                 StepVerifier.create(client.purgeDeletedKeyWithResponse(deletedKey.getName()))
-                        .assertNext(voidResponse -> {
-                            assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                        }).verifyComplete();
+                    .assertNext(voidResponse -> {
+                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
+                    }).verifyComplete();
                 pollOnKeyPurge(deletedKey.getName());
             }
         });
@@ -404,9 +396,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             assertNotNull(pollResponse.getValue());
 
             StepVerifier.create(client.purgeDeletedKeyWithResponse(keyName))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
+                .assertNext(voidResponse -> {
+                    assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
+                }).verifyComplete();
             pollOnKeyPurge(keyName);
         });
 

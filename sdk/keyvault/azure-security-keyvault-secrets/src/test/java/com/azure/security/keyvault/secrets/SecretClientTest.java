@@ -27,18 +27,7 @@ public class SecretClientTest extends SecretClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(pipeline -> new SecretClientBuilder()
-                .pipeline(pipeline)
-                .vaultUrl(getEndpoint())
-                .buildClient());
-        } else {
-            client = clientSetup(pipeline -> new SecretClientBuilder()
-                .pipeline(pipeline)
-                .vaultUrl(getEndpoint())
-                .buildClient());
-        }
+        client = clientBuilder.buildClient();
     }
 
     /**
@@ -120,7 +109,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that an attempt to get a non-existing secret throws an error.
      */
     public void getSecretNotFound() {
-        assertRestException(() -> client.getSecret("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getSecret("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -128,7 +117,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     public void deleteSecret() {
         deleteSecretRunner((secretToDelete) -> {
-            assertSecretEquals(secretToDelete,  client.setSecret(secretToDelete));
+            assertSecretEquals(secretToDelete, client.setSecret(secretToDelete));
             SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretToDelete.getName());
 
             PollResponse<DeletedSecret> pollResponse = poller.poll();
@@ -178,7 +167,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that an attempt to retrieve a non existing deleted secret throws an error on a soft-delete enabled vault.
      */
     public void getDeletedSecretNotFound() {
-        assertRestException(() -> client.getDeletedSecret("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getDeletedSecret("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
 
@@ -270,7 +259,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     public void listSecrets() {
         listSecretsRunner((secrets) -> {
-            for (KeyVaultSecret secret :  secrets.values()) {
+            for (KeyVaultSecret secret : secrets.values()) {
                 assertSecretEquals(secret, client.setSecret(secret));
             }
 
@@ -307,7 +296,7 @@ public class SecretClientTest extends SecretClientTestBase {
             }
 
             sleepInRecordMode(60000);
-            Iterable<DeletedSecret> deletedSecrets =  client.listDeletedSecrets();
+            Iterable<DeletedSecret> deletedSecrets = client.listDeletedSecrets();
             for (DeletedSecret actualSecret : deletedSecrets) {
                 if (secrets.containsKey(actualSecret.getName())) {
                     assertNotNull(actualSecret.getDeletedOn());
@@ -339,7 +328,7 @@ public class SecretClientTest extends SecretClientTestBase {
                 assertSecretEquals(secret, client.setSecret(secret));
             }
 
-            Iterable<SecretProperties> secretVersionsOutput =  client.listPropertiesOfSecretVersions(secretName);
+            Iterable<SecretProperties> secretVersionsOutput = client.listPropertiesOfSecretVersions(secretName);
             List<SecretProperties> secretVersionsList = new ArrayList<>();
             secretVersionsOutput.forEach(secretVersionsList::add);
             assertEquals(secretVersions.size(), secretVersionsList.size());
