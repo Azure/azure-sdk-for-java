@@ -4,16 +4,16 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
-
-import java.util.Collections;
-import java.util.Map;
-import java.time.Duration;
-import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Code snippets for {@link DataLakeFileSystemClient}
@@ -29,6 +29,31 @@ public class PathClientJavaDocCodeSamples {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
+
+    /**
+     * Code snippets for {@link DataLakePathClient#create()} and
+     * {@link DataLakePathClient#createWithResponse(PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
+     */
+    public void createCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.create
+        System.out.printf("Last Modified Time:%s", client.create().getLastModified());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.create
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        String permissions = "permissions";
+        String umask = "umask";
+
+        Response<PathInfo> response = client.createWithResponse(httpHeaders,
+            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask, timeout,
+            new Context(key1, value1));
+        System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+    }
 
     /**
      * Code snippets for {@link DataLakePathClient#setMetadata(Map)}

@@ -51,8 +51,11 @@ public class DataLakePathAsyncClient {
     private final String accountName;
     private final String fileSystemName;
     private final String pathName;
-    protected final BlockBlobAsyncClient blockBlobAsyncClient;
     private final DataLakeServiceVersion serviceVersion;
+
+    protected PathResourceType pathResourceType;
+
+    protected final BlockBlobAsyncClient blockBlobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
@@ -66,7 +69,8 @@ public class DataLakePathAsyncClient {
      * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
-        String accountName, String fileSystemName, String pathName, BlockBlobAsyncClient blockBlobAsyncClient) {
+        String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
+        BlockBlobAsyncClient blockBlobAsyncClient) {
         this.dataLakeStorage = new DataLakeStorageClientBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -77,6 +81,7 @@ public class DataLakePathAsyncClient {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = pathName;
+        this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
     }
 
@@ -179,20 +184,56 @@ public class DataLakePathAsyncClient {
         return serviceVersion;
     }
 
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @return A reactive response containing information about the created resource.
+     */
+    public Mono<PathInfo> create() {
+        try {
+            return createWithResponse(null, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 
     /**
-     * Package-private create method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
+     * Creates a resource.
      *
-     * @param resourceType {@link PathResourceType}
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the resource.
      * @param accessConditions {@link DataLakeRequestConditions}
-     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
-     * @param umask Restricts permissions of the directory to be created.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
+     * @param umask Restricts permissions of the resource to be created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
+    public Mono<Response<PathInfo>> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
+        DataLakeRequestConditions accessConditions, String permissions, String umask) {
+        try {
+            return withContext(context -> createWithResponse(pathResourceType, headers, metadata,
+                accessConditions, permissions, umask, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     Mono<Response<PathInfo>> createWithResponse(PathResourceType resourceType, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions accessConditions, String permissions, String umask,
         Context context) {
@@ -555,7 +596,8 @@ public class DataLakePathAsyncClient {
             .setBlobName(destinationPath).toUrl().toString();
 
         return new DataLakePathAsyncClient(getHttpPipeline(), newDfsEndpoint, serviceVersion, accountName,
-            fileSystemName, destinationPath, prepareBuilderReplacePath(destinationPath).buildBlockBlobAsyncClient());
+            fileSystemName, destinationPath, pathResourceType,
+            prepareBuilderReplacePath(destinationPath).buildBlockBlobAsyncClient());
     }
 
     /**
