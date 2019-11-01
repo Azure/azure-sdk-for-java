@@ -47,8 +47,7 @@ class EventHubAsyncClient implements Closeable {
      * @return The fully qualified namespace of this Event Hub.
      */
     public String getFullyQualifiedNamespace() {
-        // to be implemented
-        return null;
+        return connection.getFullyQualifiedDomainName();
     }
 
     /**
