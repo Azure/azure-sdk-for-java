@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
-import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Locale;
 
 /**
@@ -29,7 +29,7 @@ public abstract class TestBase {
     protected TestResourceNamer testResourceNamer;
 
     @Rule
-    public TestRunVerifier testRunVerifier = new TestRunVerifier();
+    public final TestRunVerifier testRunVerifier = new TestRunVerifier();
 
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
@@ -52,7 +52,7 @@ public abstract class TestBase {
 
         try {
             interceptorManager = new InterceptorManager(testName, testMode, testRunVerifier.doNotRecordTest());
-        } catch (IOException e) {
+        } catch (UncheckedIOException e) {
             logger.error("Could not create interceptor for {}", testName, e);
             Assert.fail();
         }

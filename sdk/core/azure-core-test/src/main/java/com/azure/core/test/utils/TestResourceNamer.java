@@ -24,7 +24,8 @@ public class TestResourceNamer extends ResourceNamer {
      * Constructor of TestResourceNamer
      *
      * @param name test name as prefix
-     * @param testMode the test mode {@link TestMode#PLAYBACK} or {@link TestMode#RECORD}
+     * @param testMode The {@link TestMode} which the tests are running in.
+     * @param doNotRecord Flag indicating whether values produced by this class should be record or played back.
      * @param recordedData the recorded data with list of network call
      */
     public TestResourceNamer(String name, TestMode testMode, boolean doNotRecord, RecordedData recordedData) {

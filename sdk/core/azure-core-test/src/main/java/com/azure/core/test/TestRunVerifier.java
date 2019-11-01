@@ -12,7 +12,7 @@ import static org.junit.Assume.assumeTrue;
 /**
  * This class validates that a test is able to run.
  */
-class TestRunVerifier extends TestWatcher {
+public class TestRunVerifier extends TestWatcher {
     private volatile boolean doNotRecord;
     private volatile boolean skipInPlayback;
     private volatile boolean testRan;

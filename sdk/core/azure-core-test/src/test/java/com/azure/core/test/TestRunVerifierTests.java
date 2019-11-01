@@ -11,7 +11,15 @@ import org.junit.runner.Description;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Tests for {@link TestRunVerifier}.
+ */
 public class TestRunVerifierTests {
+
+    /**
+     * Validates that a test method without the {@link DoNotRecord} annotation is allowed to run in all test modes and
+     * will record network calls and test values.
+     */
     @Test
     public void testWithoutDoNotRecord() {
         TestRunVerifier verifier = new TestRunVerifier();
@@ -29,6 +37,10 @@ public class TestRunVerifierTests {
         assertTrue(verifier.wasTestRan());
     }
 
+    /**
+     * Validates that a test method with the default {@link DoNotRecord} annotation is allowed to run in all test modes
+     * but doesn't have its network calls or test values recorded.
+     */
     @Test
     public void testWithDoNotRecordRunInPlayback() {
         TestRunVerifier verifier = new TestRunVerifier();
@@ -46,6 +58,11 @@ public class TestRunVerifierTests {
         assertTrue(verifier.wasTestRan());
     }
 
+    /**
+     * Validates that a test method with the {@link DoNotRecord} annotation having {@code skipInPlayback} set to true
+     * is only allowed to run in {@link TestMode#RECORD} and {@link TestMode#LIVE} and won't have its network calls or
+     * test values recorded.
+     */
     @Test
     public void testWithDoNotRecordSkipInPlayback() {
         TestRunVerifier verifier = new TestRunVerifier();
