@@ -23,8 +23,10 @@ public class ModelHelper {
     public static ParallelTransferOptions populateAndApplyDefaults(ParallelTransferOptions other) {
         other = other == null ? new ParallelTransferOptions(null, null, null) : other;
         return new ParallelTransferOptions(
-            other.getBlockSize() == null ? BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE : other.getBlockSize(),
-            other.getNumBuffers() == null ? BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS : other.getNumBuffers(),
+            other.getBlockSize() == null ? Integer.valueOf(BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+                : other.getBlockSize(),
+            other.getNumBuffers() == null ? Integer.valueOf(BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS)
+                : other.getNumBuffers(),
             other.getProgressReceiver());
     }
 }

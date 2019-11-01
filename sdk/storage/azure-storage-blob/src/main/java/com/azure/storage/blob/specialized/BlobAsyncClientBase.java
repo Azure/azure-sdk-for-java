@@ -777,9 +777,10 @@ public class BlobAsyncClientBase {
 
                     // Calculate whether we need a full chunk or something smaller because we are at the end.
                     long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSize(),
-                        newCount - (chunkNum * finalParallelTransferOptions.getBlockSize()));
+                        newCount - (chunkNum.longValue() * finalParallelTransferOptions.getBlockSize().longValue()));
                     BlobRange chunkRange = new BlobRange(
-                        rangeReal.getOffset() + (chunkNum * finalParallelTransferOptions.getBlockSize()),
+                        rangeReal.getOffset() +
+                            (chunkNum.longValue() * finalParallelTransferOptions.getBlockSize().longValue()),
                         chunkSizeActual);
 
                     // Make the download call.
