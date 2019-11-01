@@ -16,8 +16,9 @@ import java.util.Objects;
  * persisted to {@link RecordedData}.
  */
 public class TestResourceNamer extends ResourceNamer {
-    private final TestMode testMode;
     private final RecordedData recordedData;
+    private final boolean allowedToReadRecordedValues;
+    private final boolean allowedToRecordValues;
 
     /**
      * Constructor of TestResourceNamer
@@ -26,16 +27,17 @@ public class TestResourceNamer extends ResourceNamer {
      * @param testMode the test mode {@link TestMode#PLAYBACK} or {@link TestMode#RECORD}
      * @param recordedData the recorded data with list of network call
      */
-    public TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
+    public TestResourceNamer(String name, TestMode testMode, boolean doNotRecord, RecordedData recordedData) {
         super(name);
 
         // Only need recordedData if the test is running in playback or record.
-        if (testMode != TestMode.LIVE) {
+        if (testMode != TestMode.LIVE && !doNotRecord) {
             Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
         }
 
         this.recordedData = recordedData;
-        this.testMode = testMode;
+        this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
+        this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
     }
 
     /**
@@ -47,12 +49,12 @@ public class TestResourceNamer extends ResourceNamer {
      */
     @Override
     public String randomName(String prefix, int maxLen) {
-        if (testMode == TestMode.PLAYBACK) {
+        if (allowedToReadRecordedValues) {
             return recordedData.removeVariable();
         } else {
             String name = super.randomName(prefix, maxLen);
 
-            if (testMode == TestMode.RECORD) {
+            if (allowedToRecordValues) {
                 recordedData.addVariable(name);
             }
 
@@ -67,12 +69,12 @@ public class TestResourceNamer extends ResourceNamer {
      */
     @Override
     public String randomUuid() {
-        if (testMode == TestMode.PLAYBACK) {
+        if (allowedToReadRecordedValues) {
             return recordedData.removeVariable();
         } else {
             String uuid = super.randomUuid();
 
-            if (testMode == TestMode.RECORD) {
+            if (allowedToRecordValues) {
                 recordedData.addVariable(uuid);
             }
 
@@ -86,12 +88,12 @@ public class TestResourceNamer extends ResourceNamer {
      * @return OffsetDateTime of UTC now.
      */
     public OffsetDateTime now() {
-        if (testMode == TestMode.PLAYBACK) {
+        if (allowedToReadRecordedValues) {
             return OffsetDateTime.parse(recordedData.removeVariable());
         } else {
             OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
 
-            if (testMode == TestMode.RECORD) {
+            if (allowedToRecordValues) {
                 recordedData.addVariable(now.toString());
             }
 
@@ -106,10 +108,10 @@ public class TestResourceNamer extends ResourceNamer {
      * @return the recorded value.
      */
     public String recordValueFromConfig(String value) {
-        if (testMode == TestMode.PLAYBACK) {
+        if (allowedToReadRecordedValues) {
             return recordedData.removeVariable();
         } else {
-            if (testMode == TestMode.RECORD) {
+            if (allowedToRecordValues) {
                 recordedData.addVariable(value);
             }
 

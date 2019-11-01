@@ -51,12 +51,13 @@ public abstract class TestBase {
         logger.info("Test Mode: {}, Name: {}", testMode, testName);
 
         try {
-            interceptorManager = new InterceptorManager(testName, testMode);
+            interceptorManager = new InterceptorManager(testName, testMode, testRunVerifier.doNotRecordTest());
         } catch (IOException e) {
             logger.error("Could not create interceptor for {}", testName, e);
             Assert.fail();
         }
-        testResourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData());
+        testResourceNamer = new TestResourceNamer(testName, testMode, testRunVerifier.doNotRecordTest(),
+            interceptorManager.getRecordedData());
 
         beforeTest();
     }

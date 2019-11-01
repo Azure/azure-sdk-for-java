@@ -3,7 +3,7 @@
 
 package com.azure.core.test;
 
-import com.azure.core.test.annotation.IgnoreRecording;
+import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
@@ -13,17 +13,24 @@ import static org.junit.Assume.assumeTrue;
  * This class validates that a test is able to run.
  */
 class TestRunVerifier extends TestWatcher {
-    private volatile boolean isPlaybackAllowed;
+    private volatile boolean doNotRecord;
+    private volatile boolean skipInPlayback;
     private volatile boolean testRan;
 
     @Override
     protected void starting(Description description) {
         try {
-            isPlaybackAllowed = description.getTestClass()
+            DoNotRecord doNotRecordAnnotation = description.getTestClass()
                 .getMethod(description.getMethodName())
-                .getAnnotation(IgnoreRecording.class) == null;
+                .getAnnotation(DoNotRecord.class);
+
+            if (doNotRecordAnnotation != null) {
+                doNotRecord = true;
+                skipInPlayback = doNotRecordAnnotation.skipInPlayback();
+            }
         } catch (NoSuchMethodException ex) {
-            isPlaybackAllowed = true;
+            doNotRecord = false;
+            skipInPlayback = false;
         }
     }
 
@@ -33,8 +40,17 @@ class TestRunVerifier extends TestWatcher {
      * @param testMode The {@link TestMode} tests are being ran in.
      */
     void verifyTestCanRun(TestMode testMode) {
-        testRan = isPlaybackAllowed || testMode != TestMode.PLAYBACK;
+        testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
         assumeTrue("Test does not allow playback and was ran in 'TestMode.PLAYBACK'.", testRan);
+    }
+
+    /**
+     * Returns whether the test should have its network calls recorded during a {@link TestMode#RECORD record} test run.
+     *
+     * @return Flag indicating whether to record test network calls.
+     */
+    boolean doNotRecordTest() {
+        return doNotRecord;
     }
 
     /**

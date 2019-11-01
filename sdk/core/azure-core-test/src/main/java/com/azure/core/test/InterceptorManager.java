@@ -41,6 +41,8 @@ public class InterceptorManager implements AutoCloseable {
     private final Map<String, String> textReplacementRules;
     private final String testName;
     private final TestMode testMode;
+    private final boolean allowedToReadRecordedValues;
+    private final boolean allowedToRecordValues;
 
     // Stores a map of all the HTTP properties in a session
     // A state machine ensuring a test is always reset before another one is setup
@@ -66,16 +68,18 @@ public class InterceptorManager implements AutoCloseable {
      * not be located or the data could not be deserialized into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} is {@code null}.
      */
-    public InterceptorManager(String testName, TestMode testMode) throws IOException {
+    public InterceptorManager(String testName, TestMode testMode, boolean doNotRecord) throws IOException {
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
         this.testName = testName;
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
+        this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
+        this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
 
-        if (testMode == TestMode.PLAYBACK) {
+        if (allowedToReadRecordedValues) {
             this.recordedData = readDataFromFile();
-        } else if (testMode == TestMode.RECORD) {
+        } else if (allowedToRecordValues) {
             this.recordedData = new RecordedData();
         } else {
             this.recordedData = null;
@@ -96,14 +100,17 @@ public class InterceptorManager implements AutoCloseable {
      * into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
      */
-    public InterceptorManager(String testName, Map<String, String> textReplacementRules) throws IOException {
+    public InterceptorManager(String testName, Map<String, String> textReplacementRules, boolean doNotRecord)
+        throws IOException {
         Objects.requireNonNull(testName, "'testName' cannot be null.");
         Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
 
         this.testName = testName;
         this.testMode = TestMode.PLAYBACK;
+        this.allowedToReadRecordedValues = !doNotRecord;
+        this.allowedToRecordValues = false;
 
-        this.recordedData = readDataFromFile();
+        this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
         this.textReplacementRules = textReplacementRules;
     }
 
@@ -152,21 +159,12 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Override
     public void close() {
-        switch (testMode) {
-            case RECORD:
-                try {
-                    writeDataToFile();
-                } catch (IOException e) {
-                    logger.error("Unable to write data to playback file.", e);
-                }
-                break;
-            case LIVE:
-            case PLAYBACK:
-                // Do nothing
-                break;
-            default:
-                logger.error("==> Unknown AZURE_TEST_MODE: {}", testMode);
-                break;
+        if (allowedToRecordValues) {
+            try {
+                writeDataToFile();
+            } catch (IOException e) {
+                logger.error("Unable to write data to playback file.", e);
+            }
         }
     }
 
@@ -179,29 +177,38 @@ public class InterceptorManager implements AutoCloseable {
     private void writeDataToFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        File recordFile = getRecordFile(testName);
+        File recordFile = createRecordFile(testName);
+        mapper.writeValue(recordFile, recordedData);
+    }
 
+    private File getRecordFolderPath() {
+        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
+        return new File(folderUrl.getPath() + RECORD_FOLDER);
+    }
+
+    private File createRecordFile(String testName) throws IOException {
+        File folder = getRecordFolderPath();
+
+        if (!folder.exists()) {
+            if (folder.mkdir()) {
+                logger.verbose("Created directory: {}", folder.getPath());
+            }
+        }
+
+        File recordFile = new File(folder, testName + ".json");
         if (recordFile.createNewFile()) {
             logger.verbose("Created record file: {}", recordFile.getPath());
         }
 
-        mapper.writeValue(recordFile, recordedData);
+        logger.info("==> Playback file path: " + recordFile.getPath());
+        return recordFile;
     }
 
     private File getRecordFile(String testName) {
-        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
-        File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
+        File recordFile = new File(getRecordFolderPath(), testName + ".json");
+        logger.info("==> Playback file path: " + recordFile.getPath());
 
-        if (!folderFile.exists()) {
-            if (folderFile.mkdir()) {
-                logger.verbose("Created directory: {}", folderFile.getPath());
-            }
-        }
-
-        String filePath = folderFile.getPath() + "/" + testName + ".json";
-        logger.info("==> Playback file path: " + filePath);
-
-        return new File(filePath);
+        return recordFile;
     }
 
     /**
