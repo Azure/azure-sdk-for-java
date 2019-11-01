@@ -7,9 +7,14 @@ import com.azure.core.amqp.ExponentialRetryPolicy;
 import com.azure.core.amqp.FixedRetryPolicy;
 import com.azure.core.amqp.RetryMode;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.credential.TokenCredential;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -21,6 +26,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -33,7 +39,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class EventHubLinkProviderTest {
+public class EventHubConnectionTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(2);
     private static final String HOST_NAME = "Some-host-name";
     private final RetryOptions retryOptions = new RetryOptions()
@@ -41,31 +47,21 @@ public class EventHubLinkProviderTest {
         .setMaxRetries(0);
 
     @Mock
-    private EventHubConnection connection;
+    private EventHubAmqpConnection connection;
     @Mock
     private EventHubSession session;
+    @Mock
+    private TokenCredential tokenCredential;
 
-    private EventHubLinkProvider provider;
+    private EventHubConnection provider;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        provider = new EventHubLinkProvider(Mono.fromCallable(() -> connection), HOST_NAME, retryOptions);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void nullConnection() {
-        new EventHubLinkProvider(null, HOST_NAME, new RetryOptions());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void nullHostname() {
-        new EventHubLinkProvider(Mono.just(connection), null, new RetryOptions());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void nullRetry() {
-        new EventHubLinkProvider(Mono.just(connection), HOST_NAME, null);
+        ConnectionOptions connectionOptions = new ConnectionOptions(HOST_NAME, "event-hub-path", tokenCredential,
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
+            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+        provider = new EventHubConnection(Mono.just(connection), connectionOptions);
     }
 
     @Test

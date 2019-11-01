@@ -10,9 +10,10 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -21,33 +22,37 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Package-private class that manages the creation of AMQP links.
+ * Class that manages the connection to Azure Event Hubs.
  */
-class EventHubLinkProvider implements Closeable {
-    private final ClientLogger logger = new ClientLogger(EventHubLinkProvider.class);
-    private final Mono<EventHubConnection> connectionMono;
-    private final String hostname;
-    private final RetryOptions retryOptions;
+public class EventHubConnection implements Closeable {
+    private final ClientLogger logger = new ClientLogger(EventHubConnection.class);
     private final AtomicBoolean hasConnection = new AtomicBoolean();
+    private final ConnectionOptions connectionOptions;
+    private final Mono<EventHubAmqpConnection> currentConnection;
 
     /**
-     * Creates a new instance of {@link EventHubLinkProvider}.
-     *
-     * @param connection A connection to the Event Hub.
-     * @param hostname The FQDN of the Event Hub.
-     * @param retryOptions Retry options to use when creating the link.
-     * @throws NullPointerException if {@code connection}, {@code hostname}, or {@code retryOptions} is null.
+     * Creates a new instance of {@link EventHubConnection}.
      */
-    EventHubLinkProvider(Mono<EventHubConnection> connection, String hostname, RetryOptions retryOptions) {
-        this.connectionMono = Objects.requireNonNull(connection, "'connection' cannot be null.")
+    EventHubConnection(Mono<EventHubAmqpConnection> createConnectionMono, ConnectionOptions connectionOptions) {
+        this.connectionOptions = connectionOptions;
+        this.currentConnection = createConnectionMono
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
-        this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
-        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+    }
+
+    String getFullyQualifiedDomainName() {
+        return connectionOptions.getHostname();
+    }
+
+    String getEventHubName() {
+        return connectionOptions.getEntityPath();
+    }
+
+    RetryOptions getRetryOptions() {
+        return connectionOptions.getRetry();
     }
 
     /**
@@ -56,7 +61,7 @@ class EventHubLinkProvider implements Closeable {
      * @return The Event Hub management node.
      */
     Mono<EventHubManagementNode> getManagementNode() {
-        return connectionMono.flatMap(EventHubConnection::getManagementNode);
+        return currentConnection.flatMap(EventHubAmqpConnection::getManagementNode);
     }
 
     /**
@@ -69,7 +74,7 @@ class EventHubLinkProvider implements Closeable {
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, RetryOptions retryOptions) {
-        return connectionMono.flatMap(connection -> connection.createSession(entityPath))
+        return currentConnection.flatMap(connection -> connection.createSession(entityPath))
             .flatMap(session -> {
                 logger.verbose("Creating producer for {}", entityPath);
                 final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
@@ -91,12 +96,12 @@ class EventHubLinkProvider implements Closeable {
      */
     Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
             EventHubConsumerOptions options) {
-        return connectionMono.flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
+        return currentConnection.flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
             .flatMap(session -> {
                 logger.verbose("Creating consumer for path: {}", entityPath);
-                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
-                return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(),
+                return session.createConsumer(linkName, entityPath, connectionOptions.getRetry().getTryTimeout(),
                     retryPolicy, eventPosition, options);
             });
     }
@@ -110,14 +115,14 @@ class EventHubLinkProvider implements Closeable {
     public void close() {
         if (hasConnection.getAndSet(false)) {
             try {
-                final AmqpConnection connection = connectionMono.block(retryOptions.getTryTimeout());
+                final AmqpConnection connection = currentConnection.block(connectionOptions.getRetry().getTryTimeout());
                 if (connection != null) {
                     connection.close();
                 }
             } catch (IOException exception) {
                 throw logger.logExceptionAsError(
                     new AmqpException(false, "Unable to close connection to service", exception,
-                        new ErrorContext(hostname)));
+                        new ErrorContext(connectionOptions.getHostname())));
             }
         }
     }

@@ -1,24 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation;
+package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventProcessorStore;
-import com.azure.messaging.eventhubs.InMemoryEventProcessorStore;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
-import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.azure.messaging.eventhubs.PartitionProcessor;
-import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import org.junit.After;
 import org.junit.Before;

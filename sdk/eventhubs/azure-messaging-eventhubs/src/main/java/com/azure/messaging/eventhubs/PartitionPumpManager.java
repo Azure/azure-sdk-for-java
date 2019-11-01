@@ -1,32 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation;
+package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.core.util.tracing.ProcessKind;
-import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.azure.messaging.eventhubs.EventHubConsumerClient;
-import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.EventProcessorStore;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
-import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
-import com.azure.messaging.eventhubs.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
+import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.publisher.Signal;
 
@@ -37,6 +26,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
+
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
@@ -49,7 +42,7 @@ import java.util.function.Supplier;
  * all connections to the Event Hub.
  * </p>
  */
-public class PartitionPumpManager {
+class PartitionPumpManager {
 
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
     private final EventProcessorStore eventProcessorStore;
@@ -70,7 +63,7 @@ public class PartitionPumpManager {
      * @param eventHubClientBuilder The client builder used to create new clients (and new connections) for each
      * partition processed by this {@link EventProcessor}.
      */
-    public PartitionPumpManager(EventProcessorStore eventProcessorStore,
+    PartitionPumpManager(EventProcessorStore eventProcessorStore,
         Supplier<PartitionProcessor> partitionProcessorFactory,
         EventPosition initialEventPosition, EventHubClientBuilder eventHubClientBuilder,
         TracerProvider tracerProvider) {
@@ -85,7 +78,7 @@ public class PartitionPumpManager {
      * Stops all partition pumps that are actively consuming events. This method is invoked when the {@link
      * EventProcessor} is requested to stop.
      */
-    public void stopAllPartitionPumps() {
+    void stopAllPartitionPumps() {
         this.partitionPumps.forEach((partitionId, eventHubConsumer) -> {
             try {
                 eventHubConsumer.close();
@@ -103,7 +96,7 @@ public class PartitionPumpManager {
      *
      * @param claimedOwnership The details of partition ownership for which new partition pump is requested to start.
      */
-    public void startPartitionPump(PartitionOwnership claimedOwnership) {
+    void startPartitionPump(PartitionOwnership claimedOwnership) {
         if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
             logger.info("Consumer is already running for this partition  {}", claimedOwnership.getPartitionId());
             return;
