@@ -126,24 +126,27 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final EventHubLinkProvider linkProvider;
+    private final EventHubConnection connection;
     private final RetryOptions retryOptions;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
+    private final boolean isSharedConnection;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
      * when {@link BatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to load
      * balance the messages amongst available partitions.
      */
-    EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
-        RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer) {
+    EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
+        RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
+        boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
-        this.linkProvider = linkProvider;
+        this.connection = connection;
         this.retryOptions = retryOptions;
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
+        this.isSharedConnection = isSharedConnection;
     }
 
     /**
@@ -172,7 +175,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getProperties() {
-        return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
+        return connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
     /**
@@ -194,7 +197,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
+        return connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
@@ -534,7 +537,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (openLink != null) {
             return Mono.just(openLink);
         } else {
-            return linkProvider.createSendLink(getLinkName(partitionId), entityPath, retryOptions)
+            return connection.createSendLink(getLinkName(partitionId), entityPath, retryOptions)
                 .map(link -> openLinks.computeIfAbsent(entityPath, unusedKey -> link));
         }
     }
@@ -553,6 +556,10 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
             });
             openLinks.clear();
+
+            if (!isSharedConnection) {
+                connection.close();
+            }
         }
     }
 

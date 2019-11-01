@@ -29,13 +29,10 @@ public class PublishEventsWithCustomMetadata {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        // Create a producer.
+        EventHubProducerAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
-
-        // Create a producer. This overload of `createProducer` does not accept any arguments
-        EventHubProducerAsyncClient producer = client.createProducer();
+            .buildAsyncProducer();
 
         // Because an event consists mainly of an opaque set of bytes, it may be difficult for consumers of those events
         // to make informed decisions about how to process them.
@@ -75,7 +72,7 @@ public class PublishEventsWithCustomMetadata {
         // the event.
         // .subscribe() is a non-blocking call. The program will immediately move to the next line after setting up
         // the callbacks for each event in the observable.
-        producer.send(data, sendOptions).subscribe(
+        client.send(data, sendOptions).subscribe(
             ignored -> {
                 System.out.println("Sent.");
             },
@@ -89,8 +86,7 @@ public class PublishEventsWithCustomMetadata {
                         amqpException.isTransient(), amqpException.getErrorCondition()));
                 }
             }, () -> {
-                // Disposing of our producer and client.
-                producer.close();
+                // Disposing of our client.
                 client.close();
             });
     }

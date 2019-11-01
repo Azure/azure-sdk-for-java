@@ -25,8 +25,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Mono;
@@ -60,16 +60,21 @@ import java.util.ServiceLoader;
  * </ul>
  *
  * <p>
- * <strong>Creating an asynchronous {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong>
+ * <strong>Starting position</strong>, <strong>consumer group</strong>, and <strong>credentials</strong> are
+ * <strong>required</strong> when creating an {@link EventHubConsumerAsyncClient} or {@link EventHubConsumerClient}.
+ * {@link EventHubClientBuilder#consumerOptions(EventHubConsumerOptions) Consumer options} can be supplied for
+ * optional consumer customizations.
  * </p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string-string}
+ * <p><strong>Creating an asynchronous {@link EventHubProducerAsyncClient} using Event Hubs namespace connection string
+ * </strong></p>
  *
- * <p>
- * <strong>Creating a synchronous {@link EventHubClient} using an Event Hub instance connection string</strong>
- * </p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
+ * <p><strong>Creating a synchronous {@link EventHubConsumerClient} using an Event Hub instance connection string
+ * </strong></p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
  *
  * @see EventHubClient
  * @see EventHubAsyncClient
@@ -98,6 +103,7 @@ public class EventHubClientBuilder {
     private EventHubConsumerOptions consumerOptions;
     private EventPosition startingPosition;
     private String consumerGroup;
+    private EventHubConnection eventHubConnection;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
@@ -206,6 +212,18 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the Event Hub connection to use when interacting with Event Hubs. If not set, a new connection will be
+     * constructed and used. If a connection is provided, end users are responsible for disposing of it.
+     *
+     * @param eventHubConnection Event Hub connection to use.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder connection(EventHubConnection eventHubConnection) {
+        this.eventHubConnection = eventHubConnection;
         return this;
     }
 
@@ -408,7 +426,7 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubAsyncClient buildAsyncClient() {
+    EventHubAsyncClient buildAsyncClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         return buildAsyncClient(connectionOptions);
     }
@@ -438,32 +456,35 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubClient buildClient() {
+    EventHubClient buildClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final EventHubAsyncClient client = buildAsyncClient(connectionOptions);
 
         return new EventHubClient(client, connectionOptions);
     }
 
-    private static EventHubAsyncClient buildAsyncClient(ConnectionOptions connectionOptions) {
+    private EventHubAsyncClient buildAsyncClient(ConnectionOptions connectionOptions) {
+        final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+            connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
+            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-
-        final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
+        final Mono<EventHubAmqpConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
-            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
-                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
-            return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
+            return new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
                 tokenManagerProvider, messageSerializer);
         });
-        final EventHubLinkProvider linkProvider = new EventHubLinkProvider(connectionMono,
-            connectionOptions.getHostname(), connectionOptions.getRetry());
 
-        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, linkProvider);
+        final boolean isSharedConnection = eventHubConnection != null;
+        final EventHubConnection connection = isSharedConnection
+            ? eventHubConnection
+            : new EventHubConnection(connectionMono, connectionOptions);
+
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+
+        return new EventHubAsyncClient(connection, tracerProvider, messageSerializer, isSharedConnection);
     }
 
     private ConnectionOptions getConnectionOptions() {

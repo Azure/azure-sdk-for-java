@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Firewall Policy NAT Rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType", defaultImpl = FirewallPolicyNatRule.class)
 @JsonTypeName("FirewallPolicyNatRule")
 public class FirewallPolicyNatRule extends FirewallPolicyRule {
     /**

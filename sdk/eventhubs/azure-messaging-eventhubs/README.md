@@ -69,23 +69,24 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 For the Event Hubs client library to interact with an Event Hub, it will need to understand how to connect and authorize
 with it.
 
-### Create an Event Hub client using a connection string
+### Create an Event Hub producer using a connection string
 
 The easiest means for doing so is to use a connection string, which is created automatically when creating an Event Hubs
 namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
 [get an Event Hubs connection string][event_hubs_connection_string].
 
-Both the asynchronous and synchronous Event Hub clients can be created using `EventHubClientBuilder`. Invoking
-`.buildAsyncClient()` will create an `EventHubAsyncClient` and invoking `.buildClient()` will create an `EventHubClient`.
+Both the asynchronous and synchronous Event Hub producer and consumer clients can be created using 
+`EventHubClientBuilder`. Invoking `.buildAsyncProducer()` and `buildProducer` will build the asynchronous and 
+synchronous producers. Similarly, `.buildAsyncConsumer` and `.buildConsumer` will build the appropriate consumers.
 
-The snippet below creates an asynchronous Event Hub client.
+The snippet below creates an asynchronous Event Hub producer.
 
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
-EventHubAsyncClient client = new EventHubClientBuilder()
+EventHubProducerAsyncClient client = new EventHubClientBuilder()
     .connectionString(connectionString, eventHubName)
-    .buildAsyncClient();
+    .buildAsyncProducer();
 ```
 
 ### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
@@ -124,16 +125,12 @@ ClientSecretCredential credential = new ClientSecretCredentialBuilder()
 // {your-namespace}.servicebus.windows.net
 String host = "<< EVENT HUBS HOST >>"
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
-EventHubAsyncClient client = new EventHubClientBuilder()
+EventHubProducerAsyncClient client = new EventHubClientBuilder()
     .credential(host, eventHubName, credential)
-    .buildAsyncClient();
+    .buildAsyncProducer();
 ```
 
 ## Key concepts
-
-- An **Event Hub client** is the primary interface for developers interacting with the Event Hubs client library,
-  allowing for inspection of Event Hub metadata and providing a guided experience towards specific Event Hub operations
-  such as the creation of producers and consumers.
 
 - An **Event Hub producer** is a source of telemetry data, diagnostics information, usage logs, or other log data, as
   part of an embedded device solution, a mobile device application, a game title running on a console or other device,
@@ -170,27 +167,30 @@ are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
 ### Publish events to an Event Hub
 
 In order to publish events, you'll need to create an asynchronous
-[`EventHubProducerAsyncClient`][source_eventhubasyncproducerclient] or a synchronous [`EventHubProducerClient`][source_eventHubProducerClient].
-Producers may be dedicated to a specific partition, or allow the Event Hubs service to decide which partition events
-should be published to. It is recommended to use automatic routing when the publishing of events needs to be highly
-available or when event data should be distributed evenly among the partitions. In the our example, we will take
-advantage of automatic routing.
+[`EventHubProducerAsyncClient`][source_eventhubasyncproducerclient] or a synchronous 
+[`EventHubProducerClient`][source_eventHubProducerClient].
+Each producers can send events to either, a specific partition, or allow the Event Hubs service to decide which
+partition events should be published to. It is recommended to use automatic routing when the publishing of events needs
+to be highly available or when event data should be distributed evenly among the partitions. In the our example, we will
+take advantage of automatic routing.
 
 #### Event Hub producer creation
 
-With an existing [EventHubAsyncClient][source_eventhubasyncclient] or [EventHubClient][source_eventhubclient],
-developers can create a producer by calling `createProducer()` or `createProducer(EventHubProducerOptions)`. If
-`EventHubClient` is used, a synchronous `EventHubProducerClient` is created. If `EventHubAsyncClient` is used, an asynchronous
+Developers can create a producer by calling `buildProducer()` or `buildAsyncProducer`. If `buildProducer` is invoked, a
+synchronous `EventHubProducerClient` is created. If `buildAsyncProducer` is used, an asynchronous
 `EventHubProducerAsyncClient` is returned.
 
-The snippet below creates a producer that sends events to any partition, allowing Event Hubs service to route the event
+Specifying `SendOptions.partitionId(String)` will send events to a specific partition, and not, will allow for automatic
+routing. In addition, specifying `partitionKey(String)` will tell Event Hubs service to hash the events and send them to
+the same partition.
+
+The snippet below creates a producer and sends events to any partition, allowing Event Hubs service to route the event
 to an available partition.
 
 ```java
-EventHubAsyncClient client = new EventHubClientBuilder()
+EventHubProducerAsyncClient client = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
-    .buildAsyncClient();
-EventHubProducerAsyncClient producer = client.createProducer();
+    .buildAsyncProducer();
 ```
 
 To send events to a particular partition, set the optional parameter `partitionId` on
@@ -229,45 +229,43 @@ example, we will focus on reading new events as they are published.
 #### Consume events with EventHubAsyncConsumer
 
 In the snippet below, we are creating an asynchronous consumer that receives events from `partitionId` and only listens
-to newest events that get pushed to the partition. Developers can begin receiving events by calling `.receive()` and
-subscribing to the stream.
+to newest events that get pushed to the partition using `receive(String partitionId)`. Developers can begin receiving
+events by calling `.receive(String partitionId)` and subscribing to the stream.
 
 ```java
-EventHubAsyncClient client = new EventHubClientBuilder()
+EventHubAsyncConsumer client = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
-    .buildAsyncClient();
+    .consumerGroup(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
+    .startingPosition(EventPosition.earliest())
+    .buildAsyncConsumer();
 
-String partitionId = "<< EVENT HUB PARTITION ID >>"
-EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-    EventPosition.earliest());
-
-consumer.receive().subscribe(event -> {
+consumer.receive(partitionId).subscribe(event -> {
     // Process each event as it arrives.
 });
 ```
 
 #### Consume events with EventHubConsumer
 
-Developers can create a synchronous consumer that returns events in batches using an `EventHubClient`. In the snippet
-below, a consumer is created that starts reading events from the beginning of the partition's event stream.
+Developers can create a synchronous consumer that returns events in batches using an `EventHubAsyncConsumer`. In the
+snippet below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
 ```java
-EventHubClient client = new EventHubClientBuilder()
+EventHubConsumer client = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
-    .buildClient();
+    .consumerGroup(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
+    .startingPosition(EventPosition.earliest())
+    .buildConsumer();
 
 String partitionId = "<< EVENT HUB PARTITION ID >>";
-EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-    EventPosition.earliest());
 
 // Get the first 15 events in the stream, or as many events as can be received within 40 seconds.
-IterableStream<EventData> events = consumer.receive(15, Duration.ofSeconds(40));
+IterableStream<EventData> events = consumer.receive(partitionId, 15, Duration.ofSeconds(40));
 for (EventData event : events) {
     // Process each event
 }
 
 // Calling receive again returns the next 15 events in the stream, or as many as possible in 40 seconds.
-IterableStream<EventData> nextEvents = consumer.receive(15, Duration.ofSeconds(40));
+IterableStream<EventData> nextEvents = consumer.receive(partitionId, 15, Duration.ofSeconds(40));
 ```
 
 ### Consume events using an Event Processor
@@ -276,26 +274,26 @@ To consume events for all partitions of an Event Hub, you'll create an [`EventPr
 specific consumer group. When an Event Hub is created, it provides a default consumer group that can be used to get
 started.
 
-The [`EventProcessor`][source_eventprocessor] will delegate processing of events to a
-[`PartitionProcessor`][source_partition_processor] implementation that you provide, allowing your logic to focus on the
-logic needed to provide value while the processor holds responsibility for managing the underlying consumer operations.
+The [`EventProcessor`][source_eventprocessor] will delegate processing of events to a callback function that you 
+provide, allowing you to focus on the logic needed to provide value while the processor holds responsibility for 
+managing the underlying consumer operations.
 
-In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the built-in
-[`InMemoryPartitionManager`][source_inmemorypartitionmanager], and a `PartitionProcessor` implementation that logs
-events received to console.
+In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
+[`InMemoryEventProcessorStore`][source_inmemoryeventprocessorstore] available in samples, and a callback function that 
+processes events received from the Event Hub and writes to console.
 
 ```java
 class Program {
     public static void main(String[] args) {
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
-            .buildAsyncClient();
-
         EventProcessor eventProcessor = new EventProcessorBuilder()
-            .consumerGroup("<< CONSUMER GROUP NAME>>")
-            .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory((SimplePartitionProcessor::new))
-            .partitionManager(new InMemoryPartitionManager())
+            .consumerGroup("<< CONSUMER GROUP NAME >>")
+            .connectionString("<< EVENT HUB CONNECTION STRING >>")
+            .eventProcessorStore(new InMemoryEventProcessorStore())
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
@@ -306,17 +304,6 @@ class Program {
 
         // When the user wishes to stop processing events, they can call `stop()`.
         eventProcessor.stop();
-    }
-}
-
-class SimplePartitionProcessor extends PartitionProcessor {
-    /**
-     * Processes the event data.
-     */
-    // @Override
-    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-        System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
-        return partitionContext.updateCheckpoint(eventData);
     }
 }
 ```
@@ -444,7 +431,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
 [source_sendOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/SendOptions.java
 [source_batchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/BatchOptions.java
-[source_inmemorypartitionmanager]: ./src/main/java/com/azure/messaging/eventhubs/InMemoryPartitionManager.java
+[source_inmemoryeventprocessorstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryEventProcessorStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
 

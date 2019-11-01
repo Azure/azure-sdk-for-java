@@ -66,7 +66,9 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+
+            final EventHubProducerClient producer = client.createProducer();
+            testData = setupEventTestData(producer, NUMBER_OF_EVENTS, options);
         }
 
         consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,
