@@ -723,16 +723,16 @@ public class BlobAsyncClientBase {
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
-        BlobRange rangeReal = range == null ? new BlobRange(0) : range;
+        BlobRange finalRange = range == null ? new BlobRange(0) : range;
         final ParallelTransferOptions finalParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
-        BlobRequestConditions conditionsReal = requestConditions == null
+        BlobRequestConditions finalConditions = requestConditions == null
             ? new BlobRequestConditions() : requestConditions;
 
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(filePath);
         return Mono.just(channel)
-            .flatMap(c -> this.downloadToFileImpl(c, rangeReal, finalParallelTransferOptions,
-                downloadRetryOptions, conditionsReal, rangeGetContentMd5, context))
+            .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
+                downloadRetryOptions, finalConditions, rangeGetContentMd5, context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, filePath, signalType));
     }
 
@@ -745,7 +745,7 @@ public class BlobAsyncClientBase {
         }
     }
 
-    private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange rangeReal,
+    private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
         ParallelTransferOptions finalParallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
@@ -755,11 +755,11 @@ public class BlobAsyncClientBase {
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
-       return getSetupMono(rangeReal, finalParallelTransferOptions, downloadRetryOptions, requestConditions,
+        return getSetupMono(finalRange, finalParallelTransferOptions, downloadRetryOptions, requestConditions,
            rangeGetContentMd5, context)
         .flatMap(setupTuple3 -> {
             long newCount = setupTuple3.getT1();
-            BlobRequestConditions realConditions = setupTuple3.getT2();
+            BlobRequestConditions finalConditions = setupTuple3.getT2();
 
             int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSize());
 
@@ -779,12 +779,12 @@ public class BlobAsyncClientBase {
                     long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSize(),
                         newCount - (chunkNum.longValue() * finalParallelTransferOptions.getBlockSize().longValue()));
                     BlobRange chunkRange = new BlobRange(
-                        rangeReal.getOffset() +
-                            (chunkNum.longValue() * finalParallelTransferOptions.getBlockSize().longValue()),
+                        finalRange.getOffset()
+                            + (chunkNum.longValue() * finalParallelTransferOptions.getBlockSize().longValue()),
                         chunkSizeActual);
 
                     // Make the download call.
-                    return this.downloadWithResponse(chunkRange, downloadRetryOptions, realConditions,
+                    return this.downloadWithResponse(chunkRange, downloadRetryOptions, finalConditions,
                         rangeGetContentMd5, null)
                         .subscribeOn(Schedulers.elastic())
                         .flatMap(response ->
@@ -885,8 +885,8 @@ public class BlobAsyncClientBase {
             .setLeaseId(accessConditions.getLeaseId());
     }
 
-    private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response,
-        AsynchronousFileChannel file, long chunkNum, ParallelTransferOptions optionsReal, Lock progressLock,
+    private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
+        long chunkNum, ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
         AtomicLong totalProgress) {
 
         // Extract the body.
@@ -894,11 +894,11 @@ public class BlobAsyncClientBase {
 
         // Report progress as necessary.
         data = ProgressReporter.addParallelProgressReporting(data,
-            optionsReal.getProgressReceiver(), progressLock, totalProgress);
+            finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
         // Write to the file.
         return FluxUtil.writeFile(data, file,
-            chunkNum * optionsReal.getBlockSize());
+            chunkNum * finalParallelTransferOptions.getBlockSize());
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {

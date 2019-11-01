@@ -541,9 +541,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final ParallelTransferOptions finalParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
         final BlobRequestConditions finalRequestConditions = (accessConditions == null)
-            ? new BlobRequestConditions()
-            : accessConditions;
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+            ? new BlobRequestConditions() : accessConditions;
+
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
@@ -551,14 +550,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
         final SortedMap<Long, String> blockIds = new TreeMap<>();
         return Flux.fromIterable(sliceFile(fileSize, finalParallelTransferOptions.getBlockSize(),
-            parallelTransferOptions == null || parallelTransferOptions.getBlockSize() == null))
+            parallelTransferOptions))
             .flatMap(chunk -> {
                 String blockId = getBlockID();
                 blockIds.put(chunk.getOffset(), blockId);
 
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                     FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
-                    progressReceiver, progressLock, totalProgress);
+                    finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
                 return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(), null,
                     finalRequestConditions.getLeaseId());
@@ -595,7 +594,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    private List<BlobRange> sliceFile(long fileSize, int blockSize, boolean enableHtbbOptimization) {
+    private List<BlobRange> sliceFile(long fileSize, int blockSize, ParallelTransferOptions originalOptions) {
+        boolean enableHtbbOptimization = originalOptions == null || originalOptions.getBlockSize() == null;
         List<BlobRange> ranges = new ArrayList<>();
         if (fileSize > 100 * Constants.MB && enableHtbbOptimization) {
             blockSize = BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;

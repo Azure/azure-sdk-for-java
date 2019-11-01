@@ -54,7 +54,7 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
     private static final class InnerHttpResponse extends HttpResponse {
         private final HttpResponse innerHttpResponse;
         private final HttpHeaders headers;
-        protected InnerHttpResponse(HttpResponse innerHttpResponse, HttpHeaders headers, HttpRequest request) {
+        InnerHttpResponse(HttpResponse innerHttpResponse, HttpHeaders headers, HttpRequest request) {
             super(request);
             this.innerHttpResponse = innerHttpResponse;
             this.headers = headers;
