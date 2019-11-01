@@ -356,9 +356,8 @@ public class EventHubClientBuilder {
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubConnection buildConnection() {
-        final ConnectionOptions connectionOptions = getConnectionOptions();
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-        return buildConnection(connectionOptions, messageSerializer);
+        return buildConnection(messageSerializer);
     }
 
     /**
@@ -367,8 +366,8 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubConsumerAsyncClient} with the configured options.
      *
-     * @throws IllegalArgumentException If the credentials have not been set using either {@link
-     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. If
+     * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
+     * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. If
      * {@link #startingPosition(EventPosition)} or {@link #consumerGroup(String)} have not been set.
      * Or, if a proxy is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
@@ -394,8 +393,8 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubConsumerClient} with the configured options.
      *
-     * @throws IllegalArgumentException If the credentials have not been set using either {@link
-     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. If
+     * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
+     * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. If
      * {@link #startingPosition(EventPosition)} or {@link #consumerGroup(String)} have not been set.
      * Or, if a proxy is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
@@ -413,9 +412,9 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubProducerAsyncClient} instance with all the configured options.
      *
-     * @throws IllegalArgumentException if the credentials have not been set using either {@link
-     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
+     * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy
+     * is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerAsyncClient buildAsyncProducer() {
         return buildAsyncClient().createProducer();
@@ -427,9 +426,9 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubProducerClient} instance with all the configured options.
      *
-     * @throws IllegalArgumentException if the credentials have not been set using either {@link
-     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
+     * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy
+     * is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerClient buildProducer() {
         return buildClient().createProducer();
@@ -461,8 +460,16 @@ public class EventHubClientBuilder {
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     EventHubAsyncClient buildAsyncClient() {
-        final ConnectionOptions connectionOptions = getConnectionOptions();
-        return buildAsyncClient(connectionOptions);
+        final MessageSerializer messageSerializer = new EventHubMessageSerializer();
+
+        final boolean isSharedConnection = eventHubConnection != null;
+        final EventHubConnection connection = isSharedConnection
+            ? eventHubConnection
+            : buildConnection(messageSerializer);
+
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+
+        return new EventHubAsyncClient(connection, tracerProvider, messageSerializer, isSharedConnection);
     }
 
     /**
@@ -491,14 +498,13 @@ public class EventHubClientBuilder {
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     EventHubClient buildClient() {
-        final ConnectionOptions connectionOptions = getConnectionOptions();
-        final EventHubAsyncClient client = buildAsyncClient(connectionOptions);
+        final EventHubAsyncClient client = buildAsyncClient();
 
-        return new EventHubClient(client, connectionOptions);
+        return new EventHubClient(client, retryOptions);
     }
 
-    private EventHubConnection buildConnection(ConnectionOptions connectionOptions,
-        MessageSerializer messageSerializer) {
+    private EventHubConnection buildConnection(MessageSerializer messageSerializer) {
+        final ConnectionOptions connectionOptions = getConnectionOptions();
         final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
             connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
             ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
@@ -513,19 +519,6 @@ public class EventHubClientBuilder {
         });
 
         return new EventHubConnection(connectionMono, connectionOptions);
-    }
-
-    private EventHubAsyncClient buildAsyncClient(ConnectionOptions connectionOptions) {
-        final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-
-        final boolean isSharedConnection = eventHubConnection != null;
-        final EventHubConnection connection = isSharedConnection
-            ? eventHubConnection
-            : buildConnection(connectionOptions, messageSerializer);
-
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
-        return new EventHubAsyncClient(connection, tracerProvider, messageSerializer, isSharedConnection);
     }
 
     private ConnectionOptions getConnectionOptions() {
