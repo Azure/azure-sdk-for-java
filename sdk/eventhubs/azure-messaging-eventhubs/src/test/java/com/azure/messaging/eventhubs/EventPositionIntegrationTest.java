@@ -66,7 +66,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(client.createProducer(), NUMBER_OF_EVENTS, options);
 
             // Receiving back those events we sent so we have something to compare to.
             logger.info("Receiving the events we sent.");

@@ -4,17 +4,13 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.TestUtils;
-import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.time.Instant;
 import java.util.List;
 
 /**
- * Contains information about test events pushed to Azure Event Hubs.
- *
- * @see IntegrationTestBase#setupEventTestData(EventHubClient, int, SendOptions)
+ * Contains information about test events pushed to Azure Event Hubs.*
  */
 public class IntegrationTestEventData {
     private final String partitionId;

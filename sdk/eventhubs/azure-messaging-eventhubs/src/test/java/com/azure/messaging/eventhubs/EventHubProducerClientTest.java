@@ -5,17 +5,22 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -31,6 +36,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -63,7 +69,7 @@ public class EventHubProducerClientTest {
     @Mock
     private AmqpSession session;
     @Mock
-    private EventHubConnection connection;
+    private EventHubAmqpConnection connection;
     @Captor
     private ArgumentCaptor<Message> singleMessageCaptor;
     @Captor
@@ -72,7 +78,9 @@ public class EventHubProducerClientTest {
     private EventHubProducerAsyncClient asyncProducer;
     private RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(30));
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
-    private EventHubLinkProvider linkProvider;
+    private EventHubConnection linkProvider;
+    @Mock
+    private TokenCredential tokenCredential;
 
     @Before
     public void setup() {
@@ -83,9 +91,13 @@ public class EventHubProducerClientTest {
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-        linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, retryOptions);
+
+        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
+            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+        linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions,
-            tracerProvider, messageSerializer);
+            tracerProvider, messageSerializer, false);
     }
 
     @After
@@ -133,7 +145,7 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer);
+            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
@@ -185,7 +197,7 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer);
+            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE));
 

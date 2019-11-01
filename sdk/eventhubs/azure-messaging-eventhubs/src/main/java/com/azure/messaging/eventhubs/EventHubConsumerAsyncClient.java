@@ -13,6 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -37,16 +38,28 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * referred to as a "Non-Epoch Consumer."</li>
  * </ul>
  *
- * <p><strong>Consuming events from Event Hub</strong></p>
+ * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
+ * <p>Required parameters are {@code consumerGroup}, {@code startingPosition}, and credentials are required when
+ * creating a consumer.</p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive}
+ * <p><strong>Consuming events a single partition from Event Hub</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string}
  *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
+ * <p>For event consumers that need to limit the number of events they receive at a given time, they can use {@link
+ * BaseSubscriber#request(long)}.</p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-basesubscriber}
  *
- * For event consumers that need to limit the number of events they receive at a given time, they can use {@link
- * BaseSubscriber#request(long)}.
+ * <p><strong>Receiving from all partitions</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive}
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#basesubscriber}
+ * <p><strong>Viewing latest partition information</strong></p>
+ * <p>Latest partition information as events are received can by setting
+ * {@link EventHubConsumerOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
+ * {@code true}. As events come in, explore the {@link PartitionContext} object.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#lastenqueuedeventproperties}
  */
 @Immutable
 public class EventHubConsumerAsyncClient implements Closeable {
@@ -59,23 +72,25 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final EventHubLinkProvider linkProvider;
+    private final EventHubConnection connection;
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final EventPosition startingPosition;
     private final EventHubConsumerOptions consumerOptions;
+    private final boolean isSharedConnection;
     private final Flux<PartitionEvent> allPartitionsFlux;
 
-    EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
+    EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
         MessageSerializer messageSerializer, String consumerGroup, EventPosition startingPosition,
-        EventHubConsumerOptions consumerOptions) {
+        EventHubConsumerOptions consumerOptions, boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
-        this.linkProvider = linkProvider;
+        this.connection = connection;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
         this.startingPosition = startingPosition;
         this.consumerOptions = consumerOptions;
+        this.isSharedConnection = isSharedConnection;
         this.allPartitionsFlux = Flux.defer(() -> {
             return getPartitionIds().map(id -> {
                 final EventHubPartitionAsyncConsumer partitionConsumer = createPartitionConsumer(id);
@@ -130,7 +145,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getProperties() {
-        return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
+        return connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
     /**
@@ -152,7 +167,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
+        return connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
@@ -207,7 +222,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
             });
             openPartitionConsumers.clear();
 
-            //TODO (conniey): Depending on whether or not shared connection, dispose of connection.
+            if (!isSharedConnection) {
+                connection.close();
+            }
         }
     }
 
@@ -217,7 +234,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
             getEventHubName(), consumerGroup, partitionId);
 
         final Mono<AmqpReceiveLink> receiveLinkMono =
-            linkProvider.createReceiveLink(linkName, entityPath, getStartingPosition(), consumerOptions)
+            connection.createReceiveLink(linkName, entityPath, getStartingPosition(), consumerOptions)
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
 
         return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer,
