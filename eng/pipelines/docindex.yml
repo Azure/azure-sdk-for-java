@@ -138,7 +138,7 @@ jobs:
                     foreach($lib in $clientArr) 
                     {
                         Write-Host "Write $($lib) to $($Dir.Name).md"
-                        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $PkgName"
+                        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"
                     }
                 }
                 if ($mgmtArr.Count -gt 0) 
@@ -147,7 +147,7 @@ jobs:
                     foreach($lib in $clientArr) 
                     {
                         Write-Output "Write $($lib) to $($Dir.Name).md"
-                        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $PkgName"
+                        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"
                     }
                 }
               }
