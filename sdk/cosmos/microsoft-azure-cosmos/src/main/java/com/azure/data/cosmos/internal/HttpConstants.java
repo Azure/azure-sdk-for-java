@@ -253,7 +253,7 @@ public class HttpConstants {
         // @see
         // https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
         // {x-version-update-start;com.microsoft.azure:azure-cosmos;current}
-        public static final String SDK_VERSION = "3.4.0";
+        public static final String SDK_VERSION = "3.3.2";
         // {x-version-update-end}
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }

@@ -1,5 +1,8 @@
 ## Changelog
 
+### 3.3.2
+- ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
+
 ### 3.3.1
 - Added @JsonIgnore on getLogger in JsonSerializable
 
