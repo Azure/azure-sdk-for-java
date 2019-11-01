@@ -51,7 +51,7 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
         return new InnerHttpResponse(unprocessedResponse, headers, unprocessedResponse.getRequest());
     }
 
-    private final class InnerHttpResponse extends HttpResponse {
+    private static final class InnerHttpResponse extends HttpResponse {
         private final HttpResponse innerHttpResponse;
         private final HttpHeaders headers;
         protected InnerHttpResponse(HttpResponse innerHttpResponse, HttpHeaders headers, HttpRequest request) {

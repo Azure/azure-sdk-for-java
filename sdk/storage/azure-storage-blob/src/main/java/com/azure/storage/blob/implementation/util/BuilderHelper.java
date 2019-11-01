@@ -119,6 +119,4 @@ public final class BuilderHelper {
             .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
             .build();
     }
-
-
 }

@@ -37,7 +37,7 @@ public final class ParallelTransferOptions {
      */
     public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver) {
         if (blockSize != null) {
-            StorageImplUtils.assertInBounds("blockSize", blockSize, 0, BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES);
+            StorageImplUtils.assertInBounds("blockSize", blockSize, 1, BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES);
         }
         this.blockSize = blockSize;
 
