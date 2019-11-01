@@ -78,6 +78,8 @@ public final class BlobContainerClientBuilder {
     }
 
     /**
+     * Creates a {@link BlobContainerClient} from the configured options.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildClient}
@@ -89,6 +91,8 @@ public final class BlobContainerClientBuilder {
     }
 
     /**
+     * Creates a {@link BlobContainerAsyncClient} from the configured options.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildAsyncClient}
