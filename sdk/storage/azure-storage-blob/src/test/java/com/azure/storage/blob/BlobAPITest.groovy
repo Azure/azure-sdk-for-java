@@ -535,13 +535,13 @@ class BlobAPITest extends APISpec {
             .subscribe(
             new Consumer<Response<BlobProperties>>() {
                 @Override
-                void accept(Response<BlobProperties> headers) throws Exception {
+                void accept(Response<BlobProperties> headers) {
                     etagConflict = false
                 }
             },
             new Consumer<Throwable>() {
                 @Override
-                void accept(Throwable throwable) throws Exception {
+                void accept(Throwable throwable) {
                     if (throwable instanceof BlobStorageException &&
                         ((BlobStorageException) throwable).getStatusCode() == 412) {
                         etagConflict = true
