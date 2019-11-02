@@ -6,14 +6,14 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import org.apache.qpid.proton.engine.EndpointState;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 public class HandlerTest {
     private Handler handler;
 
-    @Before
+    @BeforeEach
     public void setup() {
         handler = new TestHandler();
     }

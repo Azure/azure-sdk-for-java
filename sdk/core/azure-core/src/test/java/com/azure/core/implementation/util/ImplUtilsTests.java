@@ -3,13 +3,13 @@
 
 package com.azure.core.implementation.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ImplUtilsTests {
     @Test
     public void findFirstOfTypeEmptyArgs() {
-        Assert.assertNull(ImplUtils.findFirstOfType(null, Integer.class));
+        Assertions.assertNull(ImplUtils.findFirstOfType(null, Integer.class));
     }
 
     @Test
@@ -17,7 +17,7 @@ public class ImplUtilsTests {
         int expected = 1;
         Object[] args = { "string", expected };
         int actual = ImplUtils.findFirstOfType(args, Integer.class);
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -25,12 +25,12 @@ public class ImplUtilsTests {
         int expected = 1;
         Object[] args = { "string", expected, 10 };
         int actual = ImplUtils.findFirstOfType(args, Integer.class);
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void findFirstOfTypeWithNoneOfType() {
         Object[] args = { "string", "anotherString" };
-        Assert.assertNull(ImplUtils.findFirstOfType(args, Integer.class));
+        Assertions.assertNull(ImplUtils.findFirstOfType(args, Integer.class));
     }
 }

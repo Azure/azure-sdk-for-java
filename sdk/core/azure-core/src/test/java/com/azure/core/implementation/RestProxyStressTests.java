@@ -28,12 +28,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.implementation.http.ContentType;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
@@ -61,8 +56,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RestProxyStressTests {
     private static IOService service;
@@ -72,11 +67,11 @@ public class RestProxyStressTests {
     // the server is already running on that port.
     private static int port = 8080;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() throws IOException {
-        Assume.assumeTrue(
-                "Set the environment variable JAVA_SDK_STRESS_TESTS to \"true\" to run stress tests",
-                Boolean.parseBoolean(System.getenv("JAVA_SDK_STRESS_TESTS")));
+        Assumptions.assumeTrue(
+            Boolean.parseBoolean(System.getenv("JAVA_SDK_STRESS_TESTS")),
+            "Set the environment variable JAVA_SDK_STRESS_TESTS to \"true\" to run stress tests");
 
         String tempFolderPath = System.getenv("JAVA_STRESS_TEST_TEMP_PATH");
         if (tempFolderPath == null || tempFolderPath.isEmpty()) {
@@ -110,7 +105,7 @@ public class RestProxyStressTests {
     private static void launchTestServer() throws IOException {
         String portString = System.getenv("JAVA_SDK_TEST_PORT");
         // TODO: figure out why test server hangs only when spawned as a subprocess
-        Assume.assumeTrue("JAVA_SDK_TEST_PORT must specify the port of a running local server", portString != null);
+        Assumptions.assumeTrue(portString != null, "JAVA_SDK_TEST_PORT must specify the port of a running local server");
         if (portString != null) {
             port = Integer.parseInt(portString, 10);
             LoggerFactory.getLogger(RestProxyStressTests.class).warn("Attempting to connect to already-running test server on port {}", port);
@@ -126,7 +121,7 @@ public class RestProxyStressTests {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterClass() throws Exception {
         if (testServer != null) {
             testServer.destroy();
@@ -259,7 +254,7 @@ public class RestProxyStressTests {
     }
 
     @Test
-    @Ignore("Should only be run manually")
+    @Disabled("Should only be run manually")
     public void prepare100MFiles() throws Exception {
         create100MFiles(true);
     }
@@ -291,7 +286,7 @@ public class RestProxyStressTests {
 //                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", FluxUtil.byteBufStreamFromFile(fileStream), FILE_SIZE).map(response -> {
 //                        String base64MD5 = response.headers().value("Content-MD5");
 //                        byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
-//                        Assert.assertArrayEquals(md5, receivedMD5);
+//                        Assertions.assertArrayEquals(md5, receivedMD5);
 //                        return response;
 //                    });
 //                })
@@ -300,7 +295,7 @@ public class RestProxyStressTests {
 //        //
 //        long durationMilliseconds = Duration.between(uploadStart, Instant.now()).toMillis();
 //        LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
-        Assert.fail("Need to implement this test again");
+        Assertions.fail("Need to implement this test again");
     }
 
     @Test
@@ -342,7 +337,7 @@ public class RestProxyStressTests {
 //                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", stream, FILE_SIZE).map(response -> {
 //                        String base64MD5 = response.headers().value("Content-MD5");
 //                        byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
-//                        Assert.assertArrayEquals(md5, receivedMD5);
+//                        Assertions.assertArrayEquals(md5, receivedMD5);
 //                        return response;
 //                    });
 //                })
@@ -351,7 +346,7 @@ public class RestProxyStressTests {
 //        //
 //        long durationMilliseconds = Duration.between(uploadStart, Instant.now()).toMillis();
 //        LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
-        Assert.fail("Need to implement this test again");
+        Assertions.fail("Need to implement this test again");
     }
 
 

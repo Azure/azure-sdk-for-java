@@ -11,10 +11,10 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -53,7 +53,7 @@ public class ReactorSessionTest {
     @Mock
     private ReactorProvider reactorProvider;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
         when(reactor.selectable()).thenReturn(selectable);
@@ -72,7 +72,7 @@ public class ReactorSessionTest {
             Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         session = null;
         reactor = null;
@@ -88,9 +88,9 @@ public class ReactorSessionTest {
         // Assert
         verify(session, times(1)).open();
 
-        Assert.assertSame(session, reactorSession.session());
-        Assert.assertEquals(NAME, reactorSession.getSessionName());
-        Assert.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
+        Assertions.assertSame(session, reactorSession.session());
+        Assertions.assertEquals(NAME, reactorSession.getSessionName());
+        Assertions.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
     }
 
     @Test

@@ -3,24 +3,26 @@
 
 package com.azure.core.http.policy;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.Duration;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link FixedDelay}.
  */
 public class FixedDelayTest {
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullDelay() {
-        FixedDelay fixedDelay = new FixedDelay(3, null);
+        assertThrows(NullPointerException.class, () -> new FixedDelay(3, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNegativeMaxRetries() {
-        FixedDelay fixedDelay = new FixedDelay(-1, Duration.ofSeconds(1));
+        assertThrows(IllegalArgumentException.class, () -> new FixedDelay(-1, Duration.ofSeconds(1)));
     }
 
     @Test

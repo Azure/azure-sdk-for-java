@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -15,11 +15,11 @@ public class TypeUtilTests {
     public void testGetClasses() {
         Puppy puppy = new Puppy();
         List<Class<?>> classes = TypeUtil.getAllClasses(puppy.getClass());
-        Assert.assertEquals(4, classes.size());
-        Assert.assertTrue(classes.contains(Puppy.class));
-        Assert.assertTrue(classes.contains(Dog.class));
-        Assert.assertTrue(classes.contains(Pet.class));
-        Assert.assertTrue(classes.contains(Object.class));
+        Assertions.assertEquals(4, classes.size());
+        Assertions.assertTrue(classes.contains(Puppy.class));
+        Assertions.assertTrue(classes.contains(Dog.class));
+        Assertions.assertTrue(classes.contains(Pet.class));
+        Assertions.assertTrue(classes.contains(Object.class));
     }
 
     @Test
@@ -28,21 +28,21 @@ public class TypeUtilTests {
         Type[] dogArgs = TypeUtil.getTypeArguments(Puppy.class.getGenericSuperclass());
         Type[] petArgs = TypeUtil.getTypeArguments(Dog.class.getGenericSuperclass());
 
-        Assert.assertEquals(0, puppyArgs.length);
-        Assert.assertEquals(1, dogArgs.length);
-        Assert.assertEquals(2, petArgs.length);
+        Assertions.assertEquals(0, puppyArgs.length);
+        Assertions.assertEquals(1, dogArgs.length);
+        Assertions.assertEquals(2, petArgs.length);
     }
 
     @Test
     public void testGetTypeArgument() {
         Type dogArgs = TypeUtil.getTypeArgument(Puppy.class.getGenericSuperclass());
-        Assert.assertEquals(Kid.class, dogArgs);
+        Assertions.assertEquals(Kid.class, dogArgs);
     }
 
     @Test
     public void testGetRawClass() {
         Type petType = Puppy.class.getSuperclass().getGenericSuperclass();
-        Assert.assertEquals(Pet.class, TypeUtil.getRawClass(petType));
+        Assertions.assertEquals(Pet.class, TypeUtil.getRawClass(petType));
     }
 
     @Test
@@ -51,9 +51,9 @@ public class TypeUtilTests {
         Type petType = TypeUtil.getSuperType(dogType);
 
         Type[] arguments = TypeUtil.getTypeArguments(petType);
-        Assert.assertEquals(2, arguments.length);
-        Assert.assertEquals(Kid.class, arguments[0]);
-        Assert.assertEquals(String.class, arguments[1]);
+        Assertions.assertEquals(2, arguments.length);
+        Assertions.assertEquals(Kid.class, arguments[0]);
+        Assertions.assertEquals(String.class, arguments[1]);
     }
 
     @Test
@@ -61,9 +61,9 @@ public class TypeUtilTests {
         Type petType = TypeUtil.getSuperType(Puppy.class, Pet.class);
 
         Type[] arguments = TypeUtil.getTypeArguments(petType);
-        Assert.assertEquals(2, arguments.length);
-        Assert.assertEquals(Kid.class, arguments[0]);
-        Assert.assertEquals(String.class, arguments[1]);
+        Assertions.assertEquals(2, arguments.length);
+        Assertions.assertEquals(Kid.class, arguments[0]);
+        Assertions.assertEquals(String.class, arguments[1]);
     }
 
     @Test
@@ -71,12 +71,12 @@ public class TypeUtilTests {
         Type dogType = TypeUtil.getSuperType(Puppy.class);
         Type petType = TypeUtil.getSuperType(dogType);
 
-        Assert.assertTrue(TypeUtil.isTypeOrSubTypeOf(Puppy.class, dogType));
-        Assert.assertTrue(TypeUtil.isTypeOrSubTypeOf(Puppy.class, Puppy.class));
-        Assert.assertTrue(TypeUtil.isTypeOrSubTypeOf(Puppy.class, petType));
-        Assert.assertTrue(TypeUtil.isTypeOrSubTypeOf(dogType, petType));
-        Assert.assertTrue(TypeUtil.isTypeOrSubTypeOf(dogType, dogType));
-        Assert.assertTrue(TypeUtil.isTypeOrSubTypeOf(petType, petType));
+        Assertions.assertTrue(TypeUtil.isTypeOrSubTypeOf(Puppy.class, dogType));
+        Assertions.assertTrue(TypeUtil.isTypeOrSubTypeOf(Puppy.class, Puppy.class));
+        Assertions.assertTrue(TypeUtil.isTypeOrSubTypeOf(Puppy.class, petType));
+        Assertions.assertTrue(TypeUtil.isTypeOrSubTypeOf(dogType, petType));
+        Assertions.assertTrue(TypeUtil.isTypeOrSubTypeOf(dogType, dogType));
+        Assertions.assertTrue(TypeUtil.isTypeOrSubTypeOf(petType, petType));
     }
 
     @Test
@@ -85,8 +85,8 @@ public class TypeUtilTests {
         Type petType = TypeUtil.getSuperType(dogType);
 
         Type createdType = TypeUtil.createParameterizedType(Pet.class, Kid.class, String.class);
-        Assert.assertEquals(TypeUtil.getRawClass(petType), TypeUtil.getRawClass(createdType));
-        Assert.assertArrayEquals(TypeUtil.getTypeArguments(petType), TypeUtil.getTypeArguments(createdType));
+        Assertions.assertEquals(TypeUtil.getRawClass(petType), TypeUtil.getRawClass(createdType));
+        Assertions.assertArrayEquals(TypeUtil.getTypeArguments(petType), TypeUtil.getTypeArguments(createdType));
     }
 
     private abstract static class Pet<T extends Human, V> {

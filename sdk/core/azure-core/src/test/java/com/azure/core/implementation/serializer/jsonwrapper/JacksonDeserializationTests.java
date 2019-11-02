@@ -6,9 +6,9 @@ package com.azure.core.implementation.serializer.jsonwrapper;
 import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
 import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,11 +19,11 @@ import java.util.Map;
 
 public class JacksonDeserializationTests extends JsonDeserializationTests {
 
-    @Before
+    @BeforeEach
     public void initialize() throws Exception {
         // createDeserializer
         jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        Assert.assertNotNull(jsonApi);
+        Assertions.assertNotNull(jsonApi);
         jsonApi.configure(Config.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
@@ -35,7 +35,7 @@ public class JacksonDeserializationTests extends JsonDeserializationTests {
 
         jsonApi.configureTimezone();
         Entry entry = jsonApi.readString(json, Entry.class);
-        Assert.assertEquals(date, entry.date());
+        Assertions.assertEquals(date, entry.date());
     }
 
     @Test
@@ -48,6 +48,6 @@ public class JacksonDeserializationTests extends JsonDeserializationTests {
         expected.setIntValue(1);
         expected.setStringValue("one");
         Foo actual = jsonApi.convertObjectToType(document, Foo.class);
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 }

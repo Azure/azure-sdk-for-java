@@ -10,11 +10,11 @@ import com.azure.core.http.HttpResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -31,6 +31,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -41,7 +42,7 @@ public class OkHttpClientTests {
 
     private static WireMockServer server;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
         server.stubFor(
@@ -54,7 +55,7 @@ public class OkHttpClientTests {
         server.start();
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterClass() {
         if (server != null) {
             server.shutdown();
@@ -72,7 +73,7 @@ public class OkHttpClientTests {
     }
 
     @Test
-    @Ignore("This tests behaviour of reactor netty's ByteBufFlux, not applicable for OkHttp")
+    @Disabled("This tests behaviour of reactor netty's ByteBufFlux, not applicable for OkHttp")
     public void testMultipleSubscriptionsEmitsError() {
         HttpResponse response = getResponse("/short");
         // Subscription:1
@@ -90,10 +91,10 @@ public class OkHttpClientTests {
         StepVerifier.create(response.getBodyAsString())
                 .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
                 .verifyComplete();
-        Assert.assertEquals(500, response.getStatusCode());
+        Assertions.assertEquals(500, response.getStatusCode());
     }
 
-    @Ignore("Not working accurately at present")
+    @Disabled("Not working accurately at present")
     @Test
     public void testFlowableBackpressure() {
         HttpResponse response = getResponse("/long");
@@ -141,55 +142,57 @@ public class OkHttpClientTests {
                 .verify();
     }
 
-    @Test(timeout = 5000)
+    @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable()
             throws IOException, InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<Socket> sock = new AtomicReference<>();
-        ServerSocket ss = new ServerSocket(0);
-        try {
-            Mono.fromCallable(() -> {
-                latch.countDown();
-                Socket socket = ss.accept();
-                sock.set(socket);
-                // give the client time to get request across
-                Thread.sleep(500);
-                // respond but don't send the complete response
-                byte[] bytes = new byte[1024];
-                int n = socket.getInputStream().read(bytes);
-                System.out.println(new String(bytes, 0, n, StandardCharsets.UTF_8));
-                String response = "HTTP/1.1 200 OK\r\n" //
+        Assertions.assertTimeout(Duration.ofMillis(5000), () -> {
+            CountDownLatch latch = new CountDownLatch(1);
+            AtomicReference<Socket> sock = new AtomicReference<>();
+            ServerSocket ss = new ServerSocket(0);
+            try {
+                Mono.fromCallable(() -> {
+                    latch.countDown();
+                    Socket socket = ss.accept();
+                    sock.set(socket);
+                    // give the client time to get request across
+                    Thread.sleep(500);
+                    // respond but don't send the complete response
+                    byte[] bytes = new byte[1024];
+                    int n = socket.getInputStream().read(bytes);
+                    System.out.println(new String(bytes, 0, n, StandardCharsets.UTF_8));
+                    String response = "HTTP/1.1 200 OK\r\n" //
                         + "Content-Type: text/plain\r\n" //
                         + "Content-Length: 10\r\n" //
                         + "\r\n" //
                         + "zi";
-                OutputStream out = socket.getOutputStream();
-                out.write(response.getBytes());
-                out.flush();
-                // kill the socket with HTTP response body incomplete
-                socket.close();
-                return 1;
-            })
-                .subscribeOn(Schedulers.elastic())
-                .subscribe();
-            //
-            latch.await();
-            HttpClient client = HttpClient.createDefault();
-            HttpRequest request = new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost:" + ss.getLocalPort() + "/get"));
-            HttpResponse response = client.send(request).block();
-            Assert.assertEquals(200, response.getStatusCode());
-            System.out.println("reading body");
-            //
-            StepVerifier.create(response.getBodyAsByteArray())
-                // .awaitDone(20, TimeUnit.SECONDS)
-                .verifyError(IOException.class);
-        } finally {
-            ss.close();
-        }
+                    OutputStream out = socket.getOutputStream();
+                    out.write(response.getBytes());
+                    out.flush();
+                    // kill the socket with HTTP response body incomplete
+                    socket.close();
+                    return 1;
+                })
+                    .subscribeOn(Schedulers.elastic())
+                    .subscribe();
+                //
+                latch.await();
+                HttpClient client = HttpClient.createDefault();
+                HttpRequest request = new HttpRequest(HttpMethod.GET,
+                    new URL("http://localhost:" + ss.getLocalPort() + "/get"));
+                HttpResponse response = client.send(request).block();
+                Assertions.assertEquals(200, response.getStatusCode());
+                System.out.println("reading body");
+                //
+                StepVerifier.create(response.getBodyAsByteArray())
+                    // .awaitDone(20, TimeUnit.SECONDS)
+                    .verifyError(IOException.class);
+            } finally {
+                ss.close();
+            }
+        });
     }
 
-    @Ignore("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
+    @Disabled("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
         long t = System.currentTimeMillis();
@@ -207,8 +210,8 @@ public class OkHttpClientTests {
                             .doOnNext(bb -> md.update(bb))
                             .map(bb -> new NumberedByteBuffer(n, bb))
 //                          .doOnComplete(() -> System.out.println("completed " + n))
-                            .doOnComplete(() -> Assert.assertArrayEquals("wrong digest!", expectedDigest,
-                                    md.digest()));
+                            .doOnComplete(() -> Assertions.assertArrayEquals(expectedDigest,
+                                    md.digest(), "wrong digest!"));
                 }))
                 .sequential()
                 // enable the doOnNext call to see request numbers and thread names
@@ -286,7 +289,7 @@ public class OkHttpClientTests {
         HttpResponse response = doRequest(client, path);
         String s = new String(response.getBodyAsByteArray().block(),
                 StandardCharsets.UTF_8);
-        Assert.assertEquals(expectedBody, s);
+        Assertions.assertEquals(expectedBody, s);
     }
 
     private HttpResponse doRequest(HttpClient client, String path) {

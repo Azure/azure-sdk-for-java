@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MessageConstantTest {
 
@@ -16,7 +16,7 @@ public class MessageConstantTest {
         String header = "absolute-expiry-time";
         MessageConstant actual = MessageConstant.fromString(header);
 
-        Assert.assertEquals(MessageConstant.ABSOLUTE_EXPIRY_TIME, actual);
+        Assertions.assertEquals(MessageConstant.ABSOLUTE_EXPIRY_TIME, actual);
     }
 
     /**
@@ -27,6 +27,6 @@ public class MessageConstantTest {
         String expected = "x-opt-enqueued-time";
         String actual = MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue();
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 }

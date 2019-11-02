@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AmqpShutdownSignalTest {
 
@@ -19,11 +19,11 @@ public class AmqpShutdownSignalTest {
 
         AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(isTransient, isInitiatedByClient, message);
 
-        Assert.assertTrue(shutdownSignal.isTransient());
-        Assert.assertTrue(shutdownSignal.isInitiatedByClient());
+        Assertions.assertTrue(shutdownSignal.isTransient());
+        Assertions.assertTrue(shutdownSignal.isInitiatedByClient());
 
         String contents = shutdownSignal.toString();
-        Assert.assertNotNull(contents);
-        Assert.assertTrue(contents.contains(message));
+        Assertions.assertNotNull(contents);
+        Assertions.assertTrue(contents.contains(message));
     }
 }

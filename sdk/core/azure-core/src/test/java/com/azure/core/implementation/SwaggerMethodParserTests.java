@@ -12,13 +12,14 @@ import com.azure.core.implementation.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SwaggerMethodParserTests {
 
@@ -26,12 +27,13 @@ public class SwaggerMethodParserTests {
         void testMethod1();
     }
 
-    @Test(expected = MissingRequiredAnnotationException.class)
+    @Test
     public void withNoAnnotations() {
-        final Method testMethod1 = TestInterface1.class.getDeclaredMethods()[0];
-        assertEquals("testMethod1", testMethod1.getName());
-
-        new SwaggerMethodParser(testMethod1, "https://raw.host.com");
+        assertThrows(MissingRequiredAnnotationException.class, () -> {
+            final Method testMethod1 = TestInterface1.class.getDeclaredMethods()[0];
+            assertEquals("testMethod1", testMethod1.getName());
+            new SwaggerMethodParser(testMethod1, "https://raw.host.com");
+        });
     }
 
     interface TestInterface2 {

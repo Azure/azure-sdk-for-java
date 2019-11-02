@@ -8,13 +8,14 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class SwaggerInterfaceParserTests {
 
@@ -31,14 +32,14 @@ public class SwaggerInterfaceParserTests {
     interface TestInterface3 {
     }
 
-    @Test(expected = MissingRequiredAnnotationException.class)
+    @Test
     public void hostWithNoHostAnnotation() {
-        new SwaggerInterfaceParser(TestInterface1.class, null);
+        assertThrows(MissingRequiredAnnotationException.class, () -> new SwaggerInterfaceParser(TestInterface1.class, null));
     }
 
-    @Test(expected = MissingRequiredAnnotationException.class)
+    @Test
     public void hostWithNoServiceNameAnnotation() {
-        new SwaggerInterfaceParser(TestInterface2.class, null);
+        assertThrows(MissingRequiredAnnotationException.class, () -> new SwaggerInterfaceParser(TestInterface2.class, null));
     }
 
     @Test

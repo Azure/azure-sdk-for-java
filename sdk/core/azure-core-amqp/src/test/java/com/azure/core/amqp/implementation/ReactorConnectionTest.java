@@ -23,10 +23,10 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -76,7 +76,7 @@ public class ReactorConnectionTest {
     private ReactorProvider reactorProvider;
     private ConnectionHandler connectionHandler;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
 
@@ -101,7 +101,7 @@ public class ReactorConnectionTest {
             tokenManager, messageSerializer);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
@@ -117,24 +117,24 @@ public class ReactorConnectionTest {
         final Map<String, Object> expectedProperties = new HashMap<>(connectionHandler.getConnectionProperties());
 
         // Assert
-        Assert.assertTrue(connection instanceof ReactorConnection);
-        Assert.assertEquals(CONNECTION_ID, connection.getId());
-        Assert.assertEquals(HOSTNAME, connection.getHostname());
+        Assertions.assertTrue(connection instanceof ReactorConnection);
+        Assertions.assertEquals(CONNECTION_ID, connection.getId());
+        Assertions.assertEquals(HOSTNAME, connection.getHostname());
 
-        Assert.assertEquals(connectionHandler.getMaxFrameSize(), connection.getMaxFrameSize());
+        Assertions.assertEquals(connectionHandler.getMaxFrameSize(), connection.getMaxFrameSize());
 
-        Assert.assertNotNull(connection.getConnectionProperties());
-        Assert.assertEquals(expectedProperties.size(), connection.getConnectionProperties().size());
+        Assertions.assertNotNull(connection.getConnectionProperties());
+        Assertions.assertEquals(expectedProperties.size(), connection.getConnectionProperties().size());
 
         expectedProperties.forEach((key, value) -> {
             final Object removed = connection.getConnectionProperties().remove(key);
-            Assert.assertNotNull(removed);
+            Assertions.assertNotNull(removed);
 
             final String expected = String.valueOf(value);
             final String actual = String.valueOf(removed);
-            Assert.assertEquals(expected, actual);
+            Assertions.assertEquals(expected, actual);
         });
-        Assert.assertTrue(connection.getConnectionProperties().isEmpty());
+        Assertions.assertTrue(connection.getConnectionProperties().isEmpty());
     }
 
     /**
@@ -152,19 +152,19 @@ public class ReactorConnectionTest {
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .assertNext(s -> {
-                Assert.assertNotNull(s);
-                Assert.assertEquals(SESSION_NAME, s.getSessionName());
-                Assert.assertTrue(s instanceof ReactorSession);
-                Assert.assertSame(session, ((ReactorSession) s).session());
+                Assertions.assertNotNull(s);
+                Assertions.assertEquals(SESSION_NAME, s.getSessionName());
+                Assertions.assertTrue(s instanceof ReactorSession);
+                Assertions.assertSame(session, ((ReactorSession) s).session());
             }).verifyComplete();
 
         // Assert that the same instance is obtained and we don't get a new session with the same name.
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .assertNext(s -> {
-                Assert.assertNotNull(s);
-                Assert.assertEquals(SESSION_NAME, s.getSessionName());
-                Assert.assertTrue(s instanceof ReactorSession);
-                Assert.assertSame(session, ((ReactorSession) s).session());
+                Assertions.assertNotNull(s);
+                Assertions.assertEquals(SESSION_NAME, s.getSessionName());
+                Assertions.assertTrue(s instanceof ReactorSession);
+                Assertions.assertSame(session, ((ReactorSession) s).session());
             }).verifyComplete();
 
         verify(record, Mockito.times(1)).set(Handler.class, Handler.class, sessionHandler);
@@ -222,7 +222,7 @@ public class ReactorConnectionTest {
                 try {
                     connection.close();
                 } catch (IOException e) {
-                    Assert.fail("Should not have thrown an error.");
+                    Assertions.fail("Should not have thrown an error.");
                 }
             })
             .verifyComplete();
@@ -251,7 +251,7 @@ public class ReactorConnectionTest {
                 try {
                     connection.close();
                 } catch (IOException e) {
-                    Assert.fail("Should not have thrown an error.");
+                    Assertions.fail("Should not have thrown an error.");
                 }
             })
             .verifyComplete();
@@ -271,7 +271,7 @@ public class ReactorConnectionTest {
         // Act and Assert
         StepVerifier.create(this.connection.getCBSNode())
             .assertNext(node -> {
-                Assert.assertTrue(node instanceof CBSChannel);
+                Assertions.assertTrue(node instanceof CBSChannel);
             }).verifyComplete();
     }
 
@@ -324,7 +324,7 @@ public class ReactorConnectionTest {
 
         StepVerifier.create(connection.getCBSNode())
             .assertNext(node -> {
-                Assert.assertTrue(node instanceof CBSChannel);
+                Assertions.assertTrue(node instanceof CBSChannel);
             }).verifyComplete();
 
         verify(transport, times(1)).unbind();

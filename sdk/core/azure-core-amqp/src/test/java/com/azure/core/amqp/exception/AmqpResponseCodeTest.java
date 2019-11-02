@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AmqpResponseCodeTest {
     /**
@@ -17,7 +17,7 @@ public class AmqpResponseCodeTest {
 
         AmqpResponseCode actual = AmqpResponseCode.fromValue(forbidden);
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     /**
@@ -28,6 +28,6 @@ public class AmqpResponseCodeTest {
         int expected = 404;
         AmqpResponseCode forbidden = AmqpResponseCode.NOT_FOUND;
 
-        Assert.assertEquals(expected, forbidden.getValue());
+        Assertions.assertEquals(expected, forbidden.getValue());
     }
 }
