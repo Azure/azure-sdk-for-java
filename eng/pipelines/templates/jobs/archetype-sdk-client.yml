@@ -61,9 +61,14 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
       - script: |
-          pip install markdown2
-        displayName: 'pip install markdown2'
+          pip install markdown2 BeautifulSoup4
+        displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - template: ../steps/cache-maven-repository.yml
 

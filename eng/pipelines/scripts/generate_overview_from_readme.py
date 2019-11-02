@@ -15,11 +15,11 @@
 # will be written to overview file. If there is a readme, its contents will be added after that.
 
 import argparse
+from bs4 import BeautifulSoup
 import markdown2
 import os.path
 from io import open
 import sys
-
 
 def generate_overview(readme_file, version):
 
@@ -42,17 +42,22 @@ def generate_overview(readme_file, version):
         # code blocks within the readme so they'll displaye correctly in the html
         html_readme_content = markdown2.markdown(readme_content, extras=["fenced-code-blocks"])
 
+        # Due to javadoc's iFrames the links need to target new tabs otherwise hilarity ensues
+        soup = BeautifulSoup(html_readme_content, "html.parser")
+        for a in soup.findAll('a'):
+            a['target'] = '_blank'
+
     # The html_readme_content needs to be encapsulated inside of <body> tags in order
     # for the content to correctly be added to the landing page
     with open(html_overview_file, 'w', encoding='utf-8') as f:
         # The literal strings have to be unicode otherwise the write will fail.
         # This will allow this code to work for python 2 and 3
-        f.write(u'<body>')
-        f.write(u'Current version is {}, click <a href="https://azure.github.io/azure-sdk-for-java">here</a> for the index'.format(version))
-        f.write(u'<br/>')
+        f.write('<body>')
+        f.write('Current version is {}, click <a href="https://azure.github.io/azure-sdk-for-java" target="new">here</a> for the index'.format(version))
+        f.write('<br/>')
         if (readme_exists):
-            f.write(html_readme_content)
-        f.write(u'</body>')
+            f.write(str(soup))
+        f.write('</body>')
 
 
 def main():
