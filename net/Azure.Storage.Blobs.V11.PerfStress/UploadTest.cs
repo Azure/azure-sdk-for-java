@@ -6,30 +6,22 @@ using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class UploadTest : ContainerTest<SizeOptions>
+    public class UploadTest : RandomBlobTest<SizeOptions>
     {
-        private readonly CloudBlockBlob _cloudBlockBlob;
-
         public UploadTest(SizeOptions options) : base(options)
-        {
-            var blobName = "uploadv11test-" + Guid.NewGuid();
-            _cloudBlockBlob = CloudBlobContainer.GetBlockBlobReference(blobName);
+        { 
         }
 
         public override void Run(CancellationToken cancellationToken)
         {
             using var stream = RandomStream.Create(Options.Size);
-
-            // No need to delete file in Cleanup(), since ContainerTest.GlobalCleanup() deletes the whole container
-            _cloudBlockBlob.UploadFromStream(stream);
+            CloudBlockBlob.UploadFromStream(stream);
         }
 
         public override async Task RunAsync(CancellationToken cancellationToken)
         {
             using var stream = RandomStream.Create(Options.Size);
-
-            // No need to delete file in Cleanup(), since ContainerTest.GlobalCleanup() deletes the whole container
-            await _cloudBlockBlob.UploadFromStreamAsync(stream, cancellationToken);
+            await CloudBlockBlob.UploadFromStreamAsync(stream, cancellationToken);
         }
     }
 }
