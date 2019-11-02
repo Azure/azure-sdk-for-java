@@ -3,6 +3,7 @@
 ### 3.3.2
 - ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
 - Port consistency policy bug fix (see https://github.com/Azure/azure-cosmosdb-java/pull/196)
+- Port test fixes (see https://github.com/Azure/azure-cosmosdb-java/pull/196)
 
 ### 3.3.1
 - Added @JsonIgnore on getLogger in JsonSerializable
