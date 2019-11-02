@@ -18,10 +18,10 @@ namespace Azure.Storage.Blobs.PerfStress
             BlockBlobClient.Upload(stream, cancellationToken: cancellationToken);
         }
 
-        public override Task RunAsync(CancellationToken cancellationToken)
+        public override async Task RunAsync(CancellationToken cancellationToken)
         {
             using var stream = RandomStream.Create(Options.Size);
-            return BlockBlobClient.UploadAsync(stream, cancellationToken: cancellationToken);
+            await BlockBlobClient.UploadAsync(stream, cancellationToken: cancellationToken);
         }
     }
 }
