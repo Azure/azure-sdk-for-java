@@ -441,7 +441,7 @@ public final class RntbdClientChannelPool extends SimpleChannelPool {
         final RntbdRequestManager requestManager = channel.pipeline().get(RntbdRequestManager.class);
 
         if (requestManager == null) {
-            RntbdReporter.reportIssueUnless(logger, !channel.isActive(), channel, "active with no request manager");
+            reportIssueUnless(logger, !channel.isActive(), channel, "active with no request manager");
             return true; // inactive
         }
 
@@ -562,7 +562,7 @@ public final class RntbdClientChannelPool extends SimpleChannelPool {
 
                             if (completed.isSuccess()) {
 
-                                RntbdReporter.reportIssueUnless(logger, this.acquired && requestManager.hasRntbdContext(),
+                                reportIssueUnless(logger, this.acquired && requestManager.hasRntbdContext(),
                                     channel,"acquired: {}, rntbdContext: {}", this.acquired,
                                     requestManager.rntbdContext());
 

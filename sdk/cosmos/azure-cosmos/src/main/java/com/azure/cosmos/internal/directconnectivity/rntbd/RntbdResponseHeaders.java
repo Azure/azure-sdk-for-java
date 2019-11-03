@@ -26,6 +26,7 @@ import static com.azure.cosmos.internal.directconnectivity.WFConstants.BackendHe
 import static com.azure.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdIndexingDirective;
 import static com.azure.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
 
+@SuppressWarnings("UnstableApiUsage")
 @JsonFilter("RntbdToken")
 class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
@@ -223,7 +224,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     static RntbdResponseHeaders decode(final ByteBuf in) {
         final RntbdResponseHeaders headers = new RntbdResponseHeaders(in);
-        decode(headers);
+        RntbdTokenStream.decode(headers);
         return headers;
     }
 

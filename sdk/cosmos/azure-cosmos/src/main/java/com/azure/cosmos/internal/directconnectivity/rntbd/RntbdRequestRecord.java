@@ -6,6 +6,7 @@ package com.azure.cosmos.internal.directconnectivity.rntbd;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.RequestTimeoutException;
 import com.azure.cosmos.internal.directconnectivity.StoreResponse;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.instrument.Timer;
 import io.netty.util.Timeout;
 import io.netty.util.TimerTask;
@@ -14,19 +15,25 @@ import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
+    private static final AtomicReferenceFieldUpdater<RntbdRequestRecord, State>
+        stateUpdater = AtomicReferenceFieldUpdater.newUpdater(RntbdRequestRecord.class, State.class,"state");
+
     private final RntbdRequestArgs args;
     private final RntbdRequestTimer timer;
+    private volatile State state;
 
     public RntbdRequestRecord(final RntbdRequestArgs args, final RntbdRequestTimer timer) {
 
         checkNotNull(args, "args");
         checkNotNull(timer, "timer");
 
+        this.state = State.CREATED;
         this.args = args;
         this.timer = timer;
     }
@@ -37,6 +44,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         return this.args.activityId();
     }
 
+    @JsonProperty
     public RntbdRequestArgs args() {
         return this.args;
     }
@@ -45,8 +53,33 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         return this.args.creationTime();
     }
 
+    public boolean expire() {
+        final RequestTimeoutException error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
+        BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
+        return this.completeExceptionally(error);
+    }
+
     public Duration lifetime() {
         return this.args.lifetime();
+    }
+
+    public Timeout newTimeout(final TimerTask task) {
+        return this.timer.newTimeout(task);
+    }
+
+    @JsonProperty
+    public State state() {
+        return stateUpdater.get(this);
+    }
+
+    RntbdRequestRecord state(State value) {
+        stateUpdater.set(this, value);
+        return this;
+    }
+
+    @JsonProperty
+    public long timeoutIntervalInMillis() {
+        return this.timer.getRequestTimeout(TimeUnit.MILLISECONDS);
     }
 
     public long transportRequestId() {
@@ -57,28 +90,21 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
     // region Methods
 
-    public boolean expire() {
-
-        final long timeoutInterval = this.timer.getRequestTimeout(TimeUnit.MILLISECONDS);
-        final String message = String.format("Request timeout interval (%,d ms) elapsed", timeoutInterval);
-        final RequestTimeoutException error = new RequestTimeoutException(message, this.args.physicalAddress());
-
-        BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
-
-        return this.completeExceptionally(error);
-    }
-
-    public Timeout newTimeout(final TimerTask task) {
-        return this.timer.newTimeout(task);
-    }
-
     public long stop(Timer requests, Timer responses) {
         return this.args.stop(requests, responses);
     }
 
     @Override
     public String toString() {
-        return RntbdObjectMapper.toString(this.args);
+        return RntbdObjectMapper.toString(this);
+    }
+
+    // endregion
+
+    // region Types
+
+    enum State {
+        CREATED, QUEUED, SENT, UNSENT
     }
 
     // endregion

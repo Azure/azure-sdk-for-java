@@ -61,7 +61,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
             // do a point read
             // or single partition query
             // or cross partition query to find the write.
-            int j = Math.toIntExact(Math.floorMod(i, 3));
+            int j = Math.toIntExact(Math.floorMod(i, 2));
             switch (j) {
                 case 0:
                     // write a random document to cosmodb and update the cache.
@@ -95,7 +95,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
             // a point read for a in memory cached document
             // or single partition query for a in memory cached document
             // or cross partition query for a in memory cached document
-            int j = Math.toIntExact(Math.floorMod(i, 4));
+            int j = Math.toIntExact(Math.floorMod(i, 3));
             switch (j) {
                 case 0:
                     // write a random document to cosmosdb and update the cache
@@ -124,8 +124,12 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         }
 
         concurrencyControlSemaphore.acquire();
-
-        obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
+        try {
+            obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
+        } catch (Throwable error) {
+            concurrencyControlSemaphore.release();
+            logger.error("subscription failed due to ", error);
+        }
     }
 
     private void populateCache() {

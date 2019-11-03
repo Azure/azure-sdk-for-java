@@ -65,7 +65,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
     // region Constructors
 
-    public RntbdClientChannelHealthChecker(final RntbdEndpoint.Config config) {
+    public RntbdClientChannelHealthChecker(final Config config) {
 
         checkNotNull(config, "config: null");
 
@@ -102,7 +102,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         final Promise<Boolean> promise = channel.eventLoop().newPromise();
 
         if (requestManager == null) {
-            RntbdReporter.reportIssueUnless(logger, !channel.isActive(), channel, "active with no request manager");
+            reportIssueUnless(logger, !channel.isActive(), channel, "active with no request manager");
             return promise.setSuccess(Boolean.FALSE);
         }
 

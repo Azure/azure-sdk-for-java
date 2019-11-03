@@ -3,14 +3,14 @@
 
 package com.azure.cosmos.internal.directconnectivity;
 
+import com.azure.cosmos.internal.Configs;
+import com.azure.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.cosmos.internal.UserAgentContainer;
 import com.azure.cosmos.internal.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.internal.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.internal.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.internal.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.internal.directconnectivity.rntbd.RntbdServiceEndpoint;
-import com.azure.cosmos.internal.Configs;
-import com.azure.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.cosmos.internal.UserAgentContainer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -26,6 +26,7 @@ import reactor.core.publisher.SignalType;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -70,31 +71,11 @@ public final class RntbdTransportClient extends TransportClient {
 
     // endregion
 
-    // region Accessors
-
-    public int endpointCount() {
-        return this.endpointProvider.count();
-    }
-
-    public int endpointEvictionCount() {
-        return this.endpointProvider.evictions();
-    }
-
-    public long id() {
-        return this.id;
-    }
+    // region Methods
 
     public boolean isClosed() {
         return this.closed.get();
     }
-
-    public Tag tag() {
-        return this.tag;
-    }
-
-    // endregion
-
-    // region Methods
 
     @Override
     public void close() {
@@ -109,24 +90,42 @@ public final class RntbdTransportClient extends TransportClient {
         logger.debug("\n  [{}]\n  already closed", this);
     }
 
-    @Override
-    public Mono<StoreResponse> invokeStoreAsync(final URI physicalAddress, final RxDocumentServiceRequest request) {
+    public int endpointCount() {
+        return this.endpointProvider.count();
+    }
 
-        checkNotNull(physicalAddress, "physicalAddress");
-        checkNotNull(request, "request");
+    public int endpointEvictionCount() {
+        return this.endpointProvider.evictions();
+    }
+
+    public long id() {
+        return this.id;
+    }
+
+    @Override
+    public Mono<StoreResponse> invokeStoreAsync(final URI address, final RxDocumentServiceRequest request) {
+
+        checkNotNull(address, "expected non-null address");
+        checkNotNull(request, "expected non-null request");
         this.throwIfClosed();
 
-        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, physicalAddress);
+        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
         requestArgs.traceOperation(logger, null, "invokeStoreAsync");
 
-        final RntbdEndpoint endpoint = this.endpointProvider.get(physicalAddress);
-        final RntbdRequestRecord requestRecord = endpoint.request(requestArgs);
+        final RntbdEndpoint endpoint = this.endpointProvider.get(address);
+        final RntbdRequestRecord record = endpoint.request(requestArgs);
 
-        return Mono.fromFuture(requestRecord).doFinally(signal -> {
+        return Mono.fromFuture(record).doFinally(signal -> {
             if (signal == SignalType.CANCEL) {
-                requestRecord.cancel(false);
+                boolean cancelled = record.cancel(false);
+                logger.debug("{cancelled: {}, endpoint: {}, record: {}}", cancelled, endpoint, record);
+                logger.trace("{}", cancelled);
             }
         });
+    }
+
+    public Tag tag() {
+        return this.tag;
     }
 
     @Override
@@ -134,49 +133,21 @@ public final class RntbdTransportClient extends TransportClient {
         return RntbdObjectMapper.toString(this);
     }
 
-    private void throwIfClosed() {
-        checkState(!this.closed.get(), "%s is closed", this);
-    }
-
-    // endregion
-
-    // region Privates
-
     private static Tag tag(long id) {
         return Tag.of(TAG_NAME, Strings.padStart(Long.toHexString(id).toUpperCase(), 4, '0'));
     }
 
     // endregion
 
-    // region Types
+    // region Privates
 
-    static final class JsonSerializer extends StdSerializer<RntbdTransportClient> {
-
-        public JsonSerializer() {
-            super(RntbdTransportClient.class);
-        }
-
-        @Override
-        public void serialize(RntbdTransportClient value, JsonGenerator generator, SerializerProvider provider) throws IOException {
-
-            generator.writeStartObject();
-            generator.writeNumberField("id", value.id());
-            generator.writeBooleanField("isClosed", value.isClosed());
-            generator.writeObjectField("configuration", value.endpointProvider.config());
-            generator.writeArrayFieldStart("serviceEndpoints");
-
-            value.endpointProvider.list().forEach(endpoint -> {
-                try {
-                    generator.writeObject(endpoint);
-                } catch (IOException error) {
-                    logger.error("failed to serialize instance {} due to:", value.id(), error);
-                }
-            });
-
-            generator.writeEndArray();
-            generator.writeEndObject();
-        }
+    private void throwIfClosed() {
+        checkState(!this.closed.get(), "%s is closed", this);
     }
+
+    // endregion
+
+    // region Types
 
     public static final class Options {
 
@@ -192,6 +163,7 @@ public final class RntbdTransportClient extends TransportClient {
         private final int maxRequestsPerChannel;
         private final int partitionCount;
         private final Duration receiveHangDetectionTime;
+        private final Duration requestExpiryInterval;
         private final Duration requestTimeout;
         private final Duration sendHangDetectionTime;
         private final Duration shutdownTimeout;
@@ -212,6 +184,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
             this.partitionCount = builder.partitionCount;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
+            this.requestExpiryInterval = builder.requestExpiryInterval;
             this.requestTimeout = builder.requestTimeout;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
             this.shutdownTimeout = builder.shutdownTimeout;
@@ -262,6 +235,10 @@ public final class RntbdTransportClient extends TransportClient {
             return this.receiveHangDetectionTime;
         }
 
+        public Duration requestExpiryInterval() {
+            return this.requestExpiryInterval;
+        }
+
         public Duration requestTimeout() {
             return this.requestTimeout;
         }
@@ -274,17 +251,17 @@ public final class RntbdTransportClient extends TransportClient {
             return this.shutdownTimeout;
         }
 
-        public UserAgentContainer userAgent() {
-            return this.userAgent;
+        @Override
+        public String toString() {
+            return RntbdObjectMapper.toJson(this);
         }
 
         // endregion
 
         // region Methods
 
-        @Override
-        public String toString() {
-            return RntbdObjectMapper.toJson(this);
+        public UserAgentContainer userAgent() {
+            return this.userAgent;
         }
 
         // endregion
@@ -297,6 +274,7 @@ public final class RntbdTransportClient extends TransportClient {
 
             private static final UserAgentContainer DEFAULT_USER_AGENT_CONTAINER = new UserAgentContainer();
             private static final Duration FIFTEEN_SECONDS = Duration.ofSeconds(15L);
+            private static final Duration FIVE_SECONDS =Duration.ofSeconds(5L);
             private static final Duration SEVENTY_SECONDS = Duration.ofSeconds(70L);
             private static final Duration SIXTY_FIVE_SECONDS = Duration.ofSeconds(65L);
             private static final Duration TEN_SECONDS = Duration.ofSeconds(10L);
@@ -311,6 +289,7 @@ public final class RntbdTransportClient extends TransportClient {
             private int maxRequestsPerChannel = 30;
             private int partitionCount = 1;
             private Duration receiveHangDetectionTime = SIXTY_FIVE_SECONDS;
+            private Duration requestExpiryInterval = FIVE_SECONDS;
             private Duration requestTimeout;
             private Duration sendHangDetectionTime = TEN_SECONDS;
             private Duration shutdownTimeout = FIFTEEN_SECONDS;
@@ -332,17 +311,20 @@ public final class RntbdTransportClient extends TransportClient {
 
             // region Methods
 
-            public Options build() {
-                checkState(this.bufferPageSize <= this.maxBufferCapacity, "bufferPageSize (%s) > maxBufferCapacity (%s)",
-                    this.bufferPageSize, this.maxBufferCapacity
-                );
-                return new Options(this);
-            }
-
             public Builder bufferPageSize(final int value) {
-                checkArgument(value >= 4096 && (value & (value - 1)) == 0, "value: %s", value);
+                checkArgument(value >= 4096 && (value & (value - 1)) == 0,
+                    "expected value to be a power of 2 >= 4096, not %s",
+                    value);
                 this.bufferPageSize = value;
                 return this;
+            }
+
+            public Options build() {
+                checkState(this.bufferPageSize <= this.maxBufferCapacity,
+                    "expected bufferPageSize (%s) <= maxBufferCapacity (%s)",
+                    this.bufferPageSize,
+                    this.maxBufferCapacity);
+                return new Options(this);
             }
 
             public Builder certificateHostNameOverride(final String value) {
@@ -351,85 +333,95 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             public Builder connectionTimeout(final Duration value) {
-                checkArgument(value == null || value.compareTo(Duration.ZERO) > 0, "value: %s", value);
+                checkArgument(value == null || value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.connectionTimeout = value;
                 return this;
             }
 
             public Builder idleChannelTimeout(final Duration value) {
-                checkNotNull(value, "value: null");
+                checkNotNull(value, "expected non-null value");
                 this.idleChannelTimeout = value;
                 return this;
             }
 
             public Builder idleEndpointTimeout(final Duration value) {
-                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0, "value: %s", value);
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.idleEndpointTimeout = value;
                 return this;
             }
 
             public Builder maxBufferCapacity(final int value) {
-                checkArgument(value > 0 && (value & (value - 1)) == 0, "value: %s", value);
+                checkArgument(value > 0 && (value & (value - 1)) == 0,
+                    "expected positive value, not %s",
+                    value);
                 this.maxBufferCapacity = value;
                 return this;
             }
 
             public Builder maxChannelsPerEndpoint(final int value) {
-                checkArgument(value > 0, "value: %s", value);
+                checkArgument(value > 0, "expected positive value, not %s", value);
                 this.maxChannelsPerEndpoint = value;
                 return this;
             }
 
             public Builder maxRequestsPerChannel(final int value) {
-                checkArgument(value > 0, "value: %s", value);
+                checkArgument(value > 0, "expected positive value, not %s", value);
                 this.maxRequestsPerChannel = value;
                 return this;
             }
 
             public Builder partitionCount(final int value) {
-                checkArgument(value > 0, "value: %s", value);
+                checkArgument(value > 0, "expected positive value, not %s", value);
                 this.partitionCount = value;
                 return this;
             }
 
             public Builder receiveHangDetectionTime(final Duration value) {
-
-                checkNotNull(value, "value: null");
-                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
-
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.receiveHangDetectionTime = value;
                 return this;
             }
 
+            public Builder requestExpiryInterval(final Duration value) {
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
+                this.requestExpiryInterval = value;
+                return this;
+            }
+
             public Builder requestTimeout(final Duration value) {
-
-                checkNotNull(value, "value: null");
-                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
-
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.requestTimeout = value;
                 return this;
             }
 
             public Builder sendHangDetectionTime(final Duration value) {
-
-                checkNotNull(value, "value: null");
-                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
-
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.sendHangDetectionTime = value;
                 return this;
             }
 
             public Builder shutdownTimeout(final Duration value) {
-
-                checkNotNull(value, "value: null");
-                checkArgument(value.compareTo(Duration.ZERO) > 0, "value: %s", value);
-
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
                 this.shutdownTimeout = value;
                 return this;
             }
 
             public Builder userAgent(final UserAgentContainer value) {
-                checkNotNull(value, "value: null");
+                checkNotNull(value, "expected non-null value");
                 this.userAgent = value;
                 return this;
             }
@@ -438,6 +430,36 @@ public final class RntbdTransportClient extends TransportClient {
         }
 
         // endregion
+    }
+
+    static final class JsonSerializer extends StdSerializer<RntbdTransportClient> {
+
+        public JsonSerializer() {
+            super(RntbdTransportClient.class);
+        }
+
+        @Override
+        public void serialize(
+
+            final RntbdTransportClient value,
+            final JsonGenerator generator,
+            final SerializerProvider provider
+
+        ) throws IOException {
+
+            generator.writeStartObject();
+            generator.writeNumberField("id", value.id());
+            generator.writeBooleanField("isClosed", value.isClosed());
+            generator.writeObjectField("configuration", value.endpointProvider.config());
+            generator.writeArrayFieldStart("serviceEndpoints");
+
+            for (final Iterator<RntbdEndpoint> iterator = value.endpointProvider.list().iterator(); iterator.hasNext(); ) {
+                generator.writeObject(iterator.next());
+            }
+
+            generator.writeEndArray();
+            generator.writeEndObject();
+        }
     }
 
     // endregion

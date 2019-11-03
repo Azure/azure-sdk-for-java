@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.internal.directconnectivity.rntbd;
 
+import com.azure.cosmos.internal.directconnectivity.rntbd.RntbdEndpoint.Config;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -25,11 +26,11 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     private static final AttributeKey<RntbdRequestManager> REQUEST_MANAGER = AttributeKey.newInstance("requestManager");
     private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelHandler.class);
     private final ChannelHealthChecker healthChecker;
-    private final RntbdEndpoint.Config config;
+    private final Config config;
 
-    RntbdClientChannelHandler(final RntbdEndpoint.Config config, final ChannelHealthChecker healthChecker) {
-        checkNotNull(healthChecker, "healthChecker");
-        checkNotNull(config, "config");
+    RntbdClientChannelHandler(final Config config, final ChannelHealthChecker healthChecker) {
+        checkNotNull(healthChecker, "expected non-null healthChecker");
+        checkNotNull(config, "expected non-null config");
         this.healthChecker = healthChecker;
         this.config = config;
     }

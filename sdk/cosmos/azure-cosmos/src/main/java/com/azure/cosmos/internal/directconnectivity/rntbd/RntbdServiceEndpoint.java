@@ -31,7 +31,6 @@ import java.net.SocketAddress;
 import java.net.URI;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -41,6 +40,7 @@ import static com.azure.cosmos.internal.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.internal.directconnectivity.RntbdTransportClient.Options;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @JsonSerialize(using = RntbdServiceEndpoint.JsonSerializer.class)
 public final class RntbdServiceEndpoint implements RntbdEndpoint {
@@ -48,7 +48,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // region Fields
 
     private static final String TAG_NAME = RntbdServiceEndpoint.class.getSimpleName();
-    private static final long QUIET_PERIOD = 2L * 1_000_000_000L;
+    private static final long QUIET_PERIOD = 2L * 1_000_000_000L; // 2 seconds
 
     private static final AtomicLong instanceCount = new AtomicLong();
     private static final Logger logger = LoggerFactory.getLogger(RntbdServiceEndpoint.class);
@@ -349,13 +349,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                     endpoint.close();
                 }
 
-                this.eventLoopGroup.shutdownGracefully(QUIET_PERIOD, this.config.shutdownTimeout(), TimeUnit.NANOSECONDS).addListener(future -> {
-                    if (future.isSuccess()) {
-                        logger.debug("\n  [{}]\n  closed endpoints", this);
-                        return;
-                    }
-                    logger.error("\n  [{}]\n  failed to close endpoints due to ", this, future.cause());
-                });
+                this.eventLoopGroup.shutdownGracefully(QUIET_PERIOD, this.config.shutdownTimeout(), NANOSECONDS)
+                    .addListener(future -> {
+                        if (future.isSuccess()) {
+                            logger.debug("\n  [{}]\n  closed endpoints", this);
+                            return;
+                        }
+                        logger.error("\n  [{}]\n  failed to close endpoints due to ", this, future.cause());
+                    });
                 return;
             }
 
