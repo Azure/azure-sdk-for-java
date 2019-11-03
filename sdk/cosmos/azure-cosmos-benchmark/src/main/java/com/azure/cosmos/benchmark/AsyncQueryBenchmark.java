@@ -83,8 +83,8 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
         } else {
             throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());
         }
-        concurrencyControlSemaphore.acquire();
 
+        concurrencyControlSemaphore.acquire();
         obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
 }

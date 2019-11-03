@@ -80,14 +80,13 @@ public final class RntbdTransportClient extends TransportClient {
     @Override
     public void close() {
 
-        logger.debug("\n  [{}] CLOSE", this);
-
         if (this.closed.compareAndSet(false, true)) {
+            logger.debug("close {}", this);
             this.endpointProvider.close();
             return;
         }
 
-        logger.debug("\n  [{}]\n  already closed", this);
+        logger.debug("already closed {}", this);
     }
 
     public int endpointCount() {
@@ -451,13 +450,16 @@ public final class RntbdTransportClient extends TransportClient {
             generator.writeNumberField("id", value.id());
             generator.writeBooleanField("isClosed", value.isClosed());
             generator.writeObjectField("configuration", value.endpointProvider.config());
-            generator.writeArrayFieldStart("serviceEndpoints");
+            generator.writeObjectFieldStart("serviceEndpoints");
+            generator.writeNumberField("count", value.endpointCount());
+            generator.writeArrayFieldStart("items");
 
             for (final Iterator<RntbdEndpoint> iterator = value.endpointProvider.list().iterator(); iterator.hasNext(); ) {
                 generator.writeObject(iterator.next());
             }
 
             generator.writeEndArray();
+            generator.writeEndObject();
             generator.writeEndObject();
         }
     }
