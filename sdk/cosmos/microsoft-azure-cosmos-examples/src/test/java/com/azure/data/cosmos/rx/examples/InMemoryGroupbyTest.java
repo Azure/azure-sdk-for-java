@@ -86,7 +86,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
                 tasks.add(client.createDocument(getCollectionLink(), doc, null, true).then());
             }
         }
-        Flux.merge(tasks).last().block();
+        Flux.merge(tasks).then().block();
         System.out.println("finished inserting documents");
     }
 

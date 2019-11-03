@@ -111,7 +111,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
             Document doc = new Document(String.format("{ 'id': 'loc%d', 'counter': %d}", i, i));
             tasks.add(client.createDocument(getCollectionLink(), doc, null, true).then());
         }
-        Flux.merge(tasks).last().block();
+        Flux.merge(tasks).then().block();
     }
 
     @AfterClass(groups = "samples", timeOut = TIMEOUT)
