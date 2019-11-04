@@ -111,10 +111,10 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     public Observable<Cluster> listAsync() {
         ClustersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<List<ClusterInner>, Observable<ClusterInner>>() {
+        .flatMap(new Func1<Page<ClusterInner>, Observable<ClusterInner>>() {
             @Override
-            public Observable<ClusterInner> call(List<ClusterInner> innerList) {
-                return Observable.from(innerList);
+            public Observable<ClusterInner> call(Page<ClusterInner> innerList) {
+                return Observable.from(innerList.items());
             }
         })
         .map(new Func1<ClusterInner, Cluster>() {
