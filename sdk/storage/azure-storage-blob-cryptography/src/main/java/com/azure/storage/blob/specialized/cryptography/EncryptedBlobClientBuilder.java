@@ -337,9 +337,7 @@ public final class EncryptedBlobClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
-            this.endpoint = parts.isIpUrl()
-                ? String.format("%s://%s/%s", parts.getScheme(), parts.getHost(), parts.getAccountName())
-                : String.format("%s://%s", parts.getScheme(), parts.getHost());
+            this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName();
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();

@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.sas.BlobServiceSasQueryParameters;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -17,7 +18,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.regex.Pattern;
 
 /**
  * This class represents the components that make up an Azure Storage Container/Blob URL. You may parse an
@@ -25,9 +25,6 @@ import java.util.regex.Pattern;
  * #toUrl()}.
  */
 public final class BlobUrlParts {
-    private static final Pattern IP_V4_URL_PATTERN = Pattern
-        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
-
     private final ClientLogger logger = new ClientLogger(BlobUrlParts.class);
 
     private String scheme;
@@ -36,7 +33,6 @@ public final class BlobUrlParts {
     private String blobName;
     private String snapshot;
     private String accountName;
-    private boolean isIpUrl;
     private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -210,19 +206,6 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Indicates whether the URL is using an IP-style endpoint.
-     *
-     * <p>
-     * {@code http://127.0.0.1:10000/myaccount/mycontainer/myblob.txt} is an example of an IP-style endpoint whereas
-     * {@code https://myaccount.blob.core.windows.net/mycontainer/myblob.txt} is not.
-     *
-     * @return Flag indicating whether the URL is an IP-style endpoint.
-     */
-    public boolean isIpUrl() {
-        return isIpUrl;
-    }
-
-    /**
      * Converts the blob URL parts to a {@link URL}.
      *
      * @return A {@code URL} to the blob resource composed of all the elements in this object.
@@ -310,7 +293,7 @@ public final class BlobUrlParts {
     public static BlobUrlParts parse(URL url) {
         BlobUrlParts parts = new BlobUrlParts().setScheme(url.getProtocol());
 
-        if (IP_V4_URL_PATTERN.matcher(url.getHost()).find()) {
+        if (ModelHelper.IP_V4_URL_PATTERN.matcher(url.getHost()).find()) {
             parseIpUrl(url, parts);
         } else {
             parseNonIpUrl(url, parts);
@@ -350,8 +333,6 @@ public final class BlobUrlParts {
         } else if (pathPieces.length == 2) {
             parts.setContainerName(pathPieces[1]);
         }
-
-        parts.isIpUrl = true;
     }
 
     /*
@@ -392,8 +373,6 @@ public final class BlobUrlParts {
                 parts.setBlobName(path.substring(containerEndIndex + 1));
             }
         }
-
-        parts.isIpUrl = false;
     }
 
     /**
