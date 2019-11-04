@@ -1,39 +1,33 @@
 parameters:
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions) $(ProfileFlag)'
+  TestOptions: '$(DefaultOptions)'
   TestGoals: test
   TestMatrix:
     Linux - Java 8:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.8'
-      ProfileFlag: ''
     macOS - Java 8:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.8'
-      ProfileFlag: ''
     Windows - Java 8:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
-      ProfileFlag: ''
     Linux - Java 11:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.11'
-      ProfileFlag: ''
     macOS - Java 11:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.11'
-      ProfileFlag: ''
     Windows - Java 11:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
-      ProfileFlag: ''
 
 jobs:
   - job: 'Build'
@@ -48,7 +42,6 @@ jobs:
       matrix:
         Client Libraries:
           ArtifactName: 'packages'
-          ProfileFlag: ''
           JavaVersion: '1.11'
 
     steps:
@@ -75,7 +68,7 @@ jobs:
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -241,7 +234,7 @@ jobs:
         condition: ne(variables['SdkType'], 'client')
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) $(ProfileFlag)'
+          options: '$(DefaultOptions)'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)

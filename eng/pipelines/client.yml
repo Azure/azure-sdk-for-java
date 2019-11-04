@@ -25,7 +25,6 @@ jobs:
       matrix:
         Client Libraries:
           ArtifactName: 'packages'
-          ProfileFlag: ''
           JavaVersion: '1.11'
 
     steps:
@@ -39,7 +38,7 @@ jobs:
         inputs:
           mavenPomFile: $(pomFile)
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -197,32 +196,26 @@ jobs:
           OSName: 'Linux'
           OSVmImage: 'ubuntu-16.04'
           JavaVersion: '1.8'
-          ProfileFlag: ''
         macOS - Java 8:
           OSName: 'macOS'
           OSVmImage: 'macOS-10.13'
           JavaVersion: '1.8'
-          ProfileFlag: ''
         Windows - Java 8:
           OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.8'
-          ProfileFlag: ''
         Linux - Java 11:
           OSName: 'Linux'
           OSVmImage: 'ubuntu-16.04'
           JavaVersion: '1.11'
-          ProfileFlag: ''
         macOS - Java 11:
           OSName: 'macOS'
           OSVmImage: 'macOS-10.13'
           JavaVersion: '1.11'
-          ProfileFlag: ''
         Windows - Java 11:
           OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.11'
-          ProfileFlag: ''
 
     pool:
       vmImage: $(OSVmImage)
@@ -236,7 +229,7 @@ jobs:
         displayName: 'Compile all code and run tests'
         inputs:
           mavenPomFile: $(pomFile)
-          options: '$(DefaultOptions) $(ProfileFlag) -Dinclude-non-shipping-modules'
+          options: '$(DefaultOptions) -Dinclude-non-shipping-modules'
           mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
