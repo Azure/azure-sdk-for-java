@@ -13,6 +13,7 @@ import spock.lang.Unroll
 class AzuriteTest extends APISpec {
     String azuriteEndpoint = "http://127.0.0.1:10000/devstoreaccount1"
     StorageSharedKeyCredential azuriteCredential = new StorageSharedKeyCredential("devstoreaccount1", "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==")
+    String azuriteBlobConnectionString = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;"
 
     private BlobServiceClient getAzuriteServiceClient() {
         return getServiceClient(azuriteCredential, azuriteEndpoint)
@@ -49,6 +50,28 @@ class AzuriteTest extends APISpec {
         "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob" | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "path/to]a blob"
         "http://localhost:10000/devstoreaccount1/container/斑點"                 | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"
         "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"   | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"
+    }
+
+    def "UseDevelopmentStorage true"() {
+        setup:
+        def originalUseDevelopmentStorage = System.getProperty("UseDevelopmentStorage")
+        System.setProperty("UseDevelopmentStorage", "true")
+
+        when:
+        def serviceClient = new BlobServiceClientBuilder()
+            .connectionString(azuriteBlobConnectionString)
+            .buildClient()
+
+        then:
+        serviceClient.getAccountUrl() == "http://127.0.0.1:10000/devstoreaccount1"
+        serviceClient.getAccountName() == "devstoreaccount1"
+
+        cleanup:
+        if (originalUseDevelopmentStorage != null) {
+            System.setProperty("UseDevelopmentStorage", originalUseDevelopmentStorage)
+        } else {
+            System.clearProperty("UseDevelopmentStorage")
+        }
     }
 
     def "Azurite URL constructing service client"() {
@@ -175,7 +198,7 @@ class AzuriteTest extends APISpec {
         def response = containerClient.createWithResponse(null, null, null, null)
 
         then:
-        response.getStatusCode() == 200
+        response.getStatusCode() == 201
 
         cleanup:
         containerClient.delete()
