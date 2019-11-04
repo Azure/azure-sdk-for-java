@@ -3,27 +3,22 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
-import spock.lang.Specification
 import spock.lang.Unroll
 
-class AzuriteTest extends Specification {
+class AzuriteTest extends APISpec {
     String azuriteEndpoint = "http://127.0.0.1:10000/devstoreaccount1"
     StorageSharedKeyCredential azuriteCredential = new StorageSharedKeyCredential("devstoreaccount1", "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==")
 
     private BlobServiceClient getAzuriteServiceClient() {
-        return new BlobServiceClientBuilder()
-            .endpoint(azuriteEndpoint)
-            .credential(azuriteCredential)
-            .buildClient()
+        return getServiceClient(azuriteCredential, azuriteEndpoint)
     }
 
-    private void validateBlobClient(BlobClientBase client, String accountName, String containerName, String blobName, String blobUrl) {
+    private static void validateBlobClient(BlobClientBase client, String accountName, String containerName, String blobName, String blobUrl) {
         assert client.getAccountName() == accountName
         assert client.getContainerName() == containerName
         assert client.getBlobName() == blobName
@@ -169,5 +164,40 @@ class AzuriteTest extends Specification {
 
         then:
         notThrown(BlobStorageException)
+    }
+
+    def "Create container"() {
+        setup:
+        def containerClient = getAzuriteServiceClient()
+            .getBlobContainerClient(generateContainerName())
+
+        when:
+        def response = containerClient.createWithResponse(null, null, null, null)
+
+        then:
+        response.getStatusCode() == 200
+
+        cleanup:
+        containerClient.delete()
+    }
+
+    def "Upload to blob"() {
+        setup:
+        def containerClient = getAzuriteServiceClient()
+            .getBlobContainerClient(generateContainerName())
+        containerClient.create()
+        def blobClient = containerClient.getBlobClient(generateBlobName())
+
+        when:
+        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        notThrown(BlobStorageException)
+        def outputStream = new ByteArrayOutputStream()
+        blobClient.download(outputStream)
+        outputStream.toByteArray() == defaultData.array()
+
+        cleanup:
+        containerClient.delete()
     }
 }
