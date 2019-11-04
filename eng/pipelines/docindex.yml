@@ -48,6 +48,14 @@ jobs:
           # the service name in all caps
           $serviceMapHash = Get-Content -Path "$(Build.SourcesDirectory)/eng/docgeneration/service-mapper.json" | ConvertFrom-Json -AsHashtable
 
+          # There are some artifact that show up, due to the way we do discovery, that are never shipped.
+          # Keep a list of those here and anything we don't want to ship can be added to here which will
+          # cause them to get skipped when generating the DocIndex
+          $ArtifactsToSkip = (
+            'azure-cosmos-benchmark',
+            'azure-sdk-template'
+          )
+
           # The list of services is being constructed from the directory list under the sdk folder
           # which, right now, only contains client/data directories. When management is moved to
           # the under sdk it'll automatically get picked up.
@@ -95,6 +103,14 @@ jobs:
                       $artifactId = $xml.project.artifactId
 
                       $parent = $xml.project.parent.relativePath
+
+                      # If this is an artifact that isn't shipping then just
+                      # move on to the next one
+                      if ($ArtifactsToSkip -contains $artifactId)
+                      {
+                          Write-Output "skipping $artifactId"
+                          continue
+                      }
 
                       # If the parent is null or empty then the pom isn't directly including 
                       # one of the pom.[client|data|management].xml and needs to be specially
@@ -154,7 +170,7 @@ jobs:
           }
 
           New-Item -Path "$(Build.SourcesDirectory)/docfx_project" -Name "toc.yml" -Force
-          Add-Content -Path "$(Build.SourcesDirectory)/docfx_project/toc.yml" -Value "- name: Azure SDK for Java Apis`r`n  href: api/`r`n  homepage: api/index.md"
+          Add-Content -Path "$(Build.SourcesDirectory)/docfx_project/toc.yml" -Value "- name: Azure SDK for Java APIs`r`n  href: api/`r`n  homepage: api/index.md"
           Copy-Item "$(Build.SourcesDirectory)/README.md" -Destination "$(Build.SourcesDirectory)/docfx_project/api/index.md" -Force
         displayName: Create main index and navigation toc.yml, copy over readme.
       - pwsh: ls
