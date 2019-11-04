@@ -65,7 +65,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
                         return Mono.just(false);
                     }
                 }
-                logger.warn("Unexpected exception thrown", throwable);
+                logger.error("Unexpected exception thrown", throwable);
                 return Mono.error(throwable);
             });
     }
@@ -86,7 +86,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
                         return Mono.just(true);
                     }
                 }
-                logger.warn("Unexpected exception thrown", throwable);
+                logger.error("Unexpected exception thrown", throwable);
                 return Mono.just(false);
             });
     }
@@ -115,7 +115,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
                         return Mono.just(false);
                     }
                 }
-                logger.warn("Unexpected exception thrown", throwable);
+                logger.error("Unexpected exception thrown", throwable);
                 return Mono.error(throwable);
             });
     }
@@ -156,7 +156,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
                         return Mono.just(false);
                     }
                 }
-                logger.warn("Unexpected exception thrown", throwable);
+                logger.error("Unexpected exception thrown", throwable);
                 return Mono.error(throwable);
             });
     }
