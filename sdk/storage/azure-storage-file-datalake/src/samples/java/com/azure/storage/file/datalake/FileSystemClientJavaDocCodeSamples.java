@@ -192,7 +192,7 @@ public class FileSystemClientJavaDocCodeSamples {
         DataLakeFileClient fileClient = client.createFile(fileName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -203,7 +203,7 @@ public class FileSystemClientJavaDocCodeSamples {
         Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, permissions, umask, httpHeaders,
             Collections.singletonMap("metadata", "value"), requestConditions,
             timeout, new Context(key1, value1));
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
     }
 
     /**
@@ -234,7 +234,7 @@ public class FileSystemClientJavaDocCodeSamples {
         DataLakeDirectoryClient directoryClient = client.createDirectory(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -245,7 +245,7 @@ public class FileSystemClientJavaDocCodeSamples {
         Response<DataLakeDirectoryClient> newDirectoryClient = client.createDirectoryWithResponse(directoryName,
             permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
             timeout, new Context(key1, value1));
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
     }
 
     /**

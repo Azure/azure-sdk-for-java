@@ -161,7 +161,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
      *
      * @param fileName Name of the file to create.
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
@@ -179,8 +179,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
         Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
-        Response<PathInfo> response = dataLakeFileClient.createWithResponse(permissions, umask, headers, metadata, accessConditions,
-            timeout, context);
+        Response<PathInfo> response = dataLakeFileClient.createWithResponse(permissions, umask, headers, metadata,
+            accessConditions, timeout, context);
         return new SimpleResponse<>(response, dataLakeFileClient);
     }
 
@@ -264,15 +264,15 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
      *
      * @param subDirectoryName Name of the sub-directory to create.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the sub-directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the sub-directory owner, the sub-directory owning group, and
      * others.
      * @param umask Restricts permissions of the sub-directory to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the sub-directory.
+     * @param accessConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -280,11 +280,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * used to interact with the sub-directory created.
      */
     public Response<DataLakeDirectoryClient> createSubDirectoryWithResponse(String subDirectoryName,
-        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
-        String permissions, String umask, Duration timeout, Context context) {
+        String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
+        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getSubDirectoryClient(subDirectoryName);
-        Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata, accessConditions,
-            timeout, context);
+        Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata,
+            accessConditions, timeout, context);
         return new SimpleResponse<>(response, dataLakeDirectoryClient);
     }
 

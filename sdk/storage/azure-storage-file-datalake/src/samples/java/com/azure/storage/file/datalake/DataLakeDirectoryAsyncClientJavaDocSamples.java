@@ -67,7 +67,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         DataLakeFileAsyncClient fileClient = client.createFile(fileName).block();
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -78,7 +78,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         DataLakeFileAsyncClient newFileClient = client.createFileWithResponse(fileName,
             permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions
         ).block().getValue();
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 
     /**
@@ -109,7 +109,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         DataLakeDirectoryAsyncClient directoryClient = client.createSubDirectory(fileName).block();
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectory#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -120,7 +120,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubDirectoryWithResponse(
             fileName, permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions
         ).block().getValue();
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 
     /**

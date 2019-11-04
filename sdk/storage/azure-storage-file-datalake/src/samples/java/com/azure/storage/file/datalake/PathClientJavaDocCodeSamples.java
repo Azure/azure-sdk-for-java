@@ -39,7 +39,7 @@ public class PathClientJavaDocCodeSamples {
         System.out.printf("Last Modified Time:%s", client.create().getLastModified());
         // END: com.azure.storage.file.datalake.DataLakePathClient.create
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -52,7 +52,7 @@ public class PathClientJavaDocCodeSamples {
             Collections.singletonMap("metadata", "value"), requestConditions, timeout,
             new Context(key1, value1));
         System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
-        // END: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
     }
 
     /**
