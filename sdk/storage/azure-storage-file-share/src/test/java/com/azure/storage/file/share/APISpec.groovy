@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
@@ -19,6 +20,8 @@ import spock.lang.Specification
 import java.time.Duration
 import java.time.OffsetDateTime
 
+import static org.junit.Assume.assumeTrue
+
 class APISpec extends Specification {
     // Field common used for all APIs.
     static ClientLogger logger = new ClientLogger(APISpec.class)
@@ -26,7 +29,7 @@ class APISpec extends Specification {
     def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
     def testFolder = getClass().getClassLoader().getResource("testfiles")
     InterceptorManager interceptorManager
-    TestResourceNamer testResourceName
+    TestResourceNamer resourceNamer
 
     // Primary Clients used for API tests
     ShareServiceClient primaryFileServiceClient
@@ -38,6 +41,8 @@ class APISpec extends Specification {
 
     static TestMode testMode = getTestMode()
     String connectionString
+    boolean recordLiveMode
+    boolean testRan
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = false
@@ -50,9 +55,21 @@ class APISpec extends Specification {
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, testMode)
-        testResourceName = new TestResourceNamer(methodName, testMode,
-            interceptorManager.getRecordedData())
+
+        def doNotRecordAnnotation = specificationContext.getCurrentIteration().getDescription().getAnnotation(DoNotRecord.class)
+
+        if (doNotRecordAnnotation != null) {
+            recordLiveMode = false
+            testRan = !(doNotRecordAnnotation.skipInPlayback() && getTestMode() == TestMode.PLAYBACK)
+            assumeTrue("Test does not allow playback and was ran in 'TestMode.PLAYBACK'.", testRan)
+        } else {
+            recordLiveMode = true
+            testRan = true
+        }
+
+        this.interceptorManager = new InterceptorManager(methodName, testMode, !recordLiveMode)
+        this.resourceNamer = new TestResourceNamer(methodName, testMode, !recordLiveMode, interceptorManager.getRecordedData())
+
         if (getTestMode() == TestMode.RECORD) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
@@ -65,14 +82,16 @@ class APISpec extends Specification {
      * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
-        interceptorManager.close()
-        if (getTestMode() == TestMode.RECORD) {
-            ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
-                .connectionString(connectionString)
-                .buildClient()
-            cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()),
-                Duration.ofSeconds(30), null).each {
-                cleanupFileServiceClient.deleteShare(it.getName())
+        if (testRan) {
+            interceptorManager.close()
+            if (getTestMode() == TestMode.RECORD) {
+                ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
+                    .connectionString(connectionString)
+                    .buildClient()
+                cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()),
+                    Duration.ofSeconds(30), null).each {
+                    cleanupFileServiceClient.deleteShare(it.getName())
+                }
             }
         }
     }
@@ -193,7 +212,7 @@ class APISpec extends Specification {
     }
 
     OffsetDateTime getUTCNow() {
-        return testResourceName.now()
+        return resourceNamer.now()
     }
 
     InputStream getInputStream(byte[] data) {

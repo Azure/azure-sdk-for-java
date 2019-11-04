@@ -26,8 +26,8 @@ class DirectoryAsyncAPITests extends APISpec {
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        directoryPath = testResourceName.randomName(methodName, 60)
+        shareName = resourceNamer.randomName(methodName, 60)
+        directoryPath = resourceNamer.randomName(methodName, 60)
         shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryAsyncClient()
@@ -69,7 +69,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create directory error"() {
         given:
-        def testShareName = testResourceName.randomName(methodName, 60)
+        def testShareName = resourceNamer.randomName(methodName, 60)
         when:
         def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryAsyncClient().create())
         then:
@@ -306,7 +306,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         LinkedList<String> nameList = new LinkedList<>()
-        def dirPrefix = testResourceName.randomName(methodName, 60)
+        def dirPrefix = resourceNamer.randomName(methodName, 60)
         for (int i = 0; i < 2; i++) {
             def subDirClient = primaryDirectoryAsyncClient.getSubDirectoryClient(dirPrefix + i)
             subDirClient.create().block()

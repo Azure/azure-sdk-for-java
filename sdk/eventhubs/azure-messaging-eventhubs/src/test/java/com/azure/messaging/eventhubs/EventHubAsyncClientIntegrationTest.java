@@ -70,7 +70,10 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         builder = createBuilder()
             .transportType(transportType);
-        client = builder.buildAsyncClient();
+        EventHubConnection connection = builder.buildConnection();
+        client = new EventHubClientBuilder()
+            .connection(connection)
+            .buildAsyncClient();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.warning("Already pushed events to partition. Skipping.");

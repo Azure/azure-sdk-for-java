@@ -456,7 +456,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [source_code]:  src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/quick-create-portal

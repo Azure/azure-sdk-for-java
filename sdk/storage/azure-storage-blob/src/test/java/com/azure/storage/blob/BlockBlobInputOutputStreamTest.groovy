@@ -1,9 +1,9 @@
 package com.azure.storage.blob
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
-import spock.lang.Requires
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
@@ -13,7 +13,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Upload download"() {
         when:
         int length = 6 * Constants.MB

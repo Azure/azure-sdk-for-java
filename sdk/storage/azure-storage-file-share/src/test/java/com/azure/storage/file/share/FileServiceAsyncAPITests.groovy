@@ -27,7 +27,7 @@ class FileServiceAsyncAPITests extends APISpec {
     static def INVALID_ALLOWED_METHOD = Collections.singletonList(new ShareCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = resourceNamer.randomName(methodName, 60)
         primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
         for (int i = 0; i < 6; i++) {
             TOO_MANY_RULES.add(new ShareCorsRule())
@@ -115,7 +115,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
     def "Delete share does not exist"() {
         when:
-        def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShare(testResourceName.randomName(methodName, 60)))
+        def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShare(resourceNamer.randomName(methodName, 60)))
 
         then:
         deleteShareVerifier.verifyErrorSatisfies {

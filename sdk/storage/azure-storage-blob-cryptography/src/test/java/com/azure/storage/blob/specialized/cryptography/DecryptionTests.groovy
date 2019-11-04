@@ -36,7 +36,7 @@ class DecryptionTests extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Decryption"() {
         setup:
         def flow = new EncryptedFlux(testCase, fakeKey, this)

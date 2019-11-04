@@ -1,0 +1,87 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsgetuserdelegationkey074085129a706a3e1e46f0?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "0e2ecd8b-b759-4ea7-9817-933007d8a3aa"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEAA6E5C153",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:43:41 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dc6fd7b1-e01e-007c-2bd3-90d34f000000",
+      "Date" : "Fri, 01 Nov 2019 16:43:41 GMT",
+      "x-ms-client-request-id" : "0e2ecd8b-b759-4ea7-9817-933007d8a3aa"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://gaprahns.blob.core.windows.net?restype=service&comp=userdelegationkey",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "6323c143-84a0-406f-9ba4-661f133e672a",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "3a656c14-a01e-0034-53d3-90e1d2000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><UserDelegationKey><SignedOid>d9a56ecb-02da-47d0-b2f2-684b30fc8dcb</SignedOid><SignedTid>3fd621c0-6df9-4a90-9c7d-bad46b13578e</SignedTid><SignedStart>2019-11-01T16:43:41Z</SignedStart><SignedExpiry>2019-11-02T16:43:41Z</SignedExpiry><SignedService>b</SignedService><SignedVersion>2019-02-02</SignedVersion><Value>UkVEQUNURUQ=</Value></UserDelegationKey>",
+      "Date" : "Fri, 01 Nov 2019 16:43:41 GMT",
+      "x-ms-client-request-id" : "6323c143-84a0-406f-9ba4-661f133e672a",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfsgetuserdelegationkey&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "0aafd679-9a3e-4d0f-a757-f8c8062f1603"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dc6fd852-e01e-007c-44d3-90d34f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfsgetuserdelegationkey</Prefix><Containers><Container><Name>jtfsgetuserdelegationkey074085129a706a3e1e46f0</Name><Properties><Last-Modified>Fri, 01 Nov 2019 16:43:41 GMT</Last-Modified><Etag>\"0x8D75EEAA6E5C153\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 01 Nov 2019 16:43:41 GMT",
+      "x-ms-client-request-id" : "0aafd679-9a3e-4d0f-a757-f8c8062f1603",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsgetuserdelegationkey074085129a706a3e1e46f0?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "8a3487e7-af47-4305-b2d3-982c729e087b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "3a656c53-a01e-0034-0ad3-90e1d2000000",
+      "Date" : "Fri, 01 Nov 2019 16:43:41 GMT",
+      "x-ms-client-request-id" : "8a3487e7-af47-4305-b2d3-982c729e087b"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsgetuserdelegationkey074085129a706a3e1e46f0" ]
+}

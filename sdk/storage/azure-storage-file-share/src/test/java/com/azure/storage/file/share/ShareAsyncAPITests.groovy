@@ -24,7 +24,7 @@ class ShareAsyncAPITests extends APISpec {
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = resourceNamer.randomName(methodName, 60)
         primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
         primaryShareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
@@ -97,7 +97,7 @@ class ShareAsyncAPITests extends APISpec {
     def "Create snapshot"() {
         given:
         primaryShareAsyncClient.create().block()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = resourceNamer.randomName(methodName, 60)
         when:
         def createSnapshotVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(null))
 
@@ -124,7 +124,7 @@ class ShareAsyncAPITests extends APISpec {
     def "Create snapshot metadata"() {
         given:
         primaryShareAsyncClient.create().block()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = resourceNamer.randomName(methodName, 60)
         when:
         def createSnapshotVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(testMetadata))
         then:

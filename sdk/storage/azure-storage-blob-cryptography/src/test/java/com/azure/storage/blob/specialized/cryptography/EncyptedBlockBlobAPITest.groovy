@@ -64,7 +64,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Key and key resolver null
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Create encryption client fails"() {
         when:
         beac = getEncryptedClientBuilder(null, null, primaryCredential,
@@ -87,7 +87,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // Check that all valid ways to specify the key and keyResolver work
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Create encryption client succeeds"() {
         when:
         def key
@@ -126,7 +126,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         true    | true
     }
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Test Async and Sync EncryptedBlockBlobClient to BlockBlobClient"() {
         when:
         beac.upload(defaultFlux, null).block()
@@ -162,7 +162,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks that encryption is not just a no-op
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Encryption not a no-op"() {
         setup:
         ByteBuffer byteBuffer = getRandomData(Constants.KB)
@@ -181,7 +181,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // This test uses an encrypted client to encrypt and decrypt data
     // Tests upload and buffered upload with different bytebuffer sizes
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Encryption"() {
         when:
         def byteBufferList = []
@@ -221,7 +221,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that HTTP headers are successfully set on the encrypted client
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Encryption HTTP headers"() {
         setup:
         BlobHttpHeaders headers = new BlobHttpHeaders().setCacheControl(cacheControl)
@@ -251,7 +251,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that metadata in encryption is successfully set
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Encryption metadata"() {
         setup:
         Map<String, String> metadata = new HashMap<>()
@@ -286,7 +286,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that access conditions in encryption clients are successfully set
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Encryption AC"() {
         when:
         beac.upload(defaultFlux, null).block()
@@ -323,7 +323,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that access conditions in encryption clients are unsuccessful with invalid data
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Encryption AC fail"() {
         setup:
         beac.upload(defaultFlux, null).block()
@@ -355,7 +355,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks the upload to file method on an encrypted client
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Encrypted upload file"() {
         setup:
         def file = getRandomFile(KB)
@@ -368,7 +368,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks the download to file method on an encrypted client
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Encrypted download file"() {
         setup:
         def path = UUID.randomUUID().toString() + ".txt"
@@ -385,7 +385,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         new File(path).delete()
     }
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "Download unencrypted data"() {
         setup:
         // Create an async client
@@ -422,7 +422,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // Tests key resolver
     @Unroll
-    @Requires({liveMode()})
+    @DoNotRecord(skipInPlayback = true)({liveMode()})
     def "Key resolver used to decrypt data"() {
         setup:
         def blobName = generateBlobName()
@@ -473,7 +473,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with old SDK download with new SDk.
-    @Requires({liveMode()})
+    @DoNotRecord(skipInPlayback = true)({liveMode()})
     def "Cross platform test upload old download new"() {
         setup:
         def blobName = generateBlobName()
@@ -509,7 +509,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with new SDK download with old SDk.
-    @Requires({liveMode()})
+    @DoNotRecord(skipInPlayback = true)({liveMode()})
     def "Cross platform test upload new download old"() {
         setup:
         def blobName = generateBlobName()
@@ -541,7 +541,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         stream.toByteArray() == defaultData.array()
     }
 
-    @Requires({liveMode()})
+    @DoNotRecord(skipInPlayback = true)({liveMode()})
     def "encrypted client file upload overwrite false"() {
         setup:
         def file = getRandomFile(KB)
@@ -555,7 +555,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({liveMode()})
+    @DoNotRecord(skipInPlayback = true)({liveMode()})
     def "encrypted client file upload overwrite true"() {
         setup:
         def file = getRandomFile(KB)
@@ -568,7 +568,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         notThrown(Throwable)
     }
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "encrypted client upload overwrite false"() {
         setup:
         ByteBuffer byteBuffer = getRandomData(Constants.KB)
@@ -582,7 +582,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)({ liveMode() })
     def "encrypted client upload overwrite true"() {
         setup:
         ByteBuffer byteBuffer = getRandomData(Constants.KB)

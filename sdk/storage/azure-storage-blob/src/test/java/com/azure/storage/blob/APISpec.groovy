@@ -20,6 +20,7 @@ import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.implementation.util.ImplUtils
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
@@ -39,7 +40,6 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -49,6 +49,8 @@ import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
+
+import static org.junit.Assume.assumeTrue
 
 class APISpec extends Specification {
     @Shared
@@ -132,6 +134,7 @@ class APISpec extends Specification {
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
+    boolean testRan
     private TestResourceNamer resourceNamer
     protected String testName
     String containerName
@@ -150,11 +153,20 @@ class APISpec extends Specification {
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
 
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        def doNotRecordAnnotation = specificationContext.getCurrentIteration().getDescription().getAnnotation(DoNotRecord.class)
+
+        if (doNotRecordAnnotation != null) {
+            recordLiveMode = false
+            testRan = !(doNotRecordAnnotation.skipInPlayback() && setupTestMode() == TestMode.PLAYBACK)
+            assumeTrue("Test does not allow playback and was ran in 'TestMode.PLAYBACK'.", testRan)
+        } else {
+            recordLiveMode = testMode == TestMode.RECORD
+            testRan = true
+        }
+
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode, !recordLiveMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, testMode, !recordLiveMode, interceptorManager.getRecordedData())
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -169,18 +181,20 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
-        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
-            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+        if (testRan) {
+            def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
+            for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
+                BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
-            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
+                if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                    createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
+                }
+
+                containerClient.delete()
             }
 
-            containerClient.delete()
+            interceptorManager.close()
         }
-
-        interceptorManager.close()
     }
 
     //TODO: Should this go in core.
@@ -202,13 +216,10 @@ class APISpec extends Specification {
         return TestMode.PLAYBACK
     }
 
-    static boolean liveMode() {
-        return setupTestMode() == TestMode.RECORD
-    }
-
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
+
 
         if (testMode == TestMode.RECORD) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
@@ -403,6 +414,8 @@ class APISpec extends Specification {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
+            return builder.build()
+        } else if (testMode == TestMode.LIVE) {
             return builder.build()
         } else {
             return interceptorManager.getPlaybackClient()

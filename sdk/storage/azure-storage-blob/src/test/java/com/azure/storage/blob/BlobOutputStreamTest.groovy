@@ -1,13 +1,13 @@
 package com.azure.storage.blob
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.common.implementation.Constants
-import spock.lang.Requires
 
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "BlockBlob output stream"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -23,7 +23,7 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "PageBlob output stream"() {
         setup:
         def data = getRandomByteArray(16 * Constants.MB - 512)
@@ -41,7 +41,7 @@ class BlobOutputStreamTest extends APISpec {
     }
 
     // Test is failing, need to investigate.
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "AppendBlob output stream"() {
         setup:
         def data = getRandomByteArray(4 * FOUR_MB)

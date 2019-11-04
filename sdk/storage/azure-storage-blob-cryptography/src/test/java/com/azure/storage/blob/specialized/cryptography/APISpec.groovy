@@ -12,26 +12,27 @@ import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
-
-import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
+
+import static org.junit.Assume.assumeTrue
 
 class APISpec extends Specification {
 
@@ -74,6 +75,7 @@ class APISpec extends Specification {
     static String connectionString
     static TestMode testMode
     private boolean recordLiveMode
+    boolean testRan
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -113,10 +115,21 @@ class APISpec extends Specification {
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+
+        def doNotRecordAnnotation = specificationContext.getCurrentIteration().getDescription().getAnnotation(DoNotRecord.class)
+
+        if (doNotRecordAnnotation != null) {
+            recordLiveMode = false
+            testRan = !(doNotRecordAnnotation.skipInPlayback() && setupTestMode() == TestMode.PLAYBACK)
+            assumeTrue("Test does not allow playback and was ran in 'TestMode.PLAYBACK'.", testRan)
+        } else {
+            recordLiveMode = true
+            testRan = true
+        }
+
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode, !recordLiveMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, testMode, !recordLiveMode, interceptorManager.getRecordedData())
+
         connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
     }
 

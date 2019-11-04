@@ -216,6 +216,12 @@ public class InterceptorManager implements AutoCloseable {
 
     private File getRecordFile(String testName) {
         File recordFile = new File(getRecordFolderPath(), testName + ".json");
+
+        if (!recordFile.exists()) {
+            throw  logger.logExceptionAsError(new RuntimeException(String.format(
+                "Missing playback file. File path: %s. ", recordFile.getPath())));
+        }
+
         logger.info("==> Playback file path: " + recordFile.getPath());
 
         return recordFile;

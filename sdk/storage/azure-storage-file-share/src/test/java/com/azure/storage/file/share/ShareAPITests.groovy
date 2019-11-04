@@ -25,7 +25,7 @@ class ShareAPITests extends APISpec {
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = resourceNamer.randomName(methodName, 60)
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = primaryFileServiceClient.getShareClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
@@ -112,7 +112,7 @@ class ShareAPITests extends APISpec {
     def "Create snapshot"() {
         given:
         primaryShareClient.create()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = resourceNamer.randomName(methodName, 60)
 
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null, null)
@@ -136,7 +136,7 @@ class ShareAPITests extends APISpec {
     def "Create snapshot metadata"() {
         given:
         primaryShareClient.create()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = resourceNamer.randomName(methodName, 60)
 
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null, null)

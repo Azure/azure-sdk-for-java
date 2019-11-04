@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.implementation.util.FluxUtil
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
@@ -32,7 +33,6 @@ import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -618,7 +618,7 @@ class BlockBlobAPITest extends APISpec {
        for getBlockID that will change every time test is run
      */
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     @Unroll
     def "Upload from file"() {
         setup:
@@ -671,7 +671,7 @@ class BlockBlobAPITest extends APISpec {
         return b1 == b2
     }
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Upload from file with metadata"() {
         given:
         def metadata = Collections.singletonMap("metadata", "value")
@@ -875,7 +875,7 @@ class BlockBlobAPITest extends APISpec {
         bc.getProperties().getAccessTier() == AccessTier.COOL
     }
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Async buffered upload empty"() {
         when:
         def emptyUploadVerifier = StepVerifier.create(blobac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null))
@@ -891,7 +891,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Async buffered upload empty buffers"() {
         when:
         def uploadVerifier = StepVerifier.create(blobac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), null))
@@ -915,7 +915,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Async buffered upload"() {
         when:
         def data = getRandomData(dataSize)
@@ -978,7 +978,7 @@ class BlockBlobAPITest extends APISpec {
     }
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Buffered upload with reporter"() {
         when:
         def uploadReporter = new Reporter(blockSize)
@@ -1004,7 +1004,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
@@ -1030,7 +1030,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Buffered upload handle pathing"() {
         setup:
         def dataList = [] as List<ByteBuffer>
@@ -1050,7 +1050,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Buffered upload handle pathing hot flux"() {
         setup:
         def dataList = [] as List<ByteBuffer>
@@ -1096,7 +1096,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Buffered upload headers"() {
         when:
         def data = getRandomByteArray(dataSize)
@@ -1127,7 +1127,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Buffered upload metadata"() {
         setup:
         def metadata = [:] as Map<String, String>
@@ -1156,7 +1156,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Buffered upload AC"() {
         setup:
         bac.upload(defaultFlux, defaultDataSize).block()
@@ -1185,7 +1185,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Buffered upload AC fail"() {
         setup:
         bac.upload(defaultFlux, defaultDataSize).block()
@@ -1219,7 +1219,7 @@ class BlockBlobAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "UploadBufferPool lock three or more buffers"() {
         setup:
         bac.upload(defaultFlux, defaultDataSize).block()
@@ -1353,7 +1353,7 @@ class BlockBlobAPITest extends APISpec {
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "BlobClient overwrite false"() {
         setup:
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
@@ -1365,7 +1365,7 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "BlobClient overwrite true"() {
         setup:
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
