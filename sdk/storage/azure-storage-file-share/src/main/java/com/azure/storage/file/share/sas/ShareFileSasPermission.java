@@ -8,11 +8,19 @@ import com.azure.storage.common.implementation.Constants;
 import java.util.Locale;
 
 /**
- * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a file. Setting
- * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
- * the values are set, this should be serialized with toString and set as the permissions field on a {@link
- * ShareServiceSasSignatureValues} object. It is possible to construct the permissions string without this class, but
- * the order of the permissions is particular and this class guarantees correctness.
+ * Constructs a string representing the permissions granted by a Service SAS to a file. Setting a value to true means
+ * that any SAS which uses these permissions will grant permissions for that operation. Once all the values are set,
+ * this should be serialized with {@link #toString() toString()} and set as the permissions field on
+ * {@link ShareServiceSasSignatureValues#setPermissions(ShareFileSasPermission) ShareServiceSasSignatureValues}.
+ *
+ * <p>
+ * It is possible to construct the permissions string without this class, but the order of the permissions is particular
+ * and this class guarantees correctness.
+ * </p>
+ *
+ * @see ShareServiceSasSignatureValues
+ * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-service-sas#permissions-for-a-file>
+ *     Permissions for a file</a>
  */
 public final class ShareFileSasPermission {
     private boolean readPermission;
@@ -65,7 +73,10 @@ public final class ShareFileSasPermission {
     }
 
     /**
-     * @return the read permission status
+     * Gets the read permission status.
+     *
+     * @return {@code true} if the SAS can read the content, properties, and metadata for a file. Can use the file as
+     * the source of a copy operation. {@code false}, otherwise.
      */
     public boolean hasReadPermission() {
         return readPermission;
@@ -74,7 +85,8 @@ public final class ShareFileSasPermission {
     /**
      * Sets the read permission status.
      *
-     * @param hasReadPermission Permission status to set
+     * @param hasReadPermission {@code true} if the SAS can read the content, properties, and metadata for a file. Can
+     * use the file as the source of a copy operation. {@code false}, otherwise.
      * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setReadPermission(boolean hasReadPermission) {
@@ -83,7 +95,9 @@ public final class ShareFileSasPermission {
     }
 
     /**
-     * @return the create permission status
+     * Gets the create permission status.
+     *
+     * @return {@code true} if SAS can create a new file or copy a file to a new file. {@code false}, otherwise.
      */
     public boolean hasCreatePermission() {
         return createPermission;
@@ -92,7 +106,8 @@ public final class ShareFileSasPermission {
     /**
      * Sets the create permission status.
      *
-     * @param hasCreatePermission Permission status to set
+     * @param hasCreatePermission {@code true} if SAS can create a new file or copy a file to a new file. {@code false},
+     * otherwise.
      * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setCreatePermission(boolean hasCreatePermission) {
@@ -101,7 +116,10 @@ public final class ShareFileSasPermission {
     }
 
     /**
-     * @return the write permission status
+     * Gets the write permission status.
+     *
+     * @return {@code true} if SAS can write content, properties, or metadata to the file. Or, use the file as the
+     * destination of a copy operation. {@code false}, otherwise.
      */
     public boolean hasWritePermission() {
         return writePermission;
@@ -110,7 +128,8 @@ public final class ShareFileSasPermission {
     /**
      * Sets the write permission status.
      *
-     * @param hasWritePermission Permission status to set
+     * @param hasWritePermission {@code true} if SAS can write content, properties, or metadata to the file. Or, use the
+     * file as the destination of a copy operation. {@code false}, otherwise.
      * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setWritePermission(boolean hasWritePermission) {
@@ -119,7 +138,9 @@ public final class ShareFileSasPermission {
     }
 
     /**
-     * @return the delete permission status
+     * Gets the delete permission status.
+     *
+     * @return {@code true} if SAS can delete a file. {@code false}, otherwise.
      */
     public boolean hasDeletePermission() {
         return deletePermission;
@@ -128,7 +149,7 @@ public final class ShareFileSasPermission {
     /**
      * Sets the delete permission status.
      *
-     * @param hasDeletePermission Permission status to set
+     * @param hasDeletePermission {@code true} if SAS can delete a file. {@code false}, otherwise.
      * @return the updated ShareFileSasPermission object
      */
     public ShareFileSasPermission setDeletePermission(boolean hasDeletePermission) {
@@ -137,7 +158,7 @@ public final class ShareFileSasPermission {
     }
 
     /**
-     * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
+     * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
      * @return A {@code String} which represents the {@code ShareFileSasPermission}.
