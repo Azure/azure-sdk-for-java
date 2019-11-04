@@ -61,7 +61,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
             // do a point read
             // or single partition query
             // or cross partition query to find the write.
-            int j = Math.toIntExact(Math.floorMod(i, 2));
+            int j = Math.toIntExact(Math.floorMod(i, 3));
+            j = 2;
             switch (j) {
                 case 0:
                     // write a random document to cosmodb and update the cache.
@@ -92,10 +93,11 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         } else {
             // will either do
             // a write
-            // a point read for a in memory cached document
+            // a point read for a in memory cached document4
             // or single partition query for a in memory cached document
             // or cross partition query for a in memory cached document
-            int j = Math.toIntExact(Math.floorMod(i, 3));
+            int j = Math.toIntExact(Math.floorMod(i, 4));
+            j = 3;
             switch (j) {
                 case 0:
                     // write a random document to cosmosdb and update the cache
