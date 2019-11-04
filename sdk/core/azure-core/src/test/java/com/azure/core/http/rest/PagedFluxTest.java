@@ -28,7 +28,7 @@ public class PagedFluxTest {
     private List<PagedResponse<String>> pagedStringResponses;
 
     @BeforeEach
-    void init(TestInfo testInfo) {
+    public void init(TestInfo testInfo) {
         System.out.println("-------------- Running " + testInfo.getDisplayName() + " -----------------------------");
     }
 

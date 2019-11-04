@@ -20,7 +20,7 @@ public class IterableResponseTest {
 
 
     @BeforeEach
-    void init(TestInfo testInfo) {
+    public void init(TestInfo testInfo) {
         System.out.println("-------------- Running " + testInfo.getDisplayName() + " -----------------------------");
     }
 
