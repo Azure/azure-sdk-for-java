@@ -70,6 +70,7 @@ public class EventHubConsumerClientTest {
     private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
     private final MessageSerializer serializer = new EventHubMessageSerializer();
     private final ExecutorService service = Executors.newFixedThreadPool(4);
+
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
     @Mock
@@ -95,7 +96,8 @@ public class EventHubConsumerClientTest {
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
             ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
         linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
-        when(connection.createSession(any())).thenReturn(Mono.fromCallable(() -> session));
+        when(connection.createSession(argThat(name -> name.endsWith(PARTITION_ID))))
+            .thenReturn(Mono.fromCallable(() -> session));
         when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
             .thenReturn(Mono.fromCallable(() -> amqpReceiveLink));
 
@@ -287,6 +289,42 @@ public class EventHubConsumerClientTest {
         Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
         Assertions.assertSame(position, consumer.getStartingPosition());
     }
+
+
+    /**
+     * Verifies that this receives a number of events.
+     */
+    @Test
+    public void receiveAllPartitions() {
+        // Arrange
+        final int numberOfEvents = 15;
+        final int firstReceive = 8;
+        final int secondReceive = 4;
+
+        sendMessages(numberOfEvents);
+
+        // Act
+        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, firstReceive);
+        final IterableStream<PartitionEvent> receive2 = consumer.receive(PARTITION_ID, secondReceive);
+
+        // Assert
+        final Map<Integer, PartitionEvent> firstActual = receive.stream()
+            .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
+        final Map<Integer, PartitionEvent> secondActual = receive2.stream()
+            .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
+
+        Assert.assertEquals(firstReceive, firstActual.size());
+        Assert.assertEquals(secondReceive, secondActual.size());
+
+        int startingIndex = 0;
+        int endIndex = firstReceive;
+        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assert.assertTrue(firstActual.containsKey(number)));
+
+        startingIndex += firstReceive;
+        endIndex += secondReceive;
+        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assert.assertTrue(secondActual.containsKey(number)));
+    }
+
 
     private static Integer getPositionId(PartitionEvent partitionEvent) {
         EventData event = partitionEvent.getEventData();
