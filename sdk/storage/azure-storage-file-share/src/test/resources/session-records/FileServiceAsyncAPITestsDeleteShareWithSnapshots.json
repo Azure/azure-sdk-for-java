@@ -1,0 +1,66 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestsdeletesharewithsnapshots665868e1?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-preview.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "1ae8d0c2-2fb5-498f-99a9-b0a455fd53eb"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7617BEF636504",
+      "Last-Modified" : "Mon, 04 Nov 2019 23:08:42 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "89487d2b-901a-0115-6264-93b4ba000000",
+      "Date" : "Mon, 04 Nov 2019 23:08:41 GMT",
+      "x-ms-client-request-id" : "1ae8d0c2-2fb5-498f-99a9-b0a455fd53eb"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestsdeletesharewithsnapshots665868e1?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-preview.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "a6455158-c25e-46e0-96ff-cdf357b50a7c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-11-04T23:08:42.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7617BEF636504",
+      "Last-Modified" : "Mon, 04 Nov 2019 23:08:42 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "89487d2d-901a-0115-6364-93b4ba000000",
+      "Date" : "Mon, 04 Nov 2019 23:08:41 GMT",
+      "x-ms-client-request-id" : "a6455158-c25e-46e0-96ff-cdf357b50a7c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestsdeletesharewithsnapshots665868e1?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-preview.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "1f40962b-eac6-4066-b06b-dc6fd36ae29c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "89487d2e-901a-0115-6464-93b4ba000000",
+      "Date" : "Mon, 04 Nov 2019 23:08:41 GMT",
+      "x-ms-client-request-id" : "1f40962b-eac6-4066-b06b-dc6fd36ae29c"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileserviceasyncapitestsdeletesharewithsnapshots665868e1" ]
+}

@@ -10,6 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -218,7 +219,7 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist
      */
     public void delete() {
-        deleteWithResponse(null, Context.NONE);
+        deleteWithResponse(null, null, Context.NONE);
     }
 
     /**
@@ -233,6 +234,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
+     * @param deleteOptions Delete options for the share and its snapshots.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -240,8 +242,9 @@ public class ShareClient {
      * @throws ShareStorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteWithResponse(context);
+    public Response<Void> deleteWithResponse(DeleteSnapshotsOptionType deleteOptions, Duration timeout,
+        Context context) {
+        Mono<Response<Void>> response = client.deleteWithResponse(deleteOptions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

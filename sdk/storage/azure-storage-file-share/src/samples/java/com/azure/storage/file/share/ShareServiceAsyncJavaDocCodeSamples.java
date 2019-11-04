@@ -3,8 +3,9 @@
 package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.models.ShareServiceProperties;
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.models.ListSharesOptions;
+import com.azure.storage.file.share.models.ShareServiceProperties;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -13,7 +14,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link ShareServiceClient} and {@link ShareServiceAsyncClient}.
+ * Contains code snippets when generating javadocs through doclets for {@link ShareServiceClient} and {@link
+ * ShareServiceAsyncClient}.
  */
 public class ShareServiceAsyncJavaDocCodeSamples {
 
@@ -31,6 +33,7 @@ public class ShareServiceAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link ShareServiceAsyncClient} with SAS token.
+     *
      * @return An instance of {@link ShareServiceAsyncClient}
      */
     public ShareServiceAsyncClient createAsyncClientWithSASToken() {
@@ -44,6 +47,7 @@ public class ShareServiceAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link ShareServiceAsyncClient} with SAS token.
+     *
      * @return An instance of {@link ShareServiceAsyncClient}
      */
     public ShareServiceAsyncClient createAsyncClientWithCredential() {
@@ -57,7 +61,9 @@ public class ShareServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link ShareServiceAsyncClient} with {@code connectionString} which turns into {@link StorageSharedKeyCredential}
+     * Generates code sample for creating a {@link ShareServiceAsyncClient} with {@code connectionString} which turns
+     * into {@link StorageSharedKeyCredential}
+     *
      * @return An instance of {@link ShareServiceAsyncClient}
      */
     public ShareServiceAsyncClient createAsyncClientWithConnectionString() {
@@ -78,7 +84,8 @@ public class ShareServiceAsyncJavaDocCodeSamples {
         ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.createShare#string
         fileServiceAsyncClient.createShare("myshare").subscribe(
-            response -> { },
+            response -> {
+            },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete creating the share!")
         );
@@ -86,7 +93,8 @@ public class ShareServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceAsyncClient#createShareWithResponse(String, Map, Integer)} with metadata
+     * Generates a code sample for using {@link ShareServiceAsyncClient#createShareWithResponse(String, Map, Integer)}
+     * with metadata
      */
     public void createShareWithResponse() {
         ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
@@ -101,7 +109,8 @@ public class ShareServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceAsyncClient#createShareWithResponse(String, Map, Integer)} with quota.
+     * Generates a code sample for using {@link ShareServiceAsyncClient#createShareWithResponse(String, Map, Integer)}
+     * with quota.
      */
     public void createShareAsyncWithQuota() {
         ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
@@ -145,7 +154,8 @@ public class ShareServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceAsyncClient#listShares(ListSharesOptions)} of metadata and snapshot.
+     * Generates a code sample for using {@link ShareServiceAsyncClient#listShares(ListSharesOptions)} of metadata and
+     * snapshot.
      */
     public void listSharesAsyncWithOverload() {
         ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
@@ -172,13 +182,14 @@ public class ShareServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceAsyncClient#deleteShareWithResponse(String, String)}
+     * Generates a code sample for using {@link ShareServiceAsyncClient#deleteShareWithResponse(String, String,
+     * DeleteSnapshotsOptionType)}
      */
     public void deleteShareAsyncMaxOverload() {
         ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.deleteShareWithResponse#string-string
         OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        fileServiceAsyncClient.deleteShareWithResponse("test", midnight.toString())
+        fileServiceAsyncClient.deleteShareWithResponse("test", midnight.toString(), DeleteSnapshotsOptionType.INCLUDE)
             .subscribe(response -> System.out.printf("Deleting the snapshot completed with status code %d",
                 response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareServiceAsyncClient.deleteShareWithResponse#string-string
@@ -246,7 +257,8 @@ public class ShareServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceAsyncClient#setPropertiesWithResponse(ShareServiceProperties)} to clear CORS in file service.
+     * Generates a code sample for using {@link ShareServiceAsyncClient#setPropertiesWithResponse(ShareServiceProperties)}
+     * to clear CORS in file service.
      */
     public void clearPropertiesAsync() {
         ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();

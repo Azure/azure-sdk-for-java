@@ -20,8 +20,6 @@ import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
-import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
 import com.azure.storage.file.share.sas.ShareServiceSasQueryParameters;
 
@@ -115,11 +113,11 @@ public class ShareFileClientBuilder {
         return version != null ? version : ShareServiceVersion.getLatest();
     }
 
-    private AzureFileStorageImpl constructImpl(ShareServiceVersion serviceVersion) {
+    private HttpPipeline constructPipeline(ShareServiceVersion version) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
+        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
                 return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (sasTokenCredential != null) {
@@ -128,13 +126,7 @@ public class ShareFileClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
-
-        return new AzureFileStorageBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, version);
     }
 
     /**
@@ -154,8 +146,9 @@ public class ShareFileClientBuilder {
      */
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareDirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
-            accountName, serviceVersion);
+
+        return new ShareDirectoryAsyncClient(constructPipeline(serviceVersion), endpoint, shareName, resourcePath,
+            shareSnapshot, accountName, serviceVersion);
     }
 
     /**
@@ -194,8 +187,9 @@ public class ShareFileClientBuilder {
      */
     public ShareFileAsyncClient buildFileAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareFileAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
-            accountName, serviceVersion);
+
+        return new ShareFileAsyncClient(constructPipeline(serviceVersion), endpoint, shareName, resourcePath,
+            shareSnapshot, accountName, serviceVersion);
     }
 
     /**

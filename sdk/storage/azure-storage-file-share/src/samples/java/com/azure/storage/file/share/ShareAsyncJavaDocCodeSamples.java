@@ -3,10 +3,11 @@
 package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
-import com.azure.storage.file.share.models.NtfsFileAttributes;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -284,12 +285,12 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#deleteWithResponse()}
+     * Generates a code sample for using {@link ShareAsyncClient#deleteWithResponse(DeleteSnapshotsOptionType)}
      */
     public void deleteWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse
-        shareAsyncClient.deleteWithResponse().subscribe(
+        shareAsyncClient.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE).subscribe(
             response -> System.out.println("Deleting the shareAsyncClient completed with status code: "
                 + response.getStatusCode()),
             error -> System.err.println(error.toString()),

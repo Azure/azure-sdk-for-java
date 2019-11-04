@@ -5,6 +5,7 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
@@ -283,12 +284,13 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#deleteWithResponse(Duration, Context)}
+     * Generates a code sample for using {@link ShareClient#deleteWithResponse(DeleteSnapshotsOptionType, Duration, Context)}
      */
     public void deleteShareWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteWithResponse#duration-context
-        Response<Void> response = shareClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Void> response = shareClient.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE,
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the share with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.share.ShareClient.deleteWithResponse#duration-context
     }

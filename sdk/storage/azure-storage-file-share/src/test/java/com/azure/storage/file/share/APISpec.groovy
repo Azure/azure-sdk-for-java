@@ -13,6 +13,7 @@ import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType
 import com.azure.storage.file.share.models.ListSharesOptions
 import spock.lang.Specification
 
@@ -72,7 +73,7 @@ class APISpec extends Specification {
                 .buildClient()
             cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()),
                 Duration.ofSeconds(30), null).each {
-                cleanupFileServiceClient.deleteShare(it.getName())
+                cleanupFileServiceClient.deleteShareWithResponse(it.getName(), null, DeleteSnapshotsOptionType.INCLUDE, null, null)
             }
         }
     }

@@ -5,6 +5,7 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
 
@@ -166,14 +167,14 @@ public class ShareServiceJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareServiceClient#deleteShareWithResponse(String, String,
-     * Duration, Context)}
+     * DeleteSnapshotsOptionType, Duration, Context)}
      */
     public void deleteShareMaxOverload() {
         ShareServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareServiceClient.deleteShareWithResponse#string-string-duration-context
         OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         Response<Void> response = fileServiceClient.deleteShareWithResponse("test", midnight.toString(),
-            Duration.ofSeconds(1), new Context(key1, value1));
+            DeleteSnapshotsOptionType.INCLUDE, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Deleting the snapshot completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareServiceClient.deleteShareWithResponse#string-string-duration-context
     }

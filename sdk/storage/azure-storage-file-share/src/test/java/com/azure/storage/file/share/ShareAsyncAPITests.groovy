@@ -5,9 +5,10 @@ package com.azure.storage.file.share
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType
+import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
-import com.azure.storage.file.share.models.NtfsFileAttributes
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
@@ -150,10 +151,31 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryShareAsyncClient.deleteWithResponse())
+        StepVerifier.create(primaryShareAsyncClient.deleteWithResponse(null))
             .assertNext {
                 FileTestHelper.assertResponseStatusCode(it, 201)
-            }
+            }.verifyComplete()
+    }
+
+    def "Delete share with snapshots"() {
+        given:
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.createSnapshot().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE))
+            .assertNext({ FileTestHelper.assertResponseStatusCode(it, 202) })
+            .verifyComplete()
+    }
+
+    def "Delete share with snapshots fail"() {
+        given:
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.createSnapshot().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.delete())
+            .verifyErrorSatisfies({ FileTestHelper.assertExceptionStatusCodeAndMessage(it, 409, ShareErrorCode.SHARE_HAS_SNAPSHOTS) })
     }
 
     def "Delete share error"() {

@@ -20,8 +20,6 @@ import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
-import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
 import com.azure.storage.file.share.sas.ShareServiceSasQueryParameters;
 
@@ -124,13 +122,7 @@ public final class ShareServiceClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
-
-        return new ShareServiceAsyncClient(azureFileStorage, accountName, serviceVersion);
+        return new ShareServiceAsyncClient(pipeline, endpoint, accountName, serviceVersion);
     }
 
     /**

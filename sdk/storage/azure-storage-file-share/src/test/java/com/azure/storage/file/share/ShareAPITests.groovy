@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
@@ -162,7 +163,33 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null, null), 202)
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null, null, null), 202)
+    }
+
+    def "Delete share with snapshots"() {
+        given:
+        primaryShareClient.create()
+        primaryShareClient.createSnapshot()
+
+        when:
+        def response = primaryShareClient.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        FileTestHelper.assertResponseStatusCode(response, 202)
+    }
+
+    def "Delete share with snapshots fail"() {
+        given:
+        primaryShareClient.create()
+        primaryShareClient.createSnapshot()
+
+        when:
+        primaryShareClient.delete()
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 409, ShareErrorCode.SHARE_HAS_SNAPSHOTS)
     }
 
     def "Delete share error"() {

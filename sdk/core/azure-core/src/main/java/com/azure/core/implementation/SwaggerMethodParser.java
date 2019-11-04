@@ -251,7 +251,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return the path value with its placeholders replaced by the matching substitutions
      */
     public String setPath(Object[] methodArguments) {
-        return applySubstitutions(relativePath, pathSubstitutions, methodArguments, UrlEscapers.PATH_ESCAPER);
+        if (ImplUtils.isNullOrEmpty(pathSubstitutions)) {
+            return "";
+        } else {
+            return applySubstitutions(relativePath, pathSubstitutions, methodArguments, UrlEscapers.PATH_ESCAPER);
+        }
     }
 
     /**

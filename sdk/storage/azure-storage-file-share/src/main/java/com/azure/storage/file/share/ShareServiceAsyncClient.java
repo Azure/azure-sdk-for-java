@@ -4,25 +4,26 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
-import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
+import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareCorsRule;
+import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.models.ListSharesOptions;
-import com.azure.storage.file.share.models.ShareItem;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -54,18 +55,19 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
 public final class ShareServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(ShareServiceAsyncClient.class);
     private final AzureFileStorageImpl azureFileStorageClient;
+    private final String endpoint;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
 
-    /**
-     * Creates a ShareServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
-     *
-     * @param azureFileStorage Client that interacts with the service interfaces.
-     */
-    ShareServiceAsyncClient(AzureFileStorageImpl azureFileStorage, String accountName,
-                            ShareServiceVersion serviceVersion) {
-        this.azureFileStorageClient = azureFileStorage;
+    ShareServiceAsyncClient(HttpPipeline pipeline, String endpoint, String accountName,
+        ShareServiceVersion serviceVersion) {
+        this.endpoint = endpoint;
         this.accountName = accountName;
+        this.azureFileStorageClient = new AzureFileStorageBuilder()
+            .pipeline(pipeline)
+            .url(endpoint)
+            .version(serviceVersion.getVersion())
+            .build();
         this.serviceVersion = serviceVersion;
     }
 
@@ -113,7 +115,8 @@ public final class ShareServiceAsyncClient {
      * @return a ShareAsyncClient that interacts with the specified share
      */
     public ShareAsyncClient getShareAsyncClient(String shareName, String snapshot) {
-        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot, accountName, serviceVersion);
+        return new ShareAsyncClient(azureFileStorageClient.getHttpPipeline(), endpoint, shareName, snapshot,
+            accountName, serviceVersion);
     }
 
     /**
@@ -419,8 +422,8 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB, Context context) {
-        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null,
-            accountName, serviceVersion);
+        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient.getHttpPipeline(), endpoint,
+            shareName, null, accountName, serviceVersion);
 
         return shareAsyncClient.createWithResponse(metadata, quotaInGB, context).map(response ->
             new SimpleResponse<>(response, shareAsyncClient));
@@ -444,7 +447,8 @@ public final class ShareServiceAsyncClient {
      */
     public Mono<Void> deleteShare(String shareName) {
         try {
-            return deleteShareWithResponse(shareName, null).flatMap(FluxUtil::toMono);
+            return deleteShareWithResponse(shareName, null, null)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -465,25 +469,23 @@ public final class ShareServiceAsyncClient {
      *
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
+     * @param deleteOptions Delete options for the share and its snapshots.
      * @return A response that only contains headers and response status code
      * @throws ShareStorageException If the share doesn't exist or the snapshot doesn't exist
      */
-    public Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot) {
+    public Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot,
+        DeleteSnapshotsOptionType deleteOptions) {
         try {
-            return withContext(context -> deleteShareWithResponse(shareName, snapshot, context));
+            return withContext(context -> deleteShareWithResponse(shareName, snapshot, deleteOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot, Context context) {
-        DeleteSnapshotsOptionType deleteSnapshots = null;
-        if (ImplUtils.isNullOrEmpty(snapshot)) {
-            deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
-        }
-        return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context)
-            .map(response -> new SimpleResponse<>(response, null));
+    Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot,
+        DeleteSnapshotsOptionType deleteOptions, Context context) {
+        return getShareAsyncClient(shareName, snapshot)
+            .deleteWithResponse(deleteOptions, context);
     }
 
     /**

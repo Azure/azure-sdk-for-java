@@ -10,6 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
@@ -337,7 +338,7 @@ public final class ShareServiceClient {
      * @throws ShareStorageException If the share doesn't exist
      */
     public void deleteShare(String shareName) {
-        deleteShareWithResponse(shareName, null, null, Context.NONE);
+        deleteShareWithResponse(shareName, null, null, null, Context.NONE);
     }
 
     /**
@@ -355,6 +356,7 @@ public final class ShareServiceClient {
      *
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
+     * @param deleteOptions Delete options for the share and its snapshots.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -362,9 +364,10 @@ public final class ShareServiceClient {
      * @throws ShareStorageException If the share doesn't exist or the snapshot doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<Void> deleteShareWithResponse(String shareName, String snapshot, Duration timeout,
-                                                  Context context) {
-        Mono<Response<Void>> response = shareServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context);
+    public Response<Void> deleteShareWithResponse(String shareName, String snapshot,
+        DeleteSnapshotsOptionType deleteOptions, Duration timeout, Context context) {
+        Mono<Response<Void>> response = shareServiceAsyncClient.deleteShareWithResponse(shareName, snapshot,
+            deleteOptions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

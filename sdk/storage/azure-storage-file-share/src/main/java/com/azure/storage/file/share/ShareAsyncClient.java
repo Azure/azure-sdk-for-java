@@ -15,7 +15,9 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ShareCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.ShareGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharePermission;
@@ -63,26 +65,24 @@ public class ShareAsyncClient {
     private final ClientLogger logger = new ClientLogger(ShareAsyncClient.class);
 
     private final AzureFileStorageImpl azureFileStorageClient;
+    private final String endpoint;
     private final String shareName;
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
 
-    /**
-     * Creates a ShareAsyncClient that sends requests to the storage share at {@link AzureFileStorageImpl#getUrl()
-     * endpoint}. Each service call goes through the {@link HttpPipeline pipeline} in the
-     * {@code azureFileStorageClient}.
-     *
-     * @param client Client that interacts with the service interfaces
-     * @param shareName Name of the share
-     */
-    ShareAsyncClient(AzureFileStorageImpl client, String shareName, String snapshot, String accountName,
+    ShareAsyncClient(HttpPipeline pipeline, String endpoint, String shareName, String snapshot, String accountName,
         ShareServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
+        this.endpoint = endpoint;
         this.shareName = shareName;
         this.snapshot = snapshot;
         this.accountName = accountName;
-        this.azureFileStorageClient = client;
+        this.azureFileStorageClient = new AzureFileStorageBuilder()
+            .pipeline(pipeline)
+            .url(String.format("%s/%s", endpoint, shareName))
+            .version(serviceVersion.getVersion())
+            .build();
         this.serviceVersion = serviceVersion;
     }
 
@@ -92,11 +92,9 @@ public class ShareAsyncClient {
      * @return the url of the Storage Share.
      */
     public String getShareUrl() {
-        StringBuilder shareUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
-        if (snapshot != null) {
-            shareUrlString.append("?snapshot=").append(snapshot);
-        }
-        return shareUrlString.toString();
+        return (snapshot != null)
+            ? String.format("%s?snapshot=%s", azureFileStorageClient.getUrl(), snapshot)
+            : azureFileStorageClient.getUrl();
     }
 
     /**
@@ -130,8 +128,8 @@ public class ShareAsyncClient {
      * @return a {@link ShareDirectoryAsyncClient} that interacts with the directory in the share
      */
     public ShareDirectoryAsyncClient getDirectoryClient(String directoryName) {
-        return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName,
-            serviceVersion);
+        return new ShareDirectoryAsyncClient(azureFileStorageClient.getHttpPipeline(), endpoint, shareName,
+            directoryName, snapshot, accountName, serviceVersion);
     }
 
     /**
@@ -144,8 +142,8 @@ public class ShareAsyncClient {
      * @return a {@link ShareFileAsyncClient} that interacts with the file in the share
      */
     public ShareFileAsyncClient getFileClient(String filePath) {
-        return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName,
-            serviceVersion);
+        return new ShareFileAsyncClient(azureFileStorageClient.getHttpPipeline(), endpoint, shareName, filePath,
+            snapshot, accountName, serviceVersion);
     }
 
     /**
@@ -204,7 +202,7 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Context context) {
         return azureFileStorageClient.shares()
-            .createWithRestResponseAsync(shareName, null, metadata, quotaInGB, context)
+            .createWithRestResponseAsync(null, metadata, quotaInGB, context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -259,7 +257,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
-        return azureFileStorageClient.shares().createSnapshotWithRestResponseAsync(shareName, null, metadata, context)
+        return azureFileStorageClient.shares().createSnapshotWithRestResponseAsync(null, metadata, context)
             .map(this::mapCreateSnapshotResponse);
     }
 
@@ -280,7 +278,7 @@ public class ShareAsyncClient {
      */
     public Mono<Void> delete() {
         try {
-            return deleteWithResponse().flatMap(FluxUtil::toMono);
+            return deleteWithResponse(null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -298,20 +296,21 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
+     * @param deleteOptions Delete options for the share and its snapshots.
      * @return A response that only contains headers and response status code
      * @throws ShareStorageException If the share doesn't exist
      */
-    public Mono<Response<Void>> deleteWithResponse() {
+    public Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteOptions) {
         try {
-            return withContext(this::deleteWithResponse);
+            return withContext(context -> deleteWithResponse(deleteOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteWithResponse(Context context) {
+    Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteOptions, Context context) {
         return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, null, context)
+            .deleteWithRestResponseAsync(snapshot, null, deleteOptions, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -366,7 +365,7 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareProperties>> getPropertiesWithResponse(Context context) {
         return azureFileStorageClient.shares()
-            .getPropertiesWithRestResponseAsync(shareName, snapshot, null, context)
+            .getPropertiesWithRestResponseAsync(snapshot, null, context)
             .map(this::mapGetPropertiesResponse);
     }
 
@@ -420,7 +419,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB, Context context) {
-        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null, quotaInGB, context)
+        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(null, quotaInGB, context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -486,7 +485,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
-        return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(shareName, null, metadata, context)
+        return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(null, metadata, context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -509,7 +508,7 @@ public class ShareAsyncClient {
         try {
             Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever =
                 marker -> this.azureFileStorageClient.shares()
-                    .getAccessPolicyWithRestResponseAsync(shareName, Context.NONE)
+                    .getAccessPolicyWithRestResponseAsync(Context.NONE)
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -595,7 +594,7 @@ public class ShareAsyncClient {
         }
 
         return azureFileStorageClient.shares()
-            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null, context)
+            .setAccessPolicyWithRestResponseAsync(permissions, null, context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -646,7 +645,7 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareStatistics>> getStatisticsWithResponse(Context context) {
         return azureFileStorageClient.shares()
-            .getStatisticsWithRestResponseAsync(shareName, context)
+            .getStatisticsWithRestResponseAsync(context)
             .map(this::mapGetStatisticsResponse);
     }
 
@@ -944,7 +943,7 @@ public class ShareAsyncClient {
         // NOTE: Should we check for null or empty?
         SharePermission sharePermission = new SharePermission().setPermission(filePermission);
         return azureFileStorageClient.shares()
-            .createPermissionWithRestResponseAsync(shareName, sharePermission, null, context)
+            .createPermissionWithRestResponseAsync(sharePermission, null, context)
             .map(response -> new SimpleResponse<>(response, response.getDeserializedHeaders().getFilePermissionKey()));
     }
 
@@ -986,7 +985,7 @@ public class ShareAsyncClient {
 
     Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, Context context) {
         return azureFileStorageClient.shares()
-            .getPermissionWithRestResponseAsync(shareName, filePermissionKey, null, context)
+            .getPermissionWithRestResponseAsync(filePermissionKey, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));
     }
 

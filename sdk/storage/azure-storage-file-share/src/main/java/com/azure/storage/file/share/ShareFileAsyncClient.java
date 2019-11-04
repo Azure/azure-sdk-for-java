@@ -20,6 +20,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FileStartCopyHeaders;
@@ -33,6 +34,7 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.models.CopyStatusType;
+import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -40,10 +42,9 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
-import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
-import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.models.ShareStorageException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -98,29 +99,26 @@ public class ShareFileAsyncClient {
     private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
 
     private final AzureFileStorageImpl azureFileStorageClient;
+    private final String endpoint;
     private final String shareName;
     private final String filePath;
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
 
-    /**
-     * Creates a ShareFileAsyncClient that sends requests to the storage file at {@link AzureFileStorageImpl#getUrl()
-     * endpoint}. Each service call goes through the {@link HttpPipeline pipeline} in the {@code client}.
-     *
-     * @param azureFileStorageClient Client that interacts with the service interfaces
-     * @param shareName Name of the share
-     * @param filePath Path to the file
-     * @param snapshot The snapshot of the share
-     */
-    ShareFileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
+    ShareFileAsyncClient(HttpPipeline pipeline, String endpoint, String shareName, String filePath,
                          String snapshot, String accountName, ShareServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(filePath, "'filePath' cannot be null.");
+        this.endpoint = endpoint;
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;
-        this.azureFileStorageClient = azureFileStorageClient;
+        this.azureFileStorageClient = new AzureFileStorageBuilder()
+            .pipeline(pipeline)
+            .url(String.format("%s/%s/%s", endpoint, shareName, filePath))
+            .version(serviceVersion.getVersion())
+            .build();
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
     }
@@ -131,12 +129,9 @@ public class ShareFileAsyncClient {
      * @return the URL of the storage file client
      */
     public String getFileUrl() {
-        StringBuilder fileUrlstring = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
-            .append(shareName).append("/").append(filePath);
-        if (snapshot != null) {
-            fileUrlstring.append("?snapshot=").append(snapshot);
-        }
-        return fileUrlstring.toString();
+        return (snapshot != null)
+            ? String.format("%s?snapshot=%s", azureFileStorageClient.getUrl(), snapshot)
+            : azureFileStorageClient.getUrl();
     }
 
     /**
@@ -221,8 +216,8 @@ public class ShareFileAsyncClient {
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
 
         return azureFileStorageClient.files()
-            .createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, context)
+            .createWithRestResponseAsync(maxSize, fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata,
+                filePermission, filePermissionKey, httpHeaders, context)
             .map(this::createFileInfoResponse);
     }
 
@@ -255,9 +250,7 @@ public class ShareFileAsyncClient {
             (pollingContext) -> {
                 try {
                     return withContext(context -> azureFileStorageClient.files()
-                            .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
-                                    metadata,
-                                    context))
+                            .startCopyWithRestResponseAsync(sourceUrl, null, metadata, context))
                             .map(response -> {
                                 final FileStartCopyHeaders headers = response.getDeserializedHeaders();
                                 copyId.set(headers.getCopyId());
@@ -381,7 +374,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<Void>> abortCopyWithResponse(String copyId, Context context) {
-        return azureFileStorageClient.files().abortCopyWithRestResponseAsync(shareName, filePath, copyId, context)
+        return azureFileStorageClient.files().abortCopyWithRestResponseAsync(copyId, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -543,7 +536,7 @@ public class ShareFileAsyncClient {
         String rangeString = range == null ? null : range.toString();
 
         return azureFileStorageClient.files()
-            .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, context)
+            .downloadWithRestResponseAsync(null, rangeString, rangeGetContentMD5, context)
             .map(response -> new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
@@ -595,7 +588,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return azureFileStorageClient.files().deleteWithRestResponseAsync(shareName, filePath, context)
+        return azureFileStorageClient.files().deleteWithRestResponseAsync(context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -647,7 +640,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileProperties>> getPropertiesWithResponse(Context context) {
         return azureFileStorageClient.files()
-            .getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, context)
+            .getPropertiesWithRestResponseAsync(snapshot, null, context)
             .map(this::getPropertiesResponse);
     }
 
@@ -742,7 +735,7 @@ public class ShareFileAsyncClient {
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
 
         return azureFileStorageClient.files()
-            .setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime,
+            .setHTTPHeadersWithRestResponseAsync(fileAttributes, fileCreationTime,
                 fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, httpHeaders, context)
             .map(this::setPropertiesResponse);
     }
@@ -810,7 +803,7 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         try {
             return azureFileStorageClient.files()
-                .setMetadataWithRestResponseAsync(shareName, filePath, null, metadata, context)
+                .setMetadataWithRestResponseAsync(null, metadata, context)
                 .map(this::setMetadataResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -878,8 +871,8 @@ public class ShareFileAsyncClient {
         long rangeOffset = (offset == null) ? 0L : offset;
         ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + length - 1);
         return azureFileStorageClient.files()
-            .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                length, data, null, null, context)
+            .uploadRangeWithRestResponseAsync(range.toString(), ShareFileRangeWriteType.UPDATE, length, data, null,
+                null, context)
             .map(this::uploadResponse);
     }
 
@@ -948,7 +941,7 @@ public class ShareFileAsyncClient {
         ShareFileRange sourceRange = new ShareFileRange(sourceOffset, sourceOffset + length - 1);
 
         return azureFileStorageClient.files()
-            .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(), sourceUrl, 0,
+            .uploadRangeFromURLWithRestResponseAsync(destinationRange.toString(), sourceUrl, 0,
                 null, sourceRange.toString(), null, null, context)
             .map(this::uploadRangeFromUrlResponse);
     }
@@ -1007,8 +1000,8 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset, Context context) {
         ShareFileRange range = new ShareFileRange(offset, offset + length - 1);
         return azureFileStorageClient.files()
-            .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
-                0L, null, null, null, context)
+            .uploadRangeWithRestResponseAsync(range.toString(), ShareFileRangeWriteType.CLEAR, 0L, null, null, null,
+                context)
             .map(this::uploadResponse);
     }
 
@@ -1109,8 +1102,7 @@ public class ShareFileAsyncClient {
         String rangeString = range == null ? null : range.toString();
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, context),
-                timeout)
+                .getRangeListWithRestResponseAsync(snapshot, null, rangeString, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1169,8 +1161,7 @@ public class ShareFileAsyncClient {
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultsPerPage, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .listHandlesWithRestResponseAsync(shareName, filePath, marker, maxResultsPerPage, null, snapshot,
-                    context), timeout)
+                .listHandlesWithRestResponseAsync(marker, maxResultsPerPage, null, snapshot, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1229,8 +1220,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<Void>> forceCloseHandleWithResponse(String handleId, Context context) {
         return azureFileStorageClient.files()
-            .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, snapshot,
-                context)
+            .forceCloseHandlesWithRestResponseAsync(handleId, null, null, snapshot, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1260,8 +1250,7 @@ public class ShareFileAsyncClient {
     PagedFlux<Integer> forceCloseAllHandlesWithOptionalTimeout(Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<Integer>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .forceCloseHandlesWithRestResponseAsync(shareName, filePath, "*", null, marker,
-                    snapshot, context), timeout)
+                .forceCloseHandlesWithRestResponseAsync("*", null, marker, snapshot, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),

@@ -4,6 +4,7 @@
 package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -102,15 +103,38 @@ class FileServiceAsyncAPITests extends APISpec {
 
     def "Delete share"() {
         given:
-        primaryFileServiceAsyncClient.createShare(shareName)
+        primaryFileServiceAsyncClient.createShare(shareName).block()
 
         when:
-        def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShareWithResponse(shareName, null))
+        def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShareWithResponse(shareName, null, null))
 
         then:
         deleteShareVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 202)
-        }
+        }.verifyComplete()
+    }
+
+    def "Delete share with snapshots"() {
+        given:
+        def shareAsyncClient = primaryFileServiceAsyncClient.createShare(shareName).block()
+        shareAsyncClient.createSnapshot().block()
+
+        expect:
+        StepVerifier.create(primaryFileServiceAsyncClient.deleteShareWithResponse(shareName, null, DeleteSnapshotsOptionType.INCLUDE))
+            .assertNext({ FileTestHelper.assertResponseStatusCode(it, 202) })
+            .verifyComplete()
+    }
+
+    def "Delete share with snapshots fail"() {
+        given:
+        def shareAsyncClient = primaryFileServiceAsyncClient.createShare(shareName).block()
+        shareAsyncClient.createSnapshot().block()
+
+        expect:
+        StepVerifier.create(primaryFileServiceAsyncClient.deleteShare(shareName))
+            .verifyErrorSatisfies({
+                FileTestHelper.assertExceptionStatusCodeAndMessage(it, 409, ShareErrorCode.SHARE_HAS_SNAPSHOTS)
+            })
     }
 
     def "Delete share does not exist"() {

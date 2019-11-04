@@ -16,6 +16,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DirectorysCreateResponse;
 import com.azure.storage.file.share.implementation.models.DirectorysGetPropertiesResponse;
@@ -68,30 +69,26 @@ public class ShareDirectoryAsyncClient {
     private final ClientLogger logger = new ClientLogger(ShareDirectoryAsyncClient.class);
 
     private final AzureFileStorageImpl azureFileStorageClient;
+    private final String endpoint;
     private final String shareName;
     private final String directoryPath;
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
 
-    /**
-     * Creates a ShareDirectoryAsyncClient that sends requests to the storage directory at {@link
-     * AzureFileStorageImpl#getUrl() endpoint}. Each service call goes through the {@link HttpPipeline pipeline} in the
-     * {@code client}.
-     *
-     * @param azureFileStorageClient Client that interacts with the service interfaces
-     * @param shareName Name of the share
-     * @param directoryPath Name of the directory
-     * @param snapshot The snapshot of the share
-     */
-    ShareDirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
+    ShareDirectoryAsyncClient(HttpPipeline pipeline, String endpoint, String shareName, String directoryPath,
                               String snapshot, String accountName, ShareServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(directoryPath);
+        this.endpoint = endpoint;
         this.shareName = shareName;
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;
-        this.azureFileStorageClient = azureFileStorageClient;
+        this.azureFileStorageClient = new AzureFileStorageBuilder()
+            .pipeline(pipeline)
+            .url(String.format("%s/%s/%s", endpoint, shareName, directoryPath))
+            .version(serviceVersion.getVersion())
+            .build();
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
     }
@@ -102,12 +99,9 @@ public class ShareDirectoryAsyncClient {
      * @return the URL of the storage directory client
      */
     public String getDirectoryUrl() {
-        StringBuilder directoryUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
-            .append(shareName).append("/").append(directoryPath);
-        if (snapshot != null) {
-            directoryUrlString.append("?snapshot=").append(snapshot);
-        }
-        return directoryUrlString.toString();
+        return (snapshot != null)
+            ? String.format("%s?snapshot=%s", azureFileStorageClient.getUrl(), snapshot)
+            : azureFileStorageClient.getUrl();
     }
 
     /**
@@ -130,8 +124,8 @@ public class ShareDirectoryAsyncClient {
      */
     public ShareFileAsyncClient getFileClient(String fileName) {
         String filePath = directoryPath + "/" + fileName;
-        return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName,
-            serviceVersion);
+        return new ShareFileAsyncClient(azureFileStorageClient.getHttpPipeline(), endpoint, shareName, filePath, null,
+            accountName, serviceVersion);
     }
 
     /**
@@ -145,8 +139,8 @@ public class ShareDirectoryAsyncClient {
      */
     public ShareDirectoryAsyncClient getSubDirectoryClient(String subDirectoryName) {
         String directoryPath = this.directoryPath + "/" + subDirectoryName;
-        return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot, accountName,
-            serviceVersion);
+        return new ShareDirectoryAsyncClient(azureFileStorageClient.getHttpPipeline(), endpoint, shareName,
+            directoryPath, snapshot, accountName, serviceVersion);
     }
 
     /**
@@ -218,8 +212,8 @@ public class ShareDirectoryAsyncClient {
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
 
         return azureFileStorageClient.directorys()
-            .createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
-                null, metadata, filePermission, filePermissionKey, context)
+            .createWithRestResponseAsync(fileAttributes, fileCreationTime, fileLastWriteTime, null, metadata,
+                filePermission, filePermissionKey, context)
             .map(this::createWithRestResponse);
     }
 
@@ -270,7 +264,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return azureFileStorageClient.directorys().deleteWithRestResponseAsync(shareName, directoryPath, context)
+        return azureFileStorageClient.directorys().deleteWithRestResponseAsync(context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -322,7 +316,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectoryProperties>> getPropertiesWithResponse(Context context) {
         return azureFileStorageClient.directorys()
-            .getPropertiesWithRestResponseAsync(shareName, directoryPath, snapshot, null, context)
+            .getPropertiesWithRestResponseAsync(snapshot, null, context)
             .map(this::getPropertiesResponse);
     }
 
@@ -392,8 +386,8 @@ public class ShareDirectoryAsyncClient {
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
 
         return azureFileStorageClient.directorys()
-            .setPropertiesWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, filePermission, filePermissionKey, context)
+            .setPropertiesWithRestResponseAsync(fileAttributes, fileCreationTime, fileLastWriteTime, null,
+                filePermission, filePermissionKey, context)
             .map(this::setPropertiesResponse);
     }
 
@@ -462,7 +456,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
         Context context) {
         return azureFileStorageClient.directorys()
-            .setMetadataWithRestResponseAsync(shareName, directoryPath, null, metadata, context)
+            .setMetadataWithRestResponseAsync(null, metadata, context)
             .map(this::setMetadataResponse);
     }
 
@@ -521,8 +515,8 @@ public class ShareDirectoryAsyncClient {
                                                                         Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<ShareFileItem>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
-                    marker, maxResultsPerPage, null, context), timeout)
+                .listFilesAndDirectoriesSegmentWithRestResponseAsync(prefix, snapshot, marker, maxResultsPerPage, null,
+                    context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -562,8 +556,8 @@ public class ShareDirectoryAsyncClient {
         Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResultPerPage, null, snapshot,
-                    recursive, context), timeout)
+                .listHandlesWithRestResponseAsync(marker, maxResultPerPage, null, snapshot, recursive, context),
+                timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -621,8 +615,8 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<Void>> forceCloseHandleWithResponse(String handleId, Context context) {
-        return this.azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath,
-            handleId, null, null, snapshot, false, context)
+        return this.azureFileStorageClient.directorys()
+            .forceCloseHandlesWithRestResponseAsync(handleId, null, null, snapshot, false, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -654,8 +648,7 @@ public class ShareDirectoryAsyncClient {
     PagedFlux<Integer> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<Integer>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
-                    recursive, context), timeout)
+                .forceCloseHandlesWithRestResponseAsync("*", null, marker, snapshot, recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),

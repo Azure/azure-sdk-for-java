@@ -4,11 +4,12 @@
 package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.share.models.ShareMetrics
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
+import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
@@ -89,10 +90,36 @@ class FileServiceAPITests extends APISpec {
         primaryFileServiceClient.createShare(shareName)
 
         when:
-        def deleteShareResponse = primaryFileServiceClient.deleteShareWithResponse(shareName, null, null, null)
+        def deleteShareResponse = primaryFileServiceClient.deleteShareWithResponse(shareName, null, null, null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(deleteShareResponse, 202)
+    }
+
+    def "Delete share with snapshots"() {
+        given:
+        def shareClient = primaryFileServiceClient.createShare(shareName)
+        shareClient.createSnapshot()
+
+        when:
+        def response = primaryFileServiceClient.deleteShareWithResponse(shareName, null, DeleteSnapshotsOptionType.INCLUDE, null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        FileTestHelper.assertResponseStatusCode(response, 202)
+    }
+
+    def "Delete share with snapshots fail"() {
+        given:
+        def shareClient = primaryFileServiceClient.createShare(shareName)
+        shareClient.createSnapshot()
+
+        when:
+        primaryFileServiceClient.deleteShare(shareName)
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 409, ShareErrorCode.SHARE_HAS_SNAPSHOTS)
     }
 
     def "Delete share does not exist"() {
@@ -161,10 +188,10 @@ class FileServiceAPITests extends APISpec {
         !shares.hasNext()
 
         where:
-        options                                                                                                                        | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs")                                                     | 3      | false           | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs") .setIncludeMetadata(true)                           | 3      | true            | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs") .setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
+        options                                                                                                                       | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs")                                                    | 3      | false           | false
+        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs").setIncludeMetadata(true)                           | 3      | true            | false
+        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs").setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
     }
 
     def "Set and get properties"() {

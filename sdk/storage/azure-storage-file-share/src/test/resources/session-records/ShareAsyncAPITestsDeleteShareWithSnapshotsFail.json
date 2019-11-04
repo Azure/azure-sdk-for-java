@@ -1,0 +1,69 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestsdeletesharewithsnapshotsfail688522a9c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-preview.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "7edbc5bb-f74f-4a61-9623-fcd9c3445c21"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7617BF7FEDACF",
+      "Last-Modified" : "Mon, 04 Nov 2019 23:08:56 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "89487eef-901a-0115-3d64-93b4ba000000",
+      "Date" : "Mon, 04 Nov 2019 23:08:56 GMT",
+      "x-ms-client-request-id" : "7edbc5bb-f74f-4a61-9623-fcd9c3445c21"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestsdeletesharewithsnapshotsfail688522a9c?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-preview.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "fe77fb74-d9f8-42e3-b46f-4c17df2fbf73"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-11-04T23:08:56.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7617BF7FEDACF",
+      "Last-Modified" : "Mon, 04 Nov 2019 23:08:56 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "89487ef1-901a-0115-3e64-93b4ba000000",
+      "Date" : "Mon, 04 Nov 2019 23:08:56 GMT",
+      "x-ms-client-request-id" : "fe77fb74-d9f8-42e3-b46f-4c17df2fbf73"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestsdeletesharewithsnapshotsfail688522a9c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-preview.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "d9627bad-25a7-4cef-95ae-86a39c069862"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "89487ef2-901a-0115-3f64-93b4ba000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:89487ef2-901a-0115-3f64-93b4ba000000\nTime:2019-11-04T23:08:56.6671581Z</Message></Error>",
+      "Date" : "Mon, 04 Nov 2019 23:08:56 GMT",
+      "x-ms-client-request-id" : "d9627bad-25a7-4cef-95ae-86a39c069862",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestsdeletesharewithsnapshotsfail688522a9c" ]
+}
