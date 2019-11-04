@@ -391,14 +391,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         private void evict(RntbdEndpoint endpoint) {
-
-            // TODO: DANOBLE: Utilize this method of tearing down unhealthy endpoints
-            //  Specifically, ensure that this method is called when a Read/WriteTimeoutException occurs or a health
-            //  check request fails. This perhaps likely requires a change to RntbdClientChannelPool.
-            //  Links:
-            //  https://msdata.visualstudio.com/CosmosDB/_workitems/edit/331552
-            //  https://msdata.visualstudio.com/CosmosDB/_workitems/edit/331593
-
             if (this.endpoints.remove(endpoint.remoteAddress().toString()) != null) {
                 this.evictions.incrementAndGet();
             }

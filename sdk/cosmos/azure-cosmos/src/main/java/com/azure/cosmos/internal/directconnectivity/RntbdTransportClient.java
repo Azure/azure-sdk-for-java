@@ -117,8 +117,10 @@ public final class RntbdTransportClient extends TransportClient {
         return Mono.fromFuture(record).doFinally(signal -> {
             if (signal == SignalType.CANCEL) {
                 boolean cancelled = record.cancel(false);
-                logger.debug("{cancelled: {}, endpoint: {}, record: {}}", cancelled, endpoint, record);
-                logger.trace("{}", cancelled);
+                logger.debug("SignalType.CANCEL received from reactor: {cancelled: {}, endpoint: {}, record: {}}",
+                    cancelled,
+                    endpoint,
+                    record);
             }
         });
     }
