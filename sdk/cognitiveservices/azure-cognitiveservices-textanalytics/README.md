@@ -3,33 +3,6 @@
 ```java
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder {
-    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
-    private static final String CONTENT_TYPE_HEADER = "Content-Type";
-    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    private static final String ACCEPT_HEADER = "Accept";
-    private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
-
-    private String endpoint;
-    private String connectionString;
-    
-    private final List<HttpPipelinePolicy> policies;
-    private final HttpHeaders headers;
-    
-    private HttpLogOptions httpLogOptions;
-    private HttpClient httpClient;
-    private HttpPipeline pipeline;
-    private Configuration configuration;
-    private RetryPolicy retryPolicy;
-    
-    public TextAnalyticsClientBuilder() {
-        policies = new ArrayList<>();
-        httpLogOptions = new HttpLogOptions();
-        headers = new HttpHeaders()
-                .put(ECHO_REQUEST_ID_HEADER, "true")
-                .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
-                .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
-    }; 
-         
     // Build Async and Sync client
     public TextAnalyticsAsyncClient buildAsyncClient();
     public TextAnalyticsClient buildClient();
@@ -46,86 +19,6 @@ public final class TextAnalyticsClientBuilder {
 }
 ```
 
-## TextAnalyticsClientImpl 
-```java
-public final class TextAnalyticsClientImpl {
-    private TextAnalyticsClientService service;
-    private String endpoint;
-    private HttpPipeline httpPipeline;
-
-    public String getEndpoint();
-    public void setEndpoint();
-    public String getHttpPipeline();
-  
-    public TextAnalyticsClientImpl(HttpPipeline httpPipeline) {
-        this.httpPipeline = httpPipeline;
-        this.service = RestProxy.create(TextAnalyticsClientService.class, this.httpPipeline);
-    }
-    
-    private interface TextAnalyticsClientService{
-        @Post("languages")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<LanguageBatchResult>> detectLanguage(@HostParam("Endpoint") String endpoint, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") LanguageBatchInput languageBatchInput);
-
-        @Post("entities")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<EntitiesBatchResult>> entities(@HostParam("Endpoint") String endpoint, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput);
-
-        @Post("healthcare")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<EntitiesBatchResult>> healthCareEntities(@HostParam("Endpoint") String endpoint, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput);
-        
-        @Post("entities/recognition/pii")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<EntitiesBatchResult>> entities(@HostParam("Endpoint") String endpoint, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput);
-        
-        @Post("entities/linking")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<EntitiesBatchResult>> entities(@HostParam("Endpoint") String endpoint, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput);
-       
-        @Post("keyPhrases")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<KeyPhraseBatchResult>> keyPhrases(@HostParam("Endpoint") String endpoint, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput);
-
-        @Post("sentiment")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Object>> sentiment(@HostParam("Endpoint") String endpoint, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput);
-        
-    };
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LanguageBatchResult>> detectLanguageWithRestResponseAsync();
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LanguageBatchResult>> detectLanguageWithRestResponseAsync(Boolean showStats, List<LanguageInput> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesBatchResult>> entitiesWithRestResponseAsync();
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesBatchResult>> entitiesWithRestResponseAsync(Boolean showStats, List<MultiLanguageInput> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<KeyPhraseBatchResult>> keyPhrasesWithRestResponseAsync();
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<KeyPhraseBatchResult>> keyPhrasesWithRestResponseAsync(Boolean showStats, List<MultiLanguageInput> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Object>> sentimentWithRestResponseAsync();
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Object>> sentimentWithRestResponseAsync(Boolean showStats, List<MultiLanguageInput> documents);
-}
-```
-
 ## TextAnalyticsAsyncClient
 ```java
 @ServiceClient(builder = TextAnalyticsClientBuilder.class, isAsync = true)
@@ -136,52 +29,59 @@ public final class TextAnalyticsAsyncClient {
     
     // (1) language
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LanguageResult> detectLanguage(List<DocumentLanguage> documents);
+    public Mono<LanguageResult> detectLanguage(String text, String countryHint, boolean showStats);
    
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LanguageResult>> detectLanguageWithResponse(List<DocumentLanguage> documents, Boolean showStats);
-    
-    // (2) health care entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntitiesBatchResult> detectHealthCareEntities(List<MultiLanguageInput> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntitiesBatchResult>> detectHealthCareEntitiesWithResponse(List<MultiLanguageInput> documents, Boolean showStats);
-    
-    // (3) PII entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntitiesBatchResult> detectPIIEntities(List<MultiLanguageInput> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntitiesBatchResult>> detectPIIEntitiesWithResponse(List<MultiLanguageInput> documents, Boolean showStats);
-    
-    // (4) Link entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityLinkingResult> detectLinkedEntities(List<DocumentLinkedEntities> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntityLinkingResult>> detectLinkedEntitiesWithResponse(List<DocumentLinkedEntities> documents, Boolean showStats);
-    
-    // (5) entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntitiesResult> detectEntitiesWithResponse(List<DocumentEntities> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntitiesResult>> detectEntitiesWithResponse(List<DocumentEntities> documents, Boolean showStats);
+    public Mono<Response<LanguageResult>> detectLanguageWithResponse(LanguageInput languageInput, boolean showStats);
 
+    // (1.1) A batch of language input 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LanguageResult> detectLanguage(LanguageBatchInput languageBatchInput, boolean showStats);
+       
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<LanguageResult>> detectLanguageBatchWithResponse(LanguageBatchInput languageBatchInput, boolean showStats);
+
+    // (2) entities
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EntitiesResult> detectEntitiesWithResponse(String text, String language, boolean showStats);
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EntitiesResult>> detectEntitiesBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats);
+
+    // (3) health care entities
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EntitiesResult> detectHealthCareEntities(String text, String language, boolean showStats);
+    
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EntitiesResult>> detectHealthCareEntitiesBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats);
+    
+    // (4) PII entities
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EntitiesResult> detectPIIEntities(String text, String language, boolean showStats);
+    
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EntitiesResult>> detectPIIEntitiesBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats);
+    
+    // (5) Link entities
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EntityLinkingResult> detectLinkedEntities(String text, String language, boolean showStats);
+    
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EntityLinkingResult>> detectLinkedEntitiesBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats);
+   
     // (6) key phrase
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyPhraseResult> detectKeyPhrases(List<DocumentKeyPhrases> documents);
+    public Mono<KeyPhraseResult> detectKeyPhrases(String text, String language, boolean showStats);
     
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyPhraseResult>> detectKeyPhrasesWithResponse(List<DocumentKeyPhrases> documents, Boolean showStats);
+    public Mono<Response<KeyPhraseResult>> detectKeyPhrasesBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats);
     
     // (7) sentiment
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SentimentResponse> detectSentiment(List<DocumentSentiment> documents);
+    public Mono<SentimentResponse> detectSentiment(String text, String language, boolean showStats);
     
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SentimentResponse>> detectSentimentWithResponse(List<DocumentSentiment> documents, Boolean showStats);
+    public Mono<Response<SentimentResponse>> detectSentimentBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats);
 }
 ```
 
@@ -209,45 +109,44 @@ public final class TextAnalyticsClient {
 
     // (2) entities
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntitiesResult detectEntities(String text, String countryHint, boolean showStats);
+    public EntitiesResult detectEntities(String text, String language, boolean showStats);
     
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntitiesResult> detectEntitiesWithResponse(List<DocumentEntities> documents, Boolean showStats);
+    public Response<EntitiesResult> detectEntitiesBatchWithResponse(MultiLanguageBatchInput  multiLanguageBatchInput, boolean showStats, Context context);
 
-    // (2) health care entities
+    // (3) health care entities
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntitiesBatchResult detectHealthCareEntities(List<MultiLanguageInput> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntitiesBatchResult> detectHealthCareEntitiesWithResponse(List<MultiLanguageInput> documents, Boolean showStats);
-    
-    // (3) PII entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntitiesBatchResult detectPIIEntities(List<MultiLanguageInput> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntitiesBatchResult> detectPIIEntitiesWithResponse(List<MultiLanguageInput> documents, Boolean showStats);
-    
-    // (4) Link entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityLinkingResult detectLinkedEntities(List<DocumentLinkedEntities> documents);
-    
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntityLinkingResult> detectLinkedEntitiesWithResponse(List<DocumentLinkedEntities> documents, Boolean showStats);
-    
-    
+    public EntitiesResult detectHealthCareEntities(String text, String language, boolean showStats);
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EntitiesResult> detectHealthCareEntitiesBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context);
+    
+    // (4) PII entities
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntitiesResult detectPIIEntities(String text, String language, boolean showStats);
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EntitiesResult> detectPIIEntitiesBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context);
+    
+    // (5) Link entities
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntityLinkingResult detectLinkedEntities(String text, String language, boolean showStats);
+    
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EntityLinkingResult> detectLinkedEntitiesBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context);
+    
     // (6) key phrase
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyPhraseResult detectKeyPhrases(List<DocumentKeyPhrases> documents);
+    public KeyPhraseResult detectKeyPhrases(String text, String language, boolean showStats);
     
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyPhraseResult> detectKeyPhrasesWithResponse(List<DocumentKeyPhrases> documents, Boolean showStats);
+    public Response<KeyPhraseResult> detectKeyPhrasesBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context);
     
     // (7) sentiment
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SentimentResponse detectSentiment(List<DocumentSentiment> documents);
+    public SentimentResponse detectSentiment(String text, String language, boolean showStats);
     
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SentimentResponse> detectSentimentWithResponse(List<DocumentSentiment> documents, Boolean showStats);
+    public Response<SentimentResponse> detectSentimentBatchWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context);
 }
+```

@@ -9,6 +9,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
+    <module>azure-cognitiveservices-textanalytics</module>
     <module>ms-azure-cs-spellcheck</module>
     <module>ms-azure-cs-textanalytics</module>
     <module>ms-azure-cs-luis-runtime</module>
