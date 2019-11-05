@@ -109,7 +109,11 @@ public final class PlaybackClient implements HttpClient {
                 }
             }
 
-            String contentType = networkCallRecord.getResponse().get("Content-Type");
+            String contentType = networkCallRecord.getResponse().entrySet().stream()
+                .filter(kvp -> kvp.getKey().equalsIgnoreCase("Content-Type"))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse(null);
 
             // octet-stream's are written to disk using Arrays.toString() which creates an output such as "[12, -1]".
             if (contentType != null && contentType.equalsIgnoreCase("application/octet-stream")) {

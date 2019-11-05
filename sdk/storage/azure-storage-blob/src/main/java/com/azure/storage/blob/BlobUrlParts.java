@@ -33,6 +33,7 @@ public final class BlobUrlParts {
     private String blobName;
     private String snapshot;
     private String accountName;
+    private boolean isIpUrl;
     private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -84,7 +85,7 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the URL host, ex. "account.blob.core.windows.net".
+     * Gets the URL host, ex. "account.blob.core.windows.net" or "127.0.0.1:10000".
      *
      * @return the URL host.
      */
@@ -93,13 +94,14 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Sets the URL host, ex. "account.blob.core.windows.net".
+     * Sets the URL host, ex. "account.blob.core.windows.net" or "127.0.0.1:10000".
      *
      * @param host The URL host.
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setHost(String host) {
         this.host = host;
+        this.isIpUrl = ModelHelper.IP_V4_URL_PATTERN.matcher(host).find();
         return this;
     }
 
@@ -217,17 +219,21 @@ public final class BlobUrlParts {
 
         StringBuilder path = new StringBuilder();
 
-        if ((this.containerName == null || this.containerName.isEmpty()) && this.blobName != null) {
+        if (ImplUtils.isNullOrEmpty(this.containerName) && this.blobName != null) {
             this.containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
+        if (this.isIpUrl) {
+            path.append(this.accountName);
+        }
+
         if (this.containerName != null) {
-            path.append(this.containerName);
+            path.append("/").append(this.containerName);
             if (this.blobName != null) {
-                path.append('/');
-                path.append(this.blobName);
+                path.append("/").append(this.blobName);
             }
         }
+
         url.setPath(path.toString());
 
         if (this.snapshot != null) {
@@ -333,6 +339,8 @@ public final class BlobUrlParts {
         } else if (pathPieces.length == 2) {
             parts.setContainerName(pathPieces[1]);
         }
+
+        parts.isIpUrl = true;
     }
 
     /*
@@ -373,6 +381,8 @@ public final class BlobUrlParts {
                 parts.setBlobName(path.substring(containerEndIndex + 1));
             }
         }
+
+        parts.isIpUrl = false;
     }
 
     /**

@@ -12,6 +12,10 @@ import spock.lang.Unroll
 
 class AzuriteTest extends APISpec {
     String azuriteEndpoint = "http://127.0.0.1:10000/devstoreaccount1"
+
+    /*
+     * The credential information for Azurite is static and documented in numerous locations, therefore it is okay to have this "secret" written into public code.
+     */
     StorageSharedKeyCredential azuriteCredential = new StorageSharedKeyCredential("devstoreaccount1", "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==")
     String azuriteBlobConnectionString = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;"
 
@@ -37,19 +41,20 @@ class AzuriteTest extends APISpec {
         parts.getAccountName() == accountName
         parts.getBlobContainerName() == blobContainerName
         parts.getBlobName() == blobName
+        parts.toUrl().toString() == expectedUrl
 
         where:
-        endpoint                                                                 | scheme | host              | accountName        | blobContainerName | blobName
-        "http://127.0.0.1:10000/devstoreaccount1"                                | "http" | "127.0.0.1:10000" | "devstoreaccount1" | null              | null
-        "http://127.0.0.1:10000/devstoreaccount1/container"                      | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | null
-        "http://127.0.0.1:10000/devstoreaccount1/container/blob"                 | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | "blob"
-        "http://localhost:10000/devstoreaccount1"                                | "http" | "localhost:10000" | "devstoreaccount1" | null              | null
-        "http://localhost:10000/devstoreaccount1/container"                      | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | null
-        "http://localhost:10000/devstoreaccount1/container/blob"                 | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "blob"
-        "http://localhost:10000/devstoreaccount1/container/path/to]a blob"       | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "path/to]a blob"
-        "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob" | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "path/to]a blob"
-        "http://localhost:10000/devstoreaccount1/container/斑點"                 | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"
-        "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"   | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"
+        endpoint                                                                 | scheme | host              | accountName        | blobContainerName | blobName         | expectedUrl
+        "http://127.0.0.1:10000/devstoreaccount1"                                | "http" | "127.0.0.1:10000" | "devstoreaccount1" | null              | null             | "http://127.0.0.1:10000/devstoreaccount1"
+        "http://127.0.0.1:10000/devstoreaccount1/container"                      | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | null             | "http://127.0.0.1:10000/devstoreaccount1/container"
+        "http://127.0.0.1:10000/devstoreaccount1/container/blob"                 | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | "blob"           | "http://127.0.0.1:10000/devstoreaccount1/container/blob"
+        "http://localhost:10000/devstoreaccount1"                                | "http" | "localhost:10000" | "devstoreaccount1" | null              | null             | "http://localhost:10000/devstoreaccount1"
+        "http://localhost:10000/devstoreaccount1/container"                      | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | null             | "http://localhost:10000/devstoreaccount1/container"
+        "http://localhost:10000/devstoreaccount1/container/blob"                 | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "blob"           | "http://localhost:10000/devstoreaccount1/container/blob"
+        "http://localhost:10000/devstoreaccount1/container/path/to]a blob"       | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "path/to]a blob" | "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob"
+        "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob" | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "path/to]a blob" | "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob"
+        "http://localhost:10000/devstoreaccount1/container/斑點"                   | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"             | "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"
+        "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"   | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"             | "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"
     }
 
     def "UseDevelopmentStorage true"() {
