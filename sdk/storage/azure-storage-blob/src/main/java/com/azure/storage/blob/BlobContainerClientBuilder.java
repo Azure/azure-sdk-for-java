@@ -138,9 +138,9 @@ public final class BlobContainerClientBuilder {
             URL url = new URL(endpoint);
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
-            this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.accountName = parts.getAccountName();
             this.containerName = parts.getBlobContainerName();
+            this.endpoint = BuilderHelper.getEndpoint(parts);
 
             String sasToken = parts.getSasQueryParameters().encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
