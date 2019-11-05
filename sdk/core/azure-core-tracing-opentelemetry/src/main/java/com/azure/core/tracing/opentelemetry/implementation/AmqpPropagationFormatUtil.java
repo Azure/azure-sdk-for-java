@@ -5,6 +5,7 @@ package com.azure.core.tracing.opentelemetry.implementation;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 import com.azure.core.util.Context;
+import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.SpanId;
 import io.opentelemetry.trace.TraceFlags;
@@ -68,12 +69,7 @@ public class AmqpPropagationFormatUtil {
     private static SpanContext fromDiagnosticId(String diagnosticId) {
         // TODO: Issue to fix this in opentelemetry https://github.com/open-telemetry/opentelemetry-java/issues/659
         if (diagnosticId == null || diagnosticId.length() < 55 || !diagnosticId.startsWith("00")) {
-            // return SpanContext.create(
-            //     TraceId.INVALID,
-            //     SpanId.INVALID,
-            //     TraceFlags.DEFAULT,
-            //     Tracestate.builder().build());
-            return null;
+            return SpanContext.create(TraceId.getInvalid(), SpanId.getInvalid(), TraceFlags.getDefault(), Tracestate.getDefault());
         }
         return SpanContext.create(
             TraceId.fromLowerBase16(diagnosticId, 3),

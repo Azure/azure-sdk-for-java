@@ -13,26 +13,26 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 public class AmqpPropagationFormatUtilTest {
 
     // TODO: Issue to fix this - https://github.com/open-telemetry/opentelemetry-java/issues/659
-    // @Test
-    // public void extractContextReturnsSpanContext() {
-    //     // Act
-    //     Context context = AmqpPropagationFormatUtil.extractContext("", Context.NONE);
-    //
-    //     // Assert
-    //     Assert.assertNotNull(context);
-    //     Assert.assertTrue(context.getData(SPAN_CONTEXT_KEY).isPresent());
-    // }
+    @Test
+    public void extractContextReturnsSpanContext() {
+        // Act
+        Context context = AmqpPropagationFormatUtil.extractContext("", Context.NONE);
 
-    // @Test
-    // public void getInvalidSpanContext() {
-    //     // Act
-    //     Context context = AmqpPropagationFormatUtil.extractContext("", Context.NONE);
-    //
-    //     // Assert
-    //     Assert.assertNotNull(context);
-    //     Assert.assertFalse("Invalid diagnostic Id, returns invalid SpanContext ",
-    //         ((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid());
-    // }
+        // Assert
+        Assert.assertNotNull(context);
+        Assert.assertTrue(context.getData(SPAN_CONTEXT_KEY).isPresent());
+    }
+
+    @Test
+    public void getInvalidSpanContext() {
+        // Act
+        Context context = AmqpPropagationFormatUtil.extractContext("", Context.NONE);
+
+        // Assert
+        Assert.assertNotNull(context);
+        Assert.assertFalse("Invalid diagnostic Id, returns invalid SpanContext ",
+            ((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid());
+    }
 
     @Test
     public void getValidSpanContext() {

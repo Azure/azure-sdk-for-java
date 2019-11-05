@@ -119,7 +119,7 @@ The following sections provides examples of using the azure-core-tracing-opentel
     ```
 
 ### Using the plugin package with AMQP client libraries
-Async send single event using [azure-messaging-eventhubs][azure-messaging-eventhubs] with tracing.
+Send a single event/message using [azure-messaging-eventhubs][azure-messaging-eventhubs] with tracing enabled.
     
 Users can additionally pass the value of the current tracing span to the EventData object with key **"opentelemetry-span"** on the [Context][context] object:
 
@@ -165,7 +165,7 @@ import static com.azure.core.implementation.tracing.Tracer.PARENT_SPAN_KEY;
 ## Troubleshooting
 ### General
 
-For more information on opentelemetry Java support for tracing, see [opentelemetry Java Quickstart][opentelemetry-quickstart].
+For more information on opentelemetry Java support for tracing, see [opentelemetry Java][opentelemetry-quickstart].
 
 ## Next steps
 ### Samples
