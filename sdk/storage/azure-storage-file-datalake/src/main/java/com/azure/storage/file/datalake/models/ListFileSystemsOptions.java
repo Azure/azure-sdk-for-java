@@ -20,6 +20,9 @@ public final class ListFileSystemsOptions {
 
     private Integer maxResultsPerPage;
 
+    /**
+     * Constructs an unpopulated {@link ListFileSystemsOptions}.
+     */
     public ListFileSystemsOptions() {
         this.details = new FileSystemListDetails();
     }
