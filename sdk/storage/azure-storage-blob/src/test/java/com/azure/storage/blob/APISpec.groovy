@@ -44,6 +44,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
+import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
@@ -498,33 +499,28 @@ class APISpec extends Specification {
     def compareFiles(File file1, File file2, long offset, long count) {
         def pos = 0L
         def readBuffer = 8 * Constants.KB
-        def stream1 = new FileInputStream(file1)
-        def stream2 = new FileInputStream(file2)
-        stream1.skip(offset)
+        def fileChannel1 = AsynchronousFileChannel.open(file1.toPath())
+        def fileChannel2 = AsynchronousFileChannel.open(file2.toPath())
 
         while (pos < count) {
-            def bufferSize = Math.min(readBuffer, count - pos)
-            def buffer1 = new byte[bufferSize]
-            def buffer2 = new byte[bufferSize]
+            def bufferSize = (int) Math.min(readBuffer, count - pos)
+            def buffer1 = ByteBuffer.allocate(bufferSize)
+            def buffer2 = ByteBuffer.allocate(bufferSize)
 
-            def readCount1 = stream1.read(buffer1)
-            def readCount2 = stream2.read(buffer2)
+            def readCount1 = fileChannel1.read(buffer1, offset + pos).get()
+            def readCount2 = fileChannel2.read(buffer2, pos).get()
 
-            if (readCount1 != readCount2) {
-                return false
-            }
-
-            if (!Arrays.equals(buffer1, buffer2)) {
+            if (readCount1 != readCount2 || buffer1 != buffer2) {
                 return false
             }
 
             pos += bufferSize
         }
 
-        def verificationRead = stream2.read()
+        def verificationRead = fileChannel2.read(ByteBuffer.allocate(1), pos).get()
 
-        stream1.close()
-        stream2.close()
+        fileChannel1.close()
+        fileChannel2.close()
 
         return pos == count && verificationRead == -1
     }

@@ -34,14 +34,14 @@ class StorageFileInputOutputStreamTests extends APISpec {
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {
-            while ((b = inputStream.read()) != -1){
+            while ((b = inputStream.read()) != -1) {
                 outputStream.write(b)
             }
         } catch (IOException ex) {
             throw new UncheckedIOException(ex)
         }
         byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 ==  randomBytes
+        assert randomBytes2 == randomBytes
     }
 
 
@@ -61,7 +61,7 @@ class StorageFileInputOutputStreamTests extends APISpec {
         byte[] b = new byte[length]
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {
-            if(inputStream.read(b) != -1){
+            if (inputStream.read(b) != -1) {
                 outputStream.write(b, 0, b.length)
             }
         } catch (IOException ex) {
