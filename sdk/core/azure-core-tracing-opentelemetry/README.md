@@ -12,7 +12,7 @@ documentation][api_documentation] | [Samples][samples]
 - Java Development Kit (JDK) with version 8 or above
 - [Maven][maven]
 
-### Adding the package to your product
+### Adding package to your product
 [//]: # ({x-version-update-start;com.azure:azure-core-tracing-opentelemetry;current})
 ```xml
 <dependency>
@@ -81,84 +81,81 @@ The following sections provides examples of using the azure-core-tracing-opentel
 ### Using the plugin package with HTTP client libraries
 - Synchronously create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
     
-    Users can additionally pass the value of the current tracing span to the SDKs using key **"opentelemetry-span"** on the [Context][context] parameter of the calling method:
+    Users can additionally pass the value of the current tracing span to the SDKs using key **PARENT_SPAN_KEY** on the [Context][context] parameter of the calling method:
     ```java
-    import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-    import com.azure.security.keyvault.secrets.SecretClientBuilder;
-    import com.azure.security.keyvault.secrets.SecretClient;
-    import com.azure.security.keyvault.secrets.models.Secret;
-    import io.opentelemetry.OpenTelemetry;
-    import io.opentelemetry.context.Scope;
-    import io.opentelemetry.trace.Span;
-    import io.opentelemetry.trace.Tracer;
-    import com.azure.core.util.Context;
-
-    import static com.azure.core.implementation.tracing.Tracer.PARENT_SPAN_KEY;
+    private static  final Tracer TRACER;
+    private static final TracerSdkFactory TRACER_SDK_FACTORY;
+        
+        static {
+            TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
+            TRACER = TRACER_SDK_FACTORY.get("Azure-OpenTelemetry");
+        }
     
-    static {
-      TracerSdkFactory tracerSdkFactory = setupOpenTelemetryAndExporter();
-      Tracer tracer = tracerSdkFactory.get("Azure-OpenTelemetry");
-      doClientWork(tracer);
-      tracerSdkFactory.shutdown();   
-    }
+        public static void main(String[] args) {
+            doClientWork();
+            TRACER_SDK_FACTORY.shutdown();
+            LOGGER.info("=== Tracer Shutdown  ===");
+        }
 
-    public static void doClientWork(Tracer tracer) {
-      SecretClient client = new SecretClientBuilder()
-        .endpoint("<your-vault-url>")
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
-      
-      try (final Scope scope = tracer.withSpan(tracer.spanBuilder("user-parent-span").startSpan())) {
-          final Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
-          // send user parent span to client call in context object
-          client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey("hello").setValue("world"), true, traceContext);
-      } finally {
-          span.end();
+        public static void doClientWork(Tracer tracer) {
+          SecretClient client = new SecretClientBuilder()
+            .endpoint("<your-vault-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+          
+          LOGGER.info("=== Start user scoped span  ===");
+          
+          Span span = TRACER.spanBuilder("user-parent-span").startSpan();
+          try (final Scope scope = TRACER.withSpan(span)) {
+              final Context traceContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
+              Secret secret = secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
+              System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue());
+          } finally {
+              span.end();
+              LOGGER.info("=== End user scoped span  ===");
+          }
       }
-    }
     ```
 
 ### Using the plugin package with AMQP client libraries
 Send a single event/message using [azure-messaging-eventhubs][azure-messaging-eventhubs] with tracing enabled.
     
-Users can additionally pass the value of the current tracing span to the EventData object with key **"opentelemetry-span"** on the [Context][context] object:
+Users can additionally pass the value of the current tracing span to the EventData object with key **PARENT_SPAN_KEY** on the [Context][context] object:
 
 ```java
-import io.opentelemetry.OpenTelemetry;
-import io.opentelemetry.context.Scope;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.Tracer;
-import com.azure.core.util.Context;
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncProducer;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-
-import static com.azure.core.implementation.tracing.Tracer.PARENT_SPAN_KEY;
+private static  final Tracer TRACER;
+private static final TracerSdkFactory TRACER_SDK_FACTORY;
     
-  static {
-    TracerSdkFactory tracerSdkFactory = setupOpenTelemetryAndExporter();
-    Tracer tracer = tracerSdkFactory.get("Azure-OpenTelemetry");
-    doClientWork(tracer);
-    tracerSdkFactory.shutdown();   
-  }
+    static {
+        TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
+        TRACER = TRACER_SDK_FACTORY.get("Azure-OpenTelemetry");
+    }
 
-  public static void doClientWork(Tracer tracer) { 
-    EventHubClient client = new EventHubClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
-    .buildClient();
-    EventHubProducer producer = client.createProducer();
+    public static void main(String[] args) {
+        doClientWork();
+        TRACER_SDK_FACTORY.shutdown();
+        LOGGER.info("=== Tracer Shutdown  ===");
+    }
 
-    try (final Scope scope = tracer.withSpan(tracer.spanBuilder("user-parent-span").startSpan())) {
-      final Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
-      // Create an event to send
-      final EventData eventData = new EventData("Hello world!".getBytes(UTF_8));
-      // Add tracing context to the event
-      eventData.context(tracingContext);
-      producer.send(eventData); 
-    } finally {
-        span.end();
-      }
+    private static void doClientWork() {
+        ConfigurationClient client = new ConfigurationClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .buildClient();
+
+        LOGGER.info("=== Start user scoped span  ===");
+
+        Span span = TRACER.spanBuilder("user-parent-span").startSpan();
+        try (final Scope scope = TRACER.withSpan(span)) {
+            final Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
+            // Create an event to send
+            final EventData eventData = new EventData("Hello world!".getBytes(UTF_8));
+            // Add tracing context to the event
+            eventData.context(tracingContext);
+            producer.send(eventData); 
+        } finally {
+            span.end();
+            LOGGER.info("=== End user scoped span  ===");
+        }
     }
 ```
 
@@ -172,18 +169,9 @@ For more information on opentelemetry Java support for tracing, see [opentelemet
 Several Java SDK samples are available to you in the SDKs GitHub repository. 
 These following samples provide example code for additional scenarios commonly encountered while working with Tracing:
 
-#### Enqueue and dequeue messages using Storage Queue client
-* [QueueClientEnqueueMessages][sample_helloWorld] and [AsyncQueueClientEnqueueMessages][sample_helloWorldAsync] - Contains samples for following scenarios with tracing support:
-    * Create a Queue client using [azure-storage-queue][azure-storage-queue] Java SDK.
-    * Enqueue and dequeue messages using the created Queue client.
-#### List Operations for secrets in a Key Vault
-* [ListKeyVaultSecrets][sample_list] and [AsyncListKeyVaultSecrets][sample_list_async] - Contains samples for following scenarios with tracing support:
-    * Create a secret.
-    * List secrets.
-    * Create new version of an existing secret.
-    * List versions of an existing secret.
-#### Publish multiple Events to an Event Hub
-* [PublishEvents][sample_publish_events] - Contains sample for publishing multiple events with tracing support.
+#### Setting configuration setting using [azure-data-app-configuration][azure_app_data_configuration]
+* [SetConfigurationSetting][sample_app_config] - Sample for setting a configuration setting using [azure-data-app-configuration][azure_app_data_configuration]
+with tracing enabled.
 
 ### Additional Documentation
 For more extensive documentation on OpenTelemetry, see the [API reference documentation][opentelemetry].
@@ -197,19 +185,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- Links -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
+[azure_data_app_configuration]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration/1.0.0-preview.6/jar
 [azure-security-keyvault-secrets]: ../keyvault/azure-security-keyvault-secrets
 [azure-messaging-eventhubs]: ../eventhubs/azure-messaging-eventhubs
-[azure-storage-queue]: ../storage/azure-storage-queue
 [context]: ../core/azure-core/src/main/java/com/azure/core/util/Context.java
 [create-eventhubs-builders]: ../eventhubs/azure-messaging-eventhubs#create-an-event-hub-client-using-a-connection-string
 [maven]: https://maven.apache.org/
 [source_code]:  src
 [api_documentation]: https://aka.ms/java-docs
-[sample_helloWorld]: ./src/samples/QueueClientEnqueueMessages.md
-[sample_helloWorldAsync]: ./src/samples/AsyncQueueClientEnqueueMessages.md
-[sample_list]: ./src/samples/ListeKeyVaultSecrets.md
-[sample_list_async]: ./src/samples/AsyncListKeyVaultSecrets.md
-[sample_publish_events]: ./src/samples/PublishEvents.md
+[sample_app_config]: ./src/samples/CreateConfigurationSettingTracingSample.md
 [samples]: ./src/samples/
 [opentelemetry]: https://github.com/open-telemetry/opentelemetry-java
 [opentelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java
