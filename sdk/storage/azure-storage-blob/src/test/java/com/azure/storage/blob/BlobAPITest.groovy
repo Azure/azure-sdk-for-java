@@ -4,14 +4,12 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
-import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.ImplUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
-import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
@@ -39,7 +37,6 @@ import java.nio.file.FileAlreadyExistsException
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.function.Consumer
 
 class BlobAPITest extends APISpec {
     BlobClient bc
@@ -492,25 +489,14 @@ class BlobAPITest extends APISpec {
             .getBlockBlobAsyncClient()
         bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
             new ParallelTransferOptions(1024, null, null), null, null, false)
-            .subscribe(
-                new Consumer<Response<BlobProperties>>() {
-                    @Override
-                    void accept(Response<BlobProperties> headers) {
-                        etagConflict = false
-                    }
-                },
-                new Consumer<Throwable>() {
-                    @Override
-                    void accept(Throwable throwable) {
-                        if (throwable instanceof BlobStorageException &&
-                            ((BlobStorageException) throwable).getStatusCode() == 412) {
-                            etagConflict = true
-                            return
-                        }
-                        etagConflict = false
-                        throw throwable
-                    }
-                })
+            .subscribe({ etagConflict = false }, {
+                if (it instanceof BlobStorageException && ((BlobStorageException) it).getStatusCode() == 412) {
+                    etagConflict = true
+                    return
+                }
+                etagConflict = false
+                throw it
+            })
 
         sleep(500) // Give some time for the download request to start.
         bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)

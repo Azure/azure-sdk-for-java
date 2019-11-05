@@ -25,6 +25,6 @@ jobs:
         AZURE_STORAGE_BLOB_CONNECTION_STRING: $(java-storage-test-blob-connection-string)
       PreRunSteps:
       - pwsh: |
-          & $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchLinuxEngine
+          & "$Env:ProgramFiles\Docker\Docker\DockerCli.exe" -SwitchLinuxEngine
           docker run -p 10000:10000 -p 10001:10001 mcr.microsoft.com/azure-storage/azurite
         displayName: "Run Azurite Docker Image"
