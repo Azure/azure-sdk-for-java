@@ -171,10 +171,10 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
                     .setType(DataType.EDM_STRING)
                     .setKey(true)
             ));
-        Response deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
+        Response<Void> deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
         Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
-        Response createResponse = client.createIndexWithResponse(index, null, null);
+        Response<Index> createResponse = client.createIndexWithResponse(index, null, null);
         Assert.assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         // Delete the same index twice

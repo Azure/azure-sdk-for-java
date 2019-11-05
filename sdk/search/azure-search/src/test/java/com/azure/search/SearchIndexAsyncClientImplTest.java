@@ -142,7 +142,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         uploadDocument(asyncClient, hotelDoc);
 
-        Mono futureDoc = asyncClient.getDocument("2", selectedFields, null);
+        Mono<Document> futureDoc = asyncClient.getDocument("2", selectedFields, null);
 
         StepVerifier
             .create(futureDoc)

@@ -4,6 +4,7 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.common.AutoCompletePagedResponse;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
@@ -75,7 +76,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("luxu", "sg", params, null);
         Assert.assertNotNull(results);
-        List allItems = results.streamByPage().collect(Collectors.toList());
+        List<PagedResponse<AutocompleteItem>> allItems = results.streamByPage().collect(Collectors.toList());
         // One page, with 0 items
         Assert.assertEquals(1, allItems.size());
         Assert.assertEquals(0, ((AutoCompletePagedResponse) allItems.get(0)).getItems().size());
@@ -88,7 +89,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("pi", "sg", params, null);
         Assert.assertNotNull(results);
-        List allItems = results.streamByPage().collect(Collectors.toList());
+        List<PagedResponse<AutocompleteItem>> allItems = results.streamByPage().collect(Collectors.toList());
         // One page, with 0 items
         Assert.assertEquals(1, allItems.size());
         Assert.assertEquals(0, ((AutoCompletePagedResponse) allItems.get(0)).getItems().size());

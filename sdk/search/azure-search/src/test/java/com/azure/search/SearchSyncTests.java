@@ -352,7 +352,7 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
         Assert.assertEquals(2, searchResultsList.size());
 
-        List hotelIds = searchResultsList.stream().map(r -> r.get("HotelId")).collect(Collectors.toList());
+        List<Object> hotelIds = searchResultsList.stream().map(r -> r.get("HotelId")).collect(Collectors.toList());
         Assert.assertTrue(Arrays.asList("1", "5").containsAll(hotelIds));
     }
 
@@ -743,7 +743,7 @@ public class SearchSyncTests extends SearchTestBase {
      * @param array which elements will be converted
      * @return {@link ArrayList}{@code <}{@link Object}{@code >}
      */
-    private static ArrayList<Object> convertArray(ArrayList array) {
+    private static ArrayList<Object> convertArray(ArrayList<Object> array) {
         ArrayList<Object> convertedArray = new ArrayList<>();
         for (Object arrayValue : array) {
             if (arrayValue instanceof LinkedHashMap) {

@@ -47,7 +47,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         DataSource dataSource1 = createTestBlobDataSource(null);
 
         // Try to delete before the data source exists, expect a NOT FOUND return status code
-        Response res = client.deleteDataSourceWithResponse(dataSource1.getName(), null, null).block();
+        Response<Void> res = client.deleteDataSourceWithResponse(dataSource1.getName(), null, null).block();
         Assert.assertTrue(res.getStatusCode() == HttpStatus.SC_NOT_FOUND);
 
         // Create the data source

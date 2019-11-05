@@ -36,6 +36,7 @@ public class IndexBatch<T> extends IndexBatchImpl<T> {
      * @param documents The documents to be uploaded.
      * @return IndexBatch with the desired actions added.
      */
+    @SuppressWarnings("unchecked")
     public IndexBatch<T> addUploadAction(T... documents) {
         addDocumentAction(Arrays.asList(documents), IndexActionType.UPLOAD);
         return this;
@@ -58,6 +59,7 @@ public class IndexBatch<T> extends IndexBatchImpl<T> {
      * @param documents The documents to be deleted.
      * @return IndexBatch with the desired actions added.
      */
+    @SuppressWarnings("unchecked")
     public IndexBatch<T> addDeleteAction(T... documents) {
         addDocumentAction(Arrays.asList(documents), IndexActionType.DELETE);
         return this;
@@ -110,6 +112,7 @@ public class IndexBatch<T> extends IndexBatchImpl<T> {
      * @param documents The documents to be merged.
      * @return IndexBatch with the desired actions added.
      */
+    @SuppressWarnings("unchecked")
     public IndexBatch<T> addMergeAction(T... documents) {
         addDocumentAction(Arrays.asList(documents), IndexActionType.MERGE);
         return this;
@@ -132,6 +135,7 @@ public class IndexBatch<T> extends IndexBatchImpl<T> {
      * @param documents The documents to be merged or uploaded.
      * @return IndexBatch with the desired actions added.
      */
+    @SuppressWarnings("unchecked")
     public IndexBatch<T> addMergeOrUploadAction(T... documents) {
         addDocumentAction(Arrays.asList(documents), IndexActionType.MERGE_OR_UPLOAD);
         return this;
