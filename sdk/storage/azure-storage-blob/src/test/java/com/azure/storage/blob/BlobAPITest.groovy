@@ -281,7 +281,8 @@ class BlobAPITest extends APISpec {
         when:
         bc.downloadToFile(testFile.getPath())
         def fileInputStream = new FileInputStream(testFile)
-        def fileData = fileInputStream.readAllBytes()
+        def fileData = new byte[testFile.size()]
+        fileInputStream.read(fileData)
         fileInputStream.close()
 
         then:
