@@ -155,5 +155,4 @@ public final class TextAnalyticsClientBuilder {
         this.retryPolicy = retryPolicy;
         return this;
     }
-
 }
