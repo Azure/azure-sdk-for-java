@@ -10,7 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.models.AccessCondition;
-import com.azure.search.models.AnalyzeResult;
+import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
 import com.azure.search.models.IndexGetStatisticsResult;
@@ -22,6 +22,7 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 
+import com.azure.search.models.TokenInfo;
 import org.apache.commons.lang3.NotImplementedException;
 
 @ServiceClient(builder = SearchServiceClientBuilder.class)
@@ -828,19 +829,47 @@ public class SearchServiceClient {
     }
 
     /**
-     * @return the Index analysis results.
-     * @throws NotImplementedException not implemented
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param indexName the name of the index for which to test an analyzer
+     * @param analyzeRequest the text and analyzer or analysis components to test
+     * @return analyze result.
      */
-    public Response<AnalyzeResult> analyzeIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedIterable<TokenInfo> analyzeIndex(String indexName,
+                                                 AnalyzeRequest analyzeRequest) {
+        return new PagedIterable<>(asyncClient.analyzeIndex(indexName, analyzeRequest));
     }
 
     /**
-     * @return a response containing the Index analysis results.
-     * @throws NotImplementedException not implemented
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param indexName the name of the index for which to test an analyzer
+     * @param analyzeRequest the text and analyzer or analysis components to test
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return analyze result.
      */
-    public Response<AnalyzeResult> analyzeIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedIterable<TokenInfo> analyzeIndex(String indexName,
+                                                 AnalyzeRequest analyzeRequest,
+                                                 RequestOptions requestOptions) {
+        return new PagedIterable<>(asyncClient.analyzeIndex(indexName, analyzeRequest, requestOptions));
+    }
+
+    /**
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param indexName the name of the index for which to test an analyzer
+     * @param analyzeRequest the text and analyzer or analysis components to test
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing analyze result.
+     */
+    public PagedIterable<TokenInfo> analyzeIndex(String indexName,
+                                                 AnalyzeRequest analyzeRequest,
+                                                 RequestOptions requestOptions,
+                                                 Context context) {
+        return new PagedIterable<>(asyncClient.analyzeIndex(indexName, analyzeRequest, requestOptions, context));
     }
 
     /**

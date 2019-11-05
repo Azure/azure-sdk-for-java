@@ -39,7 +39,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
     protected void beforeTest() {
         super.beforeTest();
         createHotelIndex();
-        asyncClient = getClientBuilder(INDEX_NAME).buildAsyncClient();
+        asyncClient = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
     }
 
     @Test

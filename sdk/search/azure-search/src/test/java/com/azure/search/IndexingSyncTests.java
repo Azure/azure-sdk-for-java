@@ -43,7 +43,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void countingDocsOfNewIndexGivesZero() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Long actual = client.getDocumentCount();
         Long expected = 0L;
@@ -54,7 +54,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void indexDoesNotThrowWhenAllActionsSucceed() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         String expectedHotelId = "1";
         Long expectedHotelCount = 1L;
@@ -74,7 +74,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void canIndexWithPascalCaseFields() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
-        client = getClientBuilder(BOOKS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
 
         List<Book> books = new ArrayList<>();
         books.add(new Book()
@@ -96,7 +96,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void canDeleteBatchByKeys() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         client.uploadDocuments(Arrays.asList(
             new Hotel().hotelId("1"),
@@ -121,7 +121,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFields() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         List<Hotel> hotels = new ArrayList<>();
         Hotel hotel = new Hotel()
@@ -145,7 +145,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         List<Document> docs = new ArrayList<>();
 
@@ -171,7 +171,7 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     public void canIndexStaticallyTypedDocuments() throws ParseException {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Hotel hotel1 = prepareStaticallyTypedHotel("1");
         Hotel hotel2 = prepareStaticallyTypedHotel("2");
@@ -215,7 +215,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void canIndexDynamicDocuments() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Document hotel1 = prepareDynamicallyTypedHotel("1");
         Document hotel2 = prepareDynamicallyTypedHotel("2");
@@ -259,7 +259,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void indexWithInvalidDocumentThrowsException() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         List<Document> docs = new ArrayList<>();
         docs.add(new Document());
@@ -287,7 +287,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             searchServiceClient.createOrUpdateIndex(indexWithReservedName);
         }
 
-        client = getClientBuilder(indexName).buildClient();
+        client = getSearchIndexClientBuilder(indexName).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
         Map<String, Object> doc = new HashMap<>();
@@ -303,7 +303,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void canRoundtripBoundaryValues() throws Exception {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
@@ -321,7 +321,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void dynamicDocumentDateTimesRoundTripAsUtc() throws Exception {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
-        client = getClientBuilder(BOOKS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
 
         OffsetDateTime utcTime = OffsetDateTime.of(
             LocalDateTime.of(2010, 1, 1, 0, 0, 0),
@@ -359,7 +359,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void staticallyTypedDateTimesRoundTripAsUtc() throws Exception {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
-        client = getClientBuilder(BOOKS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
 
         List<Book> books = Arrays.asList(
             new Book()
@@ -389,7 +389,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void canMergeStaticallyTypedDocuments() throws ParseException {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         // Define commonly used values
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -501,7 +501,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws Exception {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(prepareStaticallyTypedHotel("1"));
@@ -523,7 +523,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
@@ -642,7 +642,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void canMergeDynamicDocuments() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Document originalDoc = new Document();
         originalDoc.put("HotelId", "1");
@@ -768,7 +768,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     @Override
     public void canIndexAndAccessResponse() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         List<Hotel> hotelsToUpload = new ArrayList<>();
         hotelsToUpload.add(new Hotel()

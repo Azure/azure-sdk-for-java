@@ -47,7 +47,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
     @Test
     public void canDeserializeGeoPoint() throws Exception {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME_HOTELS).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME_HOTELS).buildClient();
 
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
@@ -64,7 +64,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
     @Test
     public void canSerializeGeoPoint() {
         setupIndexFromJsonFile(INDEX_JSON_GEO_POINTS);
-        client = getClientBuilder(INDEX_NAME_GEO_POINTS).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME_GEO_POINTS).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
 

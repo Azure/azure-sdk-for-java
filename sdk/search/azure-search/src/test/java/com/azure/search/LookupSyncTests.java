@@ -26,7 +26,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void canGetStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Hotel expected = prepareExpectedHotel();
         uploadDocument(client, expected);
@@ -39,7 +39,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValues() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Hotel expected = prepareEmptyHotel();
         uploadDocument(client, expected);
@@ -52,7 +52,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void canGetStaticallyTypedDocumentWithPascalCaseFields() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Hotel expected = preparePascalCaseFieldsHotel();
         uploadDocument(client, expected);
@@ -65,7 +65,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void canRoundtripStaticallyTypedPrimitiveCollections() throws ParseException {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
-        client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
 
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
         uploadDocument(client, expected);
@@ -78,7 +78,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() throws ParseException {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Hotel indexedDoc = prepareSelectedFieldsHotel();
         Hotel expected = new Hotel()
@@ -98,7 +98,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void canGetDynamicDocumentWithNullOrEmptyValues() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Document expectedDoc = new Document() {
             {
@@ -135,7 +135,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNulls() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Document originalDoc = new Document() {
             {
@@ -170,7 +170,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
-        client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
 
         String docKey = "3";
 
@@ -209,7 +209,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Document originalDoc = new Document() {
             {
@@ -271,7 +271,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected() {
         createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         Document originalDoc = new Document() {
             {
@@ -318,7 +318,7 @@ public class LookupSyncTests extends LookupTestBase {
     @Override
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() throws ParseException {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
-        client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
 
         String docKey = "1";
         OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");

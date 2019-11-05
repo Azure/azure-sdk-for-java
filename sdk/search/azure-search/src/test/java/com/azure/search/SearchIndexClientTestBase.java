@@ -140,17 +140,6 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         }
     }
 
-    protected void waitForIndexing() {
-        // Wait 2 secs to allow index request to finish
-        if (!interceptorManager.isPlaybackMode()) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     void assertException(Runnable exceptionThrower, Class<? extends Exception> expectedExceptionType, String expectedMessage) {
         try {
             exceptionThrower.run();

@@ -27,7 +27,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     @Override
     protected void initializeClient() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
     }
 

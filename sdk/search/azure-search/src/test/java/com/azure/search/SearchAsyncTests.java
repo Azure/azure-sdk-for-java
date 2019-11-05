@@ -45,7 +45,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canContinueSearch() {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         hotels = createHotelsList(100);
         uploadDocuments(client, hotels);
@@ -75,7 +75,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canContinueSearchWithTop() {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         // upload large documents batch
         hotels = createHotelsList(2000);
@@ -107,7 +107,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithSelectedFields() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -149,7 +149,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canUseTopAndSkipForClientSidePaging() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -166,7 +166,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canFilterNonNullableType() throws Exception {
         setupIndexFromJsonFile(MODEL_WITH_VALUE_TYPES_INDEX_JSON);
-        client = getClientBuilder(MODEL_WITH_INDEX_TYPES_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(MODEL_WITH_INDEX_TYPES_INDEX_NAME).buildAsyncClient();
 
         List<Map<String, Object>> expectedDocsList =
             uploadDocumentsJson(client, MODEL_WITH_VALUE_TYPES_DOCS_JSON)
@@ -190,7 +190,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void searchWithoutOrderBySortsByScore() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -208,7 +208,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void orderByProgressivelyBreaksTies() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         List<String> expected = Arrays.asList("1", "9", "3", "4", "5", "10", "2", "6", "7", "8");
@@ -221,7 +221,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canFilter() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -245,7 +245,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithRangeFacets() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -268,7 +268,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithValueFacets() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -338,7 +338,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithLuceneSyntax() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -362,7 +362,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchDynamicDocuments() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -391,7 +391,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -432,7 +432,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canRoundTripNonNullableValueTypes() throws Exception {
         setupIndexFromJsonFile(NON_NULLABLE_INDEX_JSON);
-        client = getClientBuilder(NON_NULLABLE_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(NON_NULLABLE_INDEX_NAME).buildAsyncClient();
 
         NonNullableModel doc1 = new NonNullableModel()
             .key("123")
@@ -461,7 +461,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithDateInStaticModel() throws ParseException, IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         // check if deserialization of Date type object is successful
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
@@ -478,7 +478,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithSynonyms() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -504,7 +504,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithSearchModeAll() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -518,7 +518,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void defaultSearchModeIsAny() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -530,7 +530,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canGetResultCountInSearch() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         Flux<SearchPagedResponse> results = client
@@ -543,7 +543,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithRegex() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -567,7 +567,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithEscapedSpecialCharsInRegex() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -586,7 +586,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void searchWithScoringProfileBoostsScore() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -602,7 +602,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canSearchWithMinimumCoverage() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -618,7 +618,7 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     public void canUseHitHighlighting() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -664,7 +664,7 @@ public class SearchAsyncTests extends SearchTestBase {
     protected void search(
         String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         PagedFluxBase<SearchResult, SearchPagedResponse> results = client.search(searchText, searchOptions, requestOptions);
         results.log().blockFirst();

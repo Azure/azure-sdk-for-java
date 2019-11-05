@@ -28,7 +28,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void canSuggestDynamicDocuments() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -44,7 +44,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void searchFieldsExcludesFieldsFromSuggest() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -61,7 +61,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void canUseSuggestHitHighlighting() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -81,7 +81,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void canGetFuzzySuggestions() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -98,7 +98,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void canSuggestStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
@@ -117,7 +117,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void canSuggestWithDateTimeInStaticModel() throws Exception {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
-        client = getClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
         Author tolkien = new Author();
         tolkien.firstName("J.R.R.");
         tolkien.lastName("Tolkien");
@@ -145,7 +145,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void fuzzyIsOffByDefault() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -160,7 +160,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void suggestThrowsWhenGivenBadSuggesterName() {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("Hotel", "Suggester does not exist", null, null);
 
@@ -172,7 +172,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void suggestThrowsWhenRequestIsMalformed() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -188,7 +188,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void testCanSuggestWithMinimumCoverage() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -209,7 +209,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void testTopTrimsResults() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -230,7 +230,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void testCanFilter() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -251,7 +251,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void testOrderByProgressivelyBreaksTies() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 

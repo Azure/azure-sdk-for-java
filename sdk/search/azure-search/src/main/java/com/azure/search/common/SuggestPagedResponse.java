@@ -36,7 +36,6 @@ public class SuggestPagedResponse extends PagedResponseBase<String, SuggestResul
             documentSearchResponse.getValue().getResults(),
             null,
             deserializeHeaders(documentSearchResponse.getHeaders()));
-
         this.coverage = documentSearchResponse.getValue().getCoverage();
     }
 

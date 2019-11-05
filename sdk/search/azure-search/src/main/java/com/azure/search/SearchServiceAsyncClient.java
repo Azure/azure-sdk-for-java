@@ -19,7 +19,7 @@ import com.azure.search.SearchServiceUrlParser.SearchServiceUrlParts;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.models.AccessCondition;
-import com.azure.search.models.AnalyzeResult;
+import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
 import com.azure.search.models.IndexGetStatisticsResult;
@@ -30,6 +30,7 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
+import com.azure.search.models.TokenInfo;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
@@ -917,19 +918,58 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return the Index analysis results.
-     * @throws NotImplementedException not implemented
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param indexName the name of the index for which to test an analyzer
+     * @param analyzeRequest the text and analyzer or analysis components to test
+     * @return analyze result.
      */
-    public Mono<AnalyzeResult> analyzeIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<TokenInfo> analyzeIndex(String indexName, AnalyzeRequest analyzeRequest) {
+        return this.analyzeIndex(indexName, analyzeRequest, null);
     }
 
     /**
-     * @return a response containing the Index analysis results.
-     * @throws NotImplementedException not implemented
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param indexName the name of the index for which to test an analyzer
+     * @param analyzeRequest the text and analyzer or analysis components to test
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing analyze result.
      */
-    public Mono<Response<AnalyzeResult>> analyzeIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<TokenInfo> analyzeIndex(String indexName,
+                                             AnalyzeRequest analyzeRequest,
+                                             RequestOptions requestOptions) {
+        return new PagedFlux<>(
+            () -> withContext(context -> this.analyzeIndexWithResponse(indexName,
+                analyzeRequest,
+                requestOptions,
+                context)),
+            nextLink -> Mono.empty());
+    }
+
+    PagedFlux<TokenInfo> analyzeIndex(String indexName,
+                                      AnalyzeRequest analyzeRequest,
+                                      RequestOptions requestOptions,
+                                      Context context) {
+        return new PagedFlux<>(
+            () -> this.analyzeIndexWithResponse(indexName, analyzeRequest, requestOptions, context),
+            nextLink -> Mono.empty());
+    }
+
+    Mono<PagedResponse<TokenInfo>> analyzeIndexWithResponse(String indexName,
+                                                    AnalyzeRequest analyzeRequest,
+                                                    RequestOptions requestOptions,
+                                                    Context context) {
+        return restClient.indexes()
+            .analyzeWithRestResponseAsync(indexName, analyzeRequest, requestOptions, context)
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getTokens(),
+                null,
+                deserializeHeaders(response.getHeaders())));
     }
 
     /**

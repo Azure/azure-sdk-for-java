@@ -20,7 +20,7 @@ public class SyncTests extends SearchIndexClientTestBase {
         super.beforeTest();
 
         createHotelIndex();
-        asyncClient = getClientBuilder("hotels").buildAsyncClient();
+        asyncClient = getSearchIndexClientBuilder("hotels").buildAsyncClient();
     }
 
     @Test

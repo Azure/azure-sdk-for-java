@@ -48,7 +48,7 @@ public class SearchSyncTests extends SearchTestBase {
     protected void search(
         String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         client.search(searchText, searchOptions, requestOptions).iterableByPage().iterator().next();
     }
@@ -56,7 +56,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchDynamicDocuments() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -86,7 +86,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canContinueSearch() {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         // upload large documents batch
         hotels = createHotelsList(100);
@@ -119,7 +119,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canContinueSearchWithTop() {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         // upload large documents batch
         hotels = createHotelsList(2000);
@@ -154,7 +154,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -196,7 +196,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canRoundTripNonNullableValueTypes() throws Exception {
         setupIndexFromJsonFile(NON_NULLABLE_INDEX_JSON);
-        client = getClientBuilder(NON_NULLABLE_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(NON_NULLABLE_INDEX_NAME).buildClient();
 
         NonNullableModel doc1 = new NonNullableModel()
             .key("123")
@@ -227,7 +227,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithDateInStaticModel() throws ParseException, IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         // check if deserialization of Date type object is successful
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
@@ -248,7 +248,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithSelectedFields() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -294,7 +294,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canUseTopAndSkipForClientSidePaging() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -311,7 +311,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void searchWithoutOrderBySortsByScore() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -325,7 +325,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void orderByProgressivelyBreaksTies() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -340,7 +340,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canFilter() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -359,7 +359,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithRangeFacets() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -381,7 +381,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithValueFacets() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -449,7 +449,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithLuceneSyntax() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -469,7 +469,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canFilterNonNullableType() throws IOException {
         setupIndexFromJsonFile(MODEL_WITH_VALUE_TYPES_INDEX_JSON);
-        client = getClientBuilder(MODEL_WITH_INDEX_TYPES_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(MODEL_WITH_INDEX_TYPES_INDEX_NAME).buildClient();
 
         List<Map<String, Object>> expectedDocsList =
             uploadDocumentsJson(client, MODEL_WITH_VALUE_TYPES_DOCS_JSON)
@@ -492,7 +492,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithSearchModeAll() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -506,7 +506,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void defaultSearchModeIsAny() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -520,7 +520,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canGetResultCountInSearch() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -536,7 +536,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithRegex() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -561,7 +561,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithEscapedSpecialCharsInRegex() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SearchOptions searchOptions = new SearchOptions().setQueryType(QueryType.FULL);
@@ -579,7 +579,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void searchWithScoringProfileBoostsScore() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SearchOptions searchOptions = new SearchOptions()
@@ -598,7 +598,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithMinimumCoverage() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         PagedIterableBase<SearchResult, SearchPagedResponse>  results = client
@@ -613,7 +613,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canUseHitHighlighting() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -662,7 +662,7 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     public void canSearchWithSynonyms() throws IOException {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
