@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Collections;
+import java.util.UUID;
 
 public class IndexManagementAsyncTests extends IndexManagementTestBase {
     private SearchServiceAsyncClient client;
@@ -245,8 +247,31 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .create(listResponse.collectList())
             .assertNext(result -> {
                 Assert.assertEquals(2, result.size());
-                Assert.assertEquals(result.get(0).getName(), index1.getName());
-                Assert.assertEquals(result.get(1).getName(), index2.getName());
+                Assert.assertEquals(index1.getName(), result.get(0).getName());
+                Assert.assertEquals(index2.getName(), result.get(1).getName());
+            })
+            .verifyComplete();
+
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        listResponse = client.listIndexes("name", requestOptions);
+
+        StepVerifier
+            .create(listResponse.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(index1.getName(), result.get(0).getName());
+                Assert.assertEquals(index2.getName(), result.get(1).getName());
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.listIndexesWithResponse("name", requestOptions))
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.getItems().size());
+                Assert.assertEquals(index1.getName(), result.getValue().get(0).getName());
+                Assert.assertEquals(index2.getName(), result.getValue().get(1).getName());
             })
             .verifyComplete();
     }
@@ -283,8 +308,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .create(selectedFieldListResponse.collectList())
             .assertNext(result -> {
                 Assert.assertEquals(2, result.size());
-                Assert.assertEquals(result.get(0).getName(), index1.getName());
-                Assert.assertEquals(result.get(1).getName(), index2.getName());
+                Assert.assertEquals(index1.getName(), result.get(0).getName());
+                Assert.assertEquals(index2.getName(), result.get(1).getName());
             })
             .verifyComplete();
     }

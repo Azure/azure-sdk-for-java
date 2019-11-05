@@ -3,6 +3,7 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedIterable;
@@ -263,8 +264,8 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         client.createSynonymMap(synonymMap1);
         client.createSynonymMap(synonymMap2);
 
-        PagedIterable<SynonymMap> listResponse = client.listSynonymMaps();
-        List<SynonymMap> result = listResponse.stream().collect(Collectors.toList());
+        PagedIterable<SynonymMap> actual = client.listSynonymMaps();
+        List<SynonymMap> result = actual.stream().collect(Collectors.toList());
 
         Assert.assertEquals(2, result.size());
         Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());
@@ -273,8 +274,17 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         RequestOptions requestOptions = new RequestOptions()
             .setClientRequestId(UUID.randomUUID());
 
-        listResponse = client.listSynonymMaps("name", requestOptions);
-        result = listResponse.stream().collect(Collectors.toList());
+        actual = client.listSynonymMaps("name", requestOptions);
+        result = actual.stream().collect(Collectors.toList());
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());
+        Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
+
+        Context context = new Context("key", "value");
+        PagedResponse<SynonymMap> listResponse = client.listSynonymMapsWithResponse("name",
+            requestOptions, context);
+        result = listResponse.getItems();
 
         Assert.assertEquals(2, result.size());
         Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());

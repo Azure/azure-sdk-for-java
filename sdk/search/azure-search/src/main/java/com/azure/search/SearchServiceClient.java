@@ -5,6 +5,7 @@ package com.azure.search;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -194,6 +195,23 @@ public class SearchServiceClient {
      */
     public PagedIterable<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions, context));
+    }
+
+    /**
+     * List all DataSources from an Azure Cognitive Search service.
+     *
+     * @param select Selects which top-level properties of DataSource definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties.
+     * @param requestOptions Additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return a response containing the list of DataSources.
+     */
+    public PagedResponse<DataSource> listDataSourcesWithResponse(String select,
+                                                                 RequestOptions requestOptions, Context context) {
+        return asyncClient.listDataSourcesWithResponse(select, requestOptions, context).block();
     }
 
     /**
@@ -586,6 +604,21 @@ public class SearchServiceClient {
      */
     public PagedIterable<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions, context));
+    }
+
+    /**
+     * Lists all indexes available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the index definitions to retrieve.
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return a response emitting the list of indexes.
+     */
+    public PagedResponse<Index> listIndexesWithResponse(String select, RequestOptions requestOptions, Context context) {
+        return asyncClient.listIndexesWithResponse(select, requestOptions, context).block();
     }
 
     /**
@@ -1037,6 +1070,22 @@ public class SearchServiceClient {
      */
     public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions, context));
+    }
+
+    /**
+     * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the index definitions to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing the list of synonym maps.
+     */
+    public PagedResponse<SynonymMap> listSynonymMapsWithResponse(String select,
+                                                                 RequestOptions requestOptions, Context context) {
+        return asyncClient.listSynonymMapsWithResponse(select, requestOptions, context).block();
     }
 
     /**

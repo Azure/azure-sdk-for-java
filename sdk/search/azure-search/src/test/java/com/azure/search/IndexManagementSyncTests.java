@@ -4,12 +4,14 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class IndexManagementSyncTests extends IndexManagementTestBase {
@@ -201,12 +204,30 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createIndex(index1);
         client.createIndex(index2);
 
-        PagedIterable<Index> listResponse = client.listIndexes();
-        List<Index> result = listResponse.stream().collect(Collectors.toList());
+        PagedIterable<Index> actual = client.listIndexes();
+        List<Index> result = actual.stream().collect(Collectors.toList());
 
         Assert.assertEquals(2, result.size());
-        Assert.assertEquals(result.get(0).getName(), index1.getName());
-        Assert.assertEquals(result.get(1).getName(), index2.getName());
+        Assert.assertEquals(index1.getName(), result.get(0).getName());
+        Assert.assertEquals(index2.getName(), result.get(1).getName());
+
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        actual = client.listIndexes("name", requestOptions);
+        result = actual.stream().collect(Collectors.toList());
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(index1.getName(), result.get(0).getName());
+        Assert.assertEquals(index2.getName(), result.get(1).getName());
+
+        Context context = new Context("key", "value");
+        PagedResponse<Index> listResponse = client.listIndexesWithResponse("name", requestOptions, context);
+        result = listResponse.getItems();
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(index1.getName(), result.get(0).getName());
+        Assert.assertEquals(index2.getName(), result.get(1).getName());
     }
 
     @Override

@@ -5,15 +5,19 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
+import com.azure.search.models.RequestOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DataSourceSyncTests extends DataSourceTestBase {
@@ -33,8 +37,21 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         List<DataSource> resultList = results.stream().collect(Collectors.toList());
 
         Assert.assertEquals(2, resultList.size());
-        Assert.assertEquals(resultList.get(0).getName(), dataSource1.getName());
-        Assert.assertEquals(resultList.get(1).getName(), dataSource2.getName());
+        Assert.assertEquals(dataSource1.getName(), resultList.get(0).getName());
+        Assert.assertEquals(dataSource2.getName(), resultList.get(1).getName());
+
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        Context context = new Context("key", "value");
+
+        PagedResponse<DataSource> listResponse = client.listDataSourcesWithResponse("name",
+            requestOptions, context);
+        resultList = listResponse.getItems();
+
+        Assert.assertEquals(2, resultList.size());
+        Assert.assertEquals(dataSource1.getName(), resultList.get(0).getName());
+        Assert.assertEquals(dataSource2.getName(), resultList.get(1).getName());
     }
 
     @Override

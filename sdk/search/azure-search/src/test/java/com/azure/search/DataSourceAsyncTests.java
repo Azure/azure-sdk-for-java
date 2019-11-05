@@ -9,10 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
+import com.azure.search.models.RequestOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
+
+import java.util.UUID;
 
 public class DataSourceAsyncTests extends DataSourceTestBase {
     private SearchServiceAsyncClient client;
@@ -33,8 +36,20 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .create(results.collectList())
             .assertNext(result -> {
                 Assert.assertEquals(2, result.size());
-                Assert.assertEquals(result.get(0).getName(), dataSource1.getName());
-                Assert.assertEquals(result.get(1).getName(), dataSource2.getName());
+                Assert.assertEquals(dataSource1.getName(), result.get(0).getName());
+                Assert.assertEquals(dataSource2.getName(), result.get(1).getName());
+            })
+            .verifyComplete();
+
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        StepVerifier
+            .create(client.listDataSourcesWithResponse("name", requestOptions))
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.getItems().size());
+                Assert.assertEquals(dataSource1.getName(), result.getValue().get(0).getName());
+                Assert.assertEquals(dataSource2.getName(), result.getValue().get(1).getName());
             })
             .verifyComplete();
     }

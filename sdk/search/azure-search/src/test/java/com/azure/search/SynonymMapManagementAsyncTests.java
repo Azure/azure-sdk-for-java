@@ -312,6 +312,15 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
             })
             .verifyComplete();
+
+        StepVerifier
+            .create(client.listSynonymMapsWithResponse("name", requestOptions))
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.getItems().size());
+                Assert.assertEquals(synonymMap1.getName(), result.getValue().get(0).getName());
+                Assert.assertEquals(synonymMap2.getName(), result.getValue().get(1).getName());
+            })
+            .verifyComplete();
     }
 
     @Override

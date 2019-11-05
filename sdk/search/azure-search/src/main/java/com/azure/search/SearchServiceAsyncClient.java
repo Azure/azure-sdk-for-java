@@ -242,7 +242,13 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)),
+            () -> this.listDataSourcesWithResponse(select, requestOptions),
+            nextLink -> Mono.empty());
+    }
+
+    PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> this.listDataSourcesWithResponse(select, requestOptions, context),
             nextLink -> Mono.empty());
     }
 
@@ -254,18 +260,14 @@ public class SearchServiceAsyncClient {
      *               The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     *
-     * @return a list of DataSources
+     * @return a response containing the list of DataSources.
      */
-    public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> this.listDataSourcesWithResponse(select, requestOptions, context),
-            nextLink -> Mono.empty());
+    public Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(String select, RequestOptions requestOptions) {
+        return withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context));
     }
 
-    public Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(
-        String select, RequestOptions requestOptions, Context context) {
+    Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(String select,
+                                                                RequestOptions requestOptions, Context context) {
         return restClient.dataSources()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -676,7 +678,7 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)),
+            () -> this.listIndexesWithResponse(select, requestOptions),
             nextLink -> Mono.empty());
     }
 
@@ -686,9 +688,21 @@ public class SearchServiceAsyncClient {
             nextLink -> Mono.empty());
     }
 
-    private Mono<PagedResponse<Index>> listIndexesWithResponse(String select,
-                                                               RequestOptions requestOptions,
-                                                               Context context) {
+    /**
+     * Lists all indexes available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the index definitions to retrieve.
+     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *                       The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response emitting the list of indexes.
+     */
+    public Mono<PagedResponse<Index>> listIndexesWithResponse(String select, RequestOptions requestOptions) {
+        return withContext(context -> this.listIndexesWithResponse(select, requestOptions, context));
+    }
+
+    Mono<PagedResponse<Index>> listIndexesWithResponse(String select, RequestOptions requestOptions, Context context) {
         return restClient.indexes()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -1120,7 +1134,7 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context)),
+            () -> this.listSynonymMapsWithResponse(select, requestOptions),
             nextLink -> Mono.empty());
     }
 
@@ -1130,9 +1144,23 @@ public class SearchServiceAsyncClient {
             nextLink -> Mono.empty());
     }
 
-    private Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select,
-                                                                        RequestOptions requestOptions,
-                                                                        Context context) {
+    /**
+     * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the index definitions to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing the list of synonym maps.
+     */
+    public Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select, RequestOptions requestOptions) {
+        return withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context));
+    }
+
+    Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select,
+                                                                RequestOptions requestOptions,
+                                                                Context context) {
         return restClient
             .synonymMaps()
             .listWithRestResponseAsync(select, requestOptions, context)
