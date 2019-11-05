@@ -193,7 +193,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
         } finally {
             if (message instanceof ReferenceCounted) {
-                boolean released = ((ReferenceCounted)message).release();
+                boolean released = ((ReferenceCounted) message).release();
                 reportIssueUnless(released, context, "failed to release message: {}", message);
             }
         }
@@ -332,12 +332,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 return;
             }
             if (event instanceof RntbdContext) {
-                this.contextFuture.complete((RntbdContext)event);
+                this.contextFuture.complete((RntbdContext) event);
                 this.removeContextNegotiatorAndFlushPendingWrites(context);
                 return;
             }
             if (event instanceof RntbdContextException) {
-                this.contextFuture.completeExceptionally((RntbdContextException)event);
+                this.contextFuture.completeExceptionally((RntbdContextException) event);
                 context.pipeline().flush().close();
                 return;
             }

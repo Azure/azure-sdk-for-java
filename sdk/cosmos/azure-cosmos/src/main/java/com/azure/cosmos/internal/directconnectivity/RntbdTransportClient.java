@@ -104,6 +104,8 @@ public final class RntbdTransportClient extends TransportClient {
     @Override
     public Mono<StoreResponse> invokeStoreAsync(final URI address, final RxDocumentServiceRequest request) {
 
+        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {})", address, request);
+
         checkNotNull(address, "expected non-null address");
         checkNotNull(request, "expected non-null request");
         this.throwIfClosed();
@@ -114,6 +116,8 @@ public final class RntbdTransportClient extends TransportClient {
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
+        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {}): {}", address, request, record);
+        
         return Mono.fromFuture(record).doFinally(signal -> {
             if (signal == SignalType.CANCEL) {
                 boolean cancelled = record.cancel(false);
