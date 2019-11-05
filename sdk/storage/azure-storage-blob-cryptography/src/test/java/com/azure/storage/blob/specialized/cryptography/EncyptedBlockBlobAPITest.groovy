@@ -214,7 +214,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         20                | 1                 // 6 One buffer larger than an encryption block.
         20                | 2                 // 7 Two buffers larger than an encryption block.
         100               | 1                 // 8 One buffer containing multiple encryption blocks
-        5 * Constants.KB  | 100               // 9 Large number of small buffers.
+        5 * Constants.KB  | Constants.KB      // 9 Large number of small buffers.
         10 * Constants.MB | 2                 // 10 Small number of large buffers.
     }
 
