@@ -56,6 +56,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     protected void performWorkload(BaseSubscriber<Document> baseSubscriber, long i) throws Exception {
         Flux<Document> obs;
         boolean readyMyWrite = RandomUtils.nextBoolean();
+        readyMyWrite = false;
         if (readyMyWrite) {
             // will do a write and immediately upon success will either
             // do a point read
@@ -79,7 +80,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                                             "couldn't find my write in a single partition query!"))));
                     break;
                 case 2:
-                    // write a random document to cosmodb and update the cache.
+                    // write a random document to cosmosdb and update the cache.
                     // then try to query for the document which just was written
                     obs = writeDocument()
                             .flatMap(d -> xPartitionQuery(generateQuery(d))
