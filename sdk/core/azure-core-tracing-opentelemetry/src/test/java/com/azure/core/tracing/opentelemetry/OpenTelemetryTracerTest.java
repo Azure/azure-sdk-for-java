@@ -36,7 +36,7 @@ public class OpenTelemetryTracerTest {
     private static final String HOSTNAME_VALUE = "testEventDataNameSpace.servicebus.windows.net";
     private static final String ENTITY_PATH_VALUE = "test";
     private static final String COMPONENT_VALUE = "eventhubs";
-    private OpenTelemetryTracer openCensusTracer;
+    private OpenTelemetryTracer openTelemetryTracer;
     private Tracer tracer;
     private Context tracingContext;
     private Span parentSpan;
@@ -45,7 +45,7 @@ public class OpenTelemetryTracerTest {
     @Before
     public void setUp() {
         System.out.println("Running: setUp");
-        openCensusTracer = new OpenTelemetryTracer();
+        openTelemetryTracer = new OpenTelemetryTracer();
         // Get the global singleton Tracer object.
         tracer = OpenTelemetry.getTracerFactory().get("TracerSdkTest");
         // Start user parent span.
@@ -69,7 +69,7 @@ public class OpenTelemetryTracerTest {
     @Test(expected = NullPointerException.class)
     public void startSpanNullPointerException() {
         // Act
-        openCensusTracer.start("", null);
+        openTelemetryTracer.start("", null);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class OpenTelemetryTracerTest {
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
 
         // Act
-        final Context updatedContext = openCensusTracer.start(METHOD_NAME, tracingContext);
+        final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, tracingContext);
 
         // Assert
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
@@ -91,7 +91,7 @@ public class OpenTelemetryTracerTest {
     @Test
     public void startSpanTestNoUserParent() {
         // Act
-        final Context updatedContext = openCensusTracer.start(METHOD_NAME, Context.NONE);
+        final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, Context.NONE);
 
         // Assert
         Assert.assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
@@ -115,7 +115,7 @@ public class OpenTelemetryTracerTest {
             .addData(HOST_NAME_KEY, HOSTNAME_VALUE);
 
         // Act
-        final Context updatedContext = openCensusTracer.start(METHOD_NAME, traceContext, ProcessKind.SEND);
+        final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, traceContext, ProcessKind.SEND);
 
         // Assert
         // verify span created with explicit parent when for Process Kind SEND
@@ -138,7 +138,7 @@ public class OpenTelemetryTracerTest {
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
 
         // Act
-        final Context updatedContext = openCensusTracer.start(METHOD_NAME, tracingContext, ProcessKind.MESSAGE);
+        final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, tracingContext, ProcessKind.MESSAGE);
 
         // Assert
         // verify span created with explicit parent when no span context in the sending Context object
@@ -158,7 +158,7 @@ public class OpenTelemetryTracerTest {
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
 
         // Act
-        final Context updatedContext = openCensusTracer.start(METHOD_NAME, tracingContext, ProcessKind.PROCESS);
+        final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, tracingContext, ProcessKind.PROCESS);
 
         // verify no parent span passed
         Assert.assertFalse("When no parent span passed in context information",
@@ -180,7 +180,7 @@ public class OpenTelemetryTracerTest {
         final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getContext());
 
         // Act
-        final Context updatedContext = openCensusTracer.start(METHOD_NAME, traceContext, ProcessKind.PROCESS);
+        final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, traceContext, ProcessKind.PROCESS);
 
         // Assert
         Assert.assertNotNull(updatedContext.getData("scope").get());
@@ -191,7 +191,7 @@ public class OpenTelemetryTracerTest {
     @Test(expected = NullPointerException.class)
     public void startSpanOverloadNullPointerException() {
         // Act
-        openCensusTracer.start("", Context.NONE, null);
+        openTelemetryTracer.start("", Context.NONE, null);
     }
 
     // TODO: Fix links for openTelemetry
@@ -205,7 +205,7 @@ public class OpenTelemetryTracerTest {
     //     final ReadableSpan parentSpanImpl = (ReadableSpan) parentSpan;
     //     final Link expectedLink = SpanData.Link.create(testSpan.getSpanContext());
     //     // Act
-    //     openCensusTracer.addLink(traceContext);
+    //     openTelemetryTracer.addLink(traceContext);
     //
     //     //Assert
     //     // verify parent span has the expected Link
@@ -221,7 +221,7 @@ public class OpenTelemetryTracerTest {
         final String expectedStatus = "UNKNOWN";
 
         // Act
-        openCensusTracer.end(null, null, tracingContext);
+        openTelemetryTracer.end(null, null, tracingContext);
 
         // Assert
         Assert.assertEquals(expectedStatus, recordEventsSpan.toSpanData().getStatus().getCanonicalCode().toString());
@@ -235,7 +235,7 @@ public class OpenTelemetryTracerTest {
         final String expectedStatus = "UNKNOWN";
 
         // Act
-        openCensusTracer.end(null, new Throwable(throwableMessage), tracingContext);
+        openTelemetryTracer.end(null, new Throwable(throwableMessage), tracingContext);
 
         // Assert
         Assert.assertEquals(expectedStatus, recordEventsSpan.toSpanData().getStatus().getCanonicalCode().toString());
@@ -250,7 +250,7 @@ public class OpenTelemetryTracerTest {
         final String expectedStatus = "NOT_FOUND";
 
         // Act
-        openCensusTracer.end(404, new Throwable(throwableMessage), tracingContext);
+        openTelemetryTracer.end(404, new Throwable(throwableMessage), tracingContext);
 
         // Assert
         Assert.assertEquals(expectedStatus, recordEventsSpan.toSpanData().getStatus().getCanonicalCode().toString());

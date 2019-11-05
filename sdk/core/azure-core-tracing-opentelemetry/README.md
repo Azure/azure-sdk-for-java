@@ -18,7 +18,7 @@ documentation][api_documentation] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -37,7 +37,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-preview.4</version>
+    <version>1.0.0-preview.1</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -79,7 +79,7 @@ A span represents a single operation in a trace. A span could be representative 
 ## Examples
 The following sections provides examples of using the azure-core-tracing-opentelemetry plugin with some of the Azure Java SDK libraries:
 ### Using the plugin package with HTTP client libraries
-- Sync create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
+- Synchronously create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
     
     Users can additionally pass the value of the current tracing span to the SDKs using key **"opentelemetry-span"** on the [Context][context] parameter of the calling method:
     ```java
@@ -87,59 +87,36 @@ The following sections provides examples of using the azure-core-tracing-opentel
     import com.azure.security.keyvault.secrets.SecretClientBuilder;
     import com.azure.security.keyvault.secrets.SecretClient;
     import com.azure.security.keyvault.secrets.models.Secret;
-    import io.opentelemetry.common.Scope;
+    import io.opentelemetry.OpenTelemetry;
+    import io.opentelemetry.context.Scope;
+    import io.opentelemetry.trace.Span;
     import io.opentelemetry.trace.Tracer;
-    import io.opentelemetry.trace.Tracing;
     import com.azure.core.util.Context;
 
-    import static com.azure.core.implementation.tracing.Tracer.opentelemetry_SPAN_KEY;
+    import static com.azure.core.implementation.tracing.Tracer.PARENT_SPAN_KEY;
     
-    SecretClient client = new SecretClientBuilder()
+    static {
+      TracerSdkFactory tracerSdkFactory = setupOpenTelemetryAndExporter();
+      Tracer tracer = tracerSdkFactory.get("Azure-OpenTelemetry");
+      doClientWork(tracer);
+      tracerSdkFactory.shutdown();   
+    }
+
+    public static void doClientWork(Tracer tracer) {
+      SecretClient client = new SecretClientBuilder()
         .endpoint("<your-vault-url>")
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
-    
-    Tracer tracer = Tracing.getTracer();
-    
-    try (Scope scope = tracer.spanBuilder("tracing-user-span").startScopedSpan()) {
-    
-        // Create context with key "opentelemetry-span" and current tracing span as value
-        Context tracingContext = new Context(opentelemetry_SPAN_KEY, tracer.getCurrentSpan());
-    
-        // Set secret and pass tracing context to pass the user-span to calling methods
-        Secret secret = secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", tracingContext));
-        System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue());
+      
+      try (final Scope scope = tracer.withSpan(tracer.spanBuilder("user-parent-span").startSpan())) {
+          final Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
+          // send user parent span to client call in context object
+          client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey("hello").setValue("world"), true, traceContext);
+      } finally {
+          span.end();
+      }
     }
     ```
-- Async create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
-    
-    To enabled tracing in async clients, users can additionally pass the value of the current tracing span to the SDKs using key **"opentelemetry-span"** on the subscriberContext of the calling method:
-    ```java
-    import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-    import com.azure.security.keyvault.secrets.SecretClientBuilder;
-    import com.azure.security.keyvault.secrets.SecretAsyncClient;
-    import com.azure.security.keyvault.secrets.models.Secret;
-    import io.opentelemetry.common.Scope;
-    import io.opentelemetry.trace.Tracer;
-    import io.opentelemetry.trace.Tracing;
-    import com.azure.core.util.Context;
-    
-    import static com.azure.core.implementation.tracing.Tracer.opentelemetry_SPAN_KEY;
-    
-    SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-        .endpoint("<your-vault-url>")
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
-    
-    Tracer tracer = Tracing.getTracer();
-    
-    Scope scope = tracer.spanBuilder("tracing-user-span").startScopedSpan())    
-    // Set secret and pass tracing context with method call
-    secretAsyncClient.setSecret(new Secret("secret_name", "secret_value")
-                    .subscriberContext(Context.of(opentelemetry_SPAN_KEY, tracer.getCurrentSpan()).doFinally(secret ->
-                        System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue()));
-    scope.close();
-  ```
 
 ### Using the plugin package with AMQP client libraries
 Async send single event using [azure-messaging-eventhubs][azure-messaging-eventhubs] with tracing.
@@ -147,36 +124,48 @@ Async send single event using [azure-messaging-eventhubs][azure-messaging-eventh
 Users can additionally pass the value of the current tracing span to the EventData object with key **"opentelemetry-span"** on the [Context][context] object:
 
 ```java
-import io.opentelemetry.common.Scope;
+import io.opentelemetry.OpenTelemetry;
+import io.opentelemetry.context.Scope;
+import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
-import io.opentelemetry.trace.Tracing;
 import com.azure.core.util.Context;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncProducer;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 
-EventHubAsyncClient client = new EventHubClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
-    .buildAsyncClient();
-EventHubAsyncProducer producer = client.createProducer();
+import static com.azure.core.implementation.tracing.Tracer.PARENT_SPAN_KEY;
+    
+  static {
+    TracerSdkFactory tracerSdkFactory = setupOpenTelemetryAndExporter();
+    Tracer tracer = tracerSdkFactory.get("Azure-OpenTelemetry");
+    doClientWork(tracer);
+    tracerSdkFactory.shutdown();   
+  }
 
-Scope scope = tracer.spanBuilder("tracing-user-span").startScopedSpan())
-Context tracingContext = new Context(opentelemetry_SPAN_KEY, tracer.getCurrentSpan());
-// Create an event to send
-final EventData eventData = new EventData("Hello world!".getBytes(UTF_8));
-// Add tracing context to the event
-eventData.context(tracingContext);
-producer.send(eventData).doFinally((ignored) -> System.out.println("Event sent."));
-scope.close();
+  public static void doClientWork(Tracer tracer) { 
+    EventHubClient client = new EventHubClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
+    .buildClient();
+    EventHubProducer producer = client.createProducer();
+
+    try (final Scope scope = tracer.withSpan(tracer.spanBuilder("user-parent-span").startSpan())) {
+      final Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
+      // Create an event to send
+      final EventData eventData = new EventData("Hello world!".getBytes(UTF_8));
+      // Add tracing context to the event
+      eventData.context(tracingContext);
+      producer.send(eventData); 
+    } finally {
+        span.end();
+      }
+    }
 ```
 
 ## Troubleshooting
 ### General
 
 For more information on opentelemetry Java support for tracing, see [opentelemetry Java Quickstart][opentelemetry-quickstart].
-
-Please refer to the [Quickstart Zipkin][zipkin-quickstart] for more documentation on using a Zipkin exporter.
 
 ## Next steps
 ### Samples
@@ -222,8 +211,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_list_async]: ./src/samples/AsyncListKeyVaultSecrets.md
 [sample_publish_events]: ./src/samples/PublishEvents.md
 [samples]: ./src/samples/
-[opentelemetry]: https://opentelemetry.io/quickstart/java/tracing/
-[opentelemetry-quickstart]: https://opentelemetry.io/quickstart/java/tracing/
-[zipkin-quickstart]: https://zipkin.io/pages/quickstart
+[opentelemetry]: https://github.com/open-telemetry/opentelemetry-java
+[opentelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core-tracing-opentelemetry/README.png)
