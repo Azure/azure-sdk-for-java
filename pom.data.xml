@@ -284,10 +284,6 @@
                 <title>Azure Storage</title>
                 <packages>com.microsoft.azure.storage*</packages>
               </group>
-              <group>
-                <title>Azure Cognitive Service Ink Recognizer</title>
-                <packages>com.microsoft.azure.cognitiveservices.inkrecognizer*</packages>
-              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -599,7 +595,6 @@
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
     <module>./sdk/applicationinsights/microsoft-azure-applicationinsights-query</module>
-    <module>./sdk/cognitiveservices/ms-azure-cs-inkrecognizer/pom.xml</module>
     <module>./sdk/cosmos</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
