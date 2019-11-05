@@ -17,12 +17,15 @@ import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
+import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
+import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -183,20 +186,22 @@ public class DataLakePathClient {
     }
 
     /**
-     * Changes the access control for a resource.
+     * Changes the access control list for a resource.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setAccessControl#PathAccessControl}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setAccessControlList#List-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param accessControl {@link PathAccessControl}
+     * @param accessControlList The access control list of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
      * @return The resource info.
      */
-    public PathInfo setAccessControl(PathAccessControl accessControl) {
-        return setAccessControlWithResponse(accessControl, null, null, Context.NONE).getValue();
+    public PathInfo setAccessControlList(List<PathAccessControlEntry> accessControlList, String group, String owner) {
+        return setAccessControlListWithResponse(accessControlList, group, owner, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -204,21 +209,68 @@ public class DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setAccessControlWithResponse#PathAccessControl-DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param accessControl {@link PathAccessControl}
+     * @param accessControlList The access control list of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
      * @param accessConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource info.
      */
-    public Response<PathInfo> setAccessControlWithResponse(PathAccessControl accessControl,
+    public Response<PathInfo> setAccessControlListWithResponse(List<PathAccessControlEntry> accessControlList,
+        String group, String owner, DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
+        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.setAccessControlWithResponse(accessControlList,
+            null, group, owner, accessConditions, context);
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Changes the permissions for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setPermissions#PathPermissions-String-String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param permissions The permissions of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
+     * @return The resource info.
+     */
+    public PathInfo setPermissions(PathPermissions permissions, String group, String owner) {
+        return setPermissionsWithResponse(permissions, group, owner, null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Changes the permissions for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param permissions The permissions of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
+     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the resource info.
+     */
+    public Response<PathInfo> setPermissionsWithResponse(PathPermissions permissions, String group, String owner,
         DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.setAccessControlWithResponse(accessControl,
-            accessConditions, context);
+        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.setAccessControlWithResponse(null, permissions,
+            group, owner, accessConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

@@ -26,14 +26,17 @@ import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
+import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
+import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -371,54 +374,108 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Changes the access control for a resource.
+     * Changes the access control list for a resource.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControl#PathAccessControl}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param accessControl {@link PathAccessControl}
+     * @param accessControlList The access control list of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
      * @return A reactive response containing the resource info.
      */
-    public Mono<PathInfo> setAccessControl(PathAccessControl accessControl) {
+    public Mono<PathInfo> setAccessControlList(List<PathAccessControlEntry> accessControlList, String group,
+        String owner) {
         try {
-            return setAccessControlWithResponse(accessControl, null).flatMap(FluxUtil::toMono);
+            return setAccessControlListWithResponse(accessControlList, group, owner, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-
     }
 
     /**
-     * Changes the access control for a resource.
+     * Changes the access control list for a resource.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlWithResponse#PathAccessControl-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param accessControl {@link PathAccessControl}
+     * @param accessControlList The access control list of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
      * @param accessConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource info.
      */
-    public Mono<Response<PathInfo>> setAccessControlWithResponse(PathAccessControl accessControl,
-        DataLakeRequestConditions accessConditions) {
+    public Mono<Response<PathInfo>> setAccessControlListWithResponse(List<PathAccessControlEntry> accessControlList,
+        String group, String owner, DataLakeRequestConditions accessConditions) {
         try {
-            return withContext(context -> setAccessControlWithResponse(accessControl, accessConditions, context));
+            return withContext(context -> setAccessControlWithResponse(accessControlList, null, group, owner,
+                accessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PathInfo>> setAccessControlWithResponse(PathAccessControl accessControl,
-        DataLakeRequestConditions accessConditions, Context context) {
+    /**
+     * Changes the permissions for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissions#PathPermissions-String-String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param permissions The permissions of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
+     * @return A reactive response containing the resource info.
+     */
+    public Mono<PathInfo> setPermissions(PathPermissions permissions, String group, String owner) {
+        try {
+            return setPermissionsWithResponse(permissions, group, owner, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 
-        Objects.requireNonNull(accessControl, "accessControl can not be null");
+    /**
+     * Changes the permissions for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param permissions The permissions of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
+     * @param accessConditions {@link DataLakeRequestConditions}
+     * @return A reactive response containing the resource info.
+     */
+    public Mono<Response<PathInfo>> setPermissionsWithResponse(PathPermissions permissions, String group, String owner,
+        DataLakeRequestConditions accessConditions) {
+        try {
+            return withContext(context -> setAccessControlWithResponse(null, permissions, group, owner,
+                accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<PathInfo>> setAccessControlWithResponse(List<PathAccessControlEntry> accessControlList,
+        PathPermissions permissions, String group, String owner, DataLakeRequestConditions accessConditions,
+        Context context) {
+
         accessConditions = accessConditions == null ? new DataLakeRequestConditions() : accessConditions;
 
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(accessConditions.getLeaseId());
@@ -428,8 +485,14 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(accessConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince());
 
-        return this.dataLakeStorage.paths().setAccessControlWithRestResponseAsync(null, accessControl.getOwner(),
-            accessControl.getGroup(), accessControl.getPermissions(), accessControl.getAcl(), null, lac, mac, context)
+        String permissionsString = permissions == null ? null : permissions.toString();
+        String accessControlListString =
+            accessControlList == null
+            ? null
+            : PathAccessControlEntry.serializeList(accessControlList);
+
+        return this.dataLakeStorage.paths().setAccessControlWithRestResponseAsync(null, owner, group, permissionsString,
+            accessControlListString, null, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
@@ -492,10 +555,10 @@ public class DataLakePathAsyncClient {
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
             PathGetPropertiesAction.GET_ACCESS_CONTROL, returnUpn, null, null, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, new PathAccessControl()
-                .setAcl(response.getDeserializedHeaders().getAcl())
-                .setGroup(response.getDeserializedHeaders().getGroup())
-                .setOwner(response.getDeserializedHeaders().getOwner())
-                .setPermissions(response.getDeserializedHeaders().getPermissions())));
+                .accessControlList(PathAccessControlEntry.parseList(response.getDeserializedHeaders().getAcl()))
+                .group(response.getDeserializedHeaders().getGroup())
+                .owner(response.getDeserializedHeaders().getOwner())
+                .setPermissions(PathPermissions.parseSymbolic(response.getDeserializedHeaders().getPermissions()))));
     }
 
     /**

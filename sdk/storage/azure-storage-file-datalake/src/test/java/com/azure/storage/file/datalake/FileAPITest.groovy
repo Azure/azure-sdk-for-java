@@ -16,13 +16,21 @@ class FileAPITest extends APISpec {
     DataLakeFileClient fc
     String fileName
 
+    PathPermissions permissions = new PathPermissions()
+        .owner(new RolePermissions().read(true).write(true).execute(true))
+        .group(new RolePermissions().read(true).execute(true))
+        .other(new RolePermissions().read(true))
+
+    List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
+
+    String group = null
+    String owner = null
+
     def setup() {
         fileName = generatePathName()
         fc = fsc.getFileClient(fileName)
 
         fc.create()
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
     }
 
     def "Create min"() {
@@ -240,35 +248,23 @@ class FileAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    def "Set access control min"() {
+    def "Set permissions min"() {
         when:
-        def resp = fc.setAccessControl(new PathAccessControl().setPermissions("0777"))
+        def resp = fc.setPermissions(permissions, group, owner)
 
         then:
         notThrown(StorageErrorException)
-
         resp.getETag()
         resp.getLastModified()
     }
 
-    def "Set access control bad permission"() {
-        when:
-        fc.setAccessControlWithResponse(new PathAccessControl().setPermissions("asdf"), null, null, null)
-
-        then:
-        def e = thrown(StorageErrorException)
-        e.getResponse().getStatusCode() == 400
-        e.getMessage().contains("InvalidPermission")
-        e.getMessage().contains("The permission value is invalid.")
-    }
-
-    def "Set access control with response"() {
+    def "Set permissions with response"() {
         expect:
-        fc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), null, null, Context.NONE).getStatusCode() == 200
+        fc.setPermissionsWithResponse(permissions, group, owner, null, null, Context.NONE).getStatusCode() == 200
     }
 
     @Unroll
-    def "Set access control AC"() {
+    def "Set permissions AC"() {
         setup:
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
@@ -280,7 +276,7 @@ class FileAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        fc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), drc, null, Context.NONE).getStatusCode() == 200
+        fc.setPermissionsWithResponse(permissions, group, owner, drc, null, Context.NONE).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -293,7 +289,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    def "Set access control AC fail"() {
+    def "Set permissions AC fail"() {
         setup:
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
@@ -305,7 +301,7 @@ class FileAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), drc, null, Context.NONE).getStatusCode() == 200
+        fc.setPermissionsWithResponse(permissions, group, owner, drc, null, Context.NONE).getStatusCode() == 200
 
         then:
         thrown(StorageErrorException)
@@ -319,12 +315,90 @@ class FileAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    def "Set access control error"() {
+    def "Set permissions error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())
 
         when:
-        fc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), null, null, null)
+        fc.setPermissionsWithResponse(permissions, group, owner, null, null, null)
+
+        then:
+        thrown(StorageErrorException)
+    }
+
+    def "Set ACL min"() {
+        when:
+        def resp = fc.setAccessControlList(pathAccessControlEntries, group, owner)
+
+        then:
+        notThrown(StorageErrorException)
+        resp.getETag()
+        resp.getLastModified()
+    }
+
+    def "Set ACL with response"() {
+        expect:
+        fc.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, null, null, Context.NONE).getStatusCode() == 200
+    }
+
+    @Unroll
+    def "Set ACL AC"() {
+        setup:
+        match = setupPathMatchCondition(fc, match)
+        leaseID = setupPathLeaseCondition(fc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        expect:
+        fc.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, drc, null, Context.NONE).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Set ACL AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(fc, noneMatch)
+        setupPathLeaseCondition(fc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        fc.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, drc, null, Context.NONE).getStatusCode() == 200
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Set ACL error"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+
+        when:
+        fc.setAccessControlList(pathAccessControlEntries, group, owner)
 
         then:
         thrown(StorageErrorException)
@@ -336,10 +410,10 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(StorageErrorException)
-        pac.getAcl()
-        pac.getPermissions()
-        pac.getOwner()
-        pac.getGroup()
+        pac.accessControlList()
+        pac.permissions()
+        pac.owner()
+        pac.group()
     }
 
     def "Get access control with response"() {
@@ -721,6 +795,10 @@ class FileAPITest extends APISpec {
     }
 
     def "Read all null"() {
+        setup:
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
         when:
         def stream = new ByteArrayOutputStream()
         def response = fc.readWithResponse(stream, null, null, null, false, null, null)
@@ -785,6 +863,9 @@ class FileAPITest extends APISpec {
         setup:
         def fileClient = getFileClient(primaryCredential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
 
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
         when:
         def range = new FileRange(2, 5L)
         def options = new DownloadRetryOptions().setMaxRetryRequests(3)
@@ -800,6 +881,10 @@ class FileAPITest extends APISpec {
     }
 
     def "Read min"() {
+        setup:
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
         when:
         def outStream = new ByteArrayOutputStream()
         fc.read(outStream)
@@ -813,6 +898,9 @@ class FileAPITest extends APISpec {
     def "Read range"() {
         setup:
         def range = (count == null) ? new FileRange(offset) : new FileRange(offset, count)
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
 
         when:
         def outStream = new ByteArrayOutputStream()
@@ -884,6 +972,10 @@ class FileAPITest extends APISpec {
     }
 
     def "Read md5"() {
+        setup:
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
         when:
         def response = fc.readWithResponse(new ByteArrayOutputStream(), new FileRange(0, 3), null, null, true, null, null)
         def contentMD5 = response.getHeaders().getValue("content-md5").getBytes()

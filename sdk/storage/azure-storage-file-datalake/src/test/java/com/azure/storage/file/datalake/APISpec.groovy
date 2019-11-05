@@ -14,10 +14,7 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.datalake.models.FileSystemItem
-import com.azure.storage.file.datalake.models.LeaseStateType
-import com.azure.storage.file.datalake.models.ListFileSystemsOptions
-import com.azure.storage.file.datalake.models.PathProperties
+import com.azure.storage.file.datalake.models.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -593,6 +590,31 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             sleep(milliseconds)
         }
+    }
+
+    def compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {
+        if (expected.size() == actual.size()) {
+            boolean success = true
+            for (PathAccessControlEntry entry : expected) {
+                success = success && entryIsInAcl(entry, actual)
+            }
+            return success
+        }
+        return false
+
+    }
+
+    def entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
+        for (PathAccessControlEntry e : acl) {
+            if (e.defaultScope() == entry.defaultScope() &&
+                e.accessControlType().equals(entry.accessControlType()) &&
+                (e.entityID() == null && entry.entityID() == null ||
+                    e.entityID().equals(entry.entityID())) &&
+                e.permissions().equals(entry.permissions())) {
+                return true
+            }
+        }
+        return false
     }
 
 }
