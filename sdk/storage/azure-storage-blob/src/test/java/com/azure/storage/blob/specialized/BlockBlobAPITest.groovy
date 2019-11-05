@@ -10,7 +10,6 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
-import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
@@ -635,7 +634,7 @@ class BlockBlobAPITest extends APISpec {
         def outChannel = AsynchronousFileChannel.open(Paths.get(outFile), StandardOpenOption.CREATE, StandardOpenOption.WRITE)
         FluxUtil.writeFile(blobac.download(), outChannel).block() == null
 
-        compareFiles(file, new File(outFile))
+        compareFiles(file, new File(outFile), 0, fileSize)
         blobac.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED).block().getCommittedBlocks().size() ==
             commitedBlockCount
 
@@ -650,25 +649,6 @@ class BlockBlobAPITest extends APISpec {
         50 * 1024 * 1024                               | null            || 0  // Size is too small to trigger stage block uploading
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null            || Math.ceil((BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1) / BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // HTBB optimizations should trigger when file size is >100MB and defaults are used.
         101 * 1024 * 1024                              | 4 * 1024 * 1024 || 0  // Size is too small to trigger stage block uploading
-    }
-
-    def compareFiles(File file1, File file2) {
-        FileInputStream fis1 = new FileInputStream(file1)
-        FileInputStream fis2 = new FileInputStream(file2)
-
-        byte b1 = fis1.read()
-        byte b2 = fis2.read()
-
-        while (b1 != -1 && b2 != -1) {
-            if (b1 != b2) {
-                return false
-            }
-            b1 = fis1.read()
-            b2 = fis2.read()
-        }
-        fis1.close()
-        fis2.close()
-        return b1 == b2
     }
 
     @Requires({ liveMode() })
@@ -1289,19 +1269,10 @@ class BlockBlobAPITest extends APISpec {
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
-        def mockPolicy = Mock(HttpPipelinePolicy) {
-            process(*_) >> { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-                return collectBytesInBuffer(context.getHttpRequest().getBody())
-                    .map { b ->
-                        return b == defaultData
-                    }
-                    .flatMap { b ->
-                        if (b) {
-                            return Mono.just(mockHttpResponse)
-                        }
-                        return Mono.error(new IllegalArgumentException())
-                    }
-            }
+        def mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+            return collectBytesInBuffer(context.getHttpRequest().getBody())
+                .map({ it == defaultData })
+                .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) })
         }
 
         // Build the pipeline

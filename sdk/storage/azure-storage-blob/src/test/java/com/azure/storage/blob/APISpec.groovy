@@ -132,7 +132,7 @@ class APISpec extends Specification {
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
-    private TestResourceNamer resourceNamer
+    protected TestResourceNamer resourceNamer
     protected String testName
     String containerName
 
@@ -484,6 +484,49 @@ class APISpec extends Specification {
         fos.write(getRandomData(size).array())
         fos.close()
         return file
+    }
+
+    /**
+     * Compares two files for having equivalent content.
+     *
+     * @param file1 File used to upload data to the service
+     * @param file2 File used to download data from the service
+     * @param offset Write offset from the upload file
+     * @param count Size of the download from the service
+     * @return Whether the files have equivalent content based on offset and read count
+     */
+    def compareFiles(File file1, File file2, long offset, long count) {
+        def pos = 0L
+        def readBuffer = 8 * Constants.KB
+        def stream1 = new FileInputStream(file1)
+        def stream2 = new FileInputStream(file2)
+        stream1.skip(offset)
+
+        while (pos < count) {
+            def bufferSize = Math.min(readBuffer, count - pos)
+            def buffer1 = new byte[bufferSize]
+            def buffer2 = new byte[bufferSize]
+
+            def readCount1 = stream1.read(buffer1)
+            def readCount2 = stream2.read(buffer2)
+
+            if (readCount1 != readCount2) {
+                return false
+            }
+
+            if (!Arrays.equals(buffer1, buffer2)) {
+                return false
+            }
+
+            pos += bufferSize
+        }
+
+        def verificationRead = stream2.read()
+
+        stream1.close()
+        stream2.close()
+
+        return pos == count && verificationRead == -1
     }
 
     /**

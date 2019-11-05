@@ -23,3 +23,7 @@ jobs:
         AZURE_STORAGE_QUEUE_ENDPOINT: $(java-storage-test-queue-endpoint)
         AZURE_STORAGE_QUEUE_CONNECTION_STRING: $(java-storage-test-queue-connection-string)
         AZURE_STORAGE_BLOB_CONNECTION_STRING: $(java-storage-test-blob-connection-string)
+      PreRunSteps:
+      - powershell: |
+          docker run -p 10000:10000 -p 10001:10001 mcr.microsoft.com/azure-storage/azurite
+        displayName: "Run Azurite Docker Image"
