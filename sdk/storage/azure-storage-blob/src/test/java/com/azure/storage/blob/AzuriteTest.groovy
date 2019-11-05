@@ -3,11 +3,19 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import reactor.core.publisher.Mono
 import spock.lang.Unroll
 
 class AzuriteTest extends APISpec {
@@ -19,8 +27,42 @@ class AzuriteTest extends APISpec {
     StorageSharedKeyCredential azuriteCredential = new StorageSharedKeyCredential("devstoreaccount1", "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==")
     String azuriteBlobConnectionString = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;"
 
+    /*
+     * Azurite returns headers in lowercase and the recording framework expects certain casing.
+     */
+    private static class FixHeadersForRecordingPolicy implements HttpPipelinePolicy {
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return next.process()
+                .map({
+                    def headers = it.getHeaders()
+                    def headerValue = headers.stream()
+                        .filter({ it.getName().equalsIgnoreCase("Content-Type") })
+                        .map({ it.getValue() })
+                        .findFirst()
+
+                    if (headerValue.isPresent()) {
+                        headers.put("Content-Type", headerValue.get())
+                    }
+
+                    return it
+                })
+        }
+    }
+
     private BlobServiceClient getAzuriteServiceClient() {
-        return getServiceClient(azuriteCredential, azuriteEndpoint)
+        def builder = new BlobServiceClientBuilder()
+            .endpoint(azuriteEndpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .credential(azuriteCredential)
+
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new FixHeadersForRecordingPolicy())
+        }
+
+        return builder.buildClient()
     }
 
     private static void validateBlobClient(BlobClientBase client, String accountName, String containerName, String blobName, String blobUrl) {
