@@ -23,7 +23,6 @@ import spock.lang.Shared
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.security.MessageDigest
 
 class EncyptedBlockBlobAPITest extends APISpec {
 
@@ -243,9 +242,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         // HTTP default content type is application/octet-stream
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        // Don't calculate MD5 as we would need to encrypt the blob then calculate it.
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | null
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
     }
 
     // This test checks that metadata in encryption is successfully set
