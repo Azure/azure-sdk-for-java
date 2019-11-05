@@ -251,7 +251,7 @@ public class StoreReader {
                 try {
                     BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, srr);
                 } catch (Exception e) {
-                    logger.error("Error occurred while recording response", e);
+                    logger.error("Unexpected failure while recording response", e);
                 }
                 if (srr.isValid) {
 
@@ -564,7 +564,7 @@ public class StoreReader {
             try {
                 BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, storeResult);
             } catch (Exception e) {
-                logger.error("Error occurred while recording response", e);
+                logger.error("Unexpected failure while recording response", e);
             }
             entity.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
 
