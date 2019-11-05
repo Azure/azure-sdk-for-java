@@ -2,12 +2,12 @@ package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
-
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
@@ -19,7 +19,6 @@ import com.microsoft.azure.storage.blob.CloudBlobClient
 import com.microsoft.azure.storage.blob.CloudBlobContainer
 import com.microsoft.azure.storage.blob.CloudBlockBlob
 import reactor.core.publisher.Flux
-import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -64,7 +63,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Key and key resolver null
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Create encryption client fails"() {
         when:
         beac = getEncryptedClientBuilder(null, null, primaryCredential,
@@ -87,7 +86,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // Check that all valid ways to specify the key and keyResolver work
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Create encryption client succeeds"() {
         when:
         def key
@@ -126,7 +125,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         true    | true
     }
 
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Test Async and Sync EncryptedBlockBlobClient to BlockBlobClient"() {
         when:
         beac.upload(defaultFlux, null).block()
@@ -162,7 +161,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks that encryption is not just a no-op
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Encryption not a no-op"() {
         setup:
         ByteBuffer byteBuffer = getRandomData(Constants.KB)
@@ -181,7 +180,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // This test uses an encrypted client to encrypt and decrypt data
     // Tests upload and buffered upload with different bytebuffer sizes
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Encryption"() {
         when:
         def byteBufferList = []
@@ -221,7 +220,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that HTTP headers are successfully set on the encrypted client
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Encryption HTTP headers"() {
         setup:
         BlobHttpHeaders headers = new BlobHttpHeaders().setCacheControl(cacheControl)
@@ -251,7 +250,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that metadata in encryption is successfully set
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Encryption metadata"() {
         setup:
         Map<String, String> metadata = new HashMap<>()
@@ -286,7 +285,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that access conditions in encryption clients are successfully set
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Encryption AC"() {
         when:
         beac.upload(defaultFlux, null).block()
@@ -323,7 +322,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that access conditions in encryption clients are unsuccessful with invalid data
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Encryption AC fail"() {
         setup:
         beac.upload(defaultFlux, null).block()
@@ -355,7 +354,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks the upload to file method on an encrypted client
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Encrypted upload file"() {
         setup:
         def file = getRandomFile(KB)
@@ -368,7 +367,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks the download to file method on an encrypted client
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Encrypted download file"() {
         setup:
         def path = UUID.randomUUID().toString() + ".txt"
@@ -385,7 +384,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         new File(path).delete()
     }
 
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Download unencrypted data"() {
         setup:
         // Create an async client
@@ -409,7 +408,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         // Upload encrypted data with regular client
         normalClient.uploadWithResponse(new ByteArrayInputStream(defaultData.array()), defaultDataSize, null, null,
-            null, null, null, null)
+            null, null, null, null, null)
 
         // Download data with encrypted client - command should fail
         ByteArrayOutputStream os = new ByteArrayOutputStream()
@@ -422,7 +421,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // Tests key resolver
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({liveMode()})
+    @DoNotRecord(skipInPlayback = true)
     def "Key resolver used to decrypt data"() {
         setup:
         def blobName = generateBlobName()
@@ -473,7 +472,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with old SDK download with new SDk.
-    @DoNotRecord(skipInPlayback = true)({liveMode()})
+    @DoNotRecord(skipInPlayback = true)
     def "Cross platform test upload old download new"() {
         setup:
         def blobName = generateBlobName()
@@ -509,7 +508,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with new SDK download with old SDk.
-    @DoNotRecord(skipInPlayback = true)({liveMode()})
+    @DoNotRecord(skipInPlayback = true)
     def "Cross platform test upload new download old"() {
         setup:
         def blobName = generateBlobName()
@@ -541,7 +540,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         stream.toByteArray() == defaultData.array()
     }
 
-    @DoNotRecord(skipInPlayback = true)({liveMode()})
+    @DoNotRecord(skipInPlayback = true)
     def "encrypted client file upload overwrite false"() {
         setup:
         def file = getRandomFile(KB)
@@ -555,7 +554,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @DoNotRecord(skipInPlayback = true)({liveMode()})
+    @DoNotRecord(skipInPlayback = true)
     def "encrypted client file upload overwrite true"() {
         setup:
         def file = getRandomFile(KB)
@@ -568,7 +567,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         notThrown(Throwable)
     }
 
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "encrypted client upload overwrite false"() {
         setup:
         ByteBuffer byteBuffer = getRandomData(Constants.KB)
@@ -582,7 +581,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "encrypted client upload overwrite true"() {
         setup:
         ByteBuffer byteBuffer = getRandomData(Constants.KB)

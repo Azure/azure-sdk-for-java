@@ -161,7 +161,7 @@ class APISpec extends Specification {
             testRan = !(doNotRecordAnnotation.skipInPlayback() && setupTestMode() == TestMode.PLAYBACK)
             assumeTrue("Test does not allow playback and was ran in 'TestMode.PLAYBACK'.", testRan)
         } else {
-            recordLiveMode = testMode == TestMode.RECORD
+            recordLiveMode = true
             testRan = true
         }
 
@@ -221,7 +221,7 @@ class APISpec extends Specification {
         String accountKey
 
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -481,9 +481,8 @@ class APISpec extends Specification {
     }
 
     /*
-    Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
-
     ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }

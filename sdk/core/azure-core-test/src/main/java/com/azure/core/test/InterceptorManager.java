@@ -184,6 +184,29 @@ public class InterceptorManager implements AutoCloseable {
         }
     }
 
+    /*
+     * Creates a File which is the session-records folder.
+     */
+    private File getRecordFolder() {
+        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
+        return new File(folderUrl.getPath(), RECORD_FOLDER);
+    }
+
+    /*
+     * Attempts to retrieve the playback file, if it is not found an exception is thrown as playback can't continue.
+     */
+    private File getRecordFile(String testName) {
+        File playbackFile = new File(getRecordFolder(), testName + ".json");
+
+        if (!playbackFile.exists()) {
+            throw  logger.logExceptionAsError(new RuntimeException(String.format(
+                "Missing playback file. File path: %s. ", playbackFile.getPath())));
+        }
+
+        logger.info("==> Playback file path: " + playbackFile.getPath());
+        return playbackFile;
+    }
+
     private void writeDataToFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -191,39 +214,23 @@ public class InterceptorManager implements AutoCloseable {
         mapper.writeValue(recordFile, recordedData);
     }
 
-    private File getRecordFolderPath() {
-        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
-        return new File(folderUrl.getPath() + RECORD_FOLDER);
-    }
-
+    /*
+     * Retrieves or creates the file that will be used to store the recorded test values.
+     */
     private File createRecordFile(String testName) throws IOException {
-        File folder = getRecordFolderPath();
-
-        if (!folder.exists()) {
-            if (folder.mkdir()) {
-                logger.verbose("Created directory: {}", folder.getPath());
+        File recordFolder = getRecordFolder();
+        if (!recordFolder.exists()) {
+            if (recordFolder.mkdir()) {
+                logger.verbose("Created directory: {}", recordFolder.getPath());
             }
         }
 
-        File recordFile = new File(folder, testName + ".json");
+        File recordFile = new File(recordFolder, testName + ".json");
         if (recordFile.createNewFile()) {
             logger.verbose("Created record file: {}", recordFile.getPath());
         }
 
-        logger.info("==> Playback file path: " + recordFile.getPath());
-        return recordFile;
-    }
-
-    private File getRecordFile(String testName) {
-        File recordFile = new File(getRecordFolderPath(), testName + ".json");
-
-        if (!recordFile.exists()) {
-            throw  logger.logExceptionAsError(new RuntimeException(String.format(
-                "Missing playback file. File path: %s. ", recordFile.getPath())));
-        }
-
-        logger.info("==> Playback file path: " + recordFile.getPath());
-
+        logger.info("==> Playback file path: " + recordFile);
         return recordFile;
     }
 

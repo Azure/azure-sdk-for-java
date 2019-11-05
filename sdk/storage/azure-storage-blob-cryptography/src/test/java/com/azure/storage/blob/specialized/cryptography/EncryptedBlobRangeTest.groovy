@@ -1,14 +1,14 @@
 package com.azure.storage.blob.specialized.cryptography
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.blob.models.BlobRange
-import spock.lang.Requires
 import spock.lang.Unroll
 
 class EncryptedBlobRangeTest extends APISpec {
 
     // This test checks that the EncryptedBlobRange cna be properly constructed from a BlobRange
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Test constructor"() {
         setup:
         BlobRange range
@@ -42,7 +42,7 @@ class EncryptedBlobRangeTest extends APISpec {
 
     // This test checks that the encrypted blob range can be correctly constructed from a BlobRange header string
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Test from blob range header"() {
         setup:
         BlobRange range

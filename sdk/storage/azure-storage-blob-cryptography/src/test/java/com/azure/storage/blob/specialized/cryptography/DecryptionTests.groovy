@@ -15,9 +15,9 @@
 
 package com.azure.storage.blob.specialized.cryptography
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.blob.models.BlobRange
 import com.fasterxml.jackson.databind.ObjectMapper
-import spock.lang.Requires
 import spock.lang.Unroll
 
 class DecryptionTests extends APISpec {
@@ -36,7 +36,7 @@ class DecryptionTests extends APISpec {
     }
 
     @Unroll
-    @DoNotRecord(skipInPlayback = true)({ liveMode() })
+    @DoNotRecord(skipInPlayback = true)
     def "Decryption"() {
         setup:
         def flow = new EncryptedFlux(testCase, fakeKey, this)
