@@ -21,9 +21,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span}
- * and in-process context propagation. Singleton OpenTelemetry tracer capable of starting
- * and exporting spans.
+ * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
+ * context propagation. Singleton OpenTelemetry tracer capable of starting and exporting spans.
  *
  * <p>
  * This helper class supports W3C distributed tracing protocol and injects SpanContext into the outgoing HTTP and AMQP
@@ -69,7 +68,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         switch (processKind) {
             case SEND:
                 spanBuilder = getSpanBuilder(spanName, context);
-                span = spanBuilder.setSpanKind(Span.Kind.CLIENT).startSpan();
+                span = spanBuilder.setSpanKind(Span.Kind.PRODUCER).startSpan();
                 if (span.isRecording()) {
                     // If span is sampled in, add additional request attributes
                     addSpanRequestAttributes(span, context, spanName);
@@ -176,14 +175,14 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Starts a new child {@link io.opentelemetry.trace.Span} with parent being the remote and uses the {@link
-     * io.opentelemetry.trace.Span} is in the current Context, to return an object that represents that scope.
+     * Starts a new child {@link Span} with parent being the remote and uses the {@link
+     * Span} is in the current Context, to return an object that represents that scope.
      * <p>The scope is exited when the returned object is closed.</p>
      *
      * @param spanName The name of the returned Span.
      * @param context The {@link com.azure.core.util.Context} containing the {@link
-     * io.opentelemetry.trace.SpanContext}.
-     * @return The returned {@link io.opentelemetry.trace.Span} and the scope in a {@link com.azure.core.util.Context}
+     * SpanContext}.
+     * @return The returned {@link Span} and the scope in a {@link com.azure.core.util.Context}
      * object.
      */
     private Context startScopedSpan(String spanName, Context context) {
@@ -200,30 +199,30 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Creates a {@link Builder} to create and start a new child {@link Span}
-     * with parent being the remote and designated by the {@link SpanContext}.
+     * Creates a {@link Builder} to create and start a new child {@link Span} with parent being the remote and
+     * designated by the {@link SpanContext}.
      *
      * @param spanName The name of the returned Span.
      * @param spanContext The remote parent context of the returned Span.
-     * @return A {@link io.opentelemetry.trace.Span} with parent being the remote {@link io.opentelemetry.trace.Span}
-     * designated by the {@link io.opentelemetry.trace.SpanContext}.
+     * @return A {@link Span} with parent being the remote {@link Span}
+     * designated by the {@link SpanContext}.
      */
-    private Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
+    private static Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
         Builder spanBuilder = TRACER.spanBuilder(spanName).setParent(spanContext);
         spanBuilder.setSpanKind(Span.Kind.SERVER);
         return spanBuilder.startSpan();
     }
 
     /**
-     * Extracts the {@link io.opentelemetry.trace.SpanContext trace identifiers} and the {@link
-     * io.opentelemetry.trace.SpanContext} of the current tracing span as text and returns in a {@link
+     * Extracts the {@link SpanContext trace identifiers} and the {@link
+     * SpanContext} of the current tracing span as text and returns in a {@link
      * com.azure.core.util.Context} object.
      *
      * @param span The current tracing span.
-     * @return The {@link com.azure.core.util.Context} containing the {@link io.opentelemetry.trace.SpanContext} and
-     * traceparent of the current span.
+     * @return The {@link com.azure.core.util.Context} containing the {@link SpanContext} and
+     * trace-parent of the current span.
      */
-    private Context setContextData(Span span) {
+    private static Context setContextData(Span span) {
         SpanContext spanContext = span.getContext();
         final String traceparent = AmqpPropagationFormatUtil.getDiagnosticId(spanContext);
         return new Context(DIAGNOSTIC_ID_KEY, traceparent).addData(SPAN_CONTEXT_KEY, spanContext);
@@ -254,7 +253,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @return The component name contained in the context.
      */
     private static String parseComponentValue(String spanName) {
-        if (spanName != null && spanName.length() > 0) {
+        if (spanName != null && !spanName.isEmpty()) {
             int componentNameStartIndex = spanName.indexOf(".");
             int componentNameEndIndex = spanName.lastIndexOf(".");
             if (componentNameStartIndex != -1 && componentNameEndIndex != -1) {
@@ -291,10 +290,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Extracts a {@link io.opentelemetry.trace.Span} from the given {@code context}.
+     * Extracts a {@link Span} from the given {@code context}.
      *
      * @param context The context containing the span.
-     * @return The {@link io.opentelemetry.trace.Span} contained in the context, and {@code null} if it does not.
+     * @return The {@link Span} contained in the context, and {@code null} if it does not.
      */
     private Span getSpan(Context context) {
         final Optional<Object> spanOptional = context.getData(PARENT_SPAN_KEY);
@@ -339,10 +338,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Extracts a {@link io.opentelemetry.trace.SpanContext} from the given {@code context}.
+     * Extracts a {@link SpanContext} from the given {@code context}.
      *
      * @param context The context containing the span context.
-     * @return The {@link io.opentelemetry.trace.SpanContext} contained in the context, and {@code null} if it does not.
+     * @return The {@link SpanContext} contained in the context, and {@code null} if it does not.
      */
     private SpanContext getSpanContext(Context context) {
         final Optional<Object> spanContextOptional = context.getData(SPAN_CONTEXT_KEY);
@@ -362,17 +361,23 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Returns a {@link Builder} to create and start a new child {@link
-     * io.opentelemetry.trace.Span} with parent being the designated {@code Span}.
+     * Returns a {@link Builder} to create and start a new child {@link Span} with parent being
+     * the designated {@code Span}.
      *
      * @param spanName The name of the returned Span.
      * @param context The context containing the span and the span name.
      * @return A {@code Span.Builder} to create and start a new {@code Span}.
      */
     private Builder getSpanBuilder(String spanName, Context context) {
-        Span parentSpan = getSpan(context) == null ? TRACER.getCurrentSpan() : getSpan(context);
-        String spanNameKey = getSpanName(context) == null ? spanName : getSpanName(context);
-        Builder spanBuilder = TRACER.spanBuilder(spanNameKey).setParent(parentSpan);
-        return spanBuilder;
+        Span parentSpan = getSpan(context);
+        String spanNameKey = getSpanName(context);
+
+        if (spanNameKey == null) {
+            spanNameKey = spanName;
+        }
+        if (parentSpan == null) {
+            parentSpan = TRACER.getCurrentSpan();
+        }
+        return TRACER.spanBuilder(spanNameKey).setParent(parentSpan);
     }
 }

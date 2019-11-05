@@ -1,6 +1,6 @@
-# Create a configuration setting with Azure Core Tracing Opentelemetry
+# List key Vault secrets with Azure Core Tracing Opentelemetry
  
-Following documentation describes instructions to run a sample program for creating a Configuration Setting with tracing instrumentation.
+Following documentation describes instructions to run a sample program for creating and listing secrets of a Key Vault with tracing instrumentation.
 
 ## Getting Started
 Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package and **[LoggingExporter][logging_exporter]** as exporter.
@@ -14,8 +14,8 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-data-appconfiguration</artifactId>
-        <version>1.0.0-preview.7</version>
+        <artifactId>azure-security-keyvault-secrets</artifactId>
+        <version>4.0.0</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
@@ -30,17 +30,15 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 </dependencies>
 
 ```
-#### Sample demonstrates tracing when adding a configuration setting using [azure-data-app-configuration][azure_data_app_configuration] client library.
+#### Sample demonstrates tracing when creating and listing secrets from a Key Vault using [azure_keyvault_secrets][azure_keyvault_secrets] client library.
 ```java
 import com.azure.core.util.Context;
-import com.azure.data.appconfiguration.ConfigurationClient;
-import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import io.opentelemetry.OpenTelemetry;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.exporters.logging.LoggingExporter;
 import io.opentelemetry.sdk.trace.TracerSdkFactory;
-import io.opentelemetry.sdk.trace.export.SimpleSpansProcessor;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
 
@@ -50,7 +48,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static java.util.logging.Logger.getLogger;
 
 public class Sample {
-    final static String CONNECTION_STRING = "<YOUR-CONNECTION_STRING";
+    final static String VAULT_URL = "<YOUR_VAULT_URL>";
     private static final Logger LOGGER = getLogger("Sample");
     private static  final Tracer TRACER;
     private static final TracerSdkFactory TRACER_SDK_FACTORY;
@@ -77,25 +75,28 @@ public class Sample {
     }
 
     private static void doClientWork(Tracer tracer) {
-        ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(CONNECTION_STRING)
+        SecretClient secretClient = new SecretClientBuilder()
+            .vaultUrl(VAULT_URL)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         LOGGER.info("=== Start user scoped span  ===");
 
         Span span = tracer.spanBuilder("user-parent-span").startSpan();
-        try (final Scope scope = tracer.withSpan(span)) {
-            final Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
-            client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey("hello").setValue("world"), true, traceContext);
+        try (final Scope scope = TRACER.withSpan(span)) {
+            secretClient.setSecretWithResponse(new KeyVaultSecret("StorageAccountPassword", "password"), Context.NONE);
+            secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {
+                KeyVaultSecret secret = secretClient.getSecret(secretProperties.getName());
+                System.out.printf("Secret with name %s retrieved %n", secret.getName());
+            });
         } finally {
             span.end();
-            LOGGER.info("=== End scoped span  ===");
         }
     }
 }
 ```
 
 <!-- Links -->
-[azure_data_app_configuration]: https://mvnrepository.com/artifact/com.azure/azure-data-appconfiguration
+[azure_keyvault_secrets]: https://mvnrepository.com/artifact/com.azure/azure-security-keyvault-secrets
 [opentelemetry_sdk]: https://github.com/open-telemetry/opentelemetry-java/tree/master/sdk
 [logging_exporter]: https://github.com/open-telemetry/opentelemetry-java/tree/master/exporters/logging

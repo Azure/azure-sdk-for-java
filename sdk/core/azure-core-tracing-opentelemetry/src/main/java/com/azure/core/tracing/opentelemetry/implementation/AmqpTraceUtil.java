@@ -14,7 +14,7 @@ public final class AmqpTraceUtil {
      *
      * @param statusMessage AMQP description for this error condition.
      * @param error the error occurred during response transmission (optional).
-     * @return the corresponding OpenTelemetry {@link io.opentelemetry.trace.Status}.
+     * @return the corresponding OpenTelemetry {@link Status}.
      */
     public static Status parseStatusMessage(String statusMessage, Throwable error) {
         if (error != null) {
@@ -25,7 +25,7 @@ public final class AmqpTraceUtil {
                 : Status.UNKNOWN.withDescription(error.getClass().getSimpleName());
 
         }
-        if (statusMessage != null && statusMessage.equalsIgnoreCase("success")) {
+        if (statusMessage != null && "success".equalsIgnoreCase(statusMessage)) {
             // No error.
             return Status.OK;
         }

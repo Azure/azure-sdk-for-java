@@ -36,6 +36,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     /**
      * @return a OpenTelemetry HTTP policy.
      */
+    @Override
     public HttpPipelinePolicy create() {
         return this;
     }
@@ -64,7 +65,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
         Span.Builder spanBuilder = TRACER.spanBuilder(urlBuilder.getPath()).setParent(parentSpan);
 
-        // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request); useful for Gantt chart
+        // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request);
         spanBuilder.setSpanKind(Span.Kind.CLIENT);
 
         // Starting the span makes the sampling decision (nothing is logged at this time)
@@ -105,7 +106,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
      *
      * @param signal Reactive Stream signal fired by Reactor.
      */
-    private static void handleResponse(Signal<HttpResponse> signal) {
+    private static void handleResponse(Signal<? extends HttpResponse> signal) {
         // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
         if (signal.isOnComplete() || signal.isOnSubscribe()) {
             return;

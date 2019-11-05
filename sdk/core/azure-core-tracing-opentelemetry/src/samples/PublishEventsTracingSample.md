@@ -1,6 +1,6 @@
-# Create a configuration setting with Azure Core Tracing Opentelemetry
+# Publish events with Azure Core Tracing Opentelemetry
  
-Following documentation describes instructions to run a sample program for creating a Configuration Setting with tracing instrumentation.
+Following documentation describes instructions to run a sample program for publishing multiple events with tracing instrumentation.
 
 ## Getting Started
 Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package and **[LoggingExporter][logging_exporter]** as exporter.
@@ -14,8 +14,8 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-data-appconfiguration</artifactId>
-        <version>1.0.0-preview.7</version>
+        <artifactId>azure-messaging-eventhubs</artifactId>
+        <version>5.0.0-preview.5</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
@@ -30,27 +30,26 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 </dependencies>
 
 ```
-#### Sample demonstrates tracing when adding a configuration setting using [azure-data-app-configuration][azure_data_app_configuration] client library.
+#### Sample demonstrates tracing when publishing multiple events to an eventhub instance using [azure-messaging-eventhubs][azure_messaging_eventhubs] client library.
 ```java
 import com.azure.core.util.Context;
-import com.azure.data.appconfiguration.ConfigurationClient;
-import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import io.opentelemetry.OpenTelemetry;
+import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducerClient;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.exporters.logging.LoggingExporter;
 import io.opentelemetry.sdk.trace.TracerSdkFactory;
-import io.opentelemetry.sdk.trace.export.SimpleSpansProcessor;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
+import reactor.core.publisher.Flux;
 
 import java.util.logging.Logger;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.logging.Logger.getLogger;
 
 public class Sample {
-    final static String CONNECTION_STRING = "<YOUR-CONNECTION_STRING";
+    final static String VAULT_URL = "<YOUR_VAULT_URL>";
     private static final Logger LOGGER = getLogger("Sample");
     private static  final Tracer TRACER;
     private static final TracerSdkFactory TRACER_SDK_FACTORY;
@@ -76,26 +75,34 @@ public class Sample {
         return tracerSdkFactory;
     }
 
-    private static void doClientWork(Tracer tracer) {
-        ConfigurationClient client = new ConfigurationClientBuilder()
+    private static void doClientWork() {
+        EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString(CONNECTION_STRING)
-            .buildClient();
+            .buildProducer();
 
+        final int count = 2;
+        final byte[] body = "Hello World!".getBytes(UTF_8);
+    
         LOGGER.info("=== Start user scoped span  ===");
-
-        Span span = tracer.spanBuilder("user-parent-span").startSpan();
-        try (final Scope scope = tracer.withSpan(span)) {
-            final Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
-            client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey("hello").setValue("world"), true, traceContext);
+    
+        Span span = TRACER.spanBuilder("user-parent-span").startSpan();
+        try (final Scope scope = TRACER.withSpan(span)) {
+            final Context traceContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
+            final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
+                final EventData data = new EventData(body, traceContext);
+                return Flux.just(data);
+            });
+            producer.send(testData.toIterable(1));
         } finally {
             span.end();
-            LOGGER.info("=== End scoped span  ===");
+            producer.close();
+            LOGGER.info("=== End user scoped span  ===");
         }
     }
 }
 ```
 
 <!-- Links -->
-[azure_data_app_configuration]: https://mvnrepository.com/artifact/com.azure/azure-data-appconfiguration
+[azure_keyvault_secrets]: https://mvnrepository.com/artifact/com.azure/azure-messaging-eventhubs/
 [opentelemetry_sdk]: https://github.com/open-telemetry/opentelemetry-java/tree/master/sdk
 [logging_exporter]: https://github.com/open-telemetry/opentelemetry-java/tree/master/exporters/logging
