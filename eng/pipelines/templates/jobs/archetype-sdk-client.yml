@@ -133,7 +133,8 @@ jobs:
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
           mavenOptions: '$(MemoryOptions)  $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+#          jdkVersionOption: '1.11'
+          jdkVersionOption: '1.8'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
@@ -146,7 +147,8 @@ jobs:
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+#          jdkVersionOption: '1.11'
+          jdkVersionOption: '1.8'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
@@ -160,7 +162,8 @@ jobs:
           options: '-DskipTests -Dgpg.skip'
           mavenOptions: ''
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+#          jdkVersionOption: '1.11'
+          jdkVersionOption: '1.8'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'spotbugs:check checkstyle:checkstyle-aggregate'
@@ -175,7 +178,8 @@ jobs:
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+#          jdkVersionOption: '1.11'
+          jdkVersionOption: '1.8'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install site:site site:stage'
@@ -190,7 +194,8 @@ jobs:
           options: '--batch-mode -DskipTests -Dgpg.skip'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+#          jdkVersionOption: '1.11'
+          jdkVersionOption: '1.8'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
@@ -207,7 +212,8 @@ jobs:
           options: '-Dexec.args="-showall -dependencymanagement"'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+#          jdkVersionOption: '1.11'
+          jdkVersionOption: '1.8'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'clean package exec:java'
