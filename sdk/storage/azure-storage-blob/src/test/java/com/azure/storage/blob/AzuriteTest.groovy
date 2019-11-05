@@ -224,10 +224,7 @@ class AzuriteTest extends APISpec {
 
     def "Connect to Azurite"() {
         setup:
-        def serviceClient = new BlobServiceClientBuilder()
-            .endpoint(azuriteEndpoint)
-            .credential(azuriteCredential)
-            .buildClient()
+        def serviceClient = getAzuriteServiceClient()
 
         when:
         serviceClient.getProperties()
