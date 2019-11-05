@@ -5,13 +5,15 @@ package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
+import com.azure.core.http.rest.Response
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
@@ -20,7 +22,7 @@ import com.azure.storage.blob.models.DownloadRetryOptions
 
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
-
+import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
@@ -29,6 +31,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -36,15 +39,16 @@ import java.nio.file.FileAlreadyExistsException
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.function.Consumer
 
 class BlobAPITest extends APISpec {
-    BlobClientBase bc
+    BlobClient bc
     String blobName
 
     def setup() {
         blobName = generateBlobName()
-        bc = cc.getBlobClient(blobName).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc = cc.getBlobClient(blobName)
+        bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
     }
 
     def "Download all null"() {
@@ -84,7 +88,7 @@ class BlobAPITest extends APISpec {
 
     def "Download empty file"() {
         setup:
-        bc = cc.getBlobClient("emptyAppendBlob").getAppendBlobClient()
+        def bc = cc.getBlobClient("emptyAppendBlob").getAppendBlobClient()
         bc.create()
 
         when:
@@ -223,7 +227,7 @@ class BlobAPITest extends APISpec {
 
     def "Download error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.download(null)
@@ -282,6 +286,330 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         testFile.delete()
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file"() {
+        setup:
+        def file = getRandomFile(fileSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def properties = bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
+
+        and:
+        def stream1 = new FileInputStream(file)
+        def stream2 = new FileInputStream(outFile)
+
+        then:
+        compareFiles(stream1, 0, file.size(), stream2)
+        properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
+
+        cleanup:
+        stream1.close()
+        stream2.close()
+        outFile.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
+    }
+
+    def compareFiles(FileInputStream stream1, long offset, long count, FileInputStream stream2) {
+        int chunkSize = 8 * 1024 * 1024
+        long pos = 0
+        stream1.skip(offset)
+
+        while (pos < count) {
+            chunkSize = Math.min(chunkSize, count - pos)
+            def buf1 = new byte[chunkSize]
+            def buf2 = new byte[chunkSize]
+            def readCount1 = stream1.read(buf1)
+            def readCount2 = stream2.read(buf2)
+
+            if (readCount1 != readCount2) {
+                return false
+            }
+
+            if (ByteBuffer.wrap(buf1).compareTo(ByteBuffer.wrap(buf2)) != 0) {
+                return false
+            }
+            pos += chunkSize
+        }
+        if (pos != count && stream2.read() != -1) {
+            return false
+        }
+        return true
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file range"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, false, null, null)
+
+        and:
+        def stream1 = new FileInputStream(file)
+        def stream2 = new FileInputStream(outFile)
+
+        then:
+        compareFiles(stream1, range.getOffset(), range.getCount(), stream2)
+
+        cleanup:
+        stream1.close()
+        stream2.close()
+        outFile.delete()
+
+        /*
+        The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
+        send off parallel requests with invalid ranges.
+         */
+        where:
+        range                                      | _
+        new BlobRange(0, defaultDataSize)          | _ // Exact count
+        new BlobRange(1, defaultDataSize - 1)      | _ // Offset and exact count
+        new BlobRange(3, 2)                        | _ // Narrow range in middle
+        new BlobRange(0, defaultDataSize - 1)      | _ // Count that is less than total
+        new BlobRange(0, 10L * 1024 * 1024 * 1024) | _ // Count much larger than remaining data
+    }
+
+    /*
+    This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
+     */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file range fail"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(defaultDataSize + 1), null, null, null, false,
+            null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        cleanup:
+        outFile.delete()
+    }
+
+    @Requires({ liveMode() })
+    def "Download file count null"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, false, null, null)
+
+        and:
+        def stream1 = new FileInputStream(file)
+        def stream2 = new FileInputStream(outFile)
+
+        then:
+        compareFiles(stream1, 0, defaultDataSize, stream2)
+
+        cleanup:
+        stream1.close()
+        stream2.close()
+        outFile.delete()
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file AC"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        BlobRequestConditions bro = new BlobRequestConditions().setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+
+        cleanup:
+        outFile.delete()
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file AC fail"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
+        BlobRequestConditions bro = new BlobRequestConditions().setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
+            e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    @Requires({ liveMode() })
+    def "Download file etag lock"() {
+        setup:
+        def file = getRandomFile(1 * 1024 * 1024)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        /*
+         Set up a large download in small chunks so it makes a lot of requests. This will give us time to cut in an
+         operation that will change the etag.
+         */
+        def etagConflict = false
+        def bac = new BlobClientBuilder().pipeline(bc.getHttpPipeline()).endpoint(bc.getBlobUrl()).buildAsyncClient()
+            .getBlockBlobAsyncClient()
+        bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(1024, null, null), null, null, false)
+            .subscribe(
+            new Consumer<Response<BlobProperties>>() {
+                @Override
+                void accept(Response<BlobProperties> headers) {
+                    etagConflict = false
+                }
+            },
+            new Consumer<Throwable>() {
+                @Override
+                void accept(Throwable throwable) {
+                    if (throwable instanceof BlobStorageException &&
+                        ((BlobStorageException) throwable).getStatusCode() == 412) {
+                        etagConflict = true
+                        return
+                    }
+                    etagConflict = false
+                    throw throwable
+                }
+            })
+
+        sleep(500) // Give some time for the download request to start.
+        bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+
+        sleep(1000) // Allow time for the upload operation
+
+        then:
+        etagConflict
+        !outFile.exists() // We should delete the file we tried to create
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file progress receiver"() {
+        def file = getRandomFile(fileSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        def mockReceiver = Mock(ProgressReceiver)
+
+        def numBlocks = fileSize / (4 * 1024 * 1024)
+        def prevCount = 0
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(null, null, mockReceiver),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null)
+
+        then:
+        // We should receive exactly one notification of the completed progress.
+        1 * mockReceiver.reportProgress(fileSize)
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred > prevCount)) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount = bytesTransferred
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockReceiver.reportProgress({ it > fileSize })
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+
+        where:
+        fileSize             | _
+        100                  | _
+        8 * 1026 * 1024 + 10 | _
     }
 
     def "Get properties default"() {
@@ -377,7 +705,7 @@ class BlobAPITest extends APISpec {
 
     def "Get properties error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.getProperties()
@@ -490,7 +818,7 @@ class BlobAPITest extends APISpec {
 
     def "Set HTTP headers error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.setHttpHeaders(null)
@@ -598,7 +926,7 @@ class BlobAPITest extends APISpec {
 
     def "Set metadata error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.setMetadata(null)
@@ -699,7 +1027,7 @@ class BlobAPITest extends APISpec {
 
     def "Snapshot error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.createSnapshot()
@@ -1017,7 +1345,7 @@ class BlobAPITest extends APISpec {
 
     def "Copy error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.copyFromUrl("http://www.error.com")
@@ -1028,7 +1356,7 @@ class BlobAPITest extends APISpec {
 
     def "Abort copy error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.abortCopyFromUrl("id")
@@ -1296,7 +1624,7 @@ class BlobAPITest extends APISpec {
 
     def "Blob delete error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.delete()
@@ -1533,7 +1861,7 @@ class BlobAPITest extends APISpec {
     }
 
     def "Undelete error"() {
-        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName())
 
         when:
         bc.undelete()
@@ -1592,7 +1920,7 @@ class BlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                 | "斑點"
+        "斑點"                   | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 }

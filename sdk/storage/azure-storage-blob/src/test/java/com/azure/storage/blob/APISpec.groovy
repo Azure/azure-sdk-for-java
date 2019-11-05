@@ -468,9 +468,8 @@ class APISpec extends Specification {
     }
 
     /*
-    Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
-
     ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }

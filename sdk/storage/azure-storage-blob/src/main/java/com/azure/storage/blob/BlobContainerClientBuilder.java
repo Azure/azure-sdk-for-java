@@ -78,6 +78,8 @@ public final class BlobContainerClientBuilder {
     }
 
     /**
+     * Creates a {@link BlobContainerClient} from the configured options.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildClient}
@@ -89,6 +91,8 @@ public final class BlobContainerClientBuilder {
     }
 
     /**
+     * Creates a {@link BlobContainerAsyncClient} from the configured options.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildAsyncClient}
@@ -134,9 +138,9 @@ public final class BlobContainerClientBuilder {
             URL url = new URL(endpoint);
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
-            this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.accountName = parts.getAccountName();
             this.containerName = parts.getBlobContainerName();
+            this.endpoint = BuilderHelper.getEndpoint(parts);
 
             String sasToken = parts.getSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {

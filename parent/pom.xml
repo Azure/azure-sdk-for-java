@@ -101,7 +101,7 @@
     <!-- Dependency Versions -->
     <jackson.version>2.10.0</jackson.version>
     <jackson-databind.version>2.10.0</jackson-databind.version>
-    <client-runtime.version>1.6.12</client-runtime.version>
+    <client-runtime.version>1.6.15</client-runtime.version>
     <commons-codec.version>1.13</commons-codec.version>
     <spotbugs.version>4.0.0-beta3</spotbugs.version>
     <spotbugs.maven.version>3.1.12.2</spotbugs.maven.version>

@@ -29,7 +29,6 @@ Following packages that we are currently releasing in **GA**. These libraries fo
 These libraries can be easily identified by their folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
 The libraries released in the November 2019 GA release:
-- [App Configuration](sdk/appconfiguration/azure-data-appconfiguration/README.md)
 - [Identity](sdk/identity/azure-identity/README.md)
 - [Key Vault Keys](sdk/keyvault/azure-security-keyvault-keys/README.md)
 - [Key Vault Secrets](sdk/keyvault/azure-security-keyvault-secrets/README.md)
@@ -41,6 +40,7 @@ The libraries released in the November 2019 GA release:
 ### Client: November 2019 Preview Release
 The libraries released in the November GA November 2019 preview:
 
+- [App Configuration](sdk/appconfiguration/azure-data-appconfiguration/README.md)
 - [Event Hubs](sdk/eventhubs/azure-messaging-eventhubs/README.md)
 - [Event Hubs Checkpoint Store](sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
 - [Storage File Shares](sdk/storage/azure-storage-file-share/README.md)

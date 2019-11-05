@@ -316,13 +316,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         BlobRequestConditions accessConditions) {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
-            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-                ? new ParallelTransferOptions(null, null, null)
-                : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
-                    parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
 
             return Mono.using(() -> super.uploadFileResourceSupplier(filePath),
-                channel -> this.uploadWithResponse(FluxUtil.readFile(channel), finalParallelTransferOptions, headers,
+                channel -> this.uploadWithResponse(FluxUtil.readFile(channel), parallelTransferOptions, headers,
                     metadataFinal, tier, accessConditions)
                     .then()
                     .doOnTerminate(() -> {
