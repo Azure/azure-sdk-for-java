@@ -2,13 +2,15 @@ trigger: none
 
 resources:
   containers:
-  - container: mcr.microsoft.com/azure-storage/azurite
+  - container: azurite
     image: mcr.microsoft.com/azure-storage/azurite
 
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: storage
+      Options:
+        enableAzurite: true
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
