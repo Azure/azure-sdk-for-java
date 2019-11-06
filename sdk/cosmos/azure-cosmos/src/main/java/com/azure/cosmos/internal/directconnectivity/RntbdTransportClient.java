@@ -117,14 +117,14 @@ public final class RntbdTransportClient extends TransportClient {
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         logger.debug("RntbdTransportClient.invokeStoreAsync({}, {}): {}", address, request, record);
-        
-        return Mono.fromFuture(record).doFinally(signal -> {
-            if (signal == SignalType.CANCEL) {
-                boolean cancelled = record.cancel(false);
-                logger.debug("SignalType.CANCEL received from reactor: {cancelled: {}, endpoint: {}, record: {}}",
-                    cancelled,
-                    endpoint,
-                    record);
+
+        return Mono.fromFuture(record).doFinally(signalType -> {
+            logger.debug("SignalType.{} received from reactor: {\n  endpoint: {},\n  record: {}\n}",
+                signalType.name(),
+                endpoint,
+                record);
+            if (signalType == SignalType.CANCEL) {
+                record.stage(RntbdRequestRecord.Stage.CANCELLED_BY_CLIENT);
             }
         });
     }

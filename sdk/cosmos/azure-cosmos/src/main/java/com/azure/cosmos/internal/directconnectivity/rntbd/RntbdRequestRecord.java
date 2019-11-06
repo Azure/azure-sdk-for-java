@@ -7,33 +7,41 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.RequestTimeoutException;
 import com.azure.cosmos.internal.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import io.micrometer.core.instrument.Timer;
 import io.netty.util.Timeout;
 import io.netty.util.TimerTask;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@JsonSerialize(using = RntbdRequestRecord.JsonSerializer.class)
 public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
-    private static final AtomicReferenceFieldUpdater<RntbdRequestRecord, State>
-        stateUpdater = AtomicReferenceFieldUpdater.newUpdater(RntbdRequestRecord.class, State.class,"state");
+    private static final AtomicReferenceFieldUpdater<RntbdRequestRecord, Stage>
+        stateUpdater = AtomicReferenceFieldUpdater.newUpdater(RntbdRequestRecord.class, Stage.class, "stage");
 
     private final RntbdRequestArgs args;
     private final RntbdRequestTimer timer;
-    private volatile State state;
+    private volatile Stage stage;
 
     public RntbdRequestRecord(final RntbdRequestArgs args, final RntbdRequestTimer timer) {
 
         checkNotNull(args, "args");
         checkNotNull(timer, "timer");
 
-        this.state = State.CREATED;
+        this.stage = Stage.CREATED;
         this.args = args;
         this.timer = timer;
     }
@@ -44,7 +52,6 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         return this.args.activityId();
     }
 
-    @JsonProperty
     public RntbdRequestArgs args() {
         return this.args;
     }
@@ -68,16 +75,15 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
     }
 
     @JsonProperty
-    public State state() {
+    public Stage stage() {
         return stateUpdater.get(this);
     }
 
-    RntbdRequestRecord state(State value) {
+    public RntbdRequestRecord stage(Stage value) {
         stateUpdater.set(this, value);
         return this;
     }
 
-    @JsonProperty
     public long timeoutIntervalInMillis() {
         return this.timer.getRequestTimeout(TimeUnit.MILLISECONDS);
     }
@@ -103,9 +109,54 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
     // region Types
 
-    enum State {
-        CREATED, QUEUED, SENT, UNSENT
+    public enum Stage {
+        CREATED, QUEUED, SENT, UNSENT, CANCELLED_BY_CLIENT
     }
 
+    static final class JsonSerializer extends StdSerializer<RntbdRequestRecord> {
+
+        JsonSerializer() {
+            super(RntbdRequestRecord.class);
+        }
+
+        @Override
+        public void serialize(final RntbdRequestRecord value, final JsonGenerator generator,
+                              final SerializerProvider provider) throws IOException {
+
+            generator.writeStartObject();
+            generator.writeObjectFieldStart("status");
+            generator.writeBooleanField("done", value.isDone());
+            generator.writeBooleanField("cancelled", value.isCancelled());
+            generator.writeBooleanField("completedExceptionally", value.isCompletedExceptionally());
+
+            if (value.isCompletedExceptionally()) {
+
+                try {
+
+                    value.get();
+
+                } catch (final ExecutionException executionException) {
+
+                    final Throwable error = executionException.getCause();
+
+                    generator.writeObjectFieldStart("error");
+                    generator.writeStringField("type", error.getClass().getName());
+                    generator.writeObjectField("value", error);
+                    generator.writeEndObject();
+
+                } catch (CancellationException | InterruptedException exception) {
+
+                    generator.writeObjectFieldStart("error");
+                    generator.writeStringField("type", exception.getClass().getName());
+                    generator.writeObjectField("value", exception);
+                    generator.writeEndObject();
+                }
+            }
+
+            generator.writeEndObject();
+            generator.writeObjectField("args", value.args);
+            generator.writeEndObject();
+        }
+    }
     // endregion
 }

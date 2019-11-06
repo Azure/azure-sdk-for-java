@@ -127,6 +127,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         }
 
         concurrencyControlSemaphore.acquire();
+        logger.debug("concurrencyControlSemaphore: {}", concurrencyControlSemaphore);
         try {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } catch (Throwable error) {

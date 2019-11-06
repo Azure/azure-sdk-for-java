@@ -312,12 +312,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         public Provider(final RntbdTransportClient transportClient, final Options options, final SslContext sslContext) {
 
-            checkNotNull(transportClient, "provider");
-            checkNotNull(options, "options");
-            checkNotNull(sslContext, "sslContext");
+            checkNotNull(transportClient, "expected non-null provider");
+            checkNotNull(options, "expected non-null options");
+            checkNotNull(sslContext, "expected non-null sslContext");
 
-            final DefaultThreadFactory threadFactory = new DefaultThreadFactory("CosmosEventLoop", true);
-            final int threadCount = Runtime.getRuntime().availableProcessors();
+            final DefaultThreadFactory threadFactory = new DefaultThreadFactory("cosmos-rntbd-nio", true);
+            final int threadCount = 2 * Runtime.getRuntime().availableProcessors();
             final LogLevel wireLogLevel;
 
             if (logger.isTraceEnabled()) {

@@ -33,6 +33,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -160,8 +161,10 @@ abstract class AsyncBenchmark<T> {
     protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
 
     private boolean shouldContinue(long startTimeMillis, long iterationCount) {
+
         Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
         int maxNumberOfOperations = configuration.getNumberOfOperations();
+
         if (maxDurationTime == null) {
             return iterationCount < maxNumberOfOperations;
         }
@@ -181,16 +184,18 @@ abstract class AsyncBenchmark<T> {
 
         successMeter = metricsRegistry.meter("#Successful Operations");
         failureMeter = metricsRegistry.meter("#Unsuccessful Operations");
+
         if (configuration.getOperationType() == Configuration.Operation.ReadLatency
-                || configuration.getOperationType() == Configuration.Operation.WriteLatency)
+                || configuration.getOperationType() == Configuration.Operation.WriteLatency) {
             latency = metricsRegistry.timer("Latency");
+        }
 
         reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
-
         long startTime = System.currentTimeMillis();
 
         AtomicLong count = new AtomicLong(0);
         long i;
+
         for ( i = 0; shouldContinue(startTime, i); i++) {
 
             BaseSubscriber<T> baseSubscriber = new BaseSubscriber<T>() {
@@ -201,7 +206,12 @@ abstract class AsyncBenchmark<T> {
 
                 @Override
                 protected void hookOnNext(T value) {
+                    logger.debug("hookOnNext: {}, count:{}", value, count.get());
+                }
 
+                @Override
+                protected void hookOnCancel() {
+                    this.hookOnError(new CancellationException());
                 }
 
                 @Override
