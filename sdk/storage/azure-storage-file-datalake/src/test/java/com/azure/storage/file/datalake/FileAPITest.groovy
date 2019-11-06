@@ -410,10 +410,10 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(StorageErrorException)
-        pac.accessControlList()
-        pac.permissions()
-        pac.owner()
-        pac.group()
+        pac.getAccessControlList()
+        pac.getPermissions()
+        pac.getOwner()
+        pac.getGroup()
     }
 
     def "Get access control with response"() {

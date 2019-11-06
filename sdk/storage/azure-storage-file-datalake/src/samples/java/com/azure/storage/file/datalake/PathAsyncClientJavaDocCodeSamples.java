@@ -173,8 +173,8 @@ public class PathAsyncClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControl
         client.getAccessControl().subscribe(
             response -> System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
-                PathAccessControlEntry.serializeList(response.accessControlList()), response.group(), response.owner(),
-                response.permissions()));
+                PathAccessControlEntry.serializeList(response.getAccessControlList()), response.getGroup(),
+                response.getOwner(), response.getPermissions()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControl
     }
 
@@ -188,8 +188,8 @@ public class PathAsyncClientJavaDocCodeSamples {
 
         client.getAccessControlWithResponse(returnUpn, accessConditions).subscribe(
             response -> System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
-                PathAccessControlEntry.serializeList(response.getValue().accessControlList()),
-                response.getValue().group(), response.getValue().owner(), response.getValue().permissions()));
+                PathAccessControlEntry.serializeList(response.getValue().getAccessControlList()),
+                response.getValue().getGroup(), response.getValue().getOwner(), response.getValue().getPermissions()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions
     }
 

@@ -10,16 +10,24 @@ import java.util.List;
  */
 public class PathAccessControl {
 
-    private List<PathAccessControlEntry> accessControlList;
-    private String group;
-    private String owner;
-    private PathPermissions permissions;
+    private final List<PathAccessControlEntry> accessControlList;
+    private final String group;
+    private final String owner;
+    private final PathPermissions permissions;
 
     /**
      * Constructs a new {@link PathAccessControl}.
+     * @param accessControlList A list of {@link PathAccessControlEntry}
+     * @param permissions {@link PathPermissions}
+     * @param group The group
+     * @param owner The owner
      */
-    public PathAccessControl() {
-
+    public PathAccessControl(List<PathAccessControlEntry> accessControlList, PathPermissions permissions,
+        String group, String owner) {
+        this.accessControlList = accessControlList;
+        this.permissions = permissions;
+        this.group = group;
+        this.owner = owner;
     }
 
     /**
@@ -27,19 +35,8 @@ public class PathAccessControl {
      *
      * @return the accessControlList value.
      */
-    public List<PathAccessControlEntry> accessControlList() {
+    public List<PathAccessControlEntry> getAccessControlList() {
         return accessControlList;
-    }
-
-    /**
-     * Set the accessControlList property: The accessControlList property.
-     *
-     * @param accessControlList the accessControlList value to set.
-     * @return the PathAccessControl object itself.
-     */
-    public PathAccessControl accessControlList(List<PathAccessControlEntry> accessControlList) {
-        this.accessControlList = accessControlList;
-        return this;
     }
 
     /**
@@ -47,19 +44,8 @@ public class PathAccessControl {
      *
      * @return the group value.
      */
-    public String group() {
+    public String getGroup() {
         return group;
-    }
-
-    /**
-     * Set the group property: The group property.
-     *
-     * @param group the group value to set.
-     * @return the PathAccessControl object itself.
-     */
-    public PathAccessControl group(String group) {
-        this.group = group;
-        return this;
     }
 
     /**
@@ -67,19 +53,8 @@ public class PathAccessControl {
      *
      * @return the owner value.
      */
-    public String owner() {
+    public String getOwner() {
         return owner;
-    }
-
-    /**
-     * Set the owner property: The owner property.
-     *
-     * @param owner the owner value to set.
-     * @return the PathAccessControl object itself.
-     */
-    public PathAccessControl owner(String owner) {
-        this.owner = owner;
-        return this;
     }
 
     /**
@@ -87,18 +62,7 @@ public class PathAccessControl {
      *
      * @return the permissions value.
      */
-    public PathPermissions permissions() {
+    public PathPermissions getPermissions() {
         return permissions;
-    }
-
-    /**
-     * Set the permission property: The permission property.
-     *
-     * @param permissions the permissions value to set.
-     * @return the PathAccessControl object itself.
-     */
-    public PathAccessControl setPermissions(PathPermissions permissions) {
-        this.permissions = permissions;
-        return this;
     }
 }

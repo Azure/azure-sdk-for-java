@@ -190,8 +190,8 @@ public class PathClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getAccessControl
         PathAccessControl response = client.getAccessControl();
         System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
-            PathAccessControlEntry.serializeList(response.accessControlList()), response.group(), response.owner(),
-            response.permissions());
+            PathAccessControlEntry.serializeList(response.getAccessControlList()), response.getGroup(),
+            response.getOwner(), response.getPermissions());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getAccessControl
     }
 
@@ -209,8 +209,8 @@ public class PathClientJavaDocCodeSamples {
         PathAccessControl pac = response.getValue();
 
         System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
-            PathAccessControlEntry.serializeList(pac.accessControlList()), pac.group(), pac.owner(),
-            pac.permissions());
+            PathAccessControlEntry.serializeList(pac.getAccessControlList()), pac.getGroup(), pac.getOwner(),
+            pac.getPermissions());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
     }
 

@@ -554,11 +554,10 @@ public class DataLakePathAsyncClient {
 
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
             PathGetPropertiesAction.GET_ACCESS_CONTROL, returnUpn, null, null, lac, mac, context)
-            .map(response -> new SimpleResponse<>(response, new PathAccessControl()
-                .accessControlList(PathAccessControlEntry.parseList(response.getDeserializedHeaders().getAcl()))
-                .group(response.getDeserializedHeaders().getGroup())
-                .owner(response.getDeserializedHeaders().getOwner())
-                .setPermissions(PathPermissions.parseSymbolic(response.getDeserializedHeaders().getPermissions()))));
+            .map(response -> new SimpleResponse<>(response, new PathAccessControl(
+                PathAccessControlEntry.parseList(response.getDeserializedHeaders().getAcl()),
+                PathPermissions.parseSymbolic(response.getDeserializedHeaders().getPermissions()),
+                response.getDeserializedHeaders().getGroup(), response.getDeserializedHeaders().getOwner())));
     }
 
     /**
