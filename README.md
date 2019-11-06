@@ -48,7 +48,7 @@ The libraries released in the November 2019 preview:
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
 ### Client: Previous Versions
-Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the preview libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Stable library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They do not implement Azure Core and so do not have the same features as the Novemeber releases. They do however offer wider coverage of services. 
+Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the preview libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Stable library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the Novemeber releases. They do however offer wider coverage of services. 
 
 ### Management
 Libraries which enable you to provision specific resources. They are responsible for directly mirroring and consuming Azure service's REST endpoints. Management library directories contain `-mgmt-`, e.g. `azure-mgmt-keyvault`.
