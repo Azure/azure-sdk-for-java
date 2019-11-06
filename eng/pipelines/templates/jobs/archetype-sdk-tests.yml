@@ -25,17 +25,17 @@ jobs:
   - job: ${{ parameters.TestName }}
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
+    resources:
+      - $({ parameters.Resources })
+
     variables:
       - template: ../variables/globals.yml
     strategy:
       matrix: ${{ parameters.Matrix }}
       maxParallel: ${{ parameters.MaxParallel }}
 
-    resources:
-    - $({ parameters.Resources })
-
     services:
-    - $({ parameters.Services })
+      - $({ parameters.Services })
 
     pool:
       vmImage: $(OSVmImage)
