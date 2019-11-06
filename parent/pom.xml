@@ -157,6 +157,7 @@
     <jetty-http.version>9.4.11.v20180605</jetty-http.version>
     <jetty-server.version>9.4.11.v20180605</jetty-server.version>
     <junit.version>4.13-beta-3</junit.version>
+    <!-- use 5.4.2 now since Version 5.5.2 as of 11.2019 fails to discover tests - https://youtrack.jetbrains.com/issue/IDEA-223700 -->
     <junit-jupiter.version>5.4.2</junit-jupiter.version>
     <junit-platform-launcher.version>1.5.2</junit-platform-launcher.version>
     <log4j.version>1.2.17</log4j.version>
@@ -397,29 +398,10 @@
 
       <!-- https://junit.org/junit5/docs/current/user-guide/#running-tests-ide-intellij-idea -->
       <dependency>
-        <groupId>org.junit.platform</groupId>
-        <artifactId>junit-platform-launcher</artifactId>
-        <version>${junit-platform-launcher.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
         <version>${junit-jupiter.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.vintage</groupId>
-        <artifactId>junit-vintage-engine</artifactId>
-        <version>${junit-jupiter.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-api</artifactId>
-        <version>${junit-jupiter.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-params</artifactId>
-        <version>${junit-jupiter.version}</version>
+        <type>pom</type>
       </dependency>
 
 

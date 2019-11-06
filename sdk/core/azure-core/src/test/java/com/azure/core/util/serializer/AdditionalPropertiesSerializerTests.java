@@ -3,9 +3,6 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.core.implementation.serializer.SerializerEncoding;
-import com.azure.core.implementation.util.Foo;
-import com.azure.core.implementation.util.FooChild;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
