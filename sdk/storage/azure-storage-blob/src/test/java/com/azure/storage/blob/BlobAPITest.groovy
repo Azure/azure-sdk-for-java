@@ -4,7 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
-import com.azure.core.implementation.util.ImplUtils
+import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
@@ -57,7 +57,7 @@ class BlobAPITest extends APISpec {
 
         then:
         body == defaultData
-        ImplUtils.isNullOrEmpty(headers.getMetadata())
+        CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getContentLength() != null
         headers.getContentType() != null
         headers.getContentRange() == null
@@ -566,7 +566,7 @@ class BlobAPITest extends APISpec {
 
         then:
         validateBasicHeaders(headers)
-        ImplUtils.isNullOrEmpty(properties.getMetadata())
+        CoreUtils.isNullOrEmpty(properties.getMetadata())
         properties.getBlobType() == BlobType.BLOCK_BLOB
         properties.getCopyCompletionTime() == null // tested in "copy"
         properties.getCopyStatusDescription() == null // only returned when the service has errors; cannot validate.

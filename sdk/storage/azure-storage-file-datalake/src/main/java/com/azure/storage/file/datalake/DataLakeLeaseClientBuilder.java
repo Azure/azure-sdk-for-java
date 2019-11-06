@@ -44,6 +44,9 @@ public final class DataLakeLeaseClientBuilder {
 
     final BlobLeaseClientBuilder blobLeaseClientBuilder;
 
+    /**
+     * Creates a new instance of {@link DataLakeLeaseClientBuilder}.
+     */
     public DataLakeLeaseClientBuilder() {
         blobLeaseClientBuilder = new BlobLeaseClientBuilder();
     }

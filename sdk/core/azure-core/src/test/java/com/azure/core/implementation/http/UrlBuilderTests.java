@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.http;
 
+import com.azure.core.util.UrlBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 

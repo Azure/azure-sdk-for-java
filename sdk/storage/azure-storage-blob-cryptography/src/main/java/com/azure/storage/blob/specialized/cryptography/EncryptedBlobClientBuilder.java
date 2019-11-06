@@ -18,7 +18,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -136,7 +136,7 @@ public final class EncryptedBlobClientBuilder {
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (ImplUtils.isNullOrEmpty(containerName)) {
+        if (CoreUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
@@ -343,7 +343,7 @@ public final class EncryptedBlobClientBuilder {
             this.snapshot = parts.getSnapshot();
 
             String sasToken = parts.getSasQueryParameters().encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {

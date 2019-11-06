@@ -5,6 +5,7 @@ package com.azure.core.implementation.serializer;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

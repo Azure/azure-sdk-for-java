@@ -32,10 +32,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <project.automatic.module.name>com.azure.data.appconfiguration</project.automatic.module.name>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

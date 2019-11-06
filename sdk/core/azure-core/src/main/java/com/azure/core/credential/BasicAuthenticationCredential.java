@@ -3,7 +3,7 @@
 
 package com.azure.core.credential;
 
-import com.azure.core.implementation.util.Base64Util;
+import com.azure.core.util.Base64Util;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 

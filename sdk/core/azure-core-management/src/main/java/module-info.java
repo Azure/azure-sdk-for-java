@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.core.management {
-    requires com.azure.core;
+    requires transitive com.azure.core;
     requires org.reactivestreams;
 
     exports com.azure.core.management.implementation to com.fasterxml.jackson.databind;
