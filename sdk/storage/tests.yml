@@ -1,10 +1,11 @@
 trigger: none
 
-jobs:
-  resources:
-    containers:
-    - container: mcr.microsoft.com/azure-storage/azurite
+resources:
+  containers:
+  - container: mcr.microsoft.com/azure-storage/azurite
+    image: mcr.microsoft.com/azure-storage/azurite
 
+jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: storage
