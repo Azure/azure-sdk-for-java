@@ -105,10 +105,6 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the {@link ProxyOptions proxy options} that the client will use.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#proxy}
-     *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
