@@ -35,10 +35,10 @@ public class UserAgentPolicyTests {
         // for optional application specific string, <application_id>, such as "AzCopy/10.0.4-Preview"
         // currently, java user agent header doesn't handle it.
 
-        // for azsdk-<sdk_language> such as "azsdk-java", use regex "\bazsdk\-java"
+        // for azsdk-<sdk_language> such as "azsdk-java", use regex "^azsdk\-java"
         // for <package_name> such as "-application-configuration", use regex "(-[a-z]+)+"
-        // for <package_version> such as "1.0.0-preview.4 ", use regex "[0-9a-Z-.]+"
-        // for <platform_info> such as  “(NODE-VERSION v4.5.0; Windows_NT 10.0.14393)”, use regex "\([a-zA-Z0-9_;:\/\s.]+\)"
-        assertTrue(userAgentValue.matches("\\bazsdk\\-java(-[a-z]+)+\\/[0-9a-z-.]+\\s\\([a-zA-Z0-9_;:\\/\\s.]+\\)"));
+        // for <package_version> such as "1.0.0-preview.4 ", use regex ".+"
+        // for <platform_info> such as  “(NODE-VERSION v4.5.0; Windows_NT 10.0.14393)”, use regex "\(.+\)"
+        assertTrue(userAgentValue.matches("^azsdk\\-java(-[a-z]+)+\\/.+\\s\\(.+\\)$"));
     }
 }
