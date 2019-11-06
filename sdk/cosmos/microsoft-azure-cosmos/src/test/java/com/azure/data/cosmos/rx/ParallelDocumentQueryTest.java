@@ -36,8 +36,6 @@ import java.util.stream.Collectors;
 import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 
-//FIXME beforeClass times out inconsistently
-@Ignore
 public class ParallelDocumentQueryTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
     private CosmosContainer createdCollection;
@@ -62,8 +60,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         };
     }
 
-    //FIXME test times out inconsistently
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
@@ -190,11 +186,16 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
-        FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
-                .statusCode(400)
+        List<CosmosItemProperties> expectedDocs = createdDocuments;
+        FeedResponseListValidator<CosmosItemProperties> validator =
+            new FeedResponseListValidator.Builder<CosmosItemProperties>()
+                .totalSize(expectedDocs.size())
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
+                                     .requestChargeGreaterThanOrEqualTo(1.0)
+                                     .build())
                 .build();
-        validateQueryFailure(queryObservable, validator);
+        validateQuerySuccess(queryObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
@@ -217,7 +218,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         assertThat(sum).isEqualTo(createdDocuments.size());
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void compositeContinuationTokenRoundTrip() throws Exception {
     	{
@@ -237,14 +238,14 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     		assertThat(range.isMinInclusive()).isEqualTo(false);
     		assertThat(range.isMaxInclusive()).isEqualTo(true);
     	}
-    	
+
     	{
     		// Negative
     		ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
     		boolean succeeed = CompositeContinuationToken.tryParse("{\"property\" : \"not a valid composite continuation token\"}", outCompositeContinuationToken);
     		assertThat(succeeed).isFalse();
     	}
-    	
+
     	{
     		// Negative - GATEWAY composite continuation token
     		ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
@@ -257,11 +258,11 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "non-emulator" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithCompositeContinuationTokens() throws Exception {
         String query = "SELECT * FROM c";
-        
+
         // Get Expected
         List<CosmosItemProperties> expectedDocs = new ArrayList<>(createdDocuments);
         assertThat(expectedDocs).isNotEmpty();
-        
+
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1, 10, 100}, expectedDocs);
     }
 
@@ -321,7 +322,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
 		return cosmosContainer.createItem(docDefinition).block().properties();
 	}
-	
+
 	private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<CosmosItemProperties> expectedDocs) {
         for (int pageSize : pageSizes) {
             List<CosmosItemProperties> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);

@@ -7,10 +7,10 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -65,7 +65,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
 
         TestMode testMode = getTestMode();
-        if (ImplUtils.isNullOrEmpty(connectionString)) {
+        if (CoreUtils.isNullOrEmpty(connectionString)) {
             connectionString = (testMode == TestMode.PLAYBACK)
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
                 : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
@@ -183,7 +183,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(setting2);
     }
 
-    @Test public abstract void setConfigurationSettingNullKey();
+    @Test
+    public abstract void setConfigurationSettingNullKey();
 
     @Test
     public abstract void getConfigurationSetting();
@@ -396,7 +397,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void deleteAllSettings();
 
     /**
-     * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
+     * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of
+     * 200.
      *
      * @param expected ConfigurationSetting expected to be returned by the service
      * @param response RestResponse returned by the service, the body should contain a ConfigurationSetting
@@ -438,8 +440,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     /**
-     * The ConfigurationSetting has some fields that are only manipulated by the service,
-     * this helper method cleans those fields on the setting returned by the service so tests are able to pass.
+     * The ConfigurationSetting has some fields that are only manipulated by the service, this helper method cleans
+     * those fields on the setting returned by the service so tests are able to pass.
+     *
      * @param expected ConfigurationSetting expected to be returned by the service.
      * @param actual ConfigurationSetting returned by the service.
      */
@@ -529,11 +532,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             || !Objects.equals(o1.getLastModified(), o2.getLastModified())
             || !Objects.equals(o1.isReadOnly(), o2.isReadOnly())
             || !Objects.equals(o1.getContentType(), o2.getContentType())
-            || ImplUtils.isNullOrEmpty(o1.getTags()) != ImplUtils.isNullOrEmpty(o2.getTags())) {
+            || CoreUtils.isNullOrEmpty(o1.getTags()) != CoreUtils.isNullOrEmpty(o2.getTags())) {
             return false;
         }
 
-        if (!ImplUtils.isNullOrEmpty(o1.getTags())) {
+        if (!CoreUtils.isNullOrEmpty(o1.getTags())) {
             return Objects.equals(o1.getTags(), o2.getTags());
         }
 

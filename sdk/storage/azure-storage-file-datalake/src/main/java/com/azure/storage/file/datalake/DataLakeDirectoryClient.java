@@ -5,8 +5,8 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -179,7 +179,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * directory.
      */
     public DataLakeFileClient getFileClient(String fileName) {
-        if (ImplUtils.isNullOrEmpty(fileName)) {
+        if (CoreUtils.isNullOrEmpty(fileName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
         }
         return new DataLakeFileClient(dataLakeDirectoryAsyncClient.getFileAsyncClient(fileName),
@@ -282,7 +282,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * in this directory
      */
     public DataLakeDirectoryClient getSubDirectoryClient(String subDirectoryName) {
-        if (ImplUtils.isNullOrEmpty(subDirectoryName)) {
+        if (CoreUtils.isNullOrEmpty(subDirectoryName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'subDirectoryName' can not be set to null"));
         }
         return new DataLakeDirectoryClient(dataLakeDirectoryAsyncClient.getSubDirectoryAsyncClient(subDirectoryName),

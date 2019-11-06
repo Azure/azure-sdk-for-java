@@ -5,8 +5,8 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -140,7 +140,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @return the xMsContentCrc64 value.
      */
     public byte[] getXMsContentCrc64() {
-        return ImplUtils.clone(this.xMsContentCrc64);
+        return CoreUtils.clone(this.xMsContentCrc64);
     }
 
     /**
@@ -153,7 +153,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
     public FileUploadRangeFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
-        this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
+        this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
     }
 

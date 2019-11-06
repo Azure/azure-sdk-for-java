@@ -11,9 +11,9 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.util.Context
+import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient

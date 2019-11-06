@@ -4,9 +4,9 @@
 package com.azure.core.annotation;
 
 import com.azure.core.http.rest.Page;
-import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.implementation.UnixTime;
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

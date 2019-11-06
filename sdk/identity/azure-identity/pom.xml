@@ -19,10 +19,6 @@
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
-  <properties>
-    <project.automatic.module.name>com.azure.identity</project.automatic.module.name>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

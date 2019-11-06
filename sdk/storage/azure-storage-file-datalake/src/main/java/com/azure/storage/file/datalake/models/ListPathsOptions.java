@@ -20,6 +20,9 @@ public class ListPathsOptions {
     private boolean returnUpn;
     private Integer maxResults;
 
+    /**
+     * Constructs an unpopulated {@link ListPathsOptions}.
+     */
     public ListPathsOptions() {
     }
 
@@ -33,6 +36,11 @@ public class ListPathsOptions {
         return path;
     }
 
+    /**
+     * Specifies if the call to listContainersSegment should recursively include all paths.
+     *
+     * @return {@code true} if the call to listContainerSegment recursively includes all paths.
+     */
     public boolean isRecursive() {
         return recursive;
     }
@@ -63,6 +71,12 @@ public class ListPathsOptions {
         return this;
     }
 
+    /**
+     * Specifies if the call to listContainersSegment should recursively include all paths.
+     *
+     * @param recursive {@code true} if the call to listContainerSegment recursively includes all paths.
+     * @return the updated ListPathsOptions object.
+     */
     public ListPathsOptions setRecursive(boolean recursive) {
         this.recursive = recursive;
         return this;

@@ -6,7 +6,7 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;

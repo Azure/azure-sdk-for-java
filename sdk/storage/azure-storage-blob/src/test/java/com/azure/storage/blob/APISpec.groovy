@@ -16,8 +16,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.util.FluxUtil
-import com.azure.core.implementation.util.ImplUtils
+import com.azure.core.util.FluxUtil
+import com.azure.core.util.CoreUtils
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.annotation.DoNotRecord
@@ -394,7 +394,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (!ImplUtils.isNullOrEmpty(sasToken)) {
+        if (!CoreUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)
         }
 
