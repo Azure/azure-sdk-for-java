@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectorypermissionandkeyerror088544?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "15a1f535-13e8-492a-be9c-5dad8b9fd540"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F5D495DBD",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:00 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c1ad4dcd-b01a-00ca-6188-83a3bb000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:00 GMT",
+      "x-ms-client-request-id" : "15a1f535-13e8-492a-be9c-5dad8b9fd540"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestscreatedirectorypermissionandkeyerror088544", "directoryapitestscreatedirectorypermissionandkeyerror062004" ]
+}

@@ -18,14 +18,14 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.implementation.RestProxy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.implementation.models.MessagesClearResponse;
 import com.azure.storage.queue.implementation.models.MessagesDequeueResponse;
 import com.azure.storage.queue.implementation.models.MessagesEnqueueResponse;
 import com.azure.storage.queue.implementation.models.MessagesPeekResponse;
-import com.azure.storage.queue.models.QueueMessage;
-import com.azure.storage.queue.models.StorageErrorException;
+import com.azure.storage.queue.implementation.models.QueueMessage;
+import com.azure.storage.queue.models.QueueStorageException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -62,22 +62,22 @@ public final class MessagesImpl {
     private interface MessagesService {
         @Get("{queueName}/messages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessagesDequeueResponse> dequeue(@PathParam("queueName") String queueName, @HostParam("url") String url, @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Delete("{queueName}/messages")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessagesClearResponse> clear(@PathParam("queueName") String queueName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Post("{queueName}/messages")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessagesEnqueueResponse> enqueue(@PathParam("queueName") String queueName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") QueueMessage queueMessage, @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("messagettl") Integer messageTimeToLive, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Get("{queueName}/messages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessagesPeekResponse> peek(@PathParam("queueName") String queueName, @HostParam("url") String url, @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("peekonly") String peekonly, Context context);
     }
 

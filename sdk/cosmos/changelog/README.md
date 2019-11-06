@@ -1,5 +1,24 @@
 ## Changelog
 
+### 3.3.2
+- ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
+- Port consistency policy bug fix (see https://github.com/Azure/azure-cosmosdb-java/pull/196)
+- Port test fixes (see https://github.com/Azure/azure-cosmosdb-java/pull/196)
+
+### 3.3.1
+- Added @JsonIgnore on getLogger in JsonSerializable
+
+### 3.3.0
+- **Version Upgrades**
+    - Project Reactor version upgrade to 3.3.0.RELEASE
+    - reactor-netty version upgrade to 0.9.0.RELEASE
+    - netty version upgrade to 4.1.42.Final
+    - netty-tcnative version upgrade to 2.0.26.Final
+- **Bug Fixes**
+    - Retry not happening on direct mode for Request Rate Too Large Exception
+    - NPE on Not Found, Gone, PartitionSplit Exception.
+    - Change Feed Processor: fix a handful of bugs related to not-reactor/blocking calls, preserving the current continuation token in the lease documents and proper load balancing of the current workload when more than one host is running at a given time.
+
 ### 3.1.0
 - Added CosmosKeyCredential support in CosmosClientBuilder to support account key rotation.
 

@@ -21,6 +21,7 @@ import com.azure.data.cosmos.internal.Utils;
 import org.apache.commons.collections4.ComparatorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -164,11 +165,12 @@ public class ConsistencyWriter {
                                            .doOnError(
                                                t -> {
                                                    try {
-                                                       CosmosClientException ex = Utils.as(t, CosmosClientException.class);
+                                                       Throwable unwrappedException = Exceptions.unwrap(t);
+                                                       CosmosClientException ex = Utils.as(unwrappedException, CosmosClientException.class);
                                                        try {
                                                            BridgeInternal.recordResponse(request.requestContext.cosmosResponseDiagnostics, request,
                                                                storeReader.createStoreResult(null, ex, false, false, primaryUri));
-                                                       } catch (CosmosClientException e) {
+                                                       } catch (Exception e) {
                                                            logger.error("Error occurred while recording response", e);
                                                        }
                                                        String value = ex.responseHeaders().get(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH);
@@ -189,7 +191,7 @@ public class ConsistencyWriter {
                 try {
                     BridgeInternal.recordResponse(request.requestContext.cosmosResponseDiagnostics, request,
                         storeReader.createStoreResult(response, null, false, false, primaryURI.get()));
-                } catch (CosmosClientException e) {
+                } catch (Exception e) {
                     logger.error("Error occurred while recording response", e);
                 }
                 return barrierForGlobalStrong(request, response);
@@ -307,43 +309,35 @@ public class ConsistencyWriter {
                     }
 
                     //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
-                    long maxGlobalCommittedLsn = (responses != null || !responses.isEmpty()) ?
-                        (Long) responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.NATURAL_COMPARATOR).get() :
+                    long maxGlobalCommittedLsn = (responses != null) ?
+                        (Long) responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.NATURAL_COMPARATOR).orElse(0L) :
                         0L;
+
                     maxGlobalCommittedLsnReceived.set(maxGlobalCommittedLsnReceived.get() > maxGlobalCommittedLsn ?
                         maxGlobalCommittedLsnReceived.get() : maxGlobalCommittedLsn);
 
                     //only refresh on first barrier call, set to false for subsequent attempts.
                     barrierRequest.requestContext.forceRefreshAddressCache = false;
 
-                    //trace on last retry.
+                    //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
                     if (writeBarrierRetryCount.getAndDecrement() == 0) {
                         logger.debug("ConsistencyWriter: WaitForWriteBarrierAsync - Last barrier multi-region strong. Responses: {}",
                             responses.stream().map(StoreResult::toString).collect(Collectors.joining("; ")));
+                        logger.debug("ConsistencyWriter: Highest global committed lsn received for write barrier call is {}", maxGlobalCommittedLsnReceived);
+                        return Mono.just(Boolean.FALSE);
                     }
 
                     return Mono.empty();
                     }).flux();
-        }).repeatWhen(s -> {
-            if (writeBarrierRetryCount.get() == 0) {
-                    return Flux.empty();
+        }).repeatWhen(s -> s.flatMap(x -> {
+            // repeat with a delay
+            if ((ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES - writeBarrierRetryCount.get()) > ConsistencyWriter.MAX_SHORT_BARRIER_RETRIES_FOR_MULTI_REGION) {
+                return Mono.delay(Duration.ofMillis(ConsistencyWriter.DELAY_BETWEEN_WRITE_BARRIER_CALLS_IN_MS)).flux();
             } else {
-
-                if ((ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES - writeBarrierRetryCount.get()) > ConsistencyWriter.MAX_SHORT_BARRIER_RETRIES_FOR_MULTI_REGION) {
-                    return Flux.just(0L).delayElements(Duration.ofMillis(ConsistencyWriter.DELAY_BETWEEN_WRITE_BARRIER_CALLS_IN_MS));
-                } else {
-                    return Flux.just(0L).delayElements(Duration.ofMillis(ConsistencyWriter.SHORT_BARRIER_RETRY_INTERVAL_IN_MS_FOR_MULTI_REGION));
-                }
+                return Mono.delay(Duration.ofMillis(ConsistencyWriter.SHORT_BARRIER_RETRY_INTERVAL_IN_MS_FOR_MULTI_REGION)).flux();
             }
-        }).take(1)
-                   .switchIfEmpty(Mono.defer(() -> {
-                       // after retries exhausted print this log and return false
-                       logger.debug("ConsistencyWriter: Highest global committed lsn received for write barrier call is {}", maxGlobalCommittedLsnReceived);
-
-                       return Mono.just(false);
-                   }))
-                   .map(r -> r)
-                .single();
+        })
+        ).take(1).single();
     }
 
     static void getLsnAndGlobalCommittedLsn(StoreResponse response, Utils.ValueHolder<Long> lsn, Utils.ValueHolder<Long> globalCommittedLsn) {

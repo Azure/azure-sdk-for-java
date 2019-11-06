@@ -16,17 +16,17 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.implementation.CollectionFormat;
-import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
 import com.azure.storage.queue.implementation.models.ServicesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.models.ServicesGetStatisticsResponse;
 import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentResponse;
 import com.azure.storage.queue.implementation.models.ServicesSetPropertiesResponse;
-import com.azure.storage.queue.models.StorageErrorException;
-import com.azure.storage.queue.models.StorageServiceProperties;
+import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.QueueServiceProperties;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -64,46 +64,46 @@ public final class ServicesImpl {
     private interface ServicesService {
         @Put("")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") StorageServiceProperties storageServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") QueueServiceProperties properties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ServicesGetStatisticsResponse> getStatistics(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ServicesListQueuesSegmentResponse> listQueuesSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
     }
 
     /**
      * Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param storageServiceProperties The StorageService properties.
+     * @param properties The StorageService properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Context context) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(QueueServiceProperties properties, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.getUrl(), storageServiceProperties, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.setProperties(this.client.getUrl(), properties, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
      * Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param storageServiceProperties The StorageService properties.
+     * @param properties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -111,10 +111,10 @@ public final class ServicesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Integer timeout, String requestId, Context context) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(QueueServiceProperties properties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.getUrl(), storageServiceProperties, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.setProperties(this.client.getUrl(), properties, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**

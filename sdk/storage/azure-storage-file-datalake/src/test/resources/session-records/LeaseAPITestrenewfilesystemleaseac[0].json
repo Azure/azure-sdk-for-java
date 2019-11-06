@@ -1,0 +1,131 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsrenewfilesystemleaseac01720653d1b4fd3072446?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "03172f8e-3484-4545-88ca-e8dca09e09db"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEA88A1AF26",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dc6f8a79-e01e-007c-3fd3-90d34f000000",
+      "Date" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "x-ms-client-request-id" : "03172f8e-3484-4545-88ca-e8dca09e09db"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsrenewfilesystemleaseac01720653d1b4fd3072446?comp=lease&restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "36bfc826-2f9d-43be-80a9-b6b72aa5a38b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEA88A1AF26",
+      "x-ms-lease-id" : "17699e35-e6fe-41d8-9bf3-27d52aa7b796",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dc6f8a8b-e01e-007c-50d3-90d34f000000",
+      "Date" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "x-ms-client-request-id" : "36bfc826-2f9d-43be-80a9-b6b72aa5a38b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsrenewfilesystemleaseac01720653d1b4fd3072446?comp=lease&restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "816311f2-36cd-4956-8af4-7a1111b41525"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEA88A1AF26",
+      "x-ms-lease-id" : "17699e35-e6fe-41d8-9bf3-27d52aa7b796",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dc6f8a95-e01e-007c-5ad3-90d34f000000",
+      "Date" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "x-ms-client-request-id" : "816311f2-36cd-4956-8af4-7a1111b41525"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfsrenewfilesystemleaseac&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "83d892ad-3c61-4e45-8f8f-24130c24a139"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dc6f8aa8-e01e-007c-6bd3-90d34f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfsrenewfilesystemleaseac</Prefix><Containers><Container><Name>jtfsrenewfilesystemleaseac01720653d1b4fd3072446</Name><Properties><Last-Modified>Fri, 01 Nov 2019 16:42:50 GMT</Last-Modified><Etag>\"0x8D75EEA88A1AF26\"</Etag><LeaseStatus>locked</LeaseStatus><LeaseState>leased</LeaseState><LeaseDuration>infinite</LeaseDuration><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "x-ms-client-request-id" : "83d892ad-3c61-4e45-8f8f-24130c24a139",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsrenewfilesystemleaseac01720653d1b4fd3072446?comp=lease&restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "2ddc371c-b03e-41ab-99b7-343e45c0cee5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEA88A1AF26",
+      "x-ms-lease-time" : "0",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "dc6f8ab5-e01e-007c-77d3-90d34f000000",
+      "Date" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "x-ms-client-request-id" : "2ddc371c-b03e-41ab-99b7-343e45c0cee5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsrenewfilesystemleaseac01720653d1b4fd3072446?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "53c41666-d376-48c6-85fa-bfca04a1bb4c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "dc6f8ac5-e01e-007c-07d3-90d34f000000",
+      "Date" : "Fri, 01 Nov 2019 16:42:50 GMT",
+      "x-ms-client-request-id" : "53c41666-d376-48c6-85fa-bfca04a1bb4c"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsrenewfilesystemleaseac01720653d1b4fd3072446" ]
+}

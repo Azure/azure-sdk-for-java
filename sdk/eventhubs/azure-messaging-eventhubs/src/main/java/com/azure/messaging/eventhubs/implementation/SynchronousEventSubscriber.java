@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 
@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Subscriber that takes {@link SynchronousReceiveWork} and publishes events to them in the order received.
  */
-public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
+public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     private final Timer timer = new Timer("SynchronousEventSubscriber");
     private final AtomicInteger pendingReceives = new AtomicInteger();
     private final ClientLogger logger = new ClientLogger(SynchronousEventSubscriber.class);
@@ -27,12 +27,8 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
 
     /**
      * Creates an instance with an initial receive work item.
-     *
-     * @param work Initial work item to start publishing to.
      */
-    public SynchronousEventSubscriber(SynchronousReceiveWork work) {
-        Objects.requireNonNull(work, "'receiveItem' cannot be null.");
-        pendingWork.add(work);
+    public SynchronousEventSubscriber() {
     }
 
     /**
@@ -82,7 +78,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<EventData> {
      * @param value Event to publish.
      */
     @Override
-    protected void hookOnNext(EventData value) {
+    protected void hookOnNext(PartitionEvent value) {
         SynchronousReceiveWork currentItem = getOrUpdateNextWork();
         if (currentItem == null) {
             logger.warning("EventData received when there is no pending work. Skipping.");

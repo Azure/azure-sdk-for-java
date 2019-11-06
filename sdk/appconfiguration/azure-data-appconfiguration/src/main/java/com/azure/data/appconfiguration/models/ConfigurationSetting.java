@@ -39,7 +39,7 @@ public class ConfigurationSetting {
     private OffsetDateTime lastModified;
 
     @JsonProperty(value = "locked")
-    private boolean locked;
+    private boolean readOnly;
 
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
@@ -132,18 +132,18 @@ public class ConfigurationSetting {
     }
 
     /**
-     * The etag for this configuration setting.
+     * The ETag for this configuration setting.
      *
-     * @return etag The etag for the setting.
+     * @return etag The ETag for the setting.
      */
     public String getETag() {
         return etag;
     }
 
     /**
-     * Sets the etag for this configuration setting.
+     * Sets the ETag for this configuration setting.
      *
-     * @param etag The etag for the configuration setting.
+     * @param etag The ETag for the configuration setting.
      * @return The updated ConfigurationSetting object.
      */
     public ConfigurationSetting setETag(String etag) {
@@ -161,15 +161,15 @@ public class ConfigurationSetting {
     }
 
     /**
-     * Gets whether or not the configuration setting is locked. If the setting is locked, then no modifications can be
+     * Gets whether or not the configuration setting is read-only. If it is, then no modifications can be
      * made to this setting.
      *
      * This is a <b>readonly</b> property. It is populated from responses from the Azure App Configuration service.
      *
-     * @return true if locked; false otherwise.
+     * @return true if read-only; false otherwise.
      */
-    public boolean isLocked() {
-        return locked;
+    public boolean isReadOnly() {
+        return readOnly;
     }
 
     /**

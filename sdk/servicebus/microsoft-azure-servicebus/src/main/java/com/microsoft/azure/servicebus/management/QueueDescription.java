@@ -7,6 +7,7 @@ import com.microsoft.azure.servicebus.IMessage;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents the metadata description of the queue.
@@ -72,9 +73,8 @@ public class QueueDescription {
      * @param lockDuration - The duration of a peek lock. Max value is 5 minutes.
      */
     public void setLockDuration(Duration lockDuration) {
-        if (lockDuration == null) {
-            throw new IllegalArgumentException("Value cannot be null");
-        }
+        Objects.requireNonNull(lockDuration, "'lockDuration' cannot be null.");
+
         this.lockDuration = lockDuration;
         if (this.lockDuration.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
             this.lockDuration = ManagementClientConstants.MAX_DURATION;
@@ -386,9 +386,7 @@ public class QueueDescription {
      * Cannot be null. Max length is 1024 chars
      */
     public void setUserMetadata(String userMetadata) {
-        if (userMetadata == null) {
-            throw new IllegalArgumentException("Value cannot be null");
-        }
+        Objects.requireNonNull(userMetadata, "'userMetadata' cannot be null.");
 
         if (userMetadata.length() > ManagementClientConstants.MAX_USERMETADATA_LENGTH) {
             throw new IllegalArgumentException("Length cannot cross " + ManagementClientConstants.MAX_USERMETADATA_LENGTH + " characters");

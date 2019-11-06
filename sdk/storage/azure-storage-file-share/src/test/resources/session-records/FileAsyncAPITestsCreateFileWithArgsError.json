@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestscreatefilewithargserror77937dbfd5d6?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "d3097f66-b744-4ec2-9849-4f76a4204f57"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F7953A0C1",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:47 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "89e9e777-f01a-00ef-3488-833b08000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:47 GMT",
+      "x-ms-client-request-id" : "d3097f66-b744-4ec2-9849-4f76a4204f57"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestscreatefilewithargserror77937dbfd5d6/fileasyncapitestscreatefilewithargserror506697eaa443",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "1640b332-6136-4b91-8673-c8b7b41893c4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "Content-Length" : "236",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "89e9e779-f01a-00ef-3588-833b08000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:89e9e779-f01a-00ef-3588-833b08000000\nTime:2019-10-15T18:42:47.3858677Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:47 GMT",
+      "x-ms-client-request-id" : "1640b332-6136-4b91-8673-c8b7b41893c4",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileasyncapitestscreatefilewithargserror77937dbfd5d6", "fileasyncapitestscreatefilewithargserror506697eaa443" ]
+}

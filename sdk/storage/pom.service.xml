@@ -10,14 +10,17 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
 <!--   <module>microsoft-azure-storage-blob</module>-->
+    <!-- NOTE: Commenting out because these should now be binary composed.
+    -->
     <module>../core/azure-core</module>
     <module>../core/azure-core-test</module>
     <module>../core/azure-core-http-netty</module>
     <module>../identity/azure-identity</module>
     <module>azure-storage-common</module>
     <module>azure-storage-blob</module>
+    <module>azure-storage-blob-batch</module>
     <module>azure-storage-blob-cryptography</module>
-    <module>azure-storage-file</module>
+    <module>azure-storage-file-share</module>
     <module>azure-storage-file-datalake</module>
     <module>azure-storage-queue</module>
     <module>azure-storage-queue-cryptography</module>

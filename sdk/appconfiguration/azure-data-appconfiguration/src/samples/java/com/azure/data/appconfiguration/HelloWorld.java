@@ -5,9 +5,6 @@ package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 /**
  * Sample demonstrates how to add, get, and delete a configuration setting.
  */
@@ -16,38 +13,31 @@ public class HelloWorld {
      * Runs the sample algorithm and demonstrates how to add, get, and delete a configuration setting.
      *
      * @param args Unused. Arguments to the program.
-     * @throws NoSuchAlgorithmException when credentials cannot be created because the service cannot resolve the
-     * HMAC-SHA256 algorithm.
-     * @throws InvalidKeyException when credentials cannot be created because the connection string is invalid.
      */
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException {
+    public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
+        String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
 
-        // Instantiate a client that will be used to call the service.
-        ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-            .credential(new ConfigurationClientCredentials(connectionString))
-            .buildAsyncClient();
+        final ConfigurationClient client = new ConfigurationClientBuilder()
+            .connectionString(connectionString)
+            .buildClient();
 
         // Name of the key to add to the configuration service.
-        String key = "hello";
+        final String key = "hello";
+        final String value = "world";
 
-        // setSetting adds or updates a setting to Azure App Configuration store. Alternatively, you can call
-        // addSetting which only succeeds if the setting does not exist in the store. Or, you can call updateSetting to
-        // update a setting that is already present in the store.
-        // We subscribe and wait for the service call to complete then print out the contents of our newly added setting.
-        // If an error occurs, we print out that error. On completion of the subscription, we delete the setting.
-        // .block() exists there so the program does not end before the deletion has completed.
-        client.setSetting(key, null, "world").subscribe(
-            result -> {
-                ConfigurationSetting setting = result;
-                System.out.println(String.format("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
-            },
-            error -> System.err.println("There was an error adding the setting: " + error.toString()),
-            () -> {
-                System.out.println("Completed. Deleting setting...");
-                client.deleteSetting(key, null).block();
-            });
+        System.out.println("Beginning of synchronous sample...");
+
+        ConfigurationSetting setting = client.setConfigurationSetting(key, null, value);
+        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+
+        setting = client.getConfigurationSetting(key, null, null);
+        System.out.printf(String.format("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+
+        setting = client.deleteConfigurationSetting(key, null);
+        System.out.printf(String.format("[DeleteConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+
+        System.out.println("End of synchronous sample.");
     }
 }

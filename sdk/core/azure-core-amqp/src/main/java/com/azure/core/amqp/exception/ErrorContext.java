@@ -5,7 +5,7 @@ package com.azure.core.amqp.exception;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -32,7 +32,7 @@ public class ErrorContext implements Serializable {
      * @throws IllegalArgumentException when {@code namespace} is {@code null} or empty.
      */
     public ErrorContext(String namespace) {
-        if (ImplUtils.isNullOrEmpty(namespace)) {
+        if (CoreUtils.isNullOrEmpty(namespace)) {
             throw new IllegalArgumentException("'namespace' cannot be null or empty");
         }
 

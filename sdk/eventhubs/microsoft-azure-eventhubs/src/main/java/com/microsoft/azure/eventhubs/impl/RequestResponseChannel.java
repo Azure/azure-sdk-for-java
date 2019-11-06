@@ -21,6 +21,7 @@ import org.apache.qpid.proton.message.Message;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -43,7 +44,8 @@ public class RequestResponseChannel implements IOObject {
     public RequestResponseChannel(
             final String linkName,
             final String path,
-            final Session session) {
+            final Session session,
+            final ScheduledExecutorService executor) {
 
         this.replyTo = path.replace("$", "") + "-client-reply-to";
         this.openRefCount = new AtomicInteger(2);
@@ -57,7 +59,7 @@ public class RequestResponseChannel implements IOObject {
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
-        BaseHandler.setHandler(this.sendLink, new SendLinkHandler(new RequestHandler(), linkName));
+        BaseHandler.setHandler(this.sendLink, new SendLinkHandler(new RequestHandler(), linkName, executor));
 
         this.receiveLink = session.receiver(linkName + ":receiver");
         final Source source = new Source();
@@ -68,7 +70,7 @@ public class RequestResponseChannel implements IOObject {
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        BaseHandler.setHandler(this.receiveLink, new ReceiveLinkHandler(new ResponseHandler(), linkName));
+        BaseHandler.setHandler(this.receiveLink, new ReceiveLinkHandler(new ResponseHandler(), linkName, executor));
     }
 
     // open should be called only once - we use FaultTolerantObject for that
@@ -104,7 +106,7 @@ public class RequestResponseChannel implements IOObject {
             final OperationResult<Message, Exception> onResponse) {
 
         if (message == null) {
-            throw new IllegalArgumentException("message cannot be null");
+            throw new IllegalArgumentException("message cannot be null.");
         }
         if (message.getMessageId() != null) {
             throw new IllegalArgumentException("message.getMessageId() should be null");

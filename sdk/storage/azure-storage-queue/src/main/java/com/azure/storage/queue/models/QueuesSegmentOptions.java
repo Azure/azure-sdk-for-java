@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 
@@ -15,24 +16,26 @@ import com.azure.storage.queue.QueueServiceClient;
  *         with the prefix.
  *     </li>
  *     <li>
- *         Providing {@link QueuesSegmentOptions#getMaxResults() maxResults} will limit the number of {@link QueueItem queues}
- *         returned in a single page.
+ *         Providing {@link QueuesSegmentOptions#getMaxResultsPerPage() maxResultsPerPage} will limit the number of
+ *         {@link QueueItem queues} returned in a single page.
  *     </li>
  *     <li>
- *         Setting {@link QueuesSegmentOptions#isIncludeMetadata() includeMetadata} to true will include the metadata of
- *         each {@link QueueItem queue}, if false {@link QueueItem#getMetadata()}  metadata} for each queue will be {@code null}.
+ *         Setting {@link QueuesSegmentOptions#isIncludeMetadata() includeMetadata} to true will include the metadata
+ *         of each {@link QueueItem queue}, if false {@link QueueItem#getMetadata()}  metadata} for each queue will be
+ *         {@code null}.
  *     </li>
  * </ul>
  *
  * @see QueueServiceClient
  * @see QueueServiceAsyncClient
  */
+@Fluent
 public final class QueuesSegmentOptions {
     private boolean includeMetadata;
 
     private String prefix;
 
-    private Integer maxResults;
+    private Integer maxResultsPerPage;
 
     /**
      * @return the status of including metadata when listing queues
@@ -73,18 +76,18 @@ public final class QueuesSegmentOptions {
     /**
      * @return the maximum number of queues to include in a single response
      */
-    public Integer getMaxResults() {
-        return maxResults;
+    public Integer getMaxResultsPerPage() {
+        return maxResultsPerPage;
     }
 
     /**
      * Sets the maximum number of queues to include in a single response
      *
-     * @param maxResults Maximum number of results to include in a single response
+     * @param maxResultsPerPage Maximum number of results to include in a single response
      * @return An updated QueuesSegmentOptions object
      */
-    public QueuesSegmentOptions setMaxResults(Integer maxResults) {
-        this.maxResults = maxResults;
+    public QueuesSegmentOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
+        this.maxResultsPerPage = maxResultsPerPage;
         return this;
     }
 }

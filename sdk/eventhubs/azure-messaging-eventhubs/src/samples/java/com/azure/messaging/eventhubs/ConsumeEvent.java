@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -27,10 +26,8 @@ public class ConsumeEvent {
      * @param args Unused arguments to the program.
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
      *         complete.
-     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubAsyncConsumer},
-     *         or the {@link EventHubAsyncProducer}
      */
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(NUMBER_OF_EVENTS);
 
         // The connection string value can be obtained by:
@@ -41,31 +38,31 @@ public class ConsumeEvent {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        // Create a consumer.
+        // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
+        // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
+        // service we only want events that are sent to the partition after we begin listening.
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.latest())
+            .buildAsyncConsumer();
 
         // To create a consumer, we need to know what partition to connect to. We take the first partition id.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
         // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
         // TimeoutException is thrown.
-        String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+        String firstPartition = consumer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
         // This shouldn't happen, but if we are unable to get the partitions within the timeout period.
         if (firstPartition == null) {
             firstPartition = "0";
         }
 
-        // Create a consumer.
-        // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
-        // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
-        // service we only want events that are sent to the partition after we begin listening.
-        EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
-            firstPartition, EventPosition.latest());
-
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
-        Disposable subscription = consumer.receive().subscribe(event -> {
+        Disposable subscription = consumer.receive(firstPartition).subscribe(partitionEvent -> {
+            EventData event = partitionEvent.getEventData();
             String contents = UTF_8.decode(event.getBody()).toString();
             System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
                 event.getSequenceNumber(), contents));
@@ -73,15 +70,18 @@ public class ConsumeEvent {
             countDownLatch.countDown();
         });
 
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .connectionString(connectionString)
+            .buildAsyncProducer();
+
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
-        // This creates a producer that only sends events to `firstPartition`.
-        EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(firstPartition);
-        EventHubAsyncProducer producer = client.createProducer(producerOptions);
+        // We set the send options to send the events to `firstPartition`.
+        SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
 
         // We create 10 events to send to the service and block until the send has completed.
         Flux.range(0, NUMBER_OF_EVENTS).flatMap(number -> {
             String body = String.format("Hello world! Number: %s", number);
-            return producer.send(new EventData(body.getBytes(UTF_8)));
+            return producer.send(new EventData(body.getBytes(UTF_8)), sendOptions);
         }).blockLast(OPERATION_TIMEOUT);
 
         try {
@@ -95,7 +95,6 @@ public class ConsumeEvent {
             subscription.dispose();
             producer.close();
             consumer.close();
-            client.close();
         }
     }
 }

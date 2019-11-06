@@ -65,7 +65,7 @@ public class InterceptorManager implements AutoCloseable {
      * @throws NullPointerException If {@code testName} is {@code null}.
      */
     public InterceptorManager(String testName, TestMode testMode) throws IOException {
-        Objects.requireNonNull(testName);
+        Objects.requireNonNull(testName, "'testName' cannot be null.");
 
         this.testName = testName;
         this.testMode = testMode;
@@ -91,8 +91,8 @@ public class InterceptorManager implements AutoCloseable {
      * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
      */
     public InterceptorManager(String testName, Map<String, String> textReplacementRules) throws IOException {
-        Objects.requireNonNull(testName);
-        Objects.requireNonNull(textReplacementRules);
+        Objects.requireNonNull(testName, "'testName' cannot be null.");
+        Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
 
         this.testName = testName;
         this.testMode = TestMode.PLAYBACK;
@@ -168,32 +168,53 @@ public class InterceptorManager implements AutoCloseable {
         return mapper.readValue(recordFile, RecordedData.class);
     }
 
+    /*
+     * Creates a File which is the session-records folder.
+     */
+    private File getRecordFolder() {
+        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
+        return new File(folderUrl.getPath(), RECORD_FOLDER);
+    }
+
+    /*
+     * Attempts to retrieve the playback file, if it is not found an exception is thrown as playback can't continue.
+     */
+    private File getRecordFile(String testName) {
+        File playbackFile = new File(getRecordFolder(), testName + ".json");
+
+        if (!playbackFile.exists()) {
+            throw  logger.logExceptionAsError(new RuntimeException(String.format(
+                "Missing playback file. File path:  %s. ", playbackFile)));
+        }
+        logger.info("==> Playback file path: " + playbackFile);
+        return playbackFile;
+    }
+
     private void writeDataToFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        File recordFile = getRecordFile(testName);
+        File recordFile = createRecordFile(testName);
+        mapper.writeValue(recordFile, recordedData);
+    }
 
+    /*
+     * Retrieves or creates the file that will be used to store the recorded test values.
+     */
+    private File createRecordFile(String testName) throws IOException {
+        File recordFolder = getRecordFolder();
+        if (!recordFolder.exists()) {
+            if (recordFolder.mkdir()) {
+                logger.verbose("Created directory: {}", recordFolder.getPath());
+            }
+        }
+
+        File recordFile = new File(recordFolder, testName + ".json");
         if (recordFile.createNewFile()) {
             logger.verbose("Created record file: {}", recordFile.getPath());
         }
 
-        mapper.writeValue(recordFile, recordedData);
-    }
-
-    private File getRecordFile(String testName) {
-        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
-        File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
-
-        if (!folderFile.exists()) {
-            if (folderFile.mkdir()) {
-                logger.verbose("Created directory: {}", folderFile.getPath());
-            }
-        }
-
-        String filePath = folderFile.getPath() + "/" + testName + ".json";
-        logger.info("==> Playback file path: " + filePath);
-
-        return new File(filePath);
+        logger.info("==> Playback file path: " + recordFile);
+        return recordFile;
     }
 
     /**

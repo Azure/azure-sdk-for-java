@@ -5,7 +5,11 @@ package com.azure.core.test;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
 
+/**
+ * A test exception.
+ */
 public class MyAzureException extends HttpResponseException {
     /**
      * Creates an exception with the {@code message}, {@code response}, and {@code body}.

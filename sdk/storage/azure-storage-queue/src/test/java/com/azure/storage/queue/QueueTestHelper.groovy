@@ -4,17 +4,17 @@
 package com.azure.storage.queue
 
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.util.ImplUtils
+import com.azure.core.util.CoreUtils
 import com.azure.core.util.Configuration
-import com.azure.storage.queue.models.CorsRule
-import com.azure.storage.queue.models.Logging
-import com.azure.storage.queue.models.Metrics
+import com.azure.storage.queue.models.QueueAnalyticsLogging
+import com.azure.storage.queue.models.QueueCorsRule
+import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueItem
-import com.azure.storage.queue.models.RetentionPolicy
-import com.azure.storage.queue.models.SignedIdentifier
-import com.azure.storage.queue.models.StorageErrorCode
-import com.azure.storage.queue.models.StorageException
-import com.azure.storage.queue.models.StorageServiceProperties
+import com.azure.storage.queue.models.QueueMetrics
+import com.azure.storage.queue.models.QueueRetentionPolicy
+import com.azure.storage.queue.models.QueueServiceProperties
+import com.azure.storage.queue.models.QueueSignedIdentifier
+import com.azure.storage.queue.models.QueueStorageException
 
 import java.time.Duration
 
@@ -23,10 +23,10 @@ class QueueTestHelper {
         return expectedStatusCode == response.getStatusCode()
     }
 
-    static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {
-        return throwable instanceof StorageException &&
-            ((StorageException) throwable).getStatusCode() == expectedStatusCode &&
-            ((StorageException) throwable).getErrorCode() == errMessage
+    static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, QueueErrorCode errMessage) {
+        return throwable instanceof QueueStorageException &&
+            ((QueueStorageException) throwable).getStatusCode() == expectedStatusCode &&
+            ((QueueStorageException) throwable).getErrorCode() == errMessage
     }
 
     static boolean assertQueuesAreEqual(QueueItem expected, QueueItem actual) {
@@ -36,36 +36,36 @@ class QueueTestHelper {
             if (!Objects.equals(expected.getName(), actual.getName())) {
                 return false
             }
-            if (expected.getMetadata() != null && !ImplUtils.isNullOrEmpty(actual.getMetadata())) {
-                return expected.getMetadata().equals(actual.getMetadata())
+            if (expected.getMetadata() != null && !CoreUtils.isNullOrEmpty(actual.getMetadata())) {
+                return expected.getMetadata() == actual.getMetadata()
             }
             return true
         }
     }
 
-    static boolean assertQueueServicePropertiesAreEqual(StorageServiceProperties expected, StorageServiceProperties actual) {
+    static boolean assertQueueServicePropertiesAreEqual(QueueServiceProperties expected, QueueServiceProperties actual) {
         if (expected == null) {
             return actual == null
         } else {
             return assertMetricsAreEqual(expected.getHourMetrics(), actual.getHourMetrics()) &&
                 assertMetricsAreEqual(expected.getMinuteMetrics(), actual.getMinuteMetrics()) &&
-                assertLoggingAreEqual(expected.getLogging(), actual.getLogging()) &&
+                assertLoggingAreEqual(expected.getAnalyticsLogging(), actual.getAnalyticsLogging()) &&
                 assertCorsAreEqual(expected.getCors(), actual.getCors())
         }
     }
 
-    static boolean assertMetricsAreEqual(Metrics expected, Metrics actual) {
+    static boolean assertMetricsAreEqual(QueueMetrics expected, QueueMetrics actual) {
         if (expected == null) {
             return actual == null
         } else {
             return Objects.equals(expected.isEnabled(), actual.isEnabled()) &&
-                Objects.equals(expected.isIncludeAPIs(), actual.isIncludeAPIs()) &&
+                Objects.equals(expected.isIncludeApis(), actual.isIncludeApis()) &&
                 Objects.equals(expected.getVersion(), actual.getVersion()) &&
                 assertRetentionPoliciesAreEqual(expected.getRetentionPolicy(), actual.getRetentionPolicy())
         }
     }
 
-    static boolean assertLoggingAreEqual(Logging expected, Logging actual) {
+    static boolean assertLoggingAreEqual(QueueAnalyticsLogging expected, QueueAnalyticsLogging actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -77,7 +77,7 @@ class QueueTestHelper {
         }
     }
 
-    static boolean assertRetentionPoliciesAreEqual(RetentionPolicy expected, RetentionPolicy actual) {
+    static boolean assertRetentionPoliciesAreEqual(QueueRetentionPolicy expected, QueueRetentionPolicy actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -86,7 +86,7 @@ class QueueTestHelper {
         }
     }
 
-    static boolean assertCorsAreEqual(List<CorsRule> expected, List<CorsRule> actual) {
+    static boolean assertCorsAreEqual(List<QueueCorsRule> expected, List<QueueCorsRule> actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -102,7 +102,7 @@ class QueueTestHelper {
         }
     }
 
-    static boolean assertCorRulesAreEqual(CorsRule expected, CorsRule actual) {
+    static boolean assertCorRulesAreEqual(QueueCorsRule expected, QueueCorsRule actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -113,7 +113,7 @@ class QueueTestHelper {
         }
     }
 
-    static boolean assertPermissionsAreEqual(SignedIdentifier expected, SignedIdentifier actual) {
+    static boolean assertPermissionsAreEqual(QueueSignedIdentifier expected, QueueSignedIdentifier actual) {
         if (expected == null) {
             return actual == null
         }
@@ -121,9 +121,9 @@ class QueueTestHelper {
             return actual.getAccessPolicy() == null
         }
         return Objects.equals(expected.getId(), actual.getId()) &&
-            Objects.equals(expected.getAccessPolicy().getPermission(), actual.getAccessPolicy().getPermission()) &&
-            Objects.equals(expected.getAccessPolicy().getStart(), actual.getAccessPolicy().getStart()) &&
-            Objects.equals(expected.getAccessPolicy().getExpiry(), actual.getAccessPolicy().getExpiry())
+            Objects.equals(expected.getAccessPolicy().getPermissions(), actual.getAccessPolicy().getPermissions()) &&
+            Objects.equals(expected.getAccessPolicy().getStartsOn(), actual.getAccessPolicy().getStartsOn()) &&
+            Objects.equals(expected.getAccessPolicy().getExpiresOn(), actual.getAccessPolicy().getExpiresOn())
     }
 
     static void sleepInRecord(Duration time) {
@@ -136,7 +136,7 @@ class QueueTestHelper {
     private static void sleep(Duration time) {
         try {
             Thread.sleep(time.toMillis())
-        } catch (InterruptedException ex) {
+        } catch (InterruptedException ignored) {
             // Ignore the error
         }
     }

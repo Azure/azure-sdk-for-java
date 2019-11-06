@@ -3,15 +3,14 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.implementation.serializer.SerializerAdapter;
-import com.azure.core.implementation.serializer.SerializerEncoding;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.core.implementation.util.ScopeUtil;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.DeviceCodeChallenge;
+import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -43,6 +42,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashSet;
@@ -106,7 +106,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithClientSecret(String clientSecret, TokenRequest request) {
+    public Mono<AccessToken> authenticateWithClientSecret(String clientSecret, TokenRequestContext request) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
@@ -135,7 +135,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithPfxCertificate(String pfxCertificatePath, String pfxCertificatePassword,
-                                                            TokenRequest request) {
+                                                            TokenRequestContext request) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
@@ -168,7 +168,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithPemCertificate(String pemCertificatePath, TokenRequest request) {
+    public Mono<AccessToken> authenticateWithPemCertificate(String pemCertificatePath, TokenRequestContext request) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
@@ -198,7 +198,8 @@ public class IdentityClient {
      * @param password the password of the user
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequest request, String username, String password) {
+    public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequestContext request,
+                                                            String username, String password) {
         return Mono.fromFuture(publicClientApplication.acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
@@ -211,7 +212,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithUserRefreshToken(TokenRequest request, MsalToken msalToken) {
+    public Mono<MsalToken> authenticateWithUserRefreshToken(TokenRequestContext request, MsalToken msalToken) {
         SilentParameters parameters;
         if (msalToken.getAccount() != null) {
             parameters = SilentParameters.builder(new HashSet<>(request.getScopes()), msalToken.getAccount()).build();
@@ -237,12 +238,12 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device
      *     code expires
      */
-    public Mono<MsalToken> authenticateWithDeviceCode(TokenRequest request,
-                                                      Consumer<DeviceCodeChallenge> deviceCodeConsumer) {
+    public Mono<MsalToken> authenticateWithDeviceCode(TokenRequestContext request,
+                                                      Consumer<DeviceCodeInfo> deviceCodeConsumer) {
         return Mono.fromFuture(() -> {
             DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(request.getScopes()),
-                dc -> deviceCodeConsumer.accept(new DeviceCodeChallenge(dc.userCode(), dc.deviceCode(),
-                    dc.verificationUri(), dc.expiresIn(), dc.interval(), dc.message()))).build();
+                dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(),
+                    dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
             return publicClientApplication.acquireToken(parameters);
         }).map(MsalToken::new);
     }
@@ -252,13 +253,13 @@ public class IdentityClient {
      *
      * @param request the details of the token request
      * @param authorizationCode the oauth2 authorization code
-     * @param redirectUri the redirectUri where the authorization code is sent to
+     * @param redirectUrl the redirectUrl where the authorization code is sent to
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequest request, String authorizationCode,
-                                                             URI redirectUri) {
+    public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
+                                                             URI redirectUrl) {
         return Mono.fromFuture(() -> publicClientApplication.acquireToken(
-            AuthorizationCodeParameters.builder(authorizationCode, redirectUri)
+            AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))
             .map(MsalToken::new);
@@ -273,7 +274,7 @@ public class IdentityClient {
      * @param port the port on which the HTTP server is listening
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequest request, int port) {
+    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         return AuthorizationCodeListener.create(port)
             .flatMap(server -> {
@@ -314,7 +315,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
-                                                                   TokenRequest request) {
+                                                                   TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
         HttpURLConnection connection = null;
         StringBuilder payload = new StringBuilder();
@@ -325,7 +326,7 @@ public class IdentityClient {
             payload.append("&api-version=");
             payload.append(URLEncoder.encode("2017-09-01", "UTF-8"));
             if (clientId != null) {
-                payload.append("&client_id=");
+                payload.append("&clientid=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
         } catch (IOException exception) {
@@ -362,7 +363,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToIMDSEndpoint(TokenRequest request) {
+    public Mono<AccessToken> authenticateToIMDSEndpoint(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
         StringBuilder payload = new StringBuilder();
         final int imdsUpgradeTimeInMs = 70 * 1000;
@@ -380,64 +381,93 @@ public class IdentityClient {
             return Mono.error(exception);
         }
 
-        int retry = 1;
-        while (retry <= options.getMaxRetry()) {
-            URL url = null;
-            HttpURLConnection connection = null;
-            try {
-                url =
-                    new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
-                        payload.toString()));
+        return checkIMDSAvailable().flatMap(available -> Mono.fromCallable(() -> {
+            int retry = 1;
+            while (retry <= options.getMaxRetry()) {
+                URL url = null;
+                HttpURLConnection connection = null;
+                try {
+                    url =
+                            new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
+                                    payload.toString()));
 
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.setRequestProperty("Metadata", "true");
+                    connection.connect();
+
+                    Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                            .useDelimiter("\\A");
+                    String result = s.hasNext() ? s.next() : "";
+
+                    return SERIALIZER_ADAPTER.<MSIToken>deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                } catch (IOException exception) {
+                    if (connection == null) {
+                        throw logger.logExceptionAsError(new RuntimeException(
+                                String.format("Could not connect to the url: %s.", url), exception));
+                    }
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == 410
+                            || responseCode == 429
+                            || responseCode == 404
+                            || (responseCode >= 500 && responseCode <= 599)) {
+                        int retryTimeoutInMs = options.getRetryTimeout()
+                                .apply(Duration.ofSeconds(RANDOM.nextInt(retry))).getNano() / 1000;
+                        // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
+                        //
+                        retryTimeoutInMs =
+                                (responseCode == 410 && retryTimeoutInMs < imdsUpgradeTimeInMs) ? imdsUpgradeTimeInMs
+                                        : retryTimeoutInMs;
+                        retry++;
+                        if (retry > options.getMaxRetry()) {
+                            break;
+                        } else {
+                            sleep(retryTimeoutInMs);
+                        }
+                    } else {
+                        throw logger.logExceptionAsError(new RuntimeException(
+                                "Couldn't acquire access token from IMDS, verify your objectId, "
+                                        + "clientId or msiResourceId", exception));
+                    }
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
+            }
+            throw logger.logExceptionAsError(new RuntimeException(
+                    String.format("MSI: Failed to acquire tokens after retrying %s times",
+                    options.getMaxRetry())));
+        }));
+    }
+
+    private Mono<Boolean> checkIMDSAvailable() {
+        StringBuilder payload = new StringBuilder();
+
+        try {
+            payload.append("api-version=");
+            payload.append(URLEncoder.encode("2018-02-01", "UTF-8"));
+        } catch (IOException exception) {
+            return Mono.error(exception);
+        }
+        return Mono.fromCallable(() -> {
+            HttpURLConnection connection = null;
+            URL url = new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
+                            payload.toString()));
+
+            try {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setRequestProperty("Metadata", "true");
+                connection.setConnectTimeout(500);
                 connection.connect();
-
-                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
-                String result = s.hasNext() ? s.next() : "";
-
-                return Mono.just(SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
-            } catch (IOException exception) {
-                if (connection == null) {
-                    return Mono.error(new RuntimeException(String.format("Could not connect to the url: %s.", url),
-                        exception));
-                }
-                int responseCode = 0;
-                try {
-                    responseCode = connection.getResponseCode();
-                } catch (IOException e) {
-                    return Mono.error(e);
-                }
-                if (responseCode == 410
-                    || responseCode == 429
-                    || responseCode == 404
-                    || (responseCode >= 500 && responseCode <= 599)) {
-                    int retryTimeoutInMs = options.getRetryTimeout().apply(RANDOM.nextInt(retry));
-                    // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
-                    //
-                    retryTimeoutInMs =
-                        (responseCode == 410 && retryTimeoutInMs < imdsUpgradeTimeInMs) ? imdsUpgradeTimeInMs
-                            : retryTimeoutInMs;
-                    retry++;
-                    if (retry > options.getMaxRetry()) {
-                        break;
-                    } else {
-                        sleep(retryTimeoutInMs);
-                    }
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Couldn't acquire access token from IMDS, verify your objectId, clientId or msiResourceId",
-                        exception));
-                }
             } finally {
                 if (connection != null) {
                     connection.disconnect();
                 }
             }
-        }
-        return Mono.error(new RuntimeException(String.format("MSI: Failed to acquire tokens after retrying %s times",
-            options.getMaxRetry())));
+
+            return true;
+        });
     }
 
     private static void sleep(int millis) {

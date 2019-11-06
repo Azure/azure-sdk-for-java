@@ -7,8 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
 /**
- * Verifies we can use various prefetch options with {@link EventHubAsyncConsumer}.
+ * Verifies we can use various prefetch options with {@link EventHubConsumerAsyncClient}.
  */
 @Ignore("Set prefetch tests do not work because they try to send very large number of events at once.")
 public class SetPrefetchCountTest extends IntegrationTestBase {
@@ -40,7 +40,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
-    private EventHubAsyncConsumer consumer;
+    private EventHubConsumerAsyncClient consumer;
 
     @Rule
     public TestName testName = new TestName();
@@ -59,8 +59,10 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         client = createBuilder().buildAsyncClient();
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
-            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+
+            final EventHubProducerAsyncClient producer = client.createProducer();
+            testData = setupEventTestData(producer, NUMBER_OF_EVENTS, options);
         }
     }
 
@@ -80,13 +82,12 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         final int eventCount = NUMBER_OF_EVENTS;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setRetry(RETRY_OPTIONS)
             .setPrefetchCount(2000);
 
-        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
             EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
-        final Disposable subscription = consumer.receive()
+        final Disposable subscription = consumer.receive(PARTITION_ID)
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 
@@ -111,10 +112,10 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions().setPrefetchCount(11);
 
-        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
             EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
-        final Disposable subscription = consumer.receive()
+        final Disposable subscription = consumer.receive(PARTITION_ID)
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 

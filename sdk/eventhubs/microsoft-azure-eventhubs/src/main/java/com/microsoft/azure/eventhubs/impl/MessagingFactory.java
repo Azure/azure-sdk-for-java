@@ -88,12 +88,12 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         if (StringUtil.isNullOrWhiteSpace(hostname)) {
             throw new IllegalArgumentException("Endpoint hostname cannot be null or empty");
         }
-        Objects.requireNonNull(operationTimeout, "Operation timeout cannot be null");
-        Objects.requireNonNull(transportType, "Transport type cannot be null");
-        Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
-        Objects.requireNonNull(retryPolicy, "Retry policy cannot be null");
-        Objects.requireNonNull(executor, "Executor cannot be null");
-        Objects.requireNonNull(reactorFactory, "Reactor factory cannot be null");
+        Objects.requireNonNull(operationTimeout, "Operation timeout cannot be null.");
+        Objects.requireNonNull(transportType, "Transport type cannot be null.");
+        Objects.requireNonNull(tokenProvider, "Token provider cannot be null.");
+        Objects.requireNonNull(retryPolicy, "Retry policy cannot be null.");
+        Objects.requireNonNull(executor, "Executor cannot be null.");
+        Objects.requireNonNull(reactorFactory, "Reactor factory cannot be null.");
 
         this.hostName = hostname;
         this.reactorFactory = reactorFactory;
@@ -300,7 +300,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     public ManagementChannel getManagementChannel() {
         synchronized (this.mgmtChannelCreateLock) {
             if (this.mgmtChannel == null) {
-                this.mgmtChannel = new ManagementChannel(this, this, this.getClientId());
+                this.mgmtChannel = new ManagementChannel(this, this, this.getClientId(), this.executor);
             }
         }
 
