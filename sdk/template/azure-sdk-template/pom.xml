@@ -27,15 +27,11 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
-  <properties>
-    <project.automatic.module.name>com.azure.sdk.template</project.automatic.module.name>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>

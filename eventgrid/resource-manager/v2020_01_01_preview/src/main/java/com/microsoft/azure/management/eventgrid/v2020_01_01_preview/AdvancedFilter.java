@@ -8,6 +8,18 @@
 
 package com.microsoft.azure.management.eventgrid.v2020_01_01_preview;
 
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.NumberInAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.NumberNotInAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.NumberLessThanAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.NumberGreaterThanAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.NumberLessThanOrEqualsAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.NumberGreaterThanOrEqualsAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.BoolEqualsAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.StringInAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.StringNotInAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.StringBeginsWithAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.StringEndsWithAdvancedFilter;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.StringContainsAdvancedFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * BoolEqualsAdvancedFilter, NumberInAdvancedFilter, StringEqualsAdvancedFilter
  * etc. depending on the type of the key based on which you want to filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType", defaultImpl = AdvancedFilter.class)
 @JsonTypeName("AdvancedFilter")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "NumberIn", value = NumberInAdvancedFilter.class),

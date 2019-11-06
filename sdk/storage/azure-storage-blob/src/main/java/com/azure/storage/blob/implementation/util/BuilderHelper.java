@@ -15,12 +15,13 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-
 import com.azure.storage.common.policy.ScrubEtagPolicy;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -33,7 +34,7 @@ import java.util.function.Supplier;
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-blob";
     // {x-version-update-start;com.azure:azure-storage-blob;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0-preview.1";
     // {x-version-update-end}
 
     /**
@@ -92,6 +93,20 @@ public final class BuilderHelper {
         BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
         BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
         return defaultOptions;
+    }
+
+    /**
+     * Gets the endpoint for the blob service based on the parsed URL.
+     *
+     * @param parts The {@link BlobUrlParts} from the parse URL.
+     * @return The endpoint for the blob service.
+     */
+    public static String getEndpoint(BlobUrlParts parts) {
+        if (ModelHelper.IP_V4_URL_PATTERN.matcher(parts.getHost()).find()) {
+            return String.format("%s://%s/%s", parts.getScheme(), parts.getHost(), parts.getAccountName());
+        } else {
+            return String.format("%s://%s", parts.getScheme(), parts.getHost());
+        }
     }
 
     /*

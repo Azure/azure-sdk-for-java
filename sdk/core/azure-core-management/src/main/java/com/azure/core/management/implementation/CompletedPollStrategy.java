@@ -5,8 +5,8 @@ package com.azure.core.management.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.SwaggerMethodParser;
+import com.azure.core.http.swagger.RestProxy;
+import com.azure.core.http.swagger.SwaggerMethodParser;
 import com.azure.core.management.OperationState;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;

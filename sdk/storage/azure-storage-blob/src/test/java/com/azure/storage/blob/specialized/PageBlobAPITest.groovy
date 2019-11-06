@@ -6,7 +6,7 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.http.RequestConditions
 import com.azure.storage.blob.APISpec
-
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -173,7 +173,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page"() {
         when:
         def response = bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -186,7 +186,8 @@ class PageBlobAPITest extends APISpec {
     def "Upload page min"() {
         expect:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null).getStatusCode() == 201
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null)
+            .getStatusCode() == 201
     }
 
     @Unroll
@@ -205,6 +206,27 @@ class PageBlobAPITest extends APISpec {
         PageBlobClient.PAGE_BYTES * 3 | UnexpectedLengthException
     }
 
+    def "Upload page transactionalMD5"() {
+        setup:
+        def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data)
+
+        expect:
+        bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            new ByteArrayInputStream(data), md5, null, null, null).getStatusCode() == 201
+    }
+
+    def "Upload page transactionalMD5 fail"() {
+        when:
+        bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)),
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
     @Unroll
     def "Upload page AC"() {
         setup:
@@ -220,7 +242,8 @@ class PageBlobAPITest extends APISpec {
 
         expect:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), pac, null, null).getStatusCode() == 201
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, pac, null, null)
+            .getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -252,7 +275,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), pac, null, null)
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, pac, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -275,7 +298,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)),
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null,
             new PageBlobRequestConditions().setLeaseId("id"), null, null)
 
         then:
@@ -497,10 +520,11 @@ class PageBlobAPITest extends APISpec {
     def "Clear page"() {
         setup:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null)
 
         when:
-        def response = bc.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), null, null, null)
+        def response = bc.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            null, null, null)
 
         then:
         bc.getPageRanges(new BlobRange(0)).getPageRange().size() == 0

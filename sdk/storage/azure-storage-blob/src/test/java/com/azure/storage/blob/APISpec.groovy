@@ -16,8 +16,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.util.FluxUtil
-import com.azure.core.implementation.util.ImplUtils
+import com.azure.core.util.FluxUtil
+import com.azure.core.util.CoreUtils
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -383,7 +383,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (!ImplUtils.isNullOrEmpty(sasToken)) {
+        if (!CoreUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)
         }
 
@@ -468,9 +468,8 @@ class APISpec extends Specification {
     }
 
     /*
-    Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
-
     ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
@@ -664,7 +663,7 @@ class APISpec extends Specification {
             response.getValue().getContentEncoding() == contentEncoding &&
             response.getValue().getContentLanguage() == contentLanguage &&
             response.getValue().getContentMd5() == contentMD5 &&
-            response.getHeaders().getValue("Content-Type") == contentType
+            response.getValue().getContentType() == contentType
     }
 
     def enableSoftDelete() {

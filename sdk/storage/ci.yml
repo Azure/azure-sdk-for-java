@@ -44,15 +44,18 @@ stages:
         - name: azure-storage-blob
           safeName: azurestorageblob
           stagingProfileId: 88192f04117501
+        - name: azure-storage-blob-batch
+          safeName: azurestorageblobbatch
+          stagingProfileId: 88192f04117501
         - name: azure-storage-blob-cryptography
           safeName: azurestorageblobcryptography
           stagingProfileId: 88192f04117501
-        - name: azure-storage-file
-          safeName: azurestoragefile
+        - name: azure-storage-file-share
+          safeName: azurestoragefileshare
           stagingProfileId: 88192f04117501
-#        - name: azure-storage-file-datalake
-#          safeName: azurestoragefiledatalake
-#          stagingProfileId: 88192f04117501
+        - name: azure-storage-file-datalake
+          safeName: azurestoragefiledatalake
+          stagingProfileId: 88192f04117501
         - name: azure-storage-queue
           safeName: azurestoragequeue
           stagingProfileId: 88192f04117501

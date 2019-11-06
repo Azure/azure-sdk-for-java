@@ -11,6 +11,8 @@ import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -78,17 +80,20 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobAsyncClient#appendBlockWithResponse(Flux, long, AppendBlobRequestConditions)}
+     * Code snippet for {@link AppendBlobAsyncClient#appendBlockWithResponse(Flux, long, byte[], AppendBlobRequestConditions)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
-    public void appendBlock2() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions
+    public void appendBlock2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobAccessConditions
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
         AppendBlobRequestConditions accessConditions = new AppendBlobRequestConditions()
             .setAppendPosition(POSITION)
             .setMaxSize(maxSize);
 
-        client.appendBlockWithResponse(data, length, accessConditions).subscribe(response ->
+        client.appendBlockWithResponse(data, length, md5, accessConditions).subscribe(response ->
             System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobAccessConditions
     }
 
     /**

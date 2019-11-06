@@ -9,12 +9,13 @@ Azure Key Vault allows you to create and store certificates in the Key Vault. Az
 ### Adding the package to your project
 
 Maven dependency for Azure Key Client library. Add it to your project's pom file.
+
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-certificates;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.0.0-preview.5</version>
+    <version>4.0.0-preview.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,7 +34,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.0.0-preview.5</version>
+    <version>4.0.0-preview.6</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -49,7 +50,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.7</version>
+  <version>1.1.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -87,10 +88,13 @@ To create/get client key credentials you can use the [Azure Portal][azure_create
 Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 
  * Create a service principal and configure its access to Azure resources:
+
     ```Bash
     az ad sp create-for-rbac -n <your-application-name> --skip-assignment
     ```
+
     Output:
+
     ```json
     {
         "appId": "generated-app-ID",
@@ -100,7 +104,9 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
         "tenant": "tenant-ID"
     }
     ```
+
 * Use the above returned credentials information to set **AZURE_CLIENT_ID**(appId), **AZURE_CLIENT_SECRET**(password) and **AZURE_TENANT_ID**(tenant) environment variables. The following example shows a way to do this in Bash:
+
   ```Bash
     export AZURE_CLIENT_ID="generated-app-ID"
     export AZURE_CLIENT_SECRET="random-password"
@@ -108,13 +114,16 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
   ```
 
 * Grant the above mentioned application authorization to perform key operations on the keyvault:
+
     ```Bash
     az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --certificate-permissions backup delete get list create
     ```
+
     > --certificate-permissions:
     > Accepted values: backup, create, delete, deleteissuers, get, getissuers, import, list, listissuers, managecontacts, manageissuers, purge, recover, restore, setissuers, update
 
 * Use the above mentioned Key Vault name to retreive details of your Vault which also contains your Key Vault URL:
+
     ```Bash
     az keyvault show --name <your-key-vault-name>
     ```
@@ -127,10 +136,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.CertificateClient;
 
 CertificateClient client = new CertificateClientBuilder()
-        .endpoint(<your-vault-url>)
+        .vaultUrl(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
+
 > NOTE: For using Asynchronous client use CertificateAsyncClient instead of CertificateClient and call buildAsyncClient()
 
 ## Key concepts
@@ -155,7 +165,8 @@ The following sections provide several code snippets covering some of the most c
 ### Create a Certificate
 
 Create a Certificate to be stored in the Azure Key Vault.
-- `createCertificate` creates a new certificate in the key vault. if the certificate with name already exists then a new version of the certificate is created.
+- `beginCreateCertificate` creates a new certificate in the key vault. if the certificate with name already exists then a new version of the certificate is created.
+
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
@@ -164,39 +175,39 @@ import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.CertificateClient;
 
 CertificateClient certificateClient = new CertificateClientBuilder()
-        .endpoint(<your-vault-url>)
+        .vaultUrl(<your-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
-
-Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName",
-    certPolicy);
-Certificate certificate = certificatePoller.block();
-System.out.printf("Certificate is returned with name %s and secret id %s \n", certificate.getProperties().getName(),
-    certificate.getSecretId());
+CertificatePolicy certificatePolicyPkcsSelf = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+SyncPoller<CertificateOperation, KeyVaultCertificate> certPoller = certificateClient.beginCreateCertificate("certificateName", certificatePolicyPkcsSelf);
+certPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+KeyVaultCertificate cert = certPoller.getFinalResult();
+System.out.printf("Certificate created with name %s", cert.getName());
 ```
 
 ### Retrieve a Certificate
 
-Retrieve a previously stored Certificate by calling `getCertificate` or `getCertificateWithPolicy`.
+Retrieve a previously stored Certificate by calling `getCertificate` or `getCertificateVersion`.
+
 ```Java
-Certificate certificate = certificateClient.getCertificateWithPolicy("certificateName");
+KeyVaultCertificateWithPolicy certificate = certificateClient.getCertificate("certificateName");
 System.out.printf("Recevied certificate with name %s and version %s and secret id %s", certificate.getName(),
     certificate.getProperties().getVersion(), certificate.getSecretId());
 ```
 
 ### Update an existing Certificate
 
-Update an existing Certificate by calling `updateCertificate`.
+Update an existing Certificate by calling `updateCertificateProperties`.
+
 ```Java
 // Get the certificate to update.
-Certificate certificate = certificateClient.getCertificateWithPolicy("certificateName");
+KeyVaultCertificateWithPolicy certificate = certificateClient.getCertificate("certificateName");
 Map<String, String> tags = new HashMap<>();
 tags.put("foo", "bar");
 // Update certificate enabled status
 certificate.getProperties().setEnabled(false);
-Certificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
+KeyVaultCertificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
 System.out.printf("Updated Certificate with name %s and enabled status %s", updatedCertificate.getName(),
     updatedCertificate.getProperties().isEnabled());
 ```
@@ -204,6 +215,7 @@ System.out.printf("Updated Certificate with name %s and enabled status %s", upda
 ### Delete a Certificate
 
 Delete an existing Certificate by calling `deleteCertificate`.
+
 ```Java
 DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
 System.out.printf("Deleted certificate with name %s and recovery id %s", deletedCertificate.getName(),
@@ -212,11 +224,12 @@ System.out.printf("Deleted certificate with name %s and recovery id %s", deleted
 
 ### List Certificates
 
-List the certificates in the key vault by calling `listCertificates`.
+List the certificates in the key vault by calling `listPropertiesOfCertificates`.
+
 ```java
 // List operations don't return the certificates with their full information. So, for each returned certificate we call getCertificate to get the certificate with all its properties excluding the policy.
-for (CertificateProperties certificateProperties : certificateClient.listCertificates()) {
-    Certificate certificateWithAllProperties = certificateClient.getCertificate(certificateProperties);
+for (CertificateProperties certificateProperties : certificateClient.listPropertiesOfCertificates()) {
+    KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificateProperties);
     System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.getName(),
         certificateWithAllProperties.getSecretId());
 }
@@ -235,7 +248,8 @@ The following sections provide several code snippets covering some of the most c
 ### Create a Certificate Asynchronously
 
 Create a Certificate to be stored in the Azure Key Vault.
-- `createCertificate` creates a new key in the key vault. if the certificate with name already exists then a new version of the certificate is created.
+- `beginCreateCertificate` creates a new certificate in the key vault. if the certificate with name already exists then a new version of the certificate is created.
+
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
@@ -247,8 +261,8 @@ CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs1
 Map<String, String> tags = new HashMap<>();
 tags.put("foo", "bar");
 //Creates a certificate and polls on its progress.
-certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
-    .getObserver()
+CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+certificateAsyncClient.beginCreateCertificate("myCertificate", policy)
     .subscribe(pollResponse -> {
         System.out.println("---------------------------------------------------------------------------------");
         System.out.println(pollResponse.getStatus());
@@ -259,9 +273,10 @@ certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, t
 
 ### Retrieve a Certificate Asynchronously
 
-Retrieve a previously stored Certificate by calling `getCertificateWithPolicy` or `getCertificate`.
+Retrieve a previously stored Certificate by calling `getCertificate` or `getCertificateVersion`.
+
 ```Java
-certificateAsyncClient.getCertificateWithPolicy("certificateName")
+certificateAsyncClient.getCertificate("certificateName")
     .subscribe(certificateResponse ->
         System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getName(),
             certificateResponse.getSecretId()));
@@ -269,11 +284,12 @@ certificateAsyncClient.getCertificateWithPolicy("certificateName")
 
 ### Update an existing Certificate Asynchronously
 
-Update an existing Certificate by calling `updateCertificate`.
+Update an existing Certificate by calling `updateCertificateProperties`.
+
 ```Java
-certificateAsyncClient.getCertificateWithPolicy("certificateName")
+certificateAsyncClient.getCertificate("certificateName")
     .subscribe(certificateResponseValue -> {
-        Certificate certificate = certificateResponseValue;
+        KeyVaultCertificate certificate = certificateResponseValue;
         //Update enabled status of the certificate
         certificate.getProperties().setEnabled(false);
         certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
@@ -286,6 +302,7 @@ certificateAsyncClient.getCertificateWithPolicy("certificateName")
 ### Delete a Certificate Asynchronously
 
 Delete an existing Certificate by calling `deleteCertificate`.
+
 ```java
 certificateAsyncClient.deleteCertificate("certificateName")
     .subscribe(deletedSecretResponse ->
@@ -294,10 +311,11 @@ certificateAsyncClient.deleteCertificate("certificateName")
 
 ### List Certificates Asynchronously
 
-List the certificates in the key vault by calling `listCertificates`.
+List the certificates in the key vault by calling `listPropertiesOfCertificates`.
+
 ```Java
 // The List Certificates operation returns certificates without their full properties, so for each certificate returned we call `getCertificate` to get all its attributes excluding the policy.
-certificateAsyncClient.listCertificates()
+certificateAsyncClient.listPropertiesOfCertificates()
     .subscribe(certificateProperties -> certificateAsyncClient.getCertificate(certificateProperties)
         .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
             certificateResponse.getName(), certificateResponse.getKeyId())));
@@ -306,6 +324,7 @@ certificateAsyncClient.listCertificates()
 ## Troubleshooting
 ### General
 Certificate Vault clients raise exceptions. For example, if you try to retrieve a certificate after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+
 ```java
 try {
     certificateClient.getCertificate("certificateName")
@@ -317,34 +336,8 @@ try {
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-### Hello World Samples
-* [HelloWorld.java][sample_helloWorld] - and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples for following scenarios:
-    * Create a Certificate & Certificate Issuer
-    * Retrieve a Certificate & Certificate Issuer
-    * Update a Certificate
-    * Delete a Certificate
-
-### List Operations Samples
-* [ListOperations.java][sample_list] and [ListOperationsAsync.java][sample_listAsync] - Contains samples for following scenarios:
-    * Create a Certificate, Certificate Issuer & Certificate Contact
-    * List Certificates, Certificate Issuers & Certificate Contacts
-    * Create new version of existing certificate.
-    * List versions of an existing certificate.
-
-### Backup And Restore Operations Samples
-* [BackupAndRestoreOperations.java][sample_BackupRestore] and [BackupAndRestoreOperationsAsync.java][sample_BackupRestoreAsync] - Contains samples for following scenarios:
-    * Create a Certificate
-    * Backup a Certificate -- Write it to a file.
-    * Delete a certificate
-    * Restore a certificate
-
-### Managing Deleted Certificates Samples:
-* [ManagingDeletedCertificates.java][sample_ManageDeleted] and [ManagingDeletedCertificatesAsync.java][sample_ManageDeletedAsync] - Contains samples for following scenarios:
-    * Create a Certificate
-    * Delete a certificate
-    * List deleted certificates
-    * Recover a deleted certificate
-    * Purge Deleted certificate
+## Next steps Samples
+Samples are explained in detail [here][samples_readme].
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
@@ -358,9 +351,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]:  src
-[api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
+[api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/quick-create-portal
@@ -371,13 +364,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_keyvault_cli]:https://docs.microsoft.com/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [certificates_samples]: src/samples/java/com/azure/security/keyvault/certificates
-[sample_helloWorld]: src/samples/java/com/azure/security/keyvault/certificates/HelloWorld.java
-[sample_helloWorldAsync]: src/samples/java/com/azure/security/keyvault/certificates/HelloWorldAsync.java
-[sample_list]: src/samples/java/com/azure/security/keyvault/certificates/ListOperations.java
-[sample_listAsync]: src/samples/java/com/azure/security/keyvault/certificates/ListOperationsAsync.java
-[sample_BackupRestore]: src/samples/java/com/azure/security/keyvault/certificates/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]: src/samples/java/com/azure/security/keyvault/certificates/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/certificates/ManagingDeletedCertificates.java
-[sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/certificates/ManagingDeletedCertificatesAsync.java
+[samples_readme]: src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-certificates/README.png)

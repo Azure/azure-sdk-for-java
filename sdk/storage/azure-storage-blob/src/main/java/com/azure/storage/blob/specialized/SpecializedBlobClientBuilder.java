@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -126,8 +126,8 @@ public final class SpecializedBlobClientBuilder {
      * Creates a {@link BlockBlobAsyncClient} based on options set in the Builder. BlockBlobAsyncClients are used to
      * perform generic upload operations such as {@link BlockBlobAsyncClient#upload(Flux, long) upload from file}
      * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long,
-     * String) stage block} and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list}, only use this
-     * when the blob is known to be a block blob.
+     * byte[], String) stage block} and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list}, only use
+     * this when the blob is known to be a block blob.
      *
      * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -188,7 +188,7 @@ public final class SpecializedBlobClientBuilder {
      * read and debug.
      */
     private String getContainerName() {
-        return ImplUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
+        return CoreUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
     }
 
     private HttpPipeline getHttpPipeline(BlobServiceVersion serviceVersion) {
@@ -290,13 +290,13 @@ public final class SpecializedBlobClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
-            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName();
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
             String sasToken = parts.getSasQueryParameters().encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {

@@ -13,12 +13,13 @@ documentation][api_documentation] | [Samples][samples]
 - [Maven][maven]
 
 ### Adding the package to your product
+
 [//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0-preview.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -37,7 +38,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opencensus</artifactId>
-    <version>1.0.0-preview.4</version>
+    <version>1.0.0-preview.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -53,7 +54,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -82,6 +83,7 @@ The following sections provides examples of using the azure-core-tracing-opencen
 - Sync create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
     
     Users can additionally pass the value of the current tracing span to the SDKs using key **"opencensus-span"** on the [Context][context] parameter of the calling method:
+
     ```java
     import com.azure.identity.credential.DefaultAzureCredentialBuilder;
     import com.azure.security.keyvault.secrets.SecretClientBuilder;
@@ -111,9 +113,11 @@ The following sections provides examples of using the azure-core-tracing-opencen
         System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue());
     }
     ```
+
 - Async create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
     
     To enabled tracing in async clients, users can additionally pass the value of the current tracing span to the SDKs using key **"opencensus-span"** on the subscriberContext of the calling method:
+
     ```java
     import com.azure.identity.credential.DefaultAzureCredentialBuilder;
     import com.azure.security.keyvault.secrets.SecretClientBuilder;
@@ -207,7 +211,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- Links -->
-[api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
+[api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azure-security-keyvault-secrets]: ../keyvault/azure-security-keyvault-secrets
 [azure-messaging-eventhubs]: ../eventhubs/azure-messaging-eventhubs
 [azure-storage-queue]: ../storage/azure-storage-queue

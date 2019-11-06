@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 /**
  * Information about the azure function destination for an event subscription.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = AzureFunctionEventSubscriptionDestination.class)
 @JsonTypeName("AzureFunction")
 @JsonFlatten
 public class AzureFunctionEventSubscriptionDestination extends EventSubscriptionDestination {
