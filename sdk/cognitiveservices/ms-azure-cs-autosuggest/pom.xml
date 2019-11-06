@@ -13,7 +13,7 @@
     </parent>
     <artifactId>azure-cognitiveservices-autosuggest</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <version>1.1.0-preview.1</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-autosuggest;current} -->
+    <version>1.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-autosuggest;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Services Auto Suggest</name>
     <description>This package contains Microsoft Cognitive Service Auto Suggest SDK.</description>

@@ -20,7 +20,7 @@ To get the binaries of the official Microsoft Azure Log Analytics SDK as distrib
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-loganalytics</artifactId>
-    <version>1.0.0-preview.2</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

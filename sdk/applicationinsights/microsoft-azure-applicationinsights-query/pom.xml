@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-applicationinsights-query</artifactId>
-    <version>1.0.0-preview-2</version> <!-- {x-version-update;com.microsoft.azure:azure-applicationinsights-query;current} -->
+    <version>1.0.0-beta-2</version> <!-- {x-version-update;com.microsoft.azure:azure-applicationinsights-query;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Application Insights Query API</name>
     <description>This package contains Microsoft Application Insights SDK for retrieving metrics, events, and running queries.</description>

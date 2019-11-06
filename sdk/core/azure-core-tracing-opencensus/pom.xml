@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
 
   <name>Microsoft Azure OpenCensus tracing plugin</name>
   <description>This package contains the OpenCensus tracing plugin for Azure client libraries.</description>
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opencensus</groupId>
