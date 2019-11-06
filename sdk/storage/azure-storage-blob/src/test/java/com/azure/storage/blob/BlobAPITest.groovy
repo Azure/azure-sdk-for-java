@@ -5,13 +5,11 @@ package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
-import com.azure.core.http.rest.Response
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
-import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
@@ -19,7 +17,6 @@ import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.DownloadRetryOptions
-
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ParallelTransferOptions
@@ -27,19 +24,19 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.sas.BlobSasPermission
-import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.function.Consumer
 
 class BlobAPITest extends APISpec {
     BlobClient bc
@@ -280,9 +277,13 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.downloadToFile(testFile.getPath())
-        def fileContent = new Scanner(testFile).useDelimiter("\\Z").next()
+        def fileInputStream = new FileInputStream(testFile)
+        def fileData = new byte[testFile.size()]
+        fileInputStream.read(fileData)
+        fileInputStream.close()
+
         then:
-        fileContent == defaultText
+        new String(fileData, StandardCharsets.UTF_8) == defaultText
 
         cleanup:
         testFile.delete()
@@ -294,7 +295,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(fileSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + ".txt")
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -303,17 +304,11 @@ class BlobAPITest extends APISpec {
         def properties = bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
             new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
 
-        and:
-        def stream1 = new FileInputStream(file)
-        def stream2 = new FileInputStream(outFile)
-
         then:
-        compareFiles(stream1, 0, file.size(), stream2)
+        compareFiles(file, outFile, 0, fileSize)
         properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
 
         cleanup:
-        stream1.close()
-        stream2.close()
         outFile.delete()
 
         where:
@@ -325,40 +320,13 @@ class BlobAPITest extends APISpec {
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
-    def compareFiles(FileInputStream stream1, long offset, long count, FileInputStream stream2) {
-        int chunkSize = 8 * 1024 * 1024
-        long pos = 0
-        stream1.skip(offset)
-
-        while (pos < count) {
-            chunkSize = Math.min(chunkSize, count - pos)
-            def buf1 = new byte[chunkSize]
-            def buf2 = new byte[chunkSize]
-            def readCount1 = stream1.read(buf1)
-            def readCount2 = stream2.read(buf2)
-
-            if (readCount1 != readCount2) {
-                return false
-            }
-
-            if (ByteBuffer.wrap(buf1).compareTo(ByteBuffer.wrap(buf2)) != 0) {
-                return false
-            }
-            pos += chunkSize
-        }
-        if (pos != count && stream2.read() != -1) {
-            return false
-        }
-        return true
-    }
-
     @Requires({ liveMode() })
     @Unroll
     def "Download file range"() {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(resourceNamer.randomName(testName, 60))
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -366,16 +334,10 @@ class BlobAPITest extends APISpec {
         when:
         bc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, false, null, null)
 
-        and:
-        def stream1 = new FileInputStream(file)
-        def stream2 = new FileInputStream(outFile)
-
         then:
-        compareFiles(stream1, range.getOffset(), range.getCount(), stream2)
+        compareFiles(file, outFile, range.getOffset(), range.getCount())
 
         cleanup:
-        stream1.close()
-        stream2.close()
         outFile.delete()
 
         /*
@@ -383,17 +345,18 @@ class BlobAPITest extends APISpec {
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                      | _
-        new BlobRange(0, defaultDataSize)          | _ // Exact count
-        new BlobRange(1, defaultDataSize - 1)      | _ // Offset and exact count
-        new BlobRange(3, 2)                        | _ // Narrow range in middle
-        new BlobRange(0, defaultDataSize - 1)      | _ // Count that is less than total
-        new BlobRange(0, 10L * 1024 * 1024 * 1024) | _ // Count much larger than remaining data
+        range                                 | _
+        new BlobRange(0, defaultDataSize)     | _ // Exact count
+        new BlobRange(1, defaultDataSize - 1) | _ // Offset and exact count
+        new BlobRange(3, 2)                   | _ // Narrow range in middle
+        new BlobRange(0, defaultDataSize - 1) | _ // Count that is less than total
+        new BlobRange(0, 10 * 1024)           | _ // Count much larger than remaining data
     }
 
     /*
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
+
     @Requires({ liveMode() })
     @Unroll
     def "Download file range fail"() {
@@ -429,16 +392,10 @@ class BlobAPITest extends APISpec {
         when:
         bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, false, null, null)
 
-        and:
-        def stream1 = new FileInputStream(file)
-        def stream2 = new FileInputStream(outFile)
-
         then:
-        compareFiles(stream1, 0, defaultDataSize, stream2)
+        compareFiles(file, outFile, 0, defaultDataSize)
 
         cleanup:
-        stream1.close()
-        stream2.close()
         outFile.delete()
     }
 
@@ -532,24 +489,13 @@ class BlobAPITest extends APISpec {
             .getBlockBlobAsyncClient()
         bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
             new ParallelTransferOptions(1024, null, null), null, null, false)
-            .subscribe(
-            new Consumer<Response<BlobProperties>>() {
-                @Override
-                void accept(Response<BlobProperties> headers) {
-                    etagConflict = false
+            .subscribe({ etagConflict = false }, {
+                if (it instanceof BlobStorageException && ((BlobStorageException) it).getStatusCode() == 412) {
+                    etagConflict = true
+                    return
                 }
-            },
-            new Consumer<Throwable>() {
-                @Override
-                void accept(Throwable throwable) {
-                    if (throwable instanceof BlobStorageException &&
-                        ((BlobStorageException) throwable).getStatusCode() == 412) {
-                        etagConflict = true
-                        return
-                    }
-                    etagConflict = false
-                    throw throwable
-                }
+                etagConflict = false
+                throw it
             })
 
         sleep(500) // Give some time for the download request to start.

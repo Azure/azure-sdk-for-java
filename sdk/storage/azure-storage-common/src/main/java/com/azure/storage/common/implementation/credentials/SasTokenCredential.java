@@ -21,7 +21,8 @@ public final class SasTokenCredential {
      * @param sasToken SAS token used to authenticate requests with the service.
      */
     public SasTokenCredential(String sasToken) {
-        this.sasToken = sasToken;
+        // Remove the leading '?' as it won't be needed when applying the SAS token to the request URL.
+        this.sasToken = (sasToken.charAt(0) == '?') ? sasToken.substring(1) : sasToken;
     }
 
     /**
@@ -43,10 +44,6 @@ public final class SasTokenCredential {
     public static SasTokenCredential fromSasTokenString(String sasToken) {
         if (CoreUtils.isNullOrEmpty(sasToken)) {
             return null;
-        }
-
-        if (sasToken.charAt(0) == '?') {
-            sasToken = sasToken.substring(1);
         }
 
         return new SasTokenCredential(sasToken);
