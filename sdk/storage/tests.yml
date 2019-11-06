@@ -1,12 +1,5 @@
 trigger: none
 
-resources:
-  containers:
-  - container: mcr.microsoft.com/azure-storage/azurite
-
-services:
-  azurite: mcr.microsoft.com/azure-storage/azurite
-
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
@@ -30,3 +23,8 @@ jobs:
         AZURE_STORAGE_QUEUE_ENDPOINT: $(java-storage-test-queue-endpoint)
         AZURE_STORAGE_QUEUE_CONNECTION_STRING: $(java-storage-test-queue-connection-string)
         AZURE_STORAGE_BLOB_CONNECTION_STRING: $(java-storage-test-blob-connection-string)
+      Resources:
+        containers:
+        - container: mcr.microsoft.com/azure-storage/azurite
+      Services:
+        azurite: mcr.microsoft.com/azure-storage/azurite
