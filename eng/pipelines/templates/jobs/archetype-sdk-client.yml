@@ -161,6 +161,7 @@ jobs:
       # running as a PR check.
       - task: Maven@3
         displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
+        condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
@@ -170,12 +171,12 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install site:site site:stage'
-          condition: ne(variables['Build.Reason'], 'PullRequest')
 
       # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
       # previous step.
       - task: Maven@3
         displayName: 'Run SpotBugs'
+        condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
           options: '--batch-mode -DskipTests -Dgpg.skip'
@@ -185,15 +186,16 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
-          condition: ne(variables['Build.Reason'], 'PullRequest')
 
       - script: |
           git clone https://github.com/JonathanGiles/DependencyChecker.git
           mkdir input && cp dependencies.json input/
         displayName: 'Download dependency checker'
+        condition: ne(variables['Build.Reason'], 'PullRequest')
 
       - task: Maven@3
         displayName: 'Analyze dependencies'
+        condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: 'DependencyChecker/pom.xml'
           options: '-Dexec.args="-showall -dependencymanagement"'
