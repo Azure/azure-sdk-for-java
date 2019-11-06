@@ -243,17 +243,54 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
 
     @Override
     public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        SynonymMap staleResource = client.createOrUpdateSynonymMap(synonymMap);
+        SynonymMap currentResource = client.createOrUpdateSynonymMap(staleResource.setSynonyms("updatedword1,updatedword2"));
 
+        try {
+            client.deleteSynonymMap(synonymMap.getName(), generateIfMatchAccessCondition(staleResource.getETag()));
+            Assert.fail("deleteSynonym did not throw an expected Exception");
+        } catch (Exception ex) {
+            Assert.assertEquals(HttpResponseException.class, ex.getClass());
+            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+        }
+
+        Response<Void> response = client.deleteSynonymMapWithResponse(synonymMap.getName(),
+            generateIfMatchAccessCondition(currentResource.getETag()),
+            null,
+            null);
+        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
     }
 
     @Override
     public void deleteSynonymMapIfExistsWorksOnlyWhenResourceExists() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        client.createSynonymMap(synonymMap);
 
+        client.deleteSynonymMap(synonymMap.getName(), generateIfExistsAccessCondition());
+        try {
+            client.deleteSynonymMap(synonymMap.getName(), generateIfExistsAccessCondition());
+            Assert.fail("deleteSynonymMap did not throw an expected Exception");
+        } catch (Exception ex) {
+            Assert.assertEquals(HttpResponseException.class, ex.getClass());
+            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+        }
     }
 
     @Override
     public void deleteSynonymMapIsIdempotent() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        Response<Void> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(), null, null, null);
+        Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
+        Response<SynonymMap> createResponse = client.createSynonymMapWithResponse(synonymMap, null, null);
+        Assert.assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
+
+        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(), null, null, null);
+        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
+
+        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(), null, null, null);
+        Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
     @Override

@@ -1,0 +1,89 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdkd5035369c18d.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "db347b91-9861-4b8a-ba35-1167cf03f240",
+      "StatusCode" : "404",
+      "Date" : "Wed, 06 Nov 2019 00:26:36 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "63",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "128",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azs-sdkd5035369c18d'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdkd5035369c18d.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "2181573b-d284-4806-8bec-32b7d9dfc6fa",
+      "StatusCode" : "201",
+      "Date" : "Wed, 06 Nov 2019 00:26:36 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7624FFC618083\"",
+      "elapsed-time" : "29",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "198",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkd5035369c18d.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7624FFC618083\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdkd5035369c18d.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdkd5035369c18d.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "14",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "8677e53f-e094-473e-a1e0-d9d5fb58265a",
+      "StatusCode" : "204",
+      "Date" : "Wed, 06 Nov 2019 00:26:36 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdkd5035369c18d.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "c198094a-925c-411c-aa32-ce5d9e05bcce",
+      "StatusCode" : "404",
+      "Date" : "Wed, 06 Nov 2019 00:26:36 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "6",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "128",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azs-sdkd5035369c18d'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

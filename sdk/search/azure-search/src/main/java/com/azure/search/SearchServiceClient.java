@@ -1200,18 +1200,80 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search synonym map.
+     *
+     * @param synonymMapName the name of the synonym map to delete
      */
-    public void deleteSynonymMap() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteSynonymMap(String synonymMapName) {
+        asyncClient.deleteSynonymMap(synonymMapName).block();
     }
 
     /**
-     * @return a response signalling completion
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search synonym map.
+     *
+     * @param synonymMapName the name of the synonym map to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values
      */
-    public Response<Response<Void>> deleteSynonymMapWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteSynonymMap(String synonymMapName, AccessCondition accessCondition) {
+        asyncClient.deleteSynonymMap(synonymMapName, accessCondition).block();
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search synonym map.
+     *
+     * @param synonymMapName the name of the synonym map to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
+     */
+    public void deleteSynonymMap(String synonymMapName,
+                                 AccessCondition accessCondition,
+                                 RequestOptions requestOptions) {
+        asyncClient.deleteSynonymMap(synonymMapName, accessCondition, requestOptions).block();
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search synonym map.
+     *
+     * @param synonymMapName the name of the synonym map to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the Http pipeline during the service call
+     * Contains the tracking ID sent with the request to help with debugging
+     */
+    public void deleteSynonymMap(String synonymMapName,
+                                           AccessCondition accessCondition,
+                                           RequestOptions requestOptions,
+                                           Context context) {
+        this.deleteSynonymMapWithResponse(synonymMapName,
+            accessCondition,
+            requestOptions,
+            context);
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search synonym map.
+     *
+     * @param synonymMapName the name of the synonym map to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     *                        Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the Http pipeline during the service call
+     * @return a response signalling completion.
+     */
+    public Response<Void> deleteSynonymMapWithResponse(String synonymMapName,
+                                                       AccessCondition accessCondition,
+                                                       RequestOptions requestOptions,
+                                                       Context context) {
+        return asyncClient.deleteSynonymMapWithResponse(synonymMapName,
+            accessCondition,
+            requestOptions,
+            context).block();
     }
 
     /**

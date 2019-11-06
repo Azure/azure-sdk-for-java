@@ -1288,19 +1288,69 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search synonym map.
+     *
+     * @param synonymMapName the name of the synonym map to delete
+     * @return a response signalling completion.
      */
-    public Mono<Void> deleteSynonymMap() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteSynonymMap(String synonymMapName) {
+        return this.deleteSynonymMap(synonymMapName, null, null);
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search synonym map.
+     *
+     * @param synonymMapName the name of the synonym map to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values
+     * @return a response signalling completion.
      */
-    public Mono<Response<Response<Void>>> deleteSynonymMapWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteSynonymMap(String synonymMapName, AccessCondition accessCondition) {
+        return this.deleteSynonymMap(synonymMapName, accessCondition, null);
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search synonym map.
+     *
+     * @param synonymMapName the name of the synonym map to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
+     */
+    public Mono<Void> deleteSynonymMap(String synonymMapName,
+                                       AccessCondition accessCondition,
+                                       RequestOptions requestOptions) {
+        return this.deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search synonym map.
+     *
+     * @param synonymMapName the name of the synonym map to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     *                        doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
+     */
+    public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,
+                                                             AccessCondition accessCondition,
+                                                             RequestOptions requestOptions) {
+        return withContext(context ->
+            this.deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context));
+    }
+
+    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,
+                                                      AccessCondition accessCondition,
+                                                      RequestOptions requestOptions,
+                                                      Context context) {
+        return restClient
+            .synonymMaps()
+            .deleteWithRestResponseAsync(synonymMapName, requestOptions, accessCondition, context)
+            .map(Function.identity());
     }
 
     /**
