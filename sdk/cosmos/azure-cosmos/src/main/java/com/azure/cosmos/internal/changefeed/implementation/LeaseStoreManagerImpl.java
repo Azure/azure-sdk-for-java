@@ -453,6 +453,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     private CosmosAsyncItem createItemForLease(String leaseId) {
-        return this.leaseDocumentClient.getContainerClient().getItem(leaseId, "/id");
+        return this.leaseDocumentClient.getContainerClient().getItem(leaseId, leaseId);
     }
 }

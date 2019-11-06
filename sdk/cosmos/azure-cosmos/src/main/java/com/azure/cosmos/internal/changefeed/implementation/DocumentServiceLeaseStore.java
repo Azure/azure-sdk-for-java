@@ -15,6 +15,8 @@ import com.azure.cosmos.internal.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.internal.changefeed.LeaseStore;
 import com.azure.cosmos.internal.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.internal.changefeed.ServiceItemLease;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -23,6 +25,7 @@ import java.time.Duration;
  * Implementation for LeaseStore.
  */
 class DocumentServiceLeaseStore implements LeaseStore {
+    private final Logger logger = LoggerFactory.getLogger(BootstrapperImpl.class);
     private ChangeFeedContextClient client;
     private String containerNamePrefix;
     private CosmosAsyncContainer leaseCollectionLink;
@@ -52,16 +55,18 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createRequestOptions(
             ServiceItemLease.fromDocument(doc));
 
-        CosmosAsyncItem docItem = this.client.getContainerClient().getItem(markerDocId, "/id");
+        CosmosAsyncItem docItem = this.client.getContainerClient().getItem(markerDocId, markerDocId);
         return this.client.readItem(docItem, requestOptions)
             .flatMap(documentResourceResponse -> Mono.just(documentResourceResponse.getItem() != null))
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
+                        logger.info("Lease synchronization document not found");
                         return Mono.just(false);
                     }
                 }
+                logger.error("Unexpected exception thrown", throwable);
                 return Mono.error(throwable);
             });
     }
@@ -72,15 +77,17 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemProperties containerDocument = new CosmosItemProperties();
         containerDocument.setId(markerDocId);
 
-        return this.client.createItem(this.leaseCollectionLink, containerDocument, null, false)
+        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(markerDocId), false)
             .map( item -> true)
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
+                        logger.info("Lease synchronization document was created by a different instance");
                         return Mono.just(true);
                     }
                 }
+                logger.error("Unexpected exception thrown", throwable);
                 return Mono.just(false);
             });
     }
@@ -92,7 +99,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         containerDocument.setId(lockId);
         BridgeInternal.setProperty(containerDocument, Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
 
-        return this.client.createItem(this.leaseCollectionLink, containerDocument, null, false)
+        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(lockId), false)
             .map(documentResourceResponse -> {
                 if (documentResourceResponse.getItem() != null) {
                     this.lockETag = documentResourceResponse.getProperties().getETag();
@@ -105,9 +112,11 @@ class DocumentServiceLeaseStore implements LeaseStore {
                 if (throwable instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
+                        logger.info("Lease synchronization document was acquired by a different instance");
                         return Mono.just(false);
                     }
                 }
+                logger.error("Unexpected exception thrown", throwable);
                 return Mono.error(throwable);
             });
     }
@@ -130,7 +139,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         accessCondition.setCondition(this.lockETag);
         requestOptions.setAccessCondition(accessCondition);
 
-        CosmosAsyncItem docItem = this.client.getContainerClient().getItem(lockId, "/id");
+        CosmosAsyncItem docItem = this.client.getContainerClient().getItem(lockId, lockId);
         return this.client.deleteItem(docItem, requestOptions)
             .map(documentResourceResponse -> {
                 if (documentResourceResponse.getItem() != null) {
@@ -144,10 +153,12 @@ class DocumentServiceLeaseStore implements LeaseStore {
                 if (throwable instanceof CosmosClientException) {
                     CosmosClientException e = (CosmosClientException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
+                        logger.info("Lease synchronization document was acquired by a different instance");
                         return Mono.just(false);
                     }
                 }
 
+                logger.error("Unexpected exception thrown", throwable);
                 return Mono.error(throwable);
             });
     }
