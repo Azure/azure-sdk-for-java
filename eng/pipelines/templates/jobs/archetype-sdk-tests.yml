@@ -25,7 +25,8 @@ jobs:
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
     services:
-      - azurite
+      ${{ if eq(parameters.Options.enableAzurite, 'true') }}:
+        azurite: azurite
 
     variables:
       - template: ../variables/globals.yml
