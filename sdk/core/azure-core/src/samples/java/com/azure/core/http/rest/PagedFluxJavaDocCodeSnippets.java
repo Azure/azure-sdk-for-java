@@ -15,7 +15,8 @@ import java.util.function.Supplier;
  * Code snippets for {@link PagedFlux}
  */
 public final class PagedFluxJavaDocCodeSnippets {
-    
+
+
     /**
      * Code snippets for showing usage of {@link PagedFlux} in class docs
      */

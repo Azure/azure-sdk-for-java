@@ -175,8 +175,7 @@ jobs:
       # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
       # previous step.
       - task: Maven@3
-        displayName: 'Run SpotBugs'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
+        displayName: 'Run SpotBugs aggregate analysis'
         inputs:
           mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
           options: '--batch-mode -DskipTests -Dgpg.skip'
