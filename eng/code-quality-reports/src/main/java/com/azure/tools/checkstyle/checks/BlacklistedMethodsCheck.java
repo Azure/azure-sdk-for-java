@@ -21,7 +21,7 @@ public class BlacklistedMethodsCheck extends AbstractCheck {
     /**
      * Specified full name of invalid methods.
      */
-    private final Set<String> methods = new HashSet<>(Arrays.asList());
+    private final Set<String> methods = new HashSet<>();
 
     /**
      * Specified message for the invalid methods
