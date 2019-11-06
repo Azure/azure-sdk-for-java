@@ -91,7 +91,7 @@ class APISpec extends Specification {
     public static final String defaultEndpointTemplate = "https://%s.dfs.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
-    static def DATA_LAKE_STORAGE = "DATA_LAKE_STORAGE_"
+    static def DATA_LAKE_STORAGE = "STORAGE_DATA_LAKE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
