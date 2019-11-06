@@ -107,15 +107,10 @@ public abstract class ClientEntity {
     }
 
     @Override
-    protected void finalize() {
-        try {
-            if (!this.isClosed) {
-                this.close();
-            }
-
-            super.finalize();
-        } catch (Throwable e) {
-            //Ignore
-        }
+    protected void finalize() throws Throwable {
+    	if (!this.getIsClosingOrClosed()) {
+    		this.closeAsync();
+    	}
+    	super.finalize();
     }
 }
