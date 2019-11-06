@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.1.0-preview.1</version>
+  <version>12.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-batch</artifactId>
-    <version>12.1.0-preview.1</version>
+    <version>12.0.0</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -57,7 +57,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.1.0-preview.1</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
