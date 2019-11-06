@@ -118,7 +118,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         // Retry header is missing or empty, return the default delay duration.
         if (isNullOrEmpty(retryHeaderValue)) {
-                return retryStrategy.calculateRetryDelay(tryCount);
+            return retryStrategy.calculateRetryDelay(tryCount);
         }
 
         // Use the response delay duration, the server returned it for a reason.
