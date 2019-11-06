@@ -23,14 +23,9 @@ public class PublishEvent {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
-
-        // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
-        // sent from this producer are load balanced between all available partitions in the Event Hub instance.
-        EventHubProducerAsyncClient producer = client.createProducer();
+            .buildAsyncProducer();
 
         // Create an event to send.
         EventData data = new EventData("Hello world!".getBytes(UTF_8));
@@ -38,6 +33,8 @@ public class PublishEvent {
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
+        // SendOptions are not specified, so events sent are load balanced between all available partitions in the
+        // Event Hub instance.
         producer.send(data).subscribe(
             (ignored) -> System.out.println("Event sent."),
             error -> {
@@ -52,7 +49,6 @@ public class PublishEvent {
             }, () -> {
                 // Disposing of our producer and client.
                 producer.close();
-                client.close();
             });
     }
 }

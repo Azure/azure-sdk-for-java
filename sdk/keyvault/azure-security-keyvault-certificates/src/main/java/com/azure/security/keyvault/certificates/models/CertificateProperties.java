@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -203,7 +203,10 @@ public class CertificateProperties {
      * @return the x509Thumbprint.
      */
     public byte[] getX509Thumbprint() {
-        return this.x509Thumbprint.decodedBytes();
+        if (x509Thumbprint != null) {
+            return this.x509Thumbprint.decodedBytes();
+        }
+        return null;
     }
 
     @JsonProperty("attributes")

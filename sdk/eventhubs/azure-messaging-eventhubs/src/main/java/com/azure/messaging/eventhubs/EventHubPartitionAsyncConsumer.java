@@ -100,7 +100,7 @@ class EventHubPartitionAsyncConsumer implements Closeable {
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
                 if (existingLink == null) {
-                    logger.warning("AmqpReceiveLink not set yet.");
+                    logger.info("AmqpReceiveLink not set yet.");
                     return;
                 }
 

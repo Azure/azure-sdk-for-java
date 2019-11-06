@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Rule condition of type application.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleConditionType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleConditionType", defaultImpl = ApplicationRuleCondition.class)
 @JsonTypeName("ApplicationRuleCondition")
 public class ApplicationRuleCondition extends FirewallPolicyRuleCondition {
     /**

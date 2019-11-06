@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -435,12 +435,11 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
-     * @return The properties of the download blob.
+     * @return The blob properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs
      */
     public BlobProperties downloadToFile(String filePath) {
-        return downloadToFileWithResponse(filePath, null, null, null, null,
-            false, null, Context.NONE).getValue();
+        return downloadToFileWithResponse(filePath, null, null, null, null, false, null, Context.NONE).getValue();
     }
 
     /**
@@ -466,19 +465,19 @@ public class BlobClientBase {
      * @param range {@link BlobRange}
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      *        transfers parameter is ignored.
-     * @param options {@link DownloadRetryOptions}
-     * @param accessConditions {@link BlobRequestConditions}
-     * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param downloadRetryOptions {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The response of download blob properties.
+     * @return A response containing the blob properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
-        BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Duration timeout, Context context) {
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, options, accessConditions, rangeGetContentMD5, context);
+            parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, context);
         return blockWithOptionalTimeout(download, timeout);
     }
 

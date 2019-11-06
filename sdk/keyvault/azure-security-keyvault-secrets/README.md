@@ -17,7 +17,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,7 +36,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0-preview.1</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -52,7 +52,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -344,7 +344,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 <!-- LINKS -->
 [source_code]:  src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/

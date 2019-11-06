@@ -3,7 +3,7 @@
 
 package com.azure.storage.common.sas;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -241,7 +241,7 @@ public final class AccountSasSignatureValues {
         StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
         StorageImplUtils.assertNotNull("permissions", this.permissions);
 
-        if (ImplUtils.isNullOrEmpty(version)) {
+        if (CoreUtils.isNullOrEmpty(version)) {
             version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         }
 

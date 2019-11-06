@@ -15,7 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
@@ -47,7 +47,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -126,24 +126,27 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final EventHubLinkProvider linkProvider;
+    private final EventHubConnection connection;
     private final RetryOptions retryOptions;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
+    private final boolean isSharedConnection;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
      * when {@link BatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to load
      * balance the messages amongst available partitions.
      */
-    EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubLinkProvider linkProvider,
-        RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer) {
+    EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
+        RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
+        boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
-        this.linkProvider = linkProvider;
+        this.connection = connection;
         this.retryOptions = retryOptions;
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
+        this.isSharedConnection = isSharedConnection;
     }
 
     /**
@@ -172,7 +175,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getProperties() {
-        return linkProvider.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
+        return connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
     /**
@@ -194,7 +197,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return linkProvider.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
+        return connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
@@ -220,12 +223,13 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         final BatchOptions clone = options.clone();
 
-        if (!ImplUtils.isNullOrEmpty(clone.getPartitionKey()) && !ImplUtils.isNullOrEmpty(clone.getPartitionId())) {
+        if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
+                && !CoreUtils.isNullOrEmpty(clone.getPartitionId())) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
                 clone.getPartitionKey(), clone.getPartitionId())));
-        } else if (!ImplUtils.isNullOrEmpty(clone.getPartitionKey())
+        } else if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
             && clone.getPartitionKey().length() > MAX_PARTITION_KEY_LENGTH) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", clone.getPartitionKey(),
@@ -395,9 +399,9 @@ public class EventHubProducerAsyncClient implements Closeable {
             return Mono.empty();
         }
 
-        if (!ImplUtils.isNullOrEmpty(batch.getPartitionId())) {
+        if (!CoreUtils.isNullOrEmpty(batch.getPartitionId())) {
             logger.info("Sending batch with size[{}] to partitionId[{}].", batch.getSize(), batch.getPartitionId());
-        } else if (!ImplUtils.isNullOrEmpty(batch.getPartitionKey())) {
+        } else if (!CoreUtils.isNullOrEmpty(batch.getPartitionKey())) {
             logger.info("Sending batch with size[{}] with partitionKey[{}].", batch.getSize(), batch.getPartitionKey());
         } else {
             logger.info("Sending batch with size[{}] to be distributed round-robin in service.", batch.getSize());
@@ -407,7 +411,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final List<Message> messages = batch.getEvents().stream().map(event -> {
             final Message message = messageSerializer.serialize(event);
 
-            if (!ImplUtils.isNullOrEmpty(partitionKey)) {
+            if (!CoreUtils.isNullOrEmpty(partitionKey)) {
                 final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
                     ? new MessageAnnotations(new HashMap<>())
                     : message.getMessageAnnotations();
@@ -428,7 +432,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         final SendOptions clone = options.clone();
         final boolean isTracingEnabled = tracerProvider.isEnabled();
 
-        if (!ImplUtils.isNullOrEmpty(clone.getPartitionKey()) && !ImplUtils.isNullOrEmpty(clone.getPartitionId())) {
+        if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
+                && !CoreUtils.isNullOrEmpty(clone.getPartitionId())) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
@@ -516,13 +521,13 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     private String getEntityPath(String partitionId) {
-        return ImplUtils.isNullOrEmpty(partitionId)
+        return CoreUtils.isNullOrEmpty(partitionId)
             ? eventHubName
             : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
     }
 
     private String getLinkName(String partitionId) {
-        return ImplUtils.isNullOrEmpty(partitionId)
+        return CoreUtils.isNullOrEmpty(partitionId)
             ? StringUtil.getRandomString("EC")
             : StringUtil.getRandomString("PS");
     }
@@ -534,7 +539,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (openLink != null) {
             return Mono.just(openLink);
         } else {
-            return linkProvider.createSendLink(getLinkName(partitionId), entityPath, retryOptions)
+            return connection.createSendLink(getLinkName(partitionId), entityPath, retryOptions)
                 .map(link -> openLinks.computeIfAbsent(entityPath, unusedKey -> link));
         }
     }
@@ -553,6 +558,10 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
             });
             openLinks.clear();
+
+            if (!isSharedConnection) {
+                connection.close();
+            }
         }
     }
 

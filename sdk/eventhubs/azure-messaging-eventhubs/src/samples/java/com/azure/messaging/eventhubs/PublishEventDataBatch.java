@@ -33,14 +33,10 @@ public class PublishEventDataBatch {
         final String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // Instantiate a client that will be used to call the service.
-        final EventHubAsyncClient client = new EventHubClientBuilder()
+        // Create a producer.
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
-
-        // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
-        // sent from this producer are load balanced between all available partitions in the Event Hub instance.
-        final EventHubProducerAsyncClient producer = client.createProducer();
+            .buildAsyncProducer();
 
         // Creating a batch where we want the events ending up in the same partition by setting the partition key.
         final BatchOptions options = new BatchOptions()
@@ -67,7 +63,6 @@ public class PublishEventDataBatch {
 
                 // Disposing of our producer and client.
                 producer.close();
-                client.close();
             });
     }
 }

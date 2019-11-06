@@ -8,11 +8,19 @@ import com.azure.storage.common.implementation.Constants;
 import java.util.Locale;
 
 /**
- * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a queue. Setting
- * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
- * the values are set, this should be serialized with toString and set as the permissions field on a {@link
- * QueueServiceSasSignatureValues} object. It is possible to construct the permissions string without this class, but
- * the order of the permissions is particular and this class guarantees correctness.
+ * Constructs a string representing the permissions granted by an Azure Service SAS to a queue. Setting a value to true
+ * means that any SAS which uses these permissions will grant permissions for that operation. Once all the values are
+ * set, this should be serialized with {@link #toString() toString} and set as the permissions field on
+ * {@link QueueServiceSasSignatureValues#setPermissions(QueueSasPermission) QueueServiceSasSignatureValues}.
+ *
+ * <p>
+ * It is possible to construct the permissions string without this class, but the order of the permissions is
+ * particular and this class guarantees correctness.
+ * </p>
+ *
+ * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-service-sas#permissions-for-a-queue>
+ *     Permissions for a queue</a>
+ * @see QueueServiceSasSignatureValues
  */
 public final class QueueSasPermission {
 
@@ -25,14 +33,14 @@ public final class QueueSasPermission {
     private boolean processPermission;
 
     /**
-     * Initializes a {@code QueueSasPermission} object with all fields set to false.
+     * Initializes a {@link QueueSasPermission} object with all fields set to false.
      */
     public QueueSasPermission() {
     }
 
     /**
-     * Creates a {@code QueueSasPermission} from the specified permissions string. This method will throw an
-     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     * Creates a {@link QueueSasPermission} from the specified permissions string. This method will throw an
+     * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code QueueSasPermission}.
      * @return A {@code QueueSasPermission} generated from the given {@code String}.
@@ -66,7 +74,10 @@ public final class QueueSasPermission {
     }
 
     /**
-     * @return the read permission status.
+     * Gets the read permissions status.
+     *
+     * @return {@code true} if SAS has permission to read metadata, properties, message count, peek at messages.
+     * {@code false}, otherwise.
      */
     public boolean hasReadPermission() {
         return readPermission;
@@ -75,8 +86,9 @@ public final class QueueSasPermission {
     /**
      * Sets the read permission status.
      *
-     * @param hasReadPermission Permission status to set
-     * @return the updated QueueSasPermission object.
+     * @param hasReadPermission {@code true} if SAS has permission to read metadata, properties, message count, peek at
+     * messages. {@code false}, otherwise.
+     * @return The updated QueueSasPermission object.
      */
     public QueueSasPermission setReadPermission(boolean hasReadPermission) {
         this.readPermission = hasReadPermission;
@@ -84,7 +96,9 @@ public final class QueueSasPermission {
     }
 
     /**
-     * @return the add permission status.
+     * Gets the add permission status.
+     *
+     * @return {@code true} if SAS has permission to add messages to the queue. {@code false}, otherwise.
      */
     public boolean hasAddPermission() {
         return addPermission;
@@ -93,7 +107,8 @@ public final class QueueSasPermission {
     /**
      * Sets the add permission status.
      *
-     * @param hasAddPermission Permission status to set
+     * @param hasAddPermission {@code true} if SAS has permission to add messages to the queue. {@code false},
+     * otherwise.
      * @return the updated QueueSasPermission object.
      */
     public QueueSasPermission setAddPermission(boolean hasAddPermission) {
@@ -102,7 +117,9 @@ public final class QueueSasPermission {
     }
 
     /**
-     * @return the update permission status.
+     * Gets the update permission status.
+     *
+     * @return {@code true} if SAS has permission to update messages in the queue. {@code false}, otherwise.
      */
     public boolean hasUpdatePermission() {
         return updatePermission;
@@ -111,7 +128,13 @@ public final class QueueSasPermission {
     /**
      * Sets the update permission status.
      *
-     * @param hasUpdatePermission Permission status to set
+     *  <p>
+     * <b>Note:</b> Use {@link #setProcessPermission(boolean) setProcessPermission(true)} to get a particular message in
+     * the queue to update.
+     * </p>
+     *
+     * @param hasUpdatePermission {@code true} if SAS has permission to update messages in the queue. {@code false},
+     * otherwise.
      * @return the updated QueueSasPermission object.
      */
     public QueueSasPermission setUpdatePermission(boolean hasUpdatePermission) {
@@ -120,7 +143,9 @@ public final class QueueSasPermission {
     }
 
     /**
-     * @return the process permission status.
+     * Gets the process permission status.
+     *
+     * @return {@code true} if SAS has permission to get and delete messages from the queue. {@code false}, otherwise.
      */
     public boolean hasProcessPermission() {
         return processPermission;
@@ -129,7 +154,8 @@ public final class QueueSasPermission {
     /**
      * Sets the process permission status.
      *
-     * @param hasProcessPermission Permission status to set
+     * @param hasProcessPermission {@code true} if SAS has permission to get and delete messages from the queue.
+     * {@code false}, otherwise.
      * @return the updated QueueSasPermission object.
      */
     public QueueSasPermission setProcessPermission(boolean hasProcessPermission) {
@@ -138,10 +164,10 @@ public final class QueueSasPermission {
     }
 
     /**
-     * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
+     * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@code String} which represents the {@code QueueSasPermission}.
+     * @return A {@link String} which represents the {@link QueueSasPermission}.
      */
     @Override
     public String toString() {

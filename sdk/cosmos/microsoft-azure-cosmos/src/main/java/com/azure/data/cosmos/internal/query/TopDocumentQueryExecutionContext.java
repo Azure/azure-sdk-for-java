@@ -20,15 +20,18 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
 
     private final IDocumentQueryExecutionComponent<T> component;
     private final int top;
+    // limit from rewritten query
+    private final int limit;
 
-    public TopDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int top) {
+    public TopDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int top, int limit) {
         this.component = component;
         this.top = top;
+        this.limit = limit;
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
-            int topCount, String topContinuationToken) {
+            int topCount, int limit, String topContinuationToken) {
         TakeContinuationToken takeContinuationToken;
 
         if (topContinuationToken == null) {
@@ -56,7 +59,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
 
         return createSourceComponentFunction
                 .apply(takeContinuationToken.getSourceToken())
-                .map(component -> new TopDocumentQueryExecutionContext<>(component, takeContinuationToken.getTakeCount()));
+                .map(component -> new TopDocumentQueryExecutionContext<>(component, takeContinuationToken.getTakeCount(), limit));
     }
 
     @Override
@@ -64,13 +67,18 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
         ParallelDocumentQueryExecutionContextBase<T> context;
 
         if (this.component instanceof AggregateDocumentQueryExecutionContext<?>) {
-            context = (ParallelDocumentQueryExecutionContextBase<T>) ((AggregateDocumentQueryExecutionContext<T>) this.component)
-                    .getComponent();
+            context =
+                (ParallelDocumentQueryExecutionContextBase<T>) ((AggregateDocumentQueryExecutionContext<T>) this.component)
+                                                                         .getComponent();
+        } else if (this.component instanceof SkipDocumentQueryExecutionContext<?>) {
+            context =
+                (ParallelDocumentQueryExecutionContextBase<T>) ((SkipDocumentQueryExecutionContext<T>) this.component)
+                                                                         .getComponent();
         } else {
             context = (ParallelDocumentQueryExecutionContextBase<T>) this.component;
         }
 
-        context.setTop(this.top);
+        context.setTop(this.limit);
 
         return this.component.drainAsync(maxPageSize).takeUntil(new Predicate<FeedResponse<T>>() {
 
