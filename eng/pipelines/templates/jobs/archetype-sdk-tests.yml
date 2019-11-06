@@ -7,8 +7,6 @@ parameters:
       OSVmImage: 'windows-2019'
       DisplayName: 'Run Live tests'
   PreRunSteps: []
-  Resources: []
-  Services: []
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
@@ -25,17 +23,15 @@ jobs:
   - job: ${{ parameters.TestName }}
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
-    resources:
-      - $({ parameters.Resources })
+  services:
+  - ${{ if eq(parameters.ServiceDirectory, 'storage') }}:
+    - azurite: mcr.microsoft.com/azure-storage/azurite
 
     variables:
       - template: ../variables/globals.yml
     strategy:
       matrix: ${{ parameters.Matrix }}
       maxParallel: ${{ parameters.MaxParallel }}
-
-    services:
-      - $({ parameters.Services })
 
     pool:
       vmImage: $(OSVmImage)
