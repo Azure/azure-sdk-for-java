@@ -1,6 +1,7 @@
 package com.azure.core.util;
 
 import com.azure.core.util.logging.ClientLogger;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
@@ -43,7 +44,7 @@ public class AzureUserAgentUtil {
             name = properties.getProperty(NAME_PROPERTY);
             logger.info("User agent properties: name = " + name + ", version = " + version + ", properties file = "
                 + propertiesFileName);
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             logger.warning("Failed to get user agent properties from " + propertiesFileName, ex);
         }
         version = version != null ? version : UNKNOWN_VERSION;
