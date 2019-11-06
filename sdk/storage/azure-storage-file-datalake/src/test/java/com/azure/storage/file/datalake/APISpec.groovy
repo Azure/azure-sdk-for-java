@@ -161,15 +161,15 @@ class APISpec extends Specification {
     }
 
     static TestMode setupTestMode() {
-//        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-//
-//        if (testMode != null) {
-//            try {
-//                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-//            } catch (IllegalArgumentException ignore) {
-//                return TestMode.PLAYBACK
-//            }
-//        }
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
+
+        if (testMode != null) {
+            try {
+                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
+            } catch (IllegalArgumentException ignore) {
+                return TestMode.PLAYBACK
+            }
+        }
 
         return TestMode.PLAYBACK
     }

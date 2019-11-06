@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.ArrayList;
@@ -12,22 +11,41 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * POSIX access control rights on files and directories. The value is a comma-separated list of access control entries.
- * Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the
- * format "[scope:][type]:[id]:[permissions]". The scope must be "default" to indicate the ACE belongs to the default
- * Access Control List (ACL) for a directory; otherwise scope is implicit and the ACE belongs to the access ACL. There
- * are four ACE types: "user" grants rights to the owner or a named user, "group" grants rights to the owning group or a
- * named group, "mask" restricts rights granted to named users and the members of groups, and "other" grants rights to
- * all users not found in any of the other entries. The user or group identifier is omitted for entries of type "mask"
- * and "other". The user or group identifier is also omitted for the owner and owning group. The permission field is a
- * 3-character sequence where the first character is 'r' to grant read access, the second character is 'w' to grant
- * write access, and the third character is 'x' to grant execute permission. If access is not granted, the '-' character
- * is used to denote that the permission is denied. For example, the following ACL grants read, write, and execute
+ * POSIX access control rights on files and directories.
+ * <p>
+ * The value is a comma-separated list of access control entries, each access control entry (ACE) consists of four
+ * elements in the format "[scope:][type]:[id]:[permissions]":
+ * <ul>
+ *   <li>Scope</li>
+ *   <li>Type</li>
+ *   <li>User or Group Identifier</li>
+ *   <li>Permissions</li>
+ * </ul>
+ * <p>
+ * The scope must be "default" to indicate the ACE belongs to the default Access Control List (ACL) for a directory;
+ * otherwise scope is implicit and the ACE belongs to the access ACL.
+ * <p>
+ * There are four ACE types:
+ * <ul>
+ *   <li>"user": grants rights to the owner or a named user</li>
+ *   <li>"group" grants rights to the owning group or a named group</li>
+ *   <li>"mask" restricts rights granted to named users and the members of groups</li>
+ *   <li>"other" grants rights to all users not found in any of the other entries</li>
+ * </ul>
+ * <p>
+ * The user or group identifier is omitted for entries of type "mask" and "other".
+ * The user or group identifier is also omitted for the owner and owning group.
+ * <p>
+ * The permission field is a 3-character sequence where the first character is 'r' to grant read access, the second
+ * character is 'w' to grant write access, and the third character is 'x' to grant execute permission.
+ * If access is not granted, the '-' character is used to denote that the permission is denied.
+ * <p>
+ * For example, the following ACL grants read, write, and execute
  * rights to the file owner and john.doe@contoso, the read right to the owning group, and nothing to everyone else:
  * "user::rwx,user:john.doe@contoso:rwx,group::r--,other::---,mask::rwx".
  */
 public class PathAccessControlEntry {
-    public static final String SUPERUSER = "$SUPERUSER";
+    public static final String SUPERUSER = "$superuser";
 
     private static final String ACCESS_CONTROL_ENTRY_INVALID_SCOPE = "Scope must be default or otherwise omitted";
 
@@ -35,8 +53,6 @@ public class PathAccessControlEntry {
      * The string to specify default scope for an Access Control Entry.
      */
     private static final String DEFAULT_SCOPE = "default";
-
-    private final ClientLogger logger = new ClientLogger(PathAccessControlEntry.class);
 
     /**
      * Indicates whether this entry belongs to the default ACL for a directory.
