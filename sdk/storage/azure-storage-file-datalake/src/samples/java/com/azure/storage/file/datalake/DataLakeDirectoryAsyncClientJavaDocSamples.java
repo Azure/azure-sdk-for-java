@@ -39,31 +39,6 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryAsyncClient#create()} and
-     * {@link DataLakeDirectoryAsyncClient#createWithResponse(PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
-     */
-    public void createCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.create
-        client.create().subscribe(response ->
-            System.out.printf("Last Modified Time:%s", response.getLastModified()));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.create
-
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
-            .setLeaseId(leaseId);
-        String permissions = "permissions";
-        String umask = "umask";
-
-        client.createWithResponse(httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask)
-            .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String
-    }
-
-    /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#delete()} and
      * {@link DataLakeDirectoryAsyncClient#deleteWithResponse(boolean, DataLakeRequestConditions)}
      */
@@ -85,14 +60,14 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#createFile(String)} and
-     * {@link DataLakeDirectoryAsyncClient#createFileWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
+     * {@link DataLakeDirectoryAsyncClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String
         DataLakeFileAsyncClient fileClient = client.createFile(fileName).block();
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -101,9 +76,9 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         String permissions = "permissions";
         String umask = "umask";
         DataLakeFileAsyncClient newFileClient = client.createFileWithResponse(fileName,
-            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions,
-            umask).block().getValue();
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions
+        ).block().getValue();
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 
     /**
@@ -127,14 +102,14 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#createSubDirectory(String)} and
-     * {@link DataLakeDirectoryAsyncClient#createSubDirectoryWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
+     * {@link DataLakeDirectoryAsyncClient#createSubDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createSubDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectory#String
         DataLakeDirectoryAsyncClient directoryClient = client.createSubDirectory(fileName).block();
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectory#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -143,9 +118,9 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         String permissions = "permissions";
         String umask = "umask";
         DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubDirectoryWithResponse(
-            fileName, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions,
-            umask).block().getValue();
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+            fileName, permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions
+        ).block().getValue();
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 
     /**

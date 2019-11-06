@@ -369,8 +369,8 @@ class FileSystemAPITest extends APISpec {
 
     def "Create file error"() {
         when:
-        fsc.createFileWithResponse(generatePathName(), null, null,
-            new DataLakeRequestConditions().setIfMatch("garbage"), null, null, null,
+        fsc.createFileWithResponse(generatePathName(), null, null, null, null,
+            new DataLakeRequestConditions().setIfMatch("garbage"), null,
             Context.NONE)
 
         then:
@@ -388,7 +388,7 @@ class FileSystemAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        def client = fsc.createFileWithResponse(generatePathName(), headers, null, null, null, null, null, null).getValue()
+        def client = fsc.createFileWithResponse(generatePathName(), null, null, headers, null, null, null, null).getValue()
         def response = client.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -415,7 +415,7 @@ class FileSystemAPITest extends APISpec {
         }
 
         when:
-        def client = fsc.createFileWithResponse(generatePathName(), null, metadata, null, null, null, null, null).getValue()
+        def client = fsc.createFileWithResponse(generatePathName(), null, null, null, metadata, null, null, null).getValue()
         def response = client.getProperties()
 
         then:
@@ -444,7 +444,7 @@ class FileSystemAPITest extends APISpec {
 
 
         expect:
-        fsc.createFileWithResponse(pathName, null, null, drc, null, null, null, null).getStatusCode() == 201
+        fsc.createFileWithResponse(pathName, null, null, null, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -472,7 +472,7 @@ class FileSystemAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        fsc.createFileWithResponse(pathName, null, null, drc, null, null, null, Context.NONE)
+        fsc.createFileWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
         thrown(StorageErrorException)
@@ -492,7 +492,7 @@ class FileSystemAPITest extends APISpec {
         def umask = "0057"
 
         expect:
-        fsc.createFileWithResponse(generatePathName(), null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+        fsc.createFileWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete file min"() {
@@ -592,8 +592,8 @@ class FileSystemAPITest extends APISpec {
 
     def "Create dir error"() {
         when:
-        fsc.createDirectoryWithResponse(generatePathName(), null, null,
-            new DataLakeRequestConditions().setIfMatch("garbage"), null, null, null,
+        fsc.createDirectoryWithResponse(generatePathName(), null, null, null, null,
+            new DataLakeRequestConditions().setIfMatch("garbage"), null,
             Context.NONE)
 
         then:
@@ -611,7 +611,7 @@ class FileSystemAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        def client = fsc.createDirectoryWithResponse(generatePathName(), headers, null, null, null, null, null, null).getValue()
+        def client = fsc.createDirectoryWithResponse(generatePathName(), null, null, headers, null, null, null, null).getValue()
         def response = client.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -638,7 +638,7 @@ class FileSystemAPITest extends APISpec {
         }
 
         when:
-        def client = fsc.createDirectoryWithResponse(generatePathName(), null, metadata, null, null, null, null, null).getValue()
+        def client = fsc.createDirectoryWithResponse(generatePathName(), null, null, null, metadata, null, null, null).getValue()
         def response = client.getProperties()
 
         then:
@@ -671,7 +671,7 @@ class FileSystemAPITest extends APISpec {
 
 
         expect:
-        fsc.createDirectoryWithResponse(pathName, null, null, drc, null, null, null, null).getStatusCode() == 201
+        fsc.createDirectoryWithResponse(pathName, null, null, null, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -699,7 +699,7 @@ class FileSystemAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        fsc.createDirectoryWithResponse(pathName, null, null, drc, null, null, null, Context.NONE)
+        fsc.createDirectoryWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
         thrown(Exception)
@@ -719,7 +719,7 @@ class FileSystemAPITest extends APISpec {
         def umask = "0057"
 
         expect:
-        fsc.createDirectoryWithResponse(generatePathName(), null, null, null, permissions, umask, null, Context.NONE).getStatusCode() == 201
+        fsc.createDirectoryWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete dir min"() {

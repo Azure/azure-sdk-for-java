@@ -24,6 +24,31 @@ public class PathAsyncClientJavaDocCodeSamples {
     private String leaseId = "leaseId";
 
     /**
+     * Code snippets for {@link DataLakePathAsyncClient#create()} and
+     * {@link DataLakePathAsyncClient#createWithResponse(String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
+     */
+    public void createCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.create
+        client.create().subscribe(response ->
+            System.out.printf("Last Modified Time:%s", response.getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.create
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        String permissions = "permissions";
+        String umask = "umask";
+
+        client.createWithResponse(permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"),
+            requestConditions)
+            .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+    }
+
+    /**
      * Code snippets for {@link DataLakePathAsyncClient#setMetadata(Map)}
      */
     public void setMetadataCodeSnippets() {

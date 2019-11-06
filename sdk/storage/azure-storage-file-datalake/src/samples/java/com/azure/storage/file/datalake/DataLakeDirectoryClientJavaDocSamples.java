@@ -7,7 +7,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import com.azure.storage.file.datalake.models.PathInfo;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -46,31 +45,6 @@ public class DataLakeDirectoryClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryClient#create()} and
-     * {@link DataLakeDirectoryClient#createWithResponse(PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
-     */
-    public void createCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.create
-        System.out.printf("Last Modified Time:%s", client.create().getLastModified());
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.create
-
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
-            .setLeaseId(leaseId);
-        String permissions = "permissions";
-        String umask = "umask";
-
-        Response<PathInfo> response = client.createWithResponse(httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask, timeout,
-            new Context(key1, value1));
-        System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
-    }
-
-    /**
      * Code snippets for {@link DataLakeDirectoryClient#delete()} and
      * {@link DataLakeDirectoryClient#deleteWithResponse(boolean, DataLakeRequestConditions, Duration, Context)}
      */
@@ -92,14 +66,14 @@ public class DataLakeDirectoryClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryClient#createFile(String)} and
-     * {@link DataLakeDirectoryClient#createFileWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
+     * {@link DataLakeDirectoryClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String
         DataLakeFileClient fileClient = client.createFile(fileName);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -107,10 +81,10 @@ public class DataLakeDirectoryClientJavaDocSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, httpHeaders,
+        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, permissions, umask, httpHeaders,
             Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask, timeout, new Context(key1, value1));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+            timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
     }
 
     /**
@@ -134,14 +108,14 @@ public class DataLakeDirectoryClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryClient#createSubDirectory(String)} and
-     * {@link DataLakeDirectoryClient#createSubDirectoryWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
+     * {@link DataLakeDirectoryClient#createSubDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createSubDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectory#String
         DataLakeDirectoryClient directoryClient = client.createSubDirectory(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectory#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -150,9 +124,9 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String permissions = "permissions";
         String umask = "umask";
         Response<DataLakeDirectoryClient> newDirectoryClient = client.createSubDirectoryWithResponse(directoryName,
-            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask, timeout,
+            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, timeout,
             new Context(key1, value1));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
     }
 
     /**

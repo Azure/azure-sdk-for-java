@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.implementation.http.PagedResponseBase;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;

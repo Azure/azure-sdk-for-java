@@ -106,6 +106,52 @@ public class DataLakePathClient {
     }
 
     /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.create}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @return Information about the created resource.
+     */
+    public PathInfo create() {
+        return createWithResponse(null, null, null, null, null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
+     * @param umask Restricts permissions of the resource to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource.
+     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing information about the created resource
+     */
+    public Response<PathInfo> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
+        Map<String, String> metadata, DataLakeRequestConditions accessConditions, Duration timeout,
+        Context context) {
+        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(
+            permissions, umask, dataLakePathAsyncClient.pathResourceType, headers, metadata, accessConditions, context);
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
      * Changes a resource's metadata. The specified metadata in this method will replace existing metadata. If old
      * values must be preserved, they must be downloaded and included in the call to this method.
      *

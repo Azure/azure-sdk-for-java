@@ -23,6 +23,7 @@ public final class FeedOptions {
     private PartitionKey partitionkey;
     private boolean populateQueryMetrics;
     private Map<String, Object> properties;
+    private boolean allowEmptyPages;
 
     public FeedOptions() {
     }
@@ -40,6 +41,7 @@ public final class FeedOptions {
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
         this.populateQueryMetrics = options.populateQueryMetrics;
+        this.allowEmptyPages = options.allowEmptyPages;
     }
 
     /**
@@ -337,5 +339,20 @@ public final class FeedOptions {
     public FeedOptions properties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Gets the option to allow empty result pages in feed response.
+     */
+    public boolean allowEmptyPages() {
+        return allowEmptyPages;
+    }
+
+    /**
+     * Sets the option to allow empty result pages in feed response. Defaults to false
+     * @param allowEmptyPages whether to allow empty pages in feed response
+     */
+    public void allowEmptyPages(boolean allowEmptyPages) {
+        this.allowEmptyPages = allowEmptyPages;
     }
 }

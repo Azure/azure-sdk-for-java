@@ -5,7 +5,7 @@ package com.azure.core.management.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.implementation.OperationDescription;
+import com.azure.core.http.swagger.OperationDescription;
 
 /**
  * The current state of polling for the result of a long running operation.
