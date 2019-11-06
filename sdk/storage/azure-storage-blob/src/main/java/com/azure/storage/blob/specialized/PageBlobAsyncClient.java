@@ -8,8 +8,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.http.UrlBuilder;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -39,8 +39,8 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -824,7 +824,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
         URL url;
         try {
-            url = builder.toURL();
+            url = builder.toUrl();
         } catch (MalformedURLException e) {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw logger.logExceptionAsError(new IllegalArgumentException(e));

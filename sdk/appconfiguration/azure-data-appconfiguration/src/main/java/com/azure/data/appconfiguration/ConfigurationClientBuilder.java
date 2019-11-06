@@ -7,6 +7,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpClient;
@@ -21,7 +23,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,9 +40,8 @@ import java.util.Objects;
  * an instance of the desired client.
  *
  * <p>The client needs the service endpoint of the Azure App Configuration store and access credential.
- * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credential it requires to
- * construct a client, set the ConfigurationClientCredentials with
- * {@link #connectionString(String) this}.</p>
+ * {@link #connectionString(String) connectionString(String)} gives the builder the service endpoint and access
+ * credential.</p>
  *
  * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
  *
@@ -60,7 +61,6 @@ import java.util.Objects;
  *
  * @see ConfigurationAsyncClient
  * @see ConfigurationClient
- * @see ConfigurationClientCredentials
  */
 @ServiceClientBuilder(serviceClients = ConfigurationClient.class)
 public final class ConfigurationClientBuilder {
@@ -326,7 +326,7 @@ public final class ConfigurationClientBuilder {
 
     private ConfigurationClientCredentials getConfigurationCredentials(Configuration configuration) {
         String connectionString = configuration.get("AZURE_APPCONFIG_CONNECTION_STRING");
-        if (ImplUtils.isNullOrEmpty(connectionString)) {
+        if (CoreUtils.isNullOrEmpty(connectionString)) {
             return credential;
         }
 

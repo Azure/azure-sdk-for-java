@@ -10,12 +10,13 @@ Azure Key Vault allows you to create and store keys in the Key Vault. Azure Key 
 ### Adding the package to your project
 
 Maven dependency for Azure Key Client library. Add it to your project's pom file.
+
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-keys;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.0.0-preview.5</version>
+    <version>4.1.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -34,7 +35,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.0.0-preview.5</version>
+    <version>4.1.0-preview.1</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -50,7 +51,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -88,10 +89,13 @@ To create/get client key credentials you can use the [Azure Portal][azure_create
 Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 
  * Create a service principal and configure its access to Azure resources:
+
     ```Bash
     az ad sp create-for-rbac -n <your-application-name> --skip-assignment
     ```
+
     Output:
+
     ```json
     {
         "appId": "generated-app-ID",
@@ -101,7 +105,9 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
         "tenant": "tenant-ID"
     }
     ```
+
 * Use the above returned credentials information to set **AZURE_CLIENT_ID**(appId), **AZURE_CLIENT_SECRET**(password) and **AZURE_TENANT_ID**(tenant) environment variables. The following example shows a way to do this in Bash:
+
   ```Bash
     export AZURE_CLIENT_ID="generated-app-ID"
     export AZURE_CLIENT_SECRET="random-password"
@@ -109,13 +115,16 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
   ```
 
 * Grant the above mentioned application authorization to perform key operations on the keyvault:
+
     ```Bash
     az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --key-permissions backup delete get list create
     ```
+
     > --key-permissions:
     > Accepted values: backup, delete, get, list, purge, recover, restore, create
 
 * Use the above mentioned Key Vault name to retreive details of your Vault which also contains your Key Vault URL:
+
     ```Bash
     az keyvault show --name <your-key-vault-name>
     ```
@@ -132,6 +141,7 @@ KeyClient client = new KeyClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
+
 > NOTE: For using Asynchronous client use KeyAsyncClient instead of KeyClient and call buildAsyncClient()
 
 
@@ -148,6 +158,7 @@ CryptographyClient cryptoClient = new CryptographyClientBuilder()
     .keyIdentifier("<Your-Key-Id-From-Keyvault>")
     .buildClient();
 ```
+
 > NOTE: For using Asynchronous client use CryptographyAsyncClient instead of CryptographyClient and call buildAsyncClient()
 
 ## Key concepts
@@ -181,6 +192,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create a Key to be stored in the Azure Key Vault.
 - `setKey` creates a new key in the key vault. if the key with name already exists then a new version of the key is created.
+
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
@@ -205,6 +217,7 @@ System.out.printf("Key is created with name %s and id %s \n", ecKey.getName(), e
 ### Retrieve a Key
 
 Retrieve a previously stored Key by calling `getKey`.
+
 ```Java
 KeyVaultKey key = keyClient.getKey("key_name");
 System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId());
@@ -213,6 +226,7 @@ System.out.printf("Key is returned with name %s and id %s \n", key.getName(), ke
 ### Update an existing Key
 
 Update an existing Key by calling `updateKeyProperties`.
+
 ```Java
 // Get the key to update.
 KeyVaultKey key = keyClient.getKey("key_name");
@@ -225,6 +239,7 @@ System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().
 ### Delete a Key
 
 Delete an existing Key by calling `beginDeleteKey`.
+
 ```Java
 SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
 
@@ -241,6 +256,7 @@ deletedKeyPoller.waitForCompletion();
 ### List Keys
 
 List the keys in the key vault by calling `listPropertiesOfKeys`.
+
 ```java
 // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
 for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
@@ -252,6 +268,7 @@ for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
 ### Encrypt
 
 Encrypt plain text by calling `encrypt`.
+
 ```java
 CryptographyClient cryptoClient = new CryptographyClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -296,6 +313,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create a Key to be stored in the Azure Key Vault.
 - `setKey` creates a new key in the key vault. if the key with name already exists then a new version of the key is created.
+
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
@@ -321,6 +339,7 @@ keyAsyncClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
 ### Retrieve a Key Asynchronously
 
 Retrieve a previously stored Key by calling `getKey`.
+
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(key ->
   System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId()));
@@ -329,6 +348,7 @@ keyAsyncClient.getKey("keyName").subscribe(key ->
 ### Update an existing Key Asynchronously
 
 Update an existing Key by calling `updateKeyProperties`.
+
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
      // Get the Key
@@ -343,6 +363,7 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
 ### Delete a Key Asynchronously
 
 Delete an existing Key by calling `beginDeleteKey`.
+
 ```java
 keyAsyncClient.beginDeleteKey("keyName")
     .subscribe(pollResponse -> {
@@ -355,6 +376,7 @@ keyAsyncClient.beginDeleteKey("keyName")
 ### List Keys Asynchronously
 
 List the keys in the key vault by calling `listPropertiesOfKeys`.
+
 ```Java
 // The List Keys operation returns keys without their value, so for each key returned we call `getKey` to get its // value as well.
 keyAsyncClient.listPropertiesOfKeys()
@@ -367,6 +389,7 @@ keyAsyncClient.listPropertiesOfKeys()
 ### Encrypt Asynchronously
 
 Encrypt plain text by calling `encrypt`.
+
 ```java
 CryptographyAsyncClient cryptoAsyncClient = new CryptographyClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -386,6 +409,7 @@ cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
 ### Decrypt Asynchronously
 
 Decrypt encrypted content by calling `decrypt`.
+
 ```java
 byte[] plainText = new byte[100];
 new Random(0x1234567L).nextBytes(plainText);
@@ -403,6 +427,7 @@ cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
 ## Troubleshooting
 ### General
 Key Vault clients raise exceptions. For example, if you try to retrieve a key after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+
 ```java
 try {
     keyClient.getKey("deletedKey")
@@ -429,9 +454,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]:  src
-[api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
+[api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/quick-create-portal

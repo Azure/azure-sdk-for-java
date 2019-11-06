@@ -12,12 +12,13 @@ Library containing core classes used to test Azure SDK client libraries.
 ## Getting started
 
 To use this package, add the following to your _pom.xml_.
+
 [//]: # ({x-version-update-start;com.azure:azure-core-test;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-preview.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

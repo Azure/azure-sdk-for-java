@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -33,8 +33,8 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Client to an append blob. It may only be instantiated through a

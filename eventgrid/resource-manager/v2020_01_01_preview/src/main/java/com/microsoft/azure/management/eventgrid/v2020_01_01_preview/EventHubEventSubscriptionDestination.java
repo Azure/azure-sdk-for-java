@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 /**
  * Information about the event hub destination for an event subscription.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = EventHubEventSubscriptionDestination.class)
 @JsonTypeName("EventHub")
 @JsonFlatten
 public class EventHubEventSubscriptionDestination extends EventSubscriptionDestination {

@@ -60,8 +60,7 @@ public class VirtualRouterInner extends Resource {
     private ProvisioningState provisioningState;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -171,7 +170,7 @@ public class VirtualRouterInner extends Resource {
     }
 
     /**
-     * Get gets a unique read-only string that changes whenever the resource is updated.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */

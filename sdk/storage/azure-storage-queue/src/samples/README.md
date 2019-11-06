@@ -31,7 +31,7 @@ status codes returned for [REST API][error_codes] requests. For example, if you 
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`
 
 ## Next steps
-Start using Storage Queue Java SDK in your solutions. Our SDK details could be found at [SDK README] [SDK_README]. 
+Start using Storage Queue Java SDK in your solutions. Our SDK details could be found at [SDK README][SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Storage blob, see the [API reference documentation][storage_queue_rest].

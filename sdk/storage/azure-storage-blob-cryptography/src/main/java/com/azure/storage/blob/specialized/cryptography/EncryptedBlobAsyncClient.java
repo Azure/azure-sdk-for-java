@@ -7,7 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -316,13 +316,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         BlobRequestConditions accessConditions) {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
-            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-                ? new ParallelTransferOptions(null, null, null)
-                : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
-                    parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
 
             return Mono.using(() -> super.uploadFileResourceSupplier(filePath),
-                channel -> this.uploadWithResponse(FluxUtil.readFile(channel), finalParallelTransferOptions, headers,
+                channel -> this.uploadWithResponse(FluxUtil.readFile(channel), parallelTransferOptions, headers,
                     metadataFinal, tier, accessConditions)
                     .then()
                     .doOnTerminate(() -> {

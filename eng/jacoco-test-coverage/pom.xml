@@ -22,10 +22,6 @@
   <description>Package for generating test coverage report for Azure Client Libraries</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-  <properties>
-    <project.automatic.module.name>com.azure.eng.jacoco.test.coverage</project.automatic.module.name>
-  </properties>
-
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>
@@ -43,77 +39,98 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+      <version>1.0.0-preview.8</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>
     <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-okhttp</artifactId>
+        <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.azure</groupId>-->
+<!--      <artifactId>azure-core-management</artifactId>-->
+<!--      <version>1.0.0-preview.8</version> &lt;!&ndash; {x-version-update;com.azure:azure-core-management;current} &ndash;&gt;-->
+<!--    </dependency>-->
+    <!-- Not required for jacoco test coverage report -->
+    <!-- <dependency> -->
+      <!-- <groupId>com.azure</groupId> -->
+      <!-- <artifactId>azure-core-test</artifactId> -->
+      <!-- <version>1.0.0-preview.7</version> --> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+    <!-- </dependency> -->
+    <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-management</artifactId>
-      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+      <artifactId>azure-core-tracing-opencensus</artifactId>
+      <version>1.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-certificates</artifactId>
+      <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+      <version>4.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.0.0-preview.3</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <version>1.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-batch</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+      <version>12.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-file</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-file;current} -->
+      <artifactId>azure-storage-file-share</artifactId>
+      <version>12.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -123,27 +140,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+      <version>12.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue-cryptography</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-queue-cryptography;current} -->
+      <version>12.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-storage-queue-cryptography;current} -->
     </dependency>
-    <!-- Tracing will be built and released separately. Removing tracing dependency
-     until we finalize dependency composition -->
-    <!--    <dependency>-->
-    <!--      <groupId>com.azure</groupId>-->
-    <!--      <artifactId>tracing-opentelemetry</artifactId>-->
-    <!--      <version>1.0.0-preview.3</version>-->
-    <!--    </dependency>-->
-
-    <!-- Not required for jacoco test coverage report -->
-    <!--    <dependency>-->
-    <!--      <groupId>com.azure</groupId>-->
-    <!--      <artifactId>azure-core-test</artifactId>-->
-    <!--      <version>1.0.0-preview.5</version>-->
-    <!--    </dependency>-->
   </dependencies>
 
   <build>
