@@ -43,7 +43,7 @@ The libraries released in the November 2019 preview:
 - [Event Hubs Checkpoint Store](sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
 - [Storage File Shares](sdk/storage/azure-storage-file-share/README.md)
 - [Key Vault Certificates](sdk/keyvault/azure-security-keyvault-certificates/README.md)
-- [azure-core-tracing-opencensus](sdk/core/azure-core-tracing-opencensus/README.md)
+- [OpenCensus Tracing](sdk/core/azure-core-tracing-opencensus/README.md)
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
