@@ -24,7 +24,7 @@ public enum HttpHeaderType {
     }
 
     /**
-     * Returns string representation of the value.
+     * Returns string representation of the {@link HttpHeaderType}.
      */
     @Override
     public String toString() {
@@ -32,7 +32,7 @@ public enum HttpHeaderType {
     }
 
     /**
-     * Creates an  {@link HttpHeaderType} from its display value.
+     * Creates a {@link HttpHeaderType} from its string value.
      *
      * @param value The string value of the  {@link HttpHeaderType}.
      * @return The  {@link HttpHeaderType} represented by the value.

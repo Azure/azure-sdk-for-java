@@ -5,12 +5,14 @@ package com.azure.core.http.policy;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
-import com.azure.core.http.*;
-
 import java.util.Objects;
-
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.HttpHeaderType;
 import com.azure.core.util.logging.ClientLogger;
+
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
