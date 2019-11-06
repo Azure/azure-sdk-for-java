@@ -60,7 +60,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.core.implementation.Base64Url"/>
+    <Class name="com.azure.core.util.Base64Url"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -197,6 +197,12 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+  <!-- TEMPORARY -->
+  <Match>
+    <Class name="com.azure.core.util.CoreUtils"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
   <!-- EventHubClientImpl.USER_AGENT is public and can be set by consumers of the SDK to not be null.
   https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ConnectionHandler.java#L88 -->
   <Match>
@@ -280,13 +286,13 @@
 
   <!-- Uninitialized subscription property will be initialized on onSubscribe(). Spotbugs is unaware of reactor execution orders. -->
   <Match>
-    <Class name="com.azure.core.implementation.util.FluxUtil"/>
+    <Class name="com.azure.core.util.FluxUtil"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
   <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
   <Match>
-    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
+    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.CoreUtils|serializer\.HttpResponseDecodeData)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -300,7 +306,7 @@
 
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
-    <Class name="com.azure.core.implementation.util.TypeUtil"/>
+    <Class name="com.azure.core.implementation.TypeUtil"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
@@ -441,7 +447,7 @@
 
   <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
   <Match>
-    <Class name="com.azure.core.implementation.RestProxy"/>
+    <Class name="com.azure.core.http.rest.RestProxy"/>
     <Method name="endTracingSpan"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
@@ -482,10 +488,10 @@
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
-      <Class name="com.azure.security.keyvault.certificates.models.IssuerBase"/>
-      <Class name="com.azure.security.keyvault.certificates.models.Issuer"/>
+      <Class name="com.azure.security.keyvault.certificates.models.IssuerProperties"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateIssuer"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
+      <Class name="com.azure.security.keyvault.certificates.models.LifeTimeAction"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
@@ -532,13 +538,17 @@
         <Class name="com.azure.security.keyvault.certificates.models.webkey.ByteExtensions"/>
         <Method name="clone"/>
       </And>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
+        <Method name="getX509Thumbprint"/>
+      </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
     <Or>
-      <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+      <Class name="~.*JavaDoc(CodeSnippets|CodeSamples|Samples)"/>
       <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
     </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,
@@ -575,7 +585,7 @@
 
   <!-- This is a false positive, the subscribe method will be called before onNext, onCancelled, or onError. -->
   <Match>
-    <Class name="com.azure.core.implementation.util.FluxUtil$1"/>
+    <Class name="com.azure.core.util.FluxUtil$1"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
@@ -590,10 +600,14 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
   </Match>
 
-  <!-- FlatteningSerializer defines non-transient non-serializable instance field logger,
-  but logger is required for logging-->
+  <!-- Serializers define non-transient non-serializable instance field -->
   <Match>
-    <Class name="com.azure.core.implementation.serializer.jackson.FlatteningSerializer"/>
+    <Or>
+      <Class name="com.azure.core.util.serializer.FlatteningSerializer"/>
+      <Class name="com.azure.core.util.serializer.FlatteningDeserializer"/>
+      <Class name="com.azure.core.util.serializer.AdditionalPropertiesSerializer"/>
+      <Class name="com.azure.core.util.serializer.AdditionalPropertiesDeserializer"/>
+    </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 

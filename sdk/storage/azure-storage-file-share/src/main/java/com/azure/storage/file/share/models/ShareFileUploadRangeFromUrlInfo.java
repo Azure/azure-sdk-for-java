@@ -13,6 +13,14 @@ public final class ShareFileUploadRangeFromUrlInfo {
     private final OffsetDateTime lastModified;
     private final Boolean isServerEncrypted;
 
+    /**
+     * Creates a new instance of this class.
+     *
+     * @param eTag The entity tag that corresponds to the directory.
+     * @param lastModified The last time the share was modified.
+     * @param isServerEncrypted The value of this header is true if the directory metadata is completely encrypted using
+     *   the specified algorithm.
+     */
     public ShareFileUploadRangeFromUrlInfo(final String eTag, final OffsetDateTime lastModified,
                                            final Boolean isServerEncrypted) {
         this.eTag = eTag;
