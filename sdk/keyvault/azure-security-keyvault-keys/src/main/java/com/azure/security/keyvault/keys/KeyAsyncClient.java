@@ -52,10 +52,6 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link KeyVaultKey keys}.
  * The client also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
- * <p><strong>Samples to construct the async client</strong></p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
- *
  * @see KeyClientBuilder
  * @see PagedFlux
  */

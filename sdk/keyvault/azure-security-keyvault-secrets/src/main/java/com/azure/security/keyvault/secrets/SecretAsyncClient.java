@@ -46,9 +46,6 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled
  * Azure Key Vault.
  *
- * <p><strong>Construct the async client</strong></p>
- * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.construct}
- *
  * @see SecretClientBuilder
  * @see PagedFlux
  */

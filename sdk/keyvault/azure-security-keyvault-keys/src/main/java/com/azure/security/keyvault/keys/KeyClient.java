@@ -28,9 +28,6 @@ import com.azure.security.keyvault.keys.models.KeyType;
  * creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link KeyVaultKey keys}. The client
  * also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
- * <p><strong>Samples to construct the sync client</strong></p>
- * {@codesnippet com.azure.security.keyvault.keys.keyclient.instantiation}
- *
  * @see KeyClientBuilder
  * @see PagedIterable
  */

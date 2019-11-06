@@ -26,9 +26,6 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
  * symmetric keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the
  * configured key.
  *
- * <p><strong>Samples to construct the sync client</strong></p>
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.instantiation}
- *
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, serviceInterfaces = CryptographyService.class)

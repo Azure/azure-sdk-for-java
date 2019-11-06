@@ -33,25 +33,6 @@ import java.util.Objects;
  * SecretClientBuilder#buildClient() buildClient} respectively.
  * It constructs an instance of the desired client.
  *
- * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
- * {@link SecretAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
- *
- * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.construct}
- *
- * <p><strong>Samples to construct the sync client</strong></p>
- * {@codesnippet com.azure.security.keyvault.secretclient.sync.construct}
- *
- * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
- * {@link HttpClient http client} can be optionally configured in the {@link SecretClientBuilder}.</p>
- *
- * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation}
- *
- * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
- * {@link String vaultUrl}
- * can be specified. It provides finer control over the construction of {@link SecretAsyncClient client}</p>
- *
- * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation}
- *
  * @see SecretClient
  * @see SecretAsyncClient
  */

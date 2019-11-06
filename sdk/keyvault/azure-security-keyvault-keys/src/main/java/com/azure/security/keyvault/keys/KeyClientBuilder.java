@@ -33,27 +33,6 @@ import java.util.Objects;
  * {@link KeyClientBuilder#buildAsyncClient() buildAsyncClient} and {@link KeyClientBuilder#buildClient() buildClient}
  * respectively. It constructs an instance of the desired client.
  *
- * <p> The minimal configuration options required by {@link KeyClientBuilder} to build {@link KeyAsyncClient} are
- * {@link String vaultUrl} and {@link TokenCredential credential}. </p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
- *
- * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
- * {@link HttpClient http client} can be optionally configured in the {@link KeyClientBuilder}.</p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation}
- *
- * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
- * {@link String vaultUrl} can be specified. It provides finer control over the construction of {@link KeyAsyncClient}
- * and {@link KeyClient}</p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation}
- *
- * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link
- * KeyClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.keyclient.instantiation}
- *
  * @see KeyAsyncClient
  * @see KeyClient
  */

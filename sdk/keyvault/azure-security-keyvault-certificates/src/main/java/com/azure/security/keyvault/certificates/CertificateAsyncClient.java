@@ -62,10 +62,6 @@ import reactor.core.publisher.Mono;
  * <p>The client further allows creating, retrieving, updating, deleting and listing the {@link Issuer certificate issuers}. The client also supports
  * creating, listing and deleting {@link Contact certificate contacts}</p>
  *
- * <p><strong>Samples to construct the async client</strong></p>
- *
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation}
- *
  * @see CertificateClientBuilder
  * @see PagedFlux
  */

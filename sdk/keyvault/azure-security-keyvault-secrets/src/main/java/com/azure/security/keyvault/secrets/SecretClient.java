@@ -21,9 +21,6 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key
  * Vault.
  *
- * <p><strong>Construct the sync client</strong></p>
- * {@codesnippet com.azure.security.keyvault.secretclient.sync.construct}
- *
  * @see SecretClientBuilder
  * @see PagedIterable
  */

@@ -32,31 +32,6 @@ import java.util.Objects;
  * CryptographyClientBuilder#buildClient() buildClient} respectively
  * It constructs an instance of the desired client.
  *
- * <p> The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to
- * build {@link CryptographyAsyncClient} are ({@link JsonWebKey jsonWebKey} or {@link String jsonWebKey identifier}) and
- * {@link TokenCredential credential}).
- * </p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.instantiation}
- *
- * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
- * {@link HttpClient http client} can be optionally configured in the {@link CryptographyClientBuilder}.</p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.withhttpclient.instantiation}
- *
- * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies
- * can be specified. It provides finer control over the construction of {@link CryptographyAsyncClient} and {@link
- * CryptographyClient}</p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.pipeline.instantiation}
- *
- * <p> The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to
- * build {@link CryptographyClient} are {@link JsonWebKey jsonWebKey} ot {@link String jsonWebKey identifier}) and
- * {@link TokenCredential credential}).
- * </p>
- *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.instantiation}
- *
  * @see CryptographyAsyncClient
  * @see CryptographyClient
  */

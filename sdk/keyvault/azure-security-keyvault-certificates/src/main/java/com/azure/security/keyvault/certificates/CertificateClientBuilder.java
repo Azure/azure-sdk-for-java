@@ -29,26 +29,6 @@ import java.util.Objects;
  * by calling {@link CertificateClientBuilder#buildAsyncClient() buildAsyncClient} and {@link CertificateClientBuilder#buildClient() buildClient} respectively
  * It constructs an instance of the desired client.
  *
- * <p> The minimal configuration options required by {@link CertificateClientBuilder} to build {@link CertificateAsyncClient}
- * are {@link String endpoint} and {@link TokenCredential credential}. </p>
- *
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation}
- *
- * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
- * {@link HttpClient http client} can be optionally configured in the {@link CertificateClientBuilder}.</p>
-
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation}
- *
- * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
- * can be specified. It provides finer control over the construction of {@link CertificateAsyncClient} and {@link CertificateClient}</p>
- *
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation}
- *
- * <p> The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build {@link CertificateClient}
- * are {@link String endpoint} and {@link TokenCredential credential}. </p>
- *
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.instantiation}
- *
  * @see CertificateAsyncClient
  * @see CertificateClient
  */
