@@ -33,7 +33,10 @@ public final class LifeTimeAction {
 
     LifeTimeAction() { }
 
-
+    /**
+     * Creates a new LifetimeAction instance, with the provided {@link CertificatePolicyAction}.
+     * @param certificatePolicyAction The action type of this LifetimeAction.
+     */
     public LifeTimeAction(CertificatePolicyAction certificatePolicyAction) {
         this.certificatePolicyAction = certificatePolicyAction;
     }

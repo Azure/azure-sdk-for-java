@@ -20,7 +20,7 @@ Maven dependency for Azure app configuration Client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.0-preview.6</version>
+    <version>1.0.0-preview.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

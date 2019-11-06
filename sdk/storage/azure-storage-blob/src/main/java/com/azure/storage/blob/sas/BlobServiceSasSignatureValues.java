@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.sas;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -113,6 +113,23 @@ public final class BlobServiceSasSignatureValues {
         this.identifier = identifier;
     }
 
+    /**
+     * Creates an object with the specified values.
+     *
+     * @param version The version of the service this SAS will target. If not specified, it will default to the version
+     *    targeted by the library.
+     * @param sasProtocol The {@link SasProtocol} which determines the protocols allowed by the SAS.
+     * @param startTime When the SAS will take effect.
+     * @param expiryTime The time after which the SAS will no longer work.
+     * @param permission The permissions string allowed by the SAS.
+     * @param sasIpRange The {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
+     * @param identifier The name of the access policy on the container this SAS references if any.
+     * @param cacheControl The cache-control header for the SAS.
+     * @param contentDisposition The content-disposition header for the SAS.
+     * @param contentEncoding The content-encoding header for the SAS.
+     * @param contentLanguage The content-language header for the SAS.
+     * @param contentType The content-type header for the SAS.
+     */
     public BlobServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
@@ -557,7 +574,7 @@ public final class BlobServiceSasSignatureValues {
             version = BlobServiceVersion.getLatest().getVersion();
         }
 
-        if (ImplUtils.isNullOrEmpty(blobName)) {
+        if (CoreUtils.isNullOrEmpty(blobName)) {
             resource = SAS_CONTAINER_CONSTANT;
         } else if (snapshotId != null) {
             resource = SAS_BLOB_SNAPSHOT_CONSTANT;
@@ -588,7 +605,7 @@ public final class BlobServiceSasSignatureValues {
     private String getCanonicalName(String account) {
         // Container: "/blob/account/containername"
         // Blob:      "/blob/account/containername/blobname"
-        return ImplUtils.isNullOrEmpty(blobName)
+        return CoreUtils.isNullOrEmpty(blobName)
             ? String.format("/blob/%s/%s", account, containerName)
             : String.format("/blob/%s/%s/%s", account, containerName, blobName.replace("\\", "/"));
     }

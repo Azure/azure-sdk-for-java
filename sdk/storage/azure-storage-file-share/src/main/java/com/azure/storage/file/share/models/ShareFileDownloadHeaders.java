@@ -6,8 +6,8 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -389,7 +389,7 @@ public final class ShareFileDownloadHeaders {
      * @return the contentMd5 value.
      */
     public byte[] getContentMd5() {
-        return ImplUtils.clone(this.contentMd5);
+        return CoreUtils.clone(this.contentMd5);
     }
 
     /**
@@ -406,7 +406,7 @@ public final class ShareFileDownloadHeaders {
      * @return the ShareFileDownloadHeaders object itself.
      */
     public ShareFileDownloadHeaders setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = ImplUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 
@@ -758,7 +758,7 @@ public final class ShareFileDownloadHeaders {
      * @return the fileContentMD5 value.
      */
     public byte[] getFileContentMD5() {
-        return ImplUtils.clone(this.fileContentMD5);
+        return CoreUtils.clone(this.fileContentMD5);
     }
 
     /**
@@ -772,7 +772,7 @@ public final class ShareFileDownloadHeaders {
      * @return the ShareFileDownloadHeaders object itself.
      */
     public ShareFileDownloadHeaders setFileContentMD5(byte[] fileContentMD5) {
-        this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
+        this.fileContentMD5 = CoreUtils.clone(fileContentMD5);
         return this;
     }
 
