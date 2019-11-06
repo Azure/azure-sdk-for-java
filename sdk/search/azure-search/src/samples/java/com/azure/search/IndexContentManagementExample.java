@@ -42,9 +42,9 @@ public class IndexContentManagementExample {
             .buildClient();
 
         List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().hotelId("100"));
-        hotels.add(new Hotel().hotelId("200"));
-        hotels.add(new Hotel().hotelId("300"));
+        hotels.add(new Hotel().setHotelId("100"));
+        hotels.add(new Hotel().setHotelId("200"));
+        hotels.add(new Hotel().setHotelId("300"));
 
         // Perform index operations on a list of documents
         DocumentIndexResult result = client.mergeOrUploadDocuments(hotels);
@@ -62,8 +62,8 @@ public class IndexContentManagementExample {
             .buildClient();
 
         IndexBatch<Hotel> batch = new IndexBatch<Hotel>()
-            .addMergeOrUploadAction(new Hotel().hotelId("100"))
-            .addDeleteAction(new Hotel().hotelId("200"));
+            .addMergeOrUploadAction(new Hotel().setHotelId("100"))
+            .addDeleteAction(new Hotel().setHotelId("200"));
 
         // Send a single batch that performs many different actions
         DocumentIndexResult result = client.index(batch);

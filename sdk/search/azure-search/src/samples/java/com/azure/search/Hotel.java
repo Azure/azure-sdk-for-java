@@ -20,20 +20,20 @@ public class Hotel {
         this.tags = new ArrayList<>();
     }
 
-    public String hotelId() {
+    public String getHotelId() {
         return this.hotelId;
     }
 
-    public Hotel hotelId(String hotelId) {
+    public Hotel setHotelId(String hotelId) {
         this.hotelId = hotelId;
         return this;
     }
 
-    public List<String> tags() {
+    public List<String> getTags() {
         return this.tags;
     }
 
-    public Hotel tags(List<String> tags) {
+    public Hotel setTags(List<String> tags) {
         this.tags = tags;
         return this;
     }

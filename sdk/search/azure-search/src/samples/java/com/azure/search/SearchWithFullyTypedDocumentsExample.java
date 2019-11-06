@@ -45,7 +45,7 @@ public class SearchWithFullyTypedDocumentsExample {
                 Document document = item.getDocument();
                 // Convert the property bag received from the search query to an object of type Hotel
                 Hotel hotel = jsonApi.convertObjectToType(document, Hotel.class);
-                System.out.println("Hotel " + hotel.hotelId());
+                System.out.println("Hotel " + hotel.getHotelId());
             });
 
         results.blockLast();
