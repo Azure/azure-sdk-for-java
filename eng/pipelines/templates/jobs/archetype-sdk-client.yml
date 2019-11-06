@@ -144,9 +144,9 @@ jobs:
           publishJUnitResults: false
           goals: 'install'
 
-      # Run SpotBugs and CheckStyle tools to ensure high code quality - these will fail the build if issues are found
+      # Run SpotBugs, CheckStyle and JavaDoc tools to ensure high code quality - these will fail the build if issues are found
       - task: Maven@3
-        displayName: 'Run SpotBugs and CheckStyle'
+        displayName: 'Run SpotBugs, CheckStyle, and JavaDoc'
         inputs:
           mavenPomFile: pom.client.xml
           options: '-DskipTests -Dgpg.skip'
@@ -155,7 +155,7 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'spotbugs:check checkstyle:checkstyle-aggregate'
+          goals: 'spotbugs:check checkstyle:checkstyle-aggregate javadoc:aggregate'
 
       # Generate the Maven site report, including SpotBugs, JavaDoc, CheckStyle, Jacoco, etc only when we are not
       # running as a PR check.
@@ -170,6 +170,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install site:site site:stage'
+          condition: ne(variables['Build.Reason'], 'PullRequest')
 
       # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
       # previous step.
@@ -184,6 +185,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
+          condition: ne(variables['Build.Reason'], 'PullRequest')
 
       - script: |
           git clone https://github.com/JonathanGiles/DependencyChecker.git
