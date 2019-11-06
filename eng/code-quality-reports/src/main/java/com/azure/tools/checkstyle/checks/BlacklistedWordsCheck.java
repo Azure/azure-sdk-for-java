@@ -6,6 +6,8 @@ package com.azure.tools.checkstyle.checks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -74,35 +76,29 @@ public class BlacklistedWordsCheck extends AbstractCheck {
     /**
      * Should we check member with given modifiers.
      *
-     * @param token
-     *                modifiers of member to check.
+     * @param token modifiers of member to check.
      * @return true if we should check such member.
      */
     private boolean isPublicApi(DetailAST token) {
         final DetailAST modifiersAST =
             token.findFirstToken(TokenTypes.MODIFIERS);
+        final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersAST);
         final boolean isStatic = modifiersAST.findFirstToken(TokenTypes.LITERAL_STATIC) != null;
-        final boolean isPublic = modifiersAST
-            .findFirstToken(TokenTypes.LITERAL_PUBLIC) != null;
-        final boolean isProtected = modifiersAST.findFirstToken(TokenTypes.LITERAL_PROTECTED) != null;
-        return (isPublic || isProtected) && !isStatic;
+        return (accessModifier.equals(AccessModifier.PUBLIC) || accessModifier.equals(AccessModifier.PROTECTED)) && !isStatic;
     }
 
     /**
      * Gets the disallowed abbreviation contained in given String.
-     * @param tokenName
-     *        the given String.
+     * @param tokenName the given String.
      * @return the disallowed abbreviation contained in given String as a
      *         separate String.
      */
     private boolean hasBlacklistedWords(String tokenName) {
-        boolean result = false;
         for (String blacklistedWord : blacklistedWords) {
             if (tokenName.contains(blacklistedWord)) {
-                result = true;
-                break;
+                return true;
             }
         }
-        return result;
+        return false;
     }
 }
