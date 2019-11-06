@@ -544,6 +544,7 @@
     <Or>
       <Class name="~.*JavaDoc(CodeSnippets|CodeSamples|Samples)"/>
       <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
+      <Class name="com.azure.storage.file.datalake.GetSetAccessControlExample"/>
     </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,
                   URF_UNREAD_FIELD,
