@@ -25,39 +25,45 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
     private final RetryStrategy retryStrategy;
 
-    private HttpHeaderType retryAfterHeader = HttpHeaderType.AZURE_RETRY_AFTER_MS_HEADER;
+    private final HttpHeaderType retryAfterHeader;
 
     /**
      * Creates a default {@link ExponentialBackoff} retry policy.
      */
     public RetryPolicy() {
-        this(new ExponentialBackoff());
+        this(new ExponentialBackoff(), HttpHeaderType.AZURE_RETRY_AFTER_MS_HEADER);
     }
 
     /**
      * Creates a default {@link ExponentialBackoff} retry policy.
+     * @param retryAfterHeader The retry after http header name to be used get retry after value from
+     * {@link HttpResponse}.
+     * @throws NullPointerException if {@code retryAfterHeader} is {@code null}.
      */
     public RetryPolicy(HttpHeaderType retryAfterHeader) {
-        this(new ExponentialBackoff(),retryAfterHeader);
+        this(new ExponentialBackoff(), retryAfterHeader);
     }
 
     /**
      * Creates a RetryPolicy with the provided {@link RetryStrategy}.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
+     * @throws NullPointerException if {@code retryStrategy} is {@code null}.
      */
     public RetryPolicy(RetryStrategy retryStrategy) {
-        this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null");
+        this(retryStrategy, HttpHeaderType.AZURE_RETRY_AFTER_MS_HEADER);
     }
 
     /**
      * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy} and {@link HttpHeaderType}.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
-     * @param retryAfterHeader The retry after http header name to be used get retry after value from {@link HttpResponse}.
+     * @param retryAfterHeader The retry after http header name to be used get retry after value from
+     * {@link HttpResponse}.
+     * @throws NullPointerException if {@code retryStrategy} or {@code retryAfterHeader} is {@code null}.
      */
     public RetryPolicy(RetryStrategy retryStrategy, HttpHeaderType retryAfterHeader) {
-        this(retryStrategy);
+        this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null");
         this.retryAfterHeader = Objects.requireNonNull(retryAfterHeader, "'retryAfterHeader' cannot be null");
     }
 
