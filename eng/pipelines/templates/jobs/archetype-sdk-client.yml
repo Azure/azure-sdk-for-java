@@ -157,6 +157,19 @@ jobs:
           publishJUnitResults: false
           goals: 'spotbugs:check checkstyle:checkstyle-aggregate javadoc:aggregate'
 
+      # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module
+      - task: Maven@3
+        displayName: 'Run SpotBugs aggregate analysis'
+        inputs:
+          mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
+          options: '--batch-mode -DskipTests -Dgpg.skip'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
+
       # Generate the Maven site report, including SpotBugs, JavaDoc, CheckStyle, Jacoco, etc only when we are not
       # running as a PR check.
       - task: Maven@3
@@ -171,20 +184,6 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install site:site site:stage'
-
-      # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
-      # previous step.
-      - task: Maven@3
-        displayName: 'Run SpotBugs aggregate analysis'
-        inputs:
-          mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
-          options: '--batch-mode -DskipTests -Dgpg.skip'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
 
       - script: |
           git clone https://github.com/JonathanGiles/DependencyChecker.git
