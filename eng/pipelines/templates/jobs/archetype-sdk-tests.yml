@@ -23,9 +23,8 @@ jobs:
   - job: ${{ parameters.TestName }}
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
-  services:
-  - ${{ if eq(parameters.ServiceDirectory, 'storage') }}:
-    - azurite: mcr.microsoft.com/azure-storage/azurite
+    services:
+      azurite: mcr.microsoft.com/azure-storage/azurite
 
     variables:
       - template: ../variables/globals.yml
