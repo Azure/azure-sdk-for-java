@@ -79,6 +79,49 @@ public class DataSources {
     }
 
     /**
+     * Creates a new DataSource to connect to an Azure Table.
+     *
+     * @param name The name of the datasource.
+     * @param storageConnectionString The connection string for the Azure Storage account.
+     * It must follow this format: "DefaultEndpointsProtocol=https;
+     * AccountName=[your storage account];AccountKey=[your account key];"
+     * Note that HTTPS is required.
+     * @param tableName The name of the Azure table from which to read rows.
+     * @param query Optional. A query that is applied to the table when reading rows.
+     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the datasource.
+     * @param description Optional. Description of the datasource.
+     * @return A new DataSource instance.
+     * @throws IllegalArgumentException if name, tableName or storageConnectionString are null or empty.
+     */
+    public static DataSource azureTableStorage(
+        String name,
+        String storageConnectionString,
+        String tableName,
+        String query,
+        DataDeletionDetectionPolicy deletionDetectionPolicy,
+        String description) {
+        if (StringUtils.isEmpty(name)) {
+            throw new IllegalArgumentException("name cannot be null or empty");
+        }
+        if (StringUtils.isEmpty(tableName)) {
+            throw new IllegalArgumentException("tableName cannot be null or empty");
+        }
+        if (StringUtils.isEmpty(storageConnectionString)) {
+            throw new IllegalArgumentException("storageConnectionString cannot be null or empty");
+        }
+        return new DataSource()
+            .setName(name)
+            .setType(DataSourceType.AZURETABLE)
+            .setCredentials(new DataSourceCredentials()
+                .setConnectionString(storageConnectionString))
+            .setContainer(new DataContainer()
+                .setName(tableName)
+                .setQuery(query))
+            .setDescription(description)
+            .setDataDeletionDetectionPolicy(deletionDetectionPolicy);
+    }
+
+     /**
      * Creates a new DataSource to connect to a CosmosDb database.
      *
      * @param name The name of the datasource.
@@ -99,6 +142,7 @@ public class DataSources {
         String collectionName,
         String query,
         Boolean useChangeDetection,
+
         DataDeletionDetectionPolicy deletionDetectionPolicy,
         String description) {
         if (StringUtils.isEmpty(name)) {

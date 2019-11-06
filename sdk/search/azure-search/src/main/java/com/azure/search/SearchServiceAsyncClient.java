@@ -305,10 +305,10 @@ public class SearchServiceAsyncClient {
      * @param dataSourceName the name of the data source for deletion
      * @return a void Mono
      */
-    public Mono<Void> deleteDataSource(String dataSourceName) {
+    public Mono<Response<Void>> deleteDataSource(String dataSourceName) {
         return withContext(context ->
             deleteDataSourceWithResponse(dataSourceName, null, null, context)
-        ).map(Response::getValue);
+        );
     }
 
     /**
@@ -319,16 +319,15 @@ public class SearchServiceAsyncClient {
      * @param accessCondition Additional parameters for the operation.
      * @return a valid Mono
      */
-    public Mono<Void> deleteDataSource(String dataSourceName,
+    public Mono<Response<Void>> deleteDataSource(String dataSourceName,
                                        RequestOptions requestOptions,
                                        AccessCondition accessCondition) {
         return withContext(context ->
-            restClient.dataSources()
-                .deleteWithRestResponseAsync(
+                deleteDataSourceWithResponse(
                     dataSourceName,
                     requestOptions,
                     accessCondition,
-                    context)).map(Response::getValue);
+                    context));
     }
 
     /**

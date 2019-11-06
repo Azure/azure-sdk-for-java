@@ -11,7 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
+import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
+import com.azure.search.models.SqlIntegratedChangeTrackingPolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
@@ -27,8 +30,8 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     public void createAndListDataSources() {
         client = getSearchServiceClientBuilder().buildClient();
 
-        DataSource dataSource1 = createTestCosmosDbDataSource(null, false);
-        DataSource dataSource2 = createTestSqlDataSource();
+        DataSource dataSource1 = createTestBlobDataSource(null);
+        DataSource dataSource2 = createTestSqlDataSource(null, null);
 
         client.createOrUpdateDataSource(dataSource1);
         client.createOrUpdateDataSource(dataSource2);
@@ -80,7 +83,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         client = getSearchServiceClientBuilder().buildClient();
 
-        DataSource dataSource = createTestSqlDataSource();
+        DataSource dataSource = createTestSqlDataSource(null, null);
         dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
 
         try {
@@ -112,12 +115,43 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     @Override
     public void createDataSourceReturnsCorrectDefinition() {
         client = getSearchServiceClientBuilder().buildClient();
+        SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
+            new SoftDeleteColumnDeletionDetectionPolicy()
+                .setSoftDeleteColumnName("isDeleted")
+                .setSoftDeleteMarkerValue("1");
+
+        HighWaterMarkChangeDetectionPolicy changeDetectionPolicy =
+            new HighWaterMarkChangeDetectionPolicy()
+                .setHighWaterMarkColumnName("fakecolumn");
+
+        // AzureSql
+        createAndValidateDataSource(createTestSqlDataSource(null, null));
+        createAndValidateDataSource(createTestSqlDataSource(deletionDetectionPolicy, null));
+        createAndValidateDataSource(createTestSqlDataSource(null, new SqlIntegratedChangeTrackingPolicy()));
+        createAndValidateDataSource(createTestSqlDataSource(deletionDetectionPolicy, changeDetectionPolicy));
+
+        // CosmosDB
+        createAndValidateDataSource(createTestCosmosDbDataSource(null, false));
+        createAndValidateDataSource(createTestCosmosDbDataSource(null, true));
+        createAndValidateDataSource(createTestCosmosDbDataSource(deletionDetectionPolicy, false));
+        createAndValidateDataSource(createTestCosmosDbDataSource(deletionDetectionPolicy, false));
+
+        // Azure Blob Storage
         createAndValidateDataSource(createTestBlobDataSource(null));
+        createAndValidateDataSource(createTestBlobDataSource(deletionDetectionPolicy));
+
+        // Azure Table Storage
+        createAndValidateDataSource(createTestTableStorageDataSource(null));
+        createAndValidateDataSource(createTestBlobDataSource(deletionDetectionPolicy));
     }
 
     private void createAndValidateDataSource(DataSource expectedDataSource) {
         DataSource actualDataSource = client.createOrUpdateDataSource(expectedDataSource);
+
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
+        // we delete the datasource because otherwise we will hit the quota limits during the tests
+        client.deleteDataSource(actualDataSource.getName());
+
     }
 }

@@ -14,8 +14,6 @@ import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Objects;
-
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public abstract class DataSourceTestBase extends SearchServiceTestBase {
@@ -26,7 +24,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     //
     // ASSUMPTION: Change tracking has already been enabled on the database with ALTER DATABASE ... SET CHANGE_TRACKING = ON
     // and it has been enabled on the table with ALTER TABLE ... ENABLE CHANGE_TRACKING
-    private static final String SQL_CONN_STRING_FIXTURE = "Server=tcp:xxx.database.windows.net,1433;Database=xxx;User ID=reader;Password=xxx;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+    private static final String SQL_CONN_STRING_FIXTURE = "Server=tcp:azs-playground.database.windows.net,1433;Database=usgs;User ID=reader;Password=EdrERBt3j6mZDP;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
 
     @Override
     protected void beforeTest() {
@@ -78,23 +76,23 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         );
     }
 
+    protected DataSource createTestTableStorageDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
+        return DataSources.azureTableStorage(
+            "azs-java-test-tablestorage",
+            "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;",
+            "faketable",
+            "fake query",
+            deletionDetectionPolicy,
+            FAKE_DESCRIPTION
+        );
+    }
+
     protected DataSource createTestSqlDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy, DataChangeDetectionPolicy changeDetectionPolicy) {
         return azureSql(
             "azs-java-test-sql",
             SQL_CONN_STRING_FIXTURE,
             "GeoNamesRI",
             changeDetectionPolicy,
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
-        );
-    }
-
-    protected DataSource createTestSqlDataSource() {
-        DataDeletionDetectionPolicy deletionDetectionPolicy = null;
-        return azureSql(
-            "azs-java-test-sql",
-            SQL_CONN_STRING_FIXTURE,
-            "GeoNamesRI",
             deletionDetectionPolicy,
             FAKE_DESCRIPTION
         );
@@ -121,61 +119,10 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
      * @param name The name of the datasource.
      * @param sqlConnectionString The connection string for the Azure SQL database.
      * @param tableOrViewName The name of the table or view from which to read rows.
-     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the datasource.
-     * @param description Optional. Description of the datasource.
-     * @return A new DataSource instance.
-     */
-    public static DataSource azureSql(
-        String name,
-        String sqlConnectionString,
-        String tableOrViewName,
-        DataDeletionDetectionPolicy deletionDetectionPolicy,
-        String description) {
-        return DataSources.azureSql(
-            name,
-            sqlConnectionString,
-            tableOrViewName,
-            description,
-            null,
-            deletionDetectionPolicy);
-    }
-
-    /**
-     * CCreates a new DataSource to connect to an Azure SQL database with change detection enabled.
-     *
-     * @param name The name of the datasource.
-     * @param sqlConnectionString The connection string for the Azure SQL database.
-     * @param tableOrViewName The name of the table or view from which to read rows.
-     * @param changeDetectionPolicy The change detection policy for the datasource.
-     * @param description Optional. Description of the datasource.
-     * @return A new DataSource instance.
-     */
-    public static DataSource azureSql(
-        String name,
-        String sqlConnectionString,
-        String tableOrViewName,
-        DataChangeDetectionPolicy changeDetectionPolicy,
-        String description) {
-        Objects.requireNonNull(changeDetectionPolicy);
-        return DataSources.azureSql(
-            name,
-            sqlConnectionString,
-            tableOrViewName,
-            description,
-            changeDetectionPolicy,
-            null);
-    }
-
-    /**
-     * Creates a new DataSource to connect to an Azure SQL database.
-     *
-     * @param name The name of the datasource.
-     * @param sqlConnectionString The connection string for the Azure SQL database.
-     * @param tableOrViewName The name of the table or view from which to read rows.
      * @param changeDetectionPolicy The change detection policy for the datasource.
      * Note that only high watermark change detection
      * is allowed for Azure SQL when deletion detection is enabled.
-     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the datasource.
+     * @param deletionDetectionPolicy The data deletion detection policy for the datasource.
      * @param description Optional. Description of the datasource.
      * @return A new DataSource instance.
      */
@@ -186,8 +133,6 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         DataChangeDetectionPolicy changeDetectionPolicy,
         DataDeletionDetectionPolicy deletionDetectionPolicy,
         String description) {
-        Objects.requireNonNull(deletionDetectionPolicy);
-        Objects.requireNonNull(changeDetectionPolicy);
         return DataSources.azureSql(
             name,
             sqlConnectionString,
