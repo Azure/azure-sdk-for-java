@@ -665,4 +665,21 @@ public abstract class SearchServiceTestBase extends TestBase {
         // Setting this access condition modifies the request to include the HTTP If-Match conditional header set to "*"
         return new AccessCondition().setIfMatch("*");
     }
+
+    void assertException(
+        Runnable exceptionThrower, Class<? extends Exception> expectedExceptionType, String expectedMessage) {
+        try {
+            exceptionThrower.run();
+            Assert.fail();
+
+        } catch (Throwable ex) {
+            // Check that this is not the "Assert.fail()" above:
+            Assert.assertNotEquals(AssertionError.class, ex.getClass());
+
+            Assert.assertEquals(expectedExceptionType, ex.getClass());
+            if (expectedMessage != null) {
+                Assert.assertTrue(ex.getMessage().contains(expectedMessage));
+            }
+        }
+    }
 }

@@ -16,6 +16,7 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.models.SqlIntegratedChangeTrackingPolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 
@@ -27,9 +28,13 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     private SearchServiceClient client;
 
     @Override
-    public void createAndListDataSources() {
+    protected void beforeTest() {
+        super.beforeTest();
         client = getSearchServiceClientBuilder().buildClient();
+    }
 
+    @Override
+    public void createAndListDataSources() {
         DataSource dataSource1 = createTestBlobDataSource(null);
         DataSource dataSource2 = createTestSqlDataSource(null, null);
 
@@ -59,9 +64,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
     @Override
     public void deleteDataSourceIsIdempotent() {
-        // Get client
-        client = getSearchServiceClientBuilder().buildClient();
-
         DataSource dataSource1 = createTestBlobDataSource(null);
 
         // Try to delete before the data source exists, expect a NOT FOUND return status code
@@ -98,7 +100,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
     @Override
     public void canUpdateDataSource() {
-        client = getSearchServiceClientBuilder().buildClient();
         DataSource initial = createTestBlobDataSource(null);
 
         // Create the data source
@@ -113,8 +114,42 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void createOrUpdateDataSourceIfNotExistsFailsOnExistingResource() {
+        // Create a data source
+        DataSource initial = createTestBlobDataSource(null);
+        client.createOrUpdateDataSource(initial);
+
+        // Create another data source with the same name
+        DataSource another = createTestBlobDataSource(null);
+
+        assertException(
+            () -> client.createOrUpdateDataSource(
+                another.getName(),
+                another,
+                null,
+                generateIfNotExistsAccessCondition(),
+                null),
+            HttpResponseException.class,
+            "The precondition given in one of the request headers evaluated to false");
+    }
+
+    @Override
+    public void createOrUpdateIfNotExistsSucceedsOnNoResource() {
+        // Create a data source
+        DataSource dataSource = createTestBlobDataSource(null);
+
+        DataSource result = client.createOrUpdateDataSource(
+            dataSource.getName(),
+            dataSource,
+            null,
+            generateIfNotExistsAccessCondition(),
+            null);
+
+        Assert.assertTrue(StringUtils.isNoneBlank(result.getETag()));
+    }
+
+    @Override
     public void createDataSourceReturnsCorrectDefinition() {
-        client = getSearchServiceClientBuilder().buildClient();
         SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("isDeleted")

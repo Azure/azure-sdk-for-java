@@ -14,6 +14,7 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.models.SqlIntegratedChangeTrackingPolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
@@ -24,9 +25,13 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     private SearchServiceAsyncClient client;
 
     @Override
-    public void createAndListDataSources() {
+    protected void beforeTest() {
+        super.beforeTest();
         client = getSearchServiceClientBuilder().buildAsyncClient();
+    }
 
+    @Override
+    public void createAndListDataSources() {
         DataSource dataSource1 = createTestBlobDataSource(null);
         DataSource dataSource2 = createTestSqlDataSource(null, null);
 
@@ -59,9 +64,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
     @Override
     public void deleteDataSourceIsIdempotent() {
-        // Get client
-        client = getSearchServiceClientBuilder().buildAsyncClient();
-
         DataSource dataSource1 = createTestBlobDataSource(null);
 
         // Try to delete before the data source exists, expect a NOT FOUND return status code
@@ -81,7 +83,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
     @Override
     public void canUpdateDataSource() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
         DataSource initial = createTestBlobDataSource(null);
 
         // Create the data source
@@ -96,9 +97,49 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     }
 
     @Override
-    public void createDataSourceFailsWithUsefulMessageOnUserError() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
+    public void createOrUpdateDataSourceIfNotExistsFailsOnExistingResource() {
+        // Create a data source
+        DataSource initial = createTestBlobDataSource(null);
+        client.createOrUpdateDataSource(initial).block();
 
+        // Create another data source with the same name
+        DataSource another = createTestBlobDataSource(null);
+
+        StepVerifier
+            .create(client.createOrUpdateDataSource(
+                another.getName(),
+                another,
+                null,
+                generateIfNotExistsAccessCondition(),
+                null))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(
+                    HttpResponseStatus.PRECONDITION_FAILED.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage()
+                    .contains("The precondition given in one of the request headers evaluated to false"));
+            });
+    }
+
+    @Override
+    public void createOrUpdateIfNotExistsSucceedsOnNoResource() {
+        // Create a data source
+        DataSource dataSource = createTestBlobDataSource(null);
+
+        StepVerifier
+            .create(client.createOrUpdateDataSource(
+                dataSource.getName(),
+                dataSource,
+                null,
+                generateIfNotExistsAccessCondition(),
+                null))
+            .assertNext(r -> Assert.assertTrue(StringUtils.isNotBlank(r.getETag())))
+            .verifyComplete();
+    }
+
+    @Override
+    public void createDataSourceFailsWithUsefulMessageOnUserError() {
         DataSource dataSource = createTestSqlDataSource(null, null);
         dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
 
@@ -114,7 +155,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
     @Override
     public void createDataSourceReturnsCorrectDefinition() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
         SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("isDeleted")

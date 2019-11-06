@@ -140,13 +140,4 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         }
     }
 
-    void assertException(Runnable exceptionThrower, Class<? extends Exception> expectedExceptionType, String expectedMessage) {
-        try {
-            exceptionThrower.run();
-            Assert.fail();
-        } catch (Throwable ex) {
-            Assert.assertEquals(expectedExceptionType, ex.getClass());
-            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
-        }
-    }
 }
