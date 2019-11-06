@@ -5,8 +5,8 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -171,7 +171,7 @@ public final class PageBlobClearPagesHeaders {
      * @return the contentMD5 value.
      */
     public byte[] getContentMD5() {
-        return ImplUtils.clone(this.contentMD5);
+        return CoreUtils.clone(this.contentMD5);
     }
 
     /**
@@ -183,7 +183,7 @@ public final class PageBlobClearPagesHeaders {
      * @return the PageBlobClearPagesHeaders object itself.
      */
     public PageBlobClearPagesHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.contentMD5 = CoreUtils.clone(contentMD5);
         return this;
     }
 
@@ -196,7 +196,7 @@ public final class PageBlobClearPagesHeaders {
      * @return the xMsContentCrc64 value.
      */
     public byte[] getXMsContentCrc64() {
-        return ImplUtils.clone(this.xMsContentCrc64);
+        return CoreUtils.clone(this.xMsContentCrc64);
     }
 
     /**
@@ -209,7 +209,7 @@ public final class PageBlobClearPagesHeaders {
      * @return the PageBlobClearPagesHeaders object itself.
      */
     public PageBlobClearPagesHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
-        this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
+        this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
     }
 

@@ -76,6 +76,10 @@ public final class LongRunningOperationStatus extends ExpandableStringEnum<LongR
         return status;
     }
 
+    /**
+     * Returns a boolean to represent if the operation is in a completed state or not.
+     * @return True if the operation is in a completed state, otherwise false.
+     */
     public boolean isComplete() {
         return completed;
     }

@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation.util;
 
-import com.azure.core.implementation.util.Base64Util;
+import com.azure.core.util.Base64Util;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.ByteArrayInputStream;

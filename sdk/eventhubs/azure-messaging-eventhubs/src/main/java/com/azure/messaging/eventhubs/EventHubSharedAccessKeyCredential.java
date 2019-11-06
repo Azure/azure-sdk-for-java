@@ -7,7 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -109,7 +109,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
     }
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
-        if (ImplUtils.isNullOrEmpty(resource)) {
+        if (CoreUtils.isNullOrEmpty(resource)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
         }
 
