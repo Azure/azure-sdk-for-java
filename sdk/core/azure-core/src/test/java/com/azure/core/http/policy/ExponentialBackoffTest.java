@@ -3,43 +3,47 @@
 
 package com.azure.core.http.policy;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.time.Duration;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link ExponentialBackoff}.
  */
 public class ExponentialBackoffTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testZeroBaseDelay() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(3, Duration.ofSeconds(0),
-            Duration.ofMillis(1000));
+        assertThrows(IllegalArgumentException.class, () -> {
+            new ExponentialBackoff(3, Duration.ofSeconds(0),
+                Duration.ofMillis(1000));
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullBaseDelay() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(3, null, Duration.ofMillis(1000));
+        assertThrows(NullPointerException.class, () -> new ExponentialBackoff(3, null, Duration.ofMillis(1000)));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullMaxDelay() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(3, Duration.ofSeconds(1), null);
+        assertThrows(NullPointerException.class, () -> new ExponentialBackoff(3, Duration.ofSeconds(1), null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testBaseGreaterThanMaxDelay() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(3, Duration.ofSeconds(1),
-            Duration.ofMillis(500));
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(3, Duration.ofSeconds(1),
+            Duration.ofMillis(500)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNegativeMaxRetries() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(-1, Duration.ofSeconds(1),
-            Duration.ofMillis(5000));
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(-1, Duration.ofSeconds(1),
+            Duration.ofMillis(5000)));
     }
 
     @Test

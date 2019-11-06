@@ -8,7 +8,7 @@ module com.azure.core.test {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.dataformat.xml;
     requires com.fasterxml.jackson.datatype.jsr310;
-    requires junit;
+    requires org.junit.jupiter.api;
     requires org.slf4j;
     requires reactor.test;
 

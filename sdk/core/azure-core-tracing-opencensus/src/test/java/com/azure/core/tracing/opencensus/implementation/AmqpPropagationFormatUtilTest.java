@@ -5,8 +5,8 @@ package com.azure.core.tracing.opencensus.implementation;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import com.azure.core.util.Context;
 import io.opencensus.trace.SpanContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 
 public class AmqpPropagationFormatUtilTest {
@@ -17,8 +17,8 @@ public class AmqpPropagationFormatUtilTest {
         Context context = AmqpPropagationFormatUtil.extractContext("", Context.NONE);
 
         // Assert
-        Assert.assertNotNull(context);
-        Assert.assertTrue(context.getData(SPAN_CONTEXT_KEY).isPresent());
+        Assertions.assertNotNull(context);
+        Assertions.assertTrue(context.getData(SPAN_CONTEXT_KEY).isPresent());
     }
 
     @Test
@@ -27,9 +27,8 @@ public class AmqpPropagationFormatUtilTest {
         Context context = AmqpPropagationFormatUtil.extractContext("", Context.NONE);
 
         // Assert
-        Assert.assertNotNull(context);
-        Assert.assertFalse("Invalid diagnostic Id, returns invalid SpanContext ",
-            ((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid());
+        Assertions.assertNotNull(context);
+        Assertions.assertFalse(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid(), "Invalid diagnostic Id, returns invalid SpanContext ");
     }
 
     @Test
@@ -38,9 +37,8 @@ public class AmqpPropagationFormatUtilTest {
         Context context = AmqpPropagationFormatUtil.extractContext("00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01", Context.NONE);
 
         // Assert
-        Assert.assertNotNull(context);
-        Assert.assertTrue("Valid diagnostic Id, returns valid SpanContext ",
-            ((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid());
+        Assertions.assertNotNull(context);
+        Assertions.assertTrue(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid(), "Valid diagnostic Id, returns valid SpanContext ");
     }
 
     @Test
@@ -54,7 +52,7 @@ public class AmqpPropagationFormatUtilTest {
         String diagnosticId = AmqpPropagationFormatUtil.getDiagnosticId(spanContext);
 
         // Assert
-        Assert.assertNotNull(diagnosticId);
-        Assert.assertEquals(testDiagnosticID, diagnosticId);
+        Assertions.assertNotNull(diagnosticId);
+        Assertions.assertEquals(testDiagnosticID, diagnosticId);
     }
 }

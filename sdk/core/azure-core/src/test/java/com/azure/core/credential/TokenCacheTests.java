@@ -3,8 +3,8 @@
 
 package com.azure.core.credential;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -44,8 +44,8 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await();
-        Assert.assertTrue(maxMillis.get() > 1000);
-        Assert.assertTrue(maxMillis.get() < 2000); // Big enough for any latency, small enough to make sure no get token is called twice
+        Assertions.assertTrue(maxMillis.get() > 1000);
+        Assertions.assertTrue(maxMillis.get() < 2000); // Big enough for any latency, small enough to make sure no get token is called twice
     }
 
     @Test
@@ -76,7 +76,7 @@ public class TokenCacheTests {
 
         latch.await();
         // At most 10 requests should do actual token acquisition, use 11 for safe
-        Assert.assertTrue(refreshes.get() <= 11);
+        Assertions.assertTrue(refreshes.get() <= 11);
     }
 
     private Mono<AccessToken> remoteGetTokenAsync(long delayInMillis) {

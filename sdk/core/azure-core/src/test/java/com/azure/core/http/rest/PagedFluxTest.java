@@ -6,19 +6,17 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
 /**
  * Unit tests for {@link PagedFlux}
  */
@@ -27,12 +25,9 @@ public class PagedFluxTest {
     private List<PagedResponse<Integer>> pagedResponses;
     private List<PagedResponse<String>> pagedStringResponses;
 
-    @Rule
-    public TestName testName = new TestName();
-
-    @Before
-    public void setup() {
-        System.out.println("-------------- Running " + testName.getMethodName() + " -----------------------------");
+    @BeforeEach
+    public void init(TestInfo testInfo) {
+        System.out.println("-------------- Running " + testInfo.getDisplayName() + " -----------------------------");
     }
 
     @Test

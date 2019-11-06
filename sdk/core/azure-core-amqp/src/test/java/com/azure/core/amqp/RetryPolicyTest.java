@@ -5,8 +5,8 @@ package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.concurrent.ThreadLocalRandom;
@@ -37,8 +37,8 @@ public class RetryPolicyTest {
         final Duration actual = policy.calculateRetryDelay(exception, count);
 
         // Assert
-        Assert.assertEquals(expected, actual);
-        Assert.assertEquals(maxRetries, policy.getMaxRetries());
+        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(maxRetries, policy.getMaxRetries());
     }
 
     /**
@@ -56,7 +56,7 @@ public class RetryPolicyTest {
         final Duration actual = policy.calculateRetryDelay(exception, count);
 
         // Assert
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     /**
@@ -74,7 +74,7 @@ public class RetryPolicyTest {
         final Duration actual = policy.calculateRetryDelay(invalidException, count);
 
         // Assert
-        Assert.assertNull(actual);
+        Assertions.assertNull(actual);
     }
 
     /**
@@ -92,7 +92,7 @@ public class RetryPolicyTest {
         final Duration actual = policy.calculateRetryDelay(invalidException, count);
 
         // Assert
-        Assert.assertNull(actual);
+        Assertions.assertNull(actual);
     }
 
     /**
@@ -110,8 +110,8 @@ public class RetryPolicyTest {
         final Duration actual = policy.calculateRetryDelay(exception, count);
 
         // Assert
-        Assert.assertEquals(maxDelay, actual);
-        Assert.assertEquals(maxRetries, policy.getMaxRetries());
+        Assertions.assertEquals(maxDelay, actual);
+        Assertions.assertEquals(maxRetries, policy.getMaxRetries());
     }
 
     private class MockRetryPolicy extends RetryPolicy {

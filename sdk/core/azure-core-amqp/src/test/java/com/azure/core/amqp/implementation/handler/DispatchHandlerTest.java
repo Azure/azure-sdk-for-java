@@ -4,17 +4,20 @@
 package com.azure.core.amqp.implementation.handler;
 
 import org.apache.qpid.proton.engine.Event;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 public class DispatchHandlerTest {
-    @Test(expected = NullPointerException.class)
+    @Test
     public void exceptionsConstructor() {
-        new DispatchHandler(null);
+        assertThrows(NullPointerException.class, () -> {
+            new DispatchHandler(null);
+        });
     }
 
     @Test
@@ -30,6 +33,6 @@ public class DispatchHandlerTest {
         handler.onTimerTask(event);
 
         // Assert
-        Assert.assertTrue(hasSet.get());
+        Assertions.assertTrue(hasSet.get());
     }
 }

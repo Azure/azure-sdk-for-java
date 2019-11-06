@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class OperationCancelledExceptionTest {
     @Test
@@ -12,7 +12,7 @@ public class OperationCancelledExceptionTest {
         final String message = "A test message.";
         final OperationCancelledException exception = new OperationCancelledException(message, null);
 
-        Assert.assertEquals(message, exception.getMessage());
+        Assertions.assertEquals(message, exception.getMessage());
     }
 
     @Test
@@ -25,7 +25,7 @@ public class OperationCancelledExceptionTest {
         final OperationCancelledException exception = new OperationCancelledException(message, innerException, null);
 
         // Arrange
-        Assert.assertEquals(message, exception.getMessage());
-        Assert.assertEquals(innerException, exception.getCause());
+        Assertions.assertEquals(message, exception.getMessage());
+        Assertions.assertEquals(innerException, exception.getCause());
     }
 }

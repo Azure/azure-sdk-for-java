@@ -5,11 +5,10 @@ package com.azure.core.test;
 import com.azure.core.util.Configuration;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.logging.ClientLogger;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -31,7 +30,7 @@ public abstract class TestBase {
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
      * variable. If it is not set, {@link TestMode#PLAYBACK}
      */
-    @BeforeClass
+    @BeforeAll
     public static void setupClass() {
         testMode = initializeTestMode();
     }
@@ -40,7 +39,7 @@ public abstract class TestBase {
      * Sets-up the {@link TestBase#testResourceNamer} and {@link TestBase#interceptorManager} before each test case is run.
      * Then calls its implementing class to perform any other set-up commands.
      */
-    @Before
+    @BeforeEach
     public void setupTest() {
         final String testName = getTestName();
         logger.info("Test Mode: {}, Name: {}", testMode, testName);
@@ -49,7 +48,7 @@ public abstract class TestBase {
             interceptorManager = new InterceptorManager(testName, testMode);
         } catch (IOException e) {
             logger.error("Could not create interceptor for {}", testName, e);
-            Assert.fail();
+            Assertions.fail();
         }
         testResourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData());
 
@@ -59,7 +58,7 @@ public abstract class TestBase {
     /**
      * Disposes of {@link InterceptorManager} and its inheriting class' resources.
      */
-    @After
+    @AfterEach
     public void teardownTest() {
         afterTest();
         interceptorManager.close();
@@ -76,9 +75,6 @@ public abstract class TestBase {
 
     /**
      * Gets the name of the current test being run.
-     * <p>
-     * NOTE: This could not be implemented in the base class using {@link TestName} because it always returns
-     * {@code null}. See https://stackoverflow.com/a/16113631/4220757.
      *
      * @return The name of the current test.
      */

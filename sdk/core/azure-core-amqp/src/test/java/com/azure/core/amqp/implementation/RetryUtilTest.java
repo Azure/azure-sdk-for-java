@@ -9,8 +9,8 @@ import com.azure.core.amqp.RetryMode;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.TransportType;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -28,8 +28,8 @@ public class RetryUtilTest {
         final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert
-        Assert.assertNotNull(retryPolicy);
-        Assert.assertEquals(FixedRetryPolicy.class, retryPolicy.getClass());
+        Assertions.assertNotNull(retryPolicy);
+        Assertions.assertEquals(FixedRetryPolicy.class, retryPolicy.getClass());
     }
 
     @Test
@@ -40,8 +40,8 @@ public class RetryUtilTest {
         final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert
-        Assert.assertNotNull(retryPolicy);
-        Assert.assertEquals(ExponentialRetryPolicy.class, retryPolicy.getClass());
+        Assertions.assertNotNull(retryPolicy);
+        Assertions.assertEquals(ExponentialRetryPolicy.class, retryPolicy.getClass());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class RetryUtilTest {
             .expectError(TimeoutException.class)
             .verify();
 
-        Assert.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
+        Assertions.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
     }
 
     @Test
@@ -89,6 +89,6 @@ public class RetryUtilTest {
             .expectError(TimeoutException.class)
             .verify();
 
-        Assert.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
+        Assertions.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
     }
 }

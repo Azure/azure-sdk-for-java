@@ -3,8 +3,8 @@
 package com.azure.core.tracing.opencensus.implementation;
 
 import io.opencensus.trace.Status;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AmqpTraceUtilTest {
 
@@ -15,8 +15,8 @@ public class AmqpTraceUtilTest {
         Status status = AmqpTraceUtil.parseStatusMessage("", null);
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.UNKNOWN.withDescription(""), status);
+        Assertions.assertNotNull(status);
+        Assertions.assertEquals(Status.UNKNOWN.withDescription(""), status);
     }
 
     @Test
@@ -26,8 +26,8 @@ public class AmqpTraceUtilTest {
         Status status = AmqpTraceUtil.parseStatusMessage("success", null);
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.OK, status);
+        Assertions.assertNotNull(status);
+        Assertions.assertEquals(Status.OK, status);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class AmqpTraceUtilTest {
         Status status = AmqpTraceUtil.parseStatusMessage("", new Error("testError"));
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.UNKNOWN.withDescription("testError"), status);
+        Assertions.assertNotNull(status);
+        Assertions.assertEquals(Status.UNKNOWN.withDescription("testError"), status);
     }
 }

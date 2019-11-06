@@ -8,10 +8,10 @@ import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -41,7 +42,7 @@ public class TracerProviderTest {
     private List<Tracer> tracers;
     private TracerProvider tracerProvider;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
@@ -49,7 +50,7 @@ public class TracerProviderTest {
         tracerProvider = new TracerProvider(tracers);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
     }
@@ -72,7 +73,7 @@ public class TracerProviderTest {
         final TracerProvider provider = new TracerProvider(Collections.emptyList());
 
         // Act & Assert
-        Assert.assertFalse(provider.isEnabled());
+        Assertions.assertFalse(provider.isEnabled());
     }
 
     @Test
@@ -102,12 +103,12 @@ public class TracerProviderTest {
         // Assert
         // Want to ensure that the data added to the parent and child are available.
         final Optional<Object> parentData = updatedContext.getData(parentKey);
-        Assert.assertTrue(parentData.isPresent());
-        Assert.assertEquals(parentValue, parentData.get());
+        Assertions.assertTrue(parentData.isPresent());
+        Assertions.assertEquals(parentValue, parentData.get());
 
         final Optional<Object> childData = updatedContext.getData(childKey);
-        Assert.assertTrue(childData.isPresent());
-        Assert.assertEquals(childValue, childData.get());
+        Assertions.assertTrue(childData.isPresent());
+        Assertions.assertEquals(childValue, childData.get());
     }
 
     @Test
@@ -179,18 +180,18 @@ public class TracerProviderTest {
         }
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void addSpanLinksNoContext() {
         // Act
-        tracerProvider.addSpanLinks(null);
+        assertThrows(NullPointerException.class, () -> tracerProvider.addSpanLinks(null));
     }
 
     /**
      * Verify that we add spans for all the tracers.
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void addSpanLinks() {
         // Act
-        tracerProvider.addSpanLinks(null);
+        assertThrows(NullPointerException.class, () -> tracerProvider.addSpanLinks(null));
     }
 }

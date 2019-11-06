@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class LinkErrorContextTest {
     /**
@@ -22,9 +22,9 @@ public class LinkErrorContextTest {
         LinkErrorContext context = new LinkErrorContext(namespace, entity, trackingId, credits);
 
         // Assert
-        Assert.assertEquals(namespace, context.getNamespace());
-        Assert.assertEquals(entity, context.getEntityPath());
-        Assert.assertEquals(trackingId, context.getTrackingId());
-        Assert.assertEquals(credits, context.getLinkCredit());
+        Assertions.assertEquals(namespace, context.getNamespace());
+        Assertions.assertEquals(entity, context.getEntityPath());
+        Assertions.assertEquals(trackingId, context.getTrackingId());
+        Assertions.assertEquals(credits, context.getLinkCredit());
     }
 }
