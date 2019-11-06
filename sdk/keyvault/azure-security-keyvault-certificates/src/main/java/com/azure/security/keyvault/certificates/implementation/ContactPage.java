@@ -4,30 +4,30 @@
 package com.azure.security.keyvault.certificates.implementation;
 
 import com.azure.core.http.rest.Page;
-import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
- * A page of Contact {@link Contact} resources and a link to get the next page of
+ * A page of Contact {@link CertificateContact} resources and a link to get the next page of
  * resources, if any.
  */
-public final class ContactPage implements Page<Contact> {
+public final class ContactPage implements Page<CertificateContact> {
 
     /**
      * The list of items.
      */
     @JsonProperty("contacts")
-    private List<Contact> items;
+    private List<CertificateContact> items;
 
     /**
-     * Gets the list of {@link Contact contacts} on this page.
+     * Gets the list of {@link CertificateContact contacts} on this page.
      *
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<Contact> getItems() {
+    public List<CertificateContact> getItems() {
         return items;
     }
 

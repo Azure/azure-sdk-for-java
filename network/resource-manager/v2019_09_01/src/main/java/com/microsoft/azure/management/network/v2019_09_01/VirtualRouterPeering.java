@@ -104,7 +104,7 @@ public interface VirtualRouterPeering extends HasInner<VirtualRouterPeeringInner
         interface WithName {
             /**
              * Specifies name.
-             * @param name Gets name of the peering unique to VirtualRouter. This name can be used to access the resource
+             * @param name Name of the virtual router peering that is unique within a virtual router
              * @return the next definition stage
              */
             WithCreate withName(String name);
@@ -170,7 +170,7 @@ public interface VirtualRouterPeering extends HasInner<VirtualRouterPeeringInner
         interface WithName {
             /**
              * Specifies name.
-             * @param name Gets name of the peering unique to VirtualRouter. This name can be used to access the resource
+             * @param name Name of the virtual router peering that is unique within a virtual router
              * @return the next update stage
              */
             Update withName(String name);

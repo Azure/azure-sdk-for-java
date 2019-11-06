@@ -6,7 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +38,7 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
             logger.info("Setting protocol to {}", protocol);
 
             try {
-                context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toURL());
+                context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
             } catch (MalformedURLException e) {
                 return Mono.error(new RuntimeException(
                     String.format("Failed to set the HTTP request protocol to %d.", protocol), e));

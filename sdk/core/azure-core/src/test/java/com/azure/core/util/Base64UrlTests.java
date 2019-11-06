@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.Base64Url;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;

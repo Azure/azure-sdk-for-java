@@ -23,13 +23,8 @@ jobs:
 
     strategy:
       matrix:
-        Java 8:
+        Client Libraries:
           ArtifactName: 'packages'
-          ProfileFlag: ''
-          JavaVersion: '1.8'
-        Java LTS:
-          ArtifactName: 'java-lts-packages'
-          ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
 
     steps:
@@ -43,7 +38,7 @@ jobs:
         inputs:
           mavenPomFile: $(pomFile)
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -97,7 +92,7 @@ jobs:
         displayName: 'Install all client libraries (for SpotBugs analysis)'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -110,7 +105,7 @@ jobs:
         displayName: 'Run SpotBugs and CheckStyle'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '-Djava-lts -DskipTests -Dgpg.skip'
+          options: '-DskipTests -Dgpg.skip'
           mavenOptions: ''
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -125,7 +120,7 @@ jobs:
         condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -140,7 +135,7 @@ jobs:
         condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
-          options: '--batch-mode -Djava-lts -DskipTests -Dgpg.skip'
+          options: '--batch-mode -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -201,32 +196,26 @@ jobs:
           OSName: 'Linux'
           OSVmImage: 'ubuntu-16.04'
           JavaVersion: '1.8'
-          ProfileFlag: ''
         macOS - Java 8:
           OSName: 'macOS'
           OSVmImage: 'macOS-10.13'
           JavaVersion: '1.8'
-          ProfileFlag: ''
         Windows - Java 8:
           OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.8'
-          ProfileFlag: ''
-        Linux - Java LTS:
+        Linux - Java 11:
           OSName: 'Linux'
           OSVmImage: 'ubuntu-16.04'
           JavaVersion: '1.11'
-          ProfileFlag: '-Djava-lts'
-        macOS - Java LTS:
+        macOS - Java 11:
           OSName: 'macOS'
           OSVmImage: 'macOS-10.13'
           JavaVersion: '1.11'
-          ProfileFlag: '-Djava-lts'
-        Windows - Java LTS:
+        Windows - Java 11:
           OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.11'
-          ProfileFlag: '-Djava-lts'
 
     pool:
       vmImage: $(OSVmImage)
@@ -237,22 +226,10 @@ jobs:
           OSName: $(OSVmImage)
 
       - task: Maven@3
-        displayName: 'Start Jetty'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) $(ProfileFlag)'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'jetty:run-forked'
-
-      - task: Maven@3
-        displayName: 'Run tests'
+        displayName: 'Compile all code and run tests'
         inputs:
           mavenPomFile: $(pomFile)
-          options: '$(DefaultOptions) $(ProfileFlag) -Dinclude-non-shipping-modules'
+          options: '$(DefaultOptions) -Dinclude-non-shipping-modules'
           mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
