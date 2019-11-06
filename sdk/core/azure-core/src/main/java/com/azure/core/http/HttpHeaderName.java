@@ -8,7 +8,7 @@ import java.util.Locale;
 /**
  * Declare various headers which can be used to interact with Azure services.
  */
-public enum HttpHeaderType {
+public enum HttpHeaderName {
 
     /**
      * The header which will have retry after value in milliseconds.
@@ -22,12 +22,12 @@ public enum HttpHeaderType {
 
     private final String value;
 
-    HttpHeaderType(final String value) {
+    HttpHeaderName(final String value) {
         this.value = value;
     }
 
     /**
-     * Returns string representation of the {@link HttpHeaderType}.
+     * Returns string representation of the {@link HttpHeaderName}.
      */
     @Override
     public String toString() {
@@ -35,20 +35,20 @@ public enum HttpHeaderType {
     }
 
     /**
-     * Creates a {@link HttpHeaderType} from its string value.
+     * Creates a {@link HttpHeaderName} from its string value.
      *
-     * @param value The string value of the  {@link HttpHeaderType}.
-     * @return The  {@link HttpHeaderType} represented by the value.
-     * @throws IllegalArgumentException If a {@link HttpHeaderType} cannot be parsed from the string value.
+     * @param value The string value of the  {@link HttpHeaderName}.
+     * @return The  {@link HttpHeaderName} represented by the value.
+     * @throws IllegalArgumentException If a {@link HttpHeaderName} cannot be parsed from the string value.
      */
-    public static HttpHeaderType fromString(final String value) {
-        for (HttpHeaderType httpHeaderType : values()) {
+    public static HttpHeaderName fromString(final String value) {
+        for (HttpHeaderName httpHeaderType : values()) {
             if (httpHeaderType.value.equalsIgnoreCase(value)) {
                 return httpHeaderType;
             }
         }
 
-        throw new IllegalArgumentException(String.format(Locale.US, "Could not convert %s to a HttpHeaderType",
+        throw new IllegalArgumentException(String.format(Locale.US, "Could not convert %s to a HttpHeaderName",
             value));
     }
 }
