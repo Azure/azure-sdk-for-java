@@ -26,5 +26,5 @@ jobs:
       PreRunSteps:
         pwsh: |
           npm install -g azurite
-          azurite
+          Start-Process azurite
         displayName: 'Install and Start Azurite'
