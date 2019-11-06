@@ -92,7 +92,7 @@ For example, using maven, you can add the following dependency to your maven pom
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>3.3.1</version>
+  <version>3.3.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
