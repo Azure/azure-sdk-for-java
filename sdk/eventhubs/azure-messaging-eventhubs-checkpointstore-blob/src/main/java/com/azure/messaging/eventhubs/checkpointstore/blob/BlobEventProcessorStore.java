@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.EventProcessorStore;
@@ -110,7 +110,7 @@ public class BlobEventProcessorStore implements EventProcessorStore {
             Long sequenceNumber = partitionOwnership.getSequenceNumber();
             metadata.put(SEQUENCE_NUMBER, sequenceNumber == null ? null : String.valueOf(sequenceNumber));
             BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            if (ImplUtils.isNullOrEmpty(partitionOwnership.getETag())) {
+            if (CoreUtils.isNullOrEmpty(partitionOwnership.getETag())) {
                 // New blob should be created
                 blobRequestConditions.setIfNoneMatch("*");
                 return blobAsyncClient.getBlockBlobAsyncClient()
@@ -187,7 +187,7 @@ public class BlobEventProcessorStore implements EventProcessorStore {
         partitionOwnership.setConsumerGroupName(names[1]);
         partitionOwnership.setPartitionId(names[2]);
 
-        if (ImplUtils.isNullOrEmpty(blobItem.getMetadata())) {
+        if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
             logger.warning("No metadata available for blob {}", blobItem.getName());
             return partitionOwnership;
         }

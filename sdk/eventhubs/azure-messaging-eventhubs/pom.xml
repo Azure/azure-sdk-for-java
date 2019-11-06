@@ -33,10 +33,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <project.automatic.module.name>com.azure.messaging.eventhubs</project.automatic.module.name>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

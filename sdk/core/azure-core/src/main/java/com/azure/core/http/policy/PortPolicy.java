@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -39,7 +39,7 @@ public class PortPolicy implements HttpPipelinePolicy {
             logger.info("Changing port to {}", port);
 
             try {
-                context.getHttpRequest().setUrl(urlBuilder.setPort(port).toURL());
+                context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
             } catch (MalformedURLException e) {
                 return Mono.error(new RuntimeException(
                     String.format("Failed to set the HTTP request port to %d.", port), e));
