@@ -125,6 +125,7 @@ public class HttpConstants {
 
         // Address related headers.
         public static final String FORCE_REFRESH = "x-ms-force-refresh";
+        public static final String FORCE_COLLECTION_ROUTING_MAP_REFRESH = "x-ms-collectionroutingmap-refresh";
         public static final String ITEM_COUNT = "x-ms-item-count";
         public static final String NEW_RESOURCE_ID = "x-ms-new-resource-id";
         public static final String USE_MASTER_COLLECTION_RESOLVER = "x-ms-use-master-collection-resolver";

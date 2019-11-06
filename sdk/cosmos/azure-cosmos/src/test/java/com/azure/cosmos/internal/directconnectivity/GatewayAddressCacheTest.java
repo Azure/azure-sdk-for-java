@@ -100,21 +100,24 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 authorizationTokenProvider,
                 null,
                 getHttpClient(configs));
-
-        RxDocumentServiceRequest req =
+        for (int i = 0; i < 2; i++) {
+            RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document,
-                        collectionLink + "/docs/",
-                getDocumentDefinition(), new HashMap<>());
-
-        Mono<List<Address>> addresses = cache.getServerAddressesViaGatewayAsync(
+                    collectionLink + "/docs/",
+                    getDocumentDefinition(), new HashMap<>());
+            if (i == 1) {
+                req.forceCollectionRoutingMapRefresh = true; //testing address api with x-ms-collectionroutingmap-refresh true
+            }
+            Mono<List<Address>> addresses = cache.getServerAddressesViaGatewayAsync(
                 req, createdCollection.getResourceId(), partitionKeyRangeIds, false);
 
-        PartitionReplicasAddressesValidator validator = new PartitionReplicasAddressesValidator.Builder()
+            PartitionReplicasAddressesValidator validator = new PartitionReplicasAddressesValidator.Builder()
                 .withProtocol(protocol)
                 .replicasOfPartitions(partitionKeyRangeIds)
                 .build();
 
-        validateSuccess(addresses, validator, TIMEOUT);
+            validateSuccess(addresses, validator, TIMEOUT);
+        }
     }
 
     @Test(groups = { "direct" }, dataProvider = "protocolProvider", timeOut = TIMEOUT)
@@ -129,21 +132,24 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             authorizationTokenProvider,
                                                             null,
                                                             getHttpClient(configs));
-
-        RxDocumentServiceRequest req =
+        for (int i = 0; i < 2; i++) {
+            RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Database,
-                        "/dbs",
-                        new Database(), new HashMap<>());
-
-        Mono<List<Address>> addresses = cache.getMasterAddressesViaGatewayAsync(req, ResourceType.Database,
+                    "/dbs",
+                    new Database(), new HashMap<>());
+            if (i == 1) {
+                req.forceCollectionRoutingMapRefresh = true; //testing address api with x-ms-collectionroutingmap-refresh true
+            }
+            Mono<List<Address>> addresses = cache.getMasterAddressesViaGatewayAsync(req, ResourceType.Database,
                 null, "/dbs/", false, false, null);
 
-        PartitionReplicasAddressesValidator validator = new PartitionReplicasAddressesValidator.Builder()
+            PartitionReplicasAddressesValidator validator = new PartitionReplicasAddressesValidator.Builder()
                 .withProtocol(protocol)
                 .replicasOfSamePartition()
                 .build();
 
-        validateSuccess(addresses, validator, TIMEOUT);
+            validateSuccess(addresses, validator, TIMEOUT);
+        }
     }
 
     @DataProvider(name = "targetPartitionsKeyRangeAndCollectionLinkParams")
@@ -802,7 +808,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         testSubscriber.assertValueCount(1);
         validator.validate(testSubscriber.values().get(0));
     }
-    
+
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder().build();
