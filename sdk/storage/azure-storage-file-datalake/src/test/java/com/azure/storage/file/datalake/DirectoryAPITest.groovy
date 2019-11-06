@@ -12,6 +12,16 @@ class DirectoryAPITest extends APISpec {
     DataLakeDirectoryClient dc
     String directoryName
 
+    PathPermissions permissions = new PathPermissions()
+        .owner(new RolePermissions().read(true).write(true).execute(true))
+        .group(new RolePermissions().read(true).execute(true))
+        .other(new RolePermissions().read(true))
+
+    List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
+
+    String group = null
+    String owner = null
+
     def setup() {
         directoryName = generatePathName()
         dc = fsc.getDirectoryClient(directoryName)
@@ -241,49 +251,23 @@ class DirectoryAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    def "Set access control min"() {
+    def "Set permissions min"() {
         when:
-        def resp = dc.setAccessControl(new PathAccessControl().setPermissions("0777"))
+        def resp = dc.setPermissions(permissions, group, owner)
 
         then:
         notThrown(StorageErrorException)
-
         resp.getETag()
         resp.getLastModified()
     }
 
-    def "Set access control bad permission"() {
-        when:
-        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("asdf"), null, null, null)
-
-        then:
-        def e = thrown(StorageErrorException)
-        e.getResponse().getStatusCode() == 400
-        e.getMessage().contains("InvalidPermission")
-        e.getMessage().contains("The permission value is invalid.")
-    }
-
-    @Unroll
-    def "Set access control with response"() {
-        setup:
-        def pac = new PathAccessControl()
-            .setPermissions(permissions)
-            .setGroup(group)
-            .setOwner(owner)
-            .setAcl(acl)
-
+    def "Set permissions with response"() {
         expect:
-        dc.setAccessControlWithResponse(pac, null, null, Context.NONE).getStatusCode() == 200
-
-        // TODO (gapra) : Add tests to add group and owner, not sure what values can be
-        where:
-        permissions | group   | owner  | acl
-        "0777"      | null    | null   | null
-        null        | null    | null   | "user::rwx"
+        dc.setPermissionsWithResponse(permissions, group, owner, null, null, Context.NONE).getStatusCode() == 200
     }
 
     @Unroll
-    def "Set access control AC"() {
+    def "Set permissions AC"() {
         setup:
         match = setupPathMatchCondition(dc, match)
         leaseID = setupPathLeaseCondition(dc, leaseID)
@@ -294,9 +278,8 @@ class DirectoryAPITest extends APISpec {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
 
-
         expect:
-        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), drc, null, Context.NONE).getStatusCode() == 200
+        dc.setPermissionsWithResponse(permissions, group, owner, drc, null, Context.NONE).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -309,7 +292,7 @@ class DirectoryAPITest extends APISpec {
     }
 
     @Unroll
-    def "Set access control AC fail"() {
+    def "Set permissions AC fail"() {
         setup:
         noneMatch = setupPathMatchCondition(dc, noneMatch)
         setupPathLeaseCondition(dc, leaseID)
@@ -321,7 +304,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), drc, null, Context.NONE).getStatusCode() == 200
+        dc.setPermissionsWithResponse(permissions, group, owner, drc, null, Context.NONE).getStatusCode() == 200
 
         then:
         thrown(StorageErrorException)
@@ -335,12 +318,90 @@ class DirectoryAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    def "Set access control error"() {
+    def "Set permissions error"() {
         setup:
         dc = fsc.getDirectoryClient(generatePathName())
 
         when:
-        dc.setAccessControlWithResponse(new PathAccessControl().setPermissions("0777"), null, null, null)
+        dc.setPermissionsWithResponse(permissions, group, owner, null, null, null)
+
+        then:
+        thrown(StorageErrorException)
+    }
+
+    def "Set ACL min"() {
+        when:
+        def resp = dc.setAccessControlList(pathAccessControlEntries, group, owner)
+
+        then:
+        notThrown(StorageErrorException)
+        resp.getETag()
+        resp.getLastModified()
+    }
+
+    def "Set ACL with response"() {
+        expect:
+        dc.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, null, null, Context.NONE).getStatusCode() == 200
+    }
+
+    @Unroll
+    def "Set ACL AC"() {
+        setup:
+        match = setupPathMatchCondition(dc, match)
+        leaseID = setupPathLeaseCondition(dc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        expect:
+        dc.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, drc, null, Context.NONE).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Set ACL AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(dc, noneMatch)
+        setupPathLeaseCondition(dc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        dc.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, drc, null, Context.NONE).getStatusCode() == 200
+
+        then:
+        thrown(StorageErrorException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Set ACL error"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        dc.setAccessControlList(pathAccessControlEntries, group, owner)
 
         then:
         thrown(StorageErrorException)
@@ -352,7 +413,7 @@ class DirectoryAPITest extends APISpec {
 
         then:
         notThrown(StorageErrorException)
-        pac.getAcl()
+        pac.getAccessControlList()
         pac.getPermissions()
         pac.getOwner()
         pac.getGroup()

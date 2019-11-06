@@ -115,7 +115,7 @@ class SASTest extends APISpec {
 //        setup:
 //        def identifier = new BlobSignedIdentifier()
 //            .setId("0000")
-//            .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
+//            .setAccessPolicy(new BlobAccessPolicy().permissions("racwdl")
 //                .setExpiresOn(getUTCNow().plusDays(1)))
 //        fsc.setAccessPolicy(null, Arrays.asList(identifier))
 //
@@ -143,7 +143,7 @@ class SASTest extends APISpec {
 //        client1.listBlobs().iterator().hasNext()
 //
 //        def sasWithPermissions = new DataLakeServiceSasSignatureValues()
-//            .setPermissions(permissions)
+//            .permissions(permissions)
 //            .setExpiryTime(expiryTime)
 //            .setFileSystemName(fsc.getFileSystemName())
 //            .generateSasQueryParameters(primaryCredential)
