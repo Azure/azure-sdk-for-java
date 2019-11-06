@@ -186,7 +186,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Changes the access control list for a resource.
+     * Changes the access control list, group and/or owner for a resource.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -195,7 +195,7 @@ public class DataLakePathClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param accessControlList The access control list of the resource.
+     * @param accessControlList A list of {@link PathAccessControlEntry} objects.
      * @param group The group of the resource.
      * @param owner The owner of the resource.
      * @return The resource info.
@@ -205,7 +205,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Changes the access control for a resource.
+     * Changes the access control list, group and/or owner for a resource.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -214,7 +214,7 @@ public class DataLakePathClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param accessControlList The access control list of the resource.
+     * @param accessControlList A list of {@link PathAccessControlEntry} objects.
      * @param group The group of the resource.
      * @param owner The owner of the resource.
      * @param accessConditions {@link DataLakeRequestConditions}
@@ -231,7 +231,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Changes the permissions for a resource.
+     * Changes the permissions, group and/or owner for a resource.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -240,7 +240,7 @@ public class DataLakePathClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param permissions The permissions of the resource.
+     * @param permissions {@link PathPermissions}
      * @param group The group of the resource.
      * @param owner The owner of the resource.
      * @return The resource info.
@@ -250,7 +250,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Changes the permissions for a resource.
+     * Changes the permissions, group and/or owner for a resource.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -259,7 +259,7 @@ public class DataLakePathClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param permissions The permissions of the resource.
+     * @param permissions {@link PathPermissions}
      * @param group The group of the resource.
      * @param owner The owner of the resource.
      * @param accessConditions {@link DataLakeRequestConditions}

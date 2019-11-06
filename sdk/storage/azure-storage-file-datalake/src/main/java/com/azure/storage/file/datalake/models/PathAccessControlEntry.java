@@ -18,7 +18,7 @@ import java.util.Objects;
  * <ul>
  *   <li>Scope</li>
  *   <li>Type</li>
- *   <li>User or Group Identifier</li>
+ *   <li>User or Group Identifier (AAD ObjectId) </li>
  *   <li>Permissions</li>
  * </ul>
  * <p>
@@ -65,7 +65,7 @@ public class PathAccessControlEntry {
     private AccessControlType accessControlType;
 
     /**
-     * Specifies the entity for which this entry applies.
+     * Specifies the entity for which this entry applies. This is an AAD ObjectId.
      *
      * Must be omitted for types mask or other. It must also be omitted when the user or group is the owner.
      */

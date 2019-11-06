@@ -31,10 +31,10 @@ class ModelTests extends APISpec{
         RolePermissions.parseOctal(octal as int).toSymbolic() == permission
 
         where:
-        octal | permission
-        1     | "--x"
-        2     | "-w-"
-        4     | "r--"
+        octal || permission
+        1     || "--x"
+        2     || "-w-"
+        4     || "r--"
     }
 
     @Unroll
@@ -43,10 +43,10 @@ class ModelTests extends APISpec{
         RolePermissions.parseSymbolic(symbol, false).toOctal() == permission
 
         where:
-        symbol | permission
-        "--x"  | "1"
-        "-w-"  | "2"
-        "r--"  | "4"
+        symbol || permission
+        "--x"  || "1"
+        "-w-"  || "2"
+        "r--"  || "4"
     }
 
     def "PathPermissions parse Symbolic"() {
@@ -95,10 +95,10 @@ class ModelTests extends APISpec{
 
         where:
         // These test the value of other
-        symbol      | execute | read | write | stickyBit | extendedInfoInAcl
-        "rwxrwxrwT" | false   | true | true  | true      | false
-        "rwxrwxrwx" | true    | true | true  | false     | false
-        "rwxrwxrw-" | false   | true | true  | false     | false
+        symbol      || execute | read | write | stickyBit | extendedInfoInAcl
+        "rwxrwxrwT" || false   | true | true  | true      | false
+        "rwxrwxrwx" || true    | true | true  | false     | false
+        "rwxrwxrw-" || false   | true | true  | false     | false
     }
 
     @Unroll
@@ -113,9 +113,9 @@ class ModelTests extends APISpec{
         permissions.stickyBit() == stickyBit
 
         where:
-        octal   | owner                         | group                         | other                         | stickyBit
-        "1421"  | RolePermissions.parseOctal(4) | RolePermissions.parseOctal(2) | RolePermissions.parseOctal(1) | true
-        "0123"  | null                          | null                          | null                          | false
+        octal   || owner                         | group                         | other                         | stickyBit
+        "1421"  || RolePermissions.parseOctal(4) | RolePermissions.parseOctal(2) | RolePermissions.parseOctal(1) | true
+        "0123"  || null                          | null                          | null                          | false
     }
 
     def "PathAccessControlEntry"() {
