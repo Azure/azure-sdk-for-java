@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -108,7 +108,7 @@ public class KeyVaultCertificate {
      * @return the cer content.
      */
     public byte[] getCer() {
-        return ImplUtils.clone(cer);
+        return CoreUtils.clone(cer);
     }
 
     @JsonProperty("attributes")

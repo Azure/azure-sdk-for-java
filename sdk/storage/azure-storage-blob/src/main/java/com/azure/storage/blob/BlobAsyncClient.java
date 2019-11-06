@@ -5,8 +5,9 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -48,7 +49,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -294,10 +295,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             Objects.requireNonNull(data, "'data' must not be null");
             BlobRequestConditions validatedAccessConditions = accessConditions == null
                 ? new BlobRequestConditions() : accessConditions;
-            final ParallelTransferOptions validatedParallelTransferOptions = parallelTransferOptions == null
-                ? new ParallelTransferOptions(null, null, null)
-                : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
-                parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
+            final ParallelTransferOptions validatedParallelTransferOptions =
+                ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
@@ -539,28 +538,26 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private Mono<Void> uploadBlocks(long fileSize, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions accessConditions, AsynchronousFileChannel channel, BlockBlobAsyncClient client) {
-        final ParallelTransferOptions finalParallelTransferOptions = (parallelTransferOptions == null)
-            ? new ParallelTransferOptions(null, null, null)
-            : new ParallelTransferOptions(parallelTransferOptions.getBlockSize(),
-            parallelTransferOptions.getNumBuffers(), parallelTransferOptions.getProgressReceiver());
+        final ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
         final BlobRequestConditions finalRequestConditions = (accessConditions == null)
-            ? new BlobRequestConditions()
-            : accessConditions;
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+            ? new BlobRequestConditions() : accessConditions;
+
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
         Lock progressLock = new ReentrantLock();
 
         final SortedMap<Long, String> blockIds = new TreeMap<>();
-        return Flux.fromIterable(sliceFile(fileSize, finalParallelTransferOptions.getBlockSize()))
+        return Flux.fromIterable(sliceFile(fileSize, finalParallelTransferOptions.getBlockSize(),
+            parallelTransferOptions))
             .flatMap(chunk -> {
                 String blockId = getBlockID();
                 blockIds.put(chunk.getOffset(), blockId);
 
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                     FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
-                    progressReceiver, progressLock, totalProgress);
+                    finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
                 return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(), null,
                     finalRequestConditions.getLeaseId());
@@ -597,9 +594,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    private List<BlobRange> sliceFile(long fileSize, int blockSize) {
+    private List<BlobRange> sliceFile(long fileSize, int blockSize, ParallelTransferOptions originalOptions) {
+        boolean enableHtbbOptimization = originalOptions == null || originalOptions.getBlockSize() == null;
         List<BlobRange> ranges = new ArrayList<>();
-        if (fileSize > 100 * Constants.MB) {
+        if (fileSize > 100 * Constants.MB && enableHtbbOptimization) {
             blockSize = BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
         }
         for (long pos = 0; pos < fileSize; pos += blockSize) {

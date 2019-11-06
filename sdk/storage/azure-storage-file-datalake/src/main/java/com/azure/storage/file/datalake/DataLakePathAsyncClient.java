@@ -3,12 +3,15 @@
 
 package com.azure.storage.file.datalake;
 
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
+
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -36,9 +39,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
@@ -94,7 +94,7 @@ public class DataLakePathAsyncClient {
      */
     static String buildMetadataString(Map<String, String> metadata) {
         StringBuilder sb = new StringBuilder();
-        if (!ImplUtils.isNullOrEmpty(metadata)) {
+        if (!CoreUtils.isNullOrEmpty(metadata)) {
             for (final Map.Entry<String, String> entry : metadata.entrySet()) {
                 if (Objects.isNull(entry.getKey()) || entry.getKey().isEmpty()) {
                     throw new IllegalArgumentException("The key for one of the metadata key-value pairs is null, "
@@ -588,7 +588,7 @@ public class DataLakePathAsyncClient {
      * @return A DataLakePathAsyncClient
      */
     DataLakePathAsyncClient getPathAsyncClient(String destinationPath) {
-        if (ImplUtils.isNullOrEmpty(destinationPath)) {
+        if (CoreUtils.isNullOrEmpty(destinationPath)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
         // Get current Datalake URL and replace current path with user provided path

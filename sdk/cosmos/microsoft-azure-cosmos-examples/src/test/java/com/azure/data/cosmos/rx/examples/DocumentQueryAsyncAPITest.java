@@ -106,10 +106,12 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
 
         numberOfDocuments = 20;
         // Add documents
+        List<Mono<Void>> tasks = new ArrayList<>();
         for (int i = 0; i < numberOfDocuments; i++) {
             Document doc = new Document(String.format("{ 'id': 'loc%d', 'counter': %d}", i, i));
-            client.createDocument(getCollectionLink(), doc, null, true).single().block();
+            tasks.add(client.createDocument(getCollectionLink(), doc, null, true).then());
         }
+        Flux.merge(tasks).then().block();
     }
 
     @AfterClass(groups = "samples", timeOut = TIMEOUT)
