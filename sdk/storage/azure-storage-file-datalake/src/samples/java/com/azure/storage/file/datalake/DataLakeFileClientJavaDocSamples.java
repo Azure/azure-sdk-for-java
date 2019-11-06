@@ -17,8 +17,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.Map;
 
 /**
  * Code snippets for {@link DataLakeFileClient}
@@ -38,31 +36,6 @@ public class DataLakeFileClientJavaDocSamples {
     private long offset = 0L;
     private long length = 4L;
     private long position = 4L;
-
-    /**
-     * Code snippets for {@link DataLakeFileClient#create()} and
-     * {@link DataLakeFileClient#createWithResponse(PathHttpHeaders, Map, DataLakeRequestConditions, String, String, Duration, Context)}
-     */
-    public void createCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.create
-        System.out.printf("Last Modified Time:%s", client.create().getLastModified());
-        // END: com.azure.storage.file.datalake.DataLakeFileClient.create
-
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
-            .setLeaseId(leaseId);
-        String permissions = "permissions";
-        String umask = "umask";
-
-        Response<PathInfo> response = client.createWithResponse(httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask, timeout,
-            new Context(key1, value1));
-        System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
-        // END: com.azure.storage.file.datalake.DataLakeFileClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context
-    }
 
     /**
      * Code snippets for {@link DataLakeFileClient#delete()} and
