@@ -271,4 +271,24 @@ public class SuggestAsyncTests extends SuggestTestBase {
             })
             .verifyComplete();
     }
+
+    @Override
+    public void testCanSuggestWithSelectedFields() throws IOException {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+
+        SuggestOptions suggestOptions = new SuggestOptions()
+            .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("secret", "sg", suggestOptions, null);
+
+        StepVerifier
+            .create(suggestResult.byPage())
+            .assertNext(this::verifySuggestWithSelectedFields)
+            .verifyComplete();
+
+
+
+    }
 }

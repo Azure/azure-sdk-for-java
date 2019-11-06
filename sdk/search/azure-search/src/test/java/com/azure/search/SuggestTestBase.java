@@ -3,19 +3,21 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
 import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Hotel;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
-
+import io.netty.handler.codec.http.HttpResponseStatus;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -129,6 +131,21 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals("War and Peace", books.get(0).getText());
     }
 
+    protected void verifySuggestWithSelectedFields(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+        Assert.assertEquals(1, suggestResultPagedResponse.getValue().size());
+        Document result = suggestResultPagedResponse.getValue().get(0).getDocument();
+
+        Assert.assertEquals("Secret Point Motel", result.get("HotelName"));
+        Assert.assertEquals(4, result.get("Rating"));
+        Assert.assertEquals("New York", ((LinkedHashMap) result.get("Address")).get("City"));
+        Assert.assertEquals(Arrays.asList("Budget Room", "Budget Room"),
+            ((ArrayList<LinkedHashMap<String, String>>) result.get("Rooms"))
+                .parallelStream()
+                .map(room -> room.get("Type"))
+            .collect(Collectors.toList()));
+
+    }
+
     @Test
     public abstract void canSuggestDynamicDocuments() throws Exception;
 
@@ -167,4 +184,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void testOrderByProgressivelyBreaksTies() throws IOException;
+
+    @Test
+    public abstract void testCanSuggestWithSelectedFields() throws IOException;
 }

@@ -18,6 +18,7 @@ import com.azure.search.SearchServiceUrlParser.SearchServiceUrlParts;
 import com.azure.search.common.AutoCompletePagedResponse;
 import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
+import com.azure.search.common.SuggestOptionsHandler;
 import com.azure.search.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.implementation.SearchIndexRestClientImpl;
 import com.azure.search.implementation.SerializationUtil;
@@ -420,7 +421,9 @@ public class SearchIndexAsyncClient {
         String suggesterName,
         SuggestOptions suggestOptions,
         RequestOptions requestOptions) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestOptions);
+        SuggestRequest suggestRequest = createSuggestRequest(searchText,
+            suggesterName,
+            SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
         return new PagedFluxBase<>(
             () -> withContext(context -> suggestFirst(requestOptions, suggestRequest, context)),
             nextLink -> Mono.empty());
@@ -432,7 +435,9 @@ public class SearchIndexAsyncClient {
         SuggestOptions suggestOptions,
         RequestOptions requestOptions,
         Context context) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestOptions);
+        SuggestRequest suggestRequest = createSuggestRequest(searchText,
+            suggesterName,
+            SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
         return new PagedFluxBase<>(
             () -> suggestFirst(requestOptions, suggestRequest, context),
             nextLink -> Mono.empty());

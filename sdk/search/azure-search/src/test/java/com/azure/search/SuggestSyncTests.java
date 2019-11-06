@@ -4,6 +4,7 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterableBase;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
@@ -280,5 +281,22 @@ public class SuggestSyncTests extends SuggestTestBase {
             .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
         Assert.assertEquals(expectedIds, actualIds);
+    }
+
+    @Override
+    public void testCanSuggestWithSelectedFields() throws IOException {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+
+        SuggestOptions suggestOptions = new SuggestOptions()
+            .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
+        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("secret", "sg", suggestOptions, null);
+
+        PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
+
+        verifySuggestWithSelectedFields(result);
+
     }
 }
