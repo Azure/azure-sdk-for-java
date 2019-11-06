@@ -55,9 +55,9 @@
 <!--                <source>..\..\sdk\keyvault\azure-security-keyvault-certificates\src\main\java\com</source>-->
 <!--                <source>..\..\sdk\keyvault\azure-security-keyvault-certificates\src\samples\java\com</source>-->
                 <source>..\..\sdk\keyvault\azure-security-keyvault-keys\src\main\java\com</source>
-                <source>..\..\sdk\keyvault\azure-security-keyvault-keys\src\samples\java\com</source>
+<!--                <source>..\..\sdk\keyvault\azure-security-keyvault-keys\src\samples\java\com</source>-->
                 <source>..\..\sdk\keyvault\azure-security-keyvault-secrets\src\main\java\com</source>
-                <source>..\..\sdk\keyvault\azure-security-keyvault-secrets\src\samples\java\com</source>
+<!--                <source>..\..\sdk\keyvault\azure-security-keyvault-secrets\src\samples\java\com</source>-->
                 <source>..\..\sdk\storage\azure-storage-common\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-common\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob\src\main\java\com</source>
