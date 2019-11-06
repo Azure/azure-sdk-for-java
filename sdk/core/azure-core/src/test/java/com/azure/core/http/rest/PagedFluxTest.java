@@ -6,12 +6,6 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.implementation.http.PagedResponseBase;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,6 +13,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 /**
  * Unit tests for {@link PagedFlux}
  */

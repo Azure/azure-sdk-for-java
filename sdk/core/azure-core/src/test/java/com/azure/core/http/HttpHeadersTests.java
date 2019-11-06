@@ -31,4 +31,14 @@ public class HttpHeadersTests {
         headers.put("a", null);
         assertNull(headers.getValue("a"));
     }
+
+    @Test
+    public void testToStringShouldBeRepresentingKeyEqualsignValue() {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.put("key1", "value1");
+        headers.put("key2", "value2");
+        headers.put("key3", "value3");
+
+        assertEquals("key1=value1, key2=value2, key3=value3", headers.toString());
+    }
 }

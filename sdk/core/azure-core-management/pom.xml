@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-management</artifactId>
-  <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+  <version>1.0.0-preview.8</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Management Java Core Library</name>
@@ -44,7 +44,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <project.automatic.module.name>com.azure.core.management</project.automatic.module.name>
   </properties>
 
   <developers>
@@ -58,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -75,13 +74,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       <scope>test</scope>
     </dependency>
 

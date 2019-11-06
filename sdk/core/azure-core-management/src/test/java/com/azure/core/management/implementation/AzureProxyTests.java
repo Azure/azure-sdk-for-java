@@ -16,7 +16,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.OperationDescription;
+import com.azure.core.http.swagger.OperationDescription;
 import com.azure.core.implementation.exception.InvalidReturnTypeException;
 import com.azure.core.management.MockResource;
 import com.azure.core.management.http.MockAzureHttpClient;

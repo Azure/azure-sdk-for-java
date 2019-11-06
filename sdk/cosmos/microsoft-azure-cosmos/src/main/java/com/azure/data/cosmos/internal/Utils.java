@@ -499,22 +499,22 @@ public class Utils {
             return null;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <V> List<V> immutableListOf() {
         return Collections.EMPTY_LIST;
     }
-    
+
     public static <V> List<V> immutableListOf(V v1) {
         List<V> list = new ArrayList<>();
         list.add(v1);
         return Collections.unmodifiableList(list);
     }
-    
+
     public static <K, V> Map<K, V>immutableMapOf() {
         return Collections.emptyMap();
     }
-    
+
     public static <K, V> Map<K, V>immutableMapOf(K k1, V v1) {
         Map<K, V> map = new HashMap<K ,V>();
         map.put(k1,  v1);

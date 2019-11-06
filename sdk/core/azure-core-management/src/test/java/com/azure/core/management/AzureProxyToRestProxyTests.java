@@ -26,7 +26,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.exception.InvalidReturnTypeException;
-import com.azure.core.implementation.http.ContentType;
+import com.azure.core.http.ContentType;
 
 import com.azure.core.management.implementation.AzureProxy;
 import com.azure.core.test.implementation.entities.HttpBinJSON;

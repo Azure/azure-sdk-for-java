@@ -6,12 +6,16 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 
+import java.util.regex.Pattern;
+
 /**
  * This class provides helper methods for common model patterns.
  *
  * RESERVED FOR INTERNAL USE.
  */
 public class ModelHelper {
+    public static final Pattern IP_V4_URL_PATTERN = Pattern
+        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
 
     /**
      * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
