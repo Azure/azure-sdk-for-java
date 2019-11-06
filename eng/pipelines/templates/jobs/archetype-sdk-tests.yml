@@ -6,7 +6,6 @@ parameters:
     Win2016:
       OSVmImage: 'windows-2019'
       DisplayName: 'Run Live tests'
-  Options: {}
   PreRunSteps: []
   TestName: LiveTest
   TimeoutInMinutes: 60
@@ -23,10 +22,6 @@ parameters:
 jobs:
   - job: ${{ parameters.TestName }}
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-
-    services:
-      ${{ if eq(parameters.Options.enableAzurite, 'true') }}:
-        azurite: azurite
 
     variables:
       - template: ../variables/globals.yml
