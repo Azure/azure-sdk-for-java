@@ -3,58 +3,49 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+
+import java.util.Collection;
+
 /**
- * Specifies the type of the {@link PathAccessControlEntry}
+ * Defines values for AccessControlType.
  */
-public enum AccessControlType {
+public class AccessControlType extends ExpandableStringEnum<AccessControlType> {
 
     /**
-     * Enum value user.
+     * Static value user for AccessControlType.
      */
-    USER("user"),
+    public static final AccessControlType USER = fromString("user");
 
     /**
-     * Enum value group.
+     * Static value group for AccessControlType.
      */
-    GROUP("group"),
+    public static final AccessControlType GROUP = fromString("group");
 
     /**
-     * Enum value mask.
+     * Static value mask for AccessControlType.
      */
-    MASK("mask"),
+    public static final AccessControlType MASK = fromString("mask");
 
     /**
-     * Enum value other.
+     * Static value other for AccessControlType.
      */
-    OTHER("other");
+    public static final AccessControlType OTHER = fromString("other");
 
     /**
-     * The actual serialized value for a LeaseStatusType instance.
-     */
-    private final String value;
-
-    AccessControlType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AccessControlType instance.
+     * Creates or finds a ArchiveStatus from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed AccessControlType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ArchiveStatus.
      */
-    public static AccessControlType fromString(String value) {
-        AccessControlType[] items = AccessControlType.values();
-        for (AccessControlType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static AccessControlType fromString(String name) {
+        return fromString(name, AccessControlType.class);
     }
 
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known ArchiveStatus values.
+     */
+    public static Collection<AccessControlType> values() {
+        return values(AccessControlType.class);
     }
 }
