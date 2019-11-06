@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.data.appconfiguration;
 
 import static org.junit.Assert.assertNotNull;
