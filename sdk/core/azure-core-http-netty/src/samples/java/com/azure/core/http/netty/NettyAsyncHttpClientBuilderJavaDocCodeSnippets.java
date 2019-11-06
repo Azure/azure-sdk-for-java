@@ -6,6 +6,8 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 import java.net.InetSocketAddress;
 
@@ -47,5 +49,21 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
             .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
             .build();
         // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#proxy
+    }
+
+    /**
+     * Code snippet for creating a new http client based on an existing reactor netty HttpClient.
+     * The existing client is configured for netty level logging.
+     */
+    public void fromExistingReactorNettyClient() {
+        // BEGIN: com.azure.core.http.netty.from-existing-http-client
+        // Creates a reactor-netty client with netty logging enabled.
+        reactor.netty.http.client.HttpClient baseHttpClient = reactor.netty.http.client.HttpClient.create()
+            .tcpConfiguration(tcp -> tcp.bootstrap(b -> b.handler(new LoggingHandler(LogLevel.INFO))));
+        // Create an HttpClient based on above reactor-netty client and configure EventLoop count.
+        HttpClient client = new NettyAsyncHttpClientBuilder(baseHttpClient)
+            .nioEventLoopGroup(new NioEventLoopGroup(5))
+            .build();
+        // END: com.azure.core.http.netty.from-existing-http-client
     }
 }
