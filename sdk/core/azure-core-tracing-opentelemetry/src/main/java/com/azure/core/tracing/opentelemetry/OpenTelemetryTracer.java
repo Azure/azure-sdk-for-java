@@ -3,11 +3,11 @@
 
 package com.azure.core.tracing.opentelemetry;
 
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.tracing.opentelemetry.implementation.AmqpTraceUtil;
 import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.OpenTelemetry;
@@ -110,8 +110,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void setAttribute(String key, String value, Context context) {
-        if (ImplUtils.isNullOrEmpty(value)) {
-            logger.info("Failed to set span attribute since value is null or empty.");
+        if (CoreUtils.isNullOrEmpty(value)) {
+            logger.warning("Failed to set span attribute since value is null or empty.");
             return;
         }
 
@@ -249,8 +249,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     /**
      * Extracts the component name from the given span name.
      *
-     * @param spanName The spanName containing the component name.
-     * @return The component name contained in the context.
+     * @param spanName The spanName containing the component name i.e spanName = "Azure.eventhubs.send"
+     * @return The component name contained in the context i.e "eventhubs"
      */
     private static String parseComponentValue(String spanName) {
         if (spanName != null && !spanName.isEmpty()) {

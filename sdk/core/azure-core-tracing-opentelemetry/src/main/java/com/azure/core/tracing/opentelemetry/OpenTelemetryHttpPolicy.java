@@ -10,8 +10,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.http.UrlBuilder;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 
 import io.opentelemetry.OpenTelemetry;
@@ -96,7 +96,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
         // AttributeValue will throw an error if the value is null.
-        if (!ImplUtils.isNullOrEmpty(value)) {
+        if (!CoreUtils.isNullOrEmpty(value)) {
             span.setAttribute(key, AttributeValue.stringAttributeValue(value));
         }
     }

@@ -24,12 +24,14 @@
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
   </distributionManagement>
+
   <repositories>
     <repository>
       <id>oss.sonatype.org-snapshot</id>
       <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
     </repository>
   </repositories>
+
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
