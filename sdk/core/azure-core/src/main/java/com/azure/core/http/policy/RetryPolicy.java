@@ -32,25 +32,32 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final ChronoUnit retryAfterTimeUnit;
 
     /**
-     * Creates a default {@link ExponentialBackoff} retry policy.
+     * Creates a default {@link ExponentialBackoff} retry policy. It will not use {@code retryAfterHeader}
+     * in {@link HttpResponse}.
      */
     public RetryPolicy() {
         this(new ExponentialBackoff(), null, null);
     }
 
     /**
-     * Creates a default {@link ExponentialBackoff} retry policy.
-     * @param retryAfterHeader The retry after http header name to be used get retry after value from
+     * Creates a default {@link ExponentialBackoff} retry policy along with provided {@code retryAfterHeader} and
+     * {@code retryAfterTimeUnit}.
+     *
+     * @param retryAfterHeader The 'retry-after' HTTP header name to lookup for the retry duration.The value
+     * {@code null} is valid.
      * @param retryAfterTimeUnit The time unit to use while applying retry based on value specified in
-     *      * {@code retryAfterHeader} in {@link HttpResponse}.
-     * {@link HttpResponse}.
+     * {@code retryAfterHeader} in {@link HttpResponse}.The value {@code null} is valid only in case when
+     * {@code retryAfterHeader} is empty or {@code null}.
+     * @throws NullPointerException Only if {@code retryAfterTimeUnit} is {@code null} and {@code retryAfterHeader}
+     * is not {@code null}.
      */
     public RetryPolicy(String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         this(new ExponentialBackoff(), retryAfterHeader, retryAfterTimeUnit);
     }
 
     /**
-     * Creates a RetryPolicy with the provided {@link RetryStrategy}.
+     * Creates a RetryPolicy with the provided {@link RetryStrategy}. It will not use {@code retryAfterHeader}
+     * in {@link HttpResponse}.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
      * @throws NullPointerException if {@code retryStrategy} is {@code null}.
@@ -60,15 +67,17 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy} and {@code retryAfterHeader}.
+     * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy}, {@code retryAfterHeader}  and
+     * {@code retryAfterTimeUnit}.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
-     * @param retryAfterHeader The retry after http header name to be used get retry after value from
-     * {@link HttpResponse}. The value {@code null} is valid.
+     * @param retryAfterHeader The 'retry-after' HTTP header name to lookup for the retry duration. The value
+     * {@code null} is valid.
      * @param retryAfterTimeUnit The time unit to use while applying retry based on value specified in
      * {@code retryAfterHeader} in {@link HttpResponse}.The value {@code null} is valid only in case when
      * {@code retryAfterHeader} is empty or {@code null}.
-     * @throws NullPointerException if {@code retryStrategy} is {@code null}.
+     * @throws NullPointerException if {@code retryStrategy} is {@code null}.Also when {@code retryAfterTimeUnit} is
+     * {@code null} and {@code retryAfterHeader} is not {@code null}.
      */
     public RetryPolicy(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
