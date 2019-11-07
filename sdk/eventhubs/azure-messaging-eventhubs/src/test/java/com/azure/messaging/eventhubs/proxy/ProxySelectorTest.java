@@ -14,7 +14,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.rules.TestName;
 import reactor.test.StepVerifier;
 
@@ -48,7 +47,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
     }
 
     @Override
-    public void setupTest(TestInfo testInfo) {
+    public void setupTest() {
         defaultProxySelector = ProxySelector.getDefault();
     }
 

@@ -60,9 +60,13 @@ public abstract class IntegrationTestBase extends TestBase {
 
     // These are overridden because we don't use the Interceptor Manager.
     @Override
-    @Before
     public void setupTest(TestInfo testInfo) {
-        logger.info("[{}]: Performing integration test set-up.", testInfo.getTestMethod().get().getName());
+        logger.info("Required until we move all libraries to JUnit 5");
+    }
+
+    @Before
+    public void setupTest() {
+        logger.info("[{}]: Performing integration test set-up.", getTestName());
 
         skipIfNotRecordMode();
 

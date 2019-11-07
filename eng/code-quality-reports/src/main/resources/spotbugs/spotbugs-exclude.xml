@@ -68,6 +68,7 @@
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
     <Or>
+      <Class name="com.azure.core.util.CoreUtils" /> <!-- false positive -->
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>

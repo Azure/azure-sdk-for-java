@@ -6,7 +6,7 @@ package com.azure.data.appconfiguration;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.azure.core.util.AzureUserAgentUtil;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -16,9 +16,9 @@ public class AppConfigUserAgentPropertiesTest {
 
     @Test
     public void testAzureConfiguration() {
-        assertNotNull(AzureUserAgentUtil.getUserAgentProperties("azure-data-appconfiguration.properties").getVersion());
-        assertNotNull(AzureUserAgentUtil.getUserAgentProperties("azure-data-appconfiguration.properties").getName());
-        assertTrue(AzureUserAgentUtil.getUserAgentProperties("azure-data-appconfiguration.properties").getVersion()
+        assertNotNull(CoreUtils.getProperties("azure-data-appconfiguration.properties").get("version"));
+        assertNotNull(CoreUtils.getProperties("azure-data-appconfiguration.properties").get("name"));
+        assertTrue(CoreUtils.getProperties("azure-data-appconfiguration.properties").get("version")
             .matches("\\d.\\d.\\d([-a-zA-Z0-9.])*"));
     }
 }
