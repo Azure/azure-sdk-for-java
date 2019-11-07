@@ -28,3 +28,4 @@ jobs:
           npm install -g azurite
           Start-Process azurite
         displayName: 'Install and Start Azurite'
+      TimeoutInMinutes: 120
