@@ -25,7 +25,6 @@ import com.azure.search.models.Index;
 import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
-import com.azure.search.models.IndexerListResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
@@ -207,7 +206,7 @@ public class SearchServiceAsyncClient {
      *
      * @param dataSourceName the name of the data source to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging.
+     * Contains the tracking ID sent with the request to help with debugging.
      * @return the DataSource.
      */
     public Mono<DataSource> getDataSource(String dataSourceName, RequestOptions requestOptions) {
@@ -220,7 +219,7 @@ public class SearchServiceAsyncClient {
      *
      * @param dataSourceName the name of the data source to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging.
+     * Contains the tracking ID sent with the request to help with debugging.
      * @param context Context
      * @return a response containing the DataSource.
      */
@@ -246,9 +245,8 @@ public class SearchServiceAsyncClient {
      * List all DataSources from an Azure Cognitive Search service.
      *
      * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties.
-     *
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties.
      * @return a list of DataSources
      */
     public PagedFlux<DataSource> listDataSources(String select) {
@@ -259,10 +257,10 @@ public class SearchServiceAsyncClient {
      * List all DataSources from an Azure Cognitive Search service.
      *
      * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties.
      * @param requestOptions Additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging.
+     * Contains the tracking ID sent with the request to help with debugging.
      * @return a list of DataSources
      */
     public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
@@ -281,10 +279,10 @@ public class SearchServiceAsyncClient {
      * List all DataSources from an Azure Cognitive Search service.
      *
      * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties.
      * @param requestOptions Additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging.
+     * Contains the tracking ID sent with the request to help with debugging.
      * @return a response containing the list of DataSources.
      */
     public Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(String select, RequestOptions requestOptions) {
@@ -303,24 +301,6 @@ public class SearchServiceAsyncClient {
                 null,
                 deserializeHeaders(response.getHeaders()))
             );
-    }
-
-    /**
-     * @return the updated DataSource.
-     * @throws NotImplementedException not implemented
-     */
-    public Mono<DataSource> createOrUpdateDataSource() {
-        throw logger.logExceptionAsError(
-            new NotImplementedException("not implemented."));
-    }
-
-    /**
-     * @return a response containing the updated DataSource.
-     * @throws NotImplementedException not implemented
-     */
-    public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse() {
-        throw logger.logExceptionAsError(
-            new NotImplementedException("not implemented."));
     }
 
     /**
@@ -344,14 +324,14 @@ public class SearchServiceAsyncClient {
      * @return a valid Mono
      */
     public Mono<Response<Void>> deleteDataSource(String dataSourceName,
-                                       RequestOptions requestOptions,
-                                       AccessCondition accessCondition) {
+                                                 RequestOptions requestOptions,
+                                                 AccessCondition accessCondition) {
         return withContext(context ->
-                deleteDataSourceWithResponse(
-                    dataSourceName,
-                    requestOptions,
-                    accessCondition,
-                    context));
+            deleteDataSourceWithResponse(
+                dataSourceName,
+                requestOptions,
+                accessCondition,
+                context));
     }
 
     /**
@@ -363,14 +343,14 @@ public class SearchServiceAsyncClient {
      * @return a mono response
      */
     public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
-                                       RequestOptions requestOptions,
-                                       AccessCondition accessCondition) {
+                                                             RequestOptions requestOptions,
+                                                             AccessCondition accessCondition) {
         return withContext(context ->
             deleteDataSourceWithResponse(
-                    dataSourceName,
-                    requestOptions,
-                    accessCondition,
-                    context));
+                dataSourceName,
+                requestOptions,
+                accessCondition,
+                context));
     }
 
     /**
@@ -382,33 +362,89 @@ public class SearchServiceAsyncClient {
      * @return a mono response
      */
     Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
-                                                   RequestOptions requestOptions,
-                                                   AccessCondition accessCondition,
-                                                   Context context) {
+                                                      RequestOptions requestOptions,
+                                                      AccessCondition accessCondition,
+                                                      Context context) {
         return restClient.dataSources()
-                .deleteWithRestResponseAsync(
-                    dataSourceName,
-                    requestOptions,
-                    accessCondition,
-                    context).map(Function.identity());
+            .deleteWithRestResponseAsync(
+                dataSourceName,
+                requestOptions,
+                accessCondition,
+                context).map(Function.identity());
     }
 
     /**
-     * @return the created Indexer.
-     * @throws NotImplementedException not implemented
-     */
-    public Mono<Indexer> createIndexer() {
-        throw logger.logExceptionAsError(
-            new NotImplementedException("not implemented."));
-    }
-
-    /**
+     * Creates a new Azure Search indexer or updates an indexer if it already exists.
+     *
+     * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
-     * @throws NotImplementedException not implemented
      */
-    public Mono<Response<Indexer>> createIndexerWithResponse() {
-        throw logger.logExceptionAsError(
-            new NotImplementedException("not implemented."));
+    public Mono<Indexer> createOrUpdateIndexer(Indexer indexer) {
+        return createOrUpdateIndexer(indexer, null, null);
+    }
+
+    /**
+     * Creates a new Azure Search indexer or updates an indexer if it already exists.
+     *
+     * @param indexer The definition of the indexer to create or update.
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @return a response containing the created Indexer.
+     */
+    public Mono<Indexer> createOrUpdateIndexer(Indexer indexer,
+                                               RequestOptions requestOptions,
+                                               AccessCondition accessCondition) {
+        return createOrUpdateIndexerWithResponse(
+            indexer,
+            requestOptions,
+            accessCondition)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Search indexer or updates an indexer if it already exists.
+     *
+     * @param indexer The definition of the indexer to create or update.
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @return a response containing the created Indexer.
+     */
+    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
+                                                                     RequestOptions requestOptions,
+                                                                     AccessCondition accessCondition) {
+        return withContext(context -> createOrUpdateIndexerWithResponse(
+            indexer,
+            requestOptions,
+            accessCondition,
+            context));
+    }
+
+    /**
+     * Creates a new Azure Search indexer or updates an indexer if it already exists.
+     *
+     * @param indexer The definition of the indexer to create or update.
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param context Context
+     * @return A response object containing the Indexer.
+     */
+    Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
+                                                              RequestOptions requestOptions,
+                                                              AccessCondition accessCondition,
+                                                              Context context) {
+        return restClient.indexers().createOrUpdateWithRestResponseAsync(
+            indexer.getName(),
+            indexer,
+            requestOptions,
+            accessCondition,
+            context)
+            .map(Function.identity());
     }
 
     /**
@@ -431,34 +467,81 @@ public class SearchServiceAsyncClient {
 
     /**
      * @return all Indexers from the Search service.
-     * @throws NotImplementedException not implemented
      */
-    public Mono<IndexerListResult> listIndexers() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<Indexer> listIndexers() {
+        return new PagedFlux<>(
+            () -> listIndexersWithResponse(null, null),
+            nextLink -> Mono.empty());
     }
 
     /**
+     * Lists all indexers available for an Azure Search service.
+     *
+     * @param select Selects which top-level properties of the indexers to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties.
+     * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
-     * @throws NotImplementedException not implemented
      */
-    public Mono<Response<IndexerListResult>> listIndexersWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions) {
+        return new PagedFlux<>(
+            () -> listIndexersWithResponse(select, requestOptions),
+            nextLink -> Mono.empty());
     }
 
     /**
-     * @return the updated Indexer.
-     * @throws NotImplementedException not implemented
+     * Lists all indexers available for an Azure Search service.
+     *
+     * @param select Selects which top-level properties of the indexers to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties.
+     * @param requestOptions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @return a response containing all Indexers from the Search service.
      */
-    public Mono<Indexer> createOrUpdateIndexer() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> listIndexersWithResponse(select, requestOptions, context),
+            nextLink -> Mono.empty());
     }
 
     /**
-     * @return a response containing the updated Indexer.
-     * @throws NotImplementedException not implemented
+     * Lists all indexers available for an Azure Search service.
+     *
+     * @param select Selects which top-level properties of the indexers to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties.
+     * @param requestOptions Additional parameters for the operation.
+     * @return a response containing all Indexers from the Search service.
      */
-    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select, RequestOptions requestOptions) {
+        return withContext(context -> listIndexersWithResponse(select, requestOptions, context));
+    }
+
+    /**
+     * Lists all indexers available for an Azure Search service.
+     *
+     * @param select Selects which top-level properties of the indexers to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties.
+     * @param requestOptions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @return a response containing all Indexers from the Search service.
+     */
+    Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select,
+                                                          RequestOptions requestOptions,
+                                                          Context context) {
+        return restClient
+            .indexers()
+            .listWithRestResponseAsync(select, requestOptions, context)
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getIndexers(),
+                null,
+                deserializeHeaders(response.getHeaders()))
+            );
     }
 
     /**
@@ -682,8 +765,8 @@ public class SearchServiceAsyncClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @return a reactive response emitting the list of indexes.
      */
     public PagedFlux<Index> listIndexes(String select) {
@@ -694,8 +777,8 @@ public class SearchServiceAsyncClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *                       The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of indexes.
@@ -716,8 +799,8 @@ public class SearchServiceAsyncClient {
      * Lists all indexes available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the index definitions to retrieve.
-     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *                       The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response emitting the list of indexes.
@@ -763,7 +846,7 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Index> createOrUpdateIndex(Index index, boolean allowIndexDowntime) {
         return this.createOrUpdateIndexWithResponse(index, allowIndexDowntime, null, null)
-                .map(Response::getValue);
+            .map(Response::getValue);
     }
 
     /**
@@ -795,7 +878,7 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Index> createOrUpdateIndex(Index index, boolean allowIndexDowntime, AccessCondition accessCondition) {
         return this.createOrUpdateIndexWithResponse(index, allowIndexDowntime, accessCondition, null)
-                .map(Response::getValue);
+            .map(Response::getValue);
     }
 
     /**
@@ -886,9 +969,9 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Void> deleteIndex(String indexName, AccessCondition accessCondition) {
         return this.deleteIndexWithResponse(indexName,
-                accessCondition,
-                null)
-                .flatMap(FluxUtil::toMono);
+            accessCondition,
+            null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -957,7 +1040,7 @@ public class SearchServiceAsyncClient {
      * @param indexName the name of the index for which to test an analyzer
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing analyze result.
      */
     public PagedFlux<TokenInfo> analyzeIndex(String indexName,
@@ -981,9 +1064,9 @@ public class SearchServiceAsyncClient {
     }
 
     Mono<PagedResponse<TokenInfo>> analyzeIndexWithResponse(String indexName,
-                                                    AnalyzeRequest analyzeRequest,
-                                                    RequestOptions requestOptions,
-                                                    Context context) {
+                                                            AnalyzeRequest analyzeRequest,
+                                                            RequestOptions requestOptions,
+                                                            Context context) {
         return restClient.indexes()
             .analyzeWithRestResponseAsync(indexName, analyzeRequest, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -1121,7 +1204,8 @@ public class SearchServiceAsyncClient {
             .map(Function.identity());
     }
 
-    /** Retrieves a synonym map definition.
+    /**
+     * Retrieves a synonym map definition.
      *
      * @param synonymMapName name of the synonym map to retrieve
      * @return the {@link SynonymMap} definition
@@ -1131,11 +1215,12 @@ public class SearchServiceAsyncClient {
             .map(Response::getValue);
     }
 
-    /** Retrieves a synonym map definition.
+    /**
+     * Retrieves a synonym map definition.
      *
      * @param synonymMapName name of the synonym map to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the {@link SynonymMap} definition
      */
     public Mono<SynonymMap> getSynonymMap(String synonymMapName, RequestOptions requestOptions) {
@@ -1143,11 +1228,12 @@ public class SearchServiceAsyncClient {
             .map(Response::getValue);
     }
 
-    /** Retrieves a synonym map definition.
+    /**
+     * Retrieves a synonym map definition.
      *
      * @param synonymMapName name of the synonym map to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the SynonymMap.
      */
     public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
@@ -1326,7 +1412,7 @@ public class SearchServiceAsyncClient {
      *
      * @param synonymMapName the name of the synonym map to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSynonymMap(String synonymMapName, AccessCondition accessCondition) {
@@ -1338,9 +1424,9 @@ public class SearchServiceAsyncClient {
      *
      * @param synonymMapName the name of the synonym map to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSynonymMap(String synonymMapName,
@@ -1355,9 +1441,9 @@ public class SearchServiceAsyncClient {
      *
      * @param synonymMapName the name of the synonym map to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,
@@ -1392,7 +1478,7 @@ public class SearchServiceAsyncClient {
      *
      * @param synonymMapName the name of the synonym map
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return true if the synonym map exists; false otherwise.
      */
     public Mono<Boolean> synonymMapExists(String synonymMapName, RequestOptions requestOptions) {
@@ -1404,7 +1490,7 @@ public class SearchServiceAsyncClient {
      *
      * @param synonymMapName the name of the synonym map
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return true if the synonym map exists; false otherwise.
      */
     public Mono<Response<Boolean>> synonymMapExistsWithResponse(String synonymMapName, RequestOptions requestOptions) {

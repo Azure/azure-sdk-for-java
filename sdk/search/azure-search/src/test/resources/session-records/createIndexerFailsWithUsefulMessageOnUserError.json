@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdka862284357a2.search-dogfood.windows-int.net/indexers('indexer')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "95c2e372-cbfd-444f-942a-a8a2315c7d54",
+      "StatusCode" : "400",
+      "Date" : "Wed, 06 Nov 2019 23:23:19 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "47",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "118",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

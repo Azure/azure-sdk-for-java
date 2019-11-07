@@ -5,7 +5,6 @@ package com.azure.search;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
 import org.junit.Test;
-
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 

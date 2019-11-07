@@ -17,6 +17,7 @@ import org.junit.Test;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public abstract class DataSourceTestBase extends SearchServiceTestBase {
+
     private static final String FAKE_DESCRIPTION = "Some data source";
     private static final String RESOURCE_NAME_PREFIX = "azs-";
     // The connection string we use here, as well as table name and target index schema, use the USGS database

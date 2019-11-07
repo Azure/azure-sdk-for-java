@@ -12,9 +12,13 @@ import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.search.common.DataSources;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
+import com.azure.search.models.DataChangeDetectionPolicy;
+import com.azure.search.models.DataDeletionDetectionPolicy;
+import com.azure.search.models.DataSource;
 import com.azure.search.models.DataType;
 import com.azure.search.models.DistanceScoringFunction;
 import com.azure.search.models.DistanceScoringParameters;
@@ -53,12 +57,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import static com.azure.search.DataSourceTestBase.azureSql;
 import java.util.Objects;
 
 public abstract class SearchServiceTestBase extends TestBase {
 
     private static final String DEFAULT_DNS_SUFFIX = "search.windows.net";
     private static final String DOGFOOD_DNS_SUFFIX = "search-dogfood.windows-int.net";
+
+    private static final String FAKE_DESCRIPTION = "Some data source";
+    private static final String RESOURCE_NAME_PREFIX = "azs-";
+    // The connection string we use here, as well as table name and target index schema, use the USGS database
+    // that we set up to support our code samples.
+    //
+    // ASSUMPTION: Change tracking has already been enabled on the database with ALTER DATABASE ... SET CHANGE_TRACKING = ON
+    // and it has been enabled on the table with ALTER TABLE ... ENABLE CHANGE_TRACKING
+    private static final String SQL_CONN_STRING_FIXTURE = "Server=tcp:xxx.database.windows.net,1433;Database=xxx;User ID=reader;Password=xxx;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+
+    public static final String AZURE_SQL_CONN_STRING_READONLY =
+        "Server=tcp:azs-playground.database.windows.net,1433;Database=usgs;User ID=reader;Password=EdrERBt3j6mZDP;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"; // [SuppressMessage("Microsoft.Security", "CS001:SecretInline")]
 
     private String searchServiceName;
     private String searchDnsSuffix;
@@ -127,42 +144,6 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
     }
 
-    private static void initializeAzureResources() {
-        String appId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-        String azureDomainId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        String secret = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-        String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
-
-        testEnvironment = Configuration.getGlobalConfiguration().get("AZURE_TEST_ENVIRONMENT");
-        if (testEnvironment == null) {
-            testEnvironment = "AZURE";
-        } else {
-            testEnvironment = testEnvironment.toUpperCase(Locale.US);
-        }
-
-        AzureEnvironment environment = testEnvironment.equals("DOGFOOD") ? getDogfoodEnvironment() : AzureEnvironment.AZURE;
-
-        ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
-            appId,
-            azureDomainId,
-            secret,
-            environment);
-
-        azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_EAST);
-    }
-
-    private static AzureEnvironment getDogfoodEnvironment() {
-        HashMap<String, String> configuration = new HashMap<>();
-        configuration.put("portalUrl", "http://df.onecloud.azure-test.net");
-        configuration.put("managementEndpointUrl", "https://management.core.windows.net/");
-        configuration.put("resourceManagerEndpointUrl", "https://api-dogfood.resources.windows-int.net/");
-        configuration.put("activeDirectoryEndpointUrl", "https://login.windows-ppe.net/");
-        configuration.put("activeDirectoryResourceId", "https://management.core.windows.net/");
-        configuration.put("activeDirectoryGraphResourceId", "https://graph.ppe.windows.net/");
-        configuration.put("activeDirectoryGraphApiVersion", "2013-04-05");
-        return new AzureEnvironment(configuration);
-    }
-
     protected Index createTestIndex() {
         Map<String, Double> weights = new HashMap<String, Double>();
         weights.put("Description", 1.5);
@@ -173,93 +154,93 @@ public abstract class SearchServiceTestBase extends TestBase {
                 new Field()
                     .setName("HotelId")
                     .setType(DataType.EDM_STRING)
-                    .setKey(true)
-                    .setSearchable(false)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(true)
-                    .setRetrievable(true),
+                    .setKey(Boolean.TRUE)
+                    .setSearchable(Boolean.FALSE)
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.TRUE)
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("HotelName")
                     .setType(DataType.EDM_STRING)
-                    .setSearchable(true)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(false)
-                    .setRetrievable(true),
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.FALSE)
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Description")
                     .setType(DataType.EDM_STRING)
-                    .setKey(false)
-                    .setSearchable(true)
-                    .setFilterable(false)
-                    .setSortable(false)
-                    .setFacetable(false)
+                    .setKey(Boolean.FALSE)
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.FALSE)
+                    .setSortable(Boolean.FALSE)
+                    .setFacetable(Boolean.FALSE)
                     .setAnalyzer(AnalyzerName.EN_LUCENE)
-                    .setRetrievable(true),
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("DescriptionFr")
                     .setType(DataType.EDM_STRING)
-                    .setSearchable(true)
-                    .setFilterable(false)
-                    .setSortable(false)
-                    .setFacetable(false)
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.FALSE)
+                    .setSortable(Boolean.FALSE)
+                    .setFacetable(Boolean.FALSE)
                     .setAnalyzer(AnalyzerName.FR_LUCENE)
-                    .setRetrievable(true),
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Description_Custom")
                     .setType(DataType.EDM_STRING)
-                    .setSearchable(true)
-                    .setFilterable(false)
-                    .setSortable(false)
-                    .setFacetable(false)
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.FALSE)
+                    .setSortable(Boolean.FALSE)
+                    .setFacetable(Boolean.FALSE)
                     .setSearchAnalyzer(AnalyzerName.STOP)
                     .setIndexAnalyzer(AnalyzerName.STOP)
-                    .setRetrievable(true),
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Category")
                     .setType(DataType.EDM_STRING)
-                    .setSearchable(true)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(true)
-                    .setRetrievable(true),
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.TRUE)
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Tags")
                     .setType(DataType.COLLECTION_EDM_STRING)
-                    .setSearchable(true)
-                    .setFilterable(true)
-                    .setSortable(false)
-                    .setFacetable(true)
-                    .setRetrievable(true),
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.FALSE)
+                    .setFacetable(Boolean.TRUE)
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("ParkingIncluded")
                     .setType(DataType.EDM_BOOLEAN)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(true)
-                    .setRetrievable(true),
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.TRUE)
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("SmokingAllowed")
                     .setType(DataType.EDM_BOOLEAN)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(true)
-                    .setRetrievable(true),
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.TRUE)
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("LastRenovationDate")
                     .setType(DataType.EDM_DATE_TIME_OFFSET)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(true)
-                    .setRetrievable(true),
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.TRUE)
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Rating")
                     .setType(DataType.EDM_INT32)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(true)
-                    .setRetrievable(true),
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.TRUE)
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Address")
                     .setType(DataType.EDM_COMPLEX_TYPE)
@@ -267,50 +248,50 @@ public abstract class SearchServiceTestBase extends TestBase {
                         new Field()
                             .setName("StreetAddress")
                             .setType(DataType.EDM_STRING)
-                            .setSearchable(true)
-                            .setRetrievable(true),
+                            .setSearchable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("City")
                             .setType(DataType.EDM_STRING)
-                            .setSearchable(true)
-                            .setFilterable(true)
-                            .setSortable(true)
-                            .setFacetable(true)
-                            .setRetrievable(true),
+                            .setSearchable(Boolean.TRUE)
+                            .setFilterable(Boolean.TRUE)
+                            .setSortable(Boolean.TRUE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("StateProvince")
                             .setType(DataType.EDM_STRING)
-                            .setSearchable(true)
-                            .setFilterable(true)
-                            .setSortable(true)
-                            .setFacetable(true)
-                            .setRetrievable(true),
+                            .setSearchable(Boolean.TRUE)
+                            .setFilterable(Boolean.TRUE)
+                            .setSortable(Boolean.TRUE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("Country")
                             .setType(DataType.EDM_STRING)
-                            .setSearchable(true)
-                            .setFilterable(true)
-                            .setSortable(true)
-                            .setFacetable(true)
-                            .setRetrievable(true),
+                            .setSearchable(Boolean.TRUE)
+                            .setFilterable(Boolean.TRUE)
+                            .setSortable(Boolean.TRUE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("PostalCode")
                             .setType(DataType.EDM_STRING)
-                            .setSearchable(true)
-                            .setFilterable(true)
-                            .setSortable(true)
-                            .setFacetable(true)
-                            .setRetrievable(true)
+                            .setSearchable(Boolean.TRUE)
+                            .setFilterable(Boolean.TRUE)
+                            .setSortable(Boolean.TRUE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE)
                         )
                     ),
                 new Field()
                     .setName("Location")
                     .setType(DataType.EDM_GEOGRAPHY_POINT)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(false)
-                    .setRetrievable(true)
-                    .setRetrievable(true),
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.FALSE)
+                    .setRetrievable(Boolean.TRUE)
+                    .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Rooms")
                     .setType(DataType.COLLECTION_EDM_COMPLEX_TYPE)
@@ -318,66 +299,66 @@ public abstract class SearchServiceTestBase extends TestBase {
                         new Field()
                             .setName("Description")
                             .setType(DataType.EDM_STRING)
-                            .setSearchable(true)
-                            .setRetrievable(true)
+                            .setSearchable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE)
                             .setAnalyzer(AnalyzerName.EN_LUCENE),
                         new Field()
                             .setName("DescriptionFr")
                             .setType(DataType.EDM_STRING)
-                            .setSearchable(true)
-                            .setRetrievable(true)
+                            .setSearchable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE)
                             .setAnalyzer(AnalyzerName.FR_LUCENE),
                         new Field()
                             .setName("Type")
                             .setType(DataType.EDM_STRING)
-                            .setSearchable(true)
-                            .setFilterable(true)
-                            .setFacetable(true)
-                            .setRetrievable(true),
+                            .setSearchable(Boolean.TRUE)
+                            .setFilterable(Boolean.TRUE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("BaseRate")
                             .setType(DataType.EDM_DOUBLE)
-                            .setKey(false)
-                            .setSearchable(false)
-                            .setFilterable(true)
-                            .setFacetable(true)
-                            .setRetrievable(true),
+                            .setKey(Boolean.FALSE)
+                            .setSearchable(Boolean.FALSE)
+                            .setFilterable(Boolean.TRUE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("BedOptions")
                             .setType(DataType.EDM_STRING)
-                            .setSearchable(true)
-                            .setFilterable(true)
-                            .setFacetable(true)
-                            .setRetrievable(true),
+                            .setSearchable(Boolean.TRUE)
+                            .setFilterable(Boolean.TRUE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("SleepsCount")
                             .setType(DataType.EDM_INT32)
-                            .setFilterable(true)
-                            .setFacetable(true)
-                            .setRetrievable(true),
+                            .setFilterable(Boolean.TRUE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("SmokingAllowed")
                             .setType(DataType.EDM_BOOLEAN)
-                            .setFilterable(true)
-                            .setFacetable(true)
-                            .setRetrievable(true),
+                            .setFilterable(Boolean.TRUE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("Tags")
                             .setType(DataType.COLLECTION_EDM_STRING)
-                            .setSearchable(true)
-                            .setFilterable(true)
-                            .setSortable(false)
-                            .setFacetable(true)
-                            .setRetrievable(true)
+                            .setSearchable(Boolean.TRUE)
+                            .setFilterable(Boolean.TRUE)
+                            .setSortable(Boolean.FALSE)
+                            .setFacetable(Boolean.TRUE)
+                            .setRetrievable(Boolean.TRUE)
                         )
                     ),
                 new Field()
                     .setName("TotalGuests")
                     .setType(DataType.EDM_INT64)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(true)
-                    .setRetrievable(false
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.TRUE)
+                    .setRetrievable(Boolean.FALSE
                     ),
                 new Field()
                     .setName("ProfitMargin")
@@ -457,6 +438,91 @@ public abstract class SearchServiceTestBase extends TestBase {
             .setSuggesters(Arrays.asList(new Suggester()
                 .setName("FancySuggester")
                 .setSourceFields(Arrays.asList("HotelName"))));
+    }
+
+    protected DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
+        return DataSources.azureBlobStorage(
+            "azs-java-test-blob",
+            "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;",
+            "fakecontainer",
+            "/fakefolder/",
+            deletionDetectionPolicy,
+            FAKE_DESCRIPTION
+        );
+    }
+
+    protected DataSource createTestSqlDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy, DataChangeDetectionPolicy changeDetectionPolicy) {
+        return azureSql(
+            "azs-java-test-sql",
+            SQL_CONN_STRING_FIXTURE,
+            "GeoNamesRI",
+            changeDetectionPolicy,
+            deletionDetectionPolicy,
+            FAKE_DESCRIPTION
+        );
+    }
+
+    protected DataSource createTestSqlDataSource() {
+        DataDeletionDetectionPolicy deletionDetectionPolicy = null;
+        return azureSql(
+            "azs-java-test-sql",
+            AZURE_SQL_CONN_STRING_READONLY,
+            "GeoNamesRI",
+            null,
+            deletionDetectionPolicy,
+            FAKE_DESCRIPTION
+        );
+    }
+
+    protected DataSource createTestCosmosDbDataSource(
+        DataDeletionDetectionPolicy deletionDetectionPolicy,
+        boolean useChangeDetection) {
+
+        return DataSources.cosmosDb(
+            "azs-java-test-cosmos",
+            "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase",
+            "faketable",
+            "SELECT ... FROM x where x._ts > @HighWaterMark",
+            useChangeDetection,
+            deletionDetectionPolicy,
+            FAKE_DESCRIPTION
+        );
+    }
+
+    private static void initializeAzureResources() {
+        String appId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        String azureDomainId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        String secret = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+        String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
+
+        testEnvironment = Configuration.getGlobalConfiguration().get("AZURE_TEST_ENVIRONMENT");
+        if (testEnvironment == null) {
+            testEnvironment = "AZURE";
+        } else {
+            testEnvironment = testEnvironment.toUpperCase(Locale.US);
+        }
+
+        AzureEnvironment environment = testEnvironment.equals("DOGFOOD") ? getDogfoodEnvironment() : AzureEnvironment.AZURE;
+
+        ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
+            appId,
+            azureDomainId,
+            secret,
+            environment);
+
+        azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_EAST);
+    }
+
+    private static AzureEnvironment getDogfoodEnvironment() {
+        HashMap<String, String> configuration = new HashMap<>();
+        configuration.put("portalUrl", "http://df.onecloud.azure-test.net");
+        configuration.put("managementEndpointUrl", "https://management.core.windows.net/");
+        configuration.put("resourceManagerEndpointUrl", "https://api-dogfood.resources.windows-int.net/");
+        configuration.put("activeDirectoryEndpointUrl", "https://login.windows-ppe.net/");
+        configuration.put("activeDirectoryResourceId", "https://management.core.windows.net/");
+        configuration.put("activeDirectoryGraphResourceId", "https://graph.ppe.windows.net/");
+        configuration.put("activeDirectoryGraphApiVersion", "2013-04-05");
+        return new AzureEnvironment(configuration);
     }
 
     protected SearchIndexClientBuilder getSearchIndexClientBuilder(String indexName) {
@@ -622,11 +688,12 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     /**
      * If the document schema is known, user can convert the properties to a specific object type
+     *
      * @param cls Class type of the document object to convert to
      * @param <T> type
      * @return an object of the request type
      */
-    protected  <T> T convertToType(Object document, Class<T> cls) {
+    protected <T> T convertToType(Object document, Class<T> cls) {
         return jsonApi.convertObjectToType(document, cls);
     }
 
