@@ -23,7 +23,7 @@ public class RecognizePII {
         // The text that need be analysed.
         String text = "My SSN is 555-55-5555";
 
-        final DocumentEntities documentEntitie = client.getPIIEntities(text, "US", false);
+        final DocumentEntities documentEntitie = client.getPiiEntities(text, "US", false);
 
         List<Entity> entities = documentEntitie.getEntities();
         for (Entity entity : entities) {

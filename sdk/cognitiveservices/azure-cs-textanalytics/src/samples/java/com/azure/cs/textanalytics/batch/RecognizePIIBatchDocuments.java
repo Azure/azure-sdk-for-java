@@ -40,7 +40,7 @@ public class RecognizePIIBatchDocuments {
 
 
         // Detecting language from a batch of documents
-        EntitiesResult detectedResult = client.getPIIEntitiesWithResponse(batchInput, false, Context.NONE).getValue();
+        EntitiesResult detectedResult = client.getPiiEntitiesWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentEntities> documentEntities = detectedResult.getDocuments();
         for (DocumentEntities documentEntitie : documentEntities) {
             List<Entity> entities = documentEntitie.getEntities();

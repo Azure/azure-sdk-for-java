@@ -24,7 +24,7 @@ public class HelloWorldAsync {
         // The text that need be analysed.
         String text = "hello world";
 
-        client.getLanguage(text, "US", false).subscribe(
+        client.getLanguages(text, "US", false).subscribe(
             result -> {
               DocumentLanguage detectedLanguageResult = result;
               List<DetectedLanguage> detectedLanguages = detectedLanguageResult.getDetectedLanguages();

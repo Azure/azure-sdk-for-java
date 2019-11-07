@@ -40,7 +40,7 @@ public class DetectLanguageBatchDocuments {
 
 
         // Detecting language from a batch of documents
-        LanguageResult detectedResult = client.getLanguageWithResponse(batchInput, false, Context.NONE).getValue();
+        LanguageResult detectedResult = client.getLanguagesWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentLanguage> documentLanguages = detectedResult.getDocuments();
         for (DocumentLanguage documentLanguage : documentLanguages) {
             List<DetectedLanguage> detectedLanguages = documentLanguage.getDetectedLanguages();

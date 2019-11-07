@@ -63,8 +63,7 @@ public final class TextAnalyticsClientBuilder {
     public TextAnalyticsAsyncClient buildAsyncClient() {
         TextAnalyticsServiceVersion serviceVersion = version != null ? version : TextAnalyticsServiceVersion.getLatest();
         // TODO: build a pipeline.
-        // (1)ConfigurationCredentialsPolicy that use the connection string,
-        // (2) AAD Token, BearerTokenAuthenticationPolicy, SasTokenCredentialPolicy
+        // (1) AAD Token, BearerTokenAuthenticationPolicy
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : null;
 
         // TODO: missing the version of the operation to use for this request.
@@ -125,10 +124,11 @@ public final class TextAnalyticsClientBuilder {
         return this;
     }
 
-    public TextAnalyticsClientBuilder connectionString(String connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
+    // TODO: use AAD token
+//    public TextAnalyticsClientBuilder connectionString(String connectionString) {
+//        this.connectionString = connectionString;
+//        return this;
+//    }
 
     public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         httpLogOptions = httpLogOptions;
