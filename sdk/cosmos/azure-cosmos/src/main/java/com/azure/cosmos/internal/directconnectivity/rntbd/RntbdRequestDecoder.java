@@ -22,7 +22,7 @@ public final class RntbdRequestDecoder extends ByteToMessageDecoder {
 
         if (message instanceof ByteBuf) {
 
-            final ByteBuf in = (ByteBuf)message;
+            final ByteBuf in = (ByteBuf) message;
             final int resourceOperationType = in.getInt(in.readerIndex() + Integer.BYTES);
 
             if (resourceOperationType != 0) {

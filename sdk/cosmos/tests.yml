@@ -22,7 +22,7 @@ jobs:
           DisplayName: ReadMyWrites Integration Tests
           OSVmImage: 'windows-2019'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
         # 09m 23s, expect passed
         Single_Region_Fast:
@@ -190,7 +190,7 @@ jobs:
           DisplayName: Single Region ReadMyWrites
           OSVmImage: 'windows-2019'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
         # 08m 50s, expect passed
         Strong_Https_Fast:
@@ -253,7 +253,7 @@ jobs:
           DisplayName: Multimaster Multi Region Long
           OSVmImage: 'windows-2019'
           ProfileFlag: '-e -Plong'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
         # 06m 34s, previously failing
         MultiMaster:
           DisplayName: Multimaster Multi Region Multi-Master

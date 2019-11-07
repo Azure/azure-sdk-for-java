@@ -47,16 +47,16 @@ public final class RntbdReporter {
     private static void doReportIssue(Logger logger, Object subject, String format, Object[] arguments) {
 
         FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
-        StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
+        StackTraceElement[] stackTrace = new Exception().getStackTrace();
         Throwable throwable = formattingTuple.getThrowable();
 
         if (throwable == null) {
             logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}]",
-                codeSource, subject, stackTraceElements[2], formattingTuple.getMessage()
+                codeSource, subject, stackTrace[2], formattingTuple.getMessage()
             );
         } else {
             logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}{}]",
-                codeSource, subject, stackTraceElements[2], formattingTuple.getMessage(),
+                codeSource, subject, stackTrace[2], formattingTuple.getMessage(),
                 ExceptionUtils.getStackTrace(throwable)
             );
         }
