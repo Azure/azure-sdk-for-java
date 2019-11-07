@@ -36,6 +36,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     private ConfigurationAsyncClient client;
 
     @Override
+    protected String getTestName() {
+        return "";
+    }
+
+    @Override
     protected void beforeTest() {
         beforeTestSetup();
 
