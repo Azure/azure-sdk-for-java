@@ -6,14 +6,12 @@ import com.azure.core.http.HttpPipeline;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SearchServiceSubclientTests {
+public class SearchServiceSubClientTests extends SearchServiceTestBase {
+
 
     @Test
     public void canGetIndexClientFromSearchClient() {
-        SearchServiceClient serviceClient = new SearchServiceClientBuilder()
-            .endpoint("https://test1.search.windows.net")
-            .credential(new ApiKeyCredentials("api-key"))
-            .buildClient();
+        SearchServiceClient serviceClient = getSearchService();
 
         SearchIndexClient indexClient = serviceClient.getIndexClient("hotels");
 
@@ -36,10 +34,8 @@ public class SearchServiceSubclientTests {
 
     @Test
     public void canGetIndexAsyncClientFromSearchClient() {
-        SearchServiceAsyncClient serviceClient = new SearchServiceClientBuilder()
-            .endpoint("https://test1.search.windows.net")
-            .credential(new ApiKeyCredentials("api-key"))
-            .buildAsyncClient();
+        SearchServiceAsyncClient serviceClient = getAsyncSearchService();
+
         SearchIndexAsyncClient indexClient = serviceClient.getIndexClient("hotels");
 
         // Validate the client was created
@@ -57,5 +53,49 @@ public class SearchServiceSubclientTests {
 
         // Validate that the client uses the specified index
         Assert.assertEquals("hotels", indexClient.getIndexName());
+    }
+
+    @Test
+    public void canGetIndexClientAfterUsingServiceClient() {
+        SearchServiceClient serviceClient = getSearchService();
+        try {
+            // this is expected to fail
+            serviceClient.deleteIndex("thisindexdoesnotexist");
+        } catch (Exception e) {
+            // deleting the index should fail as it does not exist
+        }
+
+        // This should not fail
+        SearchIndexClient indexClient = serviceClient.getIndexClient("hotels");
+        Assert.assertEquals("hotels", indexClient.getIndexName());
+    }
+
+    @Test
+    public void canGetIndexAsyncClientAfterUsingServiceClient() {
+        SearchServiceAsyncClient serviceClient = getAsyncSearchService();
+        try {
+            // this is expected to fail
+            serviceClient.deleteIndex("thisindexdoesnotexist");
+        } catch (Exception e) {
+            // deleting the index should fail as it does not exist
+        }
+
+        // This should not fail
+        SearchIndexAsyncClient indexClient = serviceClient.getIndexClient("hotels");
+        Assert.assertEquals("hotels", indexClient.getIndexName());
+    }
+
+    private SearchServiceClient getSearchService() {
+        return new SearchServiceClientBuilder()
+            .endpoint("https://test1.search.windows.net")
+            .credential(new ApiKeyCredentials("api-key"))
+            .buildClient();
+    }
+
+    private SearchServiceAsyncClient getAsyncSearchService() {
+        return new SearchServiceClientBuilder()
+            .endpoint("https://test1.search.windows.net")
+            .credential(new ApiKeyCredentials("api-key"))
+            .buildAsyncClient();
     }
 }
