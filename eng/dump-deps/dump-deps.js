@@ -46,7 +46,7 @@ const convertDependencyFile = async (inputFile) => {
           };
         }
 
-        if (depChains.some(chain => !chain["dependencyChain"])) {
+        if (depChains.length === 1 && !depChains[0].dependencyChain) {
           // dep is a direct dependency of lib
           dumpData[libId].deps.push({
             name: depName,
