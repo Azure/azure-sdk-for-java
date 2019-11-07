@@ -143,7 +143,6 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
 
         // Use the response delay duration, the server returned it for a reason.
-
         return Duration.of(Integer.parseInt(retryHeaderValue), retryAfterTimeUnit);
     }
 }
