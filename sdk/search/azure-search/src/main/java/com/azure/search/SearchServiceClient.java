@@ -130,19 +130,40 @@ public class SearchServiceClient {
     }
 
     /**
+     * Retrieves a DataSource from an Azure Cognitive Search service.
+     *
+     * @param dataSourceName the name of the data source to retrieve
      * @return the DataSource.
-     * @throws NotImplementedException not implemented
      */
-    public DataSource getDataSource() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public DataSource getDataSource(String dataSourceName) {
+        return asyncClient.getDataSource(dataSourceName).block();
     }
 
     /**
-     * @return a response containing the DataSource.
-     * @throws NotImplementedException not implemented
+     * Retrieves a DataSource from an Azure Cognitive Search service.
+     *
+     * @param dataSourceName the name of the data source to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @return the DataSource.
      */
-    public Response<DataSource> getDataSourceWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public DataSource getDataSource(String dataSourceName, RequestOptions requestOptions) {
+        return asyncClient.getDataSource(dataSourceName, requestOptions).block();
+    }
+
+    /**
+     * Retrieves a DataSource from an Azure Cognitive Search service.
+     *
+     * @param dataSourceName the name of the data source to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @param context Context
+     * @return a response containing the DataSource.
+     */
+    public Response<DataSource> getDataSourceWithResponse(String dataSourceName,
+                                                            RequestOptions requestOptions,
+                                                            Context context) {
+        return asyncClient.getDataSourceWithResponse(dataSourceName, requestOptions, context).block();
     }
 
     /**

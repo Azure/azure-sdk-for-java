@@ -192,21 +192,45 @@ public class SearchServiceAsyncClient {
     }
 
     /**
+     * Retrieves a DataSource from an Azure Cognitive Search service.
+     *
+     * @param dataSourceName the name of the data source to retrieve
      * @return the DataSource.
-     * @throws NotImplementedException not implemented
      */
-    public Mono<DataSource> getDataSource() {
-        throw logger.logExceptionAsError(
-            new NotImplementedException("not implemented."));
+    public Mono<DataSource> getDataSource(String dataSourceName) {
+        return this.getDataSourceWithResponse(dataSourceName, null, Context.NONE)
+            .map(Response::getValue);
     }
 
     /**
-     * @return a response containing the DataSource.
-     * @throws NotImplementedException not implemented
+     * Retrieves a DataSource from an Azure Cognitive Search service.
+     *
+     * @param dataSourceName the name of the data source to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @return the DataSource.
      */
-    public Mono<Response<DataSource>> getDataSourceWithResponse() {
-        throw logger.logExceptionAsError(
-            new NotImplementedException("not implemented."));
+    public Mono<DataSource> getDataSource(String dataSourceName, RequestOptions requestOptions) {
+        return this.getDataSourceWithResponse(dataSourceName, requestOptions, Context.NONE)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Retrieves a DataSource from an Azure Cognitive Search service.
+     *
+     * @param dataSourceName the name of the data source to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @param context Context
+     * @return a response containing the DataSource.
+     */
+    public Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName,
+                                                                RequestOptions requestOptions,
+                                                                Context context) {
+        return restClient
+            .dataSources()
+            .getWithRestResponseAsync(dataSourceName, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**

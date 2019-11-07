@@ -17,9 +17,12 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
 
 public class DataSourceAsyncTests extends DataSourceTestBase {
     private SearchServiceAsyncClient client;
@@ -43,9 +46,9 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         StepVerifier
             .create(results.collectList())
             .assertNext(result -> {
-                Assert.assertEquals(2, result.size());
-                Assert.assertEquals(dataSource1.getName(), result.get(0).getName());
-                Assert.assertEquals(dataSource2.getName(), result.get(1).getName());
+                assertEquals(2, result.size());
+                assertEquals(dataSource1.getName(), result.get(0).getName());
+                assertEquals(dataSource2.getName(), result.get(1).getName());
             })
             .verifyComplete();
 
@@ -55,9 +58,9 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         StepVerifier
             .create(client.listDataSourcesWithResponse("name", requestOptions))
             .assertNext(result -> {
-                Assert.assertEquals(2, result.getItems().size());
-                Assert.assertEquals(dataSource1.getName(), result.getValue().get(0).getName());
-                Assert.assertEquals(dataSource2.getName(), result.getValue().get(1).getName());
+                assertEquals(2, result.getItems().size());
+                assertEquals(dataSource1.getName(), result.getValue().get(0).getName());
+                assertEquals(dataSource2.getName(), result.getValue().get(1).getName());
             })
             .verifyComplete();
     }
@@ -146,8 +149,8 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         StepVerifier
             .create(client.createOrUpdateDataSource(dataSource))
             .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error)
+                assertEquals(HttpResponseException.class, error.getClass());
+                assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error)
                     .getResponse().getStatusCode());
                 Assert.assertTrue(error.getMessage().contains("Data source type '' is not supported"));
             });
@@ -193,5 +196,40 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
         // we delete the datasource because otherwise we will hit the quota limits during the tests
         client.deleteDataSource(actualDataSource.getName()).block();
+    }
+
+    @Override
+    public void getDataSourceReturnsCorrectDefinition() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
+
+        createGetAndValidateDataSource(createTestBlobDataSource(null));
+        createGetAndValidateDataSource(createTestTableStorageDataSource(null));
+        createGetAndValidateDataSource(createTestSqlDataSource(null, null));
+        createGetAndValidateDataSource(createTestCosmosDbDataSource(null, false));
+    }
+    private void createGetAndValidateDataSource(DataSource expectedDataSource) {
+        client.createOrUpdateDataSource(expectedDataSource).block();
+        String dataSourceName = expectedDataSource.getName();
+        DataSource actualDataSource = client.getDataSource(dataSourceName).block();
+
+        expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
+        assertDataSourcesEqual(expectedDataSource, actualDataSource);
+
+        client.deleteDataSource(dataSourceName).block();
+    }
+
+    @Override
+    public void getDataSourceThrowsOnNotFound() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
+
+        Mono<DataSource> futureDataSource = client.getDataSource("thisdatasourcedoesnotexist");
+        StepVerifier
+            .create(futureDataSource)
+            .verifyErrorSatisfies(
+                error -> {
+                    assertEquals(HttpResponseException.class, error.getClass());
+                    assertEquals(HttpResponseStatus.NOT_FOUND.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                }
+            );
     }
 }

@@ -189,4 +189,39 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client.deleteDataSource(actualDataSource.getName());
 
     }
+
+    @Override
+    public void getDataSourceReturnsCorrectDefinition() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        createGetAndValidateDataSource(createTestBlobDataSource(null));
+        createGetAndValidateDataSource(createTestTableStorageDataSource(null));
+        createGetAndValidateDataSource(createTestSqlDataSource(null, null));
+        createGetAndValidateDataSource(createTestCosmosDbDataSource(null, false));
+    }
+    
+    private void createGetAndValidateDataSource(DataSource expectedDataSource) {
+        client.createOrUpdateDataSource(expectedDataSource);
+        String dataSourceName = expectedDataSource.getName();
+        DataSource actualDataSource = client.getDataSource(dataSourceName);
+
+        expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
+        assertDataSourcesEqual(expectedDataSource, actualDataSource);
+
+        client.deleteDataSource(dataSourceName);
+    }
+
+    @Override
+    public void getDataSourceThrowsOnNotFound() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        try {
+            client.getDataSource("thisdatasourcedoesnotexist");
+            Assert.fail("Expected HttpResponseException to be thrown");
+        } catch (Exception ex) {
+            Assert.assertEquals(HttpResponseException.class, ex.getClass());
+            Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+        }
+    }
+
 }
