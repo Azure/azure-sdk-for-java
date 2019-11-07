@@ -110,7 +110,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         StepVerifier
             .create(client.createOrUpdateDataSource(
-                another.getName(),
                 another,
                 null,
                 generateIfNotExistsAccessCondition(),
@@ -132,7 +131,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         StepVerifier
             .create(client.createOrUpdateDataSource(
-                dataSource.getName(),
                 dataSource,
                 null,
                 generateIfNotExistsAccessCondition(),

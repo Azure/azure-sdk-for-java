@@ -124,7 +124,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
         assertException(
             () -> client.createOrUpdateDataSource(
-                another.getName(),
                 another,
                 null,
                 generateIfNotExistsAccessCondition(),
@@ -139,7 +138,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource dataSource = createTestBlobDataSource(null);
 
         DataSource result = client.createOrUpdateDataSource(
-            dataSource.getName(),
             dataSource,
             null,
             generateIfNotExistsAccessCondition(),
@@ -247,7 +245,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         createGetAndValidateDataSource(createTestSqlDataSource(null, null));
         createGetAndValidateDataSource(createTestCosmosDbDataSource(null, false));
     }
-    
+
     private void createGetAndValidateDataSource(DataSource expectedDataSource) {
         client.createOrUpdateDataSource(expectedDataSource);
         String dataSourceName = expectedDataSource.getName();

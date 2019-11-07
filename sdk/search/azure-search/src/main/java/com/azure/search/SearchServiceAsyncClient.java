@@ -141,14 +141,12 @@ public class SearchServiceAsyncClient {
      */
     public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource) {
         return withContext(context ->
-            createOrUpdateDataSource(dataSource.getName(),
-                dataSource, null, null, context));
+            createOrUpdateDataSource(dataSource, null, null, context));
     }
 
     /**
      * Creates a new Azure Search datasource or updates a datasource if it already exists
      *
-     * @param dataSourceName The name of the datasource to create or update.
      * @param dataSource The definition of the datasource to create or update.
      * @param requestOptions Request options
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
@@ -157,20 +155,17 @@ public class SearchServiceAsyncClient {
      * @return The newly created datasource
      */
     Mono<DataSource> createOrUpdateDataSource(
-        String dataSourceName,
         DataSource dataSource,
         RequestOptions requestOptions,
         AccessCondition accessCondition,
         Context context) {
-        return createOrUpdateDataSourceWithResponse(dataSourceName,
-            dataSource, requestOptions, accessCondition, context)
+        return createOrUpdateDataSourceWithResponse(dataSource, requestOptions, accessCondition, context)
             .map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Search datasource or updates a datasource if it already exists
      *
-     * @param dataSourceName The name of the datasource to create or update.
      * @param dataSource The definition of the datasource to create or update.
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
@@ -180,13 +175,12 @@ public class SearchServiceAsyncClient {
      * @return a datasource response
      */
     Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(
-        String dataSourceName,
         DataSource dataSource,
         RequestOptions requestOptions,
         AccessCondition accessCondition,
         Context context) {
         return restClient.dataSources().createOrUpdateWithRestResponseAsync(
-            dataSourceName, dataSource, requestOptions, accessCondition, context)
+            dataSource.getName(), dataSource, requestOptions, accessCondition, context)
             .map(Function.identity());
     }
 

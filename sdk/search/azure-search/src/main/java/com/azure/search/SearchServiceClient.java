@@ -85,7 +85,6 @@ public class SearchServiceClient {
     /**
      * Creates a new Azure Search datasource or updates a datasource if it already exists
      *
-     * @param dataSourceName The name of the datasource to create or update.
      * @param dataSource The definition of the datasource to create or update.
      * @param requestOptions Request options
      * @param accessCondition Access conditions
@@ -93,13 +92,11 @@ public class SearchServiceClient {
      * @return a datasource response
      */
     public DataSource createOrUpdateDataSource(
-        String dataSourceName,
         DataSource dataSource,
         RequestOptions requestOptions,
         AccessCondition accessCondition,
         Context context) {
-        return asyncClient.createOrUpdateDataSource(dataSourceName,
-            dataSource,
+        return asyncClient.createOrUpdateDataSource(dataSource,
             requestOptions,
             accessCondition,
             context).block();
@@ -108,7 +105,6 @@ public class SearchServiceClient {
     /**
      * Creates a new Azure Search datasource or updates a datasource if it already exists
      *
-     * @param dataSourceName The name of the datasource to create or update.
      * @param dataSource The definition of the datasource to create or update.
      * @param requestOptions Request options
      * @param accessCondition Access conditions
@@ -116,13 +112,11 @@ public class SearchServiceClient {
      * @return a datasource response
      */
     public Response<DataSource> createOrUpdateDataSourceWithResponse(
-        String dataSourceName,
         DataSource dataSource,
         RequestOptions requestOptions,
         AccessCondition accessCondition,
         Context context) {
-        return asyncClient.createOrUpdateDataSourceWithResponse(dataSourceName,
-            dataSource,
+        return asyncClient.createOrUpdateDataSourceWithResponse(dataSource,
             requestOptions,
             accessCondition,
             context).block();
