@@ -4,6 +4,7 @@
 package com.azure.core.util.logging;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -227,10 +228,16 @@ public class ClientLogger {
                 logger.info(format, args);
                 break;
             case WARNING_LEVEL:
-                logger.warn(format + throwableMessage, args);
+                if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
+                    format += System.lineSeparator() + throwableMessage;
+                }
+                logger.warn(format, args);
                 break;
             case ERROR_LEVEL:
-                logger.error(format + throwableMessage, args);
+                if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
+                    format += System.lineSeparator() + throwableMessage;
+                }
+                logger.error(format, args);
                 break;
             default:
                 // Don't do anything, this state shouldn't be possible.
