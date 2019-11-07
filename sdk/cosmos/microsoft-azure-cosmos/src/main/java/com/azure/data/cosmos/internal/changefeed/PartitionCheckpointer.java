@@ -14,5 +14,5 @@ public interface PartitionCheckpointer {
      * @param сontinuationToken the continuation token.
      * @return a deferred operation of this call.
      */
-    Mono<Void> checkpointPartition(String сontinuationToken);
+    Mono<Lease> checkpointPartition(String сontinuationToken);
 }

@@ -111,21 +111,17 @@ public class SessionTest extends TestSuiteBase {
             Document documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false)
                     .blockFirst().getResource();
 
-            // We send session tokens on Writes in GATEWAY mode
-            if (connectionMode == ConnectionMode.GATEWAY) {
-                assertThat(getSessionTokensInRequests()).hasSize(3 * i + 1);
-                assertThat(getSessionTokensInRequests().get(3 * i + 0)).isNotEmpty();
-            }
+            spyClient.clearCapturedRequests();
 
             spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).blockFirst();
 
-            assertThat(getSessionTokensInRequests()).hasSize(3 * i + 2);
-            assertThat(getSessionTokensInRequests().get(3 * i + 1)).isNotEmpty();
+            assertThat(getSessionTokensInRequests()).hasSize(1);
+            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
 
             spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).blockFirst();
 
-            assertThat(getSessionTokensInRequests()).hasSize(3 * i + 3);
-            assertThat(getSessionTokensInRequests().get(3 * i + 2)).isNotEmpty();
+            assertThat(getSessionTokensInRequests()).hasSize(2);
+            assertThat(getSessionTokensInRequests().get(1)).isNotEmpty();
         }
     }
 

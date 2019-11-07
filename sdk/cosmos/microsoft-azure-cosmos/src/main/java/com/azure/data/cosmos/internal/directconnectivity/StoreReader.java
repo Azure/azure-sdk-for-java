@@ -248,7 +248,11 @@ public class StoreReader {
             for (StoreResult srr : newStoreResults) {
 
                 entity.requestContext.requestChargeTracker.addCharge(srr.requestCharge);
-                BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, srr);
+                try {
+                    BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, srr);
+                } catch (Exception e) {
+                    logger.error("Unexpected failure while recording response", e);
+                }
                 if (srr.isValid) {
 
                     try {
@@ -557,7 +561,11 @@ public class StoreReader {
         });
 
         return storeResultObs.map(storeResult -> {
-            BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, storeResult);
+            try {
+                BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, storeResult);
+            } catch (Exception e) {
+                logger.error("Unexpected failure while recording response", e);
+            }
             entity.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
 
             if (storeResult.isGoneException && !storeResult.isInvalidPartitionException) {

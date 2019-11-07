@@ -379,7 +379,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     serverLease.setContinuationToken(continuationToken);
 
                     return serverLease;
-                }));
+                }))
+            .doOnError(throwable -> {
+                logger.info("Partition {} lease with token '{}' failed to checkpoint for owner '{}' with continuation token '{}'",
+                    lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getContinuationToken());
+            });
     }
 
     @Override
@@ -453,6 +457,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     private CosmosItem createItemForLease(String leaseId) {
-        return this.leaseDocumentClient.getContainerClient().getItem(leaseId, "/id");
+        return this.leaseDocumentClient.getContainerClient().getItem(leaseId, leaseId);
     }
 }
