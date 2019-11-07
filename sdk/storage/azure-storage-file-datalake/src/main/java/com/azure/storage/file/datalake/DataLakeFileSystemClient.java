@@ -212,14 +212,14 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context}
      *
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> deleteWithResponse(DataLakeRequestConditions accessConditions, Duration timeout,
+    public Response<Void> deleteWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
-        return blobContainerClient.deleteWithResponse(Transforms.toBlobRequestConditions(accessConditions),
+        return blobContainerClient.deleteWithResponse(Transforms.toBlobRequestConditions(requestConditions),
              timeout, context);
     }
 
@@ -278,15 +278,15 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context}
      * @param metadata Metadata to associate with the file system.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return blobContainerClient.setMetadataWithResponse(metadata,
-            Transforms.toBlobRequestConditions(accessConditions), timeout, context);
+            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
     }
 
     /**
@@ -350,7 +350,7 @@ public class DataLakeFileSystemClient {
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the file.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -358,12 +358,12 @@ public class DataLakeFileSystemClient {
      * to interact with the file created.
      */
     public Response<DataLakeFileClient> createFileWithResponse(String fileName, String permissions, String umask,
-        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
 
         return new SimpleResponse<>(dataLakeFileClient.createWithResponse(permissions, umask, headers, metadata,
-            accessConditions, timeout, context), dataLakeFileClient);
+            requestConditions, timeout, context), dataLakeFileClient);
     }
 
     /**
@@ -391,14 +391,14 @@ public class DataLakeFileSystemClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context}
      *
      * @param fileName Name of the file to delete.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> deleteFileWithResponse(String fileName, DataLakeRequestConditions accessConditions,
+    public Response<Void> deleteFileWithResponse(String fileName, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return getFileClient(fileName).deleteWithResponse(accessConditions, timeout, context);
+        return getFileClient(fileName).deleteWithResponse(requestConditions, timeout, context);
     }
 
     /**
@@ -431,7 +431,7 @@ public class DataLakeFileSystemClient {
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -439,12 +439,12 @@ public class DataLakeFileSystemClient {
      * used to interact with the directory created.
      */
     public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName, String permissions,
-        String umask, PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
+        String umask, PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
 
         return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata,
-            accessConditions, timeout, context), dataLakeDirectoryClient);
+            requestConditions, timeout, context), dataLakeDirectoryClient);
     }
 
     /**
@@ -473,14 +473,14 @@ public class DataLakeFileSystemClient {
      *
      * @param directoryName Name of the directory to delete.
      * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> deleteDirectoryWithResponse(String directoryName, boolean recursive,
-        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
-        return getDirectoryClient(directoryName).deleteWithResponse(recursive, accessConditions, timeout, context);
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
+        return getDirectoryClient(directoryName).deleteWithResponse(recursive, requestConditions, timeout, context);
     }
 
     BlobContainerClient getBlobContainerClient() {

@@ -3,9 +3,6 @@
 
 package com.azure.storage.file.datalake;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
-
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -23,6 +20,9 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 
 /**
@@ -127,14 +127,14 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * Docs</a></p>
      *
      * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> deleteWithResponse(boolean recursive, DataLakeRequestConditions accessConditions) {
+    public Mono<Response<Void>> deleteWithResponse(boolean recursive, DataLakeRequestConditions requestConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
-            return withContext(context -> deleteWithResponse(recursive, accessConditions, context));
+            return withContext(context -> deleteWithResponse(recursive, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -201,17 +201,17 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the file.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileAsyncClient} used to interact with the file created.
      */
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions) {
+        DataLakeRequestConditions requestConditions) {
         try {
             DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
 
-            return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, accessConditions)
+            return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
                 .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -248,12 +248,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileWithResponse#String-DataLakeRequestConditions}
      *
      * @param fileName Name of the file to delete.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    public Mono<Response<Void>> deleteFileWithResponse(String fileName, DataLakeRequestConditions accessConditions) {
+    public Mono<Response<Void>> deleteFileWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
         try {
-            return getFileAsyncClient(fileName).deleteWithResponse(accessConditions);
+            return getFileAsyncClient(fileName).deleteWithResponse(requestConditions);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -322,18 +322,18 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param umask Restricts permissions of the sub-directory to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the sub-directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the sub-directory created.
      */
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions) {
+        DataLakeRequestConditions requestConditions) {
         try {
             DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getSubDirectoryAsyncClient(subDirectoryName);
 
             return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata,
-                accessConditions).map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
+                requestConditions).map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -372,13 +372,13 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * @param directoryName Name of the sub-directory to delete.
      * @param recursive Whether or not to delete all paths beneath the sub-directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Response<Void>> deleteSubDirectoryWithResponse(String directoryName, boolean recursive,
-        DataLakeRequestConditions accessConditions) {
+        DataLakeRequestConditions requestConditions) {
         try {
-            return getSubDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, accessConditions);
+            return getSubDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -420,16 +420,16 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
-     * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
-     * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
+     * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
+     * @param destRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the directory created.
      */
     public Mono<Response<DataLakeDirectoryAsyncClient>> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions) {
+        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destRequestConditions) {
         try {
-            return withContext(context -> renameWithResponse(destinationPath, sourceAccessConditions,
-                destAccessConditions, context)).map(response -> new SimpleResponse<>(response,
+            return withContext(context -> renameWithResponse(destinationPath, sourceRequestConditions,
+                destRequestConditions, context)).map(response -> new SimpleResponse<>(response,
                     new DataLakeDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

@@ -130,14 +130,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions accessConditions) {
+    public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions requestConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
-            return withContext(context -> deleteWithResponse(null /* recursive */, accessConditions, context));
+            return withContext(context -> deleteWithResponse(null /* recursive */, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -253,32 +253,32 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param retainUncommittedData Whether or not uncommitted data is to be retained after the operation.
      * @param close Whether or not a file changed event raised indicates completion (true) or modification (false).
      * @param httpHeaders {@link PathHttpHeaders httpHeaders}
-     * @param accessConditions {@link DataLakeRequestConditions accessConditions}
+     * @param requestConditions {@link DataLakeRequestConditions requestConditions}
      *
      * @return A reactive response containing the information of the created resource.
      */
     public Mono<Response<PathInfo>> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
-        PathHttpHeaders httpHeaders, DataLakeRequestConditions accessConditions) {
+        PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> flushWithResponse(position, retainUncommittedData, close, httpHeaders,
-                accessConditions, context));
+                requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<PathInfo>> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
-        PathHttpHeaders httpHeaders, DataLakeRequestConditions accessConditions, Context context) {
+        PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions, Context context) {
 
         httpHeaders = httpHeaders == null ? new PathHttpHeaders() : httpHeaders;
-        accessConditions = accessConditions == null ? new DataLakeRequestConditions() : accessConditions;
+        requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
 
-        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(accessConditions.getLeaseId());
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
         ModifiedAccessConditions mac = new ModifiedAccessConditions()
-            .setIfMatch(accessConditions.getIfMatch())
-            .setIfNoneMatch(accessConditions.getIfNoneMatch())
-            .setIfModifiedSince(accessConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince());
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         return this.dataLakeStorage.paths().flushDataWithRestResponseAsync(null, position, retainUncommittedData, close,
             (long) 0, null, httpHeaders, lac, mac, context)
@@ -319,15 +319,15 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * @param range {@link FileRange}
      * @param options {@link DownloadRetryOptions}
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified file range should be returned.
      * @return A reactive response containing the file data.
      */
     public Mono<FileReadAsyncResponse> readWithResponse(FileRange range, DownloadRetryOptions options,
-        DataLakeRequestConditions accessConditions, boolean rangeGetContentMD5) {
+        DataLakeRequestConditions requestConditions, boolean rangeGetContentMD5) {
         try {
             return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
-                Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(accessConditions),
+                Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
                 rangeGetContentMD5).map(Transforms::toFileReadAsyncResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -368,16 +368,16 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param destinationPath Relative path from the file system to rename the file to, excludes the file system name.
      * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
-     * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
-     * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
+     * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
+     * @param destRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileAsyncClient} used to interact with the file created.
      */
     public Mono<Response<DataLakeFileAsyncClient>> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions) {
+        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destRequestConditions) {
         try {
-            return withContext(context -> renameWithResponse(destinationPath, sourceAccessConditions,
-                destAccessConditions, context)).map(response -> new SimpleResponse<>(response,
+            return withContext(context -> renameWithResponse(destinationPath, sourceRequestConditions,
+                destRequestConditions, context)).map(response -> new SimpleResponse<>(response,
                     new DataLakeFileAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

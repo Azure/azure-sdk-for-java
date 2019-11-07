@@ -68,11 +68,11 @@ public class LeaseClientJavaDocCodeSnippets {
      */
     public void acquireLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context
-        RequestConditions modifiedAccessConditions = new RequestConditions()
+        RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfModifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("Lease ID is %s%n", client
-            .acquireLeaseWithResponse(60, modifiedAccessConditions, timeout, new Context(key, value))
+            .acquireLeaseWithResponse(60, modifiedRequestConditions, timeout, new Context(key, value))
             .getValue());
         // END: com.azure.storage.file.datalake.DataLakeLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context
     }
@@ -82,11 +82,11 @@ public class LeaseClientJavaDocCodeSnippets {
      */
     public void renewLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context
-        RequestConditions modifiedAccessConditions = new RequestConditions()
+        RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("Renewed lease ID is %s%n",
-            client.renewLeaseWithResponse(modifiedAccessConditions, timeout, new Context(key, value))
+            client.renewLeaseWithResponse(modifiedRequestConditions, timeout, new Context(key, value))
                 .getValue());
         // END: com.azure.storage.file.datalake.DataLakeLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context
     }
@@ -96,11 +96,11 @@ public class LeaseClientJavaDocCodeSnippets {
      */
     public void releaseLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context
-        RequestConditions modifiedAccessConditions = new RequestConditions()
+        RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("Release lease completed with status %d%n",
-            client.releaseLeaseWithResponse(modifiedAccessConditions, timeout, new Context(key, value))
+            client.releaseLeaseWithResponse(modifiedRequestConditions, timeout, new Context(key, value))
                 .getStatusCode());
         // END: com.azure.storage.file.datalake.DataLakeLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context
     }
@@ -111,11 +111,11 @@ public class LeaseClientJavaDocCodeSnippets {
     public void breakLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context
         Integer retainLeaseInSeconds = 5;
-        RequestConditions modifiedAccessConditions = new RequestConditions()
+        RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("The broken lease has %d seconds remaining on the lease", client
-            .breakLeaseWithResponse(retainLeaseInSeconds, modifiedAccessConditions, timeout, new Context(key, value))
+            .breakLeaseWithResponse(retainLeaseInSeconds, modifiedRequestConditions, timeout, new Context(key, value))
             .getValue());
         // END: com.azure.storage.file.datalake.DataLakeLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context
     }
@@ -125,11 +125,11 @@ public class LeaseClientJavaDocCodeSnippets {
      */
     public void changeLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context
-        RequestConditions modifiedAccessConditions = new RequestConditions()
+        RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("Changed lease ID is %s%n",
-            client.changeLeaseWithResponse("proposedId", modifiedAccessConditions, timeout, new Context(key, value))
+            client.changeLeaseWithResponse("proposedId", modifiedRequestConditions, timeout, new Context(key, value))
                 .getValue());
         // END: com.azure.storage.file.datalake.DataLakeLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context
     }

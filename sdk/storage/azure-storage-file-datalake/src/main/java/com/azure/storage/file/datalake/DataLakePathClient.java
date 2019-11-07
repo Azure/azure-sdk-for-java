@@ -137,16 +137,16 @@ public class DataLakePathClient {
      * @param umask Restricts permissions of the resource to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing information about the created resource
      */
     public Response<PathInfo> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
-        Map<String, String> metadata, DataLakeRequestConditions accessConditions, Duration timeout,
+        Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
         Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(
-            permissions, umask, dataLakePathAsyncClient.pathResourceType, headers, metadata, accessConditions, context);
+            permissions, umask, dataLakePathAsyncClient.pathResourceType, headers, metadata, requestConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -180,14 +180,14 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
-        return blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(accessConditions),
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
+        return blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
             timeout, context);
     }
 
@@ -220,15 +220,15 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
      *
      * @param headers {@link PathHttpHeaders}
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
     public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers,
-        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-            Transforms.toBlobRequestConditions(accessConditions), timeout, context);
+            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
     }
 
     /**
@@ -263,15 +263,15 @@ public class DataLakePathClient {
      * @param accessControlList A list of {@link PathAccessControlEntry} objects.
      * @param group The group of the resource.
      * @param owner The owner of the resource.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource info.
      */
     public Response<PathInfo> setAccessControlListWithResponse(List<PathAccessControlEntry> accessControlList,
-        String group, String owner, DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
+        String group, String owner, DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PathInfo>> response = dataLakePathAsyncClient.setAccessControlWithResponse(accessControlList,
-            null, group, owner, accessConditions, context);
+            null, group, owner, requestConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -308,15 +308,15 @@ public class DataLakePathClient {
      * @param permissions {@link PathPermissions}
      * @param group The group of the resource.
      * @param owner The owner of the resource.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource info.
      */
     public Response<PathInfo> setPermissionsWithResponse(PathPermissions permissions, String group, String owner,
-        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PathInfo>> response = dataLakePathAsyncClient.setAccessControlWithResponse(null, permissions,
-            group, owner, accessConditions, context);
+            group, owner, requestConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -349,15 +349,15 @@ public class DataLakePathClient {
      *
      * @param returnUpn When true, user identity values returned as User Principal Names. When false, user identity
      * values returned as Azure Active Directory Object IDs. Default value is false.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource access control.
      */
     public Response<PathAccessControl> getAccessControlWithResponse(boolean returnUpn,
-        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PathAccessControl>> response = dataLakePathAsyncClient.getAccessControlWithResponse(returnUpn,
-            accessConditions, context);
+            requestConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -388,15 +388,15 @@ public class DataLakePathClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource properties and metadata.
      */
-    public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions accessConditions,
+    public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
-            Transforms.toBlobRequestConditions(accessConditions), timeout, context);
+            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
         return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
     }
 
@@ -404,33 +404,33 @@ public class DataLakePathClient {
      * Package-private rename method for use by {@link DataLakeFileClient} and {@link DataLakeDirectoryClient}
      *
      * @param destinationPath The path of the destination relative to the file system name
-     * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
-     * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
+     * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
+     * @param destRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakePathClient} used to interact with the path created.
      */
     Mono<Response<DataLakePathClient>> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions,
+        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destRequestConditions,
         Context context) {
 
-        destAccessConditions = destAccessConditions == null ? new DataLakeRequestConditions() : destAccessConditions;
-        sourceAccessConditions = sourceAccessConditions == null ? new DataLakeRequestConditions()
-            : sourceAccessConditions;
+        destRequestConditions = destRequestConditions == null ? new DataLakeRequestConditions() : destRequestConditions;
+        sourceRequestConditions = sourceRequestConditions == null ? new DataLakeRequestConditions()
+            : sourceRequestConditions;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
-            .setSourceIfModifiedSince(sourceAccessConditions.getIfModifiedSince())
-            .setSourceIfUnmodifiedSince(sourceAccessConditions.getIfUnmodifiedSince())
-            .setSourceIfMatch(sourceAccessConditions.getIfMatch())
-            .setSourceIfNoneMatch(sourceAccessConditions.getIfNoneMatch());
+            .setSourceIfModifiedSince(sourceRequestConditions.getIfModifiedSince())
+            .setSourceIfUnmodifiedSince(sourceRequestConditions.getIfUnmodifiedSince())
+            .setSourceIfMatch(sourceRequestConditions.getIfMatch())
+            .setSourceIfNoneMatch(sourceRequestConditions.getIfNoneMatch());
 
-        LeaseAccessConditions destLac = new LeaseAccessConditions().setLeaseId(destAccessConditions.getLeaseId());
+        LeaseAccessConditions destLac = new LeaseAccessConditions().setLeaseId(destRequestConditions.getLeaseId());
         ModifiedAccessConditions destMac = new ModifiedAccessConditions()
-            .setIfMatch(destAccessConditions.getIfMatch())
-            .setIfNoneMatch(destAccessConditions.getIfNoneMatch())
-            .setIfModifiedSince(destAccessConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(destAccessConditions.getIfUnmodifiedSince());
+            .setIfMatch(destRequestConditions.getIfMatch())
+            .setIfNoneMatch(destRequestConditions.getIfNoneMatch())
+            .setIfModifiedSince(destRequestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(destRequestConditions.getIfUnmodifiedSince());
 
         DataLakePathClient dataLakePathClient = getPathClient(destinationPath);
 
@@ -439,7 +439,7 @@ public class DataLakePathClient {
 
         return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(
             null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, renameSource,
-            sourceAccessConditions.getLeaseId(), null /* properties */, null /* permissions */, null /* umask */,
+            sourceRequestConditions.getLeaseId(), null /* properties */, null /* permissions */, null /* umask */,
             null /* request id */, null /* timeout */, null /* headers */, destLac, destMac, sourceConditions, context)
             .map(response -> new SimpleResponse<>(response, dataLakePathClient));
     }

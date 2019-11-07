@@ -242,16 +242,16 @@ class Transforms {
             path.getName(), path.getOwner(), path.getPermissions());
     }
 
-    static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions accessConditions) {
-        if (accessConditions == null) {
+    static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions requestConditions) {
+        if (requestConditions == null) {
             return null;
         }
         return new BlobRequestConditions()
-            .setLeaseId(accessConditions.getLeaseId())
-            .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince())
-            .setIfNoneMatch(accessConditions.getIfNoneMatch())
-            .setIfMatch(accessConditions.getIfMatch())
-            .setIfModifiedSince(accessConditions.getIfModifiedSince());
+            .setLeaseId(requestConditions.getLeaseId())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince());
 
     }
 

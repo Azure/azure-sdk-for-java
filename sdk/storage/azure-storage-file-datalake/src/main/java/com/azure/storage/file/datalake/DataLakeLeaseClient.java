@@ -88,7 +88,7 @@ public final class DataLakeLeaseClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -96,9 +96,9 @@ public final class DataLakeLeaseClient {
      * @return The lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> acquireLeaseWithResponse(int duration, RequestConditions modifiedAccessConditions,
+    public Response<String> acquireLeaseWithResponse(int duration, RequestConditions modifiedRequestConditions,
         Duration timeout, Context context) {
-        return blobLeaseClient.acquireLeaseWithResponse(duration, modifiedAccessConditions, timeout, context);
+        return blobLeaseClient.acquireLeaseWithResponse(duration, modifiedRequestConditions, timeout, context);
     }
 
     /**
@@ -122,7 +122,7 @@ public final class DataLakeLeaseClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context}
      *
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -130,9 +130,9 @@ public final class DataLakeLeaseClient {
      * @return The renewed lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> renewLeaseWithResponse(RequestConditions modifiedAccessConditions, Duration timeout,
+    public Response<String> renewLeaseWithResponse(RequestConditions modifiedRequestConditions, Duration timeout,
         Context context) {
-        return blobLeaseClient.renewLeaseWithResponse(modifiedAccessConditions, timeout, context);
+        return blobLeaseClient.renewLeaseWithResponse(modifiedRequestConditions, timeout, context);
     }
 
     /**
@@ -154,7 +154,7 @@ public final class DataLakeLeaseClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context}
      *
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -162,9 +162,9 @@ public final class DataLakeLeaseClient {
      * @return A response containing status code and HTTP headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> releaseLeaseWithResponse(RequestConditions modifiedAccessConditions, Duration timeout,
+    public Response<Void> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions, Duration timeout,
         Context context) {
-        return blobLeaseClient.releaseLeaseWithResponse(modifiedAccessConditions, timeout, context);
+        return blobLeaseClient.releaseLeaseWithResponse(modifiedRequestConditions, timeout, context);
     }
 
     /**
@@ -195,7 +195,7 @@ public final class DataLakeLeaseClient {
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
      * is used. A new lease will not be available before the break period has expired, but the lease may be held for
      * longer than the break period.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -204,8 +204,8 @@ public final class DataLakeLeaseClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Integer> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        RequestConditions modifiedAccessConditions, Duration timeout, Context context) {
-        return blobLeaseClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, timeout, context);
+        RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
+        return blobLeaseClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions, timeout, context);
     }
 
     /**
@@ -231,7 +231,7 @@ public final class DataLakeLeaseClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context}
      *
      * @param proposedId A new lease ID in a valid GUID format.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -240,8 +240,8 @@ public final class DataLakeLeaseClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> changeLeaseWithResponse(String proposedId,
-        RequestConditions modifiedAccessConditions, Duration timeout, Context context) {
-        return blobLeaseClient.changeLeaseWithResponse(proposedId, modifiedAccessConditions, timeout, context);
+        RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
+        return blobLeaseClient.changeLeaseWithResponse(proposedId, modifiedRequestConditions, timeout, context);
     }
 
     /**
