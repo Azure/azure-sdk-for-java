@@ -22,7 +22,8 @@ public class UserAgentPolicyTests {
     public void testUserAgentStringFormat() throws NoSuchFieldException, IllegalAccessException {
         ServiceVersion serviceVersion = Mockito.mock(ServiceVersion.class);
         when(serviceVersion.getVersion()).thenReturn("1.0.0");
-        UserAgentPolicy userAgentPolicy = new UserAgentPolicy("application-configuration", "1.0.0-preview.4", Configuration.getGlobalConfiguration(), serviceVersion);
+        UserAgentPolicy userAgentPolicy = new UserAgentPolicy("application-configuration",
+            "1.0.0-preview.4", Configuration.getGlobalConfiguration(), serviceVersion);
 
         Field userAgentField = userAgentPolicy.getClass().getDeclaredField("userAgent");
         userAgentField.setAccessible(true);
