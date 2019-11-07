@@ -15,6 +15,17 @@ import java.util.stream.Stream;
  * A collection of headers on an HTTP request or response.
  */
 public class HttpHeaders implements Iterable<HttpHeader> {
+
+    /**
+     * The header which will have retry after value in milliseconds.
+     */
+    public static final String AZURE_RETRY_AFTER_MS_HEADER = "retry-after-ms";
+
+    /**
+     * The header which will have retry after value in milliseconds.
+     */
+    public static final String AZURE_X_MS_RETRY_AFTER_MS_HEADER = "x-ms-retry-after-ms";
+
     private final Map<String, HttpHeader> headers = new ConcurrentHashMap<>();
 
     /**

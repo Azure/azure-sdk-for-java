@@ -25,7 +25,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 
 import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
-import static java.time.temporal.ChronoUnit.MILLIS;
+import static java.time.temporal.ChronoUnit`.MILLIS;
 
 /**
  * Implementation for {@link PartitionProcessor}.
