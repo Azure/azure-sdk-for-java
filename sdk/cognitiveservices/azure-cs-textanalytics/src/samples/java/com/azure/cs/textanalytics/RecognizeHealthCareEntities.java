@@ -3,8 +3,9 @@
 
 package com.azure.cs.textanalytics;
 
-import textanalytics.models.DocumentEntities;
-import textanalytics.models.Entity;
+
+import com.azure.cs.textanalytics.models.DocumentEntities;
+import com.azure.cs.textanalytics.models.Entity;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class RecognizeHealthCareEntities {
         // The text that need be analysed.
         String text = "Patient should take 40mg ibuprofen twice a week.";
 
-        final DocumentEntities documentEntitie = client.detectHealthCareEntities(text, "US", false);
+        final DocumentEntities documentEntitie = client.getHealthCareEntities(text, "US", false);
 
         List<Entity> entities = documentEntitie.getEntities();
         for (Entity entity : entities) {

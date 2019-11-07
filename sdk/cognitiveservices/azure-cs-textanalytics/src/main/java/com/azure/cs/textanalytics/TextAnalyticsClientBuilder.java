@@ -30,7 +30,6 @@ import java.util.Objects;
 
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder {
-//
 //    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
 //    private static final String CONTENT_TYPE_HEADER = "Content-Type";
 //    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
@@ -42,17 +41,11 @@ public final class TextAnalyticsClientBuilder {
 
     private String endpoint;
     private String connectionString;
-
-
-
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-
     private HttpPipeline httpPipeline;
-
     private Configuration configuration;
     private TextAnalyticsServiceVersion version;
-
 
     public TextAnalyticsClientBuilder() {
         policies = new ArrayList<>();

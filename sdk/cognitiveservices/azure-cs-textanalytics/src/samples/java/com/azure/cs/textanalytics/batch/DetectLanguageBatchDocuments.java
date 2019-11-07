@@ -3,13 +3,14 @@
 
 package com.azure.cs.textanalytics.batch;
 
+import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import textanalytics.models.DetectedLanguage;
-import textanalytics.models.DocumentLanguage;
-import textanalytics.models.LanguageBatchInput;
-import textanalytics.models.LanguageInput;
-import textanalytics.models.LanguageResult;
+import com.azure.cs.textanalytics.models.DetectedLanguage;
+import com.azure.cs.textanalytics.models.DocumentLanguage;
+import com.azure.cs.textanalytics.models.LanguageBatchInput;
+import com.azure.cs.textanalytics.models.LanguageInput;
+import com.azure.cs.textanalytics.models.LanguageResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +40,10 @@ public class DetectLanguageBatchDocuments {
 
 
         // Detecting language from a batch of documents
-        LanguageResult detectedResult = client.detectLanguageBatch(batchInput, false);
+        LanguageResult detectedResult = client.getLanguageWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentLanguage> documentLanguages = detectedResult.getDocuments();
         for (DocumentLanguage documentLanguage : documentLanguages) {
-            List<DetectedLanguage> detectedLanguages = documentLanguage.getDetectedLanguage();
+            List<DetectedLanguage> detectedLanguages = documentLanguage.getDetectedLanguages();
             for (DetectedLanguage detectedLanguage : detectedLanguages) {
                 System.out.println(String.format("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
                     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));

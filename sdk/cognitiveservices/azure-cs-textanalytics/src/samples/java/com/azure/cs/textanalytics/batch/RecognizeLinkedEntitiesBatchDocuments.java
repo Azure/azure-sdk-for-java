@@ -6,11 +6,11 @@ package com.azure.cs.textanalytics.batch;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import textanalytics.models.DocumentLinkedEntities;
-import textanalytics.models.EntityLinkingResult;
-import textanalytics.models.LinkedEntity;
-import textanalytics.models.MultiLanguageBatchInput;
-import textanalytics.models.MultiLanguageInput;
+import com.azure.cs.textanalytics.models.DocumentLinkedEntities;
+import com.azure.cs.textanalytics.models.EntityLinkingResult;
+import com.azure.cs.textanalytics.models.LinkedEntity;
+import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
+import com.azure.cs.textanalytics.models.MultiLanguageInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
         batchInput.setDocuments(documents);
 
         // Detecting language from a batch of documents
-        EntityLinkingResult detectedResult = client.detectLinkedEntitiesBatchWithResponse(batchInput, false, Context.NONE).getValue();
+        EntityLinkingResult detectedResult = client.getLinkedEntitiesWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentLinkedEntities> documentLinkedEntities = detectedResult.getDocuments();
         for (DocumentLinkedEntities documentLinkedEntitie : documentLinkedEntities) {
             List<LinkedEntity> linkedEntities = documentLinkedEntitie.getEntities();

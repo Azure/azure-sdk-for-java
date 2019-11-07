@@ -3,8 +3,9 @@
 
 package com.azure.cs.textanalytics;
 
-import textanalytics.models.DocumentEntities;
-import textanalytics.models.Entity;
+
+import com.azure.cs.textanalytics.models.DocumentEntities;
+import com.azure.cs.textanalytics.models.Entity;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class RecognizeEntities {
         // The text that need be analysed.
         String text = "Satya Nadella is the CEO of Microsoft";
 
-        final DocumentEntities documentEntitie = client.detectEntities(text, "US", false);
+        final DocumentEntities documentEntitie = client.getEntities(text, "US", false);
 
         List<Entity> entities = documentEntitie.getEntities();
         for (Entity entity : entities) {

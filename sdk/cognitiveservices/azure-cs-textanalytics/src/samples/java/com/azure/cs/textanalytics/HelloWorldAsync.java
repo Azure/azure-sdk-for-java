@@ -3,8 +3,9 @@
 
 package com.azure.cs.textanalytics;
 
-import textanalytics.models.DetectedLanguage;
-import textanalytics.models.DocumentLanguage;
+
+import com.azure.cs.textanalytics.models.DetectedLanguage;
+import com.azure.cs.textanalytics.models.DocumentLanguage;
 
 import java.util.List;
 
@@ -23,10 +24,10 @@ public class HelloWorldAsync {
         // The text that need be analysed.
         String text = "hello world";
 
-        client.detectLanguage(text, "US", false).subscribe(
+        client.getLanguage(text, "US", false).subscribe(
             result -> {
               DocumentLanguage detectedLanguageResult = result;
-              List<DetectedLanguage> detectedLanguages = detectedLanguageResult.getDetectedLanguage();
+              List<DetectedLanguage> detectedLanguages = detectedLanguageResult.getDetectedLanguages();
               for (DetectedLanguage detectedLanguage : detectedLanguages) {
                   System.out.println(String.format("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
                       detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));

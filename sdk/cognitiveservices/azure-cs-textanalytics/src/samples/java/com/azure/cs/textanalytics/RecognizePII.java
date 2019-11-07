@@ -3,8 +3,8 @@
 
 package com.azure.cs.textanalytics;
 
-import textanalytics.models.DocumentEntities;
-import textanalytics.models.Entity;
+import com.azure.cs.textanalytics.models.DocumentEntities;
+import com.azure.cs.textanalytics.models.Entity;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class RecognizePII {
         // The text that need be analysed.
         String text = "My SSN is 555-55-5555";
 
-        final DocumentEntities documentEntitie = client.detectPIIEntities(text, "US", false);
+        final DocumentEntities documentEntitie = client.getPIIEntities(text, "US", false);
 
         List<Entity> entities = documentEntitie.getEntities();
         for (Entity entity : entities) {

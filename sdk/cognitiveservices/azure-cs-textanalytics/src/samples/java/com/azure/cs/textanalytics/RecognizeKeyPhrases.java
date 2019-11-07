@@ -3,7 +3,8 @@
 
 package com.azure.cs.textanalytics;
 
-import textanalytics.models.DocumentKeyPhrases;
+import com.azure.cs.textanalytics.models.DocumentKeyPhrases;
+
 import java.util.List;
 
 public class RecognizeKeyPhrases {
@@ -22,7 +23,7 @@ public class RecognizeKeyPhrases {
         String text = "My cat might need to see a veterinarian";
 
         // Detecting language from a batch of documents
-        DocumentKeyPhrases detectedResult = client.detectKeyPhrases(text, "US", false);
+        DocumentKeyPhrases detectedResult = client.getKeyPhrases(text, "US", false);
         List<String> phrases = detectedResult.getKeyPhrases();
         for (String phrase : phrases) {
             System.out.println(String.format("Recognized Phrases: %s", phrase));

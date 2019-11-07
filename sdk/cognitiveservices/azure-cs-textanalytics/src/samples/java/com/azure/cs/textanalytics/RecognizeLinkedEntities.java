@@ -3,8 +3,8 @@
 
 package com.azure.cs.textanalytics;
 
-import textanalytics.models.DocumentLinkedEntities;
-import textanalytics.models.LinkedEntity;
+import com.azure.cs.textanalytics.models.DocumentLinkedEntities;
+import com.azure.cs.textanalytics.models.LinkedEntity;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class RecognizeLinkedEntities {
         // The text that need be analysed.
         String text = "Old Faithful is a geyser at Yellowstone Park";
 
-        DocumentLinkedEntities detectedResult = client.detectLinkedEntities(text, "US", false);
+        DocumentLinkedEntities detectedResult = client.getLinkedEntities(text, "US", false);
         List<LinkedEntity> linkedEntities = detectedResult.getEntities();
         for (LinkedEntity linkedEntity : linkedEntities) {
             System.out.println(String.format("Recognized Linked Entity: %s, URL: %s, Data Source: %s",

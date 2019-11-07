@@ -6,10 +6,10 @@ package com.azure.cs.textanalytics.batch;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import textanalytics.models.DocumentKeyPhrases;
-import textanalytics.models.KeyPhraseResult;
-import textanalytics.models.MultiLanguageBatchInput;
-import textanalytics.models.MultiLanguageInput;
+import com.azure.cs.textanalytics.models.DocumentKeyPhrases;
+import com.azure.cs.textanalytics.models.KeyPhraseResult;
+import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
+import com.azure.cs.textanalytics.models.MultiLanguageInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class RecognizeKeyPhrasesBatchDocuments {
 
 
         // Detecting language from a batch of documents
-        KeyPhraseResult detectedResult = client.detectKeyPhrasesBatchWithResponse(batchInput, false, Context.NONE).getValue();
+        KeyPhraseResult detectedResult = client.getKeyPhrasesWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentKeyPhrases> documentKeyPhrasesList = detectedResult.getDocuments();
         for (DocumentKeyPhrases documentKeyPhrases : documentKeyPhrasesList) {
             List<String> phrases = documentKeyPhrases.getKeyPhrases();

@@ -6,11 +6,11 @@ package com.azure.cs.textanalytics.batch;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import textanalytics.models.DocumentEntities;
-import textanalytics.models.EntitiesResult;
-import textanalytics.models.Entity;
-import textanalytics.models.MultiLanguageBatchInput;
-import textanalytics.models.MultiLanguageInput;
+import com.azure.cs.textanalytics.models.DocumentEntities;
+import com.azure.cs.textanalytics.models.EntitiesResult;
+import com.azure.cs.textanalytics.models.Entity;
+import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
+import com.azure.cs.textanalytics.models.MultiLanguageInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class RecognizeHealthCareEntitiesBatchDocuments {
 
 
         // Detecting language from a batch of documents
-        EntitiesResult detectedResult = client.detectHealthCareEntitiesBatchWithResponse(batchInput, false, Context.NONE).getValue();
+        EntitiesResult detectedResult = client.getHealthCareEntitiesWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentEntities> documentEntities = detectedResult.getDocuments();
         for (DocumentEntities documentEntitie : documentEntities) {
             List<Entity> entities = documentEntitie.getEntities();

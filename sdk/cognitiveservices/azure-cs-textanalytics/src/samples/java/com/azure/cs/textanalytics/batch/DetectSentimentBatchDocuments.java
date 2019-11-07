@@ -6,11 +6,11 @@ package com.azure.cs.textanalytics.batch;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import textanalytics.models.DocumentSentiment;
-import textanalytics.models.MultiLanguageBatchInput;
-import textanalytics.models.MultiLanguageInput;
-import textanalytics.models.SentenceSentiment;
-import textanalytics.models.SentimentResponse;
+import com.azure.cs.textanalytics.models.DocumentSentiment;
+import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
+import com.azure.cs.textanalytics.models.MultiLanguageInput;
+import com.azure.cs.textanalytics.models.SentenceSentiment;
+import com.azure.cs.textanalytics.models.SentimentResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class DetectSentimentBatchDocuments {
         batchInput.setDocuments(documents);
 
         // Detecting language from a batch of documents
-        SentimentResponse detectedResult = client.detectSentimentBatchWithResponse(batchInput, false, Context.NONE).getValue();
+        SentimentResponse detectedResult = client.getSentimentWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentSentiment> documentSentiments = detectedResult.getDocuments();
         for (DocumentSentiment documentSentiment : documentSentiments) {
             final String sentiment = documentSentiment.getSentiment();

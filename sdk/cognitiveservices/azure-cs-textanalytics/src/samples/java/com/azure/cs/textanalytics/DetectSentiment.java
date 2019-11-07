@@ -3,7 +3,7 @@
 
 package com.azure.cs.textanalytics;
 
-import textanalytics.models.DocumentSentiment;
+import com.azure.cs.textanalytics.models.DocumentSentiment;
 
 public class DetectSentiment {
 
@@ -20,7 +20,7 @@ public class DetectSentiment {
         String text = "The hotel was dark and unclean.";
 
         // Detecting sentiment form a single text
-        DocumentSentiment documentSentiment = client.detectSentiment(text, "US", false);
+        DocumentSentiment documentSentiment = client.getSentiment(text, "US", false);
         final String sentiment = documentSentiment.getSentiment();
         final Double documentScore = (Double) documentSentiment.getDocumentScores();
         System.out.println(String.format("Recognized Sentiment: %s, Document Score: %s", sentiment, documentScore));
