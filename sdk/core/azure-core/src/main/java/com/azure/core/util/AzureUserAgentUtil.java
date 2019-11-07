@@ -41,12 +41,14 @@ public class AzureUserAgentUtil {
         String name = UNKNOWN_NAME;
         try (InputStream inputStream = AzureUserAgentUtil.class.getClassLoader()
             .getResourceAsStream(propertiesFileName)) {
-            Properties properties = new Properties();
-            properties.load(inputStream);
-            version = properties.getProperty(VERSION_PROPERTY, UNKNOWN_VERSION);
-            name = properties.getProperty(NAME_PROPERTY, UNKNOWN_NAME);
-            logger.info("User agent properties: name = " + name + ", version = " + version + ", properties file = "
-                + propertiesFileName);
+            if (inputStream != null) {
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                version = properties.getProperty(VERSION_PROPERTY, UNKNOWN_VERSION);
+                name = properties.getProperty(NAME_PROPERTY, UNKNOWN_NAME);
+                logger.info("User agent properties: name = " + name + ", version = " + version + ", properties file = "
+                    + propertiesFileName);
+            }
         } catch (IOException ex) {
             logger.warning("Failed to get user agent properties from " + propertiesFileName, ex);
         }
