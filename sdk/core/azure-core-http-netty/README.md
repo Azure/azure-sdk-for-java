@@ -62,4 +62,4 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core-http-netty/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-netty%2FREADME.png)
