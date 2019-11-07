@@ -64,9 +64,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
      * @param retryAfterHeader The retry after http header name to be used get retry after value from
-     * {@link HttpResponse}.
+     * {@link HttpResponse}. The value {@code null} is valid.
      * @param retryAfterTimeUnit The time unit to use while applying retry based on value specified in
-     * {@code retryAfterHeader} in {@link HttpResponse}.
+     * {@code retryAfterHeader} in {@link HttpResponse}.The value {@code null} is valid only in case when
+     * {@code retryAfterHeader} is empty or {@code null}.
      * @throws NullPointerException if {@code retryStrategy} is {@code null}.
      */
     public RetryPolicy(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
