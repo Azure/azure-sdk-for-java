@@ -61,6 +61,7 @@ class BootstrapperImpl implements Bootstrapper {
                 if (initialized) {
                     return Mono.empty();
                 } else {
+                    logger.info("Acquire initialization lock");
                     return this.leaseStore.acquireInitializationLock(this.lockTime)
                         .flatMap(lockAcquired -> {
                             this.isLockAcquired = lockAcquired;
@@ -74,7 +75,7 @@ class BootstrapperImpl implements Bootstrapper {
                             }
                         })
                         .onErrorResume(throwable -> {
-                            logger.warn("Unexpected exception caught", throwable);
+                            logger.warn("Unexpected exception caught while initializing the lock", throwable);
                             return Mono.just(this.isLockAcquired);
                         })
                         .flatMap(lockAcquired -> {
