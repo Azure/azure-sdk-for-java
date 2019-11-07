@@ -19,7 +19,7 @@ documentation][api_documentation] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-preview.5</version>
+  <version>1.0.0-preview.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -38,7 +38,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opencensus</artifactId>
-    <version>1.0.0-preview.5</version>
+    <version>1.0.0-preview.4</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -54,7 +54,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.1.0-preview.1</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -230,4 +230,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [opencensus-quickstart]: https://opencensus.io/quickstart/java/tracing/
 [zipkin-quickstart]: https://zipkin.io/pages/quickstart
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core-tracing-opencensus/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-tracing-opencensus%2FREADME.png)

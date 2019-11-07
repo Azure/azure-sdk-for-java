@@ -25,6 +25,6 @@ public class AzureTests {
 //                .build();
 //        HttpBinService service = RestProxy.create(HttpBinService.class, client);
 //
-//        Assert.assertEquals("http://vault1.vault.azure.net/secrets/{secretName}", service.getSecret("http://vault1.vault.azure.net", "secret1"));
+//        Assertions.assertEquals("http://vault1.vault.azure.net/secrets/{secretName}", service.getSecret("http://vault1.vault.azure.net", "secret1"));
 //    }
 }

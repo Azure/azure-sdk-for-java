@@ -10,8 +10,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -39,7 +39,7 @@ public class RetryPolicyTests {
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
 
-        Assert.assertEquals(501, response.getStatusCode());
+        Assertions.assertEquals(501, response.getStatusCode());
     }
 
     @Test
@@ -51,7 +51,7 @@ public class RetryPolicyTests {
 
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    Assert.assertTrue(count++ < maxRetries);
+                    Assertions.assertTrue(count++ < maxRetries);
                     return Mono.just(new MockHttpResponse(request, 500));
                 }
             })
@@ -61,7 +61,7 @@ public class RetryPolicyTests {
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
 
-        Assert.assertEquals(500, response.getStatusCode());
+        Assertions.assertEquals(500, response.getStatusCode());
     }
 
     @Test
@@ -76,9 +76,9 @@ public class RetryPolicyTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (count > 0) {
-                        Assert.assertTrue(System.currentTimeMillis() >= previousAttemptMadeAt + delayMillis);
+                        Assertions.assertTrue(System.currentTimeMillis() >= previousAttemptMadeAt + delayMillis);
                     }
-                    Assert.assertTrue(count++ < maxRetries);
+                    Assertions.assertTrue(count++ < maxRetries);
                     previousAttemptMadeAt = System.currentTimeMillis();
                     return Mono.just(new MockHttpResponse(request, 500));
                 }
@@ -108,9 +108,9 @@ public class RetryPolicyTests {
                         long requestMadeAt = System.currentTimeMillis();
                         long expectedToBeMadeAt =
                             previousAttemptMadeAt + ((1 << (count - 1)) * (long) (baseDelayMillis * 0.95));
-                        Assert.assertTrue(requestMadeAt >= expectedToBeMadeAt);
+                        Assertions.assertTrue(requestMadeAt >= expectedToBeMadeAt);
                     }
-                    Assert.assertTrue(count++ < maxRetries);
+                    Assertions.assertTrue(count++ < maxRetries);
                     previousAttemptMadeAt = System.currentTimeMillis();
                     return Mono.just(new MockHttpResponse(request, 503));
                 }

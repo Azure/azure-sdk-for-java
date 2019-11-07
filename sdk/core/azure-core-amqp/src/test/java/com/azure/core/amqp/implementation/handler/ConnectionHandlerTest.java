@@ -9,10 +9,10 @@ import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
@@ -43,13 +43,13 @@ public class ConnectionHandlerTest {
     @Captor
     private ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         argumentCaptor = null;
@@ -65,22 +65,21 @@ public class ConnectionHandlerTest {
         expected.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
         // Assert
-        Assert.assertEquals(HOSTNAME, handler.getHostname());
-        Assert.assertEquals(MAX_FRAME_SIZE, handler.getMaxFrameSize());
-        Assert.assertEquals(AMQPS_PORT, handler.getProtocolPort());
+        Assertions.assertEquals(HOSTNAME, handler.getHostname());
+        Assertions.assertEquals(MAX_FRAME_SIZE, handler.getMaxFrameSize());
+        Assertions.assertEquals(AMQPS_PORT, handler.getProtocolPort());
 
         final Map<String, Object> properties = handler.getConnectionProperties();
         expected.forEach((key, value) -> {
-            Assert.assertTrue(properties.containsKey(key));
+            Assertions.assertTrue(properties.containsKey(key));
 
             final Object actual = properties.get(key);
 
-            Assert.assertTrue(actual instanceof String);
-            Assert.assertEquals(value, actual);
+            Assertions.assertTrue(actual instanceof String);
+            Assertions.assertEquals(value, actual);
         });
 
-        Assert.assertTrue("Expected the USER_AGENT string to be there.",
-            properties.containsKey(USER_AGENT.toString()));
+        Assertions.assertTrue(properties.containsKey(USER_AGENT.toString()), "Expected the USER_AGENT string to be there.");
     }
 
     @Test
@@ -125,16 +124,16 @@ public class ConnectionHandlerTest {
 
         verify(connection).setProperties(argumentCaptor.capture());
         Map<Symbol, Object> actualProperties = argumentCaptor.getValue();
-        Assert.assertEquals(expectedProperties.size(), actualProperties.size());
+        Assertions.assertEquals(expectedProperties.size(), actualProperties.size());
         expectedProperties.forEach((key, value) -> {
             final Symbol symbol = Symbol.getSymbol(key);
             final Object removed = actualProperties.remove(symbol);
-            Assert.assertNotNull(removed);
+            Assertions.assertNotNull(removed);
 
             final String expected = String.valueOf(value);
             final String actual = String.valueOf(removed);
-            Assert.assertEquals(expected, actual);
+            Assertions.assertEquals(expected, actual);
         });
-        Assert.assertTrue(actualProperties.isEmpty());
+        Assertions.assertTrue(actualProperties.isEmpty());
     }
 }

@@ -15,7 +15,7 @@ Typically, you will not need to install or specifically depend on Azure Core, in
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
-  <version>1.1.0-preview.1</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -78,4 +78,4 @@ If you would like to become an active contributor to this project please follow 
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core%2FREADME.png)

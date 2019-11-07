@@ -102,3 +102,6 @@ Set the following two Environment variables to be able to run unit tests targeti
 
 * If you see any Build Errors - make sure the Execution Environment is set to JDK version 1.8 or higher
 
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2FREADME.png)

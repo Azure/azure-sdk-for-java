@@ -412,7 +412,13 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         return false;
                     }
                 }
-            }, true)
+                /*
+                 * Use cutBefore = true as we want to window all data under 4MB into one window.
+                 * Set the prefetch to CHUNKED_UPLOAD_REQUIREMENT in the case that there are numerous tiny buffers,
+                 * windowUntil uses a default limit of 256 and once that is hit it will trigger onComplete which causes
+                 * downstream issues.
+                 */
+            }, true, CHUNKED_UPLOAD_REQUIREMENT)
             .buffer(2)
             .next()
             .flatMap(fluxes -> {

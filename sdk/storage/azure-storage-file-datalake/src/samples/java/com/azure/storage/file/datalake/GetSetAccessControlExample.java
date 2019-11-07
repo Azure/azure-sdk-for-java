@@ -5,8 +5,13 @@ package com.azure.storage.file.datalake;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.datalake.models.PathAccessControl;
+import com.azure.storage.file.datalake.models.PathAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathPermissions;
+import com.azure.storage.file.datalake.models.RolePermissions;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -77,22 +82,30 @@ public class GetSetAccessControlExample {
         /*
          * Set access controls on the file
          */
-        PathAccessControl pathAccessControl = new PathAccessControl()
-            .setPermissions("0777");
-        fileClient.setAccessControl(pathAccessControl);
+        // Set permissions
+        PathPermissions permissions = new PathPermissions()
+            .group(new RolePermissions().execute(true).read(true))
+            .owner(new RolePermissions().execute(true).read(true).write(true))
+            .other(new RolePermissions().read(true));
+        String group = "group";
+        String owner = "owner";
+
+        fileClient.setPermissions(permissions, group, owner);
+
+        // Set access control list
+        PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
+            .entityID("entityId")
+            .permissions(new RolePermissions().read(true));
+        List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
+        pathAccessControlEntries.add(pathAccessControlEntry);
+
+        fileClient.setAccessControlList(pathAccessControlEntries, group, owner);
 
         /*
          * Get access controls on the file
          */
 
         PathAccessControl returnedAccessControl = fileClient.getAccessControl();
-
-        /*
-         * Compare set and returned access control
-         */
-        if (pathAccessControl.getPermissions().equals(returnedAccessControl.getPermissions())) {
-            throw new RuntimeException("The returned permissions do not match the uploaded permissions.");
-        }
 
         /*
          * Delete the file we created earlier.
