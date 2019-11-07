@@ -18,6 +18,8 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.cs.textanalytics.implementation.TextAnalyticsAPIBuilder;
+import com.azure.cs.textanalytics.implementation.TextAnalyticsAPIImpl;
 
 import javax.security.auth.login.Configuration;
 import java.net.MalformedURLException;
@@ -28,32 +30,37 @@ import java.util.Objects;
 
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder {
-
-    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
-    private static final String CONTENT_TYPE_HEADER = "Content-Type";
-    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    private static final String ACCEPT_HEADER = "Accept";
-    private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
+//
+//    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+//    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+//    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+//    private static final String ACCEPT_HEADER = "Accept";
+//    private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
 
     private final ClientLogger logger = new ClientLogger(TextAnalyticsClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
-    private final HttpHeaders headers;
 
     private String endpoint;
     private String connectionString;
-    private HttpLogOptions httpLogOptions;
+
+
+
     private HttpClient httpClient;
-    private HttpPipeline pipeline;
+    private HttpLogOptions httpLogOptions;
+
+    private HttpPipeline httpPipeline;
+
     private Configuration configuration;
-    private RetryPolicy retryPolicy;
+    private TextAnalyticsServiceVersion version;
+
 
     public TextAnalyticsClientBuilder() {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
-        headers = new HttpHeaders()
-            .put(ECHO_REQUEST_ID_HEADER, "true")
-            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
-            .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
+//        headers = new HttpHeaders()
+//            .put(ECHO_REQUEST_ID_HEADER, "true")
+//            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
+//            .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
 
     public TextAnalyticsClient buildClient() {
@@ -61,44 +68,57 @@ public final class TextAnalyticsClientBuilder {
     }
 
     public TextAnalyticsAsyncClient buildAsyncClient() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
-        ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
-        String buildEndpoint = getBuildEndpoint(configurationCredentials);
+        TextAnalyticsServiceVersion serviceVersion = version != null ? version : TextAnalyticsServiceVersion.getLatest();
+        // TODO: build a pipeline.
+        // (1)ConfigurationCredentialsPolicy that use the connection string,
+        // (2) AAD Token, BearerTokenAuthenticationPolicy, SasTokenCredentialPolicy
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : null;
 
-        Objects.requireNonNull(buildEndpoint);
-
-        if (pipeline != null) {
-            return new TextAnalyticsAsyncClient(buildEndpoint, pipeline);
-        }
-
-        TextAnalyticsClientCredentials buildCredential = (credential == null) ? configurationCredentials : credential;
-        if (buildCredential == null) {
-            throw logger.logExceptionAsWarning(new IllegalStateException("'credential' is required."));
-        }
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersPolicy(headers));
-        policies.add(new AddDatePolicy());
-        policies.add(new ConfigurationCredentialsPolicy(buildCredential));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-
-        policies.addAll(this.policies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+        // TODO: missing the version of the operation to use for this request.
+        TextAnalyticsAPIImpl textAnalyticsAPI = new TextAnalyticsAPIBuilder()
+            .endpoint(endpoint)
+            .pipeline(pipeline)
             .build();
 
-        return new ConfigurationAsyncClient(buildEndpoint, pipeline);
+        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion);
+//        Configuration buildConfiguration =
+//            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+//        ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
+//        String buildEndpoint = getBuildEndpoint(configurationCredentials);
+//
+//        Objects.requireNonNull(buildEndpoint);
+//
+//        if (pipeline != null) {
+//            return new TextAnalyticsAsyncClient(buildEndpoint, pipeline);
+//        }
+//
+//        TextAnalyticsClientCredentials buildCredential = (credential == null) ? configurationCredentials : credential;
+//        if (buildCredential == null) {
+//            throw logger.logExceptionAsWarning(new IllegalStateException("'credential' is required."));
+//        }
+//
+//        // Closest to API goes first, closest to wire goes last.
+//        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+//
+////        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration));
+//        policies.add(new RequestIdPolicy());
+//        policies.add(new AddHeadersPolicy(headers));
+//        policies.add(new AddDatePolicy());
+////        policies.add(new ConfigurationCredentialsPolicy(buildCredential));
+//        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+//
+//        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+//
+//        policies.addAll(this.policies);
+//        HttpPolicyProviders.addAfterRetryPolicies(policies);
+//        policies.add(new HttpLoggingPolicy(httpLogOptions));
+//
+//        HttpPipeline pipeline = new HttpPipelineBuilder()
+//            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+//            .httpClient(httpClient)
+//            .build();
+//
+//        return new ConfigurationAsyncClient(buildEndpoint, pipeline);
     }
 
     // Properties
@@ -128,31 +148,31 @@ public final class TextAnalyticsClientBuilder {
         return this;
     }
 
-    public TextAnalyticsClientBuilder httpClient(HttpClient httpClient) {
-        if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
-        }
-
-        this.httpClient = client;
-        return this;
-    }
-
-    public TextAnalyticsClientBuilder pipeline(HttpPipeline pipeline) {
-        if (this.pipeline != null && pipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
-        }
-
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    public TextAnalyticsClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    public TextAnalyticsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
-        return this;
-    }
+//    public TextAnalyticsClientBuilder httpClient(HttpClient httpClient) {
+//        if (this.httpClient != null && client == null) {
+//            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+//        }
+//
+//        this.httpClient = client;
+//        return this;
+//    }
+//
+//    public TextAnalyticsClientBuilder pipeline(HttpPipeline pipeline) {
+//        if (this.pipeline != null && pipeline == null) {
+//            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+//        }
+//
+//        this.pipeline = pipeline;
+//        return this;
+//    }
+//
+//    public TextAnalyticsClientBuilder configuration(Configuration configuration) {
+//        this.configuration = configuration;
+//        return this;
+//    }
+//
+//    public TextAnalyticsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+//        this.retryPolicy = retryPolicy;
+//        return this;
+//    }
 }
