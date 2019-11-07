@@ -946,19 +946,54 @@ public class SearchServiceClient {
     }
 
     /**
+     * Creates a new skillset in an Azure Cognitive Search service.
+     *
+     * @param skillset definition of the skillset containing one or more cognitive skills
+     *
      * @return the created Skillset.
-     * @throws NotImplementedException not implemented
      */
-    public Skillset createSkillset() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Skillset createSkillset(Skillset skillset) {
+        return asyncClient.createSkillset(skillset).block();
     }
 
     /**
-     * @return a response containing the created Skillset.
-     * @throws NotImplementedException not implemented
+     * Creates a new skillset in an Azure Cognitive Search service.
+     *
+     * @param skillset definition of the skillset containing one or more cognitive skills
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the created Skillset.
      */
-    public Response<Skillset> createSkillsetWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Skillset createSkillset(Skillset skillset, RequestOptions requestOptions) {
+        return asyncClient.createSkillset(skillset, requestOptions).block();
+    }
+
+    /**
+     * Creates a new skillset in an Azure Cognitive Search service.
+     *
+     * @param skillset definition of the skillset containing one or more cognitive skills
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the created Skillset.
+     */
+    public Skillset createSkillset(Skillset skillset, RequestOptions requestOptions, Context context) {
+        return this.createSkillsetWithResponse(skillset, requestOptions, context).getValue();
+    }
+
+    /**
+     * Creates a new skillset in an Azure Cognitive Search service.
+     *
+     * @param skillset definition of the skillset containing one or more cognitive skills
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing the created Skillset.
+     */
+    public Response<Skillset> createSkillsetWithResponse(Skillset skillset,
+                                                         RequestOptions requestOptions,
+                                                         Context context) {
+        return asyncClient.createSkillsetWithResponse(skillset, requestOptions, context).block();
     }
 
     /**

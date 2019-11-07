@@ -1079,19 +1079,48 @@ public class SearchServiceAsyncClient {
     }
 
     /**
+     * Creates a new skillset in an Azure Cognitive Search service.
+     *
+     * @param skillset definition of the skillset containing one or more cognitive skills
      * @return the created Skillset.
-     * @throws NotImplementedException not implemented
      */
-    public Mono<Skillset> createSkillset() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Skillset> createSkillset(Skillset skillset) {
+        return this.createSkillsetWithResponse(skillset, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @return a response containing the created Skillset.
-     * @throws NotImplementedException not implemented
+     * Creates a new skillset in an Azure Cognitive Search service.
+     *
+     * @param skillset definition of the skillset containing one or more cognitive skills
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the created Skillset.
      */
-    public Mono<Response<Skillset>> createSkillsetWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Skillset> createSkillset(Skillset skillset, RequestOptions requestOptions) {
+        return this.createSkillsetWithResponse(skillset, requestOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new skillset in an Azure Cognitive Search service.
+     *
+     * @param skillset definition of the skillset containing one or more cognitive skills
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing the created Skillset.
+     */
+    public Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions) {
+        return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
+    }
+
+    Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset,
+                                                        RequestOptions requestOptions,
+                                                        Context context) {
+        return restClient
+            .skillsets()
+            .createWithRestResponseAsync(skillset, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**
