@@ -156,9 +156,10 @@ For more information on opentelemetry Java support for tracing, see [opentelemet
 ### Samples
 Several Java SDK samples are available to you in the SDKs GitHub repository. 
 These following samples provide example code for additional scenarios commonly encountered while working with Tracing:
-* [SetConfigurationSetting][sample_app_config] - Tracing enabled Sample for setting a configuration setting using [azure-data-app-configuration][azure_app_data_configuration].
-* [ListKeyVault Secrets][sample_key_vault] - Tracing enabled sample for creating and listing secrets of a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets].
+* [Set Configuration Setting][sample_app_config] - Tracing enabled Sample for setting a configuration setting using [azure-data-app-configuration][azure_data_app_configuration].
+* [List Key Vault Secrets][sample_key_vault] - Tracing enabled sample for creating and listing secrets of a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets].
 * [Publish Events][sample_eventhubs] - Tracing enabled sample for publishing multiple events using [azure-messaging-eventhubs][azure_messaging_eventhubs_mvn].
+* [Async List Key Vault Secrets][sample_async_key_vault] - Tracing enabled sample for asynchronously creating and listing secrets of a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets].
 
 ### Additional Documentation
 For more extensive documentation on OpenTelemetry, see the [API reference documentation][opentelemetry].
@@ -172,7 +173,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- Links -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
-[azure_data_app_configuration]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration/1.0.0-preview.6/jar
+[azure_data_app_configuration]: https://mvnrepository.com/artifact/com.azure/azure-data-appconfiguration/
 [azure-security-keyvault-secrets]: ../../keyvault/azure-security-keyvault-secrets
 [azure_keyvault_secrets]: https://mvnrepository.com/artifact/com.azure/azure-security-keyvault-secrets
 [azure-messaging-eventhubs]: ../../eventhubs/azure-messaging-eventhubs
@@ -184,6 +185,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [api_documentation]: https://aka.ms/java-docs
 [sample_app_config]: ./src/samples/CreateConfigurationSettingTracingSample.md
 [sample_key_vault]: ./src/samples/ListKeyVaultSecretsTracingSample.md
+[sample_async_key_vault]: ./src/samples/AsyncListKeyVaultSecretsSample.md
 [sample_eventhubs]: ./src/samples/PublishEventsTracingSample.md
 [samples]: ./src/samples/
 [opentelemetry]: https://github.com/open-telemetry/opentelemetry-java

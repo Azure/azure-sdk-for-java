@@ -28,8 +28,8 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
         <version>0.2.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
-
 ```
+
 #### Sample demonstrates tracing when creating and listing secrets from a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets] client library.
 ```java
 import com.azure.core.util.Context;

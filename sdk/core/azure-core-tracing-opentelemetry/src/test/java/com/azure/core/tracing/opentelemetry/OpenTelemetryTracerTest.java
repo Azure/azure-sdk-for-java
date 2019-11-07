@@ -6,10 +6,10 @@ package com.azure.core.tracing.opentelemetry;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.OpenTelemetry;
-import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.trace.AttributeValue;
 import io.opentelemetry.trace.Span;
+import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.SpanId;
 import io.opentelemetry.trace.Tracer;
 import org.junit.After;
@@ -29,7 +29,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
- * Tests OpenTelemetry tracing package using opentelemetry-impl
+ * Tests Azure-OpenTelemetry tracing package using opentelemetry-sdk
  */
 public class OpenTelemetryTracerTest {
     private static final String METHOD_NAME = "Azure.eventhubs.send";
@@ -40,7 +40,6 @@ public class OpenTelemetryTracerTest {
     private Tracer tracer;
     private Context tracingContext;
     private Span parentSpan;
-    private Scope scope;
 
     @Before
     public void setUp() {
@@ -50,7 +49,7 @@ public class OpenTelemetryTracerTest {
         tracer = OpenTelemetry.getTracerFactory().get("TracerSdkTest");
         // Start user parent span.
         parentSpan = tracer.spanBuilder(PARENT_SPAN_KEY).startSpan();
-        scope = tracer.withSpan(parentSpan);
+        tracer.withSpan(parentSpan);
         // Add parent span to tracingContext
         tracingContext = new Context(PARENT_SPAN_KEY, parentSpan);
     }
@@ -174,11 +173,14 @@ public class OpenTelemetryTracerTest {
     @Test
     public void startProcessSpanWithRemoteParent() {
         // Arrange
-        scope.close();
         final Span testSpan = tracer.spanBuilder("child-span").startSpan();
-        tracer.withSpan(testSpan);
         final SpanId testSpanId = testSpan.getContext().getSpanId();
-        final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getContext());
+        final SpanContext spanContext = SpanContext.createFromRemoteParent(
+            testSpan.getContext().getTraceId(),
+            testSpan.getContext().getSpanId(),
+            testSpan.getContext().getTraceFlags(),
+            testSpan.getContext().getTracestate());
+        final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, spanContext);
 
         // Act
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, traceContext, ProcessKind.PROCESS);
@@ -271,15 +273,14 @@ public class OpenTelemetryTracerTest {
         Assert.assertEquals(METHOD_NAME, recordEventsSpan.getName());
 
         // verify span started with explicit parent
-        // TODO: PR open - https://github.com/open-telemetry/opentelemetry-java/pull/656
-        // Assert.assertFalse(recordEventsSpan.toSpanData().getHasRemoteParent());
+        Assert.assertFalse(recordEventsSpan.toSpanData().getHasRemoteParent());
         Assert.assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
     }
 
     private static void assertSpanWithRemoteParent(Context updatedContext, SpanId parentSpanId) {
         Assert.assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
 
-        // verify instance created of openTelemetry-impl (test impl), span implementation
+        // verify instance created of opentelemetry-sdk (test impl), span implementation
         Assert.assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
 
         // verify span created with provided name and kind server
@@ -289,8 +290,7 @@ public class OpenTelemetryTracerTest {
         Assert.assertEquals(Span.Kind.SERVER, recordEventsSpan.toSpanData().getKind());
 
         // verify span started with remote parent
-        // TODO: PR open - https://github.com/open-telemetry/opentelemetry-java/pull/656
-        // Assert.assertTrue(recordEventsSpan.toSpanData().getHasRemoteParent());
+        Assert.assertTrue(recordEventsSpan.toSpanData().getHasRemoteParent());
         Assert.assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
     }
 }
