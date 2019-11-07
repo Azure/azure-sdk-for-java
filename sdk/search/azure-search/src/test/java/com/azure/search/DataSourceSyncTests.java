@@ -149,6 +149,54 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
+        // Create a data source
+        DataSource dataSource = createTestBlobDataSource(null);
+        client.createOrUpdateDataSource(dataSource);
+
+        String dataSourceName = dataSource.getName();
+
+        // Delete the data source
+        client.deleteDataSource(
+            dataSourceName,
+            null,
+            generateIfExistsAccessCondition()
+        );
+
+        // Try to delete the data source again and verify the exception:
+        assertException(
+            () -> client.deleteDataSource(
+                dataSourceName,
+                null,
+                generateIfExistsAccessCondition()),
+            HttpResponseException.class,
+            "The precondition given in one of the request headers evaluated to false");
+    }
+
+    @Override
+    public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
+        // Create a data source and save its eTag
+        DataSource dataSourceOrig = createTestBlobDataSource(null);
+        String dataSourceName = dataSourceOrig.getName();
+
+        String eTagOrig = client.createOrUpdateDataSource(dataSourceOrig).getETag();
+
+        // update the data source with the changed description, and save the updated eTag:
+        String eTagUpdate = client.createOrUpdateDataSource(
+            dataSourceOrig.setDescription("changedDescription")
+        ).getETag();
+
+        // Try to delete the data source with the original eTag, and verify the exception
+        assertException(
+            () -> client.deleteDataSource(dataSourceName, null, generateIfMatchAccessCondition(eTagOrig)),
+            HttpResponseException.class,
+            "The precondition given in one of the request headers evaluated to false");
+
+        // Delete the data source with the updated eTag:
+        client.deleteDataSource(dataSourceName, null, generateIfMatchAccessCondition(eTagUpdate));
+    }
+
+    @Override
     public void createDataSourceReturnsCorrectDefinition() {
         SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy()

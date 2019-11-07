@@ -142,6 +142,65 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
+        // Create a data source
+        DataSource dataSource = createTestBlobDataSource(null);
+        client.createOrUpdateDataSource(dataSource).block();
+
+        String dataSourceName = dataSource.getName();
+
+        // Delete the data source
+        client.deleteDataSource(
+            dataSourceName,
+            null,
+            generateIfExistsAccessCondition())
+            .block();
+
+        // Try to delete the data source again, and verify the exception
+        StepVerifier
+            .create(client.deleteDataSource(dataSourceName, null, generateIfExistsAccessCondition()))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(
+                    HttpResponseStatus.PRECONDITION_FAILED.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage()
+                    .contains("The precondition given in one of the request headers evaluated to false"));
+            });
+    }
+
+    @Override
+    public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
+        // Create a data source and save its eTag
+        DataSource dataSourceOrig = createTestBlobDataSource(null);
+        String dataSourceName = dataSourceOrig.getName();
+
+        String eTagOrig = client.createOrUpdateDataSource(dataSourceOrig)
+            .block().getETag();
+
+        // update the data source with the changed description, and save the updated eTag:
+        String eTagUpdate = client.createOrUpdateDataSource(
+            dataSourceOrig.setDescription("changedDescription")
+        ).block().getETag();
+
+        // Try to delete the data source with the original eTag, and verify the exception
+        StepVerifier
+            .create(
+                client.deleteDataSource(dataSourceName, null, generateIfMatchAccessCondition(eTagOrig))
+            ).verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(
+                    HttpResponseStatus.PRECONDITION_FAILED.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage()
+                    .contains("The precondition given in one of the request headers evaluated to false"));
+            });
+
+        // Delete the data source with the updated eTag:
+        client.deleteDataSource(dataSourceName, null, generateIfMatchAccessCondition(eTagUpdate)).block();
+    }
+
+    @Override
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         DataSource dataSource = createTestSqlDataSource(null, null);
         dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
@@ -207,12 +266,14 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         createGetAndValidateDataSource(createTestSqlDataSource(null, null));
         createGetAndValidateDataSource(createTestCosmosDbDataSource(null, false));
     }
+
     private void createGetAndValidateDataSource(DataSource expectedDataSource) {
         client.createOrUpdateDataSource(expectedDataSource).block();
         String dataSourceName = expectedDataSource.getName();
         DataSource actualDataSource = client.getDataSource(dataSourceName).block();
 
-        expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
+        expectedDataSource.setCredentials(
+            new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
         client.deleteDataSource(dataSourceName).block();
@@ -228,7 +289,9 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .verifyErrorSatisfies(
                 error -> {
                     assertEquals(HttpResponseException.class, error.getClass());
-                    assertEquals(HttpResponseStatus.NOT_FOUND.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                    assertEquals(
+                        HttpResponseStatus.NOT_FOUND.code(),
+                        ((HttpResponseException) error).getResponse().getStatusCode());
                 }
             );
     }

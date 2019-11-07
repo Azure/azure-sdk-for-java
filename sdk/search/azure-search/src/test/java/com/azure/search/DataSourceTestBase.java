@@ -60,6 +60,12 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     public abstract void getDataSourceThrowsOnNotFound();
 
     @Test
+    public abstract void deleteDataSourceIfExistsWorksOnlyWhenResourceExists();
+
+    @Test
+    public abstract void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource();
+
+    @Test
     public void canUpdateConnectionData() {
         // Note: since connection string is not returned when queried from the service, actually saving the
         // datasource, retrieving it and verifying the change, won't work.
