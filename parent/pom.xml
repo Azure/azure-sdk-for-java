@@ -118,7 +118,7 @@
     <netty.version>4.1.42.Final</netty.version>
     <okhttp.version>4.2.2</okhttp.version>
     <async-http-client.version>2.10.4</async-http-client.version>
-    <opencensus.version>0.20.0</opencensus.version>
+    <opencensus.version>0.24.0</opencensus.version>
     <rxjava.version>1.2.4</rxjava.version>
     <guava.version>24.1.1-jre</guava.version>
     <azure-annotations.version>1.7.0</azure-annotations.version>
