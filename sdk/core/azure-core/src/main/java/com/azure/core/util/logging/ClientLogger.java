@@ -192,8 +192,8 @@ public class ClientLogger {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(LoggingConfiguration loggingConfiguration, String format, Object... args) {
-        // Only log if the level is enabled.
-        if (loggingConfiguration.canLog()) {
+        // Only log if we are able.
+        if (!loggingConfiguration.canLog()) {
             return;
         }
 

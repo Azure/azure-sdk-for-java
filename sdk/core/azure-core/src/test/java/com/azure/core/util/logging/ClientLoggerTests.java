@@ -5,21 +5,26 @@ package com.azure.core.util.logging;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link ClientLogger}.
  */
 public class ClientLoggerTests {
+    private static final String PARAMETERIZED_TEST_NAME_TEMPLATE = "[" + ParameterizedTest.INDEX_PLACEHOLDER +
+        "] " + ParameterizedTest.DISPLAY_NAME_PLACEHOLDER;
+
     private static final String SLF4J_LOG_FILE_PROPERTY = "org.slf4j.simpleLogger.logFile";
     private static final String SLF4J_CACHED_STREAM_PROPERTY = "org.slf4j.simpleLogger.cacheOutputStream";
     private static final String SLF4J_TEST_LOG_FILE = "System.out";
@@ -31,22 +36,26 @@ public class ClientLoggerTests {
 
     private ByteArrayOutputStream logCaptureStream;
 
-    @Before
+    @BeforeEach
     public void setupLoggingConfiguration() {
         originalLogFile = System.getProperty(SLF4J_LOG_FILE_PROPERTY);
-        originalCachedOutputStream = System.getProperty(SLF4J_CACHED_STREAM_PROPERTY);
         System.setProperty(SLF4J_LOG_FILE_PROPERTY, SLF4J_TEST_LOG_FILE);
+
+        originalCachedOutputStream = System.getProperty(SLF4J_CACHED_STREAM_PROPERTY);
         System.setProperty(SLF4J_CACHED_STREAM_PROPERTY, SLF4J_TEST_CACHED_STREAM);
+
+        System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests", "trace");
 
         originalSystemOut = System.out;
         logCaptureStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(logCaptureStream));
     }
 
-    @After
+    @AfterEach
     public void revertLoggingConfiguration() {
         setPropertyToOriginalOrClear(SLF4J_LOG_FILE_PROPERTY, originalLogFile);
         setPropertyToOriginalOrClear(SLF4J_CACHED_STREAM_PROPERTY, originalCachedOutputStream);
+        System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests");
 
         System.setOut(originalSystemOut);
     }
@@ -86,24 +95,40 @@ public class ClientLoggerTests {
     }
 
     /**
-     * Tests that a simple log message can be logged.
+     * Tests that logging at the same level as the environment logging level will log.
      */
-    @Test
-    public void simpleLog() {
+    @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
+    @ValueSource(ints = { 1, 2, 3, 4 })
+    public void logAtSupportedLevel(int logLevel) {
         String logMessage = "This is a test";
-        logMessage(2, 2, logMessage);
+        logMessage(logLevel, logLevel, logMessage);
 
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(logValues.contains(logMessage));
     }
 
     /**
-     * Tests that logging at a level that isn't supported doesn't log anything.
+     * Tests that logging at a level that is less than the environment logging level doesn't log anything.
      */
-    @Test
-    public void logAtUnsupportedLevel() {
+    @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
+    @ValueSource(ints = { 1, 2, 3 })
+    public void logAtUnsupportedLevel(int logLevel) {
         String logMessage = "This is a test";
-        logMessage(2, 1, logMessage);
+        logMessage(logLevel + 1, logLevel, logMessage);
+
+        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        assertFalse(logValues.contains(logMessage));
+    }
+
+    /**
+     * Tests that logging when the environment log level is disabled nothing is logged.
+     * @param logLevel
+     */
+    @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
+    @ValueSource(ints = { 1, 2, 3, 4 })
+    public void logWhenLoggingDisabled(int logLevel) {
+        String logMessage = "This is a test";
+        logMessage(5, logLevel, logMessage);
 
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertFalse(logValues.contains(logMessage));
