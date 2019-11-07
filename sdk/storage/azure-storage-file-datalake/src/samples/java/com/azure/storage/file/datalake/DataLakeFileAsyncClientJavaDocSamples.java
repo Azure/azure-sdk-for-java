@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Map;
 
 /**
  * Code snippets for {@link DataLakeFileAsyncClient}
@@ -31,32 +29,6 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     private long length = 4L;
     private long position = 4L;
     private long offset = 0L;
-
-    /**
-     * Code snippets for {@link DataLakeFileAsyncClient#create()} and
-     * {@link DataLakeFileAsyncClient#createWithResponse(PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
-     */
-    public void createCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.create
-        client.create().subscribe(response ->
-            System.out.printf("Last Modified Time:%s", response.getLastModified()));
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.create
-
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String
-
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
-            .setLeaseId(leaseId);
-        String permissions = "permissions";
-        String umask = "umask";
-
-        client.createWithResponse(httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
-            permissions, umask)
-            .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String
-    }
 
     /**
      * Code snippets for {@link DataLakeFileAsyncClient#delete()} and

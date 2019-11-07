@@ -14,10 +14,10 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -43,7 +43,7 @@ public class ReactorReceiverTest {
     private ActiveClientTokenManager tokenManager;
     private ReactorReceiver reactorReceiver;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
@@ -59,7 +59,7 @@ public class ReactorReceiverTest {
         reactorReceiver = new ReactorReceiver(entityPath, receiver, receiverHandler, tokenManager);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
 
@@ -125,10 +125,10 @@ public class ReactorReceiverTest {
         verify(session, times(1)).close();
 
         verify(link).setCondition(captor.capture());
-        Assert.assertSame(condition, captor.getValue());
+        Assertions.assertSame(condition, captor.getValue());
 
         verify(session).setCondition(captor2.capture());
-        Assert.assertSame(condition, captor2.getValue());
+        Assertions.assertSame(condition, captor2.getValue());
     }
 
     @Test

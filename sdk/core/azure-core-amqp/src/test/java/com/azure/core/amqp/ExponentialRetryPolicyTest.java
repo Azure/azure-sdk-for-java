@@ -6,8 +6,8 @@ package com.azure.core.amqp;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
@@ -38,9 +38,9 @@ public class ExponentialRetryPolicyTest {
         final Duration secondRetryInterval = retry.calculateRetryDelay(exception, 2);
 
         // Assert
-        Assert.assertNotNull(firstRetryInterval);
-        Assert.assertNotNull(secondRetryInterval);
-        Assert.assertTrue(secondRetryInterval.toNanos() > firstRetryInterval.toNanos());
+        Assertions.assertNotNull(firstRetryInterval);
+        Assertions.assertNotNull(secondRetryInterval);
+        Assertions.assertTrue(secondRetryInterval.toNanos() > firstRetryInterval.toNanos());
     }
 
     /**
@@ -56,12 +56,12 @@ public class ExponentialRetryPolicyTest {
         final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, 4);
 
         // Assert
-        Assert.assertNotNull(retryInterval);
-        Assert.assertNotNull(cloneRetryInterval);
+        Assertions.assertNotNull(retryInterval);
+        Assertions.assertNotNull(cloneRetryInterval);
 
         // The retry interval for the clone will be larger because we've incremented the retry count, so it should
         // calculate a longer waiting period.
-        Assert.assertTrue(cloneRetryInterval.compareTo(retryInterval) > 0);
+        Assertions.assertTrue(cloneRetryInterval.compareTo(retryInterval) > 0);
     }
 
     /**
@@ -80,8 +80,8 @@ public class ExponentialRetryPolicyTest {
         final ExponentialRetryPolicy otherPolicy = new ExponentialRetryPolicy(otherOptions);
 
         // Assert
-        Assert.assertEquals(policy, otherPolicy);
-        Assert.assertEquals(policy.hashCode(), otherPolicy.hashCode());
+        Assertions.assertEquals(policy, otherPolicy);
+        Assertions.assertEquals(policy.hashCode(), otherPolicy.hashCode());
     }
 
     @Test
@@ -96,17 +96,17 @@ public class ExponentialRetryPolicyTest {
         final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, retryCount);
 
         // Assert
-        Assert.assertNotSame(retry, clone);
-        Assert.assertEquals(retry, clone);
-        Assert.assertEquals(retry.hashCode(), clone.hashCode());
+        Assertions.assertNotSame(retry, clone);
+        Assertions.assertEquals(retry, clone);
+        Assertions.assertEquals(retry.hashCode(), clone.hashCode());
 
-        Assert.assertNotNull(retryInterval);
-        Assert.assertNotNull(cloneRetryInterval);
+        Assertions.assertNotNull(retryInterval);
+        Assertions.assertNotNull(cloneRetryInterval);
 
         // Assert that the cloned interval is within our jitter threshold.
         final Duration minValue = retryInterval.minus(tolerance);
         final Duration maxValue = retryInterval.plus(tolerance);
-        Assert.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
+        Assertions.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
             && maxValue.compareTo(cloneRetryInterval) > 0);
     }
 }

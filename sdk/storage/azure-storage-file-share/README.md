@@ -24,7 +24,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.0.0-preview.6</version>
+  <version>12.0.0-preview.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,7 +43,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-share</artifactId>
-      <version>12.0.0-preview.6</version>
+      <version>12.0.0-preview.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -59,7 +59,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.1.0-preview.1</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -535,4 +535,4 @@ If you would like to become an active contributor to this project please follow 
 [storage_file_rest]: https://docs.microsoft.com/rest/api/storageservices/file-service-error-codes
 [samples]: src/samples
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file-share/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2FREADME.png)

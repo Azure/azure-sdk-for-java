@@ -4,10 +4,6 @@
 package com.azure.storage.file.datalake;
 
 
-import static com.azure.core.util.FluxUtil.fluxError;
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
-
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -25,11 +21,14 @@ import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
-import com.azure.storage.file.datalake.models.PathItem;
-import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
@@ -62,13 +61,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient) {
-        super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, blockBlobAsyncClient);
+        super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, PathResourceType.FILE,
+            blockBlobAsyncClient);
     }
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.getObjectPath(),
-            pathAsyncClient.getBlockBlobAsyncClient());
+            PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
     }
 
     /**
@@ -96,56 +96,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     public String getFileName() {
         return getObjectName();
-    }
-
-    /**
-     * Creates a file.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.create}
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a></p>
-     *
-     * @return A reactive response containing information about the created file.
-     */
-    public Mono<PathInfo> create() {
-        try {
-            return createWithResponse(null, null, null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Creates a file.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String}
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a></p>
-     *
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link DataLakeRequestConditions}
-     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
-     * @param umask Restricts permissions of the file to be created.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
-     * PathItem}.
-     */
-    public Mono<Response<PathInfo>> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions, String permissions, String umask) {
-        try {
-            return withContext(context -> createWithResponse(PathResourceType.FILE, headers, metadata,
-                accessConditions, permissions, umask, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
     }
 
     /**

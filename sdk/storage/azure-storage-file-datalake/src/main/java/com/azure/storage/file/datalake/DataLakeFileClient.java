@@ -12,13 +12,12 @@ import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
-import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -28,7 +27,6 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -86,52 +84,6 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public String getFileName() {
         return getObjectName();
-    }
-
-    /**
-     * Creates a file.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.create}
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a></p>
-     *
-     * @return Information about the created file.
-     */
-    public PathInfo create() {
-        return createWithResponse(null, null, null, null, null, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Creates a file.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a></p>
-     *
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link DataLakeRequestConditions}
-     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
-     * @param umask Restricts permissions of the file to be created.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing information about the created file
-     */
-    public Response<PathInfo> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions, String permissions, String umask, Duration timeout,
-        Context context) {
-        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(PathResourceType.FILE, headers,
-            metadata, accessConditions, permissions, umask, context);
-
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

@@ -16,9 +16,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.util.ReferenceCountUtil;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -39,9 +39,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NettyFluxTests {
 
@@ -158,7 +158,7 @@ public class NettyFluxTests {
     }
 
     @Test
-    @Ignore("Need to sync with smaldini to find equivalent for rx.test.awaitDone")
+    @Disabled("Need to sync with smaldini to find equivalent for rx.test.awaitDone")
     public void testBackpressureLongInput() throws IOException, NoSuchAlgorithmException {
 //        File file = new File("target/test4");
 //        byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
@@ -276,8 +276,8 @@ public class NettyFluxTests {
 //    @Test
 //    public void testToMono() {
 //        String value = "test";
-//        Assert.assertEquals(getMonoRestResponse(value).flatMap(FluxUtil::toMono).block(), value);
-//        Assert.assertEquals(getMonoRestResponse("").flatMap(FluxUtil::toMono).block(), "");
+//        Assertions.assertEquals(getMonoRestResponse(value).flatMap(FluxUtil::toMono).block(), value);
+//        Assertions.assertEquals(getMonoRestResponse("").flatMap(FluxUtil::toMono).block(), "");
 //    }
 
     @Test
@@ -315,14 +315,14 @@ public class NettyFluxTests {
     private Mono<PagedResponse<Integer>> getFirstPage(List<PagedResponse<Integer>> pagedResponses,
         Context context) {
         // Simulates the service side code which should get the context provided by customer code
-        Assert.assertEquals("Val1", context.getData("Key1").get());
+        Assertions.assertEquals("Val1", context.getData("Key1").get());
         return pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0));
     }
 
     private Mono<PagedResponse<Integer>> getNextPage(String continuationToken,
         List<PagedResponse<Integer>> pagedResponses, Context context) {
         // Simulates the service side code which should get the context provided by customer code
-        Assert.assertEquals("Val2", context.getData("Key2").get());
+        Assertions.assertEquals("Val2", context.getData("Key2").get());
         if (continuationToken == null || continuationToken.isEmpty()) {
             return Mono.empty();
         }
