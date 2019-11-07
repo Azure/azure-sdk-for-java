@@ -15,12 +15,13 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/search/
+    exclude:
+      - sdk/search/azure-search/*.md
 
 pr:
   branches:
