@@ -65,6 +65,7 @@ public class Main {
                 throw new RuntimeException(cfg.getOperationType() + " is not supported");
             }
 
+            LOGGER.info("Starting {}", cfg.getOperationType());
             benchmark.run();
             benchmark.shutdown();
 
@@ -73,6 +74,8 @@ public class Main {
             System.err.println("INVALID Usage: " + e.getMessage());
             System.err.println("Try '-help' for more information.");
             throw e;
+        } finally {
+            System.exit(0);
         }
     }
 }
