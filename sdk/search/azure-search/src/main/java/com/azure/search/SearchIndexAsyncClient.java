@@ -385,13 +385,6 @@ public class SearchIndexAsyncClient {
                 return new SimpleResponse<>(res, doc);
             })
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
-            //TODO: remove logging statements
-            .doOnSuccess(s -> logger.info(
-                "Document with key: " + key
-                    + " and selectedFields: " + selectedFields
-                    + " was retrieved successfully"))
-            .doOnError(e -> logger.error("An error occurred in "
-                + "getDocument(key, selectedFields, requestOptions): " + e.getMessage()))
             .map(Function.identity());
     }
 
