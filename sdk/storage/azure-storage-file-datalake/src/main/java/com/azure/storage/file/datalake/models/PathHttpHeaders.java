@@ -5,7 +5,7 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -187,7 +187,7 @@ public final class PathHttpHeaders {
      * @return the contentMd5 value.
      */
     public byte[] getContentMd5() {
-        return CoreUtils.clone(this.contentMd5);
+        return ImplUtils.clone(this.contentMd5);
     }
 
     /**
@@ -198,7 +198,7 @@ public final class PathHttpHeaders {
      * @return the PathHttpHeaders object itself.
      */
     public PathHttpHeaders setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = CoreUtils.clone(contentMd5);
+        this.contentMd5 = ImplUtils.clone(contentMd5);
         return this;
     }
 
@@ -209,7 +209,7 @@ public final class PathHttpHeaders {
      * @return the transactionalContentHash value.
      */
     public byte[] getTransactionalContentHash() {
-        return CoreUtils.clone(this.transactionalContentHash);
+        return ImplUtils.clone(this.transactionalContentHash);
     }
 
     /**
@@ -221,7 +221,7 @@ public final class PathHttpHeaders {
      * @return the PathHttpHeaders object itself.
      */
     public PathHttpHeaders setTransactionalContentHash(byte[] transactionalContentHash) {
-        this.transactionalContentHash = CoreUtils.clone(transactionalContentHash);
+        this.transactionalContentHash = ImplUtils.clone(transactionalContentHash);
         return this;
     }
 }
