@@ -1,0 +1,14 @@
+{
+  "name": "dump-deps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dump-deps.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rgrove/parse-xml": "^2.0.1"
+  }
+}
