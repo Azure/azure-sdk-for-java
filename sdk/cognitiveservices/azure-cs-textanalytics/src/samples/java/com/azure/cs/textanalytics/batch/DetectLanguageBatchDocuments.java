@@ -18,13 +18,9 @@ import java.util.List;
 public class DetectLanguageBatchDocuments {
 
     public static void main(String[] args) {
-        // The connection string value can be obtained by going to your Text Analytics instance in the Azure portal
-        // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
-
+        // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .connectionString(connectionString)
             .buildClient();
 
         // The texts that need be analysed.
@@ -40,7 +36,7 @@ public class DetectLanguageBatchDocuments {
 
 
         // Detecting language from a batch of documents
-        LanguageResult detectedResult = client.getLanguagesWithResponse(batchInput, false, Context.NONE).getValue();
+        LanguageResult detectedResult = client.detectLanguagesWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentLanguage> documentLanguages = detectedResult.getDocuments();
         for (DocumentLanguage documentLanguage : documentLanguages) {
             List<DetectedLanguage> detectedLanguages = documentLanguage.getDetectedLanguages();

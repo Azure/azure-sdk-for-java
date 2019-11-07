@@ -6,14 +6,10 @@ package com.azure.cs.textanalytics;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.models.DocumentEntities;
-import com.azure.cs.textanalytics.models.DocumentKeyPhrases;
-import com.azure.cs.textanalytics.models.DocumentLanguage;
-import com.azure.cs.textanalytics.models.DocumentLinkedEntities;
 import com.azure.cs.textanalytics.models.DocumentSentiment;
 import com.azure.cs.textanalytics.models.EntitiesResult;
 import com.azure.cs.textanalytics.models.Entity;
@@ -35,7 +31,7 @@ public final class TextAnalyticsClient {
 
     // (1) language
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<DetectedLanguage> getLanguages(String text, String countryHint, boolean showStats) {
+    public PagedIterable<DetectedLanguage> detectLanguages(String text, String countryHint, boolean showStats) {
 //        return getLanguageWithResponse(text, countryHint, showStats, Context.NONE).getValue();
         return null;
     }
@@ -53,13 +49,13 @@ public final class TextAnalyticsClient {
 //    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LanguageResult> getLanguagesWithResponse(LanguageBatchInput languageBatchInput, boolean showStats, Context context) {
-        return client.getLanguagesWithResponse(languageBatchInput, showStats, context).block();
+    public Response<LanguageResult> detectLanguagesWithResponse(LanguageBatchInput languageBatchInput, boolean showStats, Context context) {
+        return client.detectLanguagesWithResponse(languageBatchInput, showStats, context).block();
     }
 
     // (2) entities
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<Entity> getEntities(String text, String language, boolean showStats) {
+    public PagedIterable<Entity> recognizeEntities(String text, String language, boolean showStats) {
 //        return getEntitiesWithResponse(text, language, showStats, Context.NONE).getValue();
         return null;
     }
@@ -75,13 +71,13 @@ public final class TextAnalyticsClient {
 //    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntitiesResult> getEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.getEntitiesWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public Response<EntitiesResult> recognizeEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
+        return client.recognizeEntitiesWithResponse(multiLanguageBatchInput, showStats, context).block();
     }
 
     // (3) PII entities
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<Entity> getPiiEntities(String text, String language, boolean showStats) {
+    public PagedIterable<Entity> recognizePiiEntities(String text, String language, boolean showStats) {
 //        return getPIIEntitiesWithResponse(text, language, showStats, Context.NONE).getValue();
         return null;
     }
@@ -97,13 +93,13 @@ public final class TextAnalyticsClient {
 //    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntitiesResult> getPiiEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.getPiiEntitiesWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public Response<EntitiesResult> recognizePiiEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
+        return client.recognizePiiEntitiesWithResponse(multiLanguageBatchInput, showStats, context).block();
     }
 
     // (4) Link entities
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<LinkedEntity> getLinkedEntities(String text, String language, boolean showStats) {
+    public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text, String language, boolean showStats) {
 //        return getLinkedEntitiesWithResponse(text, language, showStats, Context.NONE).getValue();
         return null;
     }
@@ -119,13 +115,13 @@ public final class TextAnalyticsClient {
 //    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntityLinkingResult> getLinkedEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.getLinkedEntitiesWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public Response<EntityLinkingResult> recognizeLinkedEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
+        return client.recognizeLinkedEntitiesWithResponse(multiLanguageBatchInput, showStats, context).block();
     }
 
     // (5) key phrase
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<String> getKeyPhrases(String text, String language, boolean showStats) {
+    public PagedIterable<String> extractKeyPhrases(String text, String language, boolean showStats) {
 //        return getKeyPhrasesWithResponse(text, language, showStats, Context.NONE).getValue();
         return null;
     }
@@ -141,13 +137,13 @@ public final class TextAnalyticsClient {
 //    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyPhraseResult> getKeyPhrasesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.getKeyPhrasesWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public Response<KeyPhraseResult> extractKeyPhrasesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
+        return client.extractKeyPhrasesWithResponse(multiLanguageBatchInput, showStats, context).block();
     }
 
     // (6) sentiment
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentSentiment getSentiment(String text, String language, boolean showStats) {
+    public DocumentSentiment analyzeSentiment(String text, String language, boolean showStats) {
         // TODO: verify return DocumentSentiment or SentimentResponse
 //        return getSentimentWithResponse(text, language, showStats, Context.NONE).getValue();
         return null;
@@ -165,7 +161,7 @@ public final class TextAnalyticsClient {
 //    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SentimentResponse> getSentimentWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.getSentimentWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public Response<SentimentResponse> analyzeSentimentWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
+        return client.analyzeSentimentWithResponse(multiLanguageBatchInput, showStats, context).block();
     }
 }

@@ -5,22 +5,17 @@ package com.azure.cs.textanalytics;
 
 import com.azure.cs.textanalytics.models.DocumentSentiment;
 
-public class DetectSentiment {
+public class AnalyzeSentiment {
 
     public static void main(String[] args) {
-        // The connection string value can be obtained by going to your Text Analytics instance in the Azure portal
-        // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
-
+        // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .connectionString(connectionString)
             .buildClient();
         // The text that need be analysed.
         String text = "The hotel was dark and unclean.";
 
-        // Detecting sentiment form a single text
-        DocumentSentiment documentSentiment = client.getSentiment(text, "US", false);
+        DocumentSentiment documentSentiment = client.analyzeSentiment(text, "US", false);
         final String sentiment = documentSentiment.getSentiment();
         final Double documentScore = (Double) documentSentiment.getDocumentScores();
         System.out.println(String.format("Recognized Sentiment: %s, Document Score: %s", sentiment, documentScore));

@@ -17,13 +17,10 @@ import java.util.List;
 public class RecognizeKeyPhrasesBatchDocuments {
 
     public static void main(String[] args) {
-        // The connection string value can be obtained by going to your Text Analytics instance in the Azure portal
-        // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
 
+        // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .connectionString(connectionString)
             .buildClient();
 
         // The texts that need be analysed.
@@ -39,7 +36,7 @@ public class RecognizeKeyPhrasesBatchDocuments {
 
 
         // Detecting language from a batch of documents
-        KeyPhraseResult detectedResult = client.getKeyPhrasesWithResponse(batchInput, false, Context.NONE).getValue();
+        KeyPhraseResult detectedResult = client.extractKeyPhrasesWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentKeyPhrases> documentKeyPhrasesList = detectedResult.getDocuments();
         for (DocumentKeyPhrases documentKeyPhrases : documentKeyPhrasesList) {
             List<String> phrases = documentKeyPhrases.getKeyPhrases();

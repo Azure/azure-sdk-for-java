@@ -15,16 +15,12 @@ import com.azure.cs.textanalytics.models.SentimentResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetectSentimentBatchDocuments {
+public class AnalyzeSentimentBatchDocuments {
 
     public static void main(String[] args) {
-        // The connection string value can be obtained by going to your Text Analytics instance in the Azure portal
-        // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
-
+        // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .connectionString(connectionString)
             .buildClient();
 
         // The texts that need be analysed.
@@ -39,7 +35,7 @@ public class DetectSentimentBatchDocuments {
         batchInput.setDocuments(documents);
 
         // Detecting language from a batch of documents
-        SentimentResponse detectedResult = client.getSentimentWithResponse(batchInput, false, Context.NONE).getValue();
+        SentimentResponse detectedResult = client.analyzeSentimentWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentSentiment> documentSentiments = detectedResult.getDocuments();
         for (DocumentSentiment documentSentiment : documentSentiments) {
             final String sentiment = documentSentiment.getSentiment();
@@ -56,6 +52,4 @@ public class DetectSentimentBatchDocuments {
             }
         }
     }
-
-
 }

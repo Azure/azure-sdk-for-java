@@ -17,13 +17,9 @@ import java.util.List;
 
 public class RecognizeEntitiesBatchDocuments {
     public static void main(String[] args) {
-        // The connection string value can be obtained by going to your Text Analytics instance in the Azure portal
-        // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
-
+        // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .connectionString(connectionString)
             .buildClient();
 
         // The texts that need be analysed.
@@ -39,7 +35,7 @@ public class RecognizeEntitiesBatchDocuments {
 
 
         // Detecting language from a batch of documents
-        EntitiesResult detectedResult = client.getEntitiesWithResponse(batchInput, false, Context.NONE).getValue();
+        EntitiesResult detectedResult = client.recognizeEntitiesWithResponse(batchInput, false, Context.NONE).getValue();
         List<DocumentEntities> documentEntities = detectedResult.getDocuments();
         for (DocumentEntities documentEntitie : documentEntities) {
             List<Entity> entities = documentEntitie.getEntities();
