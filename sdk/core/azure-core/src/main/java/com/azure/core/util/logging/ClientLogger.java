@@ -81,8 +81,9 @@ public class ClientLogger {
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level.
      *
      * <p><strong>Code samples</strong></p>
-     * <p>
-     * Logging a message at verbose log level.
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
      * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
      *
      * @param format The formattable message to log.
@@ -97,8 +98,9 @@ public class ClientLogger {
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code informational} log level.
      *
      * <p><strong>Code samples</strong></p>
-     * <p>
-     * Logging a message at informational log level.
+     *
+     * <p>Logging a message at informational log level.</p>
+     *
      * {@codesnippet com.azure.core.util.logging.clientlogger.info}
      *
      * @param format The formattable message to log
@@ -113,8 +115,9 @@ public class ClientLogger {
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code warning} log level.
      *
      * <p><strong>Code samples</strong></p>
-     * <p>
-     * Logging a message at warning log level.
+     *
+     * <p>Logging a message at warning log level.</p>
+     *
      * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
      *
      * @param format The formattable message to log.
@@ -129,8 +132,9 @@ public class ClientLogger {
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code error} log level.
      *
      * <p><strong>Code samples</strong></p>
-     * <p>
-     * Logging an error with stack trace.
+     *
+     * <p>Logging an error with stack trace.</p>
+     *
      * {@codesnippet com.azure.core.util.logging.clientlogger.error}
      *
      * @param format The formattable message to log.
@@ -149,9 +153,7 @@ public class ClientLogger {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void log(int logLevel, String format, Object... args) {
-        if (canLogAtLevel(logLevel)) {
-            performLogging(logLevel, format, args);
-        }
+        performLogging(generateLoggingConfiguration(logLevel, false), format, args);
     }
 
     /**
@@ -179,11 +181,7 @@ public class ClientLogger {
     private RuntimeException logException(RuntimeException runtimeException, int logLevel) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
-        // Only log if the level is enabled.
-        if (canLogAtLevel(logLevel)) {
-            log(logLevel, runtimeException.getMessage(), runtimeException);
-        }
-
+        performLogging(generateLoggingConfiguration(logLevel, true), runtimeException.getMessage(), runtimeException);
         return runtimeException;
     }
 
@@ -193,13 +191,35 @@ public class ClientLogger {
      * @param format formattable message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(int logLevel, String format, Object... args) {
-        // If the logging level is less granular than verbose remove the potential throwable from the args.
-        if (logLevel > VERBOSE_LEVEL) {
-            args = attemptToRemoveThrowable(args);
+    private void performLogging(LoggingConfiguration loggingConfiguration, String format, Object... args) {
+        // Only log if the level is enabled.
+        if (loggingConfiguration.canLog()) {
+            return;
         }
 
-        switch (logLevel) {
+        // If the logging level is less granular than verbose remove the potential throwable from the args.
+        String throwableMessage = "";
+        if (doesArgsHaveThrowable(args)) {
+            // If we are logging an exception the format string is already the exception message, don't append it.
+            if (!loggingConfiguration.isExceptionLogging()) {
+                Object throwable = args[args.length - 1];
+
+                // This is true from before but is needed to appease SpotBugs.
+                if (throwable instanceof Throwable) {
+                    throwableMessage = ((Throwable) throwable).getMessage();
+                }
+            }
+
+            /*
+             * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
+             * stack trace which is only expected when logging at a verbose level.
+             */
+            if (loggingConfiguration.getEnvironmentLogLevel() > VERBOSE_LEVEL) {
+                args = removeThrowable(args);
+            }
+        }
+
+        switch (loggingConfiguration.getLogLevel()) {
             case VERBOSE_LEVEL:
                 logger.debug(format, args);
                 break;
@@ -207,10 +227,10 @@ public class ClientLogger {
                 logger.info(format, args);
                 break;
             case WARNING_LEVEL:
-                logger.warn(format, args);
+                logger.warn(format + throwableMessage, args);
                 break;
             case ERROR_LEVEL:
-                logger.error(format, args);
+                logger.error(format + throwableMessage, args);
                 break;
             default:
                 // Don't do anything, this state shouldn't be possible.
@@ -219,48 +239,99 @@ public class ClientLogger {
     }
 
     /*
-     * Helper method that determines if logging is enabled at a given level.
-     * @param level Logging level
-     * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the
-     * given level.
+     * Helper method that generates logging configurations.
+     *
+     * @param level Logging level for the log message.
+     * @param isExceptionLogging Flag indicating if the logging being performed is for an exception.
+     * @return Configurations used at log time such as the ability to log, the environment logging level, the level
+     * to log the message, and the type of logging being performed.
      */
-    private boolean canLogAtLevel(int level) {
+    private LoggingConfiguration generateLoggingConfiguration(int level, boolean isExceptionLogging) {
         // Check the configuration level every time the logger is called in case it has changed.
-        int configurationLevel =
-            Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL, DISABLED_LEVEL);
-        if (level < configurationLevel) {
-            return false;
+        int environmentLogLevel = Configuration.getGlobalConfiguration()
+            .get(Configuration.PROPERTY_AZURE_LOG_LEVEL, DISABLED_LEVEL);
+
+        if (level < environmentLogLevel) {
+            return new LoggingConfiguration(environmentLogLevel, level, false, isExceptionLogging);
         }
 
+        boolean canLog;
         switch (level) {
             case VERBOSE_LEVEL:
-                return logger != null && logger.isDebugEnabled();
+                canLog = (logger != null && logger.isDebugEnabled());
+                break;
             case INFORMATIONAL_LEVEL:
-                return logger != null && logger.isInfoEnabled();
+                canLog = (logger != null && logger.isInfoEnabled());
+                break;
             case WARNING_LEVEL:
-                return logger != null && logger.isWarnEnabled();
+                canLog = (logger != null && logger.isWarnEnabled());
+                break;
             case ERROR_LEVEL:
-                return logger != null && logger.isErrorEnabled();
+                canLog = (logger != null && logger.isErrorEnabled());
+                break;
             default:
-                return false;
+                canLog = false;
+                break;
         }
+
+        return new LoggingConfiguration(environmentLogLevel, level, canLog, isExceptionLogging);
     }
 
     /*
-     * Removes the last element from the arguments if it is a throwable.
+     * Determines if the arguments contains a throwable that would be logged, SLF4J logs a throwable if it is the last
+     * element in the argument list.
      *
-     * @param args Arguments
-     * @return The arguments with the last element removed if it was a throwable, otherwise the unmodified arguments.
+     * @param args The arguments passed to format the log message.
+     * @return True if the last element is a throwable, false otherwise.
      */
-    private Object[] attemptToRemoveThrowable(Object... args) {
+    private boolean doesArgsHaveThrowable(Object... args) {
         if (args.length == 0) {
-            return args;
+            return false;
         }
 
-        Object potentialThrowable = args[args.length - 1];
-        if (potentialThrowable instanceof Throwable) {
-            return Arrays.copyOf(args, args.length - 1);
+        return args[args.length - 1] instanceof Throwable;
+    }
+
+    /*
+     * Removes the last element from the arguments as it is a throwable.
+     *
+     * @param args The arguments passed to format the log message.
+     * @return The arguments with the last element removed.
+     */
+    private Object[] removeThrowable(Object... args) {
+        return Arrays.copyOf(args, args.length - 1);
+    }
+
+    /*
+     * Helper class which contains logging configuration.
+     */
+    private static class LoggingConfiguration {
+        private final int environmentLogLevel;
+        private final int logLevel;
+        private final boolean canLog;
+        private final boolean isExceptionLogging;
+
+        LoggingConfiguration(int environmentLogLevel, int logLevel, boolean canLog, boolean isExceptionLogging) {
+            this.environmentLogLevel = environmentLogLevel;
+            this.logLevel = logLevel;
+            this.canLog = canLog;
+            this.isExceptionLogging = isExceptionLogging;
         }
-        return args;
+
+        int getEnvironmentLogLevel() {
+            return environmentLogLevel;
+        }
+
+        int getLogLevel() {
+            return logLevel;
+        }
+
+        boolean canLog() {
+            return canLog;
+        }
+
+        boolean isExceptionLogging() {
+            return isExceptionLogging;
+        }
     }
 }
