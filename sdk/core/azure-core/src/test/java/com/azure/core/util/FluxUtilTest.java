@@ -3,8 +3,7 @@
 
 package com.azure.core.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FluxUtilTest {
     @Test
@@ -21,7 +20,7 @@ public class FluxUtilTest {
         String response = getSingle()
             .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
             .block();
-        Assert.assertEquals("Hello, Foo Bar", response);
+        assertEquals("Hello, Foo Bar", response);
     }
 
     @Test
@@ -32,7 +31,7 @@ public class FluxUtilTest {
             .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
             .doOnNext(actualLines::add)
             .subscribe();
-        Assert.assertEquals(expectedLines, actualLines);
+        assertEquals(expectedLines, actualLines);
     }
 
     @Test
