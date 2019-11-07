@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatedirectoryinvalidname50127d935940c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "a7a507d3-5c54-4119-8ab9-41955a22d2b5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F8E41AC46",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:22 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48c3d-a01a-0116-4588-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:21 GMT",
+      "x-ms-client-request-id" : "a7a507d3-5c54-4119-8ab9-41955a22d2b5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatedirectoryinvalidname50127d935940c/test%2fdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "5f222cd0-040d-4297-8f00-9799304fa0c6"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ParentNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "224",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "83e48c3f-a01a-0116-4688-83b7bd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:83e48c3f-a01a-0116-4688-83b7bd000000\nTime:2019-10-15T18:43:22.5193692Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:43:21 GMT",
+      "x-ms-client-request-id" : "5f222cd0-040d-4297-8f00-9799304fa0c6",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestscreatedirectoryinvalidname50127d935940c" ]
+}

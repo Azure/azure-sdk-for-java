@@ -7,14 +7,14 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
     <relativePath>../../../pom.data.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-extensions</artifactId>
-  <version>3.1.0</version>
+  <version>3.1.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
 
   <name>Microsoft Azure SDK for Event Hubs Extensions</name>
   <description>Extensions built on Microsoft Azure Event Hubs</description>
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs</artifactId>
-      <version>3.1.0</version>
+      <version>3.1.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>

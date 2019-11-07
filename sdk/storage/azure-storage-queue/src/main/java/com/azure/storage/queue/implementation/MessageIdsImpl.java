@@ -17,12 +17,12 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.implementation.RestProxy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.implementation.models.MessageIdsDeleteResponse;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
-import com.azure.storage.queue.models.QueueMessage;
-import com.azure.storage.queue.models.StorageErrorException;
+import com.azure.storage.queue.implementation.models.QueueMessage;
+import com.azure.storage.queue.models.QueueStorageException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -59,12 +59,12 @@ public final class MessageIdsImpl {
     private interface MessageIdsService {
         @Put("{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessageIdsUpdateResponse> update(@PathParam("queueName") String queueName, @PathParam("messageid") String messageid, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") QueueMessage queueMessage, @QueryParam("popreceipt") String popReceipt, @QueryParam("visibilitytimeout") int visibilitytimeout, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Delete("{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessageIdsDeleteResponse> delete(@PathParam("queueName") String queueName, @PathParam("messageid") String messageid, @HostParam("url") String url, @QueryParam("popreceipt") String popReceipt, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
     }
 

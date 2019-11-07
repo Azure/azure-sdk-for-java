@@ -147,7 +147,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         Mockito.doReturn(Flux.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, databaseAccountJson)))
                 .when(httpResponse).body();
         Mockito.doReturn(Mono.just(databaseAccountJson))
-                .when(httpResponse).bodyAsString(StandardCharsets.UTF_8);
+                .when(httpResponse).bodyAsString();
 
         Mockito.doReturn(new HttpHeaders()).when(httpResponse).headers();
         return httpResponse;

@@ -4,8 +4,8 @@
     "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/Abc",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "f01e7261-aaab-49d8-b4d0-0fb199bfa925"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "d3272068-a9d9-448e-a36b-d7a29ab98b7a"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -14,9 +14,9 @@
       "retry-after" : "0",
       "Content-Length" : "243",
       "StatusCode" : "400",
-      "x-ms-request-id" : "7c53624a-2003-0003-6dc2-623371000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:7c53624a-2003-0003-6dc2-623371000000\nTime:2019-09-04T01:46:07.2308101Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:46:06 GMT",
+      "x-ms-request-id" : "102a1237-6003-004b-188d-8301ec000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:102a1237-6003-004b-188d-8301ec000000\nTime:2019-10-15T19:20:12.6572201Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 19:20:12 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null

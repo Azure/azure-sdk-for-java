@@ -88,7 +88,8 @@ public class StoreClient implements IStoreClient {
 
         storeResponse = storeResponse.doOnError(e -> {
                 try {
-                    CosmosClientException exception = Utils.as(e, CosmosClientException.class);
+                    Throwable unwrappedException = reactor.core.Exceptions.unwrap(e);
+                    CosmosClientException exception = Utils.as(unwrappedException, CosmosClientException.class);
 
                     if (exception == null) {
                         return;

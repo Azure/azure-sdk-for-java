@@ -1,0 +1,76 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatesubdirectorymetadataerror329946?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "9a91ee03-5d99-4fa8-b5d0-ecfec0e8dad0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F6C8EE5EE",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:25 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8639c8d7-701a-00fe-6d88-830c13000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:25 GMT",
+      "x-ms-client-request-id" : "9a91ee03-5d99-4fa8-b5d0-ecfec0e8dad0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatesubdirectorymetadataerror329946/directoryasyncapitestscreatesubdirectorymetadataerror957944?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "ddeb011f-0594-4e10-8cee-fbd053dffcfe"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-10-15T18:42:26.1035849Z",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 15 Oct 2019 18:42:25 GMT",
+      "ETag" : "0x8D7519F6CAB6349",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-10-15T18:42:26.1035849Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "8639c8e2-701a-00fe-7788-830c13000000",
+      "x-ms-client-request-id" : "ddeb011f-0594-4e10-8cee-fbd053dffcfe",
+      "x-ms-file-last-write-time" : "2019-10-15T18:42:26.1035849Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatesubdirectorymetadataerror329946/directoryasyncapitestscreatesubdirectorymetadataerror957944%2ftestsubdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "105ecab5-e4cf-45a2-8653-87bfdb92ed70"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "Content-Length" : "278",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "8639c8e9-701a-00fe-7e88-830c13000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:8639c8e9-701a-00fe-7e88-830c13000000\nTime:2019-10-15T18:42:26.1841308Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:25 GMT",
+      "x-ms-client-request-id" : "105ecab5-e4cf-45a2-8653-87bfdb92ed70",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryasyncapitestscreatesubdirectorymetadataerror329946", "directoryasyncapitestscreatesubdirectorymetadataerror957944" ]
+}

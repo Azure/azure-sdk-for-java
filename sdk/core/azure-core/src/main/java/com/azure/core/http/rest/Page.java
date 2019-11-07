@@ -13,12 +13,16 @@ import java.util.List;
 public interface Page<T> {
 
     /**
-     * @return A list of items from that service.
+     * Gets a list of items returned from the service.
+     *
+     * @return A list of items from the service.
      */
     List<T> getItems();
 
     /**
-     * @return A link to the next page, or null if there are no more results.
+     * Gets a link to the next page, or {@code null} if there are no more results.
+     *
+     * @return A link to the next page, or {@code null} if there are no more results.
      */
-    String getNextLink();
+    String getContinuationToken();
 }

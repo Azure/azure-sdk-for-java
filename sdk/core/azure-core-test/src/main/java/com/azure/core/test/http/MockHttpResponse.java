@@ -6,10 +6,10 @@ package com.azure.core.test.http;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.serializer.SerializerAdapter;
-import com.azure.core.implementation.serializer.SerializerEncoding;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -54,6 +54,13 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, new HttpHeaders(), bodyBytes);
     }
 
+    /**
+     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and http headers.
+     *
+     * @param request HttpRequest associated with the response.
+     * @param statusCode Status code of the response.
+     * @param headers Headers of the response.
+     */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
         this(request, statusCode, headers, new byte[0]);
     }
@@ -71,7 +78,7 @@ public class MockHttpResponse extends HttpResponse {
         super(request);
         this.statusCode = statusCode;
         this.headers = headers;
-        this.bodyBytes = ImplUtils.clone(bodyBytes);
+        this.bodyBytes = CoreUtils.clone(bodyBytes);
     }
 
     /**
@@ -87,6 +94,14 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, headers, serialize(serializable));
     }
 
+    /**
+     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and response body
+     * that is JSON serialized from {@code serializable}.
+     *
+     * @param request HttpRequest associated with the response.
+     * @param statusCode Status code of the response.
+     * @param serializable Contents to be serialized into JSON for the response.
+     */
     public MockHttpResponse(HttpRequest request, int statusCode, Object serializable) {
         this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
@@ -163,7 +178,7 @@ public class MockHttpResponse extends HttpResponse {
      */
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        Objects.requireNonNull(charset);
+        Objects.requireNonNull(charset, "'charset' cannot be null.");
 
         return bodyBytes == null
                 ? Mono.empty()

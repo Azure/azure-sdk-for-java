@@ -3,8 +3,12 @@
 
 module com.azure.core.test {
     requires transitive com.azure.core;
+    requires transitive com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.annotation;
-    requires junit;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.dataformat.xml;
+    requires com.fasterxml.jackson.datatype.jsr310;
+    requires org.junit.jupiter.api;
     requires org.slf4j;
     requires reactor.test;
 
@@ -19,5 +23,6 @@ module com.azure.core.test {
         com.fasterxml.jackson.databind,
         com.azure.core;
 
+    opens com.azure.core.test.implementation.entities to com.fasterxml.jackson.databind;
     opens com.azure.core.test to com.fasterxml.jackson.databind;
 }

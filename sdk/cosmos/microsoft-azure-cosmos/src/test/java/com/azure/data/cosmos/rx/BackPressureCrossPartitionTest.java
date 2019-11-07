@@ -47,7 +47,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private static final int TIMEOUT = 1800000;
     private static final int SETUP_TIMEOUT = 60000;
 
-    private int numberOfDocs = 4000;
+    private int numberOfDocs = 1000;
     private CosmosDatabase createdDatabase;
     private CosmosContainer createdCollection;
     private List<CosmosItemProperties> createdDocuments;
@@ -105,12 +105,12 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     public Object[][] queryProvider() {
         return new Object[][] {
                 // query, maxItemCount, max expected back pressure buffered, total number of expected query results
-                { "SELECT * FROM r", 1, 2 * Queues.SMALL_BUFFER_SIZE, numberOfDocs},
-                { "SELECT * FROM r", 100, 2 * Queues.SMALL_BUFFER_SIZE, numberOfDocs},
-                { "SELECT * FROM r ORDER BY r.prop", 100, 2 * Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions, numberOfDocs},
-                { "SELECT TOP 1000 * FROM r", 1, 2 * Queues.SMALL_BUFFER_SIZE, 1000},
-                { "SELECT TOP 1000 * FROM r", 100, 2 * Queues.SMALL_BUFFER_SIZE, 1000},
-                { "SELECT TOP 1000 * FROM r ORDER BY r.prop", 100, 2 * Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions , 1000},
+                { "SELECT * FROM r", 1, Queues.SMALL_BUFFER_SIZE, numberOfDocs},
+                { "SELECT * FROM r", 100, Queues.SMALL_BUFFER_SIZE, numberOfDocs},
+                { "SELECT * FROM r ORDER BY r.prop", 100, Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions, numberOfDocs},
+                { "SELECT TOP 500 * FROM r", 1, Queues.SMALL_BUFFER_SIZE, 500},
+                { "SELECT TOP 500 * FROM r", 100, Queues.SMALL_BUFFER_SIZE, 500},
+                { "SELECT TOP 500 * FROM r ORDER BY r.prop", 100, Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions , 500},
         };
     }
 
@@ -131,7 +131,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         log.info("instantiating subscriber ...");
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>(1);
         queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
-        int sleepTimeInMillis = 40000;
+        int sleepTimeInMillis = 10000;
         int i = 0;
 
         // use a test subscriber and request for more result and sleep in between
@@ -168,7 +168,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         client = new ClientUnderTestBuilder(clientBuilder()).build();
         createdDatabase = getSharedCosmosDatabase(client);
-        createdCollection = createCollection(createdDatabase, getCollectionDefinition(), options, 20000);
+        createdCollection = createCollection(createdDatabase, getCollectionDefinition(), options, 50000);
 
         ArrayList<CosmosItemProperties> docDefList = new ArrayList<>();
         for(int i = 0; i < numberOfDocs; i++) {

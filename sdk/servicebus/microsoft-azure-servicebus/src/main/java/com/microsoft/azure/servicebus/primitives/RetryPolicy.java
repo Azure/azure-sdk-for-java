@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Represents an abstraction of a policy for retrying messaging operations when an exception is encountered. Some exceptions encountered by a sender or receiver can be transient like ServerBusy and the operation
- * will succeed if retried. Clients can specify a retry policy using {@link ConnectionStringBuilder} which guides senders and receivers to automatically retry the failed operation before throwing the exception to the client application.  
+ * will succeed if retried. Clients can specify a retry policy using {@link ConnectionStringBuilder} which guides senders and receivers to automatically retry the failed operation before throwing the exception to the client application.
  * Users should not implement this class, instead should use one of the provided implementations through {@link #getDefault} or {@link #getNoRetry}.
  * @since 1.0
  *
@@ -53,7 +53,7 @@ public abstract class RetryPolicy {
      */
     public static boolean isRetryableException(Exception exception) {
         if (exception == null) {
-            throw new IllegalArgumentException("exception cannot be null");
+            throw new IllegalArgumentException("exception cannot be null.");
         }
 
         if (exception instanceof ServiceBusException) {

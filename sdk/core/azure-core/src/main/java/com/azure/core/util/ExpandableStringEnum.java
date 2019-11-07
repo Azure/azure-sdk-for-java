@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Base implementation for expandable, single string enums.
+ *
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
@@ -41,16 +42,17 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
 
     /**
      * Creates an instance of the specific expandable string enum from a String.
-     * @param name the value to create the instance from
-     * @param clazz the class of the expandable string enum
-     * @param <T> the class of the expandable string enum
-     * @return the expandable string enum instance
+     *
+     * @param name The value to create the instance from.
+     * @param clazz The class of the expandable string enum.
+     * @param <T> the class of the expandable string enum.
+     * @return The expandable string enum instance.
      */
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
             return null;
-        } else if (VALUES_BY_NAME != null) {
+        } else {
             T value = (T) VALUES_BY_NAME.get(uniqueKey(clazz, name));
             if (value != null) {
                 return value;
@@ -67,9 +69,10 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
 
     /**
      * Gets a collection of all known values to an expandable string enum type.
-     * @param clazz the class of the expandable string enum
-     * @param <T> the class of the expandable string enum
-     * @return a collection of all known values
+     *
+     * @param clazz the class of the expandable string enum.
+     * @param <T> the class of the expandable string enum.
+     * @return A collection of all known values for the given {@code clazz}.
      */
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz) {

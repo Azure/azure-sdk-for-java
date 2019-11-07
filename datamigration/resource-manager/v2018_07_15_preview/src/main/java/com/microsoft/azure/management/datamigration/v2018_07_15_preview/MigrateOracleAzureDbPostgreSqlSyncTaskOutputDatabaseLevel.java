@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigrateOracleAzureDbPostgreSqlSyncTaskOutputDatabaseLevel model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateOracleAzureDbPostgreSqlSyncTaskOutputDatabaseLevel.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("DatabaseLevelOutput")
 public class MigrateOracleAzureDbPostgreSqlSyncTaskOutputDatabaseLevel extends MigrateOracleAzureDbPostgreSqlSyncTaskOutput {
     /**

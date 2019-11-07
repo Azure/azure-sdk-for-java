@@ -21,22 +21,31 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.implementation.RestProxy;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.storage.file.datalake.models.DataLakeStorageErrorException;
-import com.azure.storage.file.datalake.models.PathGetPropertiesAction;
-import com.azure.storage.file.datalake.models.PathLeaseAction;
-import com.azure.storage.file.datalake.models.PathRenameMode;
-import com.azure.storage.file.datalake.models.PathResourceType;
-import com.azure.storage.file.datalake.models.PathsCreateResponse;
-import com.azure.storage.file.datalake.models.PathsDeleteResponse;
-import com.azure.storage.file.datalake.models.PathsGetPropertiesResponse;
-import com.azure.storage.file.datalake.models.PathsLeaseResponse;
-import com.azure.storage.file.datalake.models.PathsListResponse;
-import com.azure.storage.file.datalake.models.PathsReadResponse;
-import com.azure.storage.file.datalake.models.PathsUpdateResponse;
-import com.azure.storage.file.datalake.models.PathUpdateAction;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
+import com.azure.storage.file.datalake.implementation.models.PathLeaseAction;
+import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
+import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.models.PathsAppendDataResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsCreateResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsDeleteResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsFlushDataResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsLeaseResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsReadResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsUpdateResponse;
+import com.azure.storage.file.datalake.implementation.models.PathUpdateAction;
+import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import java.nio.ByteBuffer;
+import java.time.OffsetDateTime;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -69,177 +78,177 @@ public final class PathsImpl {
      * The interface defining all the services for DataLakeStorageClientPaths
      * to be used by the proxy service to perform REST calls.
      */
-    @Host("http://{accountName}.{dnsSuffix}")
+    @Host("{url}")
     @ServiceInterface(name = "DataLakeStorageClientPaths")
     private interface PathsService {
-        @Get("{filesystem}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        Mono<PathsListResponse> list(@PathParam("filesystem") String filesystem, @HostParam("accountName") String accountName, @HostParam("dnsSuffix") String dnsSuffix, @QueryParam("directory") String directory, @QueryParam("recursive") boolean recursive, @QueryParam("continuation") String continuation, @QueryParam("maxResults") Integer maxResults, @QueryParam("upn") Boolean upn, @QueryParam("resource") String resource, @HeaderParam("x-ms-client-request-id") String xMsClientRequestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-date") String xMsDate, @HeaderParam("x-ms-version") String xMsVersion, Context context);
-
         @Put("{filesystem}/{path}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        Mono<PathsCreateResponse> create(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("accountName") String accountName, @HostParam("dnsSuffix") String dnsSuffix, @QueryParam("resource") PathResourceType resource, @QueryParam("continuation") String continuation, @QueryParam("mode") PathRenameMode mode, @HeaderParam("Cache-Control") String cacheControl, @HeaderParam("Content-Encoding") String contentEncoding, @HeaderParam("Content-Language") String contentLanguage, @HeaderParam("Content-Disposition") String contentDisposition, @HeaderParam("x-ms-cache-control") String xMsCacheControl, @HeaderParam("x-ms-content-type") String xMsContentType, @HeaderParam("x-ms-content-encoding") String xMsContentEncoding, @HeaderParam("x-ms-content-language") String xMsContentLanguage, @HeaderParam("x-ms-content-disposition") String xMsContentDisposition, @HeaderParam("x-ms-rename-source") String xMsRenameSource, @HeaderParam("x-ms-lease-id") String xMsLeaseId, @HeaderParam("x-ms-source-lease-id") String xMsSourceLeaseId, @HeaderParam("x-ms-properties") String xMsProperties, @HeaderParam("x-ms-permissions") String xMsPermissions, @HeaderParam("x-ms-umask") String xMsUmask, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") String ifModifiedSince, @HeaderParam("If-Unmodified-Since") String ifUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String xMsSourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String xMsSourceIfNoneMatch, @HeaderParam("x-ms-source-if-modified-since") String xMsSourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") String xMsSourceIfUnmodifiedSince, @HeaderParam("x-ms-client-request-id") String xMsClientRequestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-date") String xMsDate, @HeaderParam("x-ms-version") String xMsVersion, Context context);
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsCreateResponse> create(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("resource") PathResourceType resource, @QueryParam("continuation") String continuation, @QueryParam("mode") PathRenameMode mode, @HeaderParam("x-ms-rename-source") String renameSource, @HeaderParam("x-ms-source-lease-id") String sourceLeaseId, @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-umask") String umask, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, Context context);
 
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        Mono<PathsUpdateResponse> update(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("accountName") String accountName, @HostParam("dnsSuffix") String dnsSuffix, @QueryParam("action") PathUpdateAction action, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-lease-id") String xMsLeaseId, @HeaderParam("x-ms-cache-control") String xMsCacheControl, @HeaderParam("x-ms-content-type") String xMsContentType, @HeaderParam("x-ms-content-disposition") String xMsContentDisposition, @HeaderParam("x-ms-content-encoding") String xMsContentEncoding, @HeaderParam("x-ms-content-language") String xMsContentLanguage, @HeaderParam("x-ms-content-md5") String xMsContentMd5, @HeaderParam("x-ms-properties") String xMsProperties, @HeaderParam("x-ms-owner") String xMsOwner, @HeaderParam("x-ms-group") String xMsGroup, @HeaderParam("x-ms-permissions") String xMsPermissions, @HeaderParam("x-ms-acl") String xMsAcl, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") String ifModifiedSince, @HeaderParam("If-Unmodified-Since") String ifUnmodifiedSince, @BodyParam("application/octet-stream") Flux<ByteBuffer> requestBody, @HeaderParam("x-ms-client-request-id") String xMsClientRequestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-date") String xMsDate, @HeaderParam("x-ms-version") String xMsVersion, Context context);
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsUpdateResponse> update(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("action") PathUpdateAction action, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-acl") String acl, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-md5") String contentMd5, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Post("{filesystem}/{path}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        Mono<PathsLeaseResponse> lease(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("accountName") String accountName, @HostParam("dnsSuffix") String dnsSuffix, @HeaderParam("x-ms-lease-action") PathLeaseAction xMsLeaseAction, @HeaderParam("x-ms-lease-duration") Integer xMsLeaseDuration, @HeaderParam("x-ms-lease-break-period") Integer xMsLeaseBreakPeriod, @HeaderParam("x-ms-lease-id") String xMsLeaseId, @HeaderParam("x-ms-proposed-lease-id") String xMsProposedLeaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") String ifModifiedSince, @HeaderParam("If-Unmodified-Since") String ifUnmodifiedSince, @HeaderParam("x-ms-client-request-id") String xMsClientRequestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-date") String xMsDate, @HeaderParam("x-ms-version") String xMsVersion, Context context);
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsLeaseResponse> lease(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @HeaderParam("x-ms-lease-action") PathLeaseAction xMsLeaseAction, @HeaderParam("x-ms-lease-duration") Integer xMsLeaseDuration, @HeaderParam("x-ms-lease-break-period") Integer xMsLeaseBreakPeriod, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Get("{filesystem}/{path}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        Mono<PathsReadResponse> read(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("accountName") String accountName, @HostParam("dnsSuffix") String dnsSuffix, @HeaderParam("Range") String range, @HeaderParam("x-ms-lease-id") String xMsLeaseId, @HeaderParam("x-ms-range-get-content-md5") Boolean xMsRangeGetContentMd5, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") String ifModifiedSince, @HeaderParam("If-Unmodified-Since") String ifUnmodifiedSince, @HeaderParam("x-ms-client-request-id") String xMsClientRequestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-date") String xMsDate, @HeaderParam("x-ms-version") String xMsVersion, Context context);
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsReadResponse> read(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @HeaderParam("Range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean xMsRangeGetContentMd5, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Head("{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        Mono<PathsGetPropertiesResponse> getProperties(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("accountName") String accountName, @HostParam("dnsSuffix") String dnsSuffix, @QueryParam("action") PathGetPropertiesAction action, @QueryParam("upn") Boolean upn, @HeaderParam("x-ms-lease-id") String xMsLeaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") String ifModifiedSince, @HeaderParam("If-Unmodified-Since") String ifUnmodifiedSince, @HeaderParam("x-ms-client-request-id") String xMsClientRequestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-date") String xMsDate, @HeaderParam("x-ms-version") String xMsVersion, Context context);
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsGetPropertiesResponse> getProperties(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("action") PathGetPropertiesAction action, @QueryParam("upn") Boolean upn, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Delete("{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        Mono<PathsDeleteResponse> delete(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("accountName") String accountName, @HostParam("dnsSuffix") String dnsSuffix, @QueryParam("recursive") Boolean recursive, @QueryParam("continuation") String continuation, @HeaderParam("x-ms-lease-id") String xMsLeaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") String ifModifiedSince, @HeaderParam("If-Unmodified-Since") String ifUnmodifiedSince, @HeaderParam("x-ms-client-request-id") String xMsClientRequestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-date") String xMsDate, @HeaderParam("x-ms-version") String xMsVersion, Context context);
-    }
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsDeleteResponse> delete(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("recursive") Boolean recursive, @QueryParam("continuation") String continuation, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-    /**
-     * List Paths
-     * List filesystem paths and their properties.
-     *
-     * @param recursive If "true", all paths are listed; otherwise, only paths at the root of the filesystem are listed.  If "directory" is specified, the list will only include paths that share the same root.
-     * @param filesystem The filesystem identifier.  The value must start and end with a letter or number and must contain only letters, numbers, and the dash (-) character.  Consecutive dashes are not permitted.  All letters must be lowercase.  The value must have between 3 and 63 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsListResponse> listWithRestResponseAsync(boolean recursive, String filesystem, Context context) {
-        final String directory = null;
-        final String continuation = null;
-        final Integer maxResults = null;
-        final Boolean upn = null;
-        final String resource = "filesystem";
-        final String xMsClientRequestId = null;
-        final Integer timeout = null;
-        final String xMsDate = null;
-        return service.list(filesystem, this.client.getAccountName(), this.client.getDnsSuffix(), directory, recursive, continuation, maxResults, upn, resource, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
-    }
+        @Patch("{filesystem}/{path}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsSetAccessControlResponse> setAccessControl(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-acl") String acl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-    /**
-     * List Paths
-     * List filesystem paths and their properties.
-     *
-     * @param recursive If "true", all paths are listed; otherwise, only paths at the root of the filesystem are listed.  If "directory" is specified, the list will only include paths that share the same root.
-     * @param filesystem The filesystem identifier.  The value must start and end with a letter or number and must contain only letters, numbers, and the dash (-) character.  Consecutive dashes are not permitted.  All letters must be lowercase.  The value must have between 3 and 63 characters.
-     * @param directory Filters results to paths within the specified directory. An error occurs if the directory does not exist.
-     * @param continuation The number of paths returned with each invocation is limited. If the number of paths to be returned exceeds this limit, a continuation token is returned in the response header x-ms-continuation. When a continuation token is  returned in the response, it must be specified in a subsequent invocation of the list operation to continue listing the paths.
-     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater than 5,000, the response will include up to 5,000 items.
-     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user identity values returned in the owner and group fields of each list entry will be transformed from Azure Active Directory Object IDs to User Principal Names.  If "false", the values will be returned as Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not translated because they do not have unique friendly names.
-     * @param xMsClientRequestId A UUID recorded in the analytics logs for troubleshooting and correlation.
-     * @param timeout An optional operation timeout value in seconds. The period begins when the request is received by the service. If the timeout value elapses before the operation completes, the operation fails.
-     * @param xMsDate Specifies the Coordinated Universal Time (UTC) for the request.  This is required when using shared key authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsListResponse> listWithRestResponseAsync(boolean recursive, String filesystem, String directory, String continuation, Integer maxResults, Boolean upn, String xMsClientRequestId, Integer timeout, String xMsDate, Context context) {
-        final String resource = "filesystem";
-        return service.list(filesystem, this.client.getAccountName(), this.client.getDnsSuffix(), directory, recursive, continuation, maxResults, upn, resource, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+        @Patch("{filesystem}/{path}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsFlushDataResponse> flushData(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-content-md5") String contentMd5, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
+
+        @Patch("{filesystem}/{path}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsAppendDataResponse> appendData(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("position") Long position, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") Long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("Content-MD5") String transactionalContentHash, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
     }
 
     /**
      * Create File | Create Directory | Rename File | Rename Directory
      * Create or rename a file or directory.    By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken.  This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).  To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsCreateResponse> createWithRestResponseAsync(String filesystem, String path, Context context) {
+    public Mono<PathsCreateResponse> createWithRestResponseAsync(Context context) {
         final PathResourceType resource = null;
         final String continuation = null;
         final PathRenameMode mode = null;
+        final String renameSource = null;
+        final String sourceLeaseId = null;
+        final String properties = null;
+        final String permissions = null;
+        final String umask = null;
+        final String requestId = null;
+        final Integer timeout = null;
         final String cacheControl = null;
         final String contentEncoding = null;
         final String contentLanguage = null;
         final String contentDisposition = null;
-        final String xMsCacheControl = null;
-        final String xMsContentType = null;
-        final String xMsContentEncoding = null;
-        final String xMsContentLanguage = null;
-        final String xMsContentDisposition = null;
-        final String xMsRenameSource = null;
-        final String xMsLeaseId = null;
-        final String xMsSourceLeaseId = null;
-        final String xMsProperties = null;
-        final String xMsPermissions = null;
-        final String xMsUmask = null;
+        final String contentType = null;
+        final String leaseId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        final String ifModifiedSince = null;
-        final String ifUnmodifiedSince = null;
-        final String xMsSourceIfMatch = null;
-        final String xMsSourceIfNoneMatch = null;
-        final String xMsSourceIfModifiedSince = null;
-        final String xMsSourceIfUnmodifiedSince = null;
-        final String xMsClientRequestId = null;
-        final Integer timeout = null;
-        final String xMsDate = null;
-        return service.create(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), resource, continuation, mode, cacheControl, contentEncoding, contentLanguage, contentDisposition, xMsCacheControl, xMsContentType, xMsContentEncoding, xMsContentLanguage, xMsContentDisposition, xMsRenameSource, xMsLeaseId, xMsSourceLeaseId, xMsProperties, xMsPermissions, xMsUmask, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsSourceIfMatch, xMsSourceIfNoneMatch, xMsSourceIfModifiedSince, xMsSourceIfUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+        final String sourceIfMatch = null;
+        final String sourceIfNoneMatch = null;
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
+        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
+        return service.create(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
     }
 
     /**
      * Create File | Create Directory | Rename File | Rename Directory
      * Create or rename a file or directory.    By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken.  This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).  To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory". Possible values include: 'directory', 'file'.
-     * @param continuation Optional.  When renaming a directory, the number of paths that are renamed with each invocation is limited.  If the number of paths to be renamed exceeds this limit, a continuation token is returned in this response header.  When a continuation token is returned in the response, it must be specified in a subsequent invocation of the rename operation to continue renaming the directory.
+     * @param continuation Optional.  When deleting a directory, the number of paths that are deleted with each invocation is limited.  If the number of paths to be deleted exceeds this limit, a continuation token is returned in this response header.  When a continuation token is returned in the response, it must be specified in a subsequent invocation of the delete operation to continue deleting the directory.
      * @param mode Optional. Valid only when namespace is enabled. This parameter determines the behavior of the rename operation. The value must be "legacy" or "posix", and the default value will be "posix". Possible values include: 'legacy', 'posix'.
-     * @param cacheControl Optional.  The service stores this value and includes it in the "Cache-Control" response header for "Read File" operations for "Read File" operations.
-     * @param contentEncoding Optional.  Specifies which content encodings have been applied to the file. This value is returned to the client when the "Read File" operation is performed.
-     * @param contentLanguage Optional.  Specifies the natural language used by the intended audience for the file.
-     * @param contentDisposition Optional.  The service stores this value and includes it in the "Content-Disposition" response header for "Read File" operations.
-     * @param xMsCacheControl Optional.  The service stores this value and includes it in the "Cache-Control" response header for "Read File" operations.
-     * @param xMsContentType Optional.  The service stores this value and includes it in the "Content-Type" response header for "Read File" operations.
-     * @param xMsContentEncoding Optional.  The service stores this value and includes it in the "Content-Encoding" response header for "Read File" operations.
-     * @param xMsContentLanguage Optional.  The service stores this value and includes it in the "Content-Language" response header for "Read File" operations.
-     * @param xMsContentDisposition Optional.  The service stores this value and includes it in the "Content-Disposition" response header for "Read File" operations.
-     * @param xMsRenameSource An optional file or directory to be renamed.  The value must have the following format: "/{filesystem}/{path}".  If "x-ms-properties" is specified, the properties will overwrite the existing properties; otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.
-     * @param xMsLeaseId Optional.  A lease ID for the path specified in the URI.  The path to be overwritten must have an active lease and the lease ID must match.
-     * @param xMsSourceLeaseId Optional for rename operations.  A lease ID for the source path.  The source path must have an active lease and the lease ID must match.
-     * @param xMsProperties Optional.  User-defined properties to be stored with the file or directory, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.
-     * @param xMsPermissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
-     * @param xMsUmask Optional and only valid if Hierarchical Namespace is enabled for the account. When creating a file or directory and the parent folder does not have a default ACL, the umask restricts the permissions of the file or directory to be created.  The resulting permission is given by p &amp; ^u, where p is the permission and u is the umask.  For example, if p is 0777 and u is 0057, then the resulting permission is 0720.  The default permission is 0777 for a directory and 0666 for a file.  The default umask is 0027.  The umask must be specified in 4-digit octal notation (e.g. 0766).
-     * @param ifMatch Optional.  An ETag value. Specify this header to perform the operation only if the resource's ETag matches the value specified. The ETag must be specified in quotes.
-     * @param ifNoneMatch Optional.  An ETag value or the special wildcard ("*") value. Specify this header to perform the operation only if the resource's ETag does not match the value specified. The ETag must be specified in quotes.
-     * @param ifModifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has been modified since the specified date and time.
-     * @param ifUnmodifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time.
-     * @param xMsSourceIfMatch Optional.  An ETag value. Specify this header to perform the rename operation only if the source's ETag matches the value specified. The ETag must be specified in quotes.
-     * @param xMsSourceIfNoneMatch Optional.  An ETag value or the special wildcard ("*") value. Specify this header to perform the rename operation only if the source's ETag does not match the value specified. The ETag must be specified in quotes.
-     * @param xMsSourceIfModifiedSince Optional. A date and time value. Specify this header to perform the rename operation only if the source has been modified since the specified date and time.
-     * @param xMsSourceIfUnmodifiedSince Optional. A date and time value. Specify this header to perform the rename operation only if the source has not been modified since the specified date and time.
-     * @param xMsClientRequestId A UUID recorded in the analytics logs for troubleshooting and correlation.
-     * @param timeout An optional operation timeout value in seconds. The period begins when the request is received by the service. If the timeout value elapses before the operation completes, the operation fails.
-     * @param xMsDate Specifies the Coordinated Universal Time (UTC) for the request.  This is required when using shared key authorization.
+     * @param renameSource An optional file or directory to be renamed.  The value must have the following format: "/{filesystem}/{path}".  If "x-ms-properties" is specified, the properties will overwrite the existing properties; otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.
+     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and the leaase ID must match.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.  If the filesystem exists, any properties not included in the list will be removed.  All properties are removed if the header is omitted.  To merge new and existing properties, first get all existing properties and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
+     * @param umask Optional and only valid if Hierarchical Namespace is enabled for the account. When creating a file or directory and the parent folder does not have a default ACL, the umask restricts the permissions of the file or directory to be created.  The resulting permission is given by p bitwise and not u, where p is the permission and u is the umask.  For example, if p is 0777 and u is 0057, then the resulting permission is 0720.  The default permission is 0777 for a directory and 0666 for a file.  The default umask is 0027.  The umask must be specified in 4-digit octal notation (e.g. 0766).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param pathHttpHeaders Additional parameters for the operation.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param sourceModifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsCreateResponse> createWithRestResponseAsync(String filesystem, String path, PathResourceType resource, String continuation, PathRenameMode mode, String cacheControl, String contentEncoding, String contentLanguage, String contentDisposition, String xMsCacheControl, String xMsContentType, String xMsContentEncoding, String xMsContentLanguage, String xMsContentDisposition, String xMsRenameSource, String xMsLeaseId, String xMsSourceLeaseId, String xMsProperties, String xMsPermissions, String xMsUmask, String ifMatch, String ifNoneMatch, String ifModifiedSince, String ifUnmodifiedSince, String xMsSourceIfMatch, String xMsSourceIfNoneMatch, String xMsSourceIfModifiedSince, String xMsSourceIfUnmodifiedSince, String xMsClientRequestId, Integer timeout, String xMsDate, Context context) {
-        return service.create(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), resource, continuation, mode, cacheControl, contentEncoding, contentLanguage, contentDisposition, xMsCacheControl, xMsContentType, xMsContentEncoding, xMsContentLanguage, xMsContentDisposition, xMsRenameSource, xMsLeaseId, xMsSourceLeaseId, xMsProperties, xMsPermissions, xMsUmask, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsSourceIfMatch, xMsSourceIfNoneMatch, xMsSourceIfModifiedSince, xMsSourceIfUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+        String cacheControl = null;
+        if (pathHttpHeaders != null) {
+            cacheControl = pathHttpHeaders.getCacheControl();
+        }
+        String contentEncoding = null;
+        if (pathHttpHeaders != null) {
+            contentEncoding = pathHttpHeaders.getContentEncoding();
+        }
+        String contentLanguage = null;
+        if (pathHttpHeaders != null) {
+            contentLanguage = pathHttpHeaders.getContentLanguage();
+        }
+        String contentDisposition = null;
+        if (pathHttpHeaders != null) {
+            contentDisposition = pathHttpHeaders.getContentDisposition();
+        }
+        String contentType = null;
+        if (pathHttpHeaders != null) {
+            contentType = pathHttpHeaders.getContentType();
+        }
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        String sourceIfMatch = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfMatch = sourceModifiedAccessConditions.getSourceIfMatch();
+        }
+        String sourceIfNoneMatch = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfNoneMatch = sourceModifiedAccessConditions.getSourceIfNoneMatch();
+        }
+        OffsetDateTime sourceIfModifiedSince = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfModifiedSince = sourceModifiedAccessConditions.getSourceIfModifiedSince();
+        }
+        OffsetDateTime sourceIfUnmodifiedSince = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+        return service.create(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -247,40 +256,36 @@ public final class PathsImpl {
      * Uploads data to be appended to a file, flushes (writes) previously uploaded data to a file, sets properties for a file or directory, or sets access control for a file or directory. Data can only be appended to a file. This operation supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously uploaded data to a file, "setProperties" to set the properties of a file or directory, or "setAccessControl" to set the owner, group, permissions, or access control list for a file or directory.  Note that Hierarchical Namespace must be enabled for the account in order to use access control.  Also note that the Access Control List (ACL) includes permissions for the owner, owning group, and others, so the x-ms-permissions and x-ms-acl request headers are mutually exclusive. Possible values include: 'append', 'flush', 'setProperties', 'setAccessControl'.
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
+     * @param body Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, String filesystem, String path, Context context) {
+    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Context context) {
         final Long position = null;
         final Boolean retainUncommittedData = null;
         final Boolean close = null;
         final Long contentLength = null;
-        final String contentMD5 = null;
-        final String xMsLeaseId = null;
-        final String xMsCacheControl = null;
-        final String xMsContentType = null;
-        final String xMsContentDisposition = null;
-        final String xMsContentEncoding = null;
-        final String xMsContentLanguage = null;
-        final String xMsContentMd5 = null;
-        final String xMsProperties = null;
-        final String xMsOwner = null;
-        final String xMsGroup = null;
-        final String xMsPermissions = null;
-        final String xMsAcl = null;
+        final String properties = null;
+        final String owner = null;
+        final String group = null;
+        final String permissions = null;
+        final String acl = null;
+        final String requestId = null;
+        final Integer timeout = null;
+        final String cacheControl = null;
+        final String contentType = null;
+        final String contentDisposition = null;
+        final String contentEncoding = null;
+        final String contentLanguage = null;
+        final String leaseId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        final String ifModifiedSince = null;
-        final String ifUnmodifiedSince = null;
-        final Flux<ByteBuffer> requestBody = null;
-        final String xMsClientRequestId = null;
-        final Integer timeout = null;
-        final String xMsDate = null;
-        return service.update(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), action, position, retainUncommittedData, close, contentLength, contentMD5, xMsLeaseId, xMsCacheControl, xMsContentType, xMsContentDisposition, xMsContentEncoding, xMsContentLanguage, xMsContentMd5, xMsProperties, xMsOwner, xMsGroup, xMsPermissions, xMsAcl, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, requestBody, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+        String contentMd5Converted = null;
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.update(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl, body, requestId, timeout, this.client.getVersion(), contentMd5Converted, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -288,40 +293,75 @@ public final class PathsImpl {
      * Uploads data to be appended to a file, flushes (writes) previously uploaded data to a file, sets properties for a file or directory, or sets access control for a file or directory. Data can only be appended to a file. This operation supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously uploaded data to a file, "setProperties" to set the properties of a file or directory, or "setAccessControl" to set the owner, group, permissions, or access control list for a file or directory.  Note that Hierarchical Namespace must be enabled for the account in order to use access control.  Also note that the Access Control List (ACL) includes permissions for the owner, owning group, and others, so the x-ms-permissions and x-ms-acl request headers are mutually exclusive. Possible values include: 'append', 'flush', 'setProperties', 'setAccessControl'.
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
+     * @param body Initial data.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is appended to the file.  It is required when uploading data to be appended to the file and when flushing previously uploaded data to the file.  The value must be the position where the data is to be appended.  Uploaded data is not immediately flushed, or written, to the file.  To flush, the previously uploaded data must be contiguous, the position parameter must be specified and equal to the length of the file after all data has been written, and there must not be a request entity body included with the request.
      * @param retainUncommittedData Valid only for flush operations.  If "true", uncommitted data is retained after the flush operation completes; otherwise, the uncommitted data is deleted after the flush operation.  The default is false.  Data at offsets less than the specified position are written to the file when flush succeeds, but this optional parameter allows data after the flush position to be retained for a future flush operation.
      * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is the final change to distinguish the difference between an intermediate flush to a file stream and the final close of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a file change notification with a property indicating that this is the final update (the file stream has been closed). If "false" a change notification is raised indicating the file has changed. The default is false. This query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
      * @param contentLength Required for "Append Data" and "Flush Data".  Must be 0 for "Flush Data".  Must be the length of the request content in bytes for "Append Data".
-     * @param contentMD5 Optional. An MD5 hash of the request content. This header is valid on "Append" and "Flush" operations. This hash is used to verify the integrity of the request content during transport. When this header is specified, the storage service compares the hash of the content that has arrived with this header value. If the two hashes do not match, the operation will fail with error code 400 (Bad Request). Note that this MD5 hash is not stored with the file. This header is associated with the request content, and not with the stored content of the file itself.
-     * @param xMsLeaseId The lease ID must be specified if there is an active lease.
-     * @param xMsCacheControl Optional and only valid for flush and set properties operations.  The service stores this value and includes it in the "Cache-Control" response header for "Read File" operations.
-     * @param xMsContentType Optional and only valid for flush and set properties operations.  The service stores this value and includes it in the "Content-Type" response header for "Read File" operations.
-     * @param xMsContentDisposition Optional and only valid for flush and set properties operations.  The service stores this value and includes it in the "Content-Disposition" response header for "Read File" operations.
-     * @param xMsContentEncoding Optional and only valid for flush and set properties operations.  The service stores this value and includes it in the "Content-Encoding" response header for "Read File" operations.
-     * @param xMsContentLanguage Optional and only valid for flush and set properties operations.  The service stores this value and includes it in the "Content-Language" response header for "Read File" operations.
-     * @param xMsContentMd5 Optional and only valid for "Flush &amp; Set Properties" operations.  The service stores this value and includes it in the "Content-Md5" response header for "Read &amp; Get Properties" operations. If this property is not specified on the request, then the property will be cleared for the file. Subsequent calls to "Read &amp; Get Properties" will not return this property unless it is explicitly set on that file again.
-     * @param xMsProperties Optional.  User-defined properties to be stored with the file or directory, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. Valid only for the setProperties operation. If the file or directory exists, any properties not included in the list will be removed.  All properties are removed if the header is omitted.  To merge new and existing properties, first get all existing properties and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
-     * @param xMsOwner Optional and valid only for the setAccessControl operation. Sets the owner of the file or directory.
-     * @param xMsGroup Optional and valid only for the setAccessControl operation. Sets the owning group of the file or directory.
-     * @param xMsPermissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported. Invalid in conjunction with x-ms-acl.
-     * @param xMsAcl Optional and valid only for the setAccessControl operation. Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries that fully replaces the existing access control list (ACL).  Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the format "[scope:][type]:[id]:[permissions]". The scope must be "default" to indicate the ACE belongs to the default ACL for a directory; otherwise scope is implicit and the ACE belongs to the access ACL.  There are four ACE types: "user" grants rights to the owner or a named user, "group" grants rights to the owning group or a named group, "mask" restricts rights granted to named users and the members of groups, and "other" grants rights to all users not found in any of the other entries. The user or group identifier is omitted for entries of type "mask" and "other".  The user or group identifier is also omitted for the owner and owning group.  The permission field is a 3-character sequence where the first character is 'r' to grant read access, the second character is 'w' to grant write access, and the third character is 'x' to grant execute permission.  If access is not granted, the '-' character is used to denote that the permission is denied. For example, the following ACL grants read, write, and execute rights to the file owner and john.doe@contoso, the read right to the owning group, and nothing to everyone else: "user::rwx,user:john.doe@contoso:rwx,group::r--,other::---,mask=rwx". Invalid in conjunction with x-ms-permissions.
-     * @param ifMatch Optional for Flush Data and Set Properties, but invalid for Append Data.  An ETag value. Specify this header to perform the operation only if the resource's ETag matches the value specified. The ETag must be specified in quotes.
-     * @param ifNoneMatch Optional for Flush Data and Set Properties, but invalid for Append Data.  An ETag value or the special wildcard ("*") value. Specify this header to perform the operation only if the resource's ETag does not match the value specified. The ETag must be specified in quotes.
-     * @param ifModifiedSince Optional for Flush Data and Set Properties, but invalid for Append Data. A date and time value. Specify this header to perform the operation only if the resource has been modified since the specified date and time.
-     * @param ifUnmodifiedSince Optional for Flush Data and Set Properties, but invalid for Append Data. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time.
-     * @param requestBody Valid only for append operations.  The data to be uploaded and appended to the file.
-     * @param xMsClientRequestId A UUID recorded in the analytics logs for troubleshooting and correlation.
-     * @param timeout An optional operation timeout value in seconds. The period begins when the request is received by the service. If the timeout value elapses before the operation completes, the operation fails.
-     * @param xMsDate Specifies the Coordinated Universal Time (UTC) for the request.  This is required when using shared key authorization.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.  If the filesystem exists, any properties not included in the list will be removed.  All properties are removed if the header is omitted.  To merge new and existing properties, first get all existing properties and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param pathHttpHeaders Additional parameters for the operation.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, String filesystem, String path, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String contentMD5, String xMsLeaseId, String xMsCacheControl, String xMsContentType, String xMsContentDisposition, String xMsContentEncoding, String xMsContentLanguage, String xMsContentMd5, String xMsProperties, String xMsOwner, String xMsGroup, String xMsPermissions, String xMsAcl, String ifMatch, String ifNoneMatch, String ifModifiedSince, String ifUnmodifiedSince, Flux<ByteBuffer> requestBody, String xMsClientRequestId, Integer timeout, String xMsDate, Context context) {
-        return service.update(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), action, position, retainUncommittedData, close, contentLength, contentMD5, xMsLeaseId, xMsCacheControl, xMsContentType, xMsContentDisposition, xMsContentEncoding, xMsContentLanguage, xMsContentMd5, xMsProperties, xMsOwner, xMsGroup, xMsPermissions, xMsAcl, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, requestBody, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group, String permissions, String acl, String requestId, Integer timeout, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        byte[] contentMd5 = null;
+        if (pathHttpHeaders != null) {
+            contentMd5 = pathHttpHeaders.getContentMd5();
+        }
+        String cacheControl = null;
+        if (pathHttpHeaders != null) {
+            cacheControl = pathHttpHeaders.getCacheControl();
+        }
+        String contentType = null;
+        if (pathHttpHeaders != null) {
+            contentType = pathHttpHeaders.getContentType();
+        }
+        String contentDisposition = null;
+        if (pathHttpHeaders != null) {
+            contentDisposition = pathHttpHeaders.getContentDisposition();
+        }
+        String contentEncoding = null;
+        if (pathHttpHeaders != null) {
+            contentEncoding = pathHttpHeaders.getContentEncoding();
+        }
+        String contentLanguage = null;
+        if (pathHttpHeaders != null) {
+            contentLanguage = pathHttpHeaders.getContentLanguage();
+        }
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.update(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl, body, requestId, timeout, this.client.getVersion(), contentMd5Converted, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -329,26 +369,23 @@ public final class PathsImpl {
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break" to break an existing lease. When a lease is broken, the lease break period is allowed to elapse, during which time no lease operation except break and release can be performed on the file. When a lease is successfully broken, the response indicates the interval in seconds until a new lease can be acquired. Use "change" and specify the current lease ID in "x-ms-lease-id" and the new lease ID in "x-ms-proposed-lease-id" to change the lease ID of an active lease. Use "renew" and specify the "x-ms-lease-id" to renew an existing lease. Use "release" and specify the "x-ms-lease-id" to release a lease. Possible values include: 'acquire', 'break', 'change', 'renew', 'release'.
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsLeaseResponse> leaseWithRestResponseAsync(PathLeaseAction xMsLeaseAction, String filesystem, String path, Context context) {
+    public Mono<PathsLeaseResponse> leaseWithRestResponseAsync(PathLeaseAction xMsLeaseAction, Context context) {
         final Integer xMsLeaseDuration = null;
         final Integer xMsLeaseBreakPeriod = null;
-        final String xMsLeaseId = null;
-        final String xMsProposedLeaseId = null;
+        final String proposedLeaseId = null;
+        final String requestId = null;
+        final Integer timeout = null;
+        final String leaseId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        final String ifModifiedSince = null;
-        final String ifUnmodifiedSince = null;
-        final String xMsClientRequestId = null;
-        final Integer timeout = null;
-        final String xMsDate = null;
-        return service.lease(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), xMsLeaseAction, xMsLeaseDuration, xMsLeaseBreakPeriod, xMsLeaseId, xMsProposedLeaseId, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.lease(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), xMsLeaseAction, xMsLeaseDuration, xMsLeaseBreakPeriod, proposedLeaseId, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -356,175 +393,445 @@ public final class PathsImpl {
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break" to break an existing lease. When a lease is broken, the lease break period is allowed to elapse, during which time no lease operation except break and release can be performed on the file. When a lease is successfully broken, the response indicates the interval in seconds until a new lease can be acquired. Use "change" and specify the current lease ID in "x-ms-lease-id" and the new lease ID in "x-ms-proposed-lease-id" to change the lease ID of an active lease. Use "renew" and specify the "x-ms-lease-id" to renew an existing lease. Use "release" and specify the "x-ms-lease-id" to release a lease. Possible values include: 'acquire', 'break', 'change', 'renew', 'release'.
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
      * @param xMsLeaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds.  The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and  specifies the break period of the lease in seconds.  The lease break  duration must be between 0 and 60 seconds.
-     * @param xMsLeaseId Required when "x-ms-lease-action" is "renew", "change" or "release". For the renew and release actions, this must match the current lease ID.
-     * @param xMsProposedLeaseId Required when "x-ms-lease-action" is "acquire" or "change".  A lease will be acquired with this lease ID if the operation is successful.
-     * @param ifMatch Optional.  An ETag value. Specify this header to perform the operation only if the resource's ETag matches the value specified. The ETag must be specified in quotes.
-     * @param ifNoneMatch Optional.  An ETag value or the special wildcard ("*") value. Specify this header to perform the operation only if the resource's ETag does not match the value specified. The ETag must be specified in quotes.
-     * @param ifModifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has been modified since the specified date and time.
-     * @param ifUnmodifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time.
-     * @param xMsClientRequestId A UUID recorded in the analytics logs for troubleshooting and correlation.
-     * @param timeout An optional operation timeout value in seconds. The period begins when the request is received by the service. If the timeout value elapses before the operation completes, the operation fails.
-     * @param xMsDate Specifies the Coordinated Universal Time (UTC) for the request.  This is required when using shared key authorization.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsLeaseResponse> leaseWithRestResponseAsync(PathLeaseAction xMsLeaseAction, String filesystem, String path, Integer xMsLeaseDuration, Integer xMsLeaseBreakPeriod, String xMsLeaseId, String xMsProposedLeaseId, String ifMatch, String ifNoneMatch, String ifModifiedSince, String ifUnmodifiedSince, String xMsClientRequestId, Integer timeout, String xMsDate, Context context) {
-        return service.lease(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), xMsLeaseAction, xMsLeaseDuration, xMsLeaseBreakPeriod, xMsLeaseId, xMsProposedLeaseId, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+    public Mono<PathsLeaseResponse> leaseWithRestResponseAsync(PathLeaseAction xMsLeaseAction, Integer xMsLeaseDuration, Integer xMsLeaseBreakPeriod, String proposedLeaseId, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.lease(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), xMsLeaseAction, xMsLeaseDuration, xMsLeaseBreakPeriod, proposedLeaseId, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
      * Read File
      * Read the contents of a file.  For read operations, range requests are supported. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsReadResponse> readWithRestResponseAsync(String filesystem, String path, Context context) {
+    public Mono<PathsReadResponse> readWithRestResponseAsync(Context context) {
         final String range = null;
-        final String xMsLeaseId = null;
         final Boolean xMsRangeGetContentMd5 = null;
+        final String requestId = null;
+        final Integer timeout = null;
+        final String leaseId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        final String ifModifiedSince = null;
-        final String ifUnmodifiedSince = null;
-        final String xMsClientRequestId = null;
-        final Integer timeout = null;
-        final String xMsDate = null;
-        return service.read(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), range, xMsLeaseId, xMsRangeGetContentMd5, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.read(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), range, xMsRangeGetContentMd5, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
      * Read File
      * Read the contents of a file.  For read operations, range requests are supported. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
-     * @param xMsLeaseId Optional. If this header is specified, the operation will be performed only if both of the following conditions are met: i) the path's lease is currently active and ii) the lease ID specified in the request matches that of the path.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range header, the service returns the MD5 hash for the range, as long as the range is less than or equal to 4MB in size. If this header is specified without the Range header, the service returns status code 400 (Bad Request). If this header is set to true when the range exceeds 4 MB in size, the service returns status code 400 (Bad Request).
-     * @param ifMatch Optional.  An ETag value. Specify this header to perform the operation only if the resource's ETag matches the value specified. The ETag must be specified in quotes.
-     * @param ifNoneMatch Optional.  An ETag value or the special wildcard ("*") value. Specify this header to perform the operation only if the resource's ETag does not match the value specified. The ETag must be specified in quotes.
-     * @param ifModifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has been modified since the specified date and time.
-     * @param ifUnmodifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time.
-     * @param xMsClientRequestId A UUID recorded in the analytics logs for troubleshooting and correlation.
-     * @param timeout An optional operation timeout value in seconds. The period begins when the request is received by the service. If the timeout value elapses before the operation completes, the operation fails.
-     * @param xMsDate Specifies the Coordinated Universal Time (UTC) for the request.  This is required when using shared key authorization.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsReadResponse> readWithRestResponseAsync(String filesystem, String path, String range, String xMsLeaseId, Boolean xMsRangeGetContentMd5, String ifMatch, String ifNoneMatch, String ifModifiedSince, String ifUnmodifiedSince, String xMsClientRequestId, Integer timeout, String xMsDate, Context context) {
-        return service.read(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), range, xMsLeaseId, xMsRangeGetContentMd5, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+    public Mono<PathsReadResponse> readWithRestResponseAsync(String range, Boolean xMsRangeGetContentMd5, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.read(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), range, xMsRangeGetContentMd5, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
      * Get Properties | Get Status | Get Access Control List
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined properties for a path. Get Access Control List returns the access control list for a path. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsGetPropertiesResponse> getPropertiesWithRestResponseAsync(String filesystem, String path, Context context) {
+    public Mono<PathsGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
         final PathGetPropertiesAction action = null;
         final Boolean upn = null;
-        final String xMsLeaseId = null;
+        final String requestId = null;
+        final Integer timeout = null;
+        final String leaseId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        final String ifModifiedSince = null;
-        final String ifUnmodifiedSince = null;
-        final String xMsClientRequestId = null;
-        final Integer timeout = null;
-        final String xMsDate = null;
-        return service.getProperties(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), action, upn, xMsLeaseId, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.getProperties(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), action, upn, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
      * Get Properties | Get Status | Get Access Control List
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined properties for a path. Get Access Control List returns the access control list for a path. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned. If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical Namespace must be enabled for the account), otherwise the properties are returned. Possible values include: 'getAccessControl', 'getStatus'.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.  If "false", the values will be returned as Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not translated because they do not have unique friendly names.
-     * @param xMsLeaseId Optional. If this header is specified, the operation will be performed only if both of the following conditions are met: i) the path's lease is currently active and ii) the lease ID specified in the request matches that of the path.
-     * @param ifMatch Optional.  An ETag value. Specify this header to perform the operation only if the resource's ETag matches the value specified. The ETag must be specified in quotes.
-     * @param ifNoneMatch Optional.  An ETag value or the special wildcard ("*") value. Specify this header to perform the operation only if the resource's ETag does not match the value specified. The ETag must be specified in quotes.
-     * @param ifModifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has been modified since the specified date and time.
-     * @param ifUnmodifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time.
-     * @param xMsClientRequestId A UUID recorded in the analytics logs for troubleshooting and correlation.
-     * @param timeout An optional operation timeout value in seconds. The period begins when the request is received by the service. If the timeout value elapses before the operation completes, the operation fails.
-     * @param xMsDate Specifies the Coordinated Universal Time (UTC) for the request.  This is required when using shared key authorization.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsGetPropertiesResponse> getPropertiesWithRestResponseAsync(String filesystem, String path, PathGetPropertiesAction action, Boolean upn, String xMsLeaseId, String ifMatch, String ifNoneMatch, String ifModifiedSince, String ifUnmodifiedSince, String xMsClientRequestId, Integer timeout, String xMsDate, Context context) {
-        return service.getProperties(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), action, upn, xMsLeaseId, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+    public Mono<PathsGetPropertiesResponse> getPropertiesWithRestResponseAsync(PathGetPropertiesAction action, Boolean upn, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.getProperties(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), action, upn, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
      * Delete File | Delete Directory
      * Delete the file or directory. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsDeleteResponse> deleteWithRestResponseAsync(String filesystem, String path, Context context) {
+    public Mono<PathsDeleteResponse> deleteWithRestResponseAsync(Context context) {
         final Boolean recursive = null;
         final String continuation = null;
-        final String xMsLeaseId = null;
+        final String requestId = null;
+        final Integer timeout = null;
+        final String leaseId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        final String ifModifiedSince = null;
-        final String ifUnmodifiedSince = null;
-        final String xMsClientRequestId = null;
-        final Integer timeout = null;
-        final String xMsDate = null;
-        return service.delete(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), recursive, continuation, xMsLeaseId, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.delete(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), recursive, continuation, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
      * Delete File | Delete Directory
      * Delete the file or directory. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
-     * @param filesystem The filesystem identifier.
-     * @param path The file or directory path.
-     * @param recursive Required and valid only when the resource is a directory.  If "true", all paths beneath the directory will be deleted. If "false" and the directory is non-empty, an error occurs.
+     * @param recursive Required.
      * @param continuation Optional.  When deleting a directory, the number of paths that are deleted with each invocation is limited.  If the number of paths to be deleted exceeds this limit, a continuation token is returned in this response header.  When a continuation token is returned in the response, it must be specified in a subsequent invocation of the delete operation to continue deleting the directory.
-     * @param xMsLeaseId The lease ID must be specified if there is an active lease.
-     * @param ifMatch Optional.  An ETag value. Specify this header to perform the operation only if the resource's ETag matches the value specified. The ETag must be specified in quotes.
-     * @param ifNoneMatch Optional.  An ETag value or the special wildcard ("*") value. Specify this header to perform the operation only if the resource's ETag does not match the value specified. The ETag must be specified in quotes.
-     * @param ifModifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has been modified since the specified date and time.
-     * @param ifUnmodifiedSince Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time.
-     * @param xMsClientRequestId A UUID recorded in the analytics logs for troubleshooting and correlation.
-     * @param timeout An optional operation timeout value in seconds. The period begins when the request is received by the service. If the timeout value elapses before the operation completes, the operation fails.
-     * @param xMsDate Specifies the Coordinated Universal Time (UTC) for the request.  This is required when using shared key authorization.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsDeleteResponse> deleteWithRestResponseAsync(String filesystem, String path, Boolean recursive, String continuation, String xMsLeaseId, String ifMatch, String ifNoneMatch, String ifModifiedSince, String ifUnmodifiedSince, String xMsClientRequestId, Integer timeout, String xMsDate, Context context) {
-        return service.delete(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), recursive, continuation, xMsLeaseId, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
+    public Mono<PathsDeleteResponse> deleteWithRestResponseAsync(Boolean recursive, String continuation, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.delete(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), recursive, continuation, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsSetAccessControlResponse> setAccessControlWithRestResponseAsync(Context context) {
+        final Integer timeout = null;
+        final String owner = null;
+        final String group = null;
+        final String permissions = null;
+        final String acl = null;
+        final String requestId = null;
+        final String action = "setAccessControl";
+        final String leaseId = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.setAccessControl(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, owner, group, permissions, acl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsSetAccessControlResponse> setAccessControlWithRestResponseAsync(Integer timeout, String owner, String group, String permissions, String acl, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String action = "setAccessControl";
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.setAccessControl(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, owner, group, permissions, acl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Context context) {
+        final Integer timeout = null;
+        final Long position = null;
+        final Boolean retainUncommittedData = null;
+        final Boolean close = null;
+        final Long contentLength = null;
+        final String requestId = null;
+        final String action = "flush";
+        final String cacheControl = null;
+        final String contentType = null;
+        final String contentDisposition = null;
+        final String contentEncoding = null;
+        final String contentLanguage = null;
+        final String leaseId = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        String contentMd5Converted = null;
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.flushData(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, position, retainUncommittedData, close, contentLength, requestId, this.client.getVersion(), action, contentMd5Converted, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is appended to the file.  It is required when uploading data to be appended to the file and when flushing previously uploaded data to the file.  The value must be the position where the data is to be appended.  Uploaded data is not immediately flushed, or written, to the file.  To flush, the previously uploaded data must be contiguous, the position parameter must be specified and equal to the length of the file after all data has been written, and there must not be a request entity body included with the request.
+     * @param retainUncommittedData Valid only for flush operations.  If "true", uncommitted data is retained after the flush operation completes; otherwise, the uncommitted data is deleted after the flush operation.  The default is false.  Data at offsets less than the specified position are written to the file when flush succeeds, but this optional parameter allows data after the flush position to be retained for a future flush operation.
+     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is the final change to distinguish the difference between an intermediate flush to a file stream and the final close of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a file change notification with a property indicating that this is the final update (the file stream has been closed). If "false" a change notification is raised indicating the file has changed. The default is false. This query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
+     * @param contentLength Required for "Append Data" and "Flush Data".  Must be 0 for "Flush Data".  Must be the length of the request content in bytes for "Append Data".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param pathHttpHeaders Additional parameters for the operation.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Integer timeout, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String requestId, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String action = "flush";
+        byte[] contentMd5 = null;
+        if (pathHttpHeaders != null) {
+            contentMd5 = pathHttpHeaders.getContentMd5();
+        }
+        String cacheControl = null;
+        if (pathHttpHeaders != null) {
+            cacheControl = pathHttpHeaders.getCacheControl();
+        }
+        String contentType = null;
+        if (pathHttpHeaders != null) {
+            contentType = pathHttpHeaders.getContentType();
+        }
+        String contentDisposition = null;
+        if (pathHttpHeaders != null) {
+            contentDisposition = pathHttpHeaders.getContentDisposition();
+        }
+        String contentEncoding = null;
+        if (pathHttpHeaders != null) {
+            contentEncoding = pathHttpHeaders.getContentEncoding();
+        }
+        String contentLanguage = null;
+        if (pathHttpHeaders != null) {
+            contentLanguage = pathHttpHeaders.getContentLanguage();
+        }
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.flushData(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, position, retainUncommittedData, close, contentLength, requestId, this.client.getVersion(), action, contentMd5Converted, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Append data to the file.
+     *
+     * @param body Initial data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsAppendDataResponse> appendDataWithRestResponseAsync(Flux<ByteBuffer> body, Context context) {
+        final Long position = null;
+        final Integer timeout = null;
+        final Long contentLength = null;
+        final String requestId = null;
+        final String action = "append";
+        final String leaseId = null;
+        String transactionalContentHashConverted = null;
+        return service.appendData(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), position, timeout, contentLength, body, requestId, this.client.getVersion(), action, transactionalContentHashConverted, leaseId, context);
+    }
+
+    /**
+     * Append data to the file.
+     *
+     * @param body Initial data.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is appended to the file.  It is required when uploading data to be appended to the file and when flushing previously uploaded data to the file.  The value must be the position where the data is to be appended.  Uploaded data is not immediately flushed, or written, to the file.  To flush, the previously uploaded data must be contiguous, the position parameter must be specified and equal to the length of the file after all data has been written, and there must not be a request entity body included with the request.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param contentLength Required for "Append Data" and "Flush Data".  Must be 0 for "Flush Data".  Must be the length of the request content in bytes for "Append Data".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param pathHttpHeaders Additional parameters for the operation.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsAppendDataResponse> appendDataWithRestResponseAsync(Flux<ByteBuffer> body, Long position, Integer timeout, Long contentLength, String requestId, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, Context context) {
+        final String action = "append";
+        byte[] transactionalContentHash = null;
+        if (pathHttpHeaders != null) {
+            transactionalContentHash = pathHttpHeaders.getTransactionalContentHash();
+        }
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
+        return service.appendData(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), position, timeout, contentLength, body, requestId, this.client.getVersion(), action, transactionalContentHashConverted, leaseId, context);
     }
 }

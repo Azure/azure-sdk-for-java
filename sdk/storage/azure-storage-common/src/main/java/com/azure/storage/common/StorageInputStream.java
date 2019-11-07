@@ -4,6 +4,7 @@
 package com.azure.storage.common;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,10 @@ import java.nio.ByteBuffer;
  * Provides an input stream to read a given storage resource.
  */
 public abstract class StorageInputStream extends InputStream {
+    private static final String MARK_EXPIRED = "Stream mark expired.";
+    private static final String UNEXPECTED_STREAM_READ_ERROR =
+        "Unexpected error. Stream returned unexpected number of bytes.";
+
     private final ClientLogger logger = new ClientLogger(StorageInputStream.class);
 
     /**
@@ -140,7 +145,7 @@ public abstract class StorageInputStream extends InputStream {
     public synchronized void close() {
         this.currentBuffer = null;
         this.streamFaulted = true;
-        this.lastError = new IOException(SR.STREAM_CLOSED);
+        this.lastError = new IOException(Constants.STREAM_CLOSED);
     }
 
     /**
@@ -197,7 +202,7 @@ public abstract class StorageInputStream extends InputStream {
         if (numberOfBytesRead > 0) {
             return tBuff[0] & 0xFF;
         } else if (numberOfBytesRead == 0) {
-            throw logger.logExceptionAsError(new RuntimeException(SR.UNEXPECTED_STREAM_READ_ERROR));
+            throw logger.logExceptionAsError(new RuntimeException(UNEXPECTED_STREAM_READ_ERROR));
         } else {
             return -1;
         }
@@ -360,7 +365,7 @@ public abstract class StorageInputStream extends InputStream {
     @Override
     public synchronized void reset() {
         if (this.markedPosition + this.markExpiry < this.currentAbsoluteReadPosition) {
-            throw logger.logExceptionAsError(new RuntimeException(SR.MARK_EXPIRED));
+            throw logger.logExceptionAsError(new RuntimeException(MARK_EXPIRED));
         }
         this.reposition(this.markedPosition);
     }

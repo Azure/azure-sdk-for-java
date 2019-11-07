@@ -3,9 +3,10 @@
 
 package com.azure.core.annotation;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
@@ -28,8 +29,8 @@ import java.lang.annotation.Target;
  * {@literal @}Head(https://management.azure.com/{storageAccountId})
  *  boolean checkNameAvailability(@PathParam("nextLink") String storageAccountId);</pre>
  */
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RUNTIME)
+@Target(METHOD)
 public @interface Head {
     /**
      * Get the relative path of the annotated method's HEAD URL.

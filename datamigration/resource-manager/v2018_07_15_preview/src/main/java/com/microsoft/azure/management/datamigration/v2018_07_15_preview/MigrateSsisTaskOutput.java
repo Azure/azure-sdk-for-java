@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Output for task that migrates SSIS packages from SQL Server to Azure SQL
  * Database Managed Instance.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSsisTaskOutput.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("MigrateSsisTaskOutput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SsisProjectLevelOutput", value = MigrateSsisTaskOutputProjectLevel.class),

@@ -3,53 +3,45 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders;
-import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
-import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
 
 /**
  * This class contains the properties about an append blob.
  */
+@Immutable
 public class AppendBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
-    private final byte[] contentMD5;
+    private final byte[] contentMd5;
     private final boolean isServerEncrypted;
     private final String encryptionKeySha256;
     private final String blobAppendOffset;
     private final Integer blobCommittedBlockCount;
 
-    public AppendBlobItem(AppendBlobCreateHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobAppendOffset = null;
-        this.blobCommittedBlockCount = null;
-    }
-
-    public AppendBlobItem(AppendBlobAppendBlockHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobAppendOffset = generatedHeaders.getBlobAppendOffset();
-        this.blobCommittedBlockCount = generatedHeaders.getBlobCommittedBlockCount();
-    }
-
-    public AppendBlobItem(AppendBlobAppendBlockFromUrlHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.getETag();
-        this.lastModified = generatedHeaders.getLastModified();
-        this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
-        this.blobAppendOffset = generatedHeaders.getBlobAppendOffset();
-        this.blobCommittedBlockCount = generatedHeaders.getBlobCommittedBlockCount();
+    /**
+     * Constructs an {@link AppendBlobItem}.
+     *
+     * @param eTag ETag of the append blob.
+     * @param lastModified Last modified time of the append blob.
+     * @param contentMd5 Content MD5 of the append blob.
+     * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
+     * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
+     * @param blobAppendOffset The offset at which the block was committed to the block blob.
+     * @param blobCommittedBlockCount The number of committed blocks in the block blob.
+     */
+    public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
+        final boolean isServerEncrypted, final String encryptionKeySha256, final String blobAppendOffset,
+        final Integer blobCommittedBlockCount) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.contentMd5 = CoreUtils.clone(contentMd5);
+        this.isServerEncrypted = isServerEncrypted;
+        this.encryptionKeySha256 = encryptionKeySha256;
+        this.blobAppendOffset = blobAppendOffset;
+        this.blobCommittedBlockCount = blobCommittedBlockCount;
     }
 
     /**
@@ -83,8 +75,8 @@ public class AppendBlobItem {
     /**
      * @return the calculated MD5 of the append blob
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(contentMD5);
+    public byte[] getContentMd5() {
+        return CoreUtils.clone(contentMd5);
     }
 
     /**

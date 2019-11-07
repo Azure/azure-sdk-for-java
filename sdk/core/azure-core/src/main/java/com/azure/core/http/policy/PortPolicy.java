@@ -5,15 +5,16 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
 /**
- * The Pipeline policy that adds a given port to each HttpRequest.
+ * The pipeline policy that adds a given port to each {@link HttpRequest}.
  */
 public class PortPolicy implements HttpPipelinePolicy {
     private final int port;
@@ -21,10 +22,10 @@ public class PortPolicy implements HttpPipelinePolicy {
     private final ClientLogger logger = new ClientLogger(PortPolicy.class);
 
     /**
-     * Create a new PortPolicy object.
+     * Creates a new PortPolicy object.
      *
      * @param port The port to set.
-     * @param overwrite Whether or not to overwrite a HttpRequest's port if it already has one.
+     * @param overwrite Whether or not to overwrite a {@link HttpRequest HttpRequest's} port if it already has one.
      */
     public PortPolicy(int port, boolean overwrite) {
         this.port = port;
@@ -38,9 +39,10 @@ public class PortPolicy implements HttpPipelinePolicy {
             logger.info("Changing port to {}", port);
 
             try {
-                context.getHttpRequest().setUrl(urlBuilder.setPort(port).toURL());
+                context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
             } catch (MalformedURLException e) {
-                return Mono.error(e);
+                return Mono.error(new RuntimeException(
+                    String.format("Failed to set the HTTP request port to %d.", port), e));
             }
         }
         return next.process();

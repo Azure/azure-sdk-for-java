@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for ListContainersIncludeType.
+ * Defines values for ListBlobContainersIncludeType.
  */
 public enum ListBlobContainersIncludeType {
     /**
@@ -17,7 +17,7 @@ public enum ListBlobContainersIncludeType {
     METADATA("metadata");
 
     /**
-     * The actual serialized value for a ListContainersIncludeType instance.
+     * The actual serialized value for a ListBlobContainersIncludeType instance.
      */
     private final String value;
 
@@ -26,10 +26,10 @@ public enum ListBlobContainersIncludeType {
     }
 
     /**
-     * Parses a serialized value to a ListContainersIncludeType instance.
+     * Parses a serialized value to a ListBlobContainersIncludeType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ListContainersIncludeType object, or null if unable to parse.
+     * @return the parsed ListBlobContainersIncludeType object, or null if unable to parse.
      */
     @JsonCreator
     public static ListBlobContainersIncludeType fromString(String value) {

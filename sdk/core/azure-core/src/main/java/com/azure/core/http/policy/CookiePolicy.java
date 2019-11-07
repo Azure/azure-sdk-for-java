@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The Pipeline policy that which stores cookies based on the response Set-Cookie header and adds cookies to requests.
+ * The pipeline policy that which stores cookies based on the response "Set-Cookie" header and adds cookies to requests.
  */
 public class CookiePolicy implements HttpPipelinePolicy {
     private final ClientLogger logger = new ClientLogger(CookiePolicy.class);

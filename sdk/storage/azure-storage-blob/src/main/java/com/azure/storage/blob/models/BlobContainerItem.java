@@ -25,7 +25,7 @@ public final class BlobContainerItem {
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
-    private BlobContainerProperties properties;
+    private BlobContainerItemProperties properties;
 
     /*
      * The metadata property.
@@ -46,7 +46,7 @@ public final class BlobContainerItem {
      * Set the name property: The name property.
      *
      * @param name the name value to set.
-     * @return the ContainerItem object itself.
+     * @return the BlobContainerItem object itself.
      */
     public BlobContainerItem setName(String name) {
         this.name = name;
@@ -58,7 +58,7 @@ public final class BlobContainerItem {
      *
      * @return the properties value.
      */
-    public BlobContainerProperties getProperties() {
+    public BlobContainerItemProperties getProperties() {
         return this.properties;
     }
 
@@ -66,9 +66,9 @@ public final class BlobContainerItem {
      * Set the properties property: The properties property.
      *
      * @param properties the properties value to set.
-     * @return the ContainerItem object itself.
+     * @return the BlobContainerItem object itself.
      */
-    public BlobContainerItem setProperties(BlobContainerProperties properties) {
+    public BlobContainerItem setProperties(BlobContainerItemProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -86,7 +86,7 @@ public final class BlobContainerItem {
      * Set the metadata property: The metadata property.
      *
      * @param metadata the metadata value to set.
-     * @return the ContainerItem object itself.
+     * @return the BlobContainerItem object itself.
      */
     public BlobContainerItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;

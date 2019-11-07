@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshotmetadata33132423e0086ea?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "6dfd6003-0d49-4025-8762-9b65e1a0edd9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F8D15185E",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:20 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48c01-a01a-0116-1588-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:19 GMT",
+      "x-ms-client-request-id" : "6dfd6003-0d49-4025-8762-9b65e1a0edd9"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshotmetadata33132423e0086ea?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "8c82648d-222c-4032-8ee4-84219f29664a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-10-15T18:43:20.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F8CCB5400",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:20 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48c04-a01a-0116-1688-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:19 GMT",
+      "x-ms-client-request-id" : "8c82648d-222c-4032-8ee4-84219f29664a"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestscreatesnapshotmetadata33132423e0086ea", "shareapitestscreatesnapshotmetadata0149036792cd4e6" ]
+}

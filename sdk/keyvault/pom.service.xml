@@ -36,13 +36,15 @@
         </property>
       </activation>
       <modules>
-        <module>../core/azure-core</module>        <!-- NOTE: We need to build core so we can build against the version in the repo. -->
-        <module>../core/azure-core-test</module>        <!-- NOTE: We need to build core so we can build against the version in the repo. -->
+      <!-- NOTE: Commenting out because we should now be binary composed.
+        -->
+        <module>../core/azure-core</module>      
+        <module>../core/azure-core-test</module>       
         <module>../core/azure-core-http-netty</module>
-        <module>../identity/azure-identity</module>        <!-- NOTE: We need to build identity so we can build against the version in the repo. -->
-        <module>azure-keyvault-certificates</module>
-        <module>azure-keyvault-keys</module>
-        <module>azure-keyvault-secrets</module>
+        <module>../identity/azure-identity</module>
+        <module>azure-security-keyvault-certificates</module>
+        <module>azure-security-keyvault-keys</module>
+        <module>azure-security-keyvault-secrets</module>
       </modules>
     </profile>
   </profiles>

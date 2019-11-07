@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefileinvalidargs0000039bf3a7ade3?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "b4ece806-1a78-4a1f-aff1-6036d0718d8f"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F8F0096B2",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:23 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48c5f-a01a-0116-6088-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:22 GMT",
+      "x-ms-client-request-id" : "b4ece806-1a78-4a1f-aff1-6036d0718d8f"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefileinvalidargs0000039bf3a7ade3/testfile:",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "96df6abe-77c8-4f7a-9427-e5047e30b1f6"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidResourceName",
+      "retry-after" : "0",
+      "Content-Length" : "243",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "83e48c61-a01a-0116-6188-83b7bd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:83e48c61-a01a-0116-6188-83b7bd000000\nTime:2019-10-15T18:43:24.0878556Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:43:23 GMT",
+      "x-ms-client-request-id" : "96df6abe-77c8-4f7a-9427-e5047e30b1f6",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestscreatefileinvalidargs0000039bf3a7ade3" ]
+}

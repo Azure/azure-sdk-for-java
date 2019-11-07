@@ -23,8 +23,8 @@ public class QueueRuntimeInfoSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(QueueDescriptionSerializer.class);
 
     static QueueRuntimeInfo parseFromContent(String xml) throws MessagingEntityNotFoundException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();

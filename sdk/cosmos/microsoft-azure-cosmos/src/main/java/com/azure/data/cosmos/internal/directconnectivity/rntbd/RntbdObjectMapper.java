@@ -81,6 +81,7 @@ public final class RntbdObjectMapper {
         throw new CorruptedFrameException(cause);
     }
 
+    @SuppressWarnings("SameParameterValue")
     static void registerPropertyFilter(final Class<?> type, final Class<? extends PropertyFilter> filter) {
 
         checkNotNull(type, "type");

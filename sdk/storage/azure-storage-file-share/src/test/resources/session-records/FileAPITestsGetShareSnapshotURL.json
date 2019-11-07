@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsgetsharesnapshoturl217122edbb75f45e1?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "f28d9082-050c-4ecb-a810-e2bea1c0d532"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F6F9EBBFA",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8639ca28-701a-00fe-2688-830c13000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:30 GMT",
+      "x-ms-client-request-id" : "f28d9082-050c-4ecb-a810-e2bea1c0d532"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsgetsharesnapshoturl217122edbb75f45e1?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "85bebf9c-a9e2-4e1b-9ae6-73422b6a4ec5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-10-15T18:42:31.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F6F9EBBFA",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8639ca2a-701a-00fe-2788-830c13000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:31 GMT",
+      "x-ms-client-request-id" : "85bebf9c-a9e2-4e1b-9ae6-73422b6a4ec5"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileapitestsgetsharesnapshoturl217122edbb75f45e1", "fileapitestsgetsharesnapshoturl6638951c523a34638" ]
+}

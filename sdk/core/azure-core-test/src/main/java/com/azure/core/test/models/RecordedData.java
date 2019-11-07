@@ -36,7 +36,7 @@ public class RecordedData {
      * call could be matched.
      */
     public NetworkCallRecord findFirstAndRemoveNetworkCall(Predicate<NetworkCallRecord> isMatch) {
-        Objects.requireNonNull(isMatch);
+        Objects.requireNonNull(isMatch, "'isMatch' cannot be null.");
 
         synchronized (networkCallRecords) {
             Iterator<NetworkCallRecord> iterator = networkCallRecords.iterator();
@@ -58,7 +58,7 @@ public class RecordedData {
      * @param record The record to add.
      */
     public void addNetworkCall(NetworkCallRecord record) {
-        Objects.requireNonNull(record);
+        Objects.requireNonNull(record, "'record' cannot be null.");
 
         synchronized (networkCallRecords) {
             networkCallRecords.add(record);
@@ -71,7 +71,7 @@ public class RecordedData {
      * @param variable The variable to add to the list.
      */
     public void addVariable(String variable) {
-        Objects.requireNonNull(variable);
+        Objects.requireNonNull(variable, "'variable' cannot be null.");
 
         synchronized (variables) {
             variables.add(variable);

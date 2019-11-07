@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.BlobServiceClient;
 
 /**
@@ -11,12 +12,14 @@ import com.azure.storage.blob.BlobServiceClient;
  * requests, so changing the details for a different listing operation requires construction of a new object. Null may
  * be passed if none of the options are desirable.
  */
+@Fluent
 public final class BlobContainerListDetails {
-
     private boolean retrieveMetadata;
 
+    /**
+     * Constructs an unpopulated {@link BlobContainerListDetails}.
+     */
     public BlobContainerListDetails() {
-
     }
 
     /**

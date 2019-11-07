@@ -5,8 +5,8 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.credentials.TokenCredential;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -54,11 +54,11 @@ public class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
         request.setApplicationProperties(applicationProperties);
 
-        return credential.getToken(new TokenRequest().addScopes(tokenAudience)).flatMap(accessToken -> {
+        return credential.getToken(new TokenRequestContext().addScopes(tokenAudience)).flatMap(accessToken -> {
             request.setBody(new AmqpValue(accessToken.getToken()));
 
             return cbsChannelMono.flatMap(x -> x.sendWithAck(request))
-                .then(Mono.fromCallable(() -> accessToken.getExpiresOn()));
+                .then(Mono.fromCallable(() -> accessToken.getExpiresAt()));
         });
     }
 

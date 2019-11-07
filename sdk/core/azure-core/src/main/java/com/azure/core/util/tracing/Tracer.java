@@ -12,40 +12,45 @@ import com.azure.core.util.Context;
  */
 public interface Tracer {
     /**
-     * Key for {@link Context} which indicates that the context contains OpenCensus span data. This span will be used
+     * Key for {@link Context} which indicates that the context contains parent span data. This span will be used
      * as the parent span for all spans the SDK creates.
      * <p>
      * If no span data is listed when the SDK creates its first span, this span key will be used as the parent span.
      */
-    String OPENCENSUS_SPAN_KEY = "opencensus-span";
+    String PARENT_SPAN_KEY = "parent-span";
 
     /**
-     * Key for {@link Context} which indicates that the context contains the name for the OpenCensus spans that are
+     * Key for {@link Context} which indicates that the context contains the name for the user spans that are
      * created.
      * <p>
      * If no span name is listed when the span is created it will default to using the calling method's name.
      */
-    String OPENCENSUS_SPAN_NAME_KEY = "opencensus-span-name";
+    String USER_SPAN_NAME_KEY = "user-span-name";
 
     /**
      * Key for {@link Context} which indicates that the context contains an entity path.
      */
-    String ENTITY_PATH = "entity-path";
+    String ENTITY_PATH_KEY = "entity-path";
 
     /**
      * Key for {@link Context} which indicates that the context contains the hostname.
      */
-    String HOST_NAME = "hostname";
+    String HOST_NAME_KEY = "hostname";
 
     /**
      * Key for {@link Context} which indicates that the context contains a message span context.
      */
-    String SPAN_CONTEXT = "span-context";
+    String SPAN_CONTEXT_KEY = "span-context";
 
     /**
      * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
      */
     String DIAGNOSTIC_ID_KEY = "diagnostic-id";
+
+    /**
+     * Key for {@link Context} the scope of code where the given Span is in the current Context.
+     */
+    String SCOPE_KEY = "scope";
 
     /**
      * Creates a new tracing span.
@@ -81,7 +86,7 @@ public interface Tracer {
      *
      * <p>
      * Returns the diagnostic Id and span context of the returned span when {@code processKind} is
-     * {@link ProcessKind#RECEIVE ProcessKind.RECEIVE}.
+     * {@link ProcessKind#MESSAGE ProcessKind.MESSAGE}.
      *
      * <p>
      * Creates a new tracing span with remote parent and returns that scope when the given when {@code processKind}
@@ -92,8 +97,8 @@ public interface Tracer {
      * <p>Starts a tracing span with provided method name and AMQP operation SEND</p>
      * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-SEND}
      *
-     * <p>Starts a tracing span with provided method name and AMQP operation RECEIVE</p>
-     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-RECEIVE}
+     * <p>Starts a tracing span with provided method name and AMQP operation MESSAGE</p>
+     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-MESSAGE}
      *
      * <p>Starts a tracing span with provided method name and AMQP operation PROCESS</p>
      * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-PROCESS}

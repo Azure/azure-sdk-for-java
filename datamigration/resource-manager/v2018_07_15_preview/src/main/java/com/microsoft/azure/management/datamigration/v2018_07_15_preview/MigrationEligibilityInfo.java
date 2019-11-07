@@ -18,8 +18,8 @@ public class MigrationEligibilityInfo {
     /**
      * Whether object is eligible for migration or not.
      */
-    @JsonProperty(value = "isEligibileForMigration", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isEligibileForMigration;
+    @JsonProperty(value = "isEligibleForMigration", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isEligibleForMigration;
 
     /**
      * Information about eligibility failure for the server object.
@@ -30,10 +30,10 @@ public class MigrationEligibilityInfo {
     /**
      * Get whether object is eligible for migration or not.
      *
-     * @return the isEligibileForMigration value
+     * @return the isEligibleForMigration value
      */
-    public Boolean isEligibileForMigration() {
-        return this.isEligibileForMigration;
+    public Boolean isEligibleForMigration() {
+        return this.isEligibleForMigration;
     }
 
     /**

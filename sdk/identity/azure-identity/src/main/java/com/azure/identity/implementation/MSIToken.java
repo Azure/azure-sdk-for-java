@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credentials.AccessToken;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -54,7 +54,7 @@ public final class MSIToken extends AccessToken {
     }
 
     @Override
-    public OffsetDateTime getExpiresOn() {
+    public OffsetDateTime getExpiresAt() {
         return EPOCH.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
     }
 

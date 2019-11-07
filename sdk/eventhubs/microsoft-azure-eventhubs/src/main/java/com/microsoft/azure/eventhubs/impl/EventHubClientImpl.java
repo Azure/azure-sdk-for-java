@@ -67,7 +67,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         if (StringUtil.isNullOrWhiteSpace(connectionString)) {
             throw new IllegalArgumentException("Connection string cannot be null or empty");
         }
-        Objects.requireNonNull(executor, "Executor cannot be null");
+        Objects.requireNonNull(executor, "Executor cannot be null.");
 
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr.getEventHubName(), executor);
@@ -95,7 +95,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         if (StringUtil.isNullOrWhiteSpace(eventHubName)) {
             throw new IllegalArgumentException("Event hub name cannot be null or empty");
         }
-        Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
+        Objects.requireNonNull(tokenProvider, "Token provider cannot be null.");
 
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
         final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(endpoint.getHost(), tokenProvider, executor);
@@ -188,7 +188,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         }
 
         if (partitionKey == null) {
-            throw new IllegalArgumentException("partitionKey cannot be null");
+            throw new IllegalArgumentException("partitionKey cannot be null.");
         }
 
         return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
@@ -206,7 +206,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         }
 
         if (partitionKey == null) {
-            throw new IllegalArgumentException("partitionKey cannot be null");
+            throw new IllegalArgumentException("partitionKey cannot be null.");
         }
 
         if (partitionKey.length() > ClientConstants.MAX_PARTITION_KEY_LENGTH) {

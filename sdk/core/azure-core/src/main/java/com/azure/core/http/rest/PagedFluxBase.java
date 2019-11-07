@@ -18,28 +18,30 @@ import java.util.function.Supplier;
  * each response will contain the items in the page as well as the request details like
  * status code and headers.
  *
- * <p>To process one item at a time, simply subscribe to this flux as shown below </p>
- * <p><strong>Code sample</strong></p>
+ * <p><strong>Process each item in Flux</strong></p>
+ * <p>To process one item at a time, simply subscribe to this Flux.</p>
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.items}
  *
- * <p>To process one page at a time, use {@link #byPage} method as shown below </p>
- * <p><strong>Code sample</strong></p>
+ * <p><strong>Process one page at a time</strong></p>
+ * <p>To process one page at a time, starting from the beginning, use {@link #byPage() byPage()} method.</p>
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.pages}
  *
- * <p>To process items one page at a time starting from any page associated with a continuation token,
- * use {@link #byPage(String)} as shown below</p>
- * <p><strong>Code sample</strong></p>
+ * <p><strong>Process items starting from a continuation token</strong></p>
+ * <p>To process items one page at a time starting from any page associated with a continuation token, use
+ * {@link #byPage(String)}.</p>
  * {@codesnippet com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken}
  *
- * @param <T> The type of items in {@code P}
- * @param <P> The {@link PagedResponse} holding items of type {@code T}
+ * @param <T> The type of items in {@code P}.
+ * @param <P> The {@link PagedResponse} holding items of type {@code T}.
  *
  * @see PagedResponse
  * @see Page
  * @see Flux
  */
 public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
+
     private final Supplier<Mono<P>> firstPageRetriever;
+
     private final Function<String, Mono<P>> nextPageRetriever;
 
     /**
@@ -68,10 +70,18 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever,
                          Function<String, Mono<P>> nextPageRetriever) {
-        Objects.requireNonNull(firstPageRetriever, "First page supplier cannot be null");
-        Objects.requireNonNull(nextPageRetriever, "Next page retriever function cannot be null");
+        Objects.requireNonNull(firstPageRetriever, "'firstPageRetriever' cannot be null.");
+        Objects.requireNonNull(nextPageRetriever, "'nextPageRetriever' function cannot be null.");
         this.firstPageRetriever = firstPageRetriever;
         this.nextPageRetriever = nextPageRetriever;
+    }
+
+    Supplier<Mono<P>> getFirstPageRetriever() {
+        return firstPageRetriever;
+    }
+
+    Function<String, Mono<P>> getNextPageRetriever() {
+        return nextPageRetriever;
     }
 
     /**
@@ -135,7 +145,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * @return A {@link Flux} of items
      */
     private Publisher<T> extractAndFetchT(PagedResponse<T> page) {
-        String nextPageLink = page.getNextLink();
+        String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.getItems());
         }
@@ -149,10 +159,10 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * @return A {@link Flux} of {@link PagedResponse}
      */
     private Publisher<? extends P> extractAndFetchPage(P page) {
-        String nextPageLink = page.getNextLink();
+        String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
             return Flux.just(page);
         }
-        return Flux.just(page).concatWith(byPage(page.getNextLink()));
+        return Flux.just(page).concatWith(byPage(page.getContinuationToken()));
     }
 }

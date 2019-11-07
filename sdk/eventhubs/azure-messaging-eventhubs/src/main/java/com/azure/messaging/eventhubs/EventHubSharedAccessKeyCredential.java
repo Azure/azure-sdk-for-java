@@ -3,11 +3,11 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.credentials.TokenRequest;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -99,7 +99,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
      *     audience.
      */
     @Override
-    public Mono<AccessToken> getToken(TokenRequest request) {
+    public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (request.getScopes().size() != 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'scopes' should only contain a single argument that is the token audience or resource name."));
@@ -109,7 +109,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
     }
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
-        if (ImplUtils.isNullOrEmpty(resource)) {
+        if (CoreUtils.isNullOrEmpty(resource)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
         }
 

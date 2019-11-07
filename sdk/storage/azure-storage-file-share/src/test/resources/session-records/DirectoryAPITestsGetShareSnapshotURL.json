@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetsharesnapshoturl0163471ebc67e8?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "8da10972-f525-47d1-9b30-81d28013a2e6"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F5A940233",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:41:55 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "beee0f2c-701a-001b-2688-831ee4000000",
+      "Date" : "Tue, 15 Oct 2019 18:41:55 GMT",
+      "x-ms-client-request-id" : "8da10972-f525-47d1-9b30-81d28013a2e6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetsharesnapshoturl0163471ebc67e8?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "86103b3f-54e2-4a78-bd83-84930bc1b10c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-10-15T18:41:56.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F5A940233",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:41:55 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "beee0f2e-701a-001b-2788-831ee4000000",
+      "Date" : "Tue, 15 Oct 2019 18:41:56 GMT",
+      "x-ms-client-request-id" : "86103b3f-54e2-4a78-bd83-84930bc1b10c"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestsgetsharesnapshoturl0163471ebc67e8", "directoryapitestsgetsharesnapshoturl96745bb9230b09" ]
+}

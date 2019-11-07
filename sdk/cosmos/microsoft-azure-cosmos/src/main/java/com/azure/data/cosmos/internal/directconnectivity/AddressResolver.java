@@ -230,6 +230,8 @@ public class AddressResolver implements IAddressResolver {
             if (range == null) {
                 // Collection cache or routing map cache is potentially outdated. Return empty -
                 // upper logic will refresh cache and retry.
+                logger.debug("Collection cache or routing map cache is potentially outdated." +
+                    " Returning null. Upper logic will refresh cache and retry.");
                 return Mono.empty();
             }
 
@@ -271,6 +273,7 @@ public class AddressResolver implements IAddressResolver {
             return routingMap.getOrderedPartitionKeyRanges().get(0);
         }
 
+        logger.debug("tryResolveSinglePartitionCollection: collectionCacheIsUptoDate = {}", collectionCacheIsUptoDate);
         if (collectionCacheIsUptoDate) {
             throw BridgeInternal.setResourceAddress(new BadRequestException(RMResources.MissingPartitionKeyValue), request.getResourceAddress());
         } else {
@@ -548,6 +551,7 @@ public class AddressResolver implements IAddressResolver {
             throw BridgeInternal.setResourceAddress(new PartitionKeyRangeGoneException(errorMessage), request.getResourceAddress());
         }
 
+        logger.debug("handleRangeAddressResolutionFailure returns null");
         return null;
     }
 

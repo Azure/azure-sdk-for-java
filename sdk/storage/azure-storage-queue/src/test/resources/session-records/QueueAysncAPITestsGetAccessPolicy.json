@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicy0470888f62453632",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicy018358f966dd108b",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "2dc100f8-e2c7-4d31-ac7c-9ddb7bf3916b"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "9b85b873-9a85-4eaf-b6e3-e814962c56ea"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -13,17 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b1814b4d-6003-00c8-2ec2-62a141000000",
-      "Date" : "Wed, 04 Sep 2019 01:45:54 GMT"
+      "x-ms-request-id" : "2f7e8f0c-f003-0082-4d8d-839126000000",
+      "Date" : "Tue, 15 Oct 2019 19:19:47 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicy0470888f62453632?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetaccesspolicy018358f966dd108b?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "0d1f7b8e-83a8-43ec-8753-65e0576f85d9"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "464340d4-e772-4d64-a21e-9d2f7f473807"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -32,12 +32,12 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "b1814b50-6003-00c8-2fc2-62a141000000",
+      "x-ms-request-id" : "2f7e8f1e-f003-0082-5d8d-839126000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers />",
-      "Date" : "Wed, 04 Sep 2019 01:45:54 GMT",
+      "Date" : "Tue, 15 Oct 2019 19:19:47 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsgetaccesspolicy0470888f62453632" ]
+  "variables" : [ "queueaysncapitestsgetaccesspolicy018358f966dd108b" ]
 }

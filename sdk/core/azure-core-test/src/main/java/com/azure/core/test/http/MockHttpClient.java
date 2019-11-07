@@ -3,16 +3,16 @@
 
 package com.azure.core.test.http;
 
-import com.azure.core.implementation.entities.HttpBinFormDataJSON;
-import com.azure.core.implementation.entities.HttpBinFormDataJSON.Form;
-import com.azure.core.implementation.entities.HttpBinFormDataJSON.PizzaSize;
-import com.azure.core.implementation.entities.HttpBinJSON;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.Form;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Base64Url;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;

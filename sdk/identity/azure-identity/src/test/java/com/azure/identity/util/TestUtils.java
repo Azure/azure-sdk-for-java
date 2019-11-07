@@ -3,7 +3,7 @@
 
 package com.azure.identity.util;
 
-import com.azure.core.credentials.AccessToken;
+import com.azure.core.credential.AccessToken;
 import com.azure.identity.implementation.MsalToken;
 import com.microsoft.aad.msal4j.Account;
 import com.microsoft.aad.msal4j.IAccount;

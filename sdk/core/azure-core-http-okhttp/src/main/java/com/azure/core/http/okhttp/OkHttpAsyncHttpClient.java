@@ -138,7 +138,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @return a mono emitting aggregated ByteString
      */
     private static Mono<ByteString> toByteString(Flux<ByteBuffer> bbFlux) {
-        Objects.requireNonNull(bbFlux);
+        Objects.requireNonNull(bbFlux, "'bbFlux' cannot be null.");
         return Mono.using(okio.Buffer::new,
             buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
                 try {

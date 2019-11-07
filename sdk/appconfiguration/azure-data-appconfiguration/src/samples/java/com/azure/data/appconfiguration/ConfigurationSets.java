@@ -12,8 +12,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Sample demonstrates how to use Azure App Configuration to switch between "beta" and "production"
@@ -39,19 +37,16 @@ public class ConfigurationSets {
      * "beta" configuration set.
      *
      * @param args Unused. Arguments to the program.
-     * @throws NoSuchAlgorithmException when credentials cannot be created because the service cannot resolve the
-     * HMAC-SHA256 algorithm.
-     * @throws InvalidKeyException when credentials cannot be created because the connection string is invalid.
      * @throws IOException If the service is unable to deserialize the complex configuration object.
      */
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+    public static void main(String[] args) throws IOException {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
         String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
 
         // Instantiate a configuration client that will be used to call the configuration service.
         ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-            .credential(new ConfigurationClientCredentials(connectionString))
+            .connectionString(connectionString)
             .buildAsyncClient();
 
         // Demonstrates two different complex objects being stored in Azure App Configuration; one used for beta and the
@@ -71,7 +66,7 @@ public class ConfigurationSets {
         // services to communicate with. The sample below fetches all of the "beta" settings.
         SettingSelector selector = new SettingSelector().setLabels(BETA);
 
-        client.listSettings(selector).toStream().forEach(setting -> {
+        client.listConfigurationSettings(selector).toStream().forEach(setting -> {
             System.out.println("Key: " + setting.getKey());
             if ("application/json".equals(setting.getContentType())) {
                 try {
@@ -88,8 +83,8 @@ public class ConfigurationSets {
         // For the BETA and PRODUCTION sets, we fetch all of the settings we created in each set, and delete them.
         // Blocking so that the program does not exit before these tasks have completed.
         Flux.fromArray(new String[]{BETA, PRODUCTION})
-            .flatMap(set -> client.listSettings(new SettingSelector().setLabels(set)))
-            .map(setting -> client.deleteSettingWithResponse(setting, false))
+            .flatMap(set -> client.listConfigurationSettings(new SettingSelector().setLabels(set)))
+            .map(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
             .blockLast();
     }
 
@@ -108,6 +103,7 @@ public class ConfigurationSets {
             .setValue(MAPPER.writeValueAsString(complexConfiguration))
             .setContentType("application/json");
 
-        return Flux.merge(client.addSetting(keyVaultSetting), client.addSetting(endpointSetting)).then();
+        return Flux.merge(client.addConfigurationSetting(keyVaultSetting.getKey(), keyVaultSetting.getLabel(), keyVaultSetting.getValue()),
+            client.addConfigurationSetting(endpointSetting.getKey(), endpointSetting.getLabel(), endpointSetting.getValue())).then();
     }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Locale;
 

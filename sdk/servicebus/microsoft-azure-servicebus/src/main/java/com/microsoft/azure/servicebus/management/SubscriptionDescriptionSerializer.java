@@ -37,9 +37,9 @@ class SubscriptionDescriptionSerializer {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SubscriptionDescriptionSerializer.class);
 
     static String serialize(SubscriptionDescription subscriptionDescription) throws ServiceBusException {
-        DocumentBuilderFactory dbFactory = newInstance();
         DocumentBuilder dBuilder;
         try {
+            DocumentBuilderFactory dbFactory = SerializerUtil.getDocumentBuilderFactory();
             dBuilder = dbFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             throw new ServiceBusException(false, e);
@@ -134,8 +134,8 @@ class SubscriptionDescriptionSerializer {
 
     static List<SubscriptionDescription> parseCollectionFromContent(String topicName, String xml) {
         ArrayList<SubscriptionDescription> subList = new ArrayList<>();
-        DocumentBuilderFactory dbf = newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();
@@ -161,8 +161,8 @@ class SubscriptionDescriptionSerializer {
     }
 
     static SubscriptionDescription parseFromContent(String topicName, String xml) throws MessagingEntityNotFoundException {
-        DocumentBuilderFactory dbf = newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();

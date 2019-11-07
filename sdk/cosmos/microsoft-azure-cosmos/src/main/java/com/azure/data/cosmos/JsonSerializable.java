@@ -5,6 +5,7 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.Utils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,14 +33,14 @@ public class JsonSerializable {
     private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private ObjectMapper om;
     transient ObjectNode propertyBag = null;
-    
+
     protected JsonSerializable() {
         this.propertyBag = OBJECT_MAPPER.createObjectNode();
     }
 
     /**
      * Constructor.
-     * 
+     *
      * @param jsonString the json string that represents the JsonSerializable.
      * @param objectMapper the custom object mapper
      */
@@ -48,10 +49,10 @@ public class JsonSerializable {
         this.propertyBag = fromJson(jsonString);
         this.om = objectMapper;
     }
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param jsonString the json string that represents the JsonSerializable.
      */
     protected JsonSerializable(String jsonString) {
@@ -76,7 +77,7 @@ public class JsonSerializable {
     void setMapper(ObjectMapper om) {
         this.om = om;
     }
-        
+
     private static void checkForValidPOJO(Class<?> c) {
         if (c.isAnonymousClass() || c.isLocalClass()) {
             throw new IllegalArgumentException(
@@ -88,6 +89,7 @@ public class JsonSerializable {
         }
     }
 
+    @JsonIgnore
     public Logger getLogger() {
         return logger;
     }
@@ -106,7 +108,7 @@ public class JsonSerializable {
 
     /**
      * Checks whether a property exists.
-     * 
+     *
      * @param propertyName the property to look up.
      * @return true if the property exists.
      */
@@ -116,7 +118,7 @@ public class JsonSerializable {
 
     /**
      * Removes a value by propertyName.
-     * 
+     *
      * @param propertyName the property to remove.
      */
     void remove(String propertyName) {
@@ -125,7 +127,7 @@ public class JsonSerializable {
 
     /**
      * Sets the value of a property.
-     * 
+     *
      * @param <T>          the type of the object.
      * @param propertyName the property to set.
      * @param value        the value of the property.
@@ -183,7 +185,7 @@ public class JsonSerializable {
 
     /**
      * Gets a property value as Object.
-     * 
+     *
      * @param propertyName the property to get.
      * @return the value of the property.
      */
@@ -194,10 +196,10 @@ public class JsonSerializable {
             return null;
         }
     }
-    
+
     /**
      * Gets a string value.
-     * 
+     *
      * @param propertyName the property to get.
      * @return the string value.
      */
@@ -211,7 +213,7 @@ public class JsonSerializable {
 
     /**
      * Gets a boolean value.
-     * 
+     *
      * @param propertyName the property to get.
      * @return the boolean value.
      */
@@ -225,7 +227,7 @@ public class JsonSerializable {
 
     /**
      * Gets an integer value.
-     * 
+     *
      * @param propertyName the property to get.
      * @return the boolean value
      */
@@ -239,7 +241,7 @@ public class JsonSerializable {
 
     /**
      * Gets a long value.
-     * 
+     *
      * @param propertyName the property to get.
      * @return the long value
      */
@@ -253,7 +255,7 @@ public class JsonSerializable {
 
     /**
      * Gets a double value.
-     * 
+     *
      * @param propertyName the property to get.
      * @return the double value.
      */
@@ -267,7 +269,7 @@ public class JsonSerializable {
 
     /**
      * Gets an object value.
-     * 
+     *
      * @param <T>          the type of the object.
      * @param propertyName the property to get.
      * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
@@ -390,7 +392,7 @@ public class JsonSerializable {
 
     /**
      * Gets an object collection.
-     * 
+     *
      * @param <T>          the type of the objects in the collection.
      * @param propertyName the property to get
      * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
@@ -405,7 +407,7 @@ public class JsonSerializable {
 
     /**
      * Gets a JSONObject.
-     * 
+     *
      * @param propertyName the property to get.
      * @return the JSONObject.
      */
@@ -419,7 +421,7 @@ public class JsonSerializable {
 
     /**
      * Gets a JSONObject collection.
-     * 
+     *
      * @param propertyName the property to get.
      * @return the JSONObject collection.
      */
@@ -433,12 +435,12 @@ public class JsonSerializable {
             }
         }
 
-        return result;    
+        return result;
     }
 
     /**
      * Gets the value of a property identified by an array of property names that forms the path.
-     * 
+     *
      * @param propertyNames that form the path to the property to get.
      * @return the value of the property.
      */
@@ -462,12 +464,12 @@ public class JsonSerializable {
                     break;
                 }
             } while (iterator.hasNext());
-            
+
             if (value != null && matchedProperties == propertyNames.size()) {
                 return getValue(value);
             }
         }
-        
+
         return null;
     }
 
@@ -517,7 +519,7 @@ public class JsonSerializable {
 
     /**
      * Converts to an Object (only POJOs and JSONObject are supported).
-     * 
+     *
      * @param <T> the type of the object.
      * @param c   the class of the object, either a POJO class or JSONObject. If c is a POJO class, it must be a member
      *            (and not an anonymous or local) and a static one.
@@ -547,16 +549,16 @@ public class JsonSerializable {
 
     /**
      * Converts to a JSON string.
-     * 
+     *
      * @return the JSON string.
      */
     public String toJson() {
         return this.toJson(SerializationFormattingPolicy.NONE);
     }
-    
+
     /**
      * Converts to a JSON string.
-     * 
+     *
      * @param formattingPolicy the formatting policy to be used.
      * @return the JSON string.
      */
@@ -571,10 +573,10 @@ public class JsonSerializable {
 
     /**
      * Gets Simple STRING representation of property bag.
-     * 
-     * For proper conversion to json and inclusion of the default values 
+     *
+     * For proper conversion to json and inclusion of the default values
      * use {@link #toJson()}.
-     * 
+     *
      * @return string representation of property bag.
      */
     public String toString() {

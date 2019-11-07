@@ -3,9 +3,10 @@
 
 package com.azure.core.annotation;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
@@ -30,8 +31,8 @@ import java.lang.annotation.Target;
  *  Secret patch(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String
  *  secretName, @BodyParam SecretUpdateParameters updateParameters); </pre>
  */
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RUNTIME)
+@Target(METHOD)
 public @interface Patch {
     /**
      * Get the relative path of the annotated method's PATCH URL.

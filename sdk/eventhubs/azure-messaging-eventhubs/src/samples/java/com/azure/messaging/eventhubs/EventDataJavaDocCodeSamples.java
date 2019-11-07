@@ -23,7 +23,7 @@ public class EventDataJavaDocCodeSamples {
         // END: com.azure.messaging.eventhubs.eventdata.addProperty#string-object
     }
 
-    private final class TelemetryEvent {
+    private static final class TelemetryEvent {
         private final String name;
         private final String value;
 

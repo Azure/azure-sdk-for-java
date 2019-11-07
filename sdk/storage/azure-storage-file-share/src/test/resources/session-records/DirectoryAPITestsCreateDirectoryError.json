@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerror2634373350d2e6?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "f6f12823-0899-46aa-bfc6-fc5952e02762"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F5C0D428C",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:41:58 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "beee0f50-701a-001b-3a88-831ee4000000",
+      "Date" : "Tue, 15 Oct 2019 18:41:58 GMT",
+      "x-ms-client-request-id" : "f6f12823-0899-46aa-bfc6-fc5952e02762"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatedirectoryerror5674572836c937/directoryapitestscreatedirectoryerror24005cd1c248ec?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "df504706-50a2-400b-a823-e2ae6cdde2c7"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "c1ad4dc2-b01a-00ca-5988-83a3bb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:c1ad4dc2-b01a-00ca-5988-83a3bb000000\nTime:2019-10-15T18:41:58.3044671Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:41:58 GMT",
+      "x-ms-client-request-id" : "df504706-50a2-400b-a823-e2ae6cdde2c7",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestscreatedirectoryerror2634373350d2e6", "directoryapitestscreatedirectoryerror24005cd1c248ec", "directoryapitestscreatedirectoryerror5674572836c937" ]
+}

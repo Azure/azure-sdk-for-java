@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsdeletefileerror678935be0eac7477849?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "0079e62e-e8a3-4776-a9ce-53ab1ccb1c9d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F76365991",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:42 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "89e9e6f7-f01a-00ef-4e88-833b08000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:42 GMT",
+      "x-ms-client-request-id" : "0079e62e-e8a3-4776-a9ce-53ab1ccb1c9d"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsdeletefileerror678935be0eac7477849/fileapitestsdeletefileerror5448297b7ef3a3d134c",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "8d1c0ce0-5bd6-4a88-bc4c-ab322cce12ff"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "89e9e6fa-f01a-00ef-5088-833b08000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:89e9e6fa-f01a-00ef-5088-833b08000000\nTime:2019-10-15T18:42:42.3930501Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:42 GMT",
+      "x-ms-client-request-id" : "8d1c0ce0-5bd6-4a88-bc4c-ab322cce12ff",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileapitestsdeletefileerror678935be0eac7477849", "fileapitestsdeletefileerror5448297b7ef3a3d134c" ]
+}

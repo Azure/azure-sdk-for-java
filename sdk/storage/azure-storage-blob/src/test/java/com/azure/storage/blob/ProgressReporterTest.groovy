@@ -18,7 +18,7 @@ class ProgressReporterTest extends APISpec {
         ByteBuffer buf2 = getRandomData(15)
         ByteBuffer buf3 = getRandomData(5)
 
-        IProgressReceiver mockReceiver = Mock(IProgressReceiver)
+        ProgressReceiver mockReceiver = Mock(ProgressReceiver)
 
         Flux<ByteBuffer> data = Flux.just(buf1, buf2, buf3)
         data = ProgressReporter.addProgressReporting(data, mockReceiver)
@@ -38,7 +38,7 @@ class ProgressReporterTest extends APISpec {
     @Requires({ liveMode() })
     def "Report progress sequential network test"() {
         setup:
-        IProgressReceiver mockReceiver = Mock(IProgressReceiver)
+        ProgressReceiver mockReceiver = Mock(ProgressReceiver)
 
         ByteBuffer buffer = getRandomData(1 * 1024 * 1024)
         Flux<ByteBuffer> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
@@ -67,7 +67,7 @@ class ProgressReporterTest extends APISpec {
         ReentrantLock lock = new ReentrantLock()
         AtomicLong totalProgress = new AtomicLong(0)
 
-        IProgressReceiver mockReceiver = Mock(IProgressReceiver)
+        ProgressReceiver mockReceiver = Mock(ProgressReceiver)
         Flux<ByteBuffer> data = Flux.just(buf1, buf2, buf3)
         Flux<ByteBuffer> data2 = Flux.just(buf3, buf2, buf1)
         data = ProgressReporter.addParallelProgressReporting(data, mockReceiver, lock, totalProgress)

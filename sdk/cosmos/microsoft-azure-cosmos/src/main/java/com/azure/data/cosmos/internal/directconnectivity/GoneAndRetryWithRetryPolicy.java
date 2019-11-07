@@ -64,7 +64,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             (this.request.getPartitionKeyRangeIdentity() == null ||
             this.request.getPartitionKeyRangeIdentity().getCollectionRid() == null)) &&
             !(exception instanceof PartitionKeyRangeIsSplittingException)) {
-            logger.debug("Operation will NOT be retried. Current attempt {}, Exception: {} ", this.attemptCount,
+            logger.debug("Operation will NOT be retried. Current attempt {}, Exception:", this.attemptCount,
                     exception);
             stopStopWatch(this.durationTimer);
             return Mono.just(ShouldRetryResult.noRetry());

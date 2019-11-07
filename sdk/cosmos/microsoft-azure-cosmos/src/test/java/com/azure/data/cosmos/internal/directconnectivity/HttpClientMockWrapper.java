@@ -3,7 +3,6 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.internal.directconnectivity.WFConstants;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 import com.azure.data.cosmos.internal.http.HttpRequest;
@@ -19,8 +18,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-;
 
 public class HttpClientMockWrapper {
     public static HttpClientBehaviourBuilder httpClientBehaviourBuilder() {
@@ -88,7 +85,7 @@ public class HttpClientMockWrapper {
             HttpResponse resp = Mockito.mock(HttpResponse.class);
             Mockito.doReturn(this.status).when(resp).statusCode();
             Mockito.doReturn(Flux.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, this.content))).when(resp).body();
-            Mockito.doReturn(Mono.just(this.content)).when(resp).bodyAsString(StandardCharsets.UTF_8);
+            Mockito.doReturn(Mono.just(this.content)).when(resp).bodyAsString();
             Mockito.doReturn(this.httpHeaders).when(resp).headers();
             return resp;
         }

@@ -61,7 +61,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
             usedMemoryInBytesBefore / (double)ONE_MB,
             (usedMemoryInBytesAfter - usedMemoryInBytesBefore) / (double)ONE_MB);
 
-        assertThat(usedMemoryInBytesAfter - usedMemoryInBytesBefore).isLessThan(125 * ONE_MB);
+        assertThat(usedMemoryInBytesAfter - usedMemoryInBytesBefore).isLessThan(300 * ONE_MB);
     }
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)

@@ -10,8 +10,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -70,13 +70,13 @@ public class RequestIdPolicyTests {
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
                         String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                        Assert.assertNotNull(newRequestId);
-                        Assert.assertNotEquals(newRequestId, firstRequestId);
+                        Assertions.assertNotNull(newRequestId);
+                        Assertions.assertNotEquals(newRequestId, firstRequestId);
                     }
 
                     firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
                     if (firstRequestId == null) {
-                        Assert.fail();
+                        Assertions.fail();
                     }
                     return Mono.just(mockResponse);
                 }
@@ -98,17 +98,17 @@ public class RequestIdPolicyTests {
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
                         String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                        Assert.assertNotNull(newRequestId);
-                        Assert.assertEquals(newRequestId, firstRequestId);
+                        Assertions.assertNotNull(newRequestId);
+                        Assertions.assertEquals(newRequestId, firstRequestId);
                     }
                     firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
                     if (firstRequestId == null) {
-                        Assert.fail();
+                        Assertions.fail();
                     }
                     return Mono.just(mockResponse);
                 }
             })
-            .policies(new RequestIdPolicy(), new RetryPolicy(1, Duration.of(0, ChronoUnit.SECONDS)))
+            .policies(new RequestIdPolicy(), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
             .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();

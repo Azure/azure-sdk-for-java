@@ -1,113 +1,112 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcbuffereduploadnetworkerror0907979d92c5df18a14f?restype=container",
+    "Uri" : "https://gapradev.blob.core.windows.net/jtcbuffereduploadnetworkerror0858971b221389f9404f?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "bca51290-7488-49f0-ad8a-5a16a869e9ba"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "87c46577-a3c2-49af-8529-fae4d9444943"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73561F0C87628\"",
-      "Last-Modified" : "Mon, 09 Sep 2019 20:11:46 GMT",
+      "ETag" : "0x8D757F0B8B26C2B",
+      "Last-Modified" : "Wed, 23 Oct 2019 19:39:29 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "755bf2a2-601e-0051-2f4a-67fe5e000000",
-      "Date" : "Mon, 09 Sep 2019 20:11:45 GMT",
-      "x-ms-client-request-id" : "bca51290-7488-49f0-ad8a-5a16a869e9ba"
+      "x-ms-request-id" : "466b63b5-f01e-0002-26d9-892c83000000",
+      "Date" : "Wed, 23 Oct 2019 19:39:29 GMT",
+      "x-ms-client-request-id" : "87c46577-a3c2-49af-8529-fae4d9444943"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcbuffereduploadnetworkerror0907979d92c5df18a14f/javablobbuffereduploadnetworkerror13522801d58f6a400",
+    "Uri" : "https://gapradev.blob.core.windows.net/jtcbuffereduploadnetworkerror0858971b221389f9404f/javablobbuffereduploadnetworkerror157364ee2036bc795",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "d788c517-c444-4046-af56-0e706221849d",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "bc190497-34d2-454e-9001-b9ab5b125a19",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Mon, 09 Sep 2019 20:11:46 GMT",
+      "Last-Modified" : "Wed, 23 Oct 2019 19:39:30 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Mon, 09 Sep 2019 20:11:46 GMT",
+      "Date" : "Wed, 23 Oct 2019 19:39:29 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "ETag" : "\"0x8D73561F0D59139\"",
+      "ETag" : "0x8D757F0B8D821A0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "755bf2bb-601e-0051-464a-67fe5e000000",
-      "x-ms-client-request-id" : "d788c517-c444-4046-af56-0e706221849d"
+      "x-ms-request-id" : "466b63c9-f01e-0002-38d9-892c83000000",
+      "x-ms-client-request-id" : "bc190497-34d2-454e-9001-b9ab5b125a19"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcbuffereduploadnetworkerror0907979d92c5df18a14f/javablobbuffereduploadnetworkerror254162597abc5f02a",
+    "Uri" : "https://gapradev.blob.core.windows.net/jtcbuffereduploadnetworkerror0858971b221389f9404f/javablobbuffereduploadnetworkerror28175306be0d34bf5",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "e13d9089-62f0-4233-8a28-4953861899cc",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "9eb18bfa-b40e-4b21-91dc-c04f3e7cd489",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Mon, 09 Sep 2019 20:11:46 GMT",
+      "Last-Modified" : "Wed, 23 Oct 2019 19:39:30 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Mon, 09 Sep 2019 20:11:46 GMT",
+      "Date" : "Wed, 23 Oct 2019 19:39:30 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "ETag" : "\"0x8D73561F0E216A5\"",
+      "ETag" : "0x8D757F0B8EEB6CA",
       "Content-Length" : "0",
-      "x-ms-request-id" : "755bf2d6-601e-0051-5d4a-67fe5e000000",
-      "x-ms-client-request-id" : "e13d9089-62f0-4233-8a28-4953861899cc"
+      "x-ms-request-id" : "466b63d2-f01e-0002-41d9-892c83000000",
+      "x-ms-client-request-id" : "9eb18bfa-b40e-4b21-91dc-c04f3e7cd489"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcbuffereduploadnetworkerror0907979d92c5df18a14f/javablobbuffereduploadnetworkerror254162597abc5f02a",
+    "Uri" : "https://gapradev.blob.core.windows.net/jtcbuffereduploadnetworkerror0858971b221389f9404f/javablobbuffereduploadnetworkerror28175306be0d34bf5",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "b9722a75-7a6d-4b7e-8cdc-ce102a742090"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "57cf4d5a-3dcf-4053-aa2b-646a89e52c9f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-lease-status" : "unlocked",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-tag-count" : "0",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Mon, 09 Sep 2019 20:11:46 GMT",
+      "Last-Modified" : "Wed, 23 Oct 2019 19:39:30 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 09 Sep 2019 20:11:46 GMT",
+      "Date" : "Wed, 23 Oct 2019 19:39:30 GMT",
       "x-ms-blob-type" : "BlockBlob",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
-      "ETag" : "\"0x8D73561F0E216A5\"",
-      "x-ms-creation-time" : "Mon, 09 Sep 2019 20:11:46 GMT",
+      "ETag" : "0x8D757F0B8EEB6CA",
+      "x-ms-creation-time" : "Wed, 23 Oct 2019 19:39:30 GMT",
       "Content-Length" : "7",
-      "x-ms-request-id" : "755bf2e7-601e-0051-6a4a-67fe5e000000",
+      "x-ms-request-id" : "466b63dc-f01e-0002-4bd9-892c83000000",
       "Body" : "[100, 101, 102, 97, 117, 108, 116]",
-      "x-ms-client-request-id" : "b9722a75-7a6d-4b7e-8cdc-ce102a742090",
+      "x-ms-client-request-id" : "57cf4d5a-3dcf-4053-aa2b-646a89e52c9f",
       "Content-Type" : "application/octet-stream"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://jaschrepragrs.blob.core.windows.net?prefix=jtcbuffereduploadnetworkerror&comp=list",
+    "Uri" : "https://gapradev.blob.core.windows.net?prefix=jtcbuffereduploadnetworkerror&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "02542984-f13b-4c24-a39e-c65c0575357a"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "6c6dac66-20ce-4e47-ba8c-d1978f9c2b7c"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -115,20 +114,20 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "755bf49d-601e-0051-804a-67fe5e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://jaschrepragrs.blob.core.windows.net/\"><Prefix>jtcbuffereduploadnetworkerror</Prefix><Containers><Container><Name>jtcbuffereduploadnetworkerror0907979d92c5df18a14f</Name><Properties><Last-Modified>Mon, 09 Sep 2019 20:11:46 GMT</Last-Modified><Etag>\"0x8D73561F0C87628\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Mon, 09 Sep 2019 20:11:48 GMT",
-      "x-ms-client-request-id" : "02542984-f13b-4c24-a39e-c65c0575357a",
+      "x-ms-request-id" : "466b6459-f01e-0002-3ed9-892c83000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapradev.blob.core.windows.net/\"><Prefix>jtcbuffereduploadnetworkerror</Prefix><Containers><Container><Name>jtcbuffereduploadnetworkerror0858971b221389f9404f</Name><Properties><Last-Modified>Wed, 23 Oct 2019 19:39:29 GMT</Last-Modified><Etag>\"0x8D757F0B8B26C2B\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 23 Oct 2019 19:39:32 GMT",
+      "x-ms-client-request-id" : "6c6dac66-20ce-4e47-ba8c-d1978f9c2b7c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcbuffereduploadnetworkerror0907979d92c5df18a14f?restype=container",
+    "Uri" : "https://gapradev.blob.core.windows.net/jtcbuffereduploadnetworkerror0858971b221389f9404f?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "6886cc28-0f00-49f0-932e-28fb2c195e8f"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "f2f6febf-8ac2-42a1-800b-26df25d0dd45"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -136,11 +135,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "755bf4af-601e-0051-124a-67fe5e000000",
-      "Date" : "Mon, 09 Sep 2019 20:11:48 GMT",
-      "x-ms-client-request-id" : "6886cc28-0f00-49f0-932e-28fb2c195e8f"
+      "x-ms-request-id" : "466b6465-f01e-0002-49d9-892c83000000",
+      "Date" : "Wed, 23 Oct 2019 19:39:32 GMT",
+      "x-ms-client-request-id" : "f2f6febf-8ac2-42a1-800b-26df25d0dd45"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcbuffereduploadnetworkerror0907979d92c5df18a14f", "javablobbuffereduploadnetworkerror13522801d58f6a400", "javablobbuffereduploadnetworkerror254162597abc5f02a", "jtcbuffereduploadnetworkerror324646057e3126516a4d", "javablobbuffereduploadnetworkerror43623671e9ce74aa0" ]
+  "variables" : [ "jtcbuffereduploadnetworkerror0858971b221389f9404f", "javablobbuffereduploadnetworkerror157364ee2036bc795", "javablobbuffereduploadnetworkerror28175306be0d34bf5", "jtcbuffereduploadnetworkerror301972d3101ed6368446", "javablobbuffereduploadnetworkerror405946c2f35445b4e" ]
 }

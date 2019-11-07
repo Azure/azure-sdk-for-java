@@ -1,0 +1,96 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestssetmetadatashareapitestssetmetadatae766798869?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "bd875832-caaf-4f02-98f4-33ab54784223"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F8DB1090F",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:21 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48c24-a01a-0116-3088-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:20 GMT",
+      "x-ms-client-request-id" : "bd875832-caaf-4f02-98f4-33ab54784223"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestssetmetadatashareapitestssetmetadatae766798869?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "02b15d7e-2368-4e01-b4c3-8b0264d2946d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:21 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 15 Oct 2019 18:43:20 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "x-ms-share-quota" : "5120",
+      "ETag" : "0x8D7519F8DB1090F",
+      "x-ms-has-immutability-policy" : "false",
+      "x-ms-meta-testmetadata" : "value",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "83e48c26-a01a-0116-3188-83b7bd000000",
+      "x-ms-client-request-id" : "02b15d7e-2368-4e01-b4c3-8b0264d2946d"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestssetmetadatashareapitestssetmetadatae766798869?restype=share&comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "06ab7930-ea46-4526-8b6f-06aa6e5d9cc4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F8DC64ED6",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:21 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "83e48c27-a01a-0116-3288-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:20 GMT",
+      "x-ms-client-request-id" : "06ab7930-ea46-4526-8b6f-06aa6e5d9cc4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestssetmetadatashareapitestssetmetadatae766798869?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "8f4dac2e-f121-4da9-8bd6-d312f849e28c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:21 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 15 Oct 2019 18:43:20 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "x-ms-share-quota" : "5120",
+      "ETag" : "0x8D7519F8DC64ED6",
+      "x-ms-has-immutability-policy" : "false",
+      "x-ms-meta-afterset" : "value",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "83e48c28-a01a-0116-3388-83b7bd000000",
+      "x-ms-client-request-id" : "8f4dac2e-f121-4da9-8bd6-d312f849e28c"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestssetmetadatashareapitestssetmetadatae766798869" ]
+}

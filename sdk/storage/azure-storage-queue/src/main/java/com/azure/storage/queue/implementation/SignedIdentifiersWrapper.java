@@ -4,7 +4,7 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.storage.queue.models.SignedIdentifier;
+import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -12,12 +12,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.List;
 
 /**
- * A wrapper around List&lt;SignedIdentifier&gt; which provides top-level metadata for serialization.
+ * A wrapper around List&lt;QueueSignedIdentifier&gt; which provides top-level metadata for serialization.
  */
 @JacksonXmlRootElement(localName = "SignedIdentifiers")
 public final class SignedIdentifiersWrapper {
     @JacksonXmlProperty(localName = "SignedIdentifier")
-    private final List<SignedIdentifier> signedIdentifiers;
+    private final List<QueueSignedIdentifier> signedIdentifiers;
 
     /**
      * Creates an instance of SignedIdentifiersWrapper.
@@ -25,16 +25,16 @@ public final class SignedIdentifiersWrapper {
      * @param signedIdentifiers the list.
      */
     @JsonCreator
-    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifier") List<SignedIdentifier> signedIdentifiers) {
+    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifier") List<QueueSignedIdentifier> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
     }
 
     /**
-     * Get the List&lt;SignedIdentifier&gt; contained in this wrapper.
+     * Get the List&lt;QueueSignedIdentifier&gt; contained in this wrapper.
      *
-     * @return the List&lt;SignedIdentifier&gt;.
+     * @return the List&lt;QueueSignedIdentifier&gt;.
      */
-    public List<SignedIdentifier> items() {
+    public List<QueueSignedIdentifier> items() {
         return signedIdentifiers;
     }
 }

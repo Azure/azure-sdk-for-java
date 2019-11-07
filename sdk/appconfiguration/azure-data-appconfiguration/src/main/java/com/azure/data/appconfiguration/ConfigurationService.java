@@ -19,11 +19,9 @@ import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.http.ContentType;
+import com.azure.core.http.ContentType;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +36,6 @@ import reactor.core.publisher.Mono;
 interface ConfigurationService {
     @Get("kv/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> getKeyValue(
         @HostParam("url") String url,
@@ -52,8 +49,6 @@ interface ConfigurationService {
 
     @Put("kv/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
-    @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> setKey(
         @HostParam("url") String url,
@@ -66,8 +61,6 @@ interface ConfigurationService {
 
     @Delete("kv/{key}")
     @ExpectedResponses({200, 204})
-    @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
-    @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> delete(
         @HostParam("url") String url,
@@ -79,7 +72,6 @@ interface ConfigurationService {
 
     @Put("locks/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> lockKeyValue(
         @HostParam("url") String url,
@@ -91,7 +83,6 @@ interface ConfigurationService {
 
     @Delete("locks/{key}")
     @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> unlockKeyValue(
         @HostParam("url") String url,

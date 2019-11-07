@@ -24,94 +24,94 @@ public class LeaseClientBuilderJavaDocCodeSnippets {
     private String leaseId = "leaseId";
 
     /**
-     * Code snippets for {@link LeaseClientBuilder#buildClient()}.
+     * Code snippets for {@link BlobLeaseClientBuilder#buildClient()}.
      */
     public void syncInstantiationWithBlob() {
         // BEGIN: com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlob
-        LeaseClient leaseClient = new LeaseClientBuilder()
+        BlobLeaseClient blobLeaseClient = new BlobLeaseClientBuilder()
             .blobClient(blobClient)
             .buildClient();
         // END: com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlob
     }
 
     /**
-     * Code snippets for {@link LeaseClientBuilder#buildClient()}.
+     * Code snippets for {@link BlobLeaseClientBuilder#buildClient()}.
      */
     public void syncInstantiationWithBlobAndLeaseId() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlobAndLeaseId
-        LeaseClient leaseClient = new LeaseClientBuilder()
+        // BEGIN: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithBlobAndLeaseId
+        BlobLeaseClient blobLeaseClient = new BlobLeaseClientBuilder()
             .blobClient(blobClient)
             .leaseId(leaseId)
             .buildClient();
-        // END: com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlobAndLeaseId
+        // END: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithBlobAndLeaseId
     }
 
     /**
-     * Code snippets for {@link LeaseClientBuilder#buildClient()}.
+     * Code snippets for {@link BlobLeaseClientBuilder#buildClient()}.
      */
     public void syncInstantiationWithContainer() {
         // BEGIN: com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainer
-        LeaseClient leaseClient = new LeaseClientBuilder()
+        BlobLeaseClient blobLeaseClient = new BlobLeaseClientBuilder()
             .containerClient(blobContainerClient)
             .buildClient();
         // END: com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainer
     }
 
     /**
-     * Code snippets for {@link LeaseClientBuilder#buildClient()}.
+     * Code snippets for {@link BlobLeaseClientBuilder#buildClient()}.
      */
     public void syncInstantiationWithContainerAndLeaseId() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainerAndLeaseId
-        LeaseClient leaseClient = new LeaseClientBuilder()
+        // BEGIN: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithContainerAndLeaseId
+        BlobLeaseClient blobLeaseClient = new BlobLeaseClientBuilder()
             .containerClient(blobContainerClient)
             .leaseId(leaseId)
             .buildClient();
-        // END: com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainerAndLeaseId
+        // END: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithContainerAndLeaseId
     }
 
     /**
-     * Code snippets for {@link LeaseClientBuilder#buildAsyncClient()}.
+     * Code snippets for {@link BlobLeaseClientBuilder#buildAsyncClient()}.
      */
     public void asyncInstantiationWithBlob() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithBlob
-        LeaseAsyncClient leaseAsyncClient = new LeaseClientBuilder()
+        // BEGIN: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithBlob
+        BlobLeaseAsyncClient blobLeaseAsyncClient = new BlobLeaseClientBuilder()
             .blobAsyncClient(blobAsyncClient)
             .buildAsyncClient();
-        // END: com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithBlob
+        // END: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithBlob
     }
 
     /**
-     * Code snippets for {@link LeaseClientBuilder#buildAsyncClient()}.
+     * Code snippets for {@link BlobLeaseClientBuilder#buildAsyncClient()}.
      */
     public void asyncInstantiationWithBlobAndLeaseId() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId
-        LeaseAsyncClient leaseAsyncClient = new LeaseClientBuilder()
+        // BEGIN: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId
+        BlobLeaseAsyncClient blobLeaseAsyncClient = new BlobLeaseClientBuilder()
             .blobAsyncClient(blobAsyncClient)
             .leaseId(leaseId)
             .buildAsyncClient();
-        // END: com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId
+        // END: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId
     }
 
     /**
-     * Code snippets for {@link LeaseClientBuilder#buildAsyncClient()}.
+     * Code snippets for {@link BlobLeaseClientBuilder#buildAsyncClient()}.
      */
     public void asyncInstantiationWithContainer() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithContainer
-        LeaseAsyncClient leaseAsyncClient = new LeaseClientBuilder()
+        // BEGIN: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithContainer
+        BlobLeaseAsyncClient blobLeaseAsyncClient = new BlobLeaseClientBuilder()
             .containerAsyncClient(blobContainerAsyncClient)
             .buildAsyncClient();
-        // END: com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithContainer
+        // END: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithContainer
     }
 
     /**
-     * Code snippets for {@link LeaseClientBuilder#buildAsyncClient()}.
+     * Code snippets for {@link BlobLeaseClientBuilder#buildAsyncClient()}.
      */
     public void asyncInstantiationWithContainerAndLeaseId() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId
-        LeaseAsyncClient leaseAsyncClient = new LeaseClientBuilder()
+        // BEGIN: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId
+        BlobLeaseAsyncClient blobLeaseAsyncClient = new BlobLeaseClientBuilder()
             .containerAsyncClient(blobContainerAsyncClient)
             .leaseId(leaseId)
             .buildAsyncClient();
-        // END: com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId
+        // END: com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId
     }
 }

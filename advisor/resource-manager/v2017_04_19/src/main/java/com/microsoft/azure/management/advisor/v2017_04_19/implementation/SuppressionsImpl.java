@@ -64,10 +64,14 @@ class SuppressionsImpl extends WrapperImpl<SuppressionsInner> implements Suppres
     public Observable<SuppressionContract> getAsync(String resourceUri, String recommendationId, String name) {
         SuppressionsInner client = this.inner();
         return client.getAsync(resourceUri, recommendationId, name)
-        .map(new Func1<SuppressionContractInner, SuppressionContract>() {
+        .flatMap(new Func1<SuppressionContractInner, Observable<SuppressionContract>>() {
             @Override
-            public SuppressionContract call(SuppressionContractInner inner) {
-                return wrapModel(inner);
+            public Observable<SuppressionContract> call(SuppressionContractInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SuppressionContract)wrapModel(inner));
+                }
             }
        });
     }

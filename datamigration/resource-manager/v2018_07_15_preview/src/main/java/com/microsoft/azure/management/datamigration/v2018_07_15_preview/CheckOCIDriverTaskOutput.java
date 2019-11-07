@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.datamigration.v2018_07_15_preview;
 
-import java.util.Map;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,8 +18,8 @@ public class CheckOCIDriverTaskOutput {
     /**
      * Information about the installed driver if found and valid.
      */
-    @JsonProperty(value = "installedDriver", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, List<OracleOCIDriverInfo>> installedDriver;
+    @JsonProperty(value = "installedDriver")
+    private OracleOCIDriverInfo installedDriver;
 
     /**
      * Validation errors.
@@ -33,8 +32,19 @@ public class CheckOCIDriverTaskOutput {
      *
      * @return the installedDriver value
      */
-    public Map<String, List<OracleOCIDriverInfo>> installedDriver() {
+    public OracleOCIDriverInfo installedDriver() {
         return this.installedDriver;
+    }
+
+    /**
+     * Set information about the installed driver if found and valid.
+     *
+     * @param installedDriver the installedDriver value to set
+     * @return the CheckOCIDriverTaskOutput object itself.
+     */
+    public CheckOCIDriverTaskOutput withInstalledDriver(OracleOCIDriverInfo installedDriver) {
+        this.installedDriver = installedDriver;
+        return this;
     }
 
     /**

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsdownloaddataerror915719700909747014?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "cf9149d2-f323-4b0b-a47c-1f04363b2713"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F72F4DF9E",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:36 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "89e9e6bb-f01a-00ef-2288-833b08000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:36 GMT",
+      "x-ms-client-request-id" : "cf9149d2-f323-4b0b-a47c-1f04363b2713"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsdownloaddataerror915719700909747014/fileapitestsdownloaddataerror27737636ea0c41dc14",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "0c49795d-82ba-4fd2-9700-1c19480698ab"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "89e9e6bd-f01a-00ef-2388-833b08000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:89e9e6bd-f01a-00ef-2388-833b08000000\nTime:2019-10-15T18:42:36.7245814Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:36 GMT",
+      "x-ms-client-request-id" : "0c49795d-82ba-4fd2-9700-1c19480698ab",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileapitestsdownloaddataerror915719700909747014", "fileapitestsdownloaddataerror27737636ea0c41dc14" ]
+}

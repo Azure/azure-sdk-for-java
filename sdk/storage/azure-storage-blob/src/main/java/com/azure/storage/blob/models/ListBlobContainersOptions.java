@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
 
@@ -11,6 +12,7 @@ import com.azure.storage.blob.BlobServiceClient;
  * object. See the constructor for details on each of the options. Null may be passed in place of an object of this type
  * if no options are desirable.
  */
+@Fluent
 public final class ListBlobContainersOptions {
     private final ClientLogger logger = new ClientLogger(ListBlobContainersOptions.class);
 
@@ -18,8 +20,11 @@ public final class ListBlobContainersOptions {
 
     private String prefix;
 
-    private Integer maxResults;
+    private Integer maxResultsPerPage;
 
+    /**
+     * Constructs an unpopulated {@link ListBlobContainersOptions}.
+     */
     public ListBlobContainersOptions() {
         this.details = new BlobContainerListDetails();
     }
@@ -62,27 +67,27 @@ public final class ListBlobContainersOptions {
 
     /**
      * Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
-     * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * specify maxResultsPerPage or specifies a value greater than 5,000, the server will return up to 5,000 items.
      *
      * @return the number of containers to be returned in a single response
      */
-    public Integer getMaxResults() {
-        return maxResults;
+    public Integer getMaxResultsPerPage() {
+        return maxResultsPerPage;
     }
 
     /**
      * Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
-     * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * specify maxResultsPerPage or specifies a value greater than 5,000, the server will return up to 5,000 items.
      *
-     * @param maxResults The number of containers to return in a single response
+     * @param maxResultsPerPage The number of containers to return in a single response
      * @return the updated ListBlobContainersOptions object
-     * @throws IllegalArgumentException If {@code maxResults} is less than or equal to {@code 0}.
+     * @throws IllegalArgumentException If {@code maxResultsPerPage} is less than or equal to {@code 0}.
      */
-    public ListBlobContainersOptions setMaxResults(Integer maxResults) {
-        if (maxResults != null && maxResults <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("MaxResults must be greater than 0."));
+    public ListBlobContainersOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
+        if (maxResultsPerPage != null && maxResultsPerPage <= 0) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("MaxResultsPerPage must be greater than 0."));
         }
-        this.maxResults = maxResults;
+        this.maxResultsPerPage = maxResultsPerPage;
         return this;
     }
 }

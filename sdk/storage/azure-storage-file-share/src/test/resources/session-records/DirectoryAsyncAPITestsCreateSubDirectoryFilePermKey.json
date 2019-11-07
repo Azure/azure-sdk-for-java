@@ -1,0 +1,104 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatesubdirectoryfilepermkey765132c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "f17623a4-da3a-4a06-8f2b-23a6c7ef5148"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F6CECD473",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:26 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8639c901-701a-00fe-1588-830c13000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:26 GMT",
+      "x-ms-client-request-id" : "f17623a4-da3a-4a06-8f2b-23a6c7ef5148"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatesubdirectoryfilepermkey765132c?restype=share&comp=filepermission",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "2ba0deb1-c032-4112-ad93-f97c6f8a32d1",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "1226745640258142193*13168958551941065216",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8639c906-701a-00fe-1988-830c13000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:26 GMT",
+      "x-ms-client-request-id" : "2ba0deb1-c032-4112-ad93-f97c6f8a32d1"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatesubdirectoryfilepermkey765132c/directoryasyncapitestscreatesubdirectoryfilepermkey31807e9?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "334d94b2-9803-4b1d-b969-66e20abb289a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-10-15T18:42:26.6360987Z",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 15 Oct 2019 18:42:26 GMT",
+      "ETag" : "0x8D7519F6CFCA49B",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-10-15T18:42:26.6360987Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "8639c90a-701a-00fe-1d88-830c13000000",
+      "x-ms-client-request-id" : "334d94b2-9803-4b1d-b969-66e20abb289a",
+      "x-ms-file-last-write-time" : "2019-10-15T18:42:26.6360987Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatesubdirectoryfilepermkey765132c/directoryasyncapitestscreatesubdirectoryfilepermkey31807e9%2ftestCreateSubDirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "f5dc16a6-7bc8-48ac-9658-c6fb004a164d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "6119292009901620917*13168958551941065216",
+      "x-ms-file-id" : "11529285414812647424",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-10-15T18:42:26.6223557Z",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 15 Oct 2019 18:42:26 GMT",
+      "ETag" : "0x8D7519F6CFA8BC5",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-10-15T18:42:26.6223557Z",
+      "x-ms-file-parent-id" : "13835128424026341376",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "8639c90b-701a-00fe-1e88-830c13000000",
+      "x-ms-client-request-id" : "f5dc16a6-7bc8-48ac-9658-c6fb004a164d",
+      "x-ms-file-last-write-time" : "2019-10-15T18:42:26.6223557Z"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryasyncapitestscreatesubdirectoryfilepermkey765132c", "directoryasyncapitestscreatesubdirectoryfilepermkey31807e9", "2019-10-15T18:42:26.622355700Z", "2019-10-15T18:42:26.622355700Z" ]
+}

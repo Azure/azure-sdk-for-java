@@ -3,7 +3,7 @@
 
 package com.azure.storage.common.implementation.credentials;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.util.Map;
 
@@ -20,8 +20,9 @@ public final class SasTokenCredential {
      *
      * @param sasToken SAS token used to authenticate requests with the service.
      */
-    private SasTokenCredential(String sasToken) {
-        this.sasToken = sasToken;
+    public SasTokenCredential(String sasToken) {
+        // Remove the leading '?' as it won't be needed when applying the SAS token to the request URL.
+        this.sasToken = (sasToken.charAt(0) == '?') ? sasToken.substring(1) : sasToken;
     }
 
     /**
@@ -41,12 +42,8 @@ public final class SasTokenCredential {
      * @return a SAS token credential if {@code sasToken} is not {@code null} or empty, otherwise null.
      */
     public static SasTokenCredential fromSasTokenString(String sasToken) {
-        if (ImplUtils.isNullOrEmpty(sasToken)) {
+        if (CoreUtils.isNullOrEmpty(sasToken)) {
             return null;
-        }
-
-        if (sasToken.charAt(0) == '?') {
-            sasToken = sasToken.substring(1);
         }
 
         return new SasTokenCredential(sasToken);
@@ -66,7 +63,7 @@ public final class SasTokenCredential {
      * the signature ("sig") query parameter, otherwise returns {@code null}.
      */
     public static SasTokenCredential fromQueryParameters(Map<String, String> queryParameters) {
-        if (ImplUtils.isNullOrEmpty(queryParameters) || !queryParameters.containsKey(SIGNATURE)) {
+        if (CoreUtils.isNullOrEmpty(queryParameters) || !queryParameters.containsKey(SIGNATURE)) {
             return null;
         }
 

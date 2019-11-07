@@ -3,10 +3,10 @@
 
 package com.azure.core.http;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class HttpHeadersTests {
     @Test
@@ -30,5 +30,15 @@ public class HttpHeadersTests {
 
         headers.put("a", null);
         assertNull(headers.getValue("a"));
+    }
+
+    @Test
+    public void testToStringShouldBeRepresentingKeyEqualsignValue() {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.put("key1", "value1");
+        headers.put("key2", "value2");
+        headers.put("key3", "value3");
+
+        assertEquals("key1=value1, key2=value2, key3=value3", headers.toString());
     }
 }

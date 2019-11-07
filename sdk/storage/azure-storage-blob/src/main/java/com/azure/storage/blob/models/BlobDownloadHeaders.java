@@ -6,8 +6,8 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -67,7 +67,7 @@ public final class BlobDownloadHeaders {
      * message content integrity.
      */
     @JsonProperty(value = "Content-MD5")
-    private byte[] contentMD5;
+    private byte[] contentMd5;
 
     /*
      * This header returns the value that was specified for the
@@ -427,26 +427,26 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Get the contentMD5 property: If the blob has an MD5 hash and this
+     * Get the contentMd5 property: If the blob has an MD5 hash and this
      * operation is to read the full blob, this response header is returned so
      * that the client can check for message content integrity.
      *
-     * @return the contentMD5 value.
+     * @return the contentMd5 value.
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(this.contentMD5);
+    public byte[] getContentMd5() {
+        return CoreUtils.clone(this.contentMd5);
     }
 
     /**
-     * Set the contentMD5 property: If the blob has an MD5 hash and this
+     * Set the contentMd5 property: If the blob has an MD5 hash and this
      * operation is to read the full blob, this response header is returned so
      * that the client can check for message content integrity.
      *
-     * @param contentMD5 the contentMD5 value to set.
+     * @param contentMd5 the contentMd5 value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+    public BlobDownloadHeaders setContentMd5(byte[] contentMd5) {
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 
@@ -1046,7 +1046,7 @@ public final class BlobDownloadHeaders {
      * @return the blobContentMD5 value.
      */
     public byte[] getBlobContentMD5() {
-        return ImplUtils.clone(this.blobContentMD5);
+        return CoreUtils.clone(this.blobContentMD5);
     }
 
     /**
@@ -1060,7 +1060,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setBlobContentMD5(byte[] blobContentMD5) {
-        this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
+        this.blobContentMD5 = CoreUtils.clone(blobContentMD5);
         return this;
     }
 
@@ -1075,7 +1075,7 @@ public final class BlobDownloadHeaders {
      * @return the contentCrc64 value.
      */
     public byte[] getContentCrc64() {
-        return ImplUtils.clone(this.contentCrc64);
+        return CoreUtils.clone(this.contentCrc64);
     }
 
     /**
@@ -1090,7 +1090,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setContentCrc64(byte[] contentCrc64) {
-        this.contentCrc64 = ImplUtils.clone(contentCrc64);
+        this.contentCrc64 = CoreUtils.clone(contentCrc64);
         return this;
     }
 

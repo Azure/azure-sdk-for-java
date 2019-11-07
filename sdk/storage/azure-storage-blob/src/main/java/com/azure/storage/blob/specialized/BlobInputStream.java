@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.StorageException;
-import com.azure.storage.common.Constants;
-
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageInputStream;
+import com.azure.storage.common.implementation.Constants;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -18,28 +17,26 @@ import java.nio.ByteBuffer;
  * Provides an input stream to read a given blob resource.
  */
 public final class BlobInputStream extends StorageInputStream {
-    private final ClientLogger logger = new ClientLogger(BlobInputStream.class);
-
     /**
      * Holds the reference to the blob this stream is associated with.
      */
     private final BlobAsyncClientBase blobClient;
 
     /**
-     * Holds the {@link BlobAccessConditions} object that represents the access conditions for the blob.
+     * Holds the {@link BlobRequestConditions} object that represents the access conditions for the blob.
      */
-    private final BlobAccessConditions accessCondition;
+    private final BlobRequestConditions accessCondition;
 
     /**
      * Initializes a new instance of the BlobInputStream class.
      *
      * @param blobClient A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
-     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the
+     * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
      * blob.
-     * @throws StorageException An exception representing any error which occurred during the operation.
+     * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
-    BlobInputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition)
-        throws StorageException {
+    BlobInputStream(final BlobAsyncClient blobClient, final BlobRequestConditions accessCondition)
+        throws BlobStorageException {
         this(blobClient, 0, null, accessCondition);
     }
 
@@ -51,13 +48,13 @@ public final class BlobInputStream extends StorageInputStream {
      * with.
      * @param blobRangeOffset The offset of blob data to begin stream.
      * @param blobRangeLength How much data the stream should return after blobRangeOffset.
-     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the
+     * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
      * blob.
-     * @throws StorageException An exception representing any error which occurred during the operation.
+     * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength,
-                    final BlobAccessConditions accessCondition)
-        throws StorageException {
+                    final BlobRequestConditions accessCondition)
+        throws BlobStorageException {
         super(blobRangeOffset, blobRangeLength, 4 * Constants.MB,
             blobClient.getProperties().block().getBlobSize());
 
@@ -85,7 +82,7 @@ public final class BlobInputStream extends StorageInputStream {
             this.bufferSize = readLength;
             this.bufferStartOffset = offset;
             return currentBuffer;
-        } catch (final StorageException e) {
+        } catch (final BlobStorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
             throw this.lastError;

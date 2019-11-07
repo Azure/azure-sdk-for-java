@@ -39,8 +39,8 @@ public final class HttpPipelineCallContext {
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
     HttpPipelineCallContext(HttpRequest httpRequest, Context data) {
-        Objects.requireNonNull(httpRequest);
-        Objects.requireNonNull(data);
+        Objects.requireNonNull(httpRequest, "'httpRequest' cannot be null.");
+        Objects.requireNonNull(data, "'data' cannot be null.");
         //
         this.httpRequest = httpRequest;
         this.data = data;
@@ -49,8 +49,8 @@ public final class HttpPipelineCallContext {
     /**
      * Stores a key-value data in the context.
      *
-     * @param key the key
-     * @param value the value
+     * @param key The key to add.
+     * @param value The value to associate with that key.
      */
     public void setData(String key, Object value) {
         this.data = this.data.addData(key, value);
@@ -59,27 +59,27 @@ public final class HttpPipelineCallContext {
     /**
      * Gets a value with the given key stored in the context.
      *
-     * @param key the key
-     * @return the value
+     * @param key The key to find in the context.
+     * @return The value associated with the key.
      */
     public Optional<Object> getData(String key) {
         return this.data.getData(key);
     }
 
     /**
-     * Get the http request.
+     * Gets the HTTP request.
      *
-     * @return the request.
+     * @return The HTTP request.
      */
     public HttpRequest getHttpRequest() {
         return this.httpRequest;
     }
 
     /**
-     * Sets the http request object in the context.
+     * Sets the HTTP request object in the context.
      *
-     * @param request request object
-     * @return HttpPipelineCallContext
+     * @param request The HTTP request.
+     * @return The updated HttpPipelineCallContext object.
      */
     public HttpPipelineCallContext setHttpRequest(HttpRequest request) {
         this.httpRequest = request;

@@ -14,8 +14,8 @@ import java.util.function.Supplier;
  */
 public final class HttpPolicyProviders {
 
-    private static final Map<Class<? extends PolicyProvider>, ServiceLoader<? extends PolicyProvider>> SERVICE_LOADERS =
-        new HashMap<>();
+    private static final Map<Class<? extends HttpPolicyProvider>, ServiceLoader<? extends HttpPolicyProvider>>
+        SERVICE_LOADERS = new HashMap<>();
 
     private HttpPolicyProviders() {
         // no-op
@@ -40,10 +40,10 @@ public final class HttpPolicyProviders {
     }
 
     private static void addRetryPolicies(List<HttpPipelinePolicy> policies,
-        Supplier<Iterator<? extends PolicyProvider>> policySupplier) {
-        Iterator<? extends PolicyProvider> it = policySupplier.get();
+        Supplier<Iterator<? extends HttpPolicyProvider>> policySupplier) {
+        Iterator<? extends HttpPolicyProvider> it = policySupplier.get();
         while (it.hasNext()) {
-            PolicyProvider policyProvider = it.next();
+            HttpPolicyProvider policyProvider = it.next();
             HttpPipelinePolicy policy = policyProvider.create();
             if (policy == null) {
                 throw new NullPointerException("HttpPipelinePolicy created with " + policyProvider.getClass()
@@ -53,9 +53,9 @@ public final class HttpPolicyProviders {
         }
     }
 
-    private static Iterator<? extends PolicyProvider> getPolicyProviders(boolean reload,
-        Class<? extends PolicyProvider> cls) {
-        ServiceLoader<? extends PolicyProvider> serviceLoader = SERVICE_LOADERS
+    private static Iterator<? extends HttpPolicyProvider> getPolicyProviders(boolean reload,
+        Class<? extends HttpPolicyProvider> cls) {
+        ServiceLoader<? extends HttpPolicyProvider> serviceLoader = SERVICE_LOADERS
             .computeIfAbsent(cls, ServiceLoader::load);
 
         if (reload) {

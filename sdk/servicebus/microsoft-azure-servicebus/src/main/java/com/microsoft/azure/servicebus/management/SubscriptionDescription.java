@@ -97,7 +97,7 @@ public class SubscriptionDescription {
      */
     public void setLockDuration(Duration lockDuration) {
         if (lockDuration == null) {
-            throw new IllegalArgumentException("Value cannot be null");
+            throw new IllegalArgumentException("Value cannot be null.");
         }
         this.lockDuration = lockDuration;
         if (this.lockDuration.compareTo(ManagementClientConstants.MAX_DURATION) > 0) {
@@ -335,7 +335,7 @@ public class SubscriptionDescription {
      */
     public void setUserMetadata(String userMetadata) {
         if (userMetadata == null) {
-            throw new IllegalArgumentException("Value cannot be null");
+            throw new IllegalArgumentException("Value cannot be null.");
         }
 
         if (userMetadata.length() > ManagementClientConstants.MAX_USERMETADATA_LENGTH) {

@@ -114,7 +114,7 @@ public final class EventDataImpl implements EventData {
         this();
 
         if (data == null) {
-            throw new IllegalArgumentException("data cannot be null");
+            throw new IllegalArgumentException("data cannot be null.");
         }
 
         this.bodyData = new Binary(data);

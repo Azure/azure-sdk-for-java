@@ -81,7 +81,7 @@ public class AsyncCache<TKey, TValue> {
 
             }, err -> {
 
-                logger.debug("cache[{}] resulted in error {}, computing new value", key, err);
+                logger.debug("cache[{}] resulted in error, computing new value", key, err);
                 AsyncLazy<TValue> asyncLazy = new AsyncLazy<>(singleValueInitFunc);
                 AsyncLazy<TValue> resultAsyncLazy = values.merge(key, asyncLazy,
                         (lazyValue1, lazyValu2) -> lazyValue1 == initialLazyValue ? lazyValu2 : lazyValue1);

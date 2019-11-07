@@ -19,13 +19,13 @@ public class ResponseBase<H, T> implements Response<T> {
     private final T value;
 
     /**
-     * Create ResponseBase.
+     * Creates a {@link ResponseBase}.
      *
-     * @param request the request which resulted in this response
-     * @param statusCode the status code of the HTTP response
-     * @param headers the headers of the HTTP response
-     * @param deserializedHeaders the deserialized headers of the HTTP response
-     * @param value the deserialized value
+     * @param request The HTTP request which resulted in this response.
+     * @param statusCode The status code of the HTTP response.
+     * @param headers The headers of the HTTP response.
+     * @param deserializedHeaders The deserialized headers of the HTTP response.
+     * @param value The deserialized value of the HTTP response.
      */
     public ResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, T value, H deserializedHeaders) {
         this.request = request;
@@ -36,7 +36,9 @@ public class ResponseBase<H, T> implements Response<T> {
     }
 
     /**
-     * @return the request which resulted in this RestResponseBase.
+     * Gets The request which resulted in this {@link ResponseBase}.
+     *
+     * @return The request which resulted in this {@link ResponseBase}.
      */
     @Override
     public HttpRequest getRequest() {
@@ -60,9 +62,9 @@ public class ResponseBase<H, T> implements Response<T> {
     }
 
     /**
-     * Get the headers from the HTTP response, transformed into the header type H.
+     * Get the headers from the HTTP response, transformed into the header type, {@code H}.
      *
-     * @return an instance of header type H, containing the HTTP response headers.
+     * @return An instance of header type {@code H}, deserialized from the HTTP response headers.
      */
     public H getDeserializedHeaders() {
         return deserializedHeaders;

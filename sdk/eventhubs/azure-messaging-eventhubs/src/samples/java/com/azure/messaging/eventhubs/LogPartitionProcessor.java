@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -19,15 +19,17 @@ public class LogPartitionProcessor extends PartitionProcessor {
     /**
      * {@inheritDoc}
      *
-     * @param eventData {@link EventData} received from this partition.
+     * @param partitionEvent {@link EventData} and the partition information associated with this event.
      * @return a representation of the deferred computation of this call.
      */
     @Override
-    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
+    public Mono<Void> processEvent(PartitionEvent partitionEvent) {
         logger.info(
             "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
-            partitionContext.getEventHubName(), partitionContext.getConsumerGroup(), partitionContext.getPartitionId(),
-            eventData.getSequenceNumber());
-        return partitionContext.updateCheckpoint(eventData);
+            partitionEvent.getPartitionContext().getEventHubName(),
+            partitionEvent.getPartitionContext().getConsumerGroup(),
+            partitionEvent.getPartitionContext().getPartitionId(),
+            partitionEvent.getEventData().getSequenceNumber());
+        return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
     }
 }

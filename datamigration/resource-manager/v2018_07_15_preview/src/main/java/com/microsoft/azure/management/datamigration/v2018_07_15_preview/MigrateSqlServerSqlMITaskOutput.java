@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Output for task that migrates SQL Server databases to Azure SQL Database
  * Managed Instance.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSqlServerSqlMITaskOutput.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("MigrateSqlServerSqlMITaskOutput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ErrorOutput", value = MigrateSqlServerSqlMITaskOutputError.class),

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshot79825c8fd3641b81?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "e15d4faf-7886-4d41-a3ec-3918f368c6e9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F916C126E",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:27 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48ccc-a01a-0116-3688-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:26 GMT",
+      "x-ms-client-request-id" : "e15d4faf-7886-4d41-a3ec-3918f368c6e9"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshot79825c8fd3641b81?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "72615534-ba58-4458-a2c1-5e83e908d7d8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-10-15T18:43:27.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F916C126E",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:43:27 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e48cce-a01a-0116-3788-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:43:26 GMT",
+      "x-ms-client-request-id" : "72615534-ba58-4458-a2c1-5e83e908d7d8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestscreatesnapshot79825c8fd3641b81", "shareasyncapitestscreatesnapshot977310ff26a69b4e" ]
+}

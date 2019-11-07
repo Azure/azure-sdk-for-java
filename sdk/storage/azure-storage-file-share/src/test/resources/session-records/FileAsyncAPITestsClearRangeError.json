@@ -1,0 +1,100 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsclearrangeerror57412251c59f5ef2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "b070fab2-f13b-4720-aeeb-b183f85794a8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F7C761E68",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:52 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e489c3-a01a-0116-4b88-83b7bd000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:51 GMT",
+      "x-ms-client-request-id" : "b070fab2-f13b-4720-aeeb-b183f85794a8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsclearrangeerror57412251c59f5ef2/fileasyncapitestsclearrangeerror1819164aee7556eb",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "3a3b38e0-318c-44c3-a13e-82c54d2d9af0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-10-15T18:42:52.6572067Z",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:52 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 15 Oct 2019 18:42:51 GMT",
+      "ETag" : "0x8D7519F7C7F2623",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-10-15T18:42:52.6572067Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "83e489c5-a01a-0116-4c88-83b7bd000000",
+      "x-ms-client-request-id" : "3a3b38e0-318c-44c3-a13e-82c54d2d9af0",
+      "x-ms-file-last-write-time" : "2019-10-15T18:42:52.6572067Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsclearrangeerror57412251c59f5ef2/fileasyncapitestsclearrangeerror1819164aee7556eb?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "e0487c7b-fff6-4b49-81d8-7c16aeb4cfb4",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7519F7C862CB6",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:52 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "83e489c6-a01a-0116-4d88-83b7bd000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 15 Oct 2019 18:42:51 GMT",
+      "x-ms-client-request-id" : "e0487c7b-fff6-4b49-81d8-7c16aeb4cfb4",
+      "Content-MD5" : "A5momLrihyOacM8O00uT1g=="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsclearrangeerror57412251c59f5ef2/fileasyncapitestsclearrangeerror1819164aee7556eb?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "35924bf7-3809-4dde-932e-a736abb6c0d5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidRange",
+      "retry-after" : "0",
+      "Content-Length" : "249",
+      "StatusCode" : "416",
+      "x-ms-request-id" : "83e489c7-a01a-0116-4e88-83b7bd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidRange</Code><Message>The range specified is invalid for the current size of the resource.\nRequestId:83e489c7-a01a-0116-4e88-83b7bd000000\nTime:2019-10-15T18:42:53.2106067Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:52 GMT",
+      "x-ms-client-request-id" : "35924bf7-3809-4dde-932e-a736abb6c0d5",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileasyncapitestsclearrangeerror57412251c59f5ef2", "fileasyncapitestsclearrangeerror1819164aee7556eb" ]
+}

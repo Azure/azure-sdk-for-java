@@ -14,11 +14,13 @@ import java.util.function.Supplier;
  */
 public class PagedIterableJavaDocCodeSnippets {
 
-    /**Provides an example for iterate over each response using streamByPage function.**/
-    public void streamByPageSnippet() {
 
+    /**
+     * Provides an example for iterate over each response using streamByPage function.
+     **/
+    public void streamByPageSnippet() {
         PagedFlux<Integer> pagedFlux = createAnInstance();
-        PagedIterable<Integer> pagedIterableResponse =  new PagedIterable<>(pagedFlux);
+        PagedIterable<Integer> pagedIterableResponse = new PagedIterable<>(pagedFlux);
 
         // BEGIN: com.azure.core.http.rest.pagedIterable.streamByPage
         // process the streamByPage
@@ -29,14 +31,17 @@ public class PagedIterableJavaDocCodeSnippets {
                 System.out.printf("Response value is %d %n", value);
             });
         });
+
         // END: com.azure.core.http.rest.pagedIterable.streamByPage
     }
 
-    /**Provides an example for iterate over each response using iterableByPage function.**/
+    /**
+     * Provides an example for iterate over each response using iterableByPage function.
+     **/
     public void iterateByPageSnippet() {
 
         PagedFlux<Integer> pagedFlux = createAnInstance();
-        PagedIterable<Integer> pagedIterableResponse =  new PagedIterable<>(pagedFlux);
+        PagedIterable<Integer> pagedIterableResponse = new PagedIterable<>(pagedFlux);
 
         // BEGIN: com.azure.core.http.rest.pagedIterable.iterableByPage
         // process the iterableByPage
@@ -50,11 +55,13 @@ public class PagedIterableJavaDocCodeSnippets {
         // END: com.azure.core.http.rest.pagedIterable.iterableByPage
     }
 
-    /**Provides an example for iterate over each response using iterableByPage function and while loop.**/
+    /**
+     * Provides an example for iterate over each response using iterableByPage function and while loop.
+     **/
     public void iterableByPageWhileSnippet() {
 
         PagedFlux<Integer> pagedFlux = createAnInstance();
-        PagedIterable<Integer> pagedIterableResponse =  new PagedIterable<>(pagedFlux);
+        PagedIterable<Integer> pagedIterableResponse = new PagedIterable<>(pagedFlux);
 
         // BEGIN: com.azure.core.http.rest.pagedIterable.iterableByPage.while
         // iterate over each page
@@ -72,11 +79,11 @@ public class PagedIterableJavaDocCodeSnippets {
 
     /**
      * Code snippets for creating an instance of {@link PagedFlux}
+     *
      * @return An instance of {@link PagedFlux}
      */
     public PagedFlux<Integer> createAnInstance() {
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<Integer>>> firstPageRetriever = () -> getFirstPage();
 
@@ -86,9 +93,9 @@ public class PagedIterableJavaDocCodeSnippets {
 
         PagedFlux<Integer> pagedFlux = new PagedFlux<>(firstPageRetriever,
             nextPageRetriever);
-        // END: com.azure.core.http.rest.pagedflux.instantiation
         return pagedFlux;
     }
+
 
     /**
      * Implementation not provided

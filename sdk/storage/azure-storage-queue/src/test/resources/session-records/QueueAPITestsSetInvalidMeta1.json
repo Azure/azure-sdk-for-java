@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta110170799c642936fd4",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta111837d46bcf37a07f4",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.4 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "0ad450a2-d851-4f79-a768-d7587934f8bb"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "60fbef82-aa98-4197-9b23-c6e1609b2123"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -13,17 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f7f7c627-b003-0085-29ee-7367a3000000",
-      "Date" : "Wed, 25 Sep 2019 22:13:40 GMT"
+      "x-ms-request-id" : "2f7e7f7a-f003-0082-708d-839126000000",
+      "Date" : "Tue, 15 Oct 2019 19:19:36 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta110170799c642936fd4?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta111837d46bcf37a07f4?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.4 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "c32576df-c551-43b5-9647-1e5d8b3470cf"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "62e1b275-4a04-4407-a7c7-aedef04a6c7b"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -32,12 +32,12 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "f7f7c633-b003-0085-31ee-7367a3000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:f7f7c633-b003-0085-31ee-7367a3000000\nTime:2019-09-25T22:13:40.8595949Z</Message></Error>",
-      "Date" : "Wed, 25 Sep 2019 22:13:40 GMT",
+      "x-ms-request-id" : "2f7e7f94-f003-0082-088d-839126000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:2f7e7f94-f003-0082-088d-839126000000\nTime:2019-10-15T19:19:37.3653244Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 19:19:36 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetinvalidmeta110170799c642936fd4" ]
+  "variables" : [ "queueapitestssetinvalidmeta111837d46bcf37a07f4" ]
 }

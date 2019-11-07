@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import org.junit.Assert;
@@ -131,7 +131,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                 AmqpException exception = (AmqpException) error;
                 Assert.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
                 Assert.assertFalse(exception.isTransient());
-                Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
+                Assert.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
     }
@@ -157,7 +157,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                 AmqpException exception = (AmqpException) error;
                 Assert.assertEquals(ErrorCondition.NOT_FOUND, exception.getErrorCondition());
                 Assert.assertFalse(exception.isTransient());
-                Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
+                Assert.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
     }

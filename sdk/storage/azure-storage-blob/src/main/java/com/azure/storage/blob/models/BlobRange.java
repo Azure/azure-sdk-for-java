@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.Locale;
 
 /**
@@ -10,6 +12,7 @@ import java.util.Locale;
  * immutable to ensure thread-safety of requests, so changing the values for a different operation requires construction
  * of a new object. Passing null as a BlobRange value will default to the entire range of the blob.
  */
+@Immutable
 public final class BlobRange {
     private static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
     private static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";

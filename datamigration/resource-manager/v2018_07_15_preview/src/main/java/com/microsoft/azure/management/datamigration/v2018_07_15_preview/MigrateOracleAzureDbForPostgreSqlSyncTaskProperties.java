@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for the task that migrates Oracle to Azure Database for
  * PostgreSQL for online migrations.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = MigrateOracleAzureDbForPostgreSqlSyncTaskProperties.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("Migrate.Oracle.AzureDbForPostgreSql.Sync")
 public class MigrateOracleAzureDbForPostgreSqlSyncTaskProperties extends ProjectTaskProperties {
     /**

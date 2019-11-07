@@ -47,7 +47,7 @@ public class ProxyConfiguration implements AutoCloseable {
      * {@link ProxyAuthenticationType#DIGEST} and {@code username} or {@code password} are {@code null}.
      */
     public ProxyConfiguration(ProxyAuthenticationType authentication, java.net.Proxy proxyAddress, String username, String password) {
-        Objects.requireNonNull(authentication);
+        Objects.requireNonNull(authentication, "'authentication' cannot be null.");
 
         this.proxyAddress = proxyAddress;
         this.authentication = authentication;

@@ -36,22 +36,22 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param partitionId Partition id for this lease.
      */
     public BaseLease(String partitionId) {
-        Objects.requireNonNull(partitionId);
+        Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
         if (partitionId.isEmpty()) {
             throw new IllegalArgumentException("partitionId is Empty");
         }
         this.partitionId = partitionId;
     }
-    
+
     /**
-     * Create and populate a BaseLease for the given partition. 
-     * 
+     * Create and populate a BaseLease for the given partition.
+     *
      * @param partitionId Partition id for this lease.
      * @param owner Current owner of this lease, or empty.
      * @param isOwned True if the lease is owned, false if not.
      */
     public BaseLease(String partitionId, String owner, boolean isOwned) {
-        Objects.requireNonNull(partitionId);
+        Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
         if (partitionId.isEmpty()) {
             throw new IllegalArgumentException("partitionId is Empty");
         }
@@ -66,7 +66,7 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param source BaseLease to clone.
      */
     public BaseLease(BaseLease source) {
-        Objects.requireNonNull(source.partitionId);
+        Objects.requireNonNull(source.partitionId, "'source.partitionId' cannot be null.");
         if (source.partitionId.isEmpty()) {
             throw new IllegalArgumentException("partitionId is Empty");
         }
@@ -95,7 +95,7 @@ public class BaseLease implements Comparable<BaseLease> {
 
     /**
      * Set the owned state of the lease.
-     * 
+     *
      * @param newState true if the lease is owned, or false if it is not
      */
     public void setIsOwned(boolean newState) {
@@ -110,7 +110,7 @@ public class BaseLease implements Comparable<BaseLease> {
     public boolean getIsOwned() {
         return this.isOwned;
     }
-    
+
     /**
      * Convenience function for comparing possibleOwner against this.owner
      *
@@ -133,7 +133,7 @@ public class BaseLease implements Comparable<BaseLease> {
     public String getPartitionId() {
         return this.partitionId;
     }
-    
+
     // Compares by partition id
     @Override
     public int compareTo(BaseLease other) {

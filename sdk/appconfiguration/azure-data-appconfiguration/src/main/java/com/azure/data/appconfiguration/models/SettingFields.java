@@ -39,9 +39,9 @@ public final class SettingFields extends ExpandableStringEnum<SettingFields> {
      */
     public static final SettingFields LAST_MODIFIED = fromString("LAST_MODIFIED");
     /**
-     * Populates the {@link ConfigurationSetting#isLocked()} from the service.
+     * Populates the {@link ConfigurationSetting#isReadOnly()} from the service.
      */
-    public static final SettingFields LOCKED = fromString("LOCKED");
+    public static final SettingFields IS_READ_ONLY = fromString("LOCKED");
     /**
      * Populates the {@link ConfigurationSetting#getTags()} from the service.
      */

@@ -101,7 +101,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
             .collectList().block();
 
         assertThat(results.size()).describedAs("total results").isGreaterThanOrEqualTo(1);
-        
+
         List<HttpRequest> requests = client.getCapturedRequests();
 
         for(HttpRequest req: requests) {
@@ -111,17 +111,19 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
     private void validateRequestHasContinuationTokenLimit(HttpRequest request, Integer expectedValue) {
         Map<String, String> headers = request.headers().toMap();
-        if (expectedValue != null && expectedValue > 0) {
-            assertThat(headers
-                    .containsKey(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
+        if(headers.get(HttpConstants.HttpHeaders.IS_QUERY) != null ) {
+            if (expectedValue != null && expectedValue > 0) {
+                assertThat(headers
+                               .containsKey(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
                     .isTrue();
-            assertThat(headers
-                    .get("x-ms-documentdb-responsecontinuationtokenlimitinkb"))
+                assertThat(headers
+                               .get("x-ms-documentdb-responsecontinuationtokenlimitinkb"))
                     .isEqualTo(Integer.toString(expectedValue));
-        } else {
-            assertThat(headers
-                    .containsKey(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
+            } else {
+                assertThat(headers
+                               .containsKey(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
                     .isFalse();
+            }
         }
     }
 
@@ -159,7 +161,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
-        
+
         // do the query once to ensure the collection is cached.
         client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", options)
             .then().block();

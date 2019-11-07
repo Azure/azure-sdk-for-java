@@ -79,7 +79,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
         Lease stolenLease = getLeaseToSteal(workerToPartitionCount, target, partitionsNeededForMe, allPartitions);
         List<Lease> stolenLeases = new ArrayList<>();
 
-        if (stolenLease == null) {
+        if (stolenLease != null) {
             stolenLeases.add(stolenLease);
         }
 

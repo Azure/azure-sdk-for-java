@@ -173,7 +173,9 @@ final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_VERSION = "11.0.1";
+        // {x-version-update-start;com.microsoft.azure:azure-storage-blob;current}
+        static final String USER_AGENT_VERSION = "11.0.2";
+        // {x-version-update-end}
 
         private HeaderConstants() {
             // Private to prevent construction.
