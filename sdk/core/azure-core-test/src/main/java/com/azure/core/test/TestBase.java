@@ -40,6 +40,8 @@ public abstract class TestBase {
     /**
      * Sets-up the {@link TestBase#testResourceNamer} and {@link TestBase#interceptorManager} before each test case is
      * run. Then calls its implementing class to perform any other set-up commands.
+     *
+     * @param testInfo {@link TestInfo} to retrieve test method name.
      */
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
@@ -76,13 +78,14 @@ public abstract class TestBase {
     }
 
     /**
-     * This method is deprecated as JUnit 5 provides a simpler mechanism to get the test method name through {@link
-     * TestInfo}. Keeping this for backward compatability of other client libraries that still override this method.
-     * This method can be deleted when all client libraries remove this method. See {@link #setupTest(TestInfo)}.
-     *
      * Gets the name of the current test being run.
      *
      * @return The name of the current test.
+     *
+     * @deprecated This method is deprecated as JUnit 5 provides a simpler mechanism to get the test method name through
+     * {@link TestInfo}. Keeping this for backward compatability of other client libraries that still override this
+     * method. This method can be deleted when all client libraries remove this method. See {@link
+     * #setupTest(TestInfo)}.
      */
     @Deprecated
     protected abstract String getTestName();

@@ -22,6 +22,7 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -60,8 +61,8 @@ public abstract class IntegrationTestBase extends TestBase {
     // These are overridden because we don't use the Interceptor Manager.
     @Override
     @Before
-    public void setupTest() {
-        logger.info("[{}]: Performing integration test set-up.", getTestName());
+    public void setupTest(TestInfo testInfo) {
+        logger.info("[{}]: Performing integration test set-up.", testInfo.getTestMethod().get().getName());
 
         skipIfNotRecordMode();
 
