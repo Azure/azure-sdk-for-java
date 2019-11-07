@@ -439,8 +439,8 @@ public class DataLakeFileSystemClient {
      * used to interact with the directory created.
      */
     public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName, String permissions,
-        String umask, PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
-        Duration timeout, Context context) {
+        String umask, PathHttpHeaders headers, Map<String, String> metadata,
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
 
         return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata,

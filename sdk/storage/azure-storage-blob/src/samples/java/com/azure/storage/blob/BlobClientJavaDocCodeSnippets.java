@@ -93,14 +93,14 @@ public class BlobClientJavaDocCodeSnippets {
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.BlobClient.downloadToFile#String
 
-        // BEGIN: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobAccessConditions-boolean-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
         client.downloadToFileWithResponse(file, range, new ParallelTransferOptions(4 * Constants.MB, null, null),
             options, null, false, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
-        // END: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobAccessConditions-boolean-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
     }
 
     /**
@@ -215,12 +215,12 @@ public class BlobClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.BlobClient.copyFromUrlWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        RequestConditions modifiedAccessConditions = new RequestConditions()
+        RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         System.out.printf("Copy identifier: %s%n",
-            client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions,
+            client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedRequestConditions,
                 blobRequestConditions, timeout,
                 new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.BlobClient.copyFromUrlWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
@@ -232,14 +232,14 @@ public class BlobClientJavaDocCodeSnippets {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void downloadWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobClient.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
         System.out.printf("Download completed with status %d%n",
             client.downloadWithResponse(new ByteArrayOutputStream(), range, options, null, false,
                 timeout, new Context(key2, value2)).getStatusCode());
-        // END: com.azure.storage.blob.BlobClient.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
 
     }
 
@@ -249,11 +249,11 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void deleteWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context
         System.out.printf("Delete completed with status %d%n",
             client.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, timeout,
                 new Context(key1, value1)).getStatusCode());
-        // END: com.azure.storage.blob.BlobClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -261,13 +261,13 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void getPropertiesWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobClient.getPropertiesWithResponse#BlobAccessConditions-Duration-Context
-        BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        // BEGIN: com.azure.storage.blob.BlobClient.getPropertiesWithResponse#BlobRequestConditions-Duration-Context
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        BlobProperties properties = client.getPropertiesWithResponse(accessConditions, timeout,
+        BlobProperties properties = client.getPropertiesWithResponse(requestConditions, timeout,
             new Context(key2, value2)).getValue();
         System.out.printf("Type: %s, Size: %d%n", properties.getBlobType(), properties.getBlobSize());
-        // END: com.azure.storage.blob.BlobClient.getPropertiesWithResponse#BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.getPropertiesWithResponse#BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -275,28 +275,28 @@ public class BlobClientJavaDocCodeSnippets {
      * Context)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobClient.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context
-        BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        // BEGIN: com.azure.storage.blob.BlobClient.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobRequestConditions-Duration-Context
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         System.out.printf("Set HTTP headers completed with status %d%n",
             client.setHttpHeadersWithResponse(new BlobHttpHeaders()
                 .setContentLanguage("en-US")
-                .setContentType("binary"), accessConditions, timeout, new Context(key1, value1))
+                .setContentType("binary"), requestConditions, timeout, new Context(key1, value1))
                 .getStatusCode());
-        // END: com.azure.storage.blob.BlobClient.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobRequestConditions-Duration-Context
     }
 
     /**
      * Code snippets for {@link BlobClient#setMetadataWithResponse(Map, BlobRequestConditions, Duration, Context)}
      */
     public void setMetadataWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobClient.setMetadataWithResponse#Metadata-BlobAccessConditions-Duration-Context
-        BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        // BEGIN: com.azure.storage.blob.BlobClient.setMetadataWithResponse#Metadata-BlobRequestConditions-Duration-Context
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         System.out.printf("Set metadata completed with status %d%n",
-            client.setMetadataWithResponse(Collections.singletonMap("metadata", "value"), accessConditions, timeout,
+            client.setMetadataWithResponse(Collections.singletonMap("metadata", "value"), requestConditions, timeout,
                 new Context(key1, value1)).getStatusCode());
-        // END: com.azure.storage.blob.BlobClient.setMetadataWithResponse#Metadata-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.setMetadataWithResponse#Metadata-BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -305,14 +305,14 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void createSnapshotWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobClient.createSnapshotWithResponse#Metadata-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.createSnapshotWithResponse#Metadata-BlobRequestConditions-Duration-Context
         Map<String, String> snapshotMetadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         System.out.printf("Identifier for the snapshot is %s%n",
-            client.createSnapshotWithResponse(snapshotMetadata, accessConditions, timeout,
+            client.createSnapshotWithResponse(snapshotMetadata, requestConditions, timeout,
                 new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.BlobClient.createSnapshotWithResponse#Metadata-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.createSnapshotWithResponse#Metadata-BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -412,7 +412,7 @@ public class BlobClientJavaDocCodeSnippets {
             .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Integer blockSize = 100 * 1024 * 1024; // 100 MB;
@@ -420,7 +420,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         try {
             client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata,
-                AccessTier.HOT, accessConditions, timeout);
+                AccessTier.HOT, requestConditions, timeout);
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());

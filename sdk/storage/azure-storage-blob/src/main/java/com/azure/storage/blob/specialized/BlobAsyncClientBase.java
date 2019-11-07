@@ -3,15 +3,14 @@
 
 package com.azure.storage.blob.specialized;
 
-import static com.azure.core.util.FluxUtil.withContext;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -28,8 +27,8 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobCopyInfo;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
@@ -68,8 +67,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 import static java.lang.StrictMath.toIntExact;
 
 /**
@@ -315,27 +315,27 @@ public class BlobAsyncClientBase {
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
-     * @param sourceModifiedAccessConditions {@link RequestConditions} against the source. Standard HTTP
+     * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP
      * Access conditions related to the modification of data. ETag and LastModifiedTime are used to construct
      * conditions related to when the blob was changed relative to the given request. The request will fail if the
      * specified condition is not satisfied.
-     * @param destAccessConditions {@link BlobRequestConditions} against the destination.
+     * @param destRequestConditions {@link BlobRequestConditions} against the destination.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
      * @return A {@link PollerFlux} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
     public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-                                        RehydratePriority priority, RequestConditions sourceModifiedAccessConditions,
-                                        BlobRequestConditions destAccessConditions, Duration pollInterval) {
+                                        RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
+                                        BlobRequestConditions destRequestConditions, Duration pollInterval) {
 
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
-        final RequestConditions sourceModifiedCondition = sourceModifiedAccessConditions == null
+        final RequestConditions sourceModifiedCondition = sourceModifiedRequestConditions == null
             ? new RequestConditions()
-            : sourceModifiedAccessConditions;
-        final BlobRequestConditions destinationAccessConditions = destAccessConditions == null
+            : sourceModifiedRequestConditions;
+        final BlobRequestConditions destinationRequestConditions = destRequestConditions == null
             ? new BlobRequestConditions()
-            : destAccessConditions;
+            : destRequestConditions;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         final RequestConditions sourceConditions = new RequestConditions()
@@ -347,7 +347,7 @@ public class BlobAsyncClientBase {
         return new PollerFlux<>(interval,
             (pollingContext) -> {
                 try {
-                    return onStart(sourceUrl, metadata, tier, priority, sourceConditions, destinationAccessConditions);
+                    return onStart(sourceUrl, metadata, tier, priority, sourceConditions, destinationRequestConditions);
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
                 }
@@ -378,8 +378,8 @@ public class BlobAsyncClientBase {
     }
 
     private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-            RehydratePriority priority, RequestConditions sourceModifiedAccessConditions,
-            BlobRequestConditions destinationAccessConditions) {
+            RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
+            BlobRequestConditions destinationRequestConditions) {
         URL url;
         try {
             url = new URL(sourceUrl);
@@ -389,11 +389,12 @@ public class BlobAsyncClientBase {
 
         return withContext(
             context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null, url, null, metadata,
-                tier, priority, sourceModifiedAccessConditions.getIfModifiedSince(),
-                sourceModifiedAccessConditions.getIfUnmodifiedSince(), sourceModifiedAccessConditions.getIfMatch(),
-                sourceModifiedAccessConditions.getIfNoneMatch(), destinationAccessConditions.getIfModifiedSince(),
-                destinationAccessConditions.getIfUnmodifiedSince(), destinationAccessConditions.getIfMatch(),
-                destinationAccessConditions.getIfNoneMatch(), destinationAccessConditions.getLeaseId(), null, context))
+                tier, priority, sourceModifiedRequestConditions.getIfModifiedSince(),
+                sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
+                sourceModifiedRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfModifiedSince(),
+                destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
+                destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getLeaseId(), null,
+                context))
             .map(response -> {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -533,30 +534,30 @@ public class BlobAsyncClientBase {
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param sourceModifiedAccessConditions {@link RequestConditions} against the source. Standard HTTP Access
+     * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
      * related to when the blob was changed relative to the given request. The request will fail if the specified
      * condition is not satisfied.
-     * @param destAccessConditions {@link BlobRequestConditions} against the destination.
+     * @param destRequestConditions {@link BlobRequestConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
     public Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata,
-            AccessTier tier, RequestConditions sourceModifiedAccessConditions,
-            BlobRequestConditions destAccessConditions) {
+            AccessTier tier, RequestConditions sourceModifiedRequestConditions,
+            BlobRequestConditions destRequestConditions) {
         try {
             return withContext(context -> copyFromUrlWithResponse(copySource, metadata, tier,
-                sourceModifiedAccessConditions, destAccessConditions, context));
+                sourceModifiedRequestConditions, destRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
-            RequestConditions sourceModifiedAccessConditions, BlobRequestConditions destAccessConditions,
+            RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
             Context context) {
-        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
-            ? new RequestConditions() : sourceModifiedAccessConditions;
-        destAccessConditions = destAccessConditions == null ? new BlobRequestConditions() : destAccessConditions;
+        sourceModifiedRequestConditions = sourceModifiedRequestConditions == null
+            ? new RequestConditions() : sourceModifiedRequestConditions;
+        destRequestConditions = destRequestConditions == null ? new BlobRequestConditions() : destRequestConditions;
 
         URL url;
         try {
@@ -566,11 +567,11 @@ public class BlobAsyncClientBase {
         }
 
         return this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
-            null, null, url, null, metadata, tier, sourceModifiedAccessConditions.getIfModifiedSince(),
-            sourceModifiedAccessConditions.getIfUnmodifiedSince(), sourceModifiedAccessConditions.getIfMatch(),
-            sourceModifiedAccessConditions.getIfNoneMatch(), destAccessConditions.getIfModifiedSince(),
-            destAccessConditions.getIfUnmodifiedSince(), destAccessConditions.getIfMatch(),
-            destAccessConditions.getIfNoneMatch(), destAccessConditions.getLeaseId(), null, context)
+            null, null, url, null, metadata, tier, sourceModifiedRequestConditions.getIfModifiedSince(),
+            sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
+            sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
+            destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
+            destRequestConditions.getIfNoneMatch(), destRequestConditions.getLeaseId(), null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }
 
@@ -602,48 +603,48 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobAccessConditions-boolean}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param range {@link BlobRange}
      * @param options {@link DownloadRetryOptions}
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
      */
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions accessConditions, boolean rangeGetContentMD5) {
+        BlobRequestConditions requestConditions, boolean rangeGetContentMD5) {
         try {
             return withContext(context ->
-                downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context));
+                downloadWithResponse(range, options, requestConditions, rangeGetContentMD5, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Context context) {
-        return downloadHelper(range, options, accessConditions, rangeGetContentMD5, context)
+        BlobRequestConditions requestConditions, boolean rangeGetContentMD5, Context context) {
+        return downloadHelper(range, options, requestConditions, rangeGetContentMD5, context)
             .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
 
     private Mono<ReliableDownload> downloadHelper(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions accessConditions, boolean rangeGetContentMd5, Context context) {
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
         range = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = rangeGetContentMd5 ? rangeGetContentMd5 : null;
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         HttpGetterInfo info = new HttpGetterInfo()
             .setOffset(range.getOffset())
             .setCount(range.getCount())
-            .setETag(accessConditions.getIfMatch());
+            .setETag(requestConditions.getIfMatch());
 
         return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, null, range.toHeaderValue(),
-            accessConditions.getLeaseId(), getMD5, null, accessConditions.getIfModifiedSince(),
-            accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
-            null, customerProvidedKey, context)
+            requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
             .map(response -> {
                 info.setETag(response.getDeserializedHeaders().getETag());
                 return new ReliableDownload(response, options, info, updatedInfo ->
@@ -872,17 +873,17 @@ public class BlobAsyncClientBase {
             });
     }
 
-    private static BlobRequestConditions setEtag(BlobRequestConditions accessConditions, String etag) {
+    private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {
         //We don't want to modify the user's object, so we'll create a duplicate and set the retrieved etag.
         return new BlobRequestConditions()
             .setIfModifiedSince(
-                accessConditions.getIfModifiedSince())
+                requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(
-                accessConditions.getIfModifiedSince())
+                requestConditions.getIfModifiedSince())
             .setIfMatch(etag)
             .setIfNoneMatch(
-                accessConditions.getIfNoneMatch())
-            .setLeaseId(accessConditions.getLeaseId());
+                requestConditions.getIfNoneMatch())
+            .setLeaseId(requestConditions.getLeaseId());
     }
 
     private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
@@ -973,26 +974,26 @@ public class BlobAsyncClientBase {
      * @param deleteBlobSnapshotOptions Specifies the behavior for deleting the snapshots on this blob. {@code Include}
      * will delete the base blob and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being
      * deleted, you must pass null.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
     public Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
-        BlobRequestConditions accessConditions) {
+        BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context));
+            return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
-        BlobRequestConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
+        BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, null,
-            accessConditions.getLeaseId(), deleteBlobSnapshotOptions, accessConditions.getIfModifiedSince(),
-            accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
-            null, context)
+            requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1026,24 +1027,24 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the blob properties and metadata.
      */
-    public Mono<Response<BlobProperties>> getPropertiesWithResponse(BlobRequestConditions accessConditions) {
+    public Mono<Response<BlobProperties>> getPropertiesWithResponse(BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> getPropertiesWithResponse(accessConditions, context));
+            return withContext(context -> getPropertiesWithResponse(requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<BlobProperties>> getPropertiesWithResponse(BlobRequestConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
+    Mono<Response<BlobProperties>> getPropertiesWithResponse(BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         return this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, snapshot, null, accessConditions.getLeaseId(), accessConditions.getIfModifiedSince(),
-            accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
-            null, customerProvidedKey, context)
+            null, null, snapshot, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
             .map(rb -> {
                 BlobGetPropertiesHeaders hd = rb.getDeserializedHeaders();
                 BlobProperties properties = new BlobProperties(hd.getCreationTime(), hd.getLastModified(), hd.getETag(),
@@ -1094,26 +1095,26 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHttpHeaders}
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
     public Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers,
-        BlobRequestConditions accessConditions) {
+        BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> setHttpHeadersWithResponse(headers, accessConditions, context));
+            return withContext(context -> setHttpHeadersWithResponse(headers, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobRequestConditions accessConditions,
+    Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobRequestConditions requestConditions,
         Context context) {
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         return this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
-            null, null, null, accessConditions.getLeaseId(), accessConditions.getIfModifiedSince(),
-            accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
-            null, headers, context)
+            null, null, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, headers, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1151,26 +1152,26 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the blob.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
-        BlobRequestConditions accessConditions) {
+        BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
+            return withContext(context -> setMetadataWithResponse(metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions accessConditions,
+    Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
-            null, null, null, metadata, accessConditions.getLeaseId(), accessConditions.getIfModifiedSince(),
-            accessConditions.getIfUnmodifiedSince(), accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(),
-            null, customerProvidedKey, context)
+            null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1206,27 +1207,27 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the blob snapshot.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @return A response containing a {@link BlobAsyncClientBase} which is used to interact with the created snapshot,
      * use {@link #getSnapshotId()} to get the identifier for the snapshot.
      */
     public Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Map<String, String> metadata,
-        BlobRequestConditions accessConditions) {
+        BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> createSnapshotWithResponse(metadata, accessConditions, context));
+            return withContext(context -> createSnapshotWithResponse(metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Map<String, String> metadata,
-        BlobRequestConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
+        BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         return this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
-            null, null, null, metadata, accessConditions.getIfModifiedSince(), accessConditions.getIfUnmodifiedSince(),
-            accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(), accessConditions.getLeaseId(), null,
-            customerProvidedKey, context)
+            null, null, null, metadata, requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), requestConditions.getLeaseId(), null, customerProvidedKey, context)
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.getDeserializedHeaders().getSnapshot())));
     }
 

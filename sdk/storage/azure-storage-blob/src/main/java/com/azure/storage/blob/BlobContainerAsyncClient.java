@@ -330,31 +330,32 @@ public final class BlobContainerAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.deleteWithResponse#BlobRequestConditions}
      *
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      * @throws UnsupportedOperationException If either {@link BlobRequestConditions#getIfMatch()} or
      * {@link BlobRequestConditions#getIfNoneMatch()} is set.
      */
-    public Mono<Response<Void>> deleteWithResponse(BlobRequestConditions accessConditions) {
+    public Mono<Response<Void>> deleteWithResponse(BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteWithResponse(accessConditions, context));
+            return withContext(context -> deleteWithResponse(requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteWithResponse(BlobRequestConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
+    Mono<Response<Void>> deleteWithResponse(BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        if (!validateNoETag(accessConditions)) {
+        if (!validateNoETag(requestConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(
                 new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
 
-        return this.azureBlobStorage.containers().deleteWithRestResponseAsync(null, null, accessConditions.getLeaseId(),
-            accessConditions.getIfModifiedSince(), accessConditions.getIfUnmodifiedSince(), null, context)
+        return this.azureBlobStorage.containers().deleteWithRestResponseAsync(null, null,
+            requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -437,24 +438,24 @@ public final class BlobContainerAsyncClient {
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Map-BlobRequestConditions}
      *
      * @param metadata Metadata to associate with the container.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      * @throws UnsupportedOperationException If one of {@link BlobRequestConditions#getIfMatch()},
      * {@link BlobRequestConditions#getIfNoneMatch()}, or {@link BlobRequestConditions#getIfUnmodifiedSince()} is set.
      */
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
-        BlobRequestConditions accessConditions) {
+        BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
+            return withContext(context -> setMetadataWithResponse(metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
-        BlobRequestConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
-        if (!validateNoETag(accessConditions) || accessConditions.getIfUnmodifiedSince() != null) {
+        BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        if (!validateNoETag(requestConditions) || requestConditions.getIfUnmodifiedSince() != null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(new UnsupportedOperationException(
@@ -462,7 +463,7 @@ public final class BlobContainerAsyncClient {
         }
 
         return this.azureBlobStorage.containers().setMetadataWithRestResponseAsync(null, null,
-            accessConditions.getLeaseId(), metadata, accessConditions.getIfModifiedSince(), null, context)
+            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -555,26 +556,26 @@ public final class BlobContainerAsyncClient {
      * Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      * @throws UnsupportedOperationException If either {@link BlobRequestConditions#getIfMatch()} or
      * {@link BlobRequestConditions#getIfNoneMatch()} is set.
      */
     public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
-        List<BlobSignedIdentifier> identifiers, BlobRequestConditions accessConditions) {
+        List<BlobSignedIdentifier> identifiers, BlobRequestConditions requestConditions) {
         try {
             return withContext(
-                context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
+                context -> setAccessPolicyWithResponse(accessType, identifiers, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
-        List<BlobSignedIdentifier> identifiers, BlobRequestConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
+        List<BlobSignedIdentifier> identifiers, BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        if (!validateNoETag(accessConditions)) {
+        if (!validateNoETag(requestConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(
@@ -601,8 +602,8 @@ public final class BlobContainerAsyncClient {
         }
 
         return this.azureBlobStorage.containers().setAccessPolicyWithRestResponseAsync(
-            null, identifiers, null, accessConditions.getLeaseId(), accessType, accessConditions.getIfModifiedSince(),
-            accessConditions.getIfUnmodifiedSince(), null, context)
+            null, identifiers, null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -900,10 +901,10 @@ public final class BlobContainerAsyncClient {
     }
 
 
-    private boolean validateNoETag(BlobRequestConditions modifiedAccessConditions) {
-        if (modifiedAccessConditions == null) {
+    private boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {
+        if (modifiedRequestConditions == null) {
             return true;
         }
-        return modifiedAccessConditions.getIfMatch() == null && modifiedAccessConditions.getIfNoneMatch() == null;
+        return modifiedRequestConditions.getIfMatch() == null && modifiedRequestConditions.getIfNoneMatch() == null;
     }
 }

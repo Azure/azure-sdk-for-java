@@ -86,7 +86,7 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
             .setContentType("binary");
 
         Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         int blockSize = 100 * 1024 * 1024; // 100 MB;
@@ -94,7 +94,7 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
 
         try {
             client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, AccessTier.HOT,
-                accessConditions, timeout);
+                requestConditions, timeout);
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());

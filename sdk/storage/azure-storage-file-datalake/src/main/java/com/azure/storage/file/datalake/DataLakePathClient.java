@@ -146,7 +146,8 @@ public class DataLakePathClient {
         Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
         Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(
-            permissions, umask, dataLakePathAsyncClient.pathResourceType, headers, metadata, requestConditions, context);
+            permissions, umask, dataLakePathAsyncClient.pathResourceType, headers, metadata, requestConditions,
+            context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
