@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Represents an Azure Search indexer.
+ * Represents an indexer.
  */
 @Fluent
 public final class Indexer {
@@ -34,7 +34,7 @@ public final class Indexer {
     private String dataSourceName;
 
     /*
-     * The name of the cognitive skillset executing with this indexer.
+     * The name of the skillset executing with this indexer.
      */
     @JsonProperty(value = "skillsetName")
     private String skillsetName;
@@ -146,8 +146,8 @@ public final class Indexer {
     }
 
     /**
-     * Get the skillsetName property: The name of the cognitive skillset
-     * executing with this indexer.
+     * Get the skillsetName property: The name of the skillset executing with
+     * this indexer.
      *
      * @return the skillsetName value.
      */
@@ -156,8 +156,8 @@ public final class Indexer {
     }
 
     /**
-     * Set the skillsetName property: The name of the cognitive skillset
-     * executing with this indexer.
+     * Set the skillsetName property: The name of the skillset executing with
+     * this indexer.
      *
      * @param skillsetName the skillsetName value to set.
      * @return the Indexer object itself.

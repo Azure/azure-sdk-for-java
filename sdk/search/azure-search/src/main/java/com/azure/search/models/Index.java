@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Represents an index definition in Azure Search, which describes the fields
- * and search behavior of an index.
+ * Represents a search index definition, which describes the fields and search
+ * behavior of an index.
  */
 @Fluent
 public final class Index {

@@ -85,7 +85,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Creates a new Azure Search synonym map or updates a synonym map if it already exists.
+     * Creates a new synonym map or updates a synonym map if it already exists.
      *
      * @param synonymMapName The name of the synonym map to create or update.
      * @param synonymMap The definition of the synonym map to create or update.
@@ -103,7 +103,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Creates a new Azure Search synonym map or updates a synonym map if it already exists.
+     * Creates a new synonym map or updates a synonym map if it already exists.
      *
      * @param synonymMapName The name of the synonym map to create or update.
      * @param synonymMap The definition of the synonym map to create or update.
@@ -132,7 +132,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Deletes an Azure Search synonym map.
+     * Deletes a synonym map.
      *
      * @param synonymMapName The name of the synonym map to delete.
      * @param context The context to associate with this operation.
@@ -148,7 +148,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Deletes an Azure Search synonym map.
+     * Deletes a synonym map.
      *
      * @param synonymMapName The name of the synonym map to delete.
      * @param requestOptions Additional parameters for the operation.
@@ -175,7 +175,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Retrieves a synonym map definition from Azure Search.
+     * Retrieves a synonym map definition.
      *
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param context The context to associate with this operation.
@@ -189,7 +189,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Retrieves a synonym map definition from Azure Search.
+     * Retrieves a synonym map definition.
      *
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Additional parameters for the operation.
@@ -207,7 +207,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Lists all synonym maps available for an Azure Search service.
+     * Lists all synonym maps available for a search service.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +221,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Lists all synonym maps available for an Azure Search service.
+     * Lists all synonym maps available for a search service.
      *
      * @param select Selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
@@ -239,7 +239,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Creates a new Azure Search synonym map.
+     * Creates a new synonym map.
      *
      * @param synonymMap The definition of the synonym map to create.
      * @param context The context to associate with this operation.
@@ -253,7 +253,7 @@ public final class SynonymMapsImpl {
     }
 
     /**
-     * Creates a new Azure Search synonym map.
+     * Creates a new synonym map.
      *
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Additional parameters for the operation.

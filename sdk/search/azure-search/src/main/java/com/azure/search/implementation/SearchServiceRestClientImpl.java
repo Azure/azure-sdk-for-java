@@ -58,12 +58,12 @@ public final class SearchServiceRestClientImpl {
     }
 
     /**
-     * The name of the Azure Search service.
+     * The name of the search service.
      */
     private String searchServiceName;
 
     /**
-     * Gets The name of the Azure Search service.
+     * Gets The name of the search service.
      *
      * @return the searchServiceName value.
      */
@@ -72,7 +72,7 @@ public final class SearchServiceRestClientImpl {
     }
 
     /**
-     * Sets The name of the Azure Search service.
+     * Sets The name of the search service.
      *
      * @param searchServiceName the searchServiceName value.
      */
@@ -82,12 +82,12 @@ public final class SearchServiceRestClientImpl {
     }
 
     /**
-     * The DNS suffix of the Azure Search service. The default is search.windows.net.
+     * The DNS suffix of the search service. The default is search.windows.net.
      */
     private String searchDnsSuffix;
 
     /**
-     * Gets The DNS suffix of the Azure Search service. The default is search.windows.net.
+     * Gets The DNS suffix of the search service. The default is search.windows.net.
      *
      * @return the searchDnsSuffix value.
      */
@@ -96,7 +96,7 @@ public final class SearchServiceRestClientImpl {
     }
 
     /**
-     * Sets The DNS suffix of the Azure Search service. The default is search.windows.net.
+     * Sets The DNS suffix of the search service. The default is search.windows.net.
      *
      * @param searchDnsSuffix the searchDnsSuffix value.
      */
@@ -224,7 +224,7 @@ public final class SearchServiceRestClientImpl {
     }
 
     /**
-     * Gets service level statistics for an Azure Search service.
+     * Gets service level statistics for a search service.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,7 +237,7 @@ public final class SearchServiceRestClientImpl {
     }
 
     /**
-     * Gets service level statistics for an Azure Search service.
+     * Gets service level statistics for a search service.
      *
      * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.

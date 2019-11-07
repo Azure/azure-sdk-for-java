@@ -10,8 +10,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents a datasource definition in Azure Search, which can be used to
- * configure an indexer.
+ * Represents a datasource definition, which can be used to configure an
+ * indexer.
  */
 @Fluent
 public final class DataSource {

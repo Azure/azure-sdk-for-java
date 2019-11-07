@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Response containing search results from an Azure Search index.
+ * Response containing search results from an index.
  */
 @Fluent
 public final class DocumentSearchResult {
@@ -20,8 +20,8 @@ public final class DocumentSearchResult {
      * The total count of results found by the search operation, or null if the
      * count was not requested. If present, the count may be greater than the
      * number of results in this response. This can happen if you use the $top
-     * or $skip parameters, or if Azure Search can't return all the requested
-     * documents in a single Search response.
+     * or $skip parameters, or if Azure Cognitive Search can't return all the
+     * requested documents in a single Search response.
      */
     @JsonProperty(value = "@odata.count", access = JsonProperty.Access.WRITE_ONLY)
     private Long count;
@@ -42,10 +42,10 @@ public final class DocumentSearchResult {
     private Map<String, List<FacetResult>> facets;
 
     /*
-     * Continuation JSON payload returned when Azure Search can't return all
-     * the requested results in a single Search response. You can use this JSON
-     * along with @odata.nextLink to formulate another POST Search request to
-     * get the next part of the search response.
+     * Continuation JSON payload returned when Azure Cognitive Search can't
+     * return all the requested results in a single Search response. You can
+     * use this JSON along with @odata.nextLink to formulate another POST
+     * Search request to get the next part of the search response.
      */
     @JsonProperty(value = "@search.nextPageParameters", access = JsonProperty.Access.WRITE_ONLY)
     private SearchRequest nextPageParameters;
@@ -57,10 +57,10 @@ public final class DocumentSearchResult {
     private List<SearchResult> results;
 
     /*
-     * Continuation URL returned when Azure Search can't return all the
-     * requested results in a single Search response. You can use this URL to
-     * formulate another GET or POST Search request to get the next part of the
-     * search response. Make sure to use the same verb (GET or POST) as the
+     * Continuation URL returned when Azure Cognitive Search can't return all
+     * the requested results in a single Search response. You can use this URL
+     * to formulate another GET or POST Search request to get the next part of
+     * the search response. Make sure to use the same verb (GET or POST) as the
      * request that produced this response.
      */
     @JsonProperty(value = "@odata.nextLink", access = JsonProperty.Access.WRITE_ONLY)
@@ -70,8 +70,9 @@ public final class DocumentSearchResult {
      * Get the count property: The total count of results found by the search
      * operation, or null if the count was not requested. If present, the count
      * may be greater than the number of results in this response. This can
-     * happen if you use the $top or $skip parameters, or if Azure Search can't
-     * return all the requested documents in a single Search response.
+     * happen if you use the $top or $skip parameters, or if Azure Cognitive
+     * Search can't return all the requested documents in a single Search
+     * response.
      *
      * @return the count value.
      */
@@ -103,10 +104,10 @@ public final class DocumentSearchResult {
 
     /**
      * Get the nextPageParameters property: Continuation JSON payload returned
-     * when Azure Search can't return all the requested results in a single
-     * Search response. You can use this JSON along with @odata.nextLink to
-     * formulate another POST Search request to get the next part of the search
-     * response.
+     * when Azure Cognitive Search can't return all the requested results in a
+     * single Search response. You can use this JSON along with @odata.nextLink
+     * to formulate another POST Search request to get the next part of the
+     * search response.
      *
      * @return the nextPageParameters value.
      */
@@ -124,11 +125,12 @@ public final class DocumentSearchResult {
     }
 
     /**
-     * Get the nextLink property: Continuation URL returned when Azure Search
-     * can't return all the requested results in a single Search response. You
-     * can use this URL to formulate another GET or POST Search request to get
-     * the next part of the search response. Make sure to use the same verb
-     * (GET or POST) as the request that produced this response.
+     * Get the nextLink property: Continuation URL returned when Azure
+     * Cognitive Search can't return all the requested results in a single
+     * Search response. You can use this URL to formulate another GET or POST
+     * Search request to get the next part of the search response. Make sure to
+     * use the same verb (GET or POST) as the request that produced this
+     * response.
      *
      * @return the nextLink value.
      */

@@ -40,12 +40,12 @@ public final class SearchIndexRestClientImpl {
     }
 
     /**
-     * The name of the Azure Search service.
+     * The name of the search service.
      */
     private String searchServiceName;
 
     /**
-     * Gets The name of the Azure Search service.
+     * Gets The name of the search service.
      *
      * @return the searchServiceName value.
      */
@@ -54,7 +54,7 @@ public final class SearchIndexRestClientImpl {
     }
 
     /**
-     * Sets The name of the Azure Search service.
+     * Sets The name of the search service.
      *
      * @param searchServiceName the searchServiceName value.
      */
@@ -64,12 +64,12 @@ public final class SearchIndexRestClientImpl {
     }
 
     /**
-     * The DNS suffix of the Azure Search service. The default is search.windows.net.
+     * The DNS suffix of the search service. The default is search.windows.net.
      */
     private String searchDnsSuffix;
 
     /**
-     * Gets The DNS suffix of the Azure Search service. The default is search.windows.net.
+     * Gets The DNS suffix of the search service. The default is search.windows.net.
      *
      * @return the searchDnsSuffix value.
      */
@@ -78,7 +78,7 @@ public final class SearchIndexRestClientImpl {
     }
 
     /**
-     * Sets The DNS suffix of the Azure Search service. The default is search.windows.net.
+     * Sets The DNS suffix of the search service. The default is search.windows.net.
      *
      * @param searchDnsSuffix the searchDnsSuffix value.
      */
@@ -88,12 +88,12 @@ public final class SearchIndexRestClientImpl {
     }
 
     /**
-     * The name of the Azure Search index.
+     * The name of the index.
      */
     private String indexName;
 
     /**
-     * Gets The name of the Azure Search index.
+     * Gets The name of the index.
      *
      * @return the indexName value.
      */
@@ -102,7 +102,7 @@ public final class SearchIndexRestClientImpl {
     }
 
     /**
-     * Sets The name of the Azure Search index.
+     * Sets The name of the index.
      *
      * @param indexName the indexName value.
      */

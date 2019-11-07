@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Defines parameters for an Azure Search index that influence scoring in
- * search queries.
+ * Defines parameters for a search index that influence scoring in search
+ * queries.
  */
 @Fluent
 public final class ScoringProfile {

@@ -66,8 +66,8 @@ public class Skill {
     private List<InputFieldMappingEntry> inputs;
 
     /*
-     * The output of a skill is either a field in an Azure Search index, or a
-     * value that can be consumed as an input by another skill.
+     * The output of a skill is either a field in a search index, or a value
+     * that can be consumed as an input by another skill.
      */
     @JsonProperty(value = "outputs", required = true)
     private List<OutputFieldMappingEntry> outputs;
@@ -167,9 +167,9 @@ public class Skill {
     }
 
     /**
-     * Get the outputs property: The output of a skill is either a field in an
-     * Azure Search index, or a value that can be consumed as an input by
-     * another skill.
+     * Get the outputs property: The output of a skill is either a field in a
+     * search index, or a value that can be consumed as an input by another
+     * skill.
      *
      * @return the outputs value.
      */
@@ -178,9 +178,9 @@ public class Skill {
     }
 
     /**
-     * Set the outputs property: The output of a skill is either a field in an
-     * Azure Search index, or a value that can be consumed as an input by
-     * another skill.
+     * Set the outputs property: The output of a skill is either a field in a
+     * search index, or a value that can be consumed as an input by another
+     * skill.
      *
      * @param outputs the outputs value to set.
      * @return the Skill object itself.

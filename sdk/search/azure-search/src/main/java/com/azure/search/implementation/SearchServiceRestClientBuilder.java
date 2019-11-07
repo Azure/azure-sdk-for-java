@@ -47,12 +47,12 @@ public final class SearchServiceRestClientBuilder {
     }
 
     /*
-     * The name of the Azure Search service.
+     * The name of the search service.
      */
     private String searchServiceName;
 
     /**
-     * Sets The name of the Azure Search service.
+     * Sets The name of the search service.
      *
      * @param searchServiceName the searchServiceName value.
      * @return the SearchServiceRestClientBuilder.
@@ -63,12 +63,12 @@ public final class SearchServiceRestClientBuilder {
     }
 
     /*
-     * The DNS suffix of the Azure Search service. The default is search.windows.net.
+     * The DNS suffix of the search service. The default is search.windows.net.
      */
     private String searchDnsSuffix;
 
     /**
-     * Sets The DNS suffix of the Azure Search service. The default is search.windows.net.
+     * Sets The DNS suffix of the search service. The default is search.windows.net.
      *
      * @param searchDnsSuffix the searchDnsSuffix value.
      * @return the SearchServiceRestClientBuilder.

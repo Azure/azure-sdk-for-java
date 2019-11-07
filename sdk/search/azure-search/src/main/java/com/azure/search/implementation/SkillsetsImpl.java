@@ -84,10 +84,10 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * Creates a new cognitive skillset in an Azure Search service or updates the skillset if it already exists.
+     * Creates a new skillset in a search service or updates the skillset if it already exists.
      *
      * @param skillsetName The name of the skillset to create or update.
-     * @param skillset The skillset containing one or more cognitive skills to create or update in an Azure Search service.
+     * @param skillset The skillset containing one or more skills to create or update in a search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
@@ -100,10 +100,10 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * Creates a new cognitive skillset in an Azure Search service or updates the skillset if it already exists.
+     * Creates a new skillset in a search service or updates the skillset if it already exists.
      *
      * @param skillsetName The name of the skillset to create or update.
-     * @param skillset The skillset containing one or more cognitive skills to create or update in an Azure Search service.
+     * @param skillset The skillset containing one or more skills to create or update in a search service.
      * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,7 +120,7 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * Deletes a cognitive skillset in an Azure Search service.
+     * Deletes a skillset in a search service.
      *
      * @param skillsetName The name of the skillset to delete.
      * @param context The context to associate with this operation.
@@ -134,7 +134,7 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * Deletes a cognitive skillset in an Azure Search service.
+     * Deletes a skillset in a search service.
      *
      * @param skillsetName The name of the skillset to delete.
      * @param requestOptions Additional parameters for the operation.
@@ -152,7 +152,7 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * Retrieves a cognitive skillset in an Azure Search service.
+     * Retrieves a skillset in a search service.
      *
      * @param skillsetName The name of the skillset to retrieve.
      * @param context The context to associate with this operation.
@@ -166,7 +166,7 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * Retrieves a cognitive skillset in an Azure Search service.
+     * Retrieves a skillset in a search service.
      *
      * @param skillsetName The name of the skillset to retrieve.
      * @param requestOptions Additional parameters for the operation.
@@ -184,7 +184,7 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * List all cognitive skillsets in an Azure Search service.
+     * List all skillsets in a search service.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,7 +198,7 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * List all cognitive skillsets in an Azure Search service.
+     * List all skillsets in a search service.
      *
      * @param select Selects which top-level properties of the skillsets to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
@@ -216,9 +216,9 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * Creates a new cognitive skillset in an Azure Search service.
+     * Creates a new skillset in a search service.
      *
-     * @param skillset The skillset containing one or more cognitive skills to create in an Azure Search service.
+     * @param skillset The skillset containing one or more skills to create in a search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
@@ -230,9 +230,9 @@ public final class SkillsetsImpl {
     }
 
     /**
-     * Creates a new cognitive skillset in an Azure Search service.
+     * Creates a new skillset in a search service.
      *
-     * @param skillset The skillset containing one or more cognitive skills to create in an Azure Search service.
+     * @param skillset The skillset containing one or more skills to create in a search service.
      * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

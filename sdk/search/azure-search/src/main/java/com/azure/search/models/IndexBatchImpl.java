@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Contains a batch of document write actions to send to the Azure Search
- * index.
+ * Contains a batch of document write actions to send to the index.
  */
 @Fluent
 class IndexBatchImpl<T> {

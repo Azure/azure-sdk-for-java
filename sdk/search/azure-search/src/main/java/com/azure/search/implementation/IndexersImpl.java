@@ -98,7 +98,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Resets the change tracking state associated with an Azure Search indexer.
+     * Resets the change tracking state associated with an indexer.
      *
      * @param indexerName The name of the indexer to reset.
      * @param context The context to associate with this operation.
@@ -112,7 +112,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Resets the change tracking state associated with an Azure Search indexer.
+     * Resets the change tracking state associated with an indexer.
      *
      * @param indexerName The name of the indexer to reset.
      * @param requestOptions Additional parameters for the operation.
@@ -130,7 +130,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Runs an Azure Search indexer on-demand.
+     * Runs an indexer on-demand.
      *
      * @param indexerName The name of the indexer to run.
      * @param context The context to associate with this operation.
@@ -144,7 +144,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Runs an Azure Search indexer on-demand.
+     * Runs an indexer on-demand.
      *
      * @param indexerName The name of the indexer to run.
      * @param requestOptions Additional parameters for the operation.
@@ -162,7 +162,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Creates a new Azure Search indexer or updates an indexer if it already exists.
+     * Creates a new indexer or updates an indexer if it already exists.
      *
      * @param indexerName The name of the indexer to create or update.
      * @param indexer The definition of the indexer to create or update.
@@ -180,7 +180,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Creates a new Azure Search indexer or updates an indexer if it already exists.
+     * Creates a new indexer or updates an indexer if it already exists.
      *
      * @param indexerName The name of the indexer to create or update.
      * @param indexer The definition of the indexer to create or update.
@@ -209,7 +209,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Deletes an Azure Search indexer.
+     * Deletes an indexer.
      *
      * @param indexerName The name of the indexer to delete.
      * @param context The context to associate with this operation.
@@ -225,7 +225,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Deletes an Azure Search indexer.
+     * Deletes an indexer.
      *
      * @param indexerName The name of the indexer to delete.
      * @param requestOptions Additional parameters for the operation.
@@ -252,7 +252,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Retrieves an indexer definition from Azure Search.
+     * Retrieves an indexer definition.
      *
      * @param indexerName The name of the indexer to retrieve.
      * @param context The context to associate with this operation.
@@ -266,7 +266,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Retrieves an indexer definition from Azure Search.
+     * Retrieves an indexer definition.
      *
      * @param indexerName The name of the indexer to retrieve.
      * @param requestOptions Additional parameters for the operation.
@@ -284,7 +284,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Lists all indexers available for an Azure Search service.
+     * Lists all indexers available for a search service.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,7 +298,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Lists all indexers available for an Azure Search service.
+     * Lists all indexers available for a search service.
      *
      * @param select Selects which top-level properties of the indexers to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
@@ -316,7 +316,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Creates a new Azure Search indexer.
+     * Creates a new indexer.
      *
      * @param indexer The definition of the indexer to create.
      * @param context The context to associate with this operation.
@@ -330,7 +330,7 @@ public final class IndexersImpl {
     }
 
     /**
-     * Creates a new Azure Search indexer.
+     * Creates a new indexer.
      *
      * @param indexer The definition of the indexer to create.
      * @param requestOptions Additional parameters for the operation.

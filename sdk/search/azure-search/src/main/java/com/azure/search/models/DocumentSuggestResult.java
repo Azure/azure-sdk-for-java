@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Response containing suggestion query results from an Azure Search index.
+ * Response containing suggestion query results from an index.
  */
 @Fluent
 public final class DocumentSuggestResult {

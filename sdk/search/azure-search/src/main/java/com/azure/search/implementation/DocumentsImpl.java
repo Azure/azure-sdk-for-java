@@ -116,7 +116,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Queries the number of documents in the Azure Search index.
+     * Queries the number of documents in the index.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +129,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Queries the number of documents in the Azure Search index.
+     * Queries the number of documents in the index.
      *
      * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
@@ -146,7 +146,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Searches for documents in the Azure Search index.
+     * Searches for documents in the index.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,7 +176,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Searches for documents in the Azure Search index.
+     * Searches for documents in the index.
      *
      * @param searchText A full-text search query expression; Use "*" or omit this parameter to match all documents.
      * @param searchOptions Additional parameters for the operation.
@@ -265,7 +265,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Searches for documents in the Azure Search index.
+     * Searches for documents in the index.
      *
      * @param searchRequest The definition of the Search request.
      * @param context The context to associate with this operation.
@@ -279,7 +279,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Searches for documents in the Azure Search index.
+     * Searches for documents in the index.
      *
      * @param searchRequest The definition of the Search request.
      * @param requestOptions Additional parameters for the operation.
@@ -297,7 +297,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Retrieves a document from the Azure Search index.
+     * Retrieves a document from the index.
      *
      * @param key The key of the document to retrieve.
      * @param context The context to associate with this operation.
@@ -312,7 +312,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Retrieves a document from the Azure Search index.
+     * Retrieves a document from the index.
      *
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing from the returned document.
@@ -332,7 +332,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Suggests documents in the Azure Search index that match the given partial query text.
+     * Suggests documents in the index that match the given partial query text.
      *
      * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100 characters.
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
@@ -356,7 +356,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Suggests documents in the Azure Search index that match the given partial query text.
+     * Suggests documents in the index that match the given partial query text.
      *
      * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100 characters.
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
@@ -415,7 +415,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Suggests documents in the Azure Search index that match the given partial query text.
+     * Suggests documents in the index that match the given partial query text.
      *
      * @param suggestRequest The Suggest request.
      * @param context The context to associate with this operation.
@@ -429,7 +429,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Suggests documents in the Azure Search index that match the given partial query text.
+     * Suggests documents in the index that match the given partial query text.
      *
      * @param suggestRequest The Suggest request.
      * @param requestOptions Additional parameters for the operation.
@@ -447,7 +447,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Sends a batch of document write actions to the Azure Search index.
+     * Sends a batch of document write actions to the index.
      *
      * @param batch The batch of index actions.
      * @param context The context to associate with this operation.
@@ -461,7 +461,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Sends a batch of document write actions to the Azure Search index.
+     * Sends a batch of document write actions to the index.
      *
      * @param batch The batch of index actions.
      * @param requestOptions Additional parameters for the operation.
@@ -479,7 +479,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
      * @param searchText The incomplete term which should be auto-completed.
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
@@ -502,7 +502,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
      * @param searchText The incomplete term which should be auto-completed.
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
@@ -555,7 +555,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
      * @param autocompleteRequest The definition of the Autocomplete request.
      * @param context The context to associate with this operation.
@@ -569,7 +569,7 @@ public final class DocumentsImpl {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
      * @param autocompleteRequest The definition of the Autocomplete request.
      * @param requestOptions Additional parameters for the operation.

@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents a synonym map definition in Azure Search.
+ * Represents a synonym map definition.
  */
 @Fluent
 public final class SynonymMap {

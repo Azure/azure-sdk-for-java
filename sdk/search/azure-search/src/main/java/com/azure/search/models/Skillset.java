@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A list of cognitive skills.
+ * A list of skills.
  */
 @Fluent
 public final class Skillset {

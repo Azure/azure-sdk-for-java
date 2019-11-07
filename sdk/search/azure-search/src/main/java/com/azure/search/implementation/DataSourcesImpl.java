@@ -85,7 +85,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Creates a new Azure Search datasource or updates a datasource if it already exists.
+     * Creates a new datasource or updates a datasource if it already exists.
      *
      * @param dataSourceName The name of the datasource to create or update.
      * @param dataSource The definition of the datasource to create or update.
@@ -103,7 +103,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Creates a new Azure Search datasource or updates a datasource if it already exists.
+     * Creates a new datasource or updates a datasource if it already exists.
      *
      * @param dataSourceName The name of the datasource to create or update.
      * @param dataSource The definition of the datasource to create or update.
@@ -132,7 +132,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Deletes an Azure Search datasource.
+     * Deletes a datasource.
      *
      * @param dataSourceName The name of the datasource to delete.
      * @param context The context to associate with this operation.
@@ -148,7 +148,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Deletes an Azure Search datasource.
+     * Deletes a datasource.
      *
      * @param dataSourceName The name of the datasource to delete.
      * @param requestOptions Additional parameters for the operation.
@@ -175,7 +175,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Retrieves a datasource definition from Azure Search.
+     * Retrieves a datasource definition.
      *
      * @param dataSourceName The name of the datasource to retrieve.
      * @param context The context to associate with this operation.
@@ -189,7 +189,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Retrieves a datasource definition from Azure Search.
+     * Retrieves a datasource definition.
      *
      * @param dataSourceName The name of the datasource to retrieve.
      * @param requestOptions Additional parameters for the operation.
@@ -207,7 +207,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Lists all datasources available for an Azure Search service.
+     * Lists all datasources available for a search service.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +221,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Lists all datasources available for an Azure Search service.
+     * Lists all datasources available for a search service.
      *
      * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
@@ -239,7 +239,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Creates a new Azure Search datasource.
+     * Creates a new datasource.
      *
      * @param dataSource The definition of the datasource to create.
      * @param context The context to associate with this operation.
@@ -253,7 +253,7 @@ public final class DataSourcesImpl {
     }
 
     /**
-     * Creates a new Azure Search datasource.
+     * Creates a new datasource.
      *
      * @param dataSource The definition of the datasource to create.
      * @param requestOptions Additional parameters for the operation.

@@ -96,7 +96,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Creates a new Azure Search index.
+     * Creates a new search index.
      *
      * @param index The definition of the index to create.
      * @param context The context to associate with this operation.
@@ -110,7 +110,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Creates a new Azure Search index.
+     * Creates a new search index.
      *
      * @param index The definition of the index to create.
      * @param requestOptions Additional parameters for the operation.
@@ -128,7 +128,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Lists all indexes available for an Azure Search service.
+     * Lists all indexes available for a search service.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +142,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Lists all indexes available for an Azure Search service.
+     * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties of the index definitions to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
@@ -160,7 +160,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Creates a new Azure Search index or updates an index if it already exists.
+     * Creates a new search index or updates an index if it already exists.
      *
      * @param indexName The definition of the index to create or update.
      * @param index The definition of the index to create or update.
@@ -179,7 +179,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Creates a new Azure Search index or updates an index if it already exists.
+     * Creates a new search index or updates an index if it already exists.
      *
      * @param indexName The definition of the index to create or update.
      * @param index The definition of the index to create or update.
@@ -209,7 +209,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Deletes an Azure Search index and all the documents it contains.
+     * Deletes a search index and all the documents it contains.
      *
      * @param indexName The name of the index to delete.
      * @param context The context to associate with this operation.
@@ -225,7 +225,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Deletes an Azure Search index and all the documents it contains.
+     * Deletes a search index and all the documents it contains.
      *
      * @param indexName The name of the index to delete.
      * @param requestOptions Additional parameters for the operation.
@@ -252,7 +252,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Retrieves an index definition from Azure Search.
+     * Retrieves an index definition.
      *
      * @param indexName The name of the index to retrieve.
      * @param context The context to associate with this operation.
@@ -266,7 +266,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Retrieves an index definition from Azure Search.
+     * Retrieves an index definition.
      *
      * @param indexName The name of the index to retrieve.
      * @param requestOptions Additional parameters for the operation.
