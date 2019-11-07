@@ -266,23 +266,14 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     /**
      * Extracts request attributes from the given {@code context} and provided key.
      *
-     * @param context The context containing the entity path.
+     * @param context The context containing the specified attribute key.
      * @param key The name of the attribute that needs to be extracted from the {@code Context}.
      * @return The value for the provided key contained in the context.
      */
     private String getRequestKeyAttribute(Context context, String key) {
-        final Optional<Object> optionalObject = context.getData(key);
-
-        if (!optionalObject.isPresent()) {
-            logger.warning("Failed to find {} in the context.", key);
-            return "";
-        }
-
-        final Object value = optionalObject.get();
+        final Object value = getOptionalObject(context, key);
         if (!(value instanceof String)) {
-            logger.warning("Could not extract {}. Data is not of type String. Actual class: {}",
-                key,
-                value.getClass());
+            logger.warning("Could not extract {}. Data in context for key {} is not of type String.", key);
             return "";
         }
 
@@ -296,17 +287,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @return The {@link Span} contained in the context, and {@code null} if it does not.
      */
     private Span getSpan(Context context) {
-        final Optional<Object> spanOptional = context.getData(PARENT_SPAN_KEY);
-        if (!spanOptional.isPresent()) {
-            logger.warning("Failed to find span in the context.");
-            return null;
-        }
-
-        final Object value = spanOptional.get();
+        final Object value = getOptionalObject(context, PARENT_SPAN_KEY);
         if (!(value instanceof Span)) {
-            logger.warning("Could not extract span. Data in {} is not of type Span. Actual class: {}",
-                PARENT_SPAN_KEY,
-                value.getClass());
+            logger.warning("Could not extract span. Data in context for key {} is not of type Span.", PARENT_SPAN_KEY);
             return null;
         }
 
@@ -320,17 +303,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @return The span name contained in the context, and {@code null} if it does not.
      */
     private String getSpanName(Context context) {
-        final Optional<Object> spanNameOptional = context.getData(USER_SPAN_NAME_KEY);
-        if (!spanNameOptional.isPresent()) {
-            logger.warning("Failed to find span name in the context.");
-            return null;
-        }
-
-        final Object value = spanNameOptional.get();
+        final Object value = getOptionalObject(context, USER_SPAN_NAME_KEY);
         if (!(value instanceof String)) {
-            logger.warning("Could not extract span name. Data in {} is not of type String. Actual class: {}",
-                USER_SPAN_NAME_KEY,
-                value.getClass());
+            logger.warning("Could not extract span name. Data in context for key {} is not of type String.",
+                USER_SPAN_NAME_KEY);
             return null;
         }
 
@@ -344,16 +320,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @return The {@link SpanContext} contained in the context, and {@code null} if it does not.
      */
     private SpanContext getSpanContext(Context context) {
-        final Optional<Object> spanContextOptional = context.getData(SPAN_CONTEXT_KEY);
-        if (!spanContextOptional.isPresent()) {
-            logger.warning("Failed to find span context in the context.");
-            return null;
-        }
-
-        final Object value = spanContextOptional.get();
+        final Object value = getOptionalObject(context, SPAN_CONTEXT_KEY);
         if (!(value instanceof SpanContext)) {
-            logger.warning("Could not extract span context. Data is not of type SpanContext. Actual class: {}",
-                value.getClass());
+            logger.warning("Could not extract span context. Data is in context for key {} not of type SpanContext.",
+                SPAN_CONTEXT_KEY);
             return null;
         }
 
@@ -379,5 +349,21 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             parentSpan = TRACER.getCurrentSpan();
         }
         return TRACER.spanBuilder(spanNameKey).setParent(parentSpan);
+    }
+
+    /**
+     * Returns the value of the specified key from the context.
+     *
+     * @param context The context containing the specified key.
+     * @param key The name of the attribute that needs to be extracted from the {@code Context}.
+     * @return The value for the provided key contained in the context.
+     */
+    private Object getOptionalObject(Context context, String key) {
+        final Optional<Object> optionalObject = context.getData(key);
+        if (!optionalObject.isPresent()) {
+            logger.warning("Failed to find {} in the context.", key);
+            return null;
+        }
+        return optionalObject.get();
     }
 }

@@ -6,6 +6,7 @@ package com.azure.core.tracing.opentelemetry;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.OpenTelemetry;
+import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.trace.AttributeValue;
 import io.opentelemetry.trace.Span;
@@ -39,6 +40,7 @@ public class OpenTelemetryTracerTest {
     private Tracer tracer;
     private Context tracingContext;
     private Span parentSpan;
+    private Scope scope;
 
     @Before
     public void setUp() {
@@ -48,7 +50,7 @@ public class OpenTelemetryTracerTest {
         tracer = OpenTelemetry.getTracerFactory().get("TracerSdkTest");
         // Start user parent span.
         parentSpan = tracer.spanBuilder(PARENT_SPAN_KEY).startSpan();
-        tracer.withSpan(parentSpan);
+        scope = tracer.withSpan(parentSpan);
         // Add parent span to tracingContext
         tracingContext = new Context(PARENT_SPAN_KEY, parentSpan);
     }
@@ -172,7 +174,9 @@ public class OpenTelemetryTracerTest {
     @Test
     public void startProcessSpanWithRemoteParent() {
         // Arrange
+        scope.close();
         final Span testSpan = tracer.spanBuilder("child-span").startSpan();
+        tracer.withSpan(testSpan);
         final SpanId testSpanId = testSpan.getContext().getSpanId();
         final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getContext());
 
@@ -286,7 +290,7 @@ public class OpenTelemetryTracerTest {
 
         // verify span started with remote parent
         // TODO: PR open - https://github.com/open-telemetry/opentelemetry-java/pull/656
-        // Assert.assertTrue(recordEventsSpan.getSpanContext().isRemote());
+        // Assert.assertTrue(recordEventsSpan.toSpanData().getHasRemoteParent());
         Assert.assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
     }
 }
