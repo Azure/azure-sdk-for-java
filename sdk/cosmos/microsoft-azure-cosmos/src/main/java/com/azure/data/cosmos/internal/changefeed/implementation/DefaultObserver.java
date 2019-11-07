@@ -34,8 +34,13 @@ class DefaultObserver implements ChangeFeedObserver {
     @Override
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
         log.info("Start processing from thread {}", Thread.currentThread().getId());
-        consumer.accept(docs);
-        log.info("Done processing from thread {}", Thread.currentThread().getId());
+        try {
+            consumer.accept(docs);
+            log.info("Done processing from thread {}", Thread.currentThread().getId());
+        } catch (Exception ex) {
+            log.warn("Unexpected exception thrown from thread {}", Thread.currentThread().getId(), ex);
+            return Mono.error(ex);
+        }
 
         return Mono.empty();
     }
