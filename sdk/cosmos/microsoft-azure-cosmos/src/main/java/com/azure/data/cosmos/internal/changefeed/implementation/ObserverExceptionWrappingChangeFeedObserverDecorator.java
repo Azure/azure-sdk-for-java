@@ -32,7 +32,7 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
         }
         catch (RuntimeException userException)
         {
-            this.logger.warn("Exception happened on ChangeFeedObserver.open", userException);
+            this.logger.warn("Exception thrown during ChangeFeedObserver.open from thread {}", Thread.currentThread().getId(), userException);
             throw new ObserverException(userException);
         }
     }
@@ -44,7 +44,7 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
         }
         catch (RuntimeException userException)
         {
-            this.logger.warn("Exception happened on ChangeFeedObserver.close", userException);
+            this.logger.warn("Exception thrown during ChangeFeedObserver.close from thread {}", Thread.currentThread().getId(), userException);
             throw new ObserverException(userException);
         }
     }
@@ -53,7 +53,7 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
         return this.changeFeedObserver.processChanges(context, docs)
             .onErrorResume(throwable -> {
-                this.logger.warn("Exception happened on ChangeFeedObserver.processChanges", throwable);
+                this.logger.warn("Exception thrown during ChangeFeedObserver.processChanges from thread {}", Thread.currentThread().getId(), throwable);
                 return Mono.error(new ObserverException(throwable));
             });
     }
