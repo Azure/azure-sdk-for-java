@@ -68,11 +68,18 @@
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
     <Or>
-      <Class name="com.azure.core.util.CoreUtils" /> <!-- false positive -->
+      <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
   <!-- These KeyVaultClientBase methods are made synchronous by blocking and waiting for a result. They do not return
@@ -117,6 +124,7 @@
     <Or>
       <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
       <Class name="~com\.azure\.(.+)Impl"/>
+      <Class name="com.azure.core.util.CoreUtils"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
   </Match>
