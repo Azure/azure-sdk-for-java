@@ -94,27 +94,22 @@ The following sections provides examples of using the azure-core-tracing-opentel
         public static void main(String[] args) {
             doClientWork();
             TRACER_SDK_FACTORY.shutdown();
-            LOGGER.info("=== Tracer Shutdown  ===");
         }
 
-        public static void doClientWork(Tracer tracer) {
+        public static void doClientWork() {
           SecretClient client = new SecretClientBuilder()
             .endpoint("<your-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-          
-          LOGGER.info("=== Start user scoped span  ===");
-          
+                    
           Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-          try (final Scope scope = TRACER.withSpan(span)) {
+          try (Scope scope = TRACER.withSpan(span)) {
               final Context traceContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
-              Secret secret = secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
-              System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue());
+              secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
           } finally {
               span.end();
-              LOGGER.info("=== End user scoped span  ===");
           }
-      }
+        }
     ```
 
 ### Using the plugin package with AMQP client libraries
@@ -134,27 +129,20 @@ private static final TracerSdkFactory TRACER_SDK_FACTORY;
     public static void main(String[] args) {
         doClientWork();
         TRACER_SDK_FACTORY.shutdown();
-        LOGGER.info("=== Tracer Shutdown  ===");
     }
 
     private static void doClientWork() {
-        ConfigurationClient client = new ConfigurationClientBuilder()
+        EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString(CONNECTION_STRING)
-            .buildClient();
-
-        LOGGER.info("=== Start user scoped span  ===");
+            .buildProducer();
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-        try (final Scope scope = TRACER.withSpan(span)) {
-            final Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
-            // Create an event to send
-            final EventData eventData = new EventData("Hello world!".getBytes(UTF_8));
-            // Add tracing context to the event
-            eventData.context(tracingContext);
+        try (Scope scope = TRACER.withSpan(span)) {
+            Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
+            EventData eventData = new EventData("Hello world!".getBytes(UTF_8), traceContext);
             producer.send(eventData); 
         } finally {
             span.end();
-            LOGGER.info("=== End user scoped span  ===");
         }
     }
 ```
@@ -168,10 +156,9 @@ For more information on opentelemetry Java support for tracing, see [opentelemet
 ### Samples
 Several Java SDK samples are available to you in the SDKs GitHub repository. 
 These following samples provide example code for additional scenarios commonly encountered while working with Tracing:
-
-#### Setting configuration setting using [azure-data-app-configuration][azure_app_data_configuration]
-* [SetConfigurationSetting][sample_app_config] - Sample for setting a configuration setting using [azure-data-app-configuration][azure_app_data_configuration]
-with tracing enabled.
+* [SetConfigurationSetting][sample_app_config] - Tracing enabled Sample for setting a configuration setting using [azure-data-app-configuration][azure_app_data_configuration].
+* [ListKeyVault Secrets][sample_key_vault] - Tracing enabled sample for creating and listing secrets of a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets].
+* [Publish Events][sample_eventhubs] - Tracing enabled sample for publishing multiple events using [azure-messaging-eventhubs][azure_messaging_eventhubs_mvn].
 
 ### Additional Documentation
 For more extensive documentation on OpenTelemetry, see the [API reference documentation][opentelemetry].
@@ -186,14 +173,18 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 <!-- Links -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
 [azure_data_app_configuration]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration/1.0.0-preview.6/jar
-[azure-security-keyvault-secrets]: ../keyvault/azure-security-keyvault-secrets
-[azure-messaging-eventhubs]: ../eventhubs/azure-messaging-eventhubs
-[context]: ../core/azure-core/src/main/java/com/azure/core/util/Context.java
-[create-eventhubs-builders]: ../eventhubs/azure-messaging-eventhubs#create-an-event-hub-client-using-a-connection-string
+[azure-security-keyvault-secrets]: ../../keyvault/azure-security-keyvault-secrets
+[azure_keyvault_secrets]: https://mvnrepository.com/artifact/com.azure/azure-security-keyvault-secrets
+[azure-messaging-eventhubs]: ../../eventhubs/azure-messaging-eventhubs
+[azure_messaging_eventhubs_mvn]: https://mvnrepository.com/artifact/com.azure/azure-messaging-eventhubs/
+[context]: ../azure-core/src/main/java/com/azure/core/util/Context.java
+[create-eventhubs-builders]: ../../eventhubs/azure-messaging-eventhubs#create-an-event-hub-client-using-a-connection-string
 [maven]: https://maven.apache.org/
 [source_code]:  src
 [api_documentation]: https://aka.ms/java-docs
 [sample_app_config]: ./src/samples/CreateConfigurationSettingTracingSample.md
+[sample_key_vault]: ./src/samples/ListKeyVaultSecretsTracingSample.md
+[sample_eventhubs]: ./src/samples/PublishEventsTracingSample.md
 [samples]: ./src/samples/
 [opentelemetry]: https://github.com/open-telemetry/opentelemetry-java
 [opentelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java

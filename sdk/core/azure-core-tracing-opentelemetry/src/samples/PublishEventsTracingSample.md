@@ -3,7 +3,7 @@
 Following documentation describes instructions to run a sample program for publishing multiple events with tracing instrumentation.
 
 ## Getting Started
-Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package and **[LoggingExporter][logging_exporter]** as exporter.
+Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **[LoggingExporter][logging_exporter]** as exporter.
 ### Adding dependencies to your project:
 ```xml
 <dependencies>
@@ -103,6 +103,6 @@ public class Sample {
 ```
 
 <!-- Links -->
-[azure_keyvault_secrets]: https://mvnrepository.com/artifact/com.azure/azure-messaging-eventhubs/
+[azure_messaging_eventhubs]: https://mvnrepository.com/artifact/com.azure/azure-messaging-eventhubs/
 [opentelemetry_sdk]: https://github.com/open-telemetry/opentelemetry-java/tree/master/sdk
 [logging_exporter]: https://github.com/open-telemetry/opentelemetry-java/tree/master/exporters/logging
