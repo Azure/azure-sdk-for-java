@@ -52,9 +52,8 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
     @Override
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
         return this.changeFeedObserver.processChanges(context, docs)
-            .onErrorResume(throwable -> {
+            .doOnError(throwable -> {
                 this.logger.warn("Exception thrown during ChangeFeedObserver.processChanges from thread {}", Thread.currentThread().getId(), throwable);
-                return Mono.error(new ObserverException(throwable));
             });
     }
 }

@@ -97,9 +97,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 this.lastContinuation = documentFeedResponse.continuationToken();
                 if (documentFeedResponse.results() != null && documentFeedResponse.results().size() > 0) {
                     return this.dispatchChanges(documentFeedResponse)
-                        .onErrorResume(throwable -> {
+                        .doOnError(throwable -> {
                             logger.debug("Exception was thrown from thread {}", Thread.currentThread().getId(), throwable);
-                            return Mono.error(throwable);
                         })
                         .doOnSuccess((Void) -> {
                             this.options.requestContinuation(this.lastContinuation);

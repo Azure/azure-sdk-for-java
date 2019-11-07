@@ -380,10 +380,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                     return serverLease;
                 }))
-            .onErrorResume(throwable -> {
+            .doOnError(throwable -> {
                 logger.info("Partition {} lease with token '{}' failed to checkpoint for owner '{}' with continuation token '{}'",
                     lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getContinuationToken());
-                return Mono.error(throwable);
             });
     }
 

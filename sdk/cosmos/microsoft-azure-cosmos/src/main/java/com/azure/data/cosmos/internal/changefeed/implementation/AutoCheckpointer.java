@@ -53,9 +53,8 @@ class AutoCheckpointer implements ChangeFeedObserver {
     @Override
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
         return this.observer.processChanges(context, docs)
-            .onErrorResume(throwable -> {
+            .doOnError(throwable -> {
                 logger.warn("Unexpected exception from thread {}", Thread.currentThread().getId(), throwable);
-                return Mono.error(throwable);
             })
             .then(this.afterProcessChanges(context));
     }
@@ -65,9 +64,8 @@ class AutoCheckpointer implements ChangeFeedObserver {
 
         if (this.isCheckpointNeeded()) {
             return context.checkpoint()
-                .onErrorResume(throwable -> {
+                .doOnError(throwable -> {
                     logger.warn("Checkpoint failed; this worker will be killed", throwable);
-                    return Mono.error(throwable);
                 })
                 .doOnSuccess( (Void) -> {
                     this.processedDocCount = 0;
