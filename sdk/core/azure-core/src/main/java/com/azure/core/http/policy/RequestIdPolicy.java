@@ -15,13 +15,18 @@ import java.util.UUID;
  * the unique identifier for the request.
  */
 public class RequestIdPolicy implements HttpPipelinePolicy {
-    private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";
+    private static final String REQUEST_ID_HEADER = "client-request-id";
+    private static final String LEGACY_REQUEST_ID_HEADER = "x-ms-client-request-id";
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String requestId = context.getHttpRequest().getHeaders().getValue(REQUEST_ID_HEADER);
         if (requestId == null) {
-            context.getHttpRequest().getHeaders().put(REQUEST_ID_HEADER, UUID.randomUUID().toString());
+            String randomUUID = UUID.randomUUID().toString();
+            context.getHttpRequest().getHeaders().put(REQUEST_ID_HEADER, randomUUID);
+
+            //also set the legacy header for backwards compatibility.
+            context.getHttpRequest().getHeaders().put(LEGACY_REQUEST_ID_HEADER, randomUUID);
         }
         return next.process();
     }
