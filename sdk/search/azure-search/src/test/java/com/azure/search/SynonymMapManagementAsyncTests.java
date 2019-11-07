@@ -116,7 +116,21 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
     @Override
     public void canUpdateSynonymMap() {
+        SynonymMap initial = createTestSynonymMap();
 
+        client.createSynonymMap(initial).block();
+
+        SynonymMap updatedExpected = createTestSynonymMap()
+            .setName(initial.getName())
+            .setSynonyms("newword1,newword2");
+
+        StepVerifier
+            .create(client.createOrUpdateSynonymMap(updatedExpected))
+            .assertNext(updatedActual -> assertSynonymMapsEqual(updatedExpected, updatedActual));
+
+        StepVerifier
+            .create(client.listSynonymMaps().collectList())
+            .assertNext(e -> Assert.assertEquals(1, e.size()));
     }
 
     @Override

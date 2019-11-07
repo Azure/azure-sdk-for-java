@@ -20,6 +20,7 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     @Test
     public abstract void getSynonymMapThrowsOnNotFound();
 
+    @Test
     public abstract void canUpdateSynonymMap();
 
     @Test

@@ -94,7 +94,19 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
 
     @Override
     public void canUpdateSynonymMap() {
+        SynonymMap initial = createTestSynonymMap();
 
+        client.createSynonymMap(initial);
+
+        SynonymMap updatedExpected = createTestSynonymMap()
+            .setName(initial.getName())
+            .setSynonyms("newword1,newword2");
+
+        SynonymMap updatedActual = client.createOrUpdateSynonymMap(updatedExpected);
+        assertSynonymMapsEqual(updatedExpected, updatedActual);
+
+        PagedIterable<SynonymMap> synonymMaps = client.listSynonymMaps();
+        Assert.assertEquals(1, synonymMaps.stream().count());
     }
 
     @Override
