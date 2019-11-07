@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-datalake</artifactId>
-  <version>12.0.0-preview.6</version>
+  <version>12.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
 
   <name>Microsoft Azure client library for File Storage Data Lake</name>
   <description>This module contains client library for Microsoft Azure File Storage Data Lake.</description>
@@ -55,11 +55,11 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.0.0</version>
+      <version>12.0.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
+      <artifactId>azure-core</artifactId> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <version>1.0.0</version>
     </dependency>
 
@@ -76,13 +76,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.0</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -103,7 +103,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
