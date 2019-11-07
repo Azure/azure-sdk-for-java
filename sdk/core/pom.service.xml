@@ -13,7 +13,7 @@
     <module>azure-core-amqp</module>
     <module>azure-core-http-netty</module>
     <module>azure-core-http-okhttp</module>
-    <module>azure-core-management</module>
+<!--    <module>azure-core-management</module>-->
     <module>azure-core-test</module>
     <module>azure-core-tracing-opencensus</module>
   </modules>

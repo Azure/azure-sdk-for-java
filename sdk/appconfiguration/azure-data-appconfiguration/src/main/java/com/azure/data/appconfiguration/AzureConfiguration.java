@@ -10,6 +10,6 @@ class AzureConfiguration {
     //TODO: Eventually remove these hardcoded strings with https://github.com/Azure/azure-sdk-for-java/issues/3141
     static final String NAME = "application-configuration";
     // {x-version-update-start;com.azure:azure-data-appconfiguration;current}
-    static final String VERSION = "1.0.0-preview.6";
+    static final String VERSION = "1.0.0-preview.7";
     // {x-version-update-end}
 }

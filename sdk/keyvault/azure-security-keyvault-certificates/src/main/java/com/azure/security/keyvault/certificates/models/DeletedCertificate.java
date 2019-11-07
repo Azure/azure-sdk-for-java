@@ -14,13 +14,13 @@ import java.time.ZoneOffset;
 
 /**
  * Deleted Certificate is the resource consisting of name, recovery id, deleted date, scheduled purge date and its
- * attributes inherited from {@link Certificate}.
+ * attributes inherited from {@link KeyVaultCertificate}.
  * It is managed by Certificate Service.
  *
  * @see CertificateAsyncClient
  * @see CertificateClient
  */
-public final class DeletedCertificate extends Certificate {
+public final class DeletedCertificate extends KeyVaultCertificate {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted

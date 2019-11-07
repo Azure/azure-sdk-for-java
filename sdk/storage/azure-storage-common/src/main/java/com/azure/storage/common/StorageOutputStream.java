@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * StorageOutputStream
+ * StorageOutputStream allows for uploading data to an Azure Storage service using stream concepts.
  */
 public abstract class StorageOutputStream extends OutputStream {
     final ClientLogger logger = new ClientLogger(StorageOutputStream.class);

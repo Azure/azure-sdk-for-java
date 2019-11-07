@@ -25,9 +25,9 @@ public class GetEventHubMetadata {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubProducerAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildAsyncProducer();
 
         // Acquiring the semaphore so that this sample does not end before all the partition properties are fetched.
         semaphore.acquire();

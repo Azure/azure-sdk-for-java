@@ -20,10 +20,10 @@ import com.microsoft.azure.management.network.v2019_09_01.implementation.Network
 import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2019_09_01.implementation.NetworkSecurityGroupInner;
-import com.microsoft.azure.management.network.v2019_09_01.implementation.ResourceNavigationLinkInner;
 import com.microsoft.azure.management.network.v2019_09_01.implementation.RouteTableInner;
-import com.microsoft.azure.management.network.v2019_09_01.implementation.ServiceAssociationLinkInner;
 import com.microsoft.azure.management.network.v2019_09_01.implementation.ServiceEndpointPolicyInner;
+import com.microsoft.azure.management.network.v2019_09_01.implementation.ResourceNavigationLinkInner;
+import com.microsoft.azure.management.network.v2019_09_01.implementation.ServiceAssociationLinkInner;
 
 /**
  * Type representing Subnet.

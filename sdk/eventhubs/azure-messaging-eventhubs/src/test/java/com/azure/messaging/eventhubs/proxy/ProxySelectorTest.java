@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.proxy;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
@@ -74,21 +73,25 @@ public class ProxySelectorTest extends IntegrationTestBase {
             }
         });
 
-        final EventHubAsyncClient client = new EventHubClientBuilder()
+        final EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.earliest())
             .transportType(TransportType.AMQP_WEB_SOCKETS)
             .retry(new RetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncClient();
+            .buildAsyncConsumer();
 
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventPosition.earliest());
-
-        StepVerifier.create(consumer.receive("1").take(1))
-            .expectErrorSatisfies(error -> {
-                // The message can vary because it is returned from proton-j, so we don't want to compare against that.
-                // This is a transient error from ExceptionUtil.java: line 67.
-                System.out.println("Error: " + error);
-            })
-            .verify();
+        try {
+            StepVerifier.create(consumer.receive("1").take(1))
+                .expectErrorSatisfies(error -> {
+                    // The message can vary because it is returned from proton-j, so we don't want to compare against that.
+                    // This is a transient error from ExceptionUtil.java: line 67.
+                    System.out.println("Error: " + error);
+                })
+                .verify();
+        } finally {
+            dispose(consumer);
+        }
 
         final boolean awaited = countDownLatch.await(2, TimeUnit.SECONDS);
         Assert.assertTrue(awaited);

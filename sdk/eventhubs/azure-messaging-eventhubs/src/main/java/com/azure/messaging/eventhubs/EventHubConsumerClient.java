@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * </ul>
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
- * Create an {@link EventHubConsumerClient} using {@link EventHubClient}.
+ * Create an {@link EventHubConsumerClient} using {@link EventHubClientBuilder}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
  *
@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * `receive` completes and returns an {@link IterableStream} when either the number of events is reached, or the
  * timeout duration is reached.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-duration}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-duration}
  */
 public class EventHubConsumerClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);

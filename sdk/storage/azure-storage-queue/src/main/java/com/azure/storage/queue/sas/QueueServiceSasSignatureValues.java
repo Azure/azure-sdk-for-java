@@ -7,7 +7,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.QueueServiceVersion;
 
@@ -242,7 +242,7 @@ public final class QueueServiceSasSignatureValues {
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
-        if (ImplUtils.isNullOrEmpty(version)) {
+        if (CoreUtils.isNullOrEmpty(version)) {
             version = QueueServiceVersion.getLatest().getVersion();
         }
 

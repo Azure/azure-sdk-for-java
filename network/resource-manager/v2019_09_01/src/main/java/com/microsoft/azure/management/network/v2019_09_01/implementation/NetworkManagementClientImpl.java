@@ -1703,7 +1703,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         Validator.validate(vpnClientParams);
         final String apiVersion = "2019-09-01";
         Observable<Response<ResponseBody>> observable = service.generatevirtualwanvpnserverconfigurationvpnprofile(this.subscriptionId(), resourceGroupName, virtualWANName, vpnClientParams, apiVersion, this.acceptLanguage(), this.userAgent());
-        return this.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<VpnProfileResponseInner>() { }.getType());
+        return getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<VpnProfileResponseInner>() { }.getType());
     }
 
     /**

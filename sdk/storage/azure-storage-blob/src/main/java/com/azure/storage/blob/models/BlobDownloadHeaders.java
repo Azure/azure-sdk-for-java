@@ -6,8 +6,8 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -434,7 +434,7 @@ public final class BlobDownloadHeaders {
      * @return the contentMd5 value.
      */
     public byte[] getContentMd5() {
-        return ImplUtils.clone(this.contentMd5);
+        return CoreUtils.clone(this.contentMd5);
     }
 
     /**
@@ -446,7 +446,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = ImplUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 
@@ -1046,7 +1046,7 @@ public final class BlobDownloadHeaders {
      * @return the blobContentMD5 value.
      */
     public byte[] getBlobContentMD5() {
-        return ImplUtils.clone(this.blobContentMD5);
+        return CoreUtils.clone(this.blobContentMD5);
     }
 
     /**
@@ -1060,7 +1060,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setBlobContentMD5(byte[] blobContentMD5) {
-        this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
+        this.blobContentMD5 = CoreUtils.clone(blobContentMD5);
         return this;
     }
 
@@ -1075,7 +1075,7 @@ public final class BlobDownloadHeaders {
      * @return the contentCrc64 value.
      */
     public byte[] getContentCrc64() {
-        return ImplUtils.clone(this.contentCrc64);
+        return CoreUtils.clone(this.contentCrc64);
     }
 
     /**
@@ -1090,7 +1090,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setContentCrc64(byte[] contentCrc64) {
-        this.contentCrc64 = ImplUtils.clone(contentCrc64);
+        this.contentCrc64 = CoreUtils.clone(contentCrc64);
         return this;
     }
 

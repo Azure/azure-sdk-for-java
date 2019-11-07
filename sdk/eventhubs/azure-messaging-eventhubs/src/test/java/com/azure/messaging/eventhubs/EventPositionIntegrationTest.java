@@ -62,16 +62,19 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = createBuilder().buildAsyncClient();
+        EventHubConnection connection = createBuilder().buildConnection();
+        client = createBuilder()
+            .connection(connection)
+            .buildAsyncClient();
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(client.createProducer(), NUMBER_OF_EVENTS, options);
 
             // Receiving back those events we sent so we have something to compare to.
             logger.info("Receiving the events we sent.");
-            final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,
-                EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
+            final EventHubConsumerAsyncClient consumer = client
+                .createConsumer(DEFAULT_CONSUMER_GROUP_NAME, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
             final List<EventData> receivedEvents;
             try {
                 receivedEvents = consumer.receive(PARTITION_ID)

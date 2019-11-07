@@ -9,21 +9,23 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.EndpointState;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EndpointStateNotifierBaseTest {
     private EndpointStateNotifierBase notifier;
 
-    @Before
+    @BeforeEach
     public void setup() {
         notifier = new TestEndpointStateNotifierBase();
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         notifier.close();
     }
@@ -72,14 +74,14 @@ public class EndpointStateNotifierBaseTest {
      */
     @Test
     public void notifyEndpointState() {
-        Assert.assertEquals(AmqpEndpointState.UNINITIALIZED, notifier.getCurrentState());
+        Assertions.assertEquals(AmqpEndpointState.UNINITIALIZED, notifier.getCurrentState());
 
         StepVerifier.create(notifier.getConnectionStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> notifier.notifyEndpointState(EndpointState.ACTIVE))
             .assertNext(state -> {
-                Assert.assertEquals(AmqpEndpointState.ACTIVE, state);
-                Assert.assertEquals(AmqpEndpointState.ACTIVE, notifier.getCurrentState());
+                Assertions.assertEquals(AmqpEndpointState.ACTIVE, state);
+                Assertions.assertEquals(AmqpEndpointState.ACTIVE, notifier.getCurrentState());
             })
             .then(() -> {
                 notifier.notifyEndpointState(EndpointState.CLOSED);
@@ -90,19 +92,19 @@ public class EndpointStateNotifierBaseTest {
             .verifyComplete();
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void notifyErrorNull() {
-        notifier.notifyError(null);
+        assertThrows(NullPointerException.class, () -> notifier.notifyError(null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void notifyShutdownNull() {
-        notifier.notifyShutdown(null);
+        assertThrows(NullPointerException.class, () -> notifier.notifyShutdown(null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void notifyEndpointStateStateNull() {
-        notifier.notifyEndpointState(null);
+        assertThrows(NullPointerException.class, () -> notifier.notifyEndpointState(null));
     }
 
     private static class TestEndpointStateNotifierBase extends EndpointStateNotifierBase {

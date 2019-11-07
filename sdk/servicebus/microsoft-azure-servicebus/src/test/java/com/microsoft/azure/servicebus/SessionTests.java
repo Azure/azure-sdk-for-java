@@ -258,15 +258,17 @@ public abstract class SessionTests extends Tests {
 
     @Test
     public void testRenewSessionLock() throws InterruptedException, ServiceBusException {
-        String sessionId = TestUtils.getRandomString();
-        this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
-        Instant initialValidity = this.session.getLockedUntilUtc();
-        this.session.renewSessionLock();
-        Instant renewedValidity = this.session.getLockedUntilUtc();
-        Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time.", renewedValidity.isAfter(initialValidity));
-        this.session.renewSessionLock();
-        Instant renewedValidity2 = this.session.getLockedUntilUtc();
-        Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time.", renewedValidity2.isAfter(renewedValidity));
+    	String sessionId = TestUtils.getRandomString();
+		this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
+		Instant initialValidity = this.session.getLockedUntilUtc();
+		Thread.sleep(1000);
+		this.session.renewSessionLock();
+		Instant renewedValidity = this.session.getLockedUntilUtc();
+		Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time. Before :" + initialValidity.toString() + ", After:" + renewedValidity.toString(), renewedValidity.isAfter(initialValidity));
+		Thread.sleep(1000);
+		this.session.renewSessionLock();
+		Instant renewedValidity2 = this.session.getLockedUntilUtc();
+		Assert.assertTrue("RenewSessionLock did not renew session lockeduntil time. Before :" + renewedValidity.toString() + ", After:" + renewedValidity2.toString(), renewedValidity2.isAfter(renewedValidity));
     }
 
     @Test

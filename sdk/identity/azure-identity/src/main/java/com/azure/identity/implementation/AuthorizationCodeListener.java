@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import fi.iki.elonen.NanoHTTPD;
 import reactor.core.publisher.Mono;

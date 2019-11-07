@@ -16,8 +16,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.util.FluxUtil
-import com.azure.core.implementation.util.ImplUtils
+import com.azure.core.util.FluxUtil
+import com.azure.core.util.CoreUtils
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -44,6 +44,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
+import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
@@ -132,7 +133,7 @@ class APISpec extends Specification {
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
-    private TestResourceNamer resourceNamer
+    protected TestResourceNamer resourceNamer
     protected String testName
     String containerName
 
@@ -383,7 +384,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (!ImplUtils.isNullOrEmpty(sasToken)) {
+        if (!CoreUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)
         }
 
@@ -468,9 +469,8 @@ class APISpec extends Specification {
     }
 
     /*
-    Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
-
     ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
@@ -485,6 +485,44 @@ class APISpec extends Specification {
         fos.write(getRandomData(size).array())
         fos.close()
         return file
+    }
+
+    /**
+     * Compares two files for having equivalent content.
+     *
+     * @param file1 File used to upload data to the service
+     * @param file2 File used to download data from the service
+     * @param offset Write offset from the upload file
+     * @param count Size of the download from the service
+     * @return Whether the files have equivalent content based on offset and read count
+     */
+    def compareFiles(File file1, File file2, long offset, long count) {
+        def pos = 0L
+        def readBuffer = 8 * Constants.KB
+        def fileChannel1 = AsynchronousFileChannel.open(file1.toPath())
+        def fileChannel2 = AsynchronousFileChannel.open(file2.toPath())
+
+        while (pos < count) {
+            def bufferSize = (int) Math.min(readBuffer, count - pos)
+            def buffer1 = ByteBuffer.allocate(bufferSize)
+            def buffer2 = ByteBuffer.allocate(bufferSize)
+
+            def readCount1 = fileChannel1.read(buffer1, offset + pos).get()
+            def readCount2 = fileChannel2.read(buffer2, pos).get()
+
+            if (readCount1 != readCount2 || buffer1 != buffer2) {
+                return false
+            }
+
+            pos += bufferSize
+        }
+
+        def verificationRead = fileChannel2.read(ByteBuffer.allocate(1), pos).get()
+
+        fileChannel1.close()
+        fileChannel2.close()
+
+        return pos == count && verificationRead == -1
     }
 
     /**

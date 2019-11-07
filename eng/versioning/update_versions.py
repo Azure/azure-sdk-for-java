@@ -18,6 +18,7 @@
 
 import argparse
 from datetime import timedelta
+import errno
 import os
 import re
 import time
@@ -140,7 +141,10 @@ def update_versions_all(update_type, build_type, target_file):
                 java_file_to_update = raw_line.strip()
                 if not java_file_to_update or java_file_to_update.startswith('#'):
                     continue
-                update_versions(version_map, java_file_to_update)
+                if os.path.isfile(java_file_to_update):
+                    update_versions(version_map, java_file_to_update)
+                else:
+                    raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), java_file_to_update)
     # END:Versions_in_java_files
 
 def main():

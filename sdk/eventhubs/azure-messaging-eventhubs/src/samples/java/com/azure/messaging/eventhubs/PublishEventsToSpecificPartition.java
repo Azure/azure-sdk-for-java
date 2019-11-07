@@ -31,9 +31,9 @@ public class PublishEventsToSpecificPartition {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubProducerAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildAsyncProducer();
 
         // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
         // first partition id.
@@ -42,8 +42,6 @@ public class PublishEventsToSpecificPartition {
         // TimeoutException is thrown.
         String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
         SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
-
-        EventHubProducerAsyncClient producer = client.createProducer();
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(
@@ -55,7 +53,7 @@ public class PublishEventsToSpecificPartition {
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
         // We use the
-        producer.send(data, sendOptions).subscribe(
+        client.send(data, sendOptions).subscribe(
             (ignored) -> System.out.println("Events sent."),
             error -> {
                 System.err.println("There was an error sending the event: " + error.toString());
@@ -66,8 +64,6 @@ public class PublishEventsToSpecificPartition {
                         amqpException.isTransient(), amqpException.getErrorCondition()));
                 }
             }, () -> {
-                // Disposing of our producer and client.
-                producer.close();
                 client.close();
             });
     }

@@ -6,7 +6,6 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.Disposable;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.Semaphore;
 
@@ -26,10 +25,8 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
      * @param args Unused arguments to the program.
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
      *         complete.
-     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubConsumerAsyncClient},
-     *         or the {@link EventHubProducerAsyncClient}
      */
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException {
         Semaphore semaphore = new Semaphore(0);
 
         // The connection string value can be obtained by:
@@ -39,12 +36,14 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubClientBuilder builder = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.earliest());
 
-        client.getPartitionIds().flatMap(partitionId -> client.getPartitionProperties(partitionId))
+        EventHubConsumerAsyncClient earliestConsumer = builder.buildAsyncConsumer();
+
+        earliestConsumer.getPartitionIds().flatMap(partitionId -> earliestConsumer.getPartitionProperties(partitionId))
             .subscribe(
                 properties -> {
                     if (!properties.isEmpty()) {
@@ -75,7 +74,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
         // service we only want events that are sent to the partition after we begin listening.
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString("fake-string")
+            .connectionString(connectionString)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .startingPosition(EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false))
             .buildAsyncConsumer();
@@ -94,7 +93,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
             semaphore.release();
         });
 
-        EventHubProducerAsyncClient producer = client.createProducer();
+        EventHubProducerAsyncClient producer = builder.buildAsyncProducer();
 
         // Because the consumer is only listening to new events, we need to send some events to that partition.
         // This sends the events to `lastEnqueuedSequencePartitionId`.
@@ -108,6 +107,6 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         subscription.dispose();
         producer.close();
         consumer.close();
-        client.close();
+        earliestConsumer.close();
     }
 }

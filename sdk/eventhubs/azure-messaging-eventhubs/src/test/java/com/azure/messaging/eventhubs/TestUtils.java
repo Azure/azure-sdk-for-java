@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -84,7 +84,7 @@ public final class TestUtils {
         Map<String, Object> applicationProperties = new HashMap<>();
         APPLICATION_PROPERTIES.forEach(applicationProperties::put);
 
-        if (!ImplUtils.isNullOrEmpty(messageTrackingValue)) {
+        if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
             applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
         }
 

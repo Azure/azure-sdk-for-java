@@ -22,6 +22,9 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * BlobOutputStream allows for the uploading of data to a blob using a stream-like approach.
+ */
 public abstract class BlobOutputStream extends StorageOutputStream {
 
     BlobOutputStream(final int writeThreshold) {

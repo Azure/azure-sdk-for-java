@@ -60,7 +60,9 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+
+            final EventHubProducerAsyncClient producer = client.createProducer();
+            testData = setupEventTestData(producer, NUMBER_OF_EVENTS, options);
         }
     }
 

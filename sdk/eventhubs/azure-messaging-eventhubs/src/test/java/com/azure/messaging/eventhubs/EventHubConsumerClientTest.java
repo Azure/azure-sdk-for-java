@@ -6,10 +6,15 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -27,8 +32,8 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,12 +73,14 @@ public class EventHubConsumerClientTest {
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
     @Mock
-    private EventHubConnection connection;
+    private EventHubAmqpConnection connection;
     @Mock
     private EventHubSession session;
+    @Mock
+    private TokenCredential tokenCredential;
 
     private EventHubConsumerClient consumer;
-    private EventHubLinkProvider linkProvider;
+    private EventHubConnection linkProvider;
 
     @Before
     public void setup() {
@@ -84,7 +91,10 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
-        linkProvider = new EventHubLinkProvider(Mono.just(connection), HOSTNAME, new RetryOptions());
+        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
+            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+        linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         when(connection.createSession(any())).thenReturn(Mono.fromCallable(() -> session));
         when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
             .thenReturn(Mono.fromCallable(() -> amqpReceiveLink));
@@ -93,12 +103,12 @@ public class EventHubConsumerClientTest {
             .setIdentifier("an-identifier")
             .setPrefetchCount(PREFETCH);
         EventHubConsumerAsyncClient asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(), options);
+            linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(), options, false);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
     @After
-    public void teardown() throws IOException {
+    public void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
         service.shutdown();
@@ -113,7 +123,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(),
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false));
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false), false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
         sendMessages(numberOfEvents);
@@ -138,7 +148,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(),
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true), false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
         final int numberOfEvents = 10;

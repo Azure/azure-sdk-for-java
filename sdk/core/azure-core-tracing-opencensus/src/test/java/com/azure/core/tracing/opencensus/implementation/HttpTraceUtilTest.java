@@ -3,8 +3,8 @@
 package com.azure.core.tracing.opencensus.implementation;
 
 import io.opencensus.trace.Status;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class HttpTraceUtilTest {
     @Test
@@ -14,8 +14,8 @@ public class HttpTraceUtilTest {
         Status status = HttpTraceUtil.parseResponseStatus(1, null);
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.UNKNOWN.withDescription(null), status);
+        Assertions.assertNotNull(status);
+        Assertions.assertEquals(Status.UNKNOWN.withDescription(null), status);
     }
 
     @Test
@@ -27,8 +27,8 @@ public class HttpTraceUtilTest {
         Status status = HttpTraceUtil.parseResponseStatus(401, new Error(errorMessage));
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.UNAUTHENTICATED.withDescription(errorMessage), status);
+        Assertions.assertNotNull(status);
+        Assertions.assertEquals(Status.UNAUTHENTICATED.withDescription(errorMessage), status);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class HttpTraceUtilTest {
         Status status = HttpTraceUtil.parseResponseStatus(504, null);
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.DEADLINE_EXCEEDED.withDescription(null), status);
+        Assertions.assertNotNull(status);
+        Assertions.assertEquals(Status.DEADLINE_EXCEEDED.withDescription(null), status);
     }
 }

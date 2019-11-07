@@ -8,6 +8,13 @@
 
 package com.microsoft.azure.management.eventgrid.v2020_01_01_preview;
 
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.WebHookEventSubscriptionDestination;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.EventHubEventSubscriptionDestination;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.StorageQueueEventSubscriptionDestination;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.HybridConnectionEventSubscriptionDestination;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.ServiceBusQueueEventSubscriptionDestination;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.ServiceBusTopicEventSubscriptionDestination;
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.AzureFunctionEventSubscriptionDestination;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -15,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Information about the destination for an event subscription.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = EventSubscriptionDestination.class)
 @JsonTypeName("EventSubscriptionDestination")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "WebHook", value = WebHookEventSubscriptionDestination.class),

@@ -3,7 +3,7 @@
 
 package com.azure.core.management.serializer;
 
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.util.serializer.JacksonAdapter;
 
 /**
  * A serialization helper class overriding {@link JacksonAdapter} with extra

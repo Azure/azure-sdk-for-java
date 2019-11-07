@@ -385,7 +385,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .describedAs("getServerAddressesViaGatewayAsync will read addresses from gateway")
                 .asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
-        assertThat(suboptimalAddresses).hasSize(ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize - 1);
+
+        // relaxes one replica being down
+        assertThat(suboptimalAddresses.length).isLessThanOrEqualTo((ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize - 1));
+        assertThat(suboptimalAddresses.length).isGreaterThanOrEqualTo(ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize - 2);
         assertThat(fetchCounter.get()).isEqualTo(1);
 
         // no refresh, use cache

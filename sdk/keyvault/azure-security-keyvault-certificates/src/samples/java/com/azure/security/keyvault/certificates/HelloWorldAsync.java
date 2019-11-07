@@ -6,7 +6,7 @@ package com.azure.security.keyvault.certificates;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.Certificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
 import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
 
@@ -31,7 +31,7 @@ public class HelloWorldAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
@@ -56,16 +56,16 @@ public class HelloWorldAsync {
         Thread.sleep(22000);
 
         // Let's Get the latest version of the certificate from the key vault.
-        certificateAsyncClient.getCertificateWithPolicy("certificateName")
+        certificateAsyncClient.getCertificate("certificateName")
             .subscribe(certificateResponse ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
                     certificateResponse.getSecretId()));
 
         // After some time, we need to disable the certificate temporarily, so we update the enabled status of the certificate.
         // The update method can be used to update the enabled status of the certificate.
-        certificateAsyncClient.getCertificateWithPolicy("certificateName")
+        certificateAsyncClient.getCertificate("certificateName")
             .subscribe(certificateResponseValue -> {
-                Certificate certificate = certificateResponseValue;
+                KeyVaultCertificate certificate = certificateResponseValue;
                 //Update enabled status of the certificate
                 certificate.getProperties().setEnabled(false);
                 certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
@@ -106,7 +106,7 @@ public class HelloWorldAsync {
         Thread.sleep(22000);
 
         // Let's Get the latest version of our certificate from the key vault.
-        certificateAsyncClient.getCertificateWithPolicy("myCertificate")
+        certificateAsyncClient.getCertificate("myCertificate")
             .subscribe(certificateResponse ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
                     certificateResponse.getSecretId()));

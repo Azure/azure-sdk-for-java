@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.eventgrid.v2020_01_01_preview;
 
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.StorageBlobDeadLetterDestination;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -19,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * StorageBlobDeadLetterDestination is the only class that derives from this
  * class.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = DeadLetterDestination.class)
 @JsonTypeName("DeadLetterDestination")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "StorageBlob", value = StorageBlobDeadLetterDestination.class)

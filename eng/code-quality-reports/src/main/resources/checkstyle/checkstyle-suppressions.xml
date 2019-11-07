@@ -22,6 +22,11 @@
   <suppress checks="Javadoc" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
   <suppress checks="Header" files=".*package-info.java"/>
 
+  <!-- ignore missing javadoc in samples -->
+  <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>
+  <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>
+  <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
+
   <!-- Files licensed with alternate license in the header -->
   <suppress checks="Header" files=".*AesKwBCProviderTest.java"/>
   <suppress checks="Header" files=".*AesKwTest.java"/>
@@ -156,6 +161,11 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
 
+  <!-- Temporary suppressions -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.util.serializer.JacksonAdapter"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTag" files="com.azure.core.util.serializer.SerializerAdapter"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.core.http.rest.SwaggerMethodParser"/> <!-- FIXME this is a bug in the checkstyle rule - the class itself is non-public, so it doesn't matter that the method returns an implementation type -->
+
   <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck" files="com.azure.core.http.HttpResponse.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck" files="com.azure.security.keyvault.keys.KeyAsyncClient.java"/>
@@ -208,6 +218,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.batch.BlobBatchAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.data.appconfiguration.ConfigurationClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.datalake.DataLakeLeaseClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.java"/>
 
   <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.BlobAsyncClient.java"/>

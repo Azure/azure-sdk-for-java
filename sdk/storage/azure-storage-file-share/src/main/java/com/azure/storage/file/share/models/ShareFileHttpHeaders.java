@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -148,7 +148,7 @@ public final class ShareFileHttpHeaders {
      * @return the contentMd5 value.
      */
     public byte[] getContentMd5() {
-        return ImplUtils.clone(this.contentMd5);
+        return CoreUtils.clone(this.contentMd5);
     }
 
     /**
@@ -158,7 +158,7 @@ public final class ShareFileHttpHeaders {
      * @return the ShareFileHttpHeaders object itself.
      */
     public ShareFileHttpHeaders setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = ImplUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 

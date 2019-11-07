@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-certificates</artifactId>
-  <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+  <version>4.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
 
   <name>Microsoft Azure client library for KeyVault Certificates</name>
   <description>This module contains client library for Microsoft Azure KeyVault Certificates.</description>
@@ -36,13 +36,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <dependency>
@@ -66,14 +66,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.1.0-preview.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 
