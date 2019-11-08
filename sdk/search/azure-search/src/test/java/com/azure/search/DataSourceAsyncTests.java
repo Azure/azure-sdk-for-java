@@ -22,8 +22,6 @@ import reactor.test.StepVerifier;
 
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-
 public class DataSourceAsyncTests extends DataSourceTestBase {
     private SearchServiceAsyncClient client;
 
@@ -46,9 +44,9 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         StepVerifier
             .create(results.collectList())
             .assertNext(result -> {
-                assertEquals(2, result.size());
-                assertEquals(dataSource1.getName(), result.get(0).getName());
-                assertEquals(dataSource2.getName(), result.get(1).getName());
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(dataSource1.getName(), result.get(0).getName());
+                Assert.assertEquals(dataSource2.getName(), result.get(1).getName());
             })
             .verifyComplete();
 
@@ -58,9 +56,9 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         StepVerifier
             .create(client.listDataSourcesWithResponse("name", requestOptions))
             .assertNext(result -> {
-                assertEquals(2, result.getItems().size());
-                assertEquals(dataSource1.getName(), result.getValue().get(0).getName());
-                assertEquals(dataSource2.getName(), result.getValue().get(1).getName());
+                Assert.assertEquals(2, result.getItems().size());
+                Assert.assertEquals(dataSource1.getName(), result.getValue().get(0).getName());
+                Assert.assertEquals(dataSource2.getName(), result.getValue().get(1).getName());
             })
             .verifyComplete();
     }
@@ -199,6 +197,108 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void updateDataSourceIfExistsFailsOnNoResource() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        StepVerifier
+            .create(
+                client.createOrUpdateDataSource(
+                    dataSource,
+                    null,
+                    generateIfExistsAccessCondition(),
+                    null
+                    )
+            ).verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(
+                    HttpResponseStatus.PRECONDITION_FAILED.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage()
+                    .contains("The precondition given in one of the request headers evaluated to false"));
+            });
+
+    }
+
+    @Override
+    public void updateDataSourceIfExistsSucceedsOnExistingResource() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        DataSource createdDataSource = client.createOrUpdateDataSource(dataSource).block();
+
+        Assert.assertNotNull(createdDataSource);
+        String createdETag = createdDataSource.getETag();
+
+        createdDataSource.setDescription("edited description");
+        StepVerifier
+            .create(
+                client.createOrUpdateDataSource(
+                    dataSource,
+                    null,
+                    generateIfExistsAccessCondition(),
+                    null)
+            ).assertNext(r -> {
+                Assert.assertTrue(StringUtils.isNotBlank(r.getETag()));
+                Assert.assertNotEquals(createdETag, r.getETag());
+            });
+    }
+
+    @Override
+    public void updateDataSourceIfNotChangedFailsWhenResourceChanged() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        DataSource createdDataSource = client.createOrUpdateDataSource(dataSource).block();
+
+        Assert.assertNotNull(createdDataSource);
+        String createdETag = createdDataSource.getETag();
+
+        createdDataSource.setDescription("edited description");
+
+        DataSource updatedDataSource = client.createOrUpdateDataSource(dataSource).block();
+
+        Assert.assertTrue(StringUtils.isNotBlank(createdETag));
+        Assert.assertNotNull(updatedDataSource);
+        Assert.assertTrue(StringUtils.isNotBlank(updatedDataSource.getETag()));
+        Assert.assertNotEquals(createdETag, updatedDataSource.getETag());
+
+        StepVerifier
+            .create(
+                client.createOrUpdateDataSource(
+                    updatedDataSource,
+                    null,
+                    generateIfMatchAccessCondition(createdETag),
+                    null)
+            ).verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(
+                    HttpResponseStatus.PRECONDITION_FAILED.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage()
+                    .contains("The precondition given in one of the request headers evaluated to false"));
+            });
+    }
+
+    @Override
+    public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        DataSource createdDataSource = client.createOrUpdateDataSource(dataSource).block();
+
+        Assert.assertNotNull(createdDataSource);
+        String createdETag = createdDataSource.getETag();
+
+        createdDataSource.setDescription("edited description");
+        StepVerifier
+            .create(
+                client.createOrUpdateDataSource(
+                    createdDataSource,
+                    null,
+                    generateIfMatchAccessCondition(createdETag),
+                    null)
+            ).assertNext(r ->
+            {
+                Assert.assertTrue(StringUtils.isNotBlank(createdETag));
+                Assert.assertTrue(StringUtils.isNoneBlank(r.getETag()));
+                Assert.assertNotEquals(createdETag, r.getETag());
+            });
+    }
+
+    @Override
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         DataSource dataSource = createTestSqlDataSource(null, null);
         dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
@@ -206,8 +306,8 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         StepVerifier
             .create(client.createOrUpdateDataSource(dataSource))
             .verifyErrorSatisfies(error -> {
-                assertEquals(HttpResponseException.class, error.getClass());
-                assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error)
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error)
                     .getResponse().getStatusCode());
                 Assert.assertTrue(error.getMessage().contains("Data source type '' is not supported"));
             });
@@ -286,8 +386,8 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .create(futureDataSource)
             .verifyErrorSatisfies(
                 error -> {
-                    assertEquals(HttpResponseException.class, error.getClass());
-                    assertEquals(
+                    Assert.assertEquals(HttpResponseException.class, error.getClass());
+                    Assert.assertEquals(
                         HttpResponseStatus.NOT_FOUND.code(),
                         ((HttpResponseException) error).getResponse().getStatusCode());
                 }

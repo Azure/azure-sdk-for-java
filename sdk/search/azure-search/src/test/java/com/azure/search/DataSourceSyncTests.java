@@ -195,6 +195,86 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void updateDataSourceIfExistsFailsOnNoResource() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        assertException(
+            () -> client.createOrUpdateDataSource(
+                dataSource,
+                null,
+                generateIfExistsAccessCondition(),
+                null
+            ),
+            HttpResponseException.class,
+            "The precondition given in one of the request headers evaluated to false");
+    }
+
+    @Override
+    public void updateDataSourceIfExistsSucceedsOnExistingResource() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        DataSource createdDataSource = client.createOrUpdateDataSource(dataSource);
+
+        Assert.assertNotNull(createdDataSource);
+        String createdETag = createdDataSource.getETag();
+
+        createdDataSource.setDescription("edited description");
+        DataSource editedDataSource = client.createOrUpdateDataSource(
+            createdDataSource,
+            null,
+            generateIfExistsAccessCondition(),
+            null);
+
+        Assert.assertTrue(StringUtils.isNotEmpty(editedDataSource.getETag()));
+        Assert.assertNotEquals(editedDataSource.getETag(), createdETag);
+    }
+
+    @Override
+    public void updateDataSourceIfNotChangedFailsWhenResourceChanged() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        DataSource createdDataSource = client.createOrUpdateDataSource(dataSource);
+
+        Assert.assertNotNull(createdDataSource);
+        String createdETag = createdDataSource.getETag();
+        Assert.assertTrue(StringUtils.isNoneEmpty(createdETag));
+
+        createdDataSource.setDescription("edited description");
+        DataSource updatedDataSource = client.createOrUpdateDataSource(dataSource);
+
+        Assert.assertNotNull(updatedDataSource);
+        Assert.assertTrue(StringUtils.isNoneEmpty(updatedDataSource.getETag()));
+        Assert.assertNotEquals(createdETag, updatedDataSource.getETag());
+
+        assertException(
+            () -> client.createOrUpdateDataSource(
+                updatedDataSource,
+                null,
+                generateIfMatchAccessCondition(createdETag),
+                null),
+            HttpResponseException.class,
+            "The precondition given in one of the request headers evaluated to false"
+        );
+    }
+
+    @Override
+    public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        DataSource createdDataSource = client.createOrUpdateDataSource(dataSource);
+
+        Assert.assertNotNull(createdDataSource);
+        String createdETag = createdDataSource.getETag();
+        Assert.assertTrue(StringUtils.isNotBlank(createdETag));
+
+        createdDataSource.setDescription("edited description");
+        DataSource updatedDataSource = client.createOrUpdateDataSource(
+            createdDataSource,
+            null,
+            generateIfMatchAccessCondition(createdETag),
+            null);
+
+        Assert.assertTrue(StringUtils.isNoneBlank(updatedDataSource.getETag()));
+        Assert.assertNotEquals(createdETag, updatedDataSource.getETag());
+    }
+
+    @Override
     public void createDataSourceReturnsCorrectDefinition() {
         SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy()
