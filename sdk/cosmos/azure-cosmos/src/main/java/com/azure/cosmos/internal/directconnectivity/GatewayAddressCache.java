@@ -155,7 +155,6 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (suboptimalServerPartitionTimestamp != null) {
             logger.debug("suboptimalServerPartitionTimestamp is {}", suboptimalServerPartitionTimestamp);
-
             boolean forceRefreshDueToSuboptimalPartitionReplicaSet = Duration.between(suboptimalServerPartitionTimestamp, Instant.now()).getSeconds()
                     > this.suboptimalPartitionForceRefreshIntervalInSeconds;
 
@@ -235,7 +234,6 @@ public class GatewayAddressCache implements IAddressCache {
                             }
                             return Mono.error(unwrappedException);
                         }
-
                     });
     }
 
