@@ -3,16 +3,19 @@
 
 package com.azure.storage.file.datalake;
 
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.http.PagedResponseBase;
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -33,9 +36,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Map;
 import java.util.function.Function;
-
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 
 
 /**
@@ -115,7 +115,7 @@ public class DataLakeFileSystemAsyncClient {
      * file system.
      */
     public DataLakeFileAsyncClient getFileAsyncClient(String fileName) {
-        if (ImplUtils.isNullOrEmpty(fileName)) {
+        if (CoreUtils.isNullOrEmpty(fileName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
         }
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(fileName,
@@ -141,7 +141,7 @@ public class DataLakeFileSystemAsyncClient {
      * in this file system.
      */
     public DataLakeDirectoryAsyncClient getDirectoryAsyncClient(String directoryName) {
-        if (ImplUtils.isNullOrEmpty(directoryName)) {
+        if (CoreUtils.isNullOrEmpty(directoryName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'directoryName' can not be set to null"));
         }
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,

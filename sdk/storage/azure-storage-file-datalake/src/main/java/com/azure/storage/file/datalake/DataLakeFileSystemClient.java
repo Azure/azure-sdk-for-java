@@ -8,8 +8,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerProperties;
@@ -78,7 +78,7 @@ public class DataLakeFileSystemClient {
      * system.
      */
     public DataLakeFileClient getFileClient(String fileName) {
-        if (ImplUtils.isNullOrEmpty(fileName)) {
+        if (CoreUtils.isNullOrEmpty(fileName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
         }
         return new DataLakeFileClient(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileName),
