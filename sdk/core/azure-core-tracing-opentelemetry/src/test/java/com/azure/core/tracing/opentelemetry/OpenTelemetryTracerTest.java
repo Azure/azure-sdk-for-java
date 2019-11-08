@@ -212,9 +212,10 @@ public class OpenTelemetryTracerTest {
     //     // Create a child-parent link between multiple spans
     //     final ReadableSpan testSpan =
     //         (ReadableSpan) tracer.spanBuilder("new-test-span").startSpan();
-    //     final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getSpanContext());
     //     final ReadableSpan parentSpanImpl = (ReadableSpan) parentSpan;
+    //     final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getSpanContext());
     //     SpanData.Link expectedLink = SpanData.Link.create(testSpan.getSpanContext());
+    //
     //     // Act
     //     openTelemetryTracer.addLink(traceContext);
     //

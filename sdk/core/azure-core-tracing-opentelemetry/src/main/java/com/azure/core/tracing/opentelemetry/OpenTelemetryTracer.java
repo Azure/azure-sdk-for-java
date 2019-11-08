@@ -163,7 +163,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return;
         }
         spanBuilder.addLink(spanContext);
-        spanBuilder.startSpan();
     }
 
     /**

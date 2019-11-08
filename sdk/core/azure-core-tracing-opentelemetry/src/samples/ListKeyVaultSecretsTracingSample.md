@@ -61,12 +61,9 @@ public class Sample {
     public static void main(String[] args) {
         doClientWork();
         TRACER_SDK_FACTORY.shutdown();
-        LOGGER.info("=== Tracer Shutdown  ===");
     }
 
     private static TracerSdkFactory configureOpenTelemetryAndLoggingExporter() {
-        LOGGER.info("=== Running With LoggingExporter ===");
-
         LoggingExporter exporter = new LoggingExporter();
         TracerSdkFactory tracerSdkFactory = (TracerSdkFactory) OpenTelemetry.getTracerFactory();
         tracerSdkFactory.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
@@ -80,14 +77,12 @@ public class Sample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        LOGGER.info("=== Start user scoped span  ===");
-
         Span span = tracer.spanBuilder("user-parent-span").startSpan();
         try (final Scope scope = TRACER.withSpan(span)) {
-            secretClient.setSecretWithResponse(new KeyVaultSecret("StorageAccountPassword", "password"), Context.NONE);
+            secretClient.setSecret(new KeyVaultSecret("StorageAccountPassword", "password"));
             secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {
                 KeyVaultSecret secret = secretClient.getSecret(secretProperties.getName());
-                System.out.printf("Secret with name %s retrieved %n", secret.getName());
+                LOGGER.info("Retrieved Secret with name: ", secret.getName());
             });
         } finally {
             span.end();

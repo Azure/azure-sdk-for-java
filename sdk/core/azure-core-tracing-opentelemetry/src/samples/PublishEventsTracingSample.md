@@ -62,12 +62,9 @@ public class Sample {
     public static void main(String[] args) {
         doClientWork();
         TRACER_SDK_FACTORY.shutdown();
-        LOGGER.info("=== Tracer Shutdown  ===");
     }
 
     private static TracerSdkFactory configureOpenTelemetryAndLoggingExporter() {
-        LOGGER.info("=== Running With LoggingExporter ===");
-
         LoggingExporter exporter = new LoggingExporter();
         TracerSdkFactory tracerSdkFactory = (TracerSdkFactory) OpenTelemetry.getTracerFactory();
         tracerSdkFactory.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
@@ -82,12 +79,10 @@ public class Sample {
 
         final int count = 2;
         final byte[] body = "Hello World!".getBytes(UTF_8);
-    
-        LOGGER.info("=== Start user scoped span  ===");
-    
+        
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
         try (final Scope scope = TRACER.withSpan(span)) {
-            final Context traceContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
+            final Context traceContext = new Context(PARENT_SPAN_KEY, span);
             final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
                 final EventData data = new EventData(body, traceContext);
                 return Flux.just(data);
@@ -96,7 +91,6 @@ public class Sample {
         } finally {
             span.end();
             producer.close();
-            LOGGER.info("=== End user scoped span  ===");
         }
     }
 }

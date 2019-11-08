@@ -64,13 +64,10 @@ public class Sample {
     public static void main(String[] args) throws InterruptedException {
         Span userSpan = TRACER.spanBuilder("user-parent-span").startSpan();
         final Scope scope = TRACER.withSpan(userSpan);
-        LOGGER.info("=== Start user scoped span  ===");
         doClientWork();
-        LOGGER.info("=== End user scoped span  ===");
         userSpan.end();
         scope.close();
         TRACER_SDK_FACTORY.shutdown();
-        LOGGER.info("=== Tracer Shutdown  ===");
     }
     
     public static void doClientWork() throws InterruptedException {
@@ -84,17 +81,16 @@ public class Sample {
         client.setSecret(new KeyVaultSecret("Secret1", "password1"))
             .subscriberContext(traceContext)
             .subscribe(secretResponse ->
-                    System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), secretResponse.getValue()),
+                    LOGGER.info("Secret with name: " + secret.getName()),
                 err -> {
-                    System.out.printf("Error thrown when enqueue the message. Error message: %s%n", err.getMessage());
+                    LOGGER.info("Error occurred: " + err.getMessage());
                 });
 
        client.listPropertiesOfSecrets()
             .subscriberContext(traceContext)
             .subscribe(secretBase -> client.getSecret(secretBase.getName())
                 .subscriberContext(traceContext)
-                .subscribe(secret -> System.out.printf("Received secret with name %s and value %s%n",
-                    secret.getName(), secret.getValue())));
+                .subscribe(secret -> LOGGER.info("Secret with name: " + secret.getName())));
 
         Thread.sleep(10000);
     }

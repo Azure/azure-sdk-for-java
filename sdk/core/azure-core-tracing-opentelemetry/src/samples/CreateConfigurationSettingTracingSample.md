@@ -50,7 +50,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static java.util.logging.Logger.getLogger;
 
 public class Sample {
-    final static String CONNECTION_STRING = "<YOUR-CONNECTION_STRING";
+    final static String CONNECTION_STRING = "<YOUR-CONNECTION_STRING>";
     private static final Logger LOGGER = getLogger("Sample");
     private static  final Tracer TRACER;
     private static final TracerSdkFactory TRACER_SDK_FACTORY;
@@ -63,12 +63,9 @@ public class Sample {
     public static void main(String[] args) {
         doClientWork();
         TRACER_SDK_FACTORY.shutdown();
-        LOGGER.info("=== Tracer Shutdown  ===");
     }
 
     private static TracerSdkFactory configureOpenTelemetryAndLoggingExporter() {
-        LOGGER.info("=== Running With LoggingExporter ===");
-
         LoggingExporter exporter = new LoggingExporter();
         TracerSdkFactory tracerSdkFactory = (TracerSdkFactory) OpenTelemetry.getTracerFactory();
         tracerSdkFactory.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
@@ -81,15 +78,12 @@ public class Sample {
             .connectionString(CONNECTION_STRING)
             .buildClient();
 
-        LOGGER.info("=== Start user scoped span  ===");
-
         Span span = tracer.spanBuilder("user-parent-span").startSpan();
         try (final Scope scope = tracer.withSpan(span)) {
-            final Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
+            final Context traceContext = new Context(PARENT_SPAN_KEY, span);
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey("hello").setValue("world"), true, traceContext);
         } finally {
             span.end();
-            LOGGER.info("=== End scoped span  ===");
         }
     }
 }

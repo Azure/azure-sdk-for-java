@@ -81,7 +81,9 @@ The following sections provides examples of using the azure-core-tracing-opentel
 ### Using the plugin package with HTTP client libraries
 - Synchronously create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
     
-    Users can additionally pass the value of the current tracing span to the SDKs using key **PARENT_SPAN_KEY** on the [Context][context] parameter of the calling method:
+    Users can additionally pass the value of the current tracing span to the SDKs using key **PARENT_SPAN_KEY** on the [Context][context] parameter of the calling method.
+    The plugin package creates a root span to encapsulate all the child spans created in the calling methods when no parent span is passed in the context.
+    This [sample][sample_key_vault] provides an example when no user parent span is passed.
     ```java
     private static  final Tracer TRACER;
     private static final TracerSdkFactory TRACER_SDK_FACTORY;
@@ -104,7 +106,7 @@ The following sections provides examples of using the azure-core-tracing-opentel
                     
           Span span = TRACER.spanBuilder("user-parent-span").startSpan();
           try (Scope scope = TRACER.withSpan(span)) {
-              final Context traceContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
+              final Context traceContext = new Context(PARENT_SPAN_KEY, span);
               secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
           } finally {
               span.end();
@@ -118,7 +120,7 @@ Send a single event/message using [azure-messaging-eventhubs][azure-messaging-ev
 Users can additionally pass the value of the current tracing span to the EventData object with key **PARENT_SPAN_KEY** on the [Context][context] object:
 
 ```java
-private static  final Tracer TRACER;
+private static final Tracer TRACER;
 private static final TracerSdkFactory TRACER_SDK_FACTORY;
     
     static {
@@ -138,7 +140,7 @@ private static final TracerSdkFactory TRACER_SDK_FACTORY;
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
         try (Scope scope = TRACER.withSpan(span)) {
-            Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
+            Context traceContext = new Context(PARENT_SPAN_KEY, span);
             EventData eventData = new EventData("Hello world!".getBytes(UTF_8), traceContext);
             producer.send(eventData); 
         } finally {
