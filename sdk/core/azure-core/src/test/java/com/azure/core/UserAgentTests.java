@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -55,6 +56,54 @@ public class UserAgentTests {
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
                 new URL("http://localhost"))).block();
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void defaultApplicationIdUserAgentTest() throws Exception {
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    String header = request.getHeaders().getValue("User-Agent");
+                    String expectedHeaderPrefix = "azsdk-java-package.name";
+                    Assertions.assertTrue(header.startsWith(expectedHeaderPrefix));
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .policies(new UserAgentPolicy(
+                null,
+                "package.name",
+                "package_version",
+                Configuration.NONE,
+                () -> "1.0"))
+            .build();
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost"))).block();
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void customApplicationIdUserAgentTest() throws Exception {
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    String header = request.getHeaders().getValue("User-Agent");
+                    String expectedHeaderPrefix = "user_specified_appId";
+                    Assertions.assertTrue(header.startsWith(expectedHeaderPrefix));
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .policies(new UserAgentPolicy(
+                "user_specified_appId",
+                "package.name",
+                "package_version",
+                Configuration.NONE,
+                () -> "1.0"))
+            .build();
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost"))).block();
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

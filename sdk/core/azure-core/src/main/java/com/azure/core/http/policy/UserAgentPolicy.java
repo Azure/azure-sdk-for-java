@@ -23,6 +23,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     // azsdk-java-<client_lib>/<sdk_version> <platform_info>
     private static final String USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s %s";
 
+    // From the design guidelines, the application id user agent header format is:
+    // AzCopy/10.0.4-Preview azsdk-java-<client_lib>/<sdk_version> <platform_info>
+    private static final String APPLICATION_ID_USER_AGENT_FORMAT = "%s " + USER_AGENT_FORMAT;
+
     // When the AZURE_TELEMETRY_DISABLED configuration is true remove the <platform_info> portion of the user agent.
     private static final String DISABLED_TELEMETRY_USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s";
 
@@ -59,19 +63,26 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be included
      * in the user agent.
      *
+     * @param applicationId User specified application Id.
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
      * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
      */
-    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
+    public UserAgentPolicy(String applicationId, String sdkName, String sdkVersion, Configuration configuration,
+                           ServiceVersion version) {
         boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
         if (telemetryDisabled) {
             this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion,
                 version.getVersion());
         } else {
-            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo(),
-                version.getVersion());
+            if (applicationId == null) {
+                this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo(),
+                    version.getVersion());
+            } else {
+                this.userAgent = String.format(APPLICATION_ID_USER_AGENT_FORMAT, applicationId, sdkName, sdkVersion,
+                    getPlatformInfo(), version.getVersion());
+            }
         }
     }
 
