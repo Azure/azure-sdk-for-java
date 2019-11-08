@@ -4,33 +4,24 @@
 package com.azure.core.test;
 
 import com.azure.core.test.annotation.DoNotRecord;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 
-import static org.junit.Assume.assumeTrue;
+import java.lang.reflect.Method;
+
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * This class validates that a test is able to run.
  */
-public class TestRunVerifier extends TestWatcher {
+public class TestRunVerifier {
     private volatile boolean doNotRecord;
     private volatile boolean skipInPlayback;
     private volatile boolean testRan;
 
-    @Override
-    protected void starting(Description description) {
-        try {
-            DoNotRecord doNotRecordAnnotation = description.getTestClass()
-                .getMethod(description.getMethodName())
-                .getAnnotation(DoNotRecord.class);
-
-            if (doNotRecordAnnotation != null) {
-                doNotRecord = true;
-                skipInPlayback = doNotRecordAnnotation.skipInPlayback();
-            }
-        } catch (NoSuchMethodException ex) {
-            doNotRecord = false;
-            skipInPlayback = false;
+    TestRunVerifier(Method testMethod) {
+        DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
+        if (doNotRecordAnnotation != null) {
+            doNotRecord = true;
+            skipInPlayback = doNotRecordAnnotation.skipInPlayback();
         }
     }
 
@@ -41,7 +32,7 @@ public class TestRunVerifier extends TestWatcher {
      */
     void verifyTestCanRun(TestMode testMode) {
         testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
-        assumeTrue("Test does not allow playback and was ran in 'TestMode.PLAYBACK'.", testRan);
+        assumeTrue(testRan, "Test does not allow playback and was ran in 'TestMode.PLAYBACK'.");
     }
 
     /**

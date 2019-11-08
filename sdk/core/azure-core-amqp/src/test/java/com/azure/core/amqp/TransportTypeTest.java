@@ -3,8 +3,10 @@
 
 package com.azure.core.amqp;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TransportTypeTest {
 
@@ -16,16 +18,18 @@ public class TransportTypeTest {
         String socketString = "Amqpwebsockets";
         TransportType actual = TransportType.fromString(socketString);
 
-        Assert.assertEquals(TransportType.AMQP_WEB_SOCKETS, actual);
+        Assertions.assertEquals(TransportType.AMQP_WEB_SOCKETS, actual);
     }
 
     /**
      * Verifies that an exception is thrown when an unknown transport type string is passed.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void illegalTransportTypeString() {
         String socketString = "AmqpNonExistent";
 
-        TransportType actual = TransportType.fromString(socketString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TransportType actual = TransportType.fromString(socketString);
+        });
     }
 }

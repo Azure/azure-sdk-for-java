@@ -3,12 +3,6 @@
 
 package com.azure.core.test.implementation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -17,9 +11,8 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.http.ContentType;
-import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -29,15 +22,20 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -46,9 +44,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.Test;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RestProxyWithMockTests extends RestProxyTests {
     @Override
@@ -420,7 +421,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     private static void assertContains(String value, String expectedSubstring) {
-        assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
+        assertTrue(value.contains(expectedSubstring), "Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".");
     }
 
     private abstract static class SimpleMockHttpClient implements HttpClient {

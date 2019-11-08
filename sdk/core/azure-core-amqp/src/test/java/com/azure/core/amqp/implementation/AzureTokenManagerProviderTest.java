@@ -3,41 +3,36 @@
 
 package com.azure.core.amqp.implementation;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
-@RunWith(Theories.class)
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class AzureTokenManagerProviderTest {
     private static final String HOST_NAME = "foobar.windows.net";
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void constructorNullType() {
-        new AzureTokenManagerProvider(null, HOST_NAME, "something.");
+        assertThrows(NullPointerException.class, () -> new AzureTokenManagerProvider(null, HOST_NAME, "something."));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void constructorNullHost() {
-        new AzureTokenManagerProvider(CBSAuthorizationType.JSON_WEB_TOKEN, null, "some-scope");
+        assertThrows(NullPointerException.class, () -> new AzureTokenManagerProvider(CBSAuthorizationType.JSON_WEB_TOKEN, null, "some-scope"));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void constructorNullScope() {
-        new AzureTokenManagerProvider(CBSAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, null);
-    }
-
-    @DataPoints
-    public static CBSAuthorizationType[] getAuthorizationTypes() {
-        return CBSAuthorizationType.values();
+        assertThrows(NullPointerException.class, () -> new AzureTokenManagerProvider(CBSAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, null));
     }
 
     /**
      * Verifies that the correct resource string is returned when we pass in different authorization types.
      */
-    @Theory
+    @ParameterizedTest
+    @EnumSource(CBSAuthorizationType.class)
     public void getResourceString(CBSAuthorizationType authorizationType) {
         // Arrange
         final String scope = "some-scope";
@@ -51,13 +46,13 @@ public class AzureTokenManagerProviderTest {
         switch (authorizationType) {
             case SHARED_ACCESS_SIGNATURE:
                 final String expected = "amqp://" + HOST_NAME + "/" + entityPath;
-                Assert.assertEquals(expected, actual);
+                Assertions.assertEquals(expected, actual);
                 break;
             case JSON_WEB_TOKEN:
-                Assert.assertEquals(scope, actual);
+                Assertions.assertEquals(scope, actual);
                 break;
             default:
-                Assert.fail("This authorization type is unknown: " + authorizationType);
+                Assertions.fail("This authorization type is unknown: " + authorizationType);
         }
     }
 }

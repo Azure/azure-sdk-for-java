@@ -3,6 +3,10 @@
 
 package com.azure.security.keyvault.secrets;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -12,17 +16,13 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
-import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class SecretAsyncClientTest extends SecretClientTestBase {
 
@@ -37,6 +37,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that a secret can be created in the key vault.
      */
+    @Test
     public void setSecret() {
         setSecretRunner((expected) -> StepVerifier.create(client.setSecret(expected))
             .assertNext(response -> assertSecretEquals(expected, response))
@@ -46,6 +47,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that we cannot create a secret when the key is an empty string.
      */
+    @Test
     public void setSecretEmptyName() {
         StepVerifier.create(client.setSecret("", "A value"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
@@ -54,6 +56,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that we can create secrets when value is not null or an empty string.
      */
+    @Test
     public void setSecretEmptyValue() {
         setSecretEmptyValueRunner((secret) -> {
 
@@ -70,6 +73,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Verifies that an exception is thrown when null secret object is passed for creation.
      */
+    @Test
     public void setSecretNull() {
         StepVerifier.create(client.setSecret(null))
             .verifyError(NullPointerException.class);
@@ -78,6 +82,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that a secret is able to be updated when it exists.
      */
+    @Test
     public void updateSecret() {
         updateSecretRunner((original, updated) -> {
             StepVerifier.create(client.setSecret(original))
@@ -88,7 +93,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             StepVerifier.create(client.updateSecretProperties(secretToUpdate.getProperties().setExpiresOn(updated.getProperties().getExpiresOn())))
                 .assertNext(response -> {
                     assertNotNull(response);
-                    Assert.assertEquals(original.getName(), response.getName());
+                    assertEquals(original.getName(), response.getName());
                 }).verifyComplete();
 
             StepVerifier.create(client.getSecret(original.getName()))
@@ -100,6 +105,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that a secret is not able to be updated when it is disabled. 403 error is expected.
      */
+    @Test
     public void updateDisabledSecret() {
         updateDisabledSecretRunner((original, updated) -> {
             StepVerifier.create(client.setSecret(original))
@@ -115,6 +121,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that an existing secret can be retrieved.
      */
+    @Test
     public void getSecret() {
         getSecretRunner((original) -> {
             client.setSecret(original);
@@ -127,6 +134,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that a specific version of the secret can be retrieved.
      */
+    @Test
     public void getSecretSpecificVersion() {
         getSecretSpecificVersionRunner((secret, secretWithNewVal) -> {
             final KeyVaultSecret secretVersionOne = client.setSecret(secret).block();
@@ -145,6 +153,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that an attempt to get a non-existing secret throws an error.
      */
+    @Test
     public void getSecretNotFound() {
         StepVerifier.create(client.getSecret("non-existing"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -154,6 +163,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that an existing secret can be deleted.
      */
+    @Test
     public void deleteSecret() {
         deleteSecretRunner((secretToDelete) -> {
             StepVerifier.create(client.setSecret(secretToDelete))
@@ -170,7 +180,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             assertNotNull(deletedSecretResponse.getDeletedOn());
             assertNotNull(deletedSecretResponse.getRecoveryId());
             assertNotNull(deletedSecretResponse.getScheduledPurgeDate());
-            Assert.assertEquals(secretToDelete.getName(), deletedSecretResponse.getName());
+            assertEquals(secretToDelete.getName(), deletedSecretResponse.getName());
 
             StepVerifier.create(client.purgeDeletedSecretWithResponse(secretToDelete.getName()))
                 .assertNext(voidResponse -> {
@@ -180,6 +190,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         });
     }
 
+    @Test
     public void deleteSecretNotFound() {
         StepVerifier.create(client.beginDeleteSecret("non-existing"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -188,6 +199,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that a deleted secret can be retrieved on a soft-delete enabled vault.
      */
+    @Test
     public void getDeletedSecret() {
         getDeletedSecretRunner((secretToDeleteAndGet) -> {
             StepVerifier.create(client.setSecret(secretToDeleteAndGet))
@@ -204,7 +216,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     assertNotNull(deletedSecretResponse.getDeletedOn());
                     assertNotNull(deletedSecretResponse.getRecoveryId());
                     assertNotNull(deletedSecretResponse.getScheduledPurgeDate());
-                    Assert.assertEquals(secretToDeleteAndGet.getName(), deletedSecretResponse.getName());
+                    assertEquals(secretToDeleteAndGet.getName(), deletedSecretResponse.getName());
                 }).verifyComplete();
 
             StepVerifier.create(client.purgeDeletedSecretWithResponse(secretToDeleteAndGet.getName()))
@@ -219,6 +231,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that an attempt to retrieve a non existing deleted secret throws an error on a soft-delete enabled vault.
      */
+    @Test
     public void getDeletedSecretNotFound() {
         StepVerifier.create(client.getDeletedSecret("non-existing"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -227,6 +240,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that a deleted secret can be recovered on a soft-delete enabled vault.
      */
+    @Test
     public void recoverDeletedSecret() {
         recoverDeletedSecretRunner((secretToDeleteAndRecover) -> {
             StepVerifier.create(client.setSecret(secretToDeleteAndRecover))
@@ -245,15 +259,16 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             KeyVaultSecret secretResponse = lastResponse.getValue();
 
-            Assert.assertEquals(secretToDeleteAndRecover.getName(), secretResponse.getName());
-            Assert.assertEquals(secretToDeleteAndRecover.getProperties().getNotBefore(), secretResponse.getProperties().getNotBefore());
-            Assert.assertEquals(secretToDeleteAndRecover.getProperties().getExpiresOn(), secretResponse.getProperties().getExpiresOn());
+            assertEquals(secretToDeleteAndRecover.getName(), secretResponse.getName());
+            assertEquals(secretToDeleteAndRecover.getProperties().getNotBefore(), secretResponse.getProperties().getNotBefore());
+            assertEquals(secretToDeleteAndRecover.getProperties().getExpiresOn(), secretResponse.getProperties().getExpiresOn());
         });
     }
 
     /**
      * Tests that an attempt to recover a non existing deleted secret throws an error on a soft-delete enabled vault.
      */
+    @Test
     public void recoverDeletedSecretNotFound() {
         StepVerifier.create(client.beginRecoverDeletedSecret("non-existing"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -262,6 +277,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that a secret can be backed up in the key vault.
      */
+    @Test
     public void backupSecret() {
         backupSecretRunner((secretToBackup) -> {
             StepVerifier.create(client.setSecret(secretToBackup))
@@ -271,9 +287,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             StepVerifier.create(client.backupSecret(secretToBackup.getName()))
                 .assertNext(response -> {
-                    byte[] backupBytes = response;
-                    assertNotNull(backupBytes);
-                    assertTrue(backupBytes.length > 0);
+                    assertNotNull(response);
+                    assertTrue(response.length > 0);
                 }).verifyComplete();
         });
     }
@@ -281,6 +296,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that an attempt to backup a non existing secret throws an error.
      */
+    @Test
     public void backupSecretNotFound() {
         StepVerifier.create(client.backupSecret("non-existing"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -289,6 +305,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that a secret can be backed up in the key vault.
      */
+    @Test
     public void restoreSecret() {
         restoreSecretRunner((secretToBackupAndRestore) -> {
             StepVerifier.create(client.setSecret(secretToBackupAndRestore))
@@ -311,9 +328,9 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             StepVerifier.create(client.restoreSecretBackup(backup))
                 .assertNext(response -> {
-                    Assert.assertEquals(secretToBackupAndRestore.getName(), response.getName());
-                    Assert.assertEquals(secretToBackupAndRestore.getProperties().getNotBefore(), response.getProperties().getNotBefore());
-                    Assert.assertEquals(secretToBackupAndRestore.getProperties().getExpiresOn(), response.getProperties().getExpiresOn());
+                    assertEquals(secretToBackupAndRestore.getName(), response.getName());
+                    assertEquals(secretToBackupAndRestore.getProperties().getNotBefore(), response.getProperties().getNotBefore());
+                    assertEquals(secretToBackupAndRestore.getProperties().getExpiresOn(), response.getProperties().getExpiresOn());
                 }).verifyComplete();
         });
     }
@@ -321,6 +338,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that an attempt to restore a secret from malformed backup bytes throws an error.
      */
+    @Test
     public void restoreSecretFromMalformedBackup() {
         byte[] secretBackupBytes = "non-existing".getBytes();
         StepVerifier.create(client.restoreSecretBackup(secretBackupBytes))
@@ -330,7 +348,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that deleted secrets can be listed in the key vault.
      */
-    @Override
+    @Test
     public void listDeletedSecrets() {
         listDeletedSecretsRunner((secrets) -> {
             List<DeletedSecret> deletedSecrets = new ArrayList<>();
@@ -376,7 +394,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that secret versions can be listed in the key vault.
      */
-    @Override
+    @Test
     public void listSecretVersions() {
         listSecretVersionsRunner((secrets) -> {
             List<SecretProperties> output = new ArrayList<>();
@@ -406,6 +424,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     /**
      * Tests that secrets can be listed in the key vault.
      */
+    @Test
     public void listSecrets() {
         listSecretsRunner((secrets) -> {
             HashMap<String, KeyVaultSecret> secretsToList = secrets;
@@ -430,31 +449,13 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         });
     }
 
-    private void pollOnSecretDeletion(String secretName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 30) {
-            DeletedSecret deletedSecret = null;
-            try {
-                deletedSecret = client.getDeletedSecret(secretName).block();
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedSecret == null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-            } else {
-                return;
-            }
-        }
-        System.err.printf("Deleted Secret %s not found \n", secretName);
-    }
-
     private void pollOnSecretPurge(String secretName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 10) {
             DeletedSecret deletedSecret = null;
             try {
                 deletedSecret = client.getDeletedSecret(secretName).block();
-            } catch (ResourceNotFoundException e) {
+            } catch (ResourceNotFoundException ignored) {
             }
             if (deletedSecret != null) {
                 sleepInRecordMode(2000);

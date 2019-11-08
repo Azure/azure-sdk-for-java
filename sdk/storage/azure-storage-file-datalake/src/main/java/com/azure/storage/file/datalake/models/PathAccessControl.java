@@ -3,41 +3,40 @@
 
 package com.azure.storage.file.datalake.models;
 
+import java.util.List;
+
 /**
  * This class contains properties that are gettable and settable for path access control.
  */
 public class PathAccessControl {
 
-    private String acl;
-    private String group;
-    private String owner;
-    private String permissions;
+    private final List<PathAccessControlEntry> accessControlList;
+    private final String group;
+    private final String owner;
+    private final PathPermissions permissions;
 
     /**
      * Constructs a new {@link PathAccessControl}.
+     * @param accessControlList A list of {@link PathAccessControlEntry}
+     * @param permissions {@link PathPermissions}
+     * @param group The group
+     * @param owner The owner
      */
-    public PathAccessControl() {
-
+    public PathAccessControl(List<PathAccessControlEntry> accessControlList, PathPermissions permissions,
+        String group, String owner) {
+        this.accessControlList = accessControlList;
+        this.permissions = permissions;
+        this.group = group;
+        this.owner = owner;
     }
 
     /**
-     * Get the acl property: The acl property.
+     * Get the accessControlList property: The accessControlList property.
      *
-     * @return the acl value.
+     * @return the accessControlList value.
      */
-    public String getAcl() {
-        return acl;
-    }
-
-    /**
-     * Set the acl property: The acl property.
-     *
-     * @param acl the acl value to set.
-     * @return the PathAccessControl object itself.
-     */
-    public PathAccessControl setAcl(String acl) {
-        this.acl = acl;
-        return this;
+    public List<PathAccessControlEntry> getAccessControlList() {
+        return accessControlList;
     }
 
     /**
@@ -50,17 +49,6 @@ public class PathAccessControl {
     }
 
     /**
-     * Set the group property: The group property.
-     *
-     * @param group the group value to set.
-     * @return the PathAccessControl object itself.
-     */
-    public PathAccessControl setGroup(String group) {
-        this.group = group;
-        return this;
-    }
-
-    /**
      * Get the owner property: The owner property.
      *
      * @return the owner value.
@@ -70,33 +58,11 @@ public class PathAccessControl {
     }
 
     /**
-     * Set the owner property: The owner property.
-     *
-     * @param owner the owner value to set.
-     * @return the PathAccessControl object itself.
-     */
-    public PathAccessControl setOwner(String owner) {
-        this.owner = owner;
-        return this;
-    }
-
-    /**
      * Get the permissions property: The permissions property.
      *
      * @return the permissions value.
      */
-    public String getPermissions() {
+    public PathPermissions getPermissions() {
         return permissions;
-    }
-
-    /**
-     * Set the permission property: The permission property.
-     *
-     * @param permissions the permissions value to set.
-     * @return the PathAccessControl object itself.
-     */
-    public PathAccessControl setPermissions(String permissions) {
-        this.permissions = permissions;
-        return this;
     }
 }

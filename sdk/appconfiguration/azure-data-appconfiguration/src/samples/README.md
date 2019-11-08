@@ -20,7 +20,7 @@ Maven dependency for Azure app configuration Client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.0-preview.7</version>
+    <version>1.0.0-preview.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -67,4 +67,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_read_only]: java/com/azure/data/appconfiguration/ReadOnlySample.java
 [sample_read_revision_history]: com/azure/data/appconfiguration/ReadRevisionHistory.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/appconfiguration/azure-data-appconfiguration/samples/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2Fsrc%2Fsamples%2FREADME.png)

@@ -14,10 +14,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -33,12 +31,11 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
@@ -51,14 +48,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     ConfigurationClientBuilder clientBuilder;
     String keyPrefix;
     String labelPrefix;
-
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    public String getTestName() {
-        return testName.getMethodName();
-    }
 
     void beforeTestSetup() {
         keyPrefix = testResourceNamer.randomName(KEY_PREFIX, PREFIX_LENGTH);
@@ -371,7 +360,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void listRevisionsWithRange();
 
     @Test
-    @Ignore
+    @Disabled
     public abstract void listRevisionsInvalidRange();
 
     @Test
@@ -392,7 +381,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void getConfigurationSettingWhenValueNotUpdated();
 
-    @Ignore("This test exists to clean up resources missed due to 429s.")
+    @Disabled("This test exists to clean up resources missed due to 429s.")
     @Test
     public abstract void deleteAllSettings();
 
@@ -432,11 +421,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             actual = cleanResponse(expected, actual);
         } else if (expected == actual) {
             return;
-        } else if (expected == null || actual == null) {
-            assertFalse("One of input settings is null", true);
+        } else {
+            fail("One of input settings is null");
         }
 
-        equals(expected, actual);
+        assertTrue(equals(expected, actual));
     }
 
     /**

@@ -16,7 +16,7 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.1.0-preview.1</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -35,7 +35,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.1.0-preview.1</version>
+    <version>4.0.0</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -51,7 +51,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.1.0-preview.1</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -469,4 +469,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [keys_samples]: src/samples/java/com/azure/security/keyvault/keys
 [samples_readme]: src/samples/README.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-keys/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-keys%2FREADME.png)

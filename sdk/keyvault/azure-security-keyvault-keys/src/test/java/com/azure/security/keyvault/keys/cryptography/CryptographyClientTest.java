@@ -13,6 +13,7 @@ import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Test;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
@@ -27,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CryptographyClientTest extends CryptographyClientTestBase {
     private KeyClient client;
@@ -39,7 +40,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         client = clientBuilder.buildClient();
     }
 
-    @Override
+    @Test
     public void encryptDecryptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
@@ -75,7 +76,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         });
     }
 
-    @Override
+    @Test
     public void wrapUnwraptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
@@ -112,7 +113,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
 
-    @Override
+    @Test
     public void signVerifyRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
@@ -148,7 +149,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         });
     }
 
-    @Override
+    @Test
     public void signVerifyEc() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
         curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
@@ -208,12 +209,11 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             DeletedKey deletedKey = null;
             try {
                 deletedKey = client.getDeletedKey(keyName);
-            } catch (ResourceNotFoundException e) {
+            } catch (ResourceNotFoundException ignored) {
             }
             if (deletedKey == null) {
                 sleepInRecordMode(2000);
                 pendingPollCount += 1;
-                continue;
             } else {
                 return;
             }
@@ -227,12 +227,11 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             DeletedKey deletedKey = null;
             try {
                 deletedKey = client.getDeletedKey(keyName);
-            } catch (ResourceNotFoundException e) {
+            } catch (ResourceNotFoundException ignored) {
             }
             if (deletedKey != null) {
                 sleepInRecordMode(2000);
                 pendingPollCount += 1;
-                continue;
             } else {
                 return;
             }

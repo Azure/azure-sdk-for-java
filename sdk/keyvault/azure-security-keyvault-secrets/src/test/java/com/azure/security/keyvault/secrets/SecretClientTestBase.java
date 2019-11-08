@@ -13,9 +13,7 @@ import com.azure.core.test.TestMode;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -29,9 +27,9 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SecretClientTestBase extends TestBase {
 
@@ -40,12 +38,9 @@ public abstract class SecretClientTestBase extends TestBase {
 
     SecretClientBuilder clientBuilder;
 
-    @Rule
-    public TestName testName = new TestName();
-
     @Override
     protected String getTestName() {
-        return testName.getMethodName();
+        return "";
     }
 
     void beforeTestSetup() {

@@ -180,7 +180,7 @@ public class InterceptorManager implements AutoCloseable {
         try {
             return mapper.readValue(recordFile, RecordedData.class);
         } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+            throw logger.logExceptionAsWarning(new UncheckedIOException(ex));
         }
     }
 

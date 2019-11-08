@@ -10,13 +10,12 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -30,9 +29,9 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class KeyClientTestBase extends TestBase {
 
@@ -42,12 +41,9 @@ public abstract class KeyClientTestBase extends TestBase {
 
     KeyClientBuilder clientBuilder;
 
-    @Rule
-    public TestName testName = new TestName();
-
     @Override
     protected String getTestName() {
-        return testName.getMethodName();
+        return "";
     }
 
     void beforeTestSetup() {
@@ -62,7 +58,7 @@ public abstract class KeyClientTestBase extends TestBase {
                 Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC)
                     .plus(Duration.ofMinutes(30))));
         } else {
-            endpoint = System.getenv("AZURE_KEYVAULT_ENDPOINT");
+            endpoint = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT");
             credential = new DefaultAzureCredentialBuilder().build();
         }
 
@@ -73,10 +69,10 @@ public abstract class KeyClientTestBase extends TestBase {
             .vaultUrl(endpoint)
             .credential(credential);
 
-        if (testMode == TestMode.PLAYBACK) {
+        if (testMode == TestMode.RECORD) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build());
-        } else if (testMode == TestMode.RECORD) {
+        } else if (testMode == TestMode.PLAYBACK) {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
         }
     }
@@ -136,9 +132,6 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void updateDisabledKey();
 
     void updateDisabledKeyRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
-
-        final Map<String, String> tags = new HashMap<>();
-
         final CreateKeyOptions originalKey = new CreateKeyOptions("testKey2", EC_KEY_TYPE)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
             .setEnabled(false);

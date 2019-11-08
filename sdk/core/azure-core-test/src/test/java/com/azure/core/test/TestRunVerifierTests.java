@@ -4,12 +4,11 @@
 package com.azure.core.test;
 
 import com.azure.core.test.annotation.DoNotRecord;
-import org.junit.AssumptionViolatedException;
-import org.junit.Test;
-import org.junit.runner.Description;
+import org.junit.jupiter.api.Test;
+import org.opentest4j.TestAbortedException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link TestRunVerifier}.
@@ -21,9 +20,8 @@ public class TestRunVerifierTests {
      * will record network calls and test values.
      */
     @Test
-    public void testWithoutDoNotRecord() {
-        TestRunVerifier verifier = new TestRunVerifier();
-        verifier.starting(Description.createTestDescription(TestHelper.class, "testWithoutDoNotRecord"));
+    public void testWithoutDoNotRecord() throws NoSuchMethodException {
+        TestRunVerifier verifier = new TestRunVerifier(TestHelper.class.getMethod("testWithoutDoNotRecord"));
 
         assertFalse(verifier.doNotRecordTest());
 
@@ -42,9 +40,8 @@ public class TestRunVerifierTests {
      * but doesn't have its network calls or test values recorded.
      */
     @Test
-    public void testWithDoNotRecordRunInPlayback() {
-        TestRunVerifier verifier = new TestRunVerifier();
-        verifier.starting(Description.createTestDescription(TestHelper.class, "testWithDoNotRecordRunInPlayback"));
+    public void testWithDoNotRecordRunInPlayback() throws NoSuchMethodException {
+        TestRunVerifier verifier = new TestRunVerifier(TestHelper.class.getMethod("testWithDoNotRecordRunInPlayback"));
 
         assertTrue(verifier.doNotRecordTest());
 
@@ -64,16 +61,15 @@ public class TestRunVerifierTests {
      * test values recorded.
      */
     @Test
-    public void testWithDoNotRecordSkipInPlayback() {
-        TestRunVerifier verifier = new TestRunVerifier();
-        verifier.starting(Description.createTestDescription(TestHelper.class, "testWithDoNotRecordSkipInPlayback"));
+    public void testWithDoNotRecordSkipInPlayback() throws NoSuchMethodException {
+        TestRunVerifier verifier = new TestRunVerifier(TestHelper.class.getMethod("testWithDoNotRecordSkipInPlayback"));
 
         assertTrue(verifier.doNotRecordTest());
 
         try {
             verifier.verifyTestCanRun(TestMode.PLAYBACK);
         } catch (RuntimeException ex) {
-            assertTrue(ex instanceof AssumptionViolatedException);
+            assertTrue(ex instanceof TestAbortedException);
         }
 
         verifier.verifyTestCanRun(TestMode.LIVE);
