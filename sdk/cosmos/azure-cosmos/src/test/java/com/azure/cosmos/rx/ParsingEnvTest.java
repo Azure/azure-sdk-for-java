@@ -4,7 +4,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.internal.directconnectivity.Protocol;
+import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

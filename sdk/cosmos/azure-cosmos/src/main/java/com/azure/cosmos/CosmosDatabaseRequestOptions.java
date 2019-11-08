@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.RequestOptions;
-import com.azure.cosmos.internal.RequestOptions;
+import com.azure.cosmos.implementation.RequestOptions;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos database.

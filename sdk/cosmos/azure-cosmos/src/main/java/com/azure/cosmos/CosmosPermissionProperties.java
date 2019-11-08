@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Permission;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Permission;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Permission;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

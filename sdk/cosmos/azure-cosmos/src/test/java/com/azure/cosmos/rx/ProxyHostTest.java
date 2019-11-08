@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.internal.TestConfigurations;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.rx.proxy.HttpProxyServer;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;

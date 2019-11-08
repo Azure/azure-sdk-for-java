@@ -3,10 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
-import com.azure.cosmos.internal.DocumentCollection;
-import com.azure.cosmos.internal.AsyncDocumentClient;
-import com.azure.cosmos.internal.DocumentCollection;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.DocumentCollection;
 import reactor.core.publisher.Mono;
 
 /**

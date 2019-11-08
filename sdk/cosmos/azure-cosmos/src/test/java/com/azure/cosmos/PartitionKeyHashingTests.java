@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Undefined;
-import com.azure.cosmos.internal.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.Undefined;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.fasterxml.jackson.databind.node.NullNode;
 import org.testng.annotations.Test;
 

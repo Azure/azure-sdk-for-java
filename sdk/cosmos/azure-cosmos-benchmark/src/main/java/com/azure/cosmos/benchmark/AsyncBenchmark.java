@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.Document;
-import com.azure.cosmos.internal.DocumentCollection;
-import com.azure.cosmos.internal.ResourceResponse;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ResourceResponse;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;

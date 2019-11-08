@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.DatabaseForTest;
-import com.azure.cosmos.internal.DocumentCollection;
-import com.azure.cosmos.internal.Offer;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.ResourceResponseValidator;
-import com.azure.cosmos.internal.TestSuiteBase;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DatabaseForTest;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.ResourceResponseValidator;
+import com.azure.cosmos.implementation.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

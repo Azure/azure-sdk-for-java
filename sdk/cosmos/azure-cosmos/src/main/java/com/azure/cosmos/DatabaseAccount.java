@@ -3,12 +3,9 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.ReplicationPolicy;
-import com.azure.cosmos.internal.Utils;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.ReplicationPolicy;
-import com.azure.cosmos.internal.Utils;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.ReplicationPolicy;
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,10 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.azure.cosmos.BridgeInternal.populatePropertyBagJsonSerializable;
-import static com.azure.cosmos.BridgeInternal.setProperty;
-import static com.azure.cosmos.BridgeInternal.setResourceSelfLink;
 
 /**
  * Represents a database account in the Azure Cosmos DB database service.

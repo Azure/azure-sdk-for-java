@@ -2,14 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.Offer;
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.AsyncDocumentClient;
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.Offer;
-import com.azure.cosmos.internal.Paths;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.Paths;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;

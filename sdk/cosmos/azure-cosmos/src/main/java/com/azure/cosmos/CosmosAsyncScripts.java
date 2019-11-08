@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.StoredProcedure;
-import com.azure.cosmos.internal.Trigger;
-import com.azure.cosmos.internal.UserDefinedFunction;
-import com.azure.cosmos.internal.StoredProcedure;
-import com.azure.cosmos.internal.Trigger;
-import com.azure.cosmos.internal.UserDefinedFunction;
+import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.implementation.Trigger;
+import com.azure.cosmos.implementation.UserDefinedFunction;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

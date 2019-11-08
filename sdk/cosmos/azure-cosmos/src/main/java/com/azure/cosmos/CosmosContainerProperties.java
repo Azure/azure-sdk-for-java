@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.DocumentCollection;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.DocumentCollection;
-import com.azure.cosmos.internal.ResourceResponse;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ResourceResponse;
 
 import java.util.ArrayList;
 import java.util.List;
