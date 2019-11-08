@@ -253,11 +253,11 @@ public class GatewayAddressCache implements IAddressCache {
 
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
         if (forceRefresh) {
-            headers.put(HttpConstants.HttpHeaders.FORCE_REFRESH, Boolean.TRUE.toString());
+            headers.put(HttpConstants.HttpHeaders.FORCE_REFRESH, "true");
         }
 
         if(request.forceCollectionRoutingMapRefresh) {
-            headers.put(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH, Boolean.TRUE.toString());
+            headers.put(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH, "true");
         }
 
         addressQuery.put(HttpConstants.QueryStrings.FILTER, HttpUtils.urlEncode(this.protocolFilter));
@@ -447,15 +447,15 @@ public class GatewayAddressCache implements IAddressCache {
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
 
         if (forceRefresh) {
-            headers.put(HttpConstants.HttpHeaders.FORCE_REFRESH, Boolean.TRUE.toString());
+            headers.put(HttpConstants.HttpHeaders.FORCE_REFRESH, "true");
         }
 
         if (useMasterCollectionResolver) {
-            headers.put(HttpConstants.HttpHeaders.USE_MASTER_COLLECTION_RESOLVER, Boolean.TRUE.toString());
+            headers.put(HttpConstants.HttpHeaders.USE_MASTER_COLLECTION_RESOLVER, "true");
         }
 
         if(request.forceCollectionRoutingMapRefresh) {
-            headers.put(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH, Boolean.TRUE.toString());
+            headers.put(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH, "true");
         }
 
         queryParameters.put(HttpConstants.QueryStrings.FILTER, HttpUtils.urlEncode(this.protocolFilter));
