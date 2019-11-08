@@ -3,6 +3,10 @@
 
 package com.azure.security.keyvault.keys;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.polling.AsyncPollResponse;
@@ -13,13 +17,12 @@ import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class KeyAsyncClientTest extends KeyClientTestBase {
 
@@ -45,6 +48,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that a key can be created in the key vault.
      */
+    @Test
     public void setKey() {
         setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))
             .assertNext(response -> assertKeyEquals(expected, response))
@@ -54,6 +58,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that we cannot create a key when the key is an empty string.
      */
+    @Test
     public void setKeyEmptyName() {
         StepVerifier.create(client.createKey("", KeyType.RSA))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
@@ -62,6 +67,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that we can create keys when value is not null or an empty string.
      */
+    @Test
     public void setKeyNullType() {
         setKeyEmptyValueRunner((key) -> {
 
@@ -74,6 +80,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Verifies that an exception is thrown when null key object is passed for creation.
      */
+    @Test
     public void setKeyNull() {
         StepVerifier.create(client.createKey(null))
             .verifyError(NullPointerException.class);
@@ -82,6 +89,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that a key is able to be updated when it exists.
      */
+    @Test
     public void updateKey() {
         updateKeyRunner((original, updated) -> {
             StepVerifier.create(client.createKey(original))
@@ -104,6 +112,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that a key is not able to be updated when it is disabled. 403 error is expected.
      */
+    @Test
     public void updateDisabledKey() {
         updateDisabledKeyRunner((original, updated) -> {
             StepVerifier.create(client.createKey(original))
@@ -127,6 +136,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that an existing key can be retrieved.
      */
+    @Test
     public void getKey() {
         getKeyRunner((original) -> {
             client.createKey(original);
@@ -139,6 +149,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that a specific version of the key can be retrieved.
      */
+    @Test
     public void getKeySpecificVersion() {
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
             final KeyVaultKey keyVersionOne = client.createKey(key).block();
@@ -157,6 +168,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to get a non-existing key throws an error.
      */
+    @Test
     public void getKeyNotFound() {
         StepVerifier.create(client.getKey("non-existing"))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -166,6 +178,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that an existing key can be deleted.
      */
+    @Test
     public void deleteKey() {
         deleteKeyRunner((keyToDelete) -> {
             StepVerifier.create(client.createKey(keyToDelete))
@@ -189,6 +202,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         });
     }
 
+    @Test
     public void deleteKeyNotFound() {
         StepVerifier.create(client.beginDeleteKey("non-existing"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -197,6 +211,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete enabled vault.
      */
+    @Test
     public void getDeletedKeyNotFound() {
         StepVerifier.create(client.getDeletedKey("non-existing"))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -205,6 +220,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that a deleted key can be recovered on a soft-delete enabled vault.
      */
+    @Test
     public void recoverDeletedKey() {
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
             StepVerifier.create(client.createKey(keyToDeleteAndRecover))
@@ -233,6 +249,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
+    @Test
     public void recoverDeletedKeyNotFound() {
         StepVerifier.create(client.beginRecoverDeletedKey("non-existing"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -241,6 +258,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that a key can be backed up in the key vault.
      */
+    @Test
     public void backupKey() {
         backupKeyRunner((keyToBackup) -> {
             StepVerifier.create(client.createKey(keyToBackup))
@@ -265,6 +283,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that a key can be backed up in the key vault.
      */
+    @Test
     public void restoreKey() {
         restoreKeyRunner((keyToBackupAndRestore) -> {
             StepVerifier.create(client.createKey(keyToBackupAndRestore))
@@ -297,6 +316,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to restore a key from malformed backup bytes throws an error.
      */
+    @Test
     public void restoreKeyFromMalformedBackup() {
         byte[] keyBackupBytes = "non-existing".getBytes();
         StepVerifier.create(client.restoreKeyBackup(keyBackupBytes))
@@ -306,6 +326,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
      */
+    @Test
     public void getDeletedKey() {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
 
@@ -338,7 +359,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
-    @Override
+    @Test
     public void listDeletedKeys() {
         listDeletedKeysRunner((keys) -> {
 
@@ -383,7 +404,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that key versions can be listed in the key vault.
      */
-    @Override
+    @Test
     public void listKeyVersions() {
         listKeyVersionsRunner((keys) -> {
             List<KeyProperties> output = new ArrayList<>();
@@ -415,6 +436,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that keys can be listed in the key vault.
      */
+    @Test
     public void listKeys() {
         listKeysRunner((keys) -> {
             List<KeyProperties> output = new ArrayList<>();
