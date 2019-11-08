@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         org.apache.log4j.Logger.getLogger("io.netty").setLevel(org.apache.log4j.Level.OFF);
-
+        AsyncBenchmark benchmark = null;
         try {
             LOGGER.debug("Parsing the arguments ...");
             Configuration cfg = new Configuration();
@@ -27,7 +27,6 @@ public class Main {
                 return;
             }
 
-            AsyncBenchmark benchmark;
             switch (cfg.getOperationType()) {
             case WriteThroughput:
             case WriteLatency:
@@ -67,7 +66,6 @@ public class Main {
 
             LOGGER.info("Starting {}", cfg.getOperationType());
             benchmark.run();
-            benchmark.shutdown();
 
         } catch (ParameterException e) {
             // if any error in parsing the cmd-line options print out the usage help
@@ -75,7 +73,9 @@ public class Main {
             System.err.println("Try '-help' for more information.");
             throw e;
         } finally {
-            System.exit(0);
+            if (benchmark != null) {
+                benchmark.shutdown();
+            }
         }
     }
 }
