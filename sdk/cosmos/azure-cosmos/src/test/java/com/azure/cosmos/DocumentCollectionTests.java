@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.DocumentCollection;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.google.common.collect.ImmutableList;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;

@@ -3,17 +3,17 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.DataType;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.DocumentCollection;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.IncludedPath;
 import com.azure.cosmos.Index;
 import com.azure.cosmos.IndexingPolicy;
 import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.internal.RequestOptions;
-import com.azure.cosmos.internal.TestConfigurations;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.beust.jcommander.JCommander;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;

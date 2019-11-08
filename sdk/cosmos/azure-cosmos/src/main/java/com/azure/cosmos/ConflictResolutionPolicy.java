@@ -4,14 +4,10 @@
 package com.azure.cosmos;
 
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.DocumentCollection;
-import com.azure.cosmos.internal.StoredProcedure;
-import com.azure.cosmos.internal.Strings;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.DocumentCollection;
-import com.azure.cosmos.internal.StoredProcedure;
-import com.azure.cosmos.internal.Strings;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.implementation.Strings;
 
 
 /**

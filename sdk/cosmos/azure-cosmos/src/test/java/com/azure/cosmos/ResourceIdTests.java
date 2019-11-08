@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.ResourceId;
+import com.azure.cosmos.implementation.ResourceId;
 import org.apache.commons.lang3.tuple.Pair;
 import org.testng.annotations.Test;
 

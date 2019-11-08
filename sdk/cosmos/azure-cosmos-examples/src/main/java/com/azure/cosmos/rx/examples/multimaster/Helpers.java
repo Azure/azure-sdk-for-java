@@ -3,11 +3,11 @@
 
 package com.azure.cosmos.rx.examples.multimaster;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.DocumentCollection;
-import com.azure.cosmos.internal.ResourceResponse;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ResourceResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

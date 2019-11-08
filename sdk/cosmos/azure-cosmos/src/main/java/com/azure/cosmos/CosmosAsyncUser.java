@@ -3,10 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.Permission;
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.Permission;
+import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.implementation.Permission;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

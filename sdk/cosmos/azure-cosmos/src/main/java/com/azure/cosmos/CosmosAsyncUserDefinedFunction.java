@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.UserDefinedFunction;
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.UserDefinedFunction;
+import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.implementation.UserDefinedFunction;
 import reactor.core.publisher.Mono;
 
 public class CosmosAsyncUserDefinedFunction {

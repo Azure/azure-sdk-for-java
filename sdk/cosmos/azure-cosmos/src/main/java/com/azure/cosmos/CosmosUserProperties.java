@@ -3,12 +3,9 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.User;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.User;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.User;
 
 import java.util.List;
 import java.util.stream.Collectors;

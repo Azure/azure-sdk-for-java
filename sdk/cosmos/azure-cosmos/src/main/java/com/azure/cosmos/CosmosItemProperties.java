@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Document;
-import com.azure.cosmos.internal.Utils;
-import com.azure.cosmos.internal.Document;
-import com.azure.cosmos.internal.Utils;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;

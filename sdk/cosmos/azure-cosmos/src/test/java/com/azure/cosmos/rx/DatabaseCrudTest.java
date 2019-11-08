@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosDatabaseProperties;
 import com.azure.cosmos.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.internal.FailureValidator;
+import com.azure.cosmos.implementation.FailureValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

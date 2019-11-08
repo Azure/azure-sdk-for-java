@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 
 import java.util.List;
 
