@@ -275,6 +275,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to backup a non existing key throws an error.
      */
+    @Test
     public void backupKeyNotFound() {
         StepVerifier.create(client.backupKey("non-existing"))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
