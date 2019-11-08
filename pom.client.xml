@@ -900,6 +900,9 @@
         <property>
           <name>generate-overview</name>
         </property>
+        <file>
+          <exists>../../../eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+        </file>
       </activation>
       <build>
         <plugins>
