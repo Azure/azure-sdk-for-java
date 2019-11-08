@@ -22,7 +22,6 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.MonitoringDetails;
 
 class HanaInstancesImpl extends GroupableResourcesCoreImpl<HanaInstance, HanaInstanceImpl, HanaInstanceInner, HanaInstancesInner, HanaOnAzureManager>  implements HanaInstances {
     protected HanaInstancesImpl(HanaOnAzureManager manager) {
@@ -142,12 +141,6 @@ class HanaInstancesImpl extends GroupableResourcesCoreImpl<HanaInstance, HanaIns
     public Completable shutdownAsync(String resourceGroupName, String hanaInstanceName) {
         HanaInstancesInner client = this.inner();
         return client.shutdownAsync(resourceGroupName, hanaInstanceName).toCompletable();
-    }
-
-    @Override
-    public Completable enableMonitoringAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
-        HanaInstancesInner client = this.inner();
-        return client.enableMonitoringAsync(resourceGroupName, hanaInstanceName, monitoringParameter).toCompletable();
     }
 
     @Override
