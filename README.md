@@ -48,7 +48,7 @@ The libraries released in the GA November 2019 release:
 - [Storage Queues](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0/sdk/storage/azure-storage-queue/README.md)
 
 The libraries released in the November 2019 preview:
-- [App Configuration](https://github.com/Azure/azure-sdk-for-java/blob/074dd7a33f58ec02f84bfb6b94fa48529a6997ad/sdk/appconfiguration/azure-data-appconfiguration/README.md)
+- [App Configuration](https://github.com/Azure/azure-sdk-for-java/tree/azure-data-appconfiguration_1.0.0-preview.6/sdk/appconfiguration/azure-data-appconfiguration)
 - [Event Hubs](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs_5.0.0-preview.5/sdk/eventhubs/azure-messaging-eventhubs/README.md)
 - [Event Hubs Checkpoint Store](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs-checkpointstore-blob_1.0.0-preview.3/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
 - [Storage File Share](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.0.0-preview.5/sdk/storage/azure-storage-file-share/README.md)
