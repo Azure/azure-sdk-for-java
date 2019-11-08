@@ -25,14 +25,10 @@ import java.util.List;
 public final class CustomAnalyzer extends Analyzer {
     /*
      * The name of the tokenizer to use to divide continuous text into a
-     * sequence of tokens, such as breaking a sentence into words. Possible
-     * values include: 'classic', 'edgeNGram', 'keyword_v2', 'letter',
-     * 'lowercase', 'microsoft_language_tokenizer',
-     * 'microsoft_language_stemming_tokenizer', 'nGram', 'path_hierarchy_v2',
-     * 'pattern', 'standard_v2', 'uax_url_email', 'whitespace'
+     * sequence of tokens, such as breaking a sentence into words.
      */
     @JsonProperty(value = "tokenizer", required = true)
-    private TokenizerName tokenizer;
+    private String tokenizer;
 
     /*
      * A list of token filters used to filter out or modify the tokens
@@ -41,7 +37,7 @@ public final class CustomAnalyzer extends Analyzer {
      * the order in which they are listed.
      */
     @JsonProperty(value = "tokenFilters")
-    private List<TokenFilterName> tokenFilters;
+    private List<String> tokenFilters;
 
     /*
      * A list of character filters used to prepare input text before it is
@@ -50,34 +46,28 @@ public final class CustomAnalyzer extends Analyzer {
      * are listed.
      */
     @JsonProperty(value = "charFilters")
-    private List<CharFilterName> charFilters;
+    private List<String> charFilters;
 
     /**
      * Get the tokenizer property: The name of the tokenizer to use to divide
      * continuous text into a sequence of tokens, such as breaking a sentence
-     * into words. Possible values include: 'classic', 'edgeNGram',
-     * 'keyword_v2', 'letter', 'lowercase', 'microsoft_language_tokenizer',
-     * 'microsoft_language_stemming_tokenizer', 'nGram', 'path_hierarchy_v2',
-     * 'pattern', 'standard_v2', 'uax_url_email', 'whitespace'.
+     * into words.
      *
      * @return the tokenizer value.
      */
-    public TokenizerName getTokenizer() {
+    public String getTokenizer() {
         return this.tokenizer;
     }
 
     /**
      * Set the tokenizer property: The name of the tokenizer to use to divide
      * continuous text into a sequence of tokens, such as breaking a sentence
-     * into words. Possible values include: 'classic', 'edgeNGram',
-     * 'keyword_v2', 'letter', 'lowercase', 'microsoft_language_tokenizer',
-     * 'microsoft_language_stemming_tokenizer', 'nGram', 'path_hierarchy_v2',
-     * 'pattern', 'standard_v2', 'uax_url_email', 'whitespace'.
+     * into words.
      *
      * @param tokenizer the tokenizer value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer setTokenizer(TokenizerName tokenizer) {
+    public CustomAnalyzer setTokenizer(String tokenizer) {
         this.tokenizer = tokenizer;
         return this;
     }
@@ -90,7 +80,7 @@ public final class CustomAnalyzer extends Analyzer {
      *
      * @return the tokenFilters value.
      */
-    public List<TokenFilterName> getTokenFilters() {
+    public List<String> getTokenFilters() {
         return this.tokenFilters;
     }
 
@@ -103,7 +93,7 @@ public final class CustomAnalyzer extends Analyzer {
      * @param tokenFilters the tokenFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer setTokenFilters(List<TokenFilterName> tokenFilters) {
+    public CustomAnalyzer setTokenFilters(List<String> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
     }
@@ -116,7 +106,7 @@ public final class CustomAnalyzer extends Analyzer {
      *
      * @return the charFilters value.
      */
-    public List<CharFilterName> getCharFilters() {
+    public List<String> getCharFilters() {
         return this.charFilters;
     }
 
@@ -129,7 +119,7 @@ public final class CustomAnalyzer extends Analyzer {
      * @param charFilters the charFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer setCharFilters(List<CharFilterName> charFilters) {
+    public CustomAnalyzer setCharFilters(List<String> charFilters) {
         this.charFilters = charFilters;
         return this;
     }

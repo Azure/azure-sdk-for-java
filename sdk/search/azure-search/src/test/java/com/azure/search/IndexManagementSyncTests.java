@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AnalyzerName;
+import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
@@ -17,7 +18,6 @@ import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
-import com.azure.search.models.CorsOptions;
 import com.azure.search.models.Suggester;
 import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -343,7 +343,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Field tagsField = getFieldByName(existingIndex, "Description_Custom");
         tagsField.setRetrievable(false)
-            .setSearchAnalyzer(AnalyzerName.WHITESPACE)
+            .setSearchAnalyzer(AnalyzerName.WHITESPACE.toString())
             .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
 
         Field hotelWebSiteField = new Field()

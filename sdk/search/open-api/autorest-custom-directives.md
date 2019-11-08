@@ -9,4 +9,12 @@ declare-directive:
       where: $.path,
       transform: `$.name = $.name === "${$.from}" ? "${$.to}" : $.name`
     }
+
+  # Change from object reference to string
+  change-object-ref-to-string: >-
+    {
+      from: 'swagger-document',
+      where: $.path,
+      transform: `delete $['$ref']; $['type'] = "string"`
+    }
 ```

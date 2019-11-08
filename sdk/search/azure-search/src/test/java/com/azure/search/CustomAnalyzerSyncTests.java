@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
     private SearchServiceClient searchServiceClient;
@@ -76,7 +77,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
             fields.add(new Field()
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
-                .setAnalyzer(allAnalyzerNames.get(i)));
+                .setAnalyzer(allAnalyzerNames.get(i).toString()));
         }
 
         List<AnalyzerName> searchAnalyzersAndIndexAnalyzers = getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer();
@@ -87,8 +88,8 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
                 .setSearchable(true)
-                .setSearchAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i))
-                .setIndexAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i)));
+                .setSearchAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i).toString())
+                .setIndexAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i).toString()));
         }
 
         fields.add(new Field()
@@ -102,21 +103,23 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         assertIndexesEqual(index, createdIndex);
 
         // Add language analyzers to searchAnalyzer and indexAnalyzer properties and expect failure
-        Field fieldWithLanguageAnalyzer = new Field()
-            .setName("field" + (fieldNumber++))
-            .setType(DataType.EDM_STRING)
-            .setSearchable(true)
-            .setSearchAnalyzer(AnalyzerName.EN_LUCENE)
-            .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT);
-        addFieldToIndex(index, fieldWithLanguageAnalyzer);
         try {
-            searchServiceClient.createOrUpdateIndex(index);
-            Assert.fail("createIndex did not throw an expected Exception");
+            new Field()
+                .setName("field")
+                .setType(DataType.EDM_STRING)
+                .setSearchAnalyzer(AnalyzerName.EN_LUCENE.toString());
         } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(),
-                ((HttpResponseException) ex).getResponse().getStatusCode());
-            Assert.assertTrue(ex.getMessage().contains("Language analyzers can be only specified in the Analyzer property."));
+            Assert.assertEquals(IllegalArgumentException.class, ex.getClass());
+            Assert.assertTrue(ex.getMessage().equals("Only non-language analyzer can be used as search analyzer."));
+        }
+        try {
+            new Field()
+                .setName("field")
+                .setType(DataType.EDM_STRING)
+                .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT.toString());
+        } catch (Exception ex) {
+            Assert.assertEquals(IllegalArgumentException.class, ex.getClass());
+            Assert.assertTrue(ex.getMessage().equals("Only non-language analyzer can be used as index analyzer."));
         }
     }
 
@@ -221,9 +224,13 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
     public void canUseAllAnalysisComponentNames() {
         Analyzer analyzerWithAllTokenFilterAndCharFilters =
             new CustomAnalyzer()
-                .setTokenizer(TokenizerName.LOWERCASE)
-                .setTokenFilters(Arrays.asList(TokenFilterName.values()))
-                .setCharFilters(Arrays.asList(CharFilterName.values()))
+                .setTokenizer(TokenizerName.LOWERCASE.toString())
+                .setTokenFilters(Stream.of(TokenFilterName.values())
+                    .map(tf -> tf.toString())
+                    .collect(Collectors.toList()))
+                .setCharFilters(Stream.of(CharFilterName.values())
+                    .map(cf -> cf.toString())
+                    .collect(Collectors.toList()))
                 .setName("abc");
 
         Index index = createTestIndex();
@@ -232,7 +239,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         analyzers.addAll(Arrays.asList(TokenizerName.values())
             .stream()
             .map(tn -> new CustomAnalyzer()
-                .setTokenizer(tn)
+                .setTokenizer(tn.toString())
                 .setName(generateName()))
             .collect(Collectors.toList()));
         index.setAnalyzers(analyzers);
