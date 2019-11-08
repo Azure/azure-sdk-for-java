@@ -4,7 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.pagedFluxError;	
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
