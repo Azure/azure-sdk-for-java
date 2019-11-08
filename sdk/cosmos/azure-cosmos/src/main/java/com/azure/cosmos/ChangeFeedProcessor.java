@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.changefeed.ChangeFeedObserver;
-import com.azure.cosmos.internal.changefeed.implementation.ChangeFeedProcessorBuilderImpl;
-import com.azure.cosmos.internal.changefeed.ChangeFeedObserver;
-import com.azure.cosmos.internal.changefeed.implementation.ChangeFeedProcessorBuilderImpl;
+import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedProcessorBuilderImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.List;

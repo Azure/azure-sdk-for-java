@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Document;
+import com.azure.cosmos.implementation.Document;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;

@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Trigger;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Trigger;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.Trigger;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

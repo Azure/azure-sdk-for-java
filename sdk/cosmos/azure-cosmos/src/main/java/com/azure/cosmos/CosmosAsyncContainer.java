@@ -2,14 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.Offer;
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.RequestOptions;
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.Offer;
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.RequestOptions;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.implementation.RequestOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

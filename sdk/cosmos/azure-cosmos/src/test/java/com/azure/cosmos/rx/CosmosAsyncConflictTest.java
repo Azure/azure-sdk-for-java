@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosConflictProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.internal.HttpConstants;
+import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;

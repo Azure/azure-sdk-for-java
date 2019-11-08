@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Document;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Document;
-import com.azure.cosmos.internal.ResourceResponse;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ResourceResponse;
 
 public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties>{
     private CosmosAsyncItem itemClient;

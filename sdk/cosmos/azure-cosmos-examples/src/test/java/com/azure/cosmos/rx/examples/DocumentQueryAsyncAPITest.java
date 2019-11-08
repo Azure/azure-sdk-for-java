@@ -2,22 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.Document;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.internal.DocumentCollection;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.internal.RequestOptions;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
-import com.azure.cosmos.internal.HttpConstants;
+import com.azure.cosmos.implementation.HttpConstants;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.reactivestreams.Subscription;
 import org.testng.annotations.AfterClass;

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.internal.Document;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;

@@ -4,8 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

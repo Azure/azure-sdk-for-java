@@ -4,9 +4,9 @@
 package com.azure.cosmos.rx.examples.multimaster.samples;
 
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.internal.Document;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import org.slf4j.Logger;

@@ -3,14 +3,10 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.QueryMetrics;
-import com.azure.cosmos.internal.QueryMetricsConstants;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.QueryMetrics;
-import com.azure.cosmos.internal.QueryMetricsConstants;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.QueryMetricsConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;

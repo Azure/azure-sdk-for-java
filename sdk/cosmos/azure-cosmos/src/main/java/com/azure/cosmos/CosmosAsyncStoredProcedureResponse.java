@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.StoredProcedure;
-import com.azure.cosmos.internal.StoredProcedureResponse;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.StoredProcedure;
-import com.azure.cosmos.internal.StoredProcedureResponse;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.implementation.StoredProcedureResponse;
 
 public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosStoredProcedureProperties> {
 
