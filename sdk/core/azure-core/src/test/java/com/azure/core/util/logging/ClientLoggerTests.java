@@ -30,6 +30,11 @@ public class ClientLoggerTests {
 
     @BeforeEach
     public void setupLoggingConfiguration() {
+        /*
+         * Indicate to SLF4J to enable trace level logging for a logger named
+         * com.azure.core.util.logging.ClientLoggerTests. Trace is the maximum level of logging supported by the
+         * ClientLogger.
+         */
         System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests", "trace");
 
         /*
@@ -44,7 +49,6 @@ public class ClientLoggerTests {
     @AfterEach
     public void revertLoggingConfiguration() {
         System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests");
-
         System.setErr(originalSystemErr);
     }
 
@@ -58,6 +62,8 @@ public class ClientLoggerTests {
 
     /**
      * Tests that logging at the same level as the environment logging level will log.
+     *
+     * @param logLevel Logging level to log a message
      */
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
     @ValueSource(ints = { 1, 2, 3, 4 })
@@ -74,6 +80,8 @@ public class ClientLoggerTests {
 
     /**
      * Tests that logging at a level that is less than the environment logging level doesn't log anything.
+     *
+     * @param logLevel Logging level to log a message
      */
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
     @ValueSource(ints = { 1, 2, 3 })
@@ -90,7 +98,8 @@ public class ClientLoggerTests {
 
     /**
      * Tests that logging when the environment log level is disabled nothing is logged.
-     * @param logLevel
+     *
+     * @param logLevel Logging level to log a message
      */
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
     @ValueSource(ints = { 1, 2, 3, 4 })
@@ -141,6 +150,11 @@ public class ClientLoggerTests {
         assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
 
+    /**
+     * Tests that logging an exception as warning won't include the stack trace when the environment log level isn't
+     * VERBOSE. Additionally, this tests that the exception message isn't logged twice as logging an exception uses
+     * the exception message as the format string.
+     */
     @Test
     public void logExceptionAsWarningOnlyExceptionMessage() {
         String exceptionMessage = "An exception message";
@@ -155,6 +169,10 @@ public class ClientLoggerTests {
         assertFalse(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
 
+    /**
+     * Tests that logging an exception as warning will include the stack trace when the environment log level is set to
+     * VERBOSE.
+     */
     @Test
     public void logExceptionAsWarningStackTrace() {
         String exceptionMessage = "An exception message";
@@ -169,6 +187,11 @@ public class ClientLoggerTests {
         assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
 
+    /**
+     * Tests that logging an exception as error won't include the stack trace when the environment log level isn't
+     * VERBOSE. Additionally, this tests that the exception message isn't logged twice as logging an exception uses
+     * the exception message as the format string.
+     */
     @Test
     public void logExceptionAsErrorOnlyExceptionMessage() {
         String exceptionMessage = "An exception message";
@@ -183,6 +206,10 @@ public class ClientLoggerTests {
         assertFalse(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
 
+    /**
+     * Tests that logging an exception as error will include the stack trace when the environment log level is set to
+     * VERBOSE.
+     */
     @Test
     public void logExceptionAsErrorStackTrace() {
         String exceptionMessage = "An exception message";
