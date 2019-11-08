@@ -155,7 +155,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (suboptimalServerPartitionTimestamp != null) {
             logger.debug("suboptimalServerPartitionTimestamp is {}", suboptimalServerPartitionTimestamp);
-            
+
             boolean forceRefreshDueToSuboptimalPartitionReplicaSet = Duration.between(suboptimalServerPartitionTimestamp, Instant.now()).getSeconds()
                     > this.suboptimalPartitionForceRefreshIntervalInSeconds;
 
@@ -235,7 +235,7 @@ public class GatewayAddressCache implements IAddressCache {
                             }
                             return Mono.error(unwrappedException);
                         }
-            
+
                     });
     }
 
@@ -256,6 +256,11 @@ public class GatewayAddressCache implements IAddressCache {
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
         if (forceRefresh) {
             headers.put(HttpConstants.HttpHeaders.FORCE_REFRESH, Boolean.TRUE.toString());
+        }
+
+        if(request.forceCollectionRoutingMapRefresh)
+        {
+            headers.put(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH, Boolean.TRUE.toString());
         }
 
         addressQuery.put(HttpConstants.QueryStrings.FILTER, HttpUtils.urlEncode(this.protocolFilter));
@@ -450,6 +455,11 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (useMasterCollectionResolver) {
             headers.put(HttpConstants.HttpHeaders.USE_MASTER_COLLECTION_RESOLVER, Boolean.TRUE.toString());
+        }
+
+        if(request.forceCollectionRoutingMapRefresh)
+        {
+            headers.put(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH, Boolean.TRUE.toString());
         }
 
         queryParameters.put(HttpConstants.QueryStrings.FILTER, HttpUtils.urlEncode(this.protocolFilter));
