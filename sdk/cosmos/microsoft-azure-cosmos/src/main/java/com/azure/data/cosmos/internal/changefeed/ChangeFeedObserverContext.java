@@ -34,5 +34,5 @@ public interface ChangeFeedObserverContext {
      *
      * @return a representation of the deferred computation of this call.
      */
-    Mono<Void> checkpoint();
+    Mono<Lease> checkpoint();
 }

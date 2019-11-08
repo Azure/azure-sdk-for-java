@@ -16,7 +16,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-media</artifactId>
-  <version>1.0.0-preview.1</version> <!-- {x-version-update;com.microsoft.azure:azure-media;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-media;current} -->
   <packaging>jar</packaging>
   <name>Microsoft Azure SDK for Media Services</name>
   <description>This package contains Microsoft Azure SDK for Media Services.</description>

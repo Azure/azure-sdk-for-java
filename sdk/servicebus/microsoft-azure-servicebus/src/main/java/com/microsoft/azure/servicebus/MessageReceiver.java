@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
 
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
@@ -51,7 +52,8 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     private CoreMessageReceiver internalReceiver = null;
     private boolean isInitialized = false;
     private MessageBrowser browser = null;
-    private int messagePrefetchCount;    
+    private int messagePrefetchCount;
+    private ScheduledFuture<?> requestResponseLockTokenPruner = null;
 
     private final ConcurrentHashMap<UUID, Instant> requestResponseLockTokensToLockTimesMap;
 
@@ -529,6 +531,9 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
             } else {
                 TRACE_LOGGER.info("Closing MessageReceiver to entity '{}'", this.entityPath);
             }
+			if (this.requestResponseLockTokenPruner != null) {
+				this.requestResponseLockTokenPruner.cancel(false);
+			}
             CompletableFuture<Void> closeReceiverFuture = this.internalReceiver.closeAsync();
 
             return closeReceiverFuture.thenComposeAsync((v) -> {
@@ -753,7 +758,11 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     private void schedulePruningRequestResponseLockTokens() {
         // Run it every 1 hour
-        Timer.schedule(() -> {
+        this.requestResponseLockTokenPruner = Timer.schedule(() -> {
+        	if (MessageReceiver.this.getIsClosed())	{
+        		MessageReceiver.this.requestResponseLockTokenPruner.cancel(true);
+	    		return;
+	    	}
             Instant systemTime = Instant.now();
             Entry<UUID, Instant>[] copyOfEntries = (Entry<UUID, Instant>[]) MessageReceiver.this.requestResponseLockTokensToLockTimesMap.entrySet().toArray();
             for (Entry<UUID, Instant> entry : copyOfEntries) {

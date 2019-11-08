@@ -34,7 +34,7 @@ import java.util.function.Supplier;
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-blob";
     // {x-version-update-start;com.azure:azure-storage-blob;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0-preview.1";
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0-beta.1";
     // {x-version-update-end}
 
     /**

@@ -45,6 +45,11 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
 
 
     @Override
+    public String hanaDbCredentialsMsiId() {
+        return this.inner().hanaDbCredentialsMsiId();
+    }
+
+    @Override
     public String hanaDbName() {
         return this.inner().hanaDbName();
     }
@@ -52,6 +57,11 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     @Override
     public String hanaDbPassword() {
         return this.inner().hanaDbPassword();
+    }
+
+    @Override
+    public String hanaDbPasswordKeyVaultUrl() {
+        return this.inner().hanaDbPasswordKeyVaultUrl();
     }
 
     @Override
@@ -75,8 +85,29 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     }
 
     @Override
+    public String keyVaultId() {
+        return this.inner().keyVaultId();
+    }
+
+    @Override
+    public String logAnalyticsWorkspaceArmId() {
+        return this.inner().logAnalyticsWorkspaceArmId();
+    }
+
+    @Override
+    public String managedResourceGroupName() {
+        return this.inner().managedResourceGroupName();
+    }
+
+    @Override
     public HanaProvisioningStatesEnum provisioningState() {
         return this.inner().provisioningState();
+    }
+
+    @Override
+    public SapMonitorImpl withHanaDbCredentialsMsiId(String hanaDbCredentialsMsiId) {
+        this.inner().withHanaDbCredentialsMsiId(hanaDbCredentialsMsiId);
+        return this;
     }
 
     @Override
@@ -88,6 +119,12 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     @Override
     public SapMonitorImpl withHanaDbPassword(String hanaDbPassword) {
         this.inner().withHanaDbPassword(hanaDbPassword);
+        return this;
+    }
+
+    @Override
+    public SapMonitorImpl withHanaDbPasswordKeyVaultUrl(String hanaDbPasswordKeyVaultUrl) {
+        this.inner().withHanaDbPasswordKeyVaultUrl(hanaDbPasswordKeyVaultUrl);
         return this;
     }
 
@@ -112,6 +149,12 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     @Override
     public SapMonitorImpl withHanaSubnet(String hanaSubnet) {
         this.inner().withHanaSubnet(hanaSubnet);
+        return this;
+    }
+
+    @Override
+    public SapMonitorImpl withKeyVaultId(String keyVaultId) {
+        this.inner().withKeyVaultId(keyVaultId);
         return this;
     }
 
