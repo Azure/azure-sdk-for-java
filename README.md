@@ -9,7 +9,7 @@ You can find a complete list of all the packages for these libraries [here](pack
 
 ### Important: 
 We have released 'azure-sdk-for-java' GA( i.e. General Availability ) in November 2019. We recommend using stable and officially supported GA versions of these packages.
-You can find more detail [here](https://github.com/Azure/azure-sdk/blob/master/releases/2019-11/2019-11-java.md).
+You can find more detail GA library versions [here](https://github.com/Azure/azure-sdk/blob/master/releases/2019-11/2019-11-java.md).
 
 ## Getting started
 
@@ -23,7 +23,7 @@ Java 8 or later is required to use the November 2019 client libraries, otherwise
 ## Branches
 
 ### Master branch
-The master branch represent more recent code with new features and bug fixes. It does not represent latest released GA code base. See [below](#Client-GA-November-2019-Releases) for latest **GA** release.
+The master branch represent more recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [below](#Client-GA-November-2019-Releases) for latest **GA** release.
 
 ## Latest Release
 Each service might have a number of libraries available from each of the following categories:
