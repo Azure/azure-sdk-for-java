@@ -8,7 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 import reactor.core.publisher.Mono;
 
