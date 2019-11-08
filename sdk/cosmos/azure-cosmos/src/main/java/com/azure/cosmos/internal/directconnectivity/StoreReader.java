@@ -7,12 +7,12 @@ import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.GoneException;
-import com.azure.cosmos.internal.ISessionContainer;
 import com.azure.cosmos.InternalServerErrorException;
 import com.azure.cosmos.PartitionIsMigratingException;
 import com.azure.cosmos.PartitionKeyRangeGoneException;
 import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.internal.HttpConstants;
+import com.azure.cosmos.internal.ISessionContainer;
 import com.azure.cosmos.internal.ISessionToken;
 import com.azure.cosmos.internal.Integers;
 import com.azure.cosmos.internal.MutableVolatile;
@@ -248,7 +248,11 @@ public class StoreReader {
             for (StoreResult srr : newStoreResults) {
 
                 entity.requestContext.requestChargeTracker.addCharge(srr.requestCharge);
-                BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, srr);
+                try {
+                    BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, srr);
+                } catch (Exception e) {
+                    logger.error("Unexpected failure while recording response", e);
+                }
                 if (srr.isValid) {
 
                     try {
@@ -557,7 +561,11 @@ public class StoreReader {
         });
 
         return storeResultObs.map(storeResult -> {
-            BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, storeResult);
+            try {
+                BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, storeResult);
+            } catch (Exception e) {
+                logger.error("Unexpected failure while recording response", e);
+            }
             entity.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
 
             if (storeResult.isGoneException && !storeResult.isInvalidPartitionException) {

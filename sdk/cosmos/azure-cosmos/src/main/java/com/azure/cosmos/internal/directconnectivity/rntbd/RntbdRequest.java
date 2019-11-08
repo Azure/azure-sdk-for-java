@@ -38,7 +38,7 @@ public final class RntbdRequest {
     @JsonIgnore
     @SuppressWarnings("unchecked")
     public <T> T getHeader(final RntbdRequestHeader header) {
-        return (T)this.headers.get(header).getValue();
+        return (T) this.headers.get(header).getValue();
     }
 
     public Long getTransportRequestId() {
