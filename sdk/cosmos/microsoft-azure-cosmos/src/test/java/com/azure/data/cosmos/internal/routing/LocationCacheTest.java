@@ -300,14 +300,11 @@ public class LocationCacheTest {
         }
 
         if (shouldRefreshEndpoints) {
-            if(isMostPreferredLocationUnavailableForRead)
-            {
+            if (isMostPreferredLocationUnavailableForRead) {
                 assertThat(canRefreshInBackgroundHolder.v).isEqualTo(hasMoreThanOneReadEndpoints);
-            } else if(isMostPreferredLocationUnavailableForWrite)
-            {
+            } else if (isMostPreferredLocationUnavailableForWrite) {
                 assertThat(canRefreshInBackgroundHolder.v).isEqualTo(hasMoreThanOneWriteEndpoints);
             }
-
         }
     }
 

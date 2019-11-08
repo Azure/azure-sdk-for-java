@@ -320,8 +320,7 @@ public class LocationCache {
         Utils.ValueHolder<LocationUnavailabilityInfo> unavailabilityInfoHolder = new Utils.ValueHolder<>();
         boolean anyEndpointsAvailable = false;
         for (URL endpoint : endpoints) {
-            if(!isEndpointUnavailable(endpoint, expectedAvailableOperations))
-            {
+            if (!isEndpointUnavailable(endpoint, expectedAvailableOperations)) {
                 anyEndpointsAvailable = true;
                 break;
             }

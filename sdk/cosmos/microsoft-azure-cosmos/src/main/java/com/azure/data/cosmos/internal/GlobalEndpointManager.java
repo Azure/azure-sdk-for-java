@@ -185,8 +185,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                         return dbAccount;
                     }).flatMap(dbAccount -> {
                         // trigger a startRefreshLocationTimerAsync don't wait on it.
-                        if(!this.refreshInBackground.get())
-                        {
+                        if (!this.refreshInBackground.get()) {
                             this.startRefreshLocationTimerAsync();
                         }
                         return Mono.empty();
@@ -194,10 +193,10 @@ public class GlobalEndpointManager implements AutoCloseable {
                 }
 
                 // trigger a startRefreshLocationTimerAsync don't wait on it.
-                if(!this.refreshInBackground.get())
-                {
+                if (!this.refreshInBackground.get()) {
                     this.startRefreshLocationTimerAsync();
                 }
+
                 this.isRefreshing.set(false);
                 return Mono.empty();
             } else {
