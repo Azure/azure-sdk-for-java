@@ -52,7 +52,7 @@
       <activation>
         <property>
           <name>env.SDKTYPE</name>
-          <value>mgmt</value>
+          <value>management</value>
         </property>
       </activation>
       <modules>

@@ -39,6 +39,9 @@ pr:
       - sdk/keyvault/microsoft-azure
       - sdk/keyvault/azure-mgmt-
 
+variables:
+  SdkType: client
+
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
