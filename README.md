@@ -24,7 +24,7 @@ Java 8 or later is required to use the November 2019 client libraries, otherwise
 ### Master branch
 The master branch represent more recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [below](#Client-GA-November-2019-Releases) for latest **GA** release.<br/>
 For each package we release there will be a unique git tag created that contains the name and the version of the package to mark the commit of the code that produced the package. This tag will be used for servicing via hotfix branches as well as debugging the code for a particular preview or stable release version.
-Format of the release tags are <package-name>_<package-version>. For more information please [see](https://github.com/Azure/azure-sdk/blob/master/docs/policies/repobranching.md#release-tagging)
+Format of the release tags are &lt;package-name&gt;_&lt;package-version&gt;. For more information please [see](https://github.com/Azure/azure-sdk/blob/master/docs/policies/repobranching.md#release-tagging)
 
 ## Latest Release
 Each service might have a number of libraries available from each of the following categories:
