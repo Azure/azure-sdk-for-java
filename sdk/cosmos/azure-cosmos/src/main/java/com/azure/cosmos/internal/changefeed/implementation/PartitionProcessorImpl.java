@@ -13,6 +13,7 @@ import com.azure.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.internal.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.internal.changefeed.PartitionProcessor;
 import com.azure.cosmos.internal.changefeed.ProcessorSettings;
+import com.azure.cosmos.internal.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.internal.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.internal.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.internal.changefeed.exceptions.TaskCancelledException;
@@ -96,11 +97,14 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 this.lastContinuation = documentFeedResponse.getContinuationToken();
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     return this.dispatchChanges(documentFeedResponse)
-                        .doFinally( (Void) -> {
-                            this.options.setRequestContinuation(this.lastContinuation);
+                        .doOnError(throwable -> {
+                            logger.debug("Exception was thrown from thread {}", Thread.currentThread().getId(), throwable);
+                        })
+                        .doOnSuccess((Void) -> {
+                        this.options.setRequestContinuation(this.lastContinuation);
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
-                        }).flux();
+                        });
                 }
                 this.options.setRequestContinuation(this.lastContinuation);
 
@@ -119,7 +123,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 if (throwable instanceof CosmosClientException) {
 
                     CosmosClientException clientException = (CosmosClientException) throwable;
-                    this.logger.warn("Exception: partition {}", this.options.getPartitionKey().getInternalPartitionKey(), clientException);
+                    logger.warn("CosmosClientException: partition {} from thread {}",
+                        this.options.getPartitionKey().getInternalPartitionKey(), Thread.currentThread().getId(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
@@ -136,12 +141,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             if (this.options.getMaxItemCount() == null) {
                                 this.options.setMaxItemCount(DefaultMaxItemCount);
                             } else if (this.options.getMaxItemCount() <= 1) {
-                                this.logger.error("Cannot reduce getMaxItemCount further as it's already at {}", this.options.getMaxItemCount(), clientException);
+                                logger.error("Cannot reduce maxItemCount further as it's already at {}", this.options.getMaxItemCount(), clientException);
                                 this.resultException = new RuntimeException(clientException);
                             }
 
                             this.options.setMaxItemCount(this.options.getMaxItemCount() / 2);
-                            this.logger.warn("Reducing getMaxItemCount, new getValue: {}", this.options.getMaxItemCount());
+                            logger.warn("Reducing maxItemCount, new value: {}", this.options.getMaxItemCount());
                             return Flux.empty();
                         }
                         case TRANSIENT_ERROR: {
@@ -151,20 +156,28 @@ class PartitionProcessorImpl implements PartitionProcessor {
                                 return Mono.just(clientException.getRetryAfterInMilliseconds()) // set some seed value to be able to run
                                     // the repeat loop
                                     .delayElement(Duration.ofMillis(100))
-                                    .repeat( () -> {
+                                    .repeat(() -> {
                                         ZonedDateTime currentTime = ZonedDateTime.now();
                                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
-                                    }).flatMap( values -> Flux.empty());
+                                    }).flatMap(values -> Flux.empty());
                             }
                         }
                         default: {
-                            this.logger.error("Unrecognized DocDbError enum getValue {}", docDbError, clientException);
+                            logger.error("Unrecognized Cosmos exception returned error code {}", docDbError, clientException);
                             this.resultException = new RuntimeException(clientException);
                         }
                     }
+                } else if (throwable instanceof LeaseLostException) {
+                        logger.info("LeaseLoseException with partition {} from thread {}",
+                            this.options.getPartitionKey().getInternalPartitionKey(), Thread.currentThread().getId());
+                        this.resultException = (LeaseLostException) throwable;
                 } else if (throwable instanceof TaskCancelledException) {
-                    this.logger.debug("Exception: partition {}", this.settings.getPartitionKeyRangeId(), throwable);
+                    logger.debug("Task cancelled exception: partition {} from {}",
+                        this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId(), throwable);
                     this.resultException = (TaskCancelledException) throwable;
+                } else {
+                    logger.warn("Unexpected exception from thread {}", Thread.currentThread().getId(), throwable);
+                    this.resultException = new RuntimeException(throwable);
                 }
                 return Flux.error(throwable);
             })
@@ -176,8 +189,13 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                 return true;
             })
-            .onErrorResume(throwable -> Flux.empty())
-            .then();
+            .onErrorResume(throwable -> {
+                if (this.resultException == null) {
+                    this.resultException = new RuntimeException(throwable);
+                }
+
+                return Flux.empty();
+            }).then();
     }
 
     @Override
