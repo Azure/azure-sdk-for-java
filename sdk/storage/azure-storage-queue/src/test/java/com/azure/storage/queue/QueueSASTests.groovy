@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
@@ -32,6 +33,7 @@ class QueueSASTests extends APISpec {
         queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
     }
 
+    @DoNotRecord
     @Unroll
     def "QueueSASPermission parse"() {
         when:
@@ -55,6 +57,7 @@ class QueueSASTests extends APISpec {
         "ur"       || true  | false | true   | false
     }
 
+    @DoNotRecord
     @Unroll
     def "QueueSASPermission toString"() {
         setup:
@@ -77,6 +80,7 @@ class QueueSASTests extends APISpec {
         true  | true  | true   | true    || "raup"
     }
 
+    @DoNotRecord
     def "QueueSASPermission parse IA"() {
         when:
         QueueSasPermission.parse("rwaq")
@@ -85,6 +89,7 @@ class QueueSASTests extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @DoNotRecord
     def "queueServiceSASSignatureValues canonicalizedResource"() {
         setup:
         def queueName = queueClient.getQueueName()

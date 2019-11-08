@@ -58,8 +58,6 @@ public final class BuilderHelper {
             URL url = new URL(endpoint);
             QueueUrlParts parts = new QueueUrlParts();
 
-            parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority());
-
             if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
                 // URL is using an IP pattern of http://127.0.0.1:10000/accountName/queueName
                 // or http://localhost:10000/accountName/queueName
@@ -70,12 +68,15 @@ public final class BuilderHelper {
 
                 String[] pathPieces = path.split("/", 2);
                 parts.setAccountName(pathPieces[0]);
+                parts.setEndpoint(String.format("%s://%s/%s",
+                    url.getProtocol(), url.getAuthority(), parts.getAccountName()));
 
                 if (pathPieces.length == 2) {
                     parts.setQueueName(pathPieces[1]);
                 }
             } else {
                 // URL is using a pattern of http://accountName.blob.core.windows.net/queueName
+                parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
                 String host = url.getHost();
 
                 String accountName = null;

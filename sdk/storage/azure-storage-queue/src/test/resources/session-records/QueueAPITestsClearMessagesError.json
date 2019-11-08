@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsclearmessageserror5681502a301155707/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsclearmessageserror98020a856a9193aad/messages",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "b681b337-2152-49f6-a7b7-93db43816707"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "3ac16556-fff1-4c4c-861d-f094519e6185"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e8517-f003-0082-158d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e8517-f003-0082-158d-839126000000\nTime:2019-10-15T19:19:41.1740288Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:40 GMT",
+      "x-ms-request-id" : "9ab30678-e003-009d-0384-964a36000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:9ab30678-e003-009d-0384-964a36000000\nTime:2019-11-08T22:32:14.5201949Z</Message></Error>",
+      "Date" : "Fri, 08 Nov 2019 22:32:14 GMT",
+      "x-ms-client-request-id" : "3ac16556-fff1-4c4c-861d-f094519e6185",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsclearmessageserror5681502a301155707" ]
+  "variables" : [ "queueapitestsclearmessageserror98020a856a9193aad" ]
 }

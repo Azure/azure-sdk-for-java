@@ -4,8 +4,10 @@
 package com.azure.storage.queue
 
 import com.azure.core.http.HttpClient
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.TestRunVerifier
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.Context
@@ -18,8 +20,7 @@ import java.time.OffsetDateTime
 
 class APISpec extends Specification {
     // Field common used for all APIs.
-    def logger = new ClientLogger(APISpec.class)
-    def AZURE_TEST_MODE = "AZURE_TEST_MODE"
+    static String AZURE_TEST_MODE = "AZURE_TEST_MODE"
     InterceptorManager interceptorManager
     TestResourceNamer testResourceName
 
@@ -30,8 +31,9 @@ class APISpec extends Specification {
 
     // Test name for test method name.
     String methodName
-    def testMode = getTestMode()
+    static TestMode testMode = getTestMode()
     String connectionString
+    TestRunVerifier testRunVerifier
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = false
@@ -43,49 +45,44 @@ class APISpec extends Specification {
         String testName = refactorName(specificationContext.currentIteration.getName())
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
-        logger.info("Test Mode: {}, Name: {}", testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, testMode)
-        testResourceName = new TestResourceNamer(methodName, testMode, interceptorManager.getRecordedData())
-        if (getTestMode() == TestMode.RECORD) {
-            connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
-        } else {
-            connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
-                "EndpointSuffix=core.windows.net"
-        }
+
+        testRunVerifier = new TestRunVerifier(specificationContext.getCurrentFeature().getFeatureMethod().getReflection())
+        testRunVerifier.verifyTestCanRun(testMode)
+
+        interceptorManager = new InterceptorManager(methodName, testMode, testRunVerifier.doNotRecordTest())
+        testResourceName = new TestResourceNamer(methodName, testMode, testRunVerifier.doNotRecordTest(), interceptorManager.getRecordedData())
+
+        connectionString = (testMode == TestMode.PLAYBACK)
+            ? "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
+            : Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
     }
 
     /**
      * Clean up the test queues and messages for the account.
      */
     def cleanup() {
-
-        interceptorManager.close()
-        if (getTestMode() == TestMode.RECORD) {
-            QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
-                .connectionString(connectionString)
-                .buildClient()
-            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName.toLowerCase()),
-                Duration.ofSeconds(30), Context.NONE).each {
-                queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.getName())
+        if (testRunVerifier.wasTestRan()) {
+            interceptorManager.close()
+            if (getTestMode() != TestMode.PLAYBACK) {
+                QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
+                    .connectionString(connectionString)
+                    .buildClient()
+                cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName.toLowerCase()),
+                    Duration.ofSeconds(30), Context.NONE).each {
+                    queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.getName())
+                }
             }
         }
     }
 
-    /**
-     * Test mode is initialized whenever test is executed. Helper method which is used to determine what to do under
-     * certain test mode.
-     * @return The TestMode:
-     * <ul>
-     *     <li>Playback: (default if no test mode setup)</li>
-     * </ul>
-     */
-    def getTestMode() {
+    static def getTestMode() {
+        def logger = new ClientLogger(APISpec.class)
         def azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
         if (azureTestMode != null) {
             try {
                 return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException ignored) {
                 logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode)
                 return TestMode.PLAYBACK
             }
@@ -96,32 +93,28 @@ class APISpec extends Specification {
     }
 
     def queueServiceBuilderHelper(final InterceptorManager interceptorManager) {
-        if (testMode == TestMode.RECORD) {
-            return new QueueServiceClientBuilder()
-                .connectionString(connectionString)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
-        } else {
-            return new QueueServiceClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
+        def builder = new QueueServiceClientBuilder()
+            .connectionString(connectionString)
+            .httpClient(getHttpClient(interceptorManager))
+
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
+
+        return builder
     }
 
     def queueBuilderHelper(final InterceptorManager interceptorManager) {
-        def queueName = testResourceName.randomName("queue", 16)
-        if (testMode == TestMode.RECORD) {
-            return new QueueClientBuilder()
-                .connectionString(connectionString)
-                .queueName(queueName)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
-        } else {
-            return new QueueClientBuilder()
-                .connectionString(connectionString)
-                .queueName(queueName)
-                .httpClient(interceptorManager.getPlaybackClient())
+        def builder = new QueueClientBuilder()
+            .connectionString(connectionString)
+            .queueName(testResourceName.randomName("queue", 16))
+            .httpClient(getHttpClient(interceptorManager))
+
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
+
+        return builder
     }
 
     private def refactorName(String text) {
@@ -138,7 +131,13 @@ class APISpec extends Specification {
         return testResourceName.now()
     }
 
-    static HttpClient getHttpClient() {
-        return HttpClient.createDefault()
+    def getHttpClient(InterceptorManager interceptorManager) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
+            return new NettyAsyncHttpClientBuilder().wiretap(true).build()
+        } else if (testMode == TestMode.PLAYBACK) {
+            return interceptorManager.getPlaybackClient()
+        } else {
+            return HttpClient.createDefault()
+        }
     }
 }

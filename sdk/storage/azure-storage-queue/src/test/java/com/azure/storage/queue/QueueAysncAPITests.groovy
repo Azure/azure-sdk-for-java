@@ -3,13 +3,13 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueMessageItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import reactor.test.StepVerifier
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -30,6 +30,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
     }
 
+    @DoNotRecord
     def "Get queue URL"() {
         given:
         def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
@@ -42,6 +43,7 @@ class QueueAysncAPITests extends APISpec {
         expectURL == queueURL
     }
 
+    @DoNotRecord
     def "IP based endpoint"() {
         when:
         def queueAsyncClient = new QueueClientBuilder()
@@ -50,6 +52,7 @@ class QueueAysncAPITests extends APISpec {
             .buildAsyncClient()
 
         then:
+        queueAsyncClient.getQueueUrl() == "http://127.0.0.1:10001/devstoreaccount1/myqueue"
         queueAsyncClient.getAccountName() == "devstoreaccount1"
         queueAsyncClient.getQueueName() == "myqueue"
     }
@@ -59,12 +62,6 @@ class QueueAysncAPITests extends APISpec {
         StepVerifier.create(queueAsyncClient.createWithResponse(null)).assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 201) }
             .verifyComplete()
-    }
-
-    // TODO: Will implement the test after introduce the sas token generator
-    @Ignore
-    def "Create queue with sas token"() {
-
     }
 
     def "Delete exist queue"() {
@@ -289,7 +286,7 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
         peekMsgVerifier.assertNext {
             assert expectMsg == it.getMessageText()
-        }
+        }.verifyComplete()
     }
 
     def "Enqueue empty message"() {
@@ -304,7 +301,7 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
         peekMsgVerifier.assertNext {
             assert it.getMessageText() == null
-        }
+        }.verifyComplete()
     }
 
     def "Enqueue time to live"() {

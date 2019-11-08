@@ -1,85 +1,89 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeletemessageinvalidargs0693965ccc692d",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeletemessageinvalidargs020118f4187c98",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "68c1843a-4fb6-417f-b778-25c2a58a0c4e"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "5efea6dd-d9fd-46dc-aad6-67d92bd6d757"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a9a4aa96-a003-0116-46fc-84b7bd000000",
-      "Date" : "Thu, 17 Oct 2019 15:06:50 GMT"
+      "x-ms-request-id" : "9ab306f0-e003-009d-6584-964a36000000",
+      "Date" : "Fri, 08 Nov 2019 22:32:14 GMT",
+      "x-ms-client-request-id" : "5efea6dd-d9fd-46dc-aad6-67d92bd6d757"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeletemessageinvalidargs0693965ccc692d/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeletemessageinvalidargs020118f4187c98/messages",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "4358d887-a3bf-40d4-b776-3aa6e864f580",
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "74a0e156-3dad-4e3f-b64c-16661bb3992a",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a9a4aae9-a003-0116-0bfc-84b7bd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>0e4d5847-0aa4-463a-9e43-698deb9b5ad5</MessageId><InsertionTime>Thu, 17 Oct 2019 15:06:50 GMT</InsertionTime><ExpirationTime>Thu, 24 Oct 2019 15:06:50 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAdaACgfyE1QE=</PopReceipt><TimeNextVisible>Thu, 17 Oct 2019 15:06:50 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
-      "Date" : "Thu, 17 Oct 2019 15:06:50 GMT",
+      "x-ms-request-id" : "9ab306fd-e003-009d-6f84-964a36000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>ded1d109-edd5-463c-bf92-d73c3ef13687</MessageId><InsertionTime>Fri, 08 Nov 2019 22:32:14 GMT</InsertionTime><ExpirationTime>Fri, 15 Nov 2019 22:32:14 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAxazrXoSW1QE=</PopReceipt><TimeNextVisible>Fri, 08 Nov 2019 22:32:14 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Fri, 08 Nov 2019 22:32:14 GMT",
+      "x-ms-client-request-id" : "74a0e156-3dad-4e3f-b64c-16661bb3992a",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeletemessageinvalidargs0693965ccc692d/messages?numofmessages=1",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeletemessageinvalidargs020118f4187c98/messages?numofmessages=1",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "58c03a32-39e8-4c9f-bea6-dcc1342488b9"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "895d37f1-ed82-4d76-b3c7-ea1b771d4202"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "a9a4ab0c-a003-0116-25fc-84b7bd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>0e4d5847-0aa4-463a-9e43-698deb9b5ad5</MessageId><InsertionTime>Thu, 17 Oct 2019 15:06:50 GMT</InsertionTime><ExpirationTime>Thu, 24 Oct 2019 15:06:50 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAADfv1kvyE1QE=</PopReceipt><TimeNextVisible>Thu, 17 Oct 2019 15:07:20 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test message</MessageText></QueueMessage></QueueMessagesList>",
-      "Date" : "Thu, 17 Oct 2019 15:06:50 GMT",
+      "x-ms-request-id" : "9ab30706-e003-009d-7784-964a36000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>ded1d109-edd5-463c-bf92-d73c3ef13687</MessageId><InsertionTime>Fri, 08 Nov 2019 22:32:14 GMT</InsertionTime><ExpirationTime>Fri, 15 Nov 2019 22:32:14 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAOqjScISW1QE=</PopReceipt><TimeNextVisible>Fri, 08 Nov 2019 22:32:45 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test message</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Fri, 08 Nov 2019 22:32:14 GMT",
+      "x-ms-client-request-id" : "895d37f1-ed82-4d76-b3c7-ea1b771d4202",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeletemessageinvalidargs0693965ccc692d/messages/0e4d5847-0aa4-463a-9e43-698deb9b5ad5?popreceipt=AgAAAAMAAAAAAAAADfv1kvyE1QE%3dRandom",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsdeletemessageinvalidargs020118f4187c98/messages/ded1d109-edd5-463c-bf92-d73c3ef13687?popreceipt=AgAAAAMAAAAAAAAAOqjScISW1QE%3dRandom",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "e409f8c7-49a2-4059-9c58-c65e71eb233f"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "851c33e0-e1cd-46dc-bb5f-dee5e2cd4fde"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidQueryParameterValue",
       "retry-after" : "0",
       "Content-Length" : "444",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a9a4ab24-a003-0116-38fc-84b7bd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:a9a4ab24-a003-0116-38fc-84b7bd000000\nTime:2019-10-17T15:06:51.0297716Z</Message><QueryParameterName>popreceipt</QueryParameterName><QueryParameterValue>AgAAAAMAAAAAAAAADfv1kvyE1QE=Random</QueryParameterValue><Reason>Invalid pop receipt format</Reason></Error>",
-      "Date" : "Thu, 17 Oct 2019 15:06:50 GMT",
+      "x-ms-request-id" : "9ab3070e-e003-009d-7f84-964a36000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:9ab3070e-e003-009d-7f84-964a36000000\nTime:2019-11-08T22:32:15.0406879Z</Message><QueryParameterName>popreceipt</QueryParameterName><QueryParameterValue>AgAAAAMAAAAAAAAAOqjScISW1QE=Random</QueryParameterValue><Reason>Invalid pop receipt format</Reason></Error>",
+      "Date" : "Fri, 08 Nov 2019 22:32:14 GMT",
+      "x-ms-client-request-id" : "851c33e0-e1cd-46dc-bb5f-dee5e2cd4fde",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsdeletemessageinvalidargs0693965ccc692d" ]
+  "variables" : [ "queueapitestsdeletemessageinvalidargs020118f4187c98" ]
 }

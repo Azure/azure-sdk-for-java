@@ -3,20 +3,21 @@
     "Method" : "PUT",
     "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/a_b",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "378a43dd-76f2-40c4-b4f4-ea8ec25ce321"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "cfb94b70-eb92-4fcb-a398-7c275d31ae2d"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidResourceName",
       "retry-after" : "0",
       "Content-Length" : "243",
       "StatusCode" : "400",
-      "x-ms-request-id" : "102a120e-6003-004b-748d-8301ec000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:102a120e-6003-004b-748d-8301ec000000\nTime:2019-10-15T19:20:12.4670353Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:20:11 GMT",
+      "x-ms-request-id" : "c474e087-5003-0084-7c84-96665e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:c474e087-5003-0084-7c84-96665e000000\nTime:2019-11-08T22:32:35.0781206Z</Message></Error>",
+      "Date" : "Fri, 08 Nov 2019 22:32:34 GMT",
+      "x-ms-client-request-id" : "cfb94b70-eb92-4fcb-a398-7c275d31ae2d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null

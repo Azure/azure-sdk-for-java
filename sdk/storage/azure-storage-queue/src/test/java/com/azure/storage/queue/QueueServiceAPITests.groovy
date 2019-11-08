@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.queue.models.QueueAnalyticsLogging
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueItem
@@ -19,6 +20,7 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
     }
 
+    @DoNotRecord
     def "Get queue client"() {
         given:
         def queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
@@ -56,6 +58,7 @@ class QueueServiceAPITests extends APISpec {
         "verylong" * 8 | 400        | QueueErrorCode.OUT_OF_RANGE_INPUT
     }
 
+    @DoNotRecord
     def "Create null"() {
         when:
         primaryQueueServiceClient.createQueue(null)

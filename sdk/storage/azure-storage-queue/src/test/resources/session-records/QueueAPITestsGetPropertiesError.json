@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsgetpropertieserror3403359982dcbc1f1?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsgetpropertieserror81807f4a9eeb733c7?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "eaff2bc2-f42a-4d44-a004-ea2d2a90a7f8"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "9afa50ab-4e8e-4b24-8b25-5b73187ab13c"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e7d26-f003-0082-488d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e7d26-f003-0082-488d-839126000000\nTime:2019-10-15T19:19:35.6026155Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:34 GMT",
+      "x-ms-request-id" : "9ab30184-e003-009d-2f84-964a36000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:9ab30184-e003-009d-2f84-964a36000000\nTime:2019-11-08T22:32:09.2131610Z</Message></Error>",
+      "Date" : "Fri, 08 Nov 2019 22:32:09 GMT",
+      "x-ms-client-request-id" : "9afa50ab-4e8e-4b24-8b25-5b73187ab13c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetpropertieserror3403359982dcbc1f1" ]
+  "variables" : [ "queueapitestsgetpropertieserror81807f4a9eeb733c7" ]
 }

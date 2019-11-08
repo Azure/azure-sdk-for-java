@@ -3,7 +3,7 @@
 
 package com.azure.storage.queue
 
-
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.queue.models.QueueAccessPolicy
@@ -31,6 +31,7 @@ class QueueAPITests extends APISpec {
         queueClient = primaryQueueServiceClient.getQueueClient(queueName)
     }
 
+    @DoNotRecord
     def "Get queue URL"() {
         given:
         def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
@@ -43,6 +44,7 @@ class QueueAPITests extends APISpec {
         expectURL == queueURL
     }
 
+    @DoNotRecord
     def "IP based endpoint"() {
         when:
         def queueClient = new QueueClientBuilder()
@@ -51,6 +53,7 @@ class QueueAPITests extends APISpec {
             .buildClient()
 
         then:
+        queueClient.getQueueUrl() == "http://127.0.0.1:10001/devstoreaccount1/myqueue"
         queueClient.getAccountName() == "devstoreaccount1"
         queueClient.getQueueName() == "myqueue"
     }
@@ -248,26 +251,28 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         def expectMsg = "test message"
+
         when:
         def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekMsgIter = queueClient.peekMessage().iterator()
+        def peekedMessage = queueClient.peekMessage()
+
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        expectMsg == peekMsgIter.next().getMessageText()
-        !peekMsgIter.hasNext()
+        expectMsg == peekedMessage.getMessageText()
     }
 
     def "Enqueue empty message"() {
         given:
         queueClient.create()
         def expectMsg = ""
+
         when:
         def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekMsgIter = queueClient.peekMessage().iterator()
+        def peekedMessage = queueClient.peekMessage()
+
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        peekMsgIter.next().getMessageText() == null
-        !peekMsgIter.hasNext()
+        peekedMessage.getMessageText() == null
     }
 
     def "Enqueue time to live"() {
@@ -320,10 +325,12 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg = "test message"
         queueClient.sendMessage(expectMsg)
+
         when:
-        def peekMsgIter = queueClient.peekMessage()
+        def peekedMessage = queueClient.peekMessage()
+
         then:
-        expectMsg == peekMsgIter.getMessageText()
+        expectMsg == peekedMessage.getMessageText()
     }
 
     def "Peek multiple messages"() {
@@ -433,14 +440,16 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage("test message before update")
 
         def dequeueMsg = queueClient.receiveMessage()
+
         when:
         def updateMsgResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
-            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1), null,  null)
+            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1), null, null)
         QueueTestHelper.sleepInRecord(Duration.ofSeconds(2))
-        def peekMsgIter = queueClient.peekMessage()
+        def peekedMessage = queueClient.peekMessage()
+
         then:
         QueueTestHelper.assertResponseStatusCode(updateMsgResponse, 204)
-        updateMsg == peekMsgIter.getMessageText()
+        updateMsg == peekedMessage.getMessageText()
     }
 
     @Unroll

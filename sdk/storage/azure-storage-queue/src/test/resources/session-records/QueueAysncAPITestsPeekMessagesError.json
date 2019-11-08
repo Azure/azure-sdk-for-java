@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestspeekmessageserror371098fba09d76e/messages?peekonly=true",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestspeekmessageserror08158a6ff77abfe/messages?peekonly=true",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "6e4d2b67-7b88-44ae-a7f4-9145a5f6c6fc"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "1b0e9bde-5f53-474b-985a-251295c6c54a"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e930f-f003-0082-788d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e930f-f003-0082-788d-839126000000\nTime:2019-10-15T19:19:51.3529241Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:50 GMT",
+      "x-ms-request-id" : "c474d54c-5003-0084-4d84-96665e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:c474d54c-5003-0084-4d84-96665e000000\nTime:2019-11-08T22:32:24.0434729Z</Message></Error>",
+      "Date" : "Fri, 08 Nov 2019 22:32:23 GMT",
+      "x-ms-client-request-id" : "1b0e9bde-5f53-474b-985a-251295c6c54a",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestspeekmessageserror371098fba09d76e" ]
+  "variables" : [ "queueaysncapitestspeekmessageserror08158a6ff77abfe" ]
 }

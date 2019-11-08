@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetpropertieserror4530287ae92dfc?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetpropertieserror04915c58852ba0?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "e698b13c-bc2a-4dc4-a414-c928185aa897"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "4dbc924f-af09-4644-8a18-a7e25ddd9e39"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e8cb1-f003-0082-1c8d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e8cb1-f003-0082-1c8d-839126000000\nTime:2019-10-15T19:19:47.0737616Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:46 GMT",
+      "x-ms-request-id" : "9ab30ad0-e003-009d-3484-964a36000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:9ab30ad0-e003-009d-3484-964a36000000\nTime:2019-11-08T22:32:19.2787088Z</Message></Error>",
+      "Date" : "Fri, 08 Nov 2019 22:32:19 GMT",
+      "x-ms-client-request-id" : "4dbc924f-af09-4644-8a18-a7e25ddd9e39",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsgetpropertieserror4530287ae92dfc" ]
+  "variables" : [ "queueaysncapitestsgetpropertieserror04915c58852ba0" ]
 }

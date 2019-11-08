@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsclearmessageserror75792d86c865ee/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsclearmessageserror88624f0b3185a3/messages",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "14d40d1d-1a65-4245-bbbb-a9d9368b971f"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "b91f3533-6b46-41a4-884e-4a8d69cacb69"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e93c7-f003-0082-228d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e93c7-f003-0082-228d-839126000000\nTime:2019-10-15T19:19:51.7653257Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:50 GMT",
+      "x-ms-request-id" : "c474d5cb-5003-0084-4084-96665e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:c474d5cb-5003-0084-4084-96665e000000\nTime:2019-11-08T22:32:24.5029155Z</Message></Error>",
+      "Date" : "Fri, 08 Nov 2019 22:32:23 GMT",
+      "x-ms-client-request-id" : "b91f3533-6b46-41a4-884e-4a8d69cacb69",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsclearmessageserror75792d86c865ee" ]
+  "variables" : [ "queueaysncapitestsclearmessageserror88624f0b3185a3" ]
 }

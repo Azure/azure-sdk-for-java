@@ -10,7 +10,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.annotation.DoNotRecord
+import com.azure.core.test.TestRunVerifier
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
@@ -19,8 +19,6 @@ import spock.lang.Specification
 
 import java.time.Duration
 import java.time.OffsetDateTime
-
-import static org.junit.Assume.assumeTrue
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -41,8 +39,7 @@ class APISpec extends Specification {
 
     static TestMode testMode = getTestMode()
     String connectionString
-    boolean recordLiveMode
-    boolean testRan
+    TestRunVerifier testRunVerifier
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = false
@@ -56,19 +53,11 @@ class APISpec extends Specification {
         methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
 
-        def doNotRecordAnnotation = specificationContext.getCurrentIteration().getDescription().getAnnotation(DoNotRecord.class)
+        testRunVerifier = new TestRunVerifier(specificationContext.getCurrentFeature().getFeatureMethod().getReflection())
+        testRunVerifier.verifyTestCanRun(testMode)
 
-        if (doNotRecordAnnotation != null) {
-            recordLiveMode = false
-            testRan = !(doNotRecordAnnotation.skipInPlayback() && getTestMode() == TestMode.PLAYBACK)
-            assumeTrue("Test does not allow playback and was ran in 'TestMode.PLAYBACK'.", testRan)
-        } else {
-            recordLiveMode = true
-            testRan = true
-        }
-
-        this.interceptorManager = new InterceptorManager(methodName, testMode, !recordLiveMode)
-        this.resourceNamer = new TestResourceNamer(methodName, testMode, !recordLiveMode, interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(methodName, testMode, testRunVerifier.doNotRecordTest())
+        this.resourceNamer = new TestResourceNamer(methodName, testMode, testRunVerifier.doNotRecordTest(), interceptorManager.getRecordedData())
 
         if (getTestMode() == TestMode.RECORD) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
@@ -82,7 +71,7 @@ class APISpec extends Specification {
      * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
-        if (testRan) {
+        if (testRunVerifier.wasTestRan()) {
             interceptorManager.close()
             if (getTestMode() == TestMode.RECORD) {
                 ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
@@ -111,7 +100,7 @@ class APISpec extends Specification {
         if (azureTestMode != null) {
             try {
                 return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException ignored) {
                 logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode)
                 return TestMode.PLAYBACK
             }
@@ -191,7 +180,7 @@ class APISpec extends Specification {
         }
     }
 
-    private def reformat(String text) {
+    private static def reformat(String text) {
         def fullName = text.split(" ").collect { it.capitalize() }.join("")
         def matcher = (fullName =~ /(.*)(\[)(.*)(\])/)
 

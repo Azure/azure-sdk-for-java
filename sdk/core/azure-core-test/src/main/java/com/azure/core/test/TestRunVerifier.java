@@ -17,7 +17,7 @@ public class TestRunVerifier {
     private volatile boolean skipInPlayback;
     private volatile boolean testRan;
 
-    TestRunVerifier(Method testMethod) {
+    public TestRunVerifier(Method testMethod) {
         DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
         if (doNotRecordAnnotation != null) {
             doNotRecord = true;
@@ -30,7 +30,7 @@ public class TestRunVerifier {
      *
      * @param testMode The {@link TestMode} tests are being ran in.
      */
-    void verifyTestCanRun(TestMode testMode) {
+    public void verifyTestCanRun(TestMode testMode) {
         testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
         assumeTrue(testRan, "Test does not allow playback and was ran in 'TestMode.PLAYBACK'.");
     }
@@ -40,7 +40,7 @@ public class TestRunVerifier {
      *
      * @return Flag indicating whether to record test network calls.
      */
-    boolean doNotRecordTest() {
+    public boolean doNotRecordTest() {
         return doNotRecord;
     }
 
@@ -49,7 +49,7 @@ public class TestRunVerifier {
      *
      * @return Flag indicating whether the current test was ran.
      */
-    boolean wasTestRan() {
+    public boolean wasTestRan() {
         return testRan;
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.queue.models.QueueAnalyticsLogging
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueItem
@@ -19,6 +20,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
     }
 
+    @DoNotRecord
     def "Get queue client"() {
         given:
         def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(testResourceName.randomName(methodName, 60))
@@ -57,6 +59,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         "verylong" * 8 | 400        | QueueErrorCode.OUT_OF_RANGE_INPUT
     }
 
+    @DoNotRecord
     def "Create null"() {
         when:
         primaryQueueServiceAsyncClient.createQueue(null).block()
@@ -129,16 +132,18 @@ class QueueServiceAsyncAPITests extends APISpec {
     def "List queues"() {
         given:
         def queueName = testResourceName.randomName(methodName, 60)
-        LinkedList<QueueItem> testQueues = new LinkedList<>()
+        def testQueues = new LinkedList<QueueItem>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)
-            QueueItem queue = new QueueItem().setName(queueName + version)
+            def queue = new QueueItem().setName(queueName + version)
                 .setMetadata(Collections.singletonMap("metadata" + version, "value" + version))
             testQueues.add(queue)
             primaryQueueServiceAsyncClient.createQueueWithResponse(queue.getName(), queue.getMetadata()).block()
         }
+
         when:
         def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options))
+
         then:
         queueListVerifier.assertNext {
             assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
@@ -147,6 +152,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         }.assertNext {
             assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
         }.verifyComplete()
+
         where:
         options                                                                                              | _
         new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues")                          | _
@@ -156,11 +162,11 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "List empty queues"() {
         when:
-        def listQueueVerifier = StepVerifier.create((primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions())))
+        def listQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions()))
         then:
-        listQueueVerifier.assertNext {
-            !it.iterator().hasNext()
-        }
+        listQueueVerifier
+            .expectNextCount(0)
+            .verifyComplete()
     }
 
     def "Get and set properties"() {
