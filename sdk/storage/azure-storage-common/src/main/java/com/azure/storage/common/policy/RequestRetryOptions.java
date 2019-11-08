@@ -149,7 +149,8 @@ public final class RequestRetryOptions {
                 break;
 
             case FIXED:
-                delay = this.retryDelayInMs;
+                // The first try should have zero delay. Every other try has the fixed value
+                delay = tryCount > 1 ? this.retryDelayInMs : 0;
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Invalid retry policy type."));
