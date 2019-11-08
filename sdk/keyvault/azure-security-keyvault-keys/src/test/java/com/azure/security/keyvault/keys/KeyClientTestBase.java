@@ -3,6 +3,10 @@
 
 package com.azure.security.keyvault.keys;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -20,9 +24,7 @@ import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.KeyType;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -37,20 +39,15 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.junit.Assert.*;
-
 public abstract class KeyClientTestBase extends TestBase {
 
     private static final String KEY_NAME = "javaKeyTemp";
     private static final KeyType RSA_KEY_TYPE = KeyType.RSA;
     private static final KeyType EC_KEY_TYPE = KeyType.EC;
 
-    @Rule
-    public TestName testName = new TestName();
-
     @Override
     protected String getTestName() {
-        return testName.getMethodName();
+        return "";
     }
 
     void beforeTestSetup() {

@@ -101,7 +101,7 @@ def display_version_info(version_map):
     for value in version_map.values():
         print(value)
     
-def update_versions_all(update_type, build_type, target_file):
+def update_versions_all(update_type, build_type, target_file, skip_readme):
     version_map = {}
     # Load the version and/or external dependency file for the given UpdateType
     # into the verion_map. If UpdateType.all is selected then versions for both
@@ -124,7 +124,7 @@ def update_versions_all(update_type, build_type, target_file):
         for root, _, files in os.walk("."):
             for file_name in files:
                 file_path = root + os.sep + file_name
-                if file_name == 'README.md' or (file_name.startswith('pom.') and file_name.endswith('.xml')):
+                if (file_name == 'README.md' and not skip_readme) or (file_name.startswith('pom.') and file_name.endswith('.xml')):
                     update_versions(version_map, file_path)
 
     # This is a temporary stop gap to deal with versions hard coded in java files. 
@@ -151,6 +151,7 @@ def main():
     parser = argparse.ArgumentParser(description='Replace version numbers in poms and READMEs.')
     parser.add_argument('--update-type', '--ut', type=UpdateType, choices=list(UpdateType))
     parser.add_argument('--build-type', '--bt', type=BuildType, choices=list(BuildType))
+    parser.add_argument('--skip-readme', '--sr', action='store_true', help='Skip updating of readme files if argument is present' )
     parser.add_argument('--target-file', '--tf', nargs='?', help='File to update (optional) - all files in the current directory and subdirectories are scanned if omitted')
     args = parser.parse_args()
     if args.build_type == BuildType.management:
@@ -158,7 +159,7 @@ def main():
     if args.update_type == UpdateType.external_dependency or args.update_type == UpdateType.all:
         raise ValueError('{} is not currently supported.'.format(UpdateType.external_dependency.name))
     start_time = time.time()
-    update_versions_all(args.update_type, args.build_type, args.target_file)
+    update_versions_all(args.update_type, args.build_type, args.target_file, args.skip_readme)
     elapsed_time = time.time() - start_time
     print('elapsed_time={}'.format(elapsed_time))
     print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))

@@ -19,8 +19,10 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.*;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CryptographyClientTest extends CryptographyClientTestBase {
 
@@ -49,7 +51,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         }
     }
 
-    @Override
+    @Test
     public void encryptDecryptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
@@ -85,7 +87,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         });
     }
 
-    @Override
+    @Test
     public void wrapUnwraptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
@@ -122,7 +124,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
 
-    @Override
+    @Test
     public void signVerifyRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
@@ -158,7 +160,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         });
     }
 
-    @Override
+    @Test
     public void signVerifyEc() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
         curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);

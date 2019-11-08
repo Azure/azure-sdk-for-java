@@ -54,4 +54,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_GETTING_STARTDED]: ../../README.md#getting-started
 [SDK_README_TROUBLESHOOTING]: ../../README.md#troubleshooting
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file/samples/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fsrc%2Fsamples%2FREADME.png)

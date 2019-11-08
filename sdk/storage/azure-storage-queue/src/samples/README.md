@@ -52,4 +52,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [queue_key_concept]: ../../README.md#key-concepts
 [samples]: java/samples/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob-batch/SAMPLES/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2Fsrc%2Fsamples%2FREADME.png)
