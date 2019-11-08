@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
+import com.azure.cs.textanalytics.models.DocumentKeyPhrases;
 import com.azure.cs.textanalytics.models.DocumentSentiment;
 import com.azure.cs.textanalytics.models.EntitiesResult;
 import com.azure.cs.textanalytics.models.Entity;
@@ -31,14 +32,14 @@ public final class TextAnalyticsClient {
 
     // (1) language
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<DetectedLanguage> detectLanguages(String text, String countryHint, boolean showStats) {
+    public DetectedLanguage detectLanguage(String text, String countryHint) {
 //        return getLanguageWithResponse(text, countryHint, showStats, Context.NONE).getValue();
         return null;
     }
 //
 //    // TODO: do we actually need this method? same question applies to all other feature methods
 //    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DocumentLanguage> getLanguageWithResponse(String text, String countryHint, boolean showStats, Context context) {
+//    public Response<DetectedLanguage> getLanguageWithResponse(String text, String countryHint, Context context) {
 //        return null;
 //    }
 //
@@ -54,14 +55,14 @@ public final class TextAnalyticsClient {
     }
 
     // (2) entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<Entity> recognizeEntities(String text, String language, boolean showStats) {
-//        return getEntitiesWithResponse(text, language, showStats, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Entity> recognizeEntities(String text, String language) {
+//        return getEntitiesWithResponse(text, language, false, Context.NONE).getValue();
         return null;
     }
 
 //    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DocumentEntities> getEntitiesWithResponse(String text, String language, boolean showStats, Context context) {
+//    public Response<Entity> getEntitiesWithResponse(String text, String language, Context context) {
 //        return null;
 //    }
 //
@@ -76,14 +77,14 @@ public final class TextAnalyticsClient {
     }
 
     // (3) PII entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<Entity> recognizePiiEntities(String text, String language, boolean showStats) {
-//        return getPIIEntitiesWithResponse(text, language, showStats, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Entity> recognizePiiEntities(String text, String language) {
+//        return getPIIEntitiesWithResponse(text, language, false, Context.NONE).getValue();
         return null;
     }
 
 //    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DocumentEntities> getPIIEntitiesWithResponse(String text, String language, boolean showStats, Context context) {
+//    public Response<DocumentEntities> getPIIEntitiesWithResponse(String text, String language, Context context) {
 //        return null;
 //    }
 //
@@ -98,9 +99,9 @@ public final class TextAnalyticsClient {
     }
 
     // (4) Link entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text, String language, boolean showStats) {
-//        return getLinkedEntitiesWithResponse(text, language, showStats, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text, String language) {
+//        return getLinkedEntitiesWithResponse(text, language, false, Context.NONE).getValue();
         return null;
     }
 
@@ -120,14 +121,19 @@ public final class TextAnalyticsClient {
     }
 
     // (5) key phrase
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<String> extractKeyPhrases(String text, String language, boolean showStats) {
-//        return getKeyPhrasesWithResponse(text, language, showStats, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> extractKeyPhrases(String text, String language) {
+//        return getKeyPhrasesWithResponse(text, language, false, Context.NONE).getValue();
+        return null;
+    }
+
+    // TODO: Do we really need to show use the stats for single text?
+    public DocumentKeyPhrases extractKeyPhrases(String text, String language, boolean showStats) {
         return null;
     }
 
 //    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DocumentKeyPhrases> getKeyPhrasesWithResponse(String text, String language, boolean showStats, Context context) {
+//    public Response<DocumentKeyPhrases> getKeyPhrasesWithResponse(String text, String language, Context context) {
 //        return null;
 //    }
 //

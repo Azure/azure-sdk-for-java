@@ -14,7 +14,7 @@ public class HelloWorld {
         // The text that need be analysed.
         String text = "hello world";
 
-        client.detectLanguages(text, "US", false).stream().forEach(detectedLanguage ->
+        client.detectLanguage(text, "US", false).stream().forEach(detectedLanguage ->
             System.out.println(String.format("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
                 detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore())));
     }

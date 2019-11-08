@@ -62,7 +62,7 @@ public final class TextAnalyticsAsyncClient {
 
     // (1) language
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<DetectedLanguage> detectLanguages(String text, String countryHint, boolean showStats) {
+    public Mono<DetectedLanguage> detectLanguage(String text, String countryHint) {
          // TODO: Mono<LanguageResult> example, if choose PagedFlux, remove this
 //        try {
 //            final List<LanguageInput> languageInputs = new ArrayList<>();
@@ -82,32 +82,32 @@ public final class TextAnalyticsAsyncClient {
 //        } catch (RuntimeException ex) {
 //            return monoError(logger, ex);
 //        }
-            //TODO: PagedFlux example, PagedFlux<DetectedLanguage>, remove this if choose to use Mono example.
-            final List<LanguageInput> languageInputs = new ArrayList<>();
-            languageInputs.add(new LanguageInput().setText(text).setCountryHint(countryHint));
-
-            return new PagedFlux<>(() -> detectLanguagesWithResponse(new LanguageBatchInput().setDocuments(languageInputs),
-                showStats, Context.NONE)
-                .map(response -> {
-                    final List<DocumentLanguage> documentLanguages = response.getValue().getDocuments();
-                    if (documentLanguages.size() == 0) {
-                        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(),
-                            null,
-                            null,
-                            null);
-                    } else {
-                        final List<DetectedLanguage> detectedLanguages = documentLanguages.get(0).getDetectedLanguages();
-                        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(),
-                            detectedLanguages,
-                            null,
-                            null);
-                    }
-                }));
+//            //TODO: PagedFlux example, PagedFlux<DetectedLanguage>, remove this if choose to use Mono example.
+//            final List<LanguageInput> languageInputs = new ArrayList<>();
+//            languageInputs.add(new LanguageInput().setText(text).setCountryHint(countryHint));
+//
+//            return new PagedFlux<>(() -> detectLanguagesWithResponse(new LanguageBatchInput().setDocuments(languageInputs),
+//                showStats, Context.NONE)
+//                .map(response -> {
+//                    final List<DocumentLanguage> documentLanguages = response.getValue().getDocuments();
+//                    if (documentLanguages.size() == 0) {
+//                        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+//                            response.getHeaders(),
+//                            null,
+//                            null,
+//                            null);
+//                    } else {
+//                        final List<DetectedLanguage> detectedLanguages = documentLanguages.get(0).getDetectedLanguages();
+//                        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+//                            response.getHeaders(),
+//                            detectedLanguages,
+//                            null,
+//                            null);
+//                    }
+//                }));
+        return null;
     }
 
-    // (1.1) A batch of language input
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LanguageResult>> detectLanguagesWithResponse(LanguageBatchInput languageBatchInput,
                                                                    boolean showStats) {
@@ -126,8 +126,8 @@ public final class TextAnalyticsAsyncClient {
     }
 
     // (2) entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<Entity> recognizeEntities(String text, String language, boolean showStats) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Entity> recognizeEntities(String text, String language) {
 
         // TODO: Mono<DocumentEntities> example, remove this if choose PagedFlux
 //        try {
@@ -153,7 +153,7 @@ public final class TextAnalyticsAsyncClient {
         multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
 
         return new PagedFlux<>(() -> recognizeEntitiesWithResponse(
-            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), showStats, Context.NONE)
+            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), false, Context.NONE)
             .map(response -> {
                 final List<DocumentEntities> documentEntities = response.getValue().getDocuments();
                 if (documentEntities.size() == 0) {
@@ -192,8 +192,8 @@ public final class TextAnalyticsAsyncClient {
     }
 
     // (3) PII entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<Entity> recognizePiiEntities(String text, String language, boolean showStats) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Entity> recognizePiiEntities(String text, String language) {
         // TODO: Mono<DocumentEntities> example, remove this if choose PagedFlux
 //        try {
 //            final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
@@ -218,7 +218,7 @@ public final class TextAnalyticsAsyncClient {
         multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
 
         return new PagedFlux<>(() -> recognizeEntitiesWithResponse(
-            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), showStats, Context.NONE)
+            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), false, Context.NONE)
             .map(response -> {
                 final List<DocumentEntities> documentEntities = response.getValue().getDocuments();
                 if (documentEntities.size() == 0) {
@@ -256,8 +256,8 @@ public final class TextAnalyticsAsyncClient {
     }
 
     // (4) Link entities
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<LinkedEntity> recognizeLinkedEntities(String text, String language, boolean showStats) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<LinkedEntity> recognizeLinkedEntities(String text, String language) {
         // TODO: Mono<DocumentEntities> example, remove this if choose PagedFlux
 //        try {
 //            final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
@@ -282,7 +282,7 @@ public final class TextAnalyticsAsyncClient {
         multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
 
         return new PagedFlux<>(() -> recognizeEntitiesWithResponse(
-            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), showStats, Context.NONE)
+            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), false, Context.NONE)
             .map(response -> {
                 final List<DocumentEntities> documentEntities = response.getValue().getDocuments();
                 if (documentEntities.size() == 0) {
@@ -320,8 +320,8 @@ public final class TextAnalyticsAsyncClient {
     }
 
     // (5) key phrase
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<String> extractKeyPhrases(String text, String language, boolean showStats) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> extractKeyPhrases(String text, String language) {
         // TODO: Mono<DocumentKeyPhrases> example, remove this if choose PagedFlux
 //        try {
 //            final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
@@ -346,7 +346,7 @@ public final class TextAnalyticsAsyncClient {
         multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
 
         return new PagedFlux<>(() -> extractKeyPhrasesWithResponse(
-            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), showStats, Context.NONE)
+            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), false, Context.NONE)
             .map(response -> {
                 final List<DocumentKeyPhrases> documentEntities = response.getValue().getDocuments();
                 if (documentEntities.size() == 0) {
