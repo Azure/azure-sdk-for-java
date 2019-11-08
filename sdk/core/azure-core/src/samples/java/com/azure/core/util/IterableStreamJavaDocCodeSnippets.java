@@ -6,7 +6,7 @@ package com.azure.core.util;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.implementation.http.PagedResponseBase;
+import com.azure.core.http.rest.PagedResponseBase;
 import reactor.core.publisher.Flux;
 
 import java.net.HttpURLConnection;

@@ -4,6 +4,8 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.security.keyvault.keys.KeyAsyncClient;
+import com.azure.security.keyvault.keys.KeyClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.codec.binary.Base64;
 
@@ -16,18 +18,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * KeyProperties is the resource containing all the properties of the key except its {@link JsonWebKey} material.
+ * It is managed by the Key Service.
+ *
+ *  @see KeyClient
+ *  @see KeyAsyncClient
+ */
 @Fluent
 public class KeyProperties {
 
     /**
      * Determines whether the object is enabled.
      */
-    private Boolean enabled;
+    Boolean enabled;
 
     /**
      * Not before date in UTC.
      */
-    private OffsetDateTime notBefore;
+    OffsetDateTime notBefore;
 
     /**
      * The key version.
@@ -37,7 +46,7 @@ public class KeyProperties {
     /**
      * Expiry date in UTC.
      */
-    private OffsetDateTime expiresOn;
+    OffsetDateTime expiresOn;
 
     /**
      * Creation time in UTC.

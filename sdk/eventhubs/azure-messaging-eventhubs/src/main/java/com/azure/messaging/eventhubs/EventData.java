@@ -41,8 +41,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * types) and Data section is not supported.
  * </p>
  *
- * @see EventHubProducer
- * @see EventHubAsyncProducer
+ * @see EventHubProducerClient
+ * @see EventHubProducerAsyncClient
  */
 public class EventData implements Comparable<EventData> {
     /*

@@ -8,11 +8,18 @@ import com.azure.storage.common.implementation.Constants;
 import java.util.Locale;
 
 /**
- * This is a helper class to construct a string representing the permissions granted by an AccountSAS. Setting a value
+ * This is a helper class to construct a string representing the permissions granted by an Account SAS. Setting a value
  * to true means that any SAS which uses these permissions will grant permissions for that operation. Once all the
- * values are set, this should be serialized with toString and set as the permissions field on an {@link
- * AccountSasSignatureValues} object. It is possible to construct the permissions string without this class, but the
- * order of the permissions is particular and this class guarantees correctness.
+ * values are set, this should be serialized with toString and set as the permissions field on
+ * {@link AccountSasSignatureValues#setPermissions(AccountSasPermission) AccountSasSignatureValues}.
+ *
+ * <p>
+ * It is possible to construct the permissions string without this class, but the order of the permissions is particular
+ * and this class guarantees correctness.
+ * </p>
+ *
+ * @see AccountSasSignatureValues
+ * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-account-sas">Create account SAS</a>
  */
 public final class AccountSasPermission {
 
@@ -33,19 +40,21 @@ public final class AccountSasPermission {
     private boolean processMessagesPermission;
 
     /**
-     * Initializes an {@code AccountSasPermission} object with all fields set to false.
+     * Initializes an {@link AccountSasPermission} object with all fields set to false.
      */
     public AccountSasPermission() {
     }
 
     /**
-     * Creates an {@link AccountSasPermission} from the specified permissions string. This method will throw an
-     * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     * Creates an {@link AccountSasPermission} from the specified permissions string. This method will throw an {@link
+     * IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@link AccountSasPermission}.
+     *
      * @return An {@link AccountSasPermission} object generated from the given {@link String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u, or
-     * p.
+     *
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u,
+     *     or p.
      */
     public static AccountSasPermission parse(String permString) {
         AccountSasPermission permissions = new AccountSasPermission();
@@ -97,6 +106,7 @@ public final class AccountSasPermission {
      * Sets the read permission status.
      *
      * @param hasReadPermission Permission status to set
+     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setReadPermission(boolean hasReadPermission) {
@@ -115,6 +125,7 @@ public final class AccountSasPermission {
      * Sets the add permission status.
      *
      * @param hasAddPermission Permission status to set
+     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setAddPermission(boolean hasAddPermission) {
@@ -133,6 +144,7 @@ public final class AccountSasPermission {
      * Sets the create permission status.
      *
      * @param hasCreatePermission Permission status to set
+     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setCreatePermission(boolean hasCreatePermission) {
@@ -151,6 +163,7 @@ public final class AccountSasPermission {
      * Sets the write permission status.
      *
      * @param hasWritePermission Permission status to set
+     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setWritePermission(boolean hasWritePermission) {
@@ -169,6 +182,7 @@ public final class AccountSasPermission {
      * Sets the delete permission status.
      *
      * @param hasDeletePermission Permission status to set
+     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setDeletePermission(boolean hasDeletePermission) {
@@ -188,6 +202,7 @@ public final class AccountSasPermission {
      * directories, and files.
      *
      * @param hasListPermission Permission status to set
+     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setListPermission(boolean hasListPermission) {
@@ -208,6 +223,7 @@ public final class AccountSasPermission {
      * Sets the update permission status, it allows the update of queue messages and tables.
      *
      * @param hasUpdatePermission Permission status to set
+     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setUpdatePermission(boolean hasUpdatePermission) {
@@ -228,6 +244,7 @@ public final class AccountSasPermission {
      * Sets the process messages permission, this allows the retrieval and deletion of queue messages.
      *
      * @param hasProcessMessagesPermission Permission status to set
+     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setProcessMessages(boolean hasProcessMessagesPermission) {
@@ -236,10 +253,10 @@ public final class AccountSasPermission {
     }
 
     /**
-     * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
+     * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@code String} which represents the {@code AccountSASPermissions}.
+     * @return A {@link String} which represents the {@link AccountSasPermission}.
      */
     @Override
     public String toString() {

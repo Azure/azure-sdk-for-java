@@ -67,9 +67,7 @@ public class AsyncBufferedUploadExample {
          */
         int blockSize = 10 * 1024;
         int numBuffers = 5;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setNumBuffers(numBuffers)
-            .setBlockSize(blockSize);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(numBuffers, blockSize, null);
         blobClient.upload(sourceData, parallelTransferOptions).block();
     }
 

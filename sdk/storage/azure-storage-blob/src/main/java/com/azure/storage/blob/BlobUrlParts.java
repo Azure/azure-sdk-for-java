@@ -3,10 +3,11 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.implementation.http.UrlBuilder;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.specialized.BlobServiceSasQueryParameters;
+import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.sas.BlobServiceSasQueryParameters;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 
@@ -17,7 +18,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.regex.Pattern;
 
 /**
  * This class represents the components that make up an Azure Storage Container/Blob URL. You may parse an
@@ -25,9 +25,6 @@ import java.util.regex.Pattern;
  * #toUrl()}.
  */
 public final class BlobUrlParts {
-    private static final Pattern IP_V4_URL_PATTERN = Pattern
-        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
-
     private final ClientLogger logger = new ClientLogger(BlobUrlParts.class);
 
     private String scheme;
@@ -36,6 +33,7 @@ public final class BlobUrlParts {
     private String blobName;
     private String snapshot;
     private String accountName;
+    private boolean isIpUrl;
     private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -87,7 +85,7 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the URL host, ex. "account.blob.core.windows.net".
+     * Gets the URL host, ex. "account.blob.core.windows.net" or "127.0.0.1:10000".
      *
      * @return the URL host.
      */
@@ -96,13 +94,14 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Sets the URL host, ex. "account.blob.core.windows.net".
+     * Sets the URL host, ex. "account.blob.core.windows.net" or "127.0.0.1:10000".
      *
      * @param host The URL host.
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setHost(String host) {
         this.host = host;
+        this.isIpUrl = ModelHelper.IP_V4_URL_PATTERN.matcher(host).find();
         return this;
     }
 
@@ -220,17 +219,21 @@ public final class BlobUrlParts {
 
         StringBuilder path = new StringBuilder();
 
-        if ((this.containerName == null || this.containerName.isEmpty()) && this.blobName != null) {
+        if (CoreUtils.isNullOrEmpty(this.containerName) && this.blobName != null) {
             this.containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
+        if (this.isIpUrl) {
+            path.append(this.accountName);
+        }
+
         if (this.containerName != null) {
-            path.append(this.containerName);
+            path.append("/").append(this.containerName);
             if (this.blobName != null) {
-                path.append('/');
-                path.append(this.blobName);
+                path.append("/").append(this.blobName);
             }
         }
+
         url.setPath(path.toString());
 
         if (this.snapshot != null) {
@@ -250,7 +253,7 @@ public final class BlobUrlParts {
         }
 
         try {
-            return url.toURL();
+            return url.toUrl();
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalStateException("The URL parts created a malformed URL.", ex));
         }
@@ -296,7 +299,7 @@ public final class BlobUrlParts {
     public static BlobUrlParts parse(URL url) {
         BlobUrlParts parts = new BlobUrlParts().setScheme(url.getProtocol());
 
-        if (IP_V4_URL_PATTERN.matcher(url.getHost()).find()) {
+        if (ModelHelper.IP_V4_URL_PATTERN.matcher(url.getHost()).find()) {
             parseIpUrl(url, parts);
         } else {
             parseNonIpUrl(url, parts);
@@ -336,6 +339,8 @@ public final class BlobUrlParts {
         } else if (pathPieces.length == 2) {
             parts.setContainerName(pathPieces[1]);
         }
+
+        parts.isIpUrl = true;
     }
 
     /*
@@ -347,7 +352,7 @@ public final class BlobUrlParts {
 
         //Parse host to get account name
         // host will look like this : <accountname>.blob.core.windows.net
-        if (!ImplUtils.isNullOrEmpty(host)) {
+        if (!CoreUtils.isNullOrEmpty(host)) {
             int accountNameIndex = host.indexOf('.');
             if (accountNameIndex == -1) {
                 // host only contains account name
@@ -360,7 +365,7 @@ public final class BlobUrlParts {
 
         // find the container & blob names (if any)
         String path = url.getPath();
-        if (!ImplUtils.isNullOrEmpty(path)) {
+        if (!CoreUtils.isNullOrEmpty(path)) {
             // if the path starts with a slash remove it
             if (path.charAt(0) == '/') {
                 path = path.substring(1);
@@ -377,7 +382,7 @@ public final class BlobUrlParts {
             }
         }
 
-
+        parts.isIpUrl = false;
     }
 
     /**
@@ -389,7 +394,7 @@ public final class BlobUrlParts {
     private static TreeMap<String, String[]> parseQueryString(String queryParams) {
         final TreeMap<String, String[]> retVals = new TreeMap<>(Comparator.naturalOrder());
 
-        if (ImplUtils.isNullOrEmpty(queryParams)) {
+        if (CoreUtils.isNullOrEmpty(queryParams)) {
             return retVals;
         }
 

@@ -121,9 +121,7 @@ interface ConnectionSettingsFilter {
                 settings = remainingSettings;
             }
         }
-        if (settings.isEmpty()) {
-            return true;
-        }
-        return false;
+
+        return settings.isEmpty();
     }
 }

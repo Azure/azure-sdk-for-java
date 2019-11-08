@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class RequestResponseOpener implements Operation<RequestResponseChannel> {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseOpener.class);
@@ -18,17 +19,19 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
     private final String linkName;
     private final String endpointAddress;
     private final AmqpConnection eventDispatcher;
+    private final ScheduledExecutorService executor;
 
     private boolean isOpened;
 
     public RequestResponseOpener(final SessionProvider sessionProvider, final String clientId, final String sessionName, final String linkName,
-                                 final String endpointAddress, final AmqpConnection eventDispatcher) {
+                                 final String endpointAddress, final AmqpConnection eventDispatcher, final ScheduledExecutorService executor) {
         this.sessionProvider = sessionProvider;
         this.clientId = clientId;
         this.sessionName = sessionName;
         this.linkName = linkName;
         this.endpointAddress = endpointAddress;
         this.eventDispatcher = eventDispatcher;
+        this.executor = executor;
     }
 
     @Override
@@ -54,7 +57,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
         final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
                 this.linkName,
                 this.endpointAddress,
-                session);
+                session,
+                this.executor);
 
         requestResponseChannel.open(
                 new OperationResult<Void, Exception>() {

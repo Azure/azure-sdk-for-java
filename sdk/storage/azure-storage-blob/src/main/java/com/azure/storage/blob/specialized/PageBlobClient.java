@@ -182,7 +182,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      */
     public PageBlobItem uploadPages(PageRange pageRange, InputStream body) {
-        return uploadPagesWithResponse(pageRange, body, null, null, Context.NONE).getValue();
+        return uploadPagesWithResponse(pageRange, body, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -195,12 +195,16 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobAccessConditions-Duration-Context}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
      * @param body The data to upload.
+     * @param contentMd5 An MD5 hash of the page content. This hash is used to verify the integrity of the page during
+     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
+     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
+     * operation will fail.
      * @param pageBlobRequestConditions {@link PageBlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -208,15 +212,14 @@ public final class PageBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
-    public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
+    public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(body, "'body' cannot be null.");
         final long length = pageRange.getEnd() - pageRange.getStart() + 1;
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
-            fbb.subscribeOn(Schedulers.elastic()),
-            pageBlobRequestConditions, context);
+            fbb.subscribeOn(Schedulers.elastic()), contentMd5, pageBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

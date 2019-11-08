@@ -67,4 +67,4 @@ Use the following code to get the auth token for an User assigned identity :
 
 Where `objectId` is retrieved from the User Assigned Identity (This is currently only supported from within the portal).
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fauthorization%2Fmsi-auth-token-provider-jar%2Freadme.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fauthorization%2Fmicrosoft-azure-authentication-msi-token-provider%2Freadme.png)

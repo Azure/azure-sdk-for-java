@@ -293,13 +293,12 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     @Override
     public void onOpenComplete(Exception exception) {
         this.creatingLink = false;
+        this.cancelOpenTimer();
 
         if (exception == null) {
             if (this.linkOpen != null && !this.linkOpen.getWork().isDone()) {
                 this.linkOpen.getWork().complete(this);
             }
-
-            this.cancelOpenTimer();
 
             if (this.getIsClosingOrClosed()) {
                 return;
@@ -324,38 +323,47 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             }
 
             if (this.linkOpen != null && !this.linkOpen.getWork().isDone()) {
-                final Duration nextRetryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(
+                if ((exception instanceof EventHubException) && ((EventHubException)exception).getIsTransient()) {
+                    final Duration nextRetryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(
                         this.getClientId(), exception, this.linkOpen.getTimeoutTracker().remaining());
-                if (nextRetryInterval != null) {
-                    if (onOpenRetry != null) {
-                        onOpenRetry.accept(this);
-                    }
-
-                    try {
-                        this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler() {
-                            @Override
-                            public void onEvent() {
-                                if (!MessageReceiver.this.getIsClosingOrClosed()
-                                        && (receiveLink == null || receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)) {
-                                    createReceiveLink();
-                                    underlyingFactory.getRetryPolicy().incrementRetryCount(getClientId());
-                                }
-                            }
-                        });
-                    } catch (IOException | RejectedExecutionException schedulerException) {
-                        if (TRACE_LOGGER.isWarnEnabled()) {
-                            TRACE_LOGGER.warn(
-                                    String.format(Locale.US, "clientId[%s], receiverPath[%s], scheduling createLink encountered error: %s",
-                                            this.getClientId(), this.receivePath, schedulerException.getLocalizedMessage()));
+                    if (nextRetryInterval != null) {
+                        if (onOpenRetry != null) {
+                            onOpenRetry.accept(this);
                         }
 
-                        this.cancelOpen(schedulerException);
+                        try {
+                            this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler() {
+                                @Override
+                                public void onEvent() {
+                                    if (!MessageReceiver.this.getIsClosingOrClosed()
+                                            && (receiveLink == null || receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)) {
+                                        createReceiveLink();
+                                        underlyingFactory.getRetryPolicy().incrementRetryCount(getClientId());
+                                    }
+                                }
+                            });
+                        } catch (IOException | RejectedExecutionException schedulerException) {
+                            if (TRACE_LOGGER.isWarnEnabled()) {
+                                TRACE_LOGGER.warn(
+                                    String.format(Locale.US, "clientId[%s], receiverPath[%s], scheduling createLink encountered error: %s",
+                                        this.getClientId(), this.receivePath, schedulerException.getLocalizedMessage()));
+                            }
+                            this.cancelOpen(schedulerException);
+                        }
+                    } else {
+                        // no retries left
+                        this.cancelOpen(exception);
                     }
-                } else if (exception instanceof EventHubException && !((EventHubException) exception).getIsTransient()) {
+                } else {
+                    // not transient exception
                     this.cancelOpen(exception);
                 }
             } else {
-                this.cancelOpenTimer();
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info(
+                        String.format(Locale.US, "onOpenComplete - clientId[%s], receiverPath[%s], called with error when linkOpen already completed, error [%s]",
+                            this.getClientId(), this.receivePath, this.lastKnownLinkError.toString()));
+                }
             }
         }
     }
@@ -554,7 +562,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 if (desiredCapabilities != null) {
                     receiver.setDesiredCapabilities(desiredCapabilities);
                 }
-                final ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this, MessageReceiver.this.getClientId());
+                final ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this, MessageReceiver.this.getClientId(),
+                    MessageReceiver.this.underlyingFactory.executor);
                 BaseHandler.setHandler(receiver, handler);
 
                 if (MessageReceiver.this.receiveLink != null) {

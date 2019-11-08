@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -17,11 +17,10 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import reactor.core.Disposable;
-import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +29,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -71,13 +70,19 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         builder = createBuilder()
             .transportType(transportType);
-        client = builder.buildAsyncClient();
+        EventHubConnection connection = builder.buildConnection();
+        client = new EventHubClientBuilder()
+            .connection(connection)
+            .buildAsyncClient();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.info("Already pushed events to partition. Skipping.");
+            logger.warning("Already pushed events to partition. Skipping.");
         } else {
-            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            logger.warning("Pushing... events to partition.");
+
+            final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+            testData = setupEventTestData(client.createProducer(), NUMBER_OF_EVENTS, options);
+            logger.warning("Pushed events to partition.");
         }
     }
 
@@ -95,14 +100,15 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(2);
-        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,
             EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
+        StepVerifier.create(consumer.receive(PARTITION_ID).filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofMinutes(1));
     }
 
     /**
@@ -128,20 +134,22 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             clients[i] = builder.buildAsyncClient();
         }
 
-        final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().setPartitionId(PARTITION_ID));
-        final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
-        final Disposable.Composite subscriptions = Disposables.composite();
+        final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubProducerAsyncClient producer = clients[0].createProducer();
+        final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
 
         try {
             for (final EventHubAsyncClient hubClient : clients) {
-                final EventHubAsyncConsumer consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+                final EventHubConsumerAsyncClient consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, EventPosition.latest());
                 consumers.add(consumer);
 
-                final Disposable subscription = consumer.receive().filter(event -> {
+                consumer.receive(PARTITION_ID).filter(partitionEvent -> {
+                    EventData event = partitionEvent.getEventData();
                     return event.getProperties() != null
                         && event.getProperties().containsKey(messageTrackingId)
                         && messageTrackingValue.equals(event.getProperties().get(messageTrackingId));
-                }).take(numberOfEvents).subscribe(event -> {
+                }).take(numberOfEvents).subscribe(partitionEvent -> {
+                    EventData event = partitionEvent.getEventData();
                     logger.info("Event[{}] matched.", event.getSequenceNumber());
                 }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
                     () -> {
@@ -149,12 +157,10 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                         logger.info("Finished consuming events. Counting down: {}", count);
                         countDownLatch.countDown();
                     });
-
-                subscriptions.add(subscription);
             }
 
             // Act
-            producer.send(events).block(TIMEOUT);
+            producer.send(events, sendOptions).block(TIMEOUT);
 
             // Assert
             // Wait for all the events we sent to be received by each of the consumers.
@@ -164,10 +170,9 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             logger.info("Completed successfully.");
         } finally {
             logger.info("Disposing of subscriptions, consumers and clients.");
-            subscriptions.dispose();
 
             dispose(producer);
-            dispose(consumers.toArray(new EventHubAsyncConsumer[0]));
+            dispose(consumers.toArray(new EventHubConsumerAsyncClient[0]));
             dispose(clients);
         }
     }

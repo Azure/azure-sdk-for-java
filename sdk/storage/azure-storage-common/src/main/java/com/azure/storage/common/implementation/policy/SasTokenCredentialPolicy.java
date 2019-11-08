@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import reactor.core.publisher.Mono;
@@ -36,7 +36,7 @@ public final class SasTokenCredentialPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         try {
             URL requestURL = context.getHttpRequest().getUrl();
-            String delimiter = !ImplUtils.isNullOrEmpty(requestURL.getQuery()) ? "&" : "?";
+            String delimiter = !CoreUtils.isNullOrEmpty(requestURL.getQuery()) ? "&" : "?";
 
             String newURL = requestURL.toString() + delimiter + credential.getSasToken();
             context.getHttpRequest().setUrl(new URL(newURL));

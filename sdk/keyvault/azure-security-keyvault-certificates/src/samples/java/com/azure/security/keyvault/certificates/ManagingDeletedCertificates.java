@@ -3,13 +3,13 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.Certificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
 
@@ -38,7 +38,7 @@ public class ManagingDeletedCertificates {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -51,10 +51,10 @@ public class ManagingDeletedCertificates {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, tags);
-        certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
+        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, tags);
+        certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-        Certificate cert = certificatePoller.getResult().block();
+        KeyVaultCertificate cert = certificatePoller.getFinalResult();
 
         // The certificate is no longer needed, need to delete it from the key vault.
         DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
@@ -65,7 +65,7 @@ public class ManagingDeletedCertificates {
 
         // We accidentally deleted the certificate. Let's recover it.
         // A deleted certificate can only be recovered if the key vault is soft-delete enabled.
-        Certificate certificate = certificateClient.recoverDeletedCertificate("certificateName");
+        KeyVaultCertificate certificate = certificateClient.recoverDeletedCertificate("certificateName");
         System.out.printf(" Recovered Deleted certificate with name %s and id %s", certificate.getProperties().getName(),
             certificate.getProperties().getId());
 

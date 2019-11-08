@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
@@ -52,22 +52,15 @@ public class BackupAndRestoreOperations {
         writeBackupToFile(keyBackup, backupFilePath);
 
         // The Cloud Rsa key is no longer in use, so you delete it.
-        Poller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
+        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
 
-        while (rsaDeletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-            System.out.println(rsaDeletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
-
-        DeletedKey rsaDeletedKey = rsaDeletedKeyPoller.getLastPollResponse().getValue();
+        PollResponse<DeletedKey> pollResponse = rsaDeletedKeyPoller.poll();
+        DeletedKey rsaDeletedKey = pollResponse.getValue();
         System.out.println("Deleted Date  %s" + rsaDeletedKey.getDeletedOn().toString());
         System.out.printf("Deleted Key's Recovery Id %s", rsaDeletedKey.getRecoveryId());
 
         // Key is being deleted on server.
-        while (rsaDeletedKeyPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(rsaDeletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        rsaDeletedKeyPoller.waitForCompletion();
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);

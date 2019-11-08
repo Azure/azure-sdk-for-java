@@ -22,6 +22,9 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * BlobOutputStream allows for the uploading of data to a blob using a stream-like approach.
+ */
 public abstract class BlobOutputStream extends StorageOutputStream {
 
     BlobOutputStream(final int writeThreshold) {
@@ -94,7 +97,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long writeLength) {
             long newAppendOffset = appendBlobRequestConditions.getAppendPosition() + writeLength;
-            return client.appendBlockWithResponse(blockData, writeLength, appendBlobRequestConditions)
+            return client.appendBlockWithResponse(blockData, writeLength, null, appendBlobRequestConditions)
                 .doOnNext(ignored -> appendBlobRequestConditions.setAppendPosition(newAppendOffset))
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {
@@ -156,7 +159,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         }
 
         private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
-            return client.stageBlockWithResponse(blockId, blockData, writeLength, this.accessConditions.getLeaseId())
+            return client.stageBlockWithResponse(blockId, blockData, writeLength, null,
+                this.accessConditions.getLeaseId())
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
@@ -217,7 +221,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
             return client.uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + length - 1),
-                pageData, pageBlobRequestConditions)
+                pageData, null, pageBlobRequestConditions)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Properties of a rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleConditionType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleConditionType", defaultImpl = FirewallPolicyRuleCondition.class)
 @JsonTypeName("FirewallPolicyRuleCondition")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ApplicationRuleCondition", value = ApplicationRuleCondition.class),

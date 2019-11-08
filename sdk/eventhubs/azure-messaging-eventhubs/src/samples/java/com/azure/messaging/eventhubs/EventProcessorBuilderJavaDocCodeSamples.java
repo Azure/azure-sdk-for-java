@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import reactor.core.publisher.Mono;
 
 /**
@@ -20,34 +19,18 @@ public class EventProcessorBuilderJavaDocCodeSamples {
     public EventProcessor createEventProcessor() {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient();
 
         EventProcessor eventProcessor = new EventProcessorBuilder()
             .consumerGroup("consumer-group")
-            .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory((PartitionProcessorImpl::new))
-            .partitionManager(new InMemoryPartitionManager())
+            .eventProcessorStore(new InMemoryEventProcessorStore())
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                return Mono.empty();
+            })
+            .connectionString(connectionString)
             .buildEventProcessor();
         return eventProcessor;
-    }
-
-    /**
-     * A partition processor to demo creating an instance of {@link EventProcessor}.
-     */
-    public static final class PartitionProcessorImpl extends PartitionProcessor {
-
-        /**
-         * Processes the event data.
-         *
-         * @return a representation of deferred processing of events.
-         */
-        @Override
-        public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-            System.out.println("Processing event with sequence number " + eventData.getSequenceNumber());
-            return partitionContext.updateCheckpoint(eventData);
-        }
     }
     // END: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation
 

@@ -1,0 +1,86 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfscreatefilemin0filesystemapitestcreatefilemind8723767a75?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "9ebcb728-4c92-470e-9e63-4ca81b7965ba"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEAD3F6FA72",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:44:56 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "3a660bc2-a01e-0034-6fd3-90e1d2000000",
+      "Date" : "Fri, 01 Nov 2019 16:44:56 GMT",
+      "x-ms-client-request-id" : "9ebcb728-4c92-470e-9e63-4ca81b7965ba"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfscreatefilemin0filesystemapitestcreatefilemind8723767a75/javapathcreatefilemin1filesystemapitestcreatefilemind8764509a?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "0aba7080-2593-4f01-aa3c-53c776fa6949"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEAD408A1EA",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:44:56 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "aa8e0201-801f-00ab-6fd3-909968000000",
+      "Date" : "Fri, 01 Nov 2019 16:44:56 GMT",
+      "x-ms-client-request-id" : "0aba7080-2593-4f01-aa3c-53c776fa6949"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfscreatefilemin&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "45662d5e-cd14-49d6-bbe5-dd9f354c2f22"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dc703f4a-e01e-007c-6ad3-90d34f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfscreatefilemin</Prefix><Containers><Container><Name>jtfscreatefilemin0filesystemapitestcreatefilemind8723767a75</Name><Properties><Last-Modified>Fri, 01 Nov 2019 16:44:56 GMT</Last-Modified><Etag>\"0x8D75EEAD3F6FA72\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 01 Nov 2019 16:44:56 GMT",
+      "x-ms-client-request-id" : "45662d5e-cd14-49d6-bbe5-dd9f354c2f22",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfscreatefilemin0filesystemapitestcreatefilemind8723767a75?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "c9fa38e9-4303-48e8-84b1-281f46f9373e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "3a660c38-a01e-0034-57d3-90e1d2000000",
+      "Date" : "Fri, 01 Nov 2019 16:44:56 GMT",
+      "x-ms-client-request-id" : "c9fa38e9-4303-48e8-84b1-281f46f9373e"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfscreatefilemin0filesystemapitestcreatefilemind8723767a75", "javapathcreatefilemin1filesystemapitestcreatefilemind8764509a" ]
+}

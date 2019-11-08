@@ -5,12 +5,14 @@ package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.BlobContainerSasPermission
-import com.azure.storage.blob.BlobSasPermission
+import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.blob.sas.BlobServiceSasQueryParameters
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.implementation.StorageImplUtils
@@ -674,31 +676,5 @@ class HelperTest extends APISpec {
         "path%2Fto%5Da%20blob" | "path/to]a blob"
         "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
-    }
-
-    @Unroll
-    def "IP URLParser"() {
-        when:
-        BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint))
-
-        then:
-        parts.getScheme() == scheme
-        parts.getHost() == host
-        parts.getAccountName() == accountName
-        parts.getBlobContainerName() == blobContainerName
-        parts.getBlobName() == blobName
-
-        where:
-        endpoint                                                                 | scheme | host              | accountName        | blobContainerName | blobName
-        "http://127.0.0.1:10000/devstoreaccount1"                                | "http" | "127.0.0.1:10000" | "devstoreaccount1" | null              | null
-        "http://127.0.0.1:10000/devstoreaccount1/container"                      | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | null
-        "http://127.0.0.1:10000/devstoreaccount1/container/blob"                 | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | "blob"
-        "http://localhost:10000/devstoreaccount1"                                | "http" | "localhost:10000" | "devstoreaccount1" | null              | null
-        "http://localhost:10000/devstoreaccount1/container"                      | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | null
-        "http://localhost:10000/devstoreaccount1/container/blob"                 | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "blob"
-        "http://localhost:10000/devstoreaccount1/container/path/to]a blob"       | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "path/to]a blob"
-        "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob" | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "path/to]a blob"
-        "http://localhost:10000/devstoreaccount1/container/斑點"                 | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"
-        "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"   | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "斑點"
     }
 }

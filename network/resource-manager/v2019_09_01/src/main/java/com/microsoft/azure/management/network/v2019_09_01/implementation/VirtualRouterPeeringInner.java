@@ -38,15 +38,14 @@ public class VirtualRouterPeeringInner extends SubResource {
     private ProvisioningState provisioningState;
 
     /**
-     * Gets name of the peering unique to VirtualRouter. This name can be used
-     * to access the resource.
+     * Name of the virtual router peering that is unique within a virtual
+     * router.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -107,7 +106,7 @@ public class VirtualRouterPeeringInner extends SubResource {
     }
 
     /**
-     * Get gets name of the peering unique to VirtualRouter. This name can be used to access the resource.
+     * Get name of the virtual router peering that is unique within a virtual router.
      *
      * @return the name value
      */
@@ -116,7 +115,7 @@ public class VirtualRouterPeeringInner extends SubResource {
     }
 
     /**
-     * Set gets name of the peering unique to VirtualRouter. This name can be used to access the resource.
+     * Set name of the virtual router peering that is unique within a virtual router.
      *
      * @param name the name value to set
      * @return the VirtualRouterPeeringInner object itself.
@@ -127,7 +126,7 @@ public class VirtualRouterPeeringInner extends SubResource {
     }
 
     /**
-     * Get gets a unique read-only string that changes whenever the resource is updated.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */

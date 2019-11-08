@@ -3,11 +3,10 @@ package com.azure.storage.blob.specialized.cryptography
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
-
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
@@ -24,7 +23,6 @@ import spock.lang.Shared
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.security.MessageDigest
 
 class EncyptedBlockBlobAPITest extends APISpec {
 
@@ -91,7 +89,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Create encryption client succeeds"() {
         when:
         def key
-        if(passKey) {
+        if (passKey) {
             key = fakeKey
         } else {
             key = null
@@ -184,7 +182,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Encryption"() {
         when:
-        def byteBufferList = [];
+        def byteBufferList = []
 
         /*
         Sending a sequence of buffers allows us to test encryption behavior in different cases when the buffers do
@@ -197,8 +195,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
 
         // Test buffered upload.
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(size).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(size, 2, null)
         beac.upload(flux, parallelTransferOptions).block()
         ByteBuffer outputByteBuffer = collectBytesInBuffer(beac.download()).block()
 
@@ -234,8 +231,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Buffered upload
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-        .setBlockSize(defaultDataSize).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(defaultDataSize, 2, null)
         beac.uploadWithResponse(defaultFlux, parallelTransferOptions, headers, null, null, null).block()
         def response = beac.getPropertiesWithResponse(null).block()
 
@@ -246,9 +242,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         // HTTP default content type is application/octet-stream
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        // Don't calculate MD5 as we would need to encrypt the blob then calculate it.
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | null
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
     }
 
     // This test checks that metadata in encryption is successfully set
@@ -273,8 +270,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Buffered upload
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(defaultDataSize as int).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(defaultDataSize as int, 2, null)
         beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, metadata, null, null).block()
         properties = beac.getProperties().block()
 
@@ -310,8 +306,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         bac.setIfMatch(etag)
 
         then:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-        .setBlockSize(defaultDataSize as int).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(defaultDataSize as int, 2, null)
         beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, null, null, bac)
             .block().getStatusCode() == 201
 
@@ -341,8 +336,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .setLeaseId(leaseID)
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-        .setNumBuffers(2).setBlockSize(defaultDataSize)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(defaultDataSize, 2, null)
         beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, null, null, bac).block()
 
         then:
@@ -414,7 +408,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         // Upload encrypted data with regular client
         normalClient.uploadWithResponse(new ByteArrayInputStream(defaultData.array()), defaultDataSize, null, null,
-            null, null, null, null)
+            null, null, null, null, null)
 
         // Download data with encrypted client - command should fail
         ByteArrayOutputStream os = new ByteArrayOutputStream()
@@ -427,7 +421,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // Tests key resolver
     @Unroll
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "Key resolver used to decrypt data"() {
         setup:
         def blobName = generateBlobName()
@@ -435,8 +429,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         EncryptedBlobAsyncClient decryptResolverClient =
             getEncryptedClientBuilder(null, fakeKeyResolver as AsyncKeyEncryptionKeyResolver, primaryCredential,
                 cc.getBlobContainerUrl())
-            .blobName(blobName)
-            .buildEncryptedBlobAsyncClient()
+                .blobName(blobName)
+                .buildEncryptedBlobAsyncClient()
 
         EncryptedBlobAsyncClient encryptClient =
             getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential, cc.getBlobContainerUrl())
@@ -455,8 +449,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         Flux<ByteBuffer> flux = Flux.fromIterable(byteBufferList)
 
         // Test buffered upload.
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(size).setNumBuffers(2)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(size, 2, null)
         encryptClient.upload(flux, parallelTransferOptions).block()
         ByteBuffer outputByteBuffer = collectBytesInBuffer(decryptResolverClient.download()).block()
 
@@ -479,7 +472,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with old SDK download with new SDk.
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "Cross platform test upload old download new"() {
         setup:
         def blobName = generateBlobName()
@@ -515,7 +508,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with new SDK download with old SDk.
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "Cross platform test upload new download old"() {
         setup:
         def blobName = generateBlobName()
@@ -547,7 +540,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         stream.toByteArray() == defaultData.array()
     }
 
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "encrypted client file upload overwrite false"() {
         setup:
         def file = getRandomFile(KB)
@@ -561,7 +554,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "encrypted client file upload overwrite true"() {
         setup:
         def file = getRandomFile(KB)

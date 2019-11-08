@@ -283,6 +283,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="scope" value="protected"/>
       <property name="suppressLoadErrors" value="true"/>
     </module>
+    <module name="MissingJavadocMethod"/>
+    <module name="MissingJavadocType"/>
+    <module name="MissingJavadocPackage"/>
+
 
     <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->
     <!-- The check verifies both checked (in the throws clause) and unchecked throws -->

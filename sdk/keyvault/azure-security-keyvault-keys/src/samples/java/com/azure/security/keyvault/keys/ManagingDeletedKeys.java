@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -48,80 +48,52 @@ public class ManagingDeletedKeys {
                 .setExpiresOn(OffsetDateTime.now().plusYears(1)));
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
-        Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
+        SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
 
-        while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-            System.out.println(deletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
-        DeletedKey deletedKey = deletedKeyPoller.getLastPollResponse().getValue();
+
+        DeletedKey deletedKey = deletedKeyPollResponse.getValue();
         System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
         System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());
 
         // Key is being deleted on server.
-        while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(deletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
-
+        deletedKeyPoller.waitForCompletion();
 
         // We accidentally Cloud Ec key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
-        Poller<KeyVaultKey, Void> recoverEcKeyPoller = keyClient.beginRecoverDeletedKey("CloudEcKey");
-        while (recoverEcKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-            System.out.println(recoverEcKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        SyncPoller<KeyVaultKey, Void> recoverEcKeyPoller = keyClient.beginRecoverDeletedKey("CloudEcKey");
 
-        KeyVaultKey recoveredKey = recoverEcKeyPoller.getLastPollResponse().getValue();
+        PollResponse<KeyVaultKey> recoveryEcKeyPollResponse = recoverEcKeyPoller.poll();
+        KeyVaultKey recoveredKey = recoveryEcKeyPollResponse.getValue();
         System.out.println("Recovered Key Name %s" + recoveredKey.getName());
         System.out.printf("Recovered Key's Id %s", recoveredKey.getId());
 
         // Key is being recovered on server.
-        while (recoverEcKeyPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(recoverEcKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
-
-
+        recoverEcKeyPoller.waitForCompletion();
 
         // The Cloud Ec and Rsa keys are no longer needed, need to delete them from the key vault.
-        Poller<DeletedKey, Void> ecDeletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
+        SyncPoller<DeletedKey, Void> ecDeletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
 
-        while (ecDeletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-            System.out.println(ecDeletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        PollResponse<DeletedKey> ecDeletedKeyPollResponse = ecDeletedKeyPoller.poll();
 
-        DeletedKey ecDeletedKey = ecDeletedKeyPoller.getLastPollResponse().getValue();
+        DeletedKey ecDeletedKey = ecDeletedKeyPollResponse.getValue();
         System.out.println("Deleted Date  %s" + ecDeletedKey.getDeletedOn().toString());
         System.out.printf("Deleted Key's Recovery Id %s", ecDeletedKey.getRecoveryId());
 
         // Key is being deleted on server.
-        while (ecDeletedKeyPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(ecDeletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        ecDeletedKeyPoller.waitForCompletion();
 
+        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
 
-        Poller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
+        PollResponse<DeletedKey> rsaDeletedKeyPollResponse = rsaDeletedKeyPoller.poll();
 
-        while (rsaDeletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-            System.out.println(rsaDeletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
-
-        DeletedKey rsaDeletedKey = rsaDeletedKeyPoller.getLastPollResponse().getValue();
+        DeletedKey rsaDeletedKey = rsaDeletedKeyPollResponse.getValue();
         System.out.println("Deleted Date  %s" + rsaDeletedKey.getDeletedOn().toString());
         System.out.printf("Deleted Key's Recovery Id %s", rsaDeletedKey.getRecoveryId());
 
         // Key is being deleted on server.
-        while (rsaDeletedKeyPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(rsaDeletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
-
+        rsaDeletedKeyPoller.waitForCompletion();
 
         // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
         for (DeletedKey delKey : keyClient.listDeletedKeys()) {

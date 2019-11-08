@@ -21,7 +21,7 @@ To get the binaries of the official Microsoft Azure Event Grid Java SDK as distr
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-eventgrid</artifactId>
-    <version>1.4.0-preview.1</version>
+    <version>1.4.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -55,4 +55,4 @@ If you would like to become an active contributor to this project please follow 
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Feventgrid%2Fdata-plane%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fmicrosoft-azure-eventgrid%2FREADME.png)

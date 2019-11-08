@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.util.Map;
 import java.util.Objects;
@@ -52,7 +52,7 @@ public final class CertificateImportOptions {
     public CertificateImportOptions(String name, byte[] value) {
         Objects.requireNonNull(value, "The certificate value parameter cannot be null.");
         this.name = name;
-        this.value = ImplUtils.clone(value);
+        this.value = CoreUtils.clone(value);
     }
 
     /**
@@ -142,6 +142,6 @@ public final class CertificateImportOptions {
      * @return the value of the certificate.
      */
     public byte[] getValue() {
-        return ImplUtils.clone(this.value);
+        return CoreUtils.clone(this.value);
     }
 }

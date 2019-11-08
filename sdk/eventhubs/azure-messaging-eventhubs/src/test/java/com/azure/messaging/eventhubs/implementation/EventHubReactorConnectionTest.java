@@ -85,7 +85,7 @@ public class EventHubReactorConnectionTest {
     @Test
     public void getsManagementChannel() {
         // Arrange
-        final EventHubReactorConnection connection = new EventHubReactorConnection(CONNECTION_ID, connectionOptions,
+        final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID, connectionOptions,
             reactorProvider, handlerProvider, tokenManagerProvider, messageSerializer);
 
         // Act & Assert

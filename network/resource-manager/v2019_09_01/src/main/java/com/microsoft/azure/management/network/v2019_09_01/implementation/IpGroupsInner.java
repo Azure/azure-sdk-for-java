@@ -444,7 +444,7 @@ public class IpGroupsInner implements InnerSupportsGet<IpGroupInner>, InnerSuppo
     }
 
     /**
-     * Updates an IpGroups.
+     * Updates tags of an IpGroups resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
@@ -458,7 +458,7 @@ public class IpGroupsInner implements InnerSupportsGet<IpGroupInner>, InnerSuppo
     }
 
     /**
-     * Updates an IpGroups.
+     * Updates tags of an IpGroups resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
@@ -471,7 +471,7 @@ public class IpGroupsInner implements InnerSupportsGet<IpGroupInner>, InnerSuppo
     }
 
     /**
-     * Updates an IpGroups.
+     * Updates tags of an IpGroups resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
@@ -488,7 +488,7 @@ public class IpGroupsInner implements InnerSupportsGet<IpGroupInner>, InnerSuppo
     }
 
     /**
-     * Updates an IpGroups.
+     * Updates tags of an IpGroups resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
@@ -524,7 +524,7 @@ public class IpGroupsInner implements InnerSupportsGet<IpGroupInner>, InnerSuppo
     }
 
     /**
-     * Updates an IpGroups.
+     * Updates tags of an IpGroups resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
@@ -539,7 +539,7 @@ public class IpGroupsInner implements InnerSupportsGet<IpGroupInner>, InnerSuppo
     }
 
     /**
-     * Updates an IpGroups.
+     * Updates tags of an IpGroups resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
@@ -553,7 +553,7 @@ public class IpGroupsInner implements InnerSupportsGet<IpGroupInner>, InnerSuppo
     }
 
     /**
-     * Updates an IpGroups.
+     * Updates tags of an IpGroups resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
@@ -571,7 +571,7 @@ public class IpGroupsInner implements InnerSupportsGet<IpGroupInner>, InnerSuppo
     }
 
     /**
-     * Updates an IpGroups.
+     * Updates tags of an IpGroups resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.

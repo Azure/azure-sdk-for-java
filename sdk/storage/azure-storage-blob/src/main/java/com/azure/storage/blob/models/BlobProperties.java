@@ -4,7 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -100,7 +100,7 @@ public final class BlobProperties {
         this.eTag = eTag;
         this.blobSize = blobSize;
         this.contentType = contentType;
-        this.contentMd5 = ImplUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         this.contentEncoding = contentEncoding;
         this.contentDisposition = contentDisposition;
         this.contentLanguage = contentLanguage;
@@ -167,7 +167,7 @@ public final class BlobProperties {
      * @return the MD5 of the blob's content
      */
     public byte[] getContentMd5() {
-        return ImplUtils.clone(contentMd5);
+        return CoreUtils.clone(contentMd5);
     }
 
     /**

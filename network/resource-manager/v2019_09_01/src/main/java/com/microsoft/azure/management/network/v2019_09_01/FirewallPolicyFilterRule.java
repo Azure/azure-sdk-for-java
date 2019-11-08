@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Firewall Policy Filter Rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType", defaultImpl = FirewallPolicyFilterRule.class)
 @JsonTypeName("FirewallPolicyFilterRule")
 public class FirewallPolicyFilterRule extends FirewallPolicyRule {
     /**

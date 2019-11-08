@@ -15,7 +15,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import java.net.MalformedURLException;
@@ -30,7 +30,7 @@ import java.util.Objects;
  * It constructs an instance of the desired client.
  *
  * <p> The minimal configuration options required by {@link CertificateClientBuilder} to build {@link CertificateAsyncClient}
- * are {@link String endpoint} and {@link TokenCredential credential}. </p>
+ * are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
  * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation}
  *
@@ -39,13 +39,13 @@ import java.util.Objects;
 
  * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation}
  *
- * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
+ * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String vaultUrl}
  * can be specified. It provides finer control over the construction of {@link CertificateAsyncClient} and {@link CertificateClient}</p>
  *
  * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation}
  *
  * <p> The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build {@link CertificateClient}
- * are {@link String endpoint} and {@link TokenCredential credential}. </p>
+ * are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
  * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.instantiation}
  *
@@ -59,7 +59,7 @@ public final class CertificateClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private URL endpoint;
+    private URL vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private final RetryPolicy retryPolicy;
@@ -80,14 +80,14 @@ public final class CertificateClientBuilder {
      * Every time {@code buildClient()} is called, a new instance of {@link CertificateClient} is created.
      *
      * <p>If {@link CertificateClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link CertificateClientBuilder#endpoint(String) serviceEndpoint} are used to create the
+     * {@link CertificateClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the
      * {@link CertificateClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
      * then {@link CertificateClientBuilder#credential(TokenCredential) key vault credential}  and
-     * {@link CertificateClientBuilder#endpoint(String) key vault endpoint} are required to build the {@link CertificateClient client}.</p>
+     * {@link CertificateClientBuilder#vaultUrl(String) key vault url} are required to build the {@link CertificateClient client}.</p>
      *
      * @return A {@link CertificateClient} with the options set from the builder.
      * @throws IllegalStateException If {@link CertificateClientBuilder#credential(TokenCredential)} or
-     * {@link CertificateClientBuilder#endpoint(String)} have not been set.
+     * {@link CertificateClientBuilder#vaultUrl(String)} have not been set.
      */
     public CertificateClient buildClient() {
         return new CertificateClient(buildAsyncClient());
@@ -98,14 +98,14 @@ public final class CertificateClientBuilder {
      * Every time {@code buildAsyncClient()} is called, a new instance of {@link CertificateAsyncClient} is created.
      *
      * <p>If {@link CertificateClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link CertificateClientBuilder#endpoint(String) serviceEndpoint} are used to create the
+     * {@link CertificateClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the
      * {@link CertificateClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
      * then {@link CertificateClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link CertificateClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link CertificateAsyncClient client}.}</p>
+     * {@link CertificateClientBuilder#vaultUrl(String)} key vault url are required to build the {@link CertificateAsyncClient client}.}</p>
      *
      * @return A {@link CertificateAsyncClient} with the options set from the builder.
      * @throws IllegalStateException If {@link CertificateClientBuilder#credential(TokenCredential)} or
-     * {@link CertificateClientBuilder#endpoint(String)} have not been set.
+     * {@link CertificateClientBuilder#vaultUrl(String)} have not been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
         Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
@@ -117,7 +117,7 @@ public final class CertificateClientBuilder {
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new CertificateAsyncClient(endpoint, pipeline, serviceVersion);
+            return new CertificateAsyncClient(vaultUrl, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -139,19 +139,19 @@ public final class CertificateClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new CertificateAsyncClient(endpoint, pipeline, serviceVersion);
+        return new CertificateAsyncClient(vaultUrl, pipeline, serviceVersion);
     }
 
     /**
      * Sets the vault endpoint url to send HTTP requests to.
      *
-     * @param endpoint The vault endpoint url is used as destination on Azure to send requests to.
+     * @param vaultUrl The vault endpoint url is used as destination on Azure to send requests to.
      * @return the updated ServiceClientBuilder object.
-     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException if {@code vaultUrl} is null or it cannot be parsed into a valid URL.
      */
-    public CertificateClientBuilder endpoint(String endpoint) {
+    public CertificateClientBuilder vaultUrl(String vaultUrl) {
         try {
-            this.endpoint = new URL(endpoint);
+            this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed."));
         }
@@ -214,7 +214,7 @@ public final class CertificateClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link CertificateClientBuilder#endpoint(String) endpoint} to build {@link CertificateClient} or {@link CertificateAsyncClient}.
+     * {@link CertificateClientBuilder#vaultUrl(String) vaultUrl} to build {@link CertificateClient} or {@link CertificateAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return the updated {@link CertificateClientBuilder} object.
@@ -255,12 +255,12 @@ public final class CertificateClientBuilder {
     }
 
     private URL getBuildEndpoint(Configuration configuration) {
-        if (endpoint != null) {
-            return endpoint;
+        if (vaultUrl != null) {
+            return vaultUrl;
         }
 
         String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");
-        if (ImplUtils.isNullOrEmpty(configEndpoint)) {
+        if (CoreUtils.isNullOrEmpty(configEndpoint)) {
             return null;
         }
 

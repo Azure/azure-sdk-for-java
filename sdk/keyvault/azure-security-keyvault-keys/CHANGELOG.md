@@ -1,4 +1,29 @@
 # Release History
+## 4.0.0 (2019-10-31)
+
+### Breaking changes
+- Key has been renamed to KeyVaultKey to avoid ambiguity with other libraries and to yield better search results.
+- Key.keyMaterial has been renamed to KeyVaultKey.key.
+- The setters of JsonWebKey properties have been removed.
+- JsonWebKey methods fromRsa, fromEc and fromAes now take an optional collection of key operations.
+- JsonWebKey.keyOps is now read-only. You must pass a list of key operations at construction time.
+- endpoint method on KeyClientBuilder has been renamed to vaultUrl.
+- hsm properties and parameters have been renamed to hardwareProtected.
+- On KeyProperties, expires, created, and updated have been renamed to expiresOn, createdOn, and updatedOn respectively.
+- On DeletedKey, deletedDate has been renamed to DeletedOn.
+- listKeys and listKeyVersions methods have been renamed to listPropertiesOfKeys and listPropertiesOfKeyVersions respectively in `KeyClient` and `KeyAsyncClient`.
+- restoreKey method has been renamed to restoreKeyBackup in `KeyClient` and `KeyAsyncClient` to better associate it with KeyClient.backupKey.
+- deleteKey method has been renamed to beginDeleteKey and now returns a SyncPoller in `KeyClient` and PollerFlux in `KeyAsyncClient` to track this long-running operation.
+- recoverDeletedKey method has been renamed to beginRecoverDeletedKey and now returns a SyncPoller in `KeyClient` and PollerFlux in `KeyAsyncClient` to track this long-running operation.
+- KeyCreateOptions has been renamed to CreateKeyOptions.
+- EcCreateKeyOptions has been renamed to CreateEcKeyOptions.
+- CreateEcKeyOptions.curve has been renamed to curveName to be consistent.
+- RsaKeyCreateOptions has been renamed to CreateRsaKeyOptions.
+- KeyImportOptions has been renamed to ImportKeyOptions.
+
+### Major changes
+- JsonWebKey.keyType and JsonWebKey.keyOps have been exposed as KeyVaultKey.keyType and KeyVaultKey.keyOperations respectively.
+- KeyClient.vaultUrl has been added with the original value pass to KeyClient.
 
 ## 4.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).

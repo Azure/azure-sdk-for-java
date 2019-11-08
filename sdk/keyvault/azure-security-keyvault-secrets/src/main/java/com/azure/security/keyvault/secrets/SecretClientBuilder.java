@@ -16,7 +16,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 
@@ -85,11 +85,11 @@ public final class SecretClientBuilder {
      * <p>If {@link SecretClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link SecretClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
-     * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential and
+     * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential}, and
      * {@link SecretClientBuilder#vaultUrl(String)} key vault url are required to build the {@link SecretClient
-     * client}.}</p>
+     * client}.</p>
      *
-     * @return A SecretClient with the options set from the builder.
+     * @return A {@link SecretClient} with the options set from the builder.
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
      *     {@link SecretClientBuilder#vaultUrl(String)} have not been set.
      */
@@ -104,11 +104,11 @@ public final class SecretClientBuilder {
      * <p>If {@link SecretClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link SecretClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
-     * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential and
+     * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential}, and
      * {@link SecretClientBuilder#vaultUrl(String)} key vault url are required to build the {@link
-     * SecretAsyncClient client}.}</p>
+     * SecretAsyncClient client}.</p>
      *
-     * @return A SecretAsyncClient with the options set from the builder.
+     * @return A {@link SecretAsyncClient} with the options set from the builder.
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
      *     {@link SecretClientBuilder#vaultUrl(String)} have not been set.
      */
@@ -274,7 +274,7 @@ public final class SecretClientBuilder {
         }
 
         String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");
-        if (ImplUtils.isNullOrEmpty(configEndpoint)) {
+        if (CoreUtils.isNullOrEmpty(configEndpoint)) {
             return null;
         }
 

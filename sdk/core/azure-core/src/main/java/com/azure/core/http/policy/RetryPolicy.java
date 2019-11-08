@@ -3,7 +3,7 @@
 
 package com.azure.core.http.policy;
 
-import static com.azure.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;

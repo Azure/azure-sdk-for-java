@@ -4,16 +4,13 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.TestUtils;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 
 import java.time.Instant;
 import java.util.List;
 
 /**
- * Contains information about test events pushed to Azure Event Hubs. {@link IntegrationTestBase#setupEventTestData(EventHubClient,
- * int, EventHubProducerOptions)}.
+ * Contains information about test events pushed to Azure Event Hubs.*
  */
 public class IntegrationTestEventData {
     private final String partitionId;
@@ -22,7 +19,7 @@ public class IntegrationTestEventData {
     private final Instant enqueuedTime;
 
     IntegrationTestEventData(String partitionId, String messageTrackingId, Instant enqueuedTime,
-                             List<EventData> events) {
+            List<EventData> events) {
         this.partitionId = partitionId;
         this.events = events;
         this.messageTrackingId = messageTrackingId;

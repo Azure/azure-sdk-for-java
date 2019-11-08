@@ -57,7 +57,6 @@ public class BackupAndRestoreOperationsAsync {
 
         // The Cloud Rsa key is no longer in use, so you delete it.
         keyAsyncClient.beginDeleteKey("CloudRsaKey")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Key Name: " + pollResponse.getValue().getName());

@@ -5,15 +5,14 @@ package com.azure.messaging.eventhubs.proxy;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.jproxy.ProxyServer;
 import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -42,7 +41,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     private static IntegrationTestEventData testData;
     private static ProxyServer proxyServer;
     private static ProxySelector defaultProxySelector;
-    private EventHubAsyncClient client;
+
+    private EventHubConsumerAsyncClient consumer;
 
     public ProxyReceiveTest() {
         super(new ClientLogger(ProxyReceiveTest.class));
@@ -88,32 +88,31 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = new EventHubClientBuilder()
+        EventHubClientBuilder builder = new EventHubClientBuilder()
             .transportType(TransportType.AMQP_WEB_SOCKETS)
-            .connectionString(getConnectionString())
-            .buildAsyncClient();
+            .connectionString(getConnectionString());
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
-            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+            testData = setupEventTestData(builder.buildAsyncProducer(), NUMBER_OF_EVENTS, options);
         }
+
+        consumer = builder.consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .startingPosition(EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
+            .buildAsyncConsumer();
     }
 
     @Override
     protected void afterTest() {
-        dispose(client);
+        dispose(consumer);
     }
 
     @Test
     public void testReceiverStartOfStreamFilters() {
-        // Arrange
-        final EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
-            PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
-
         // Act & Assert
-        StepVerifier.create(consumer.receive().take(NUMBER_OF_EVENTS))
+        StepVerifier.create(consumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }

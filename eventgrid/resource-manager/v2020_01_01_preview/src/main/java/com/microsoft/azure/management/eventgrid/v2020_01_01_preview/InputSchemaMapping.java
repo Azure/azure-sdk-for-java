@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.eventgrid.v2020_01_01_preview;
 
+import com.microsoft.azure.management.eventgrid.v2020_01_01_preview.JsonInputSchemaMapping;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * custom input schema. Currently, the only supported type of
  * InputSchemaMapping is 'JsonInputSchemaMapping'.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inputSchemaMappingType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inputSchemaMappingType", defaultImpl = InputSchemaMapping.class)
 @JsonTypeName("InputSchemaMapping")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Json", value = JsonInputSchemaMapping.class)

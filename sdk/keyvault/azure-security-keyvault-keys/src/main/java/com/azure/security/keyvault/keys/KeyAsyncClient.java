@@ -11,15 +11,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.implementation.RestProxy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -38,13 +40,12 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * The KeyAsyncClient provides asynchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault. The client
@@ -381,11 +382,7 @@ public final class KeyAsyncClient {
      * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key
      * details when a response has been received.</p>
      *
-     * <pre>
-     * keyAsyncClient.importKey("keyName", jsonWebKeyToImport).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().getName(), keyResponse.value
-     *   ().getId()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.importKey#string-jsonwebkey}
      *
      * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
@@ -425,15 +422,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key
      * details when a response has been received.</p>
-     * <pre>
-     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-     *   .hsm(true)
-     *   .setExpires(OffsetDateTime.now().plusDays(60));
      *
-     * keyAsyncClient.importKey(keyImportOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().getName(),
-     *   keyResponse.value().getId()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.importKey#options}
      *
      * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.
@@ -465,15 +455,7 @@ public final class KeyAsyncClient {
      * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key
      * details when a response has been received.</p>
      *
-     * <pre>
-     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-     *   .hsm(true)
-     *   .setExpires(OffsetDateTime.now().plusDays(60));
-     *
-     * keyAsyncClient.importKey(keyImportOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().getName(),
-     *   keyResponse.value().getId()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.importKeyWithResponse#options-response}
      *
      * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.
@@ -682,35 +664,40 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKey#string}
      *
      * @param name The name of the key to be deleted.
-     * @return A {@link Poller} to poll on the {@link DeletedKey deleted key} status.
+     * @return A {@link PollerFlux} to poll on the {@link DeletedKey deleted key} status.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Poller<DeletedKey, Void> beginDeleteKey(String name) {
-        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), () -> Mono.empty(), activationOperation(name), null);
+    public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
+        return new PollerFlux<>(Duration.ofSeconds(1),
+            activationOperation(name),
+            createPollOperation(name),
+            (context, firstResponse) -> Mono.empty(),
+            (context) -> Mono.empty());
     }
 
-    private Supplier<Mono<DeletedKey>> activationOperation(String name) {
-        return () -> withContext(context -> deleteKeyWithResponse(name, context)
+    private Function<PollingContext<DeletedKey>, Mono<DeletedKey>> activationOperation(String name) {
+        return (pollingContext) -> withContext(context -> deleteKeyWithResponse(name, context)
             .flatMap(deletedKeyResponse -> Mono.just(deletedKeyResponse.getValue())));
     }
 
     /*
     Polling operation to poll on create delete key operation status.
     */
-    private Function<PollResponse<DeletedKey>, Mono<PollResponse<DeletedKey>>> createPollOperation(String keyName) {
-        return prePollResponse ->
+    private Function<PollingContext<DeletedKey>, Mono<PollResponse<DeletedKey>>> createPollOperation(String keyName) {
+        return pollingContext ->
             withContext(context -> service.getDeletedKeyPoller(vaultUrl, keyName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .flatMap(deletedKeyResponse -> {
                     if (deletedKeyResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, prePollResponse.getValue())));
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                                pollingContext.getLatestResponse().getValue())));
                     }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, deletedKeyResponse.getValue())));
+                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deletedKeyResponse.getValue())));
                 }))
                 // This means either vault has soft-delete disabled or permission is not granted for the get deleted key operation.
                 // In both cases deletion operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, prePollResponse.getValue()));
+                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollingContext.getLatestResponse().getValue()));
     }
 
     Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
@@ -847,35 +834,42 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string}
      *
      * @param name The name of the deleted key to be recovered.
-     * @return A {@link Poller} to poll on the {@link KeyVaultKey recovered key} status.
+     * @return A {@link PollerFlux} to poll on the {@link KeyVaultKey recovered key} status.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return new Poller<>(Duration.ofSeconds(1), createRecoverPollOperation(name), () -> Mono.empty(), recoverActivationOperation(name), null);
+    public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
+        return new PollerFlux<>(Duration.ofSeconds(1),
+            recoverActivationOperation(name),
+            createRecoverPollOperation(name),
+            (context, firstResponse) -> Mono.empty(),
+            context -> Mono.empty());
     }
 
-    private Supplier<Mono<KeyVaultKey>> recoverActivationOperation(String name) {
-        return () -> withContext(context -> recoverDeletedKeyWithResponse(name, context)
+    private Function<PollingContext<KeyVaultKey>, Mono<KeyVaultKey>> recoverActivationOperation(String name) {
+        return (pollingContext) -> withContext(context -> recoverDeletedKeyWithResponse(name, context)
             .flatMap(keyResponse -> Mono.just(keyResponse.getValue())));
     }
 
     /*
     Polling operation to poll on create delete key operation status.
     */
-    private Function<PollResponse<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> createRecoverPollOperation(String keyName) {
-        return prePollResponse ->
+    private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> createRecoverPollOperation(String keyName) {
+        return pollingContext ->
             withContext(context -> service.getKeyPoller(vaultUrl, keyName, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .flatMap(keyResponse -> {
                     if (keyResponse.getStatusCode() == 404) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, prePollResponse.getValue())));
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                                pollingContext.getLatestResponse().getValue())));
                     }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, keyResponse.getValue())));
+                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                            keyResponse.getValue())));
                 }))
                 // This means permission is not granted for the get deleted key operation.
                 // In both cases deletion operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, prePollResponse.getValue()));
+                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                        pollingContext.getLatestResponse().getValue()));
     }
 
     Mono<Response<KeyVaultKey>> recoverDeletedKeyWithResponse(String name, Context context) {
