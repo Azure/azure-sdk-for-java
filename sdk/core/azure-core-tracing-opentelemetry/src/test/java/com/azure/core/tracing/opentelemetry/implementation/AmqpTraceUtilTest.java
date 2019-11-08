@@ -3,8 +3,11 @@
 package com.azure.core.tracing.opentelemetry.implementation;
 
 import io.opentelemetry.trace.Status;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 public class AmqpTraceUtilTest {
 
@@ -15,8 +18,8 @@ public class AmqpTraceUtilTest {
         Status status = AmqpTraceUtil.parseStatusMessage("", null);
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.UNKNOWN.withDescription(""), status);
+        assertNotNull(status);
+        assertEquals(Status.UNKNOWN.withDescription(""), status);
     }
 
     @Test
@@ -26,8 +29,8 @@ public class AmqpTraceUtilTest {
         Status status = AmqpTraceUtil.parseStatusMessage("success", null);
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.OK, status);
+        assertNotNull(status);
+        assertEquals(Status.OK, status);
     }
 
     @Test
@@ -37,7 +40,7 @@ public class AmqpTraceUtilTest {
         Status status = AmqpTraceUtil.parseStatusMessage("", new Error("testError"));
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.UNKNOWN.withDescription("testError"), status);
+        assertNotNull(status);
+        assertEquals(Status.UNKNOWN.withDescription("testError"), status);
     }
 }

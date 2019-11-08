@@ -1,9 +1,9 @@
-# Publish events with Azure Core Tracing Opentelemetry
+# Publish events with Azure Core Tracing OpenTelemetry
  
 Following documentation describes instructions to run a sample program for publishing multiple events with tracing instrumentation.
 
 ## Getting Started
-Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **[LoggingExporter][logging_exporter]** as exporter.
+Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **[Logging Exporter][logging_exporter]** as exporter.
 ### Adding dependencies to your project:
 ```xml
 <dependencies>

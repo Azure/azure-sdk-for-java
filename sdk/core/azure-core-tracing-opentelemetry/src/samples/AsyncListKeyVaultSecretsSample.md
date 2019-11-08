@@ -1,9 +1,9 @@
-# Asynchronously list Key Vault secrets with Azure Core Tracing Opentelemetry
+# Asynchronously list Key Vault secrets with Azure Core Tracing OpenTelemetry
  
 Following documentation describes instructions to run a sample program for asynchronously creating and listing secrets of a Key Vault with tracing instrumentation.
 
 ## Getting Started
-Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package and **[LoggingExporter][logging_exporter]** as exporter.
+Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package and **[Logging Exporter][logging_exporter]** as exporter.
 ### Adding dependencies to your project:
 ```xml
 <dependencies>

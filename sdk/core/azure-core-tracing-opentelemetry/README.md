@@ -1,7 +1,7 @@
-# Azure Tracing client library for Java
-This package enables distributed tracing across Azure SDK Java libraries through [opentelemetry][opentelemetry]. OpenTelemetry is an open source, vendor-agnostic, single distribution of libraries to provide metrics collection and distributed tracing for services. 
+# Azure Tracing OpenTelemetry client library for Java
+This package enables distributed tracing across Azure SDK Java libraries through [OpenTelemetry][OpenTelemetry]. OpenTelemetry is an open source, vendor-agnostic, single distribution of libraries to provide metrics collection and distributed tracing for services. 
 The Azure core tracing package provides:
-- Context propagation, in order to correlate activities and requests between services with an initial customer action.
+- Context propagation, used to correlate activities and requests between services with an initial customer action.
 - Tracing user requests to the system, allowing to pinpoint failures and performance issues.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
@@ -150,7 +150,7 @@ private static final TracerSdkFactory TRACER_SDK_FACTORY;
 ## Troubleshooting
 ### General
 
-For more information on opentelemetry Java support for tracing, see [opentelemetry Java][opentelemetry-quickstart].
+For more information on OpenTelemetry Java support for tracing, see [OpenTelemetry Java][OpenTelemetry-quickstart].
 
 ## Next steps
 ### Samples
@@ -162,7 +162,7 @@ These following samples provide example code for additional scenarios commonly e
 * [Async List Key Vault Secrets][sample_async_key_vault] - Tracing enabled sample for asynchronously creating and listing secrets of a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets].
 
 ### Additional Documentation
-For more extensive documentation on OpenTelemetry, see the [API reference documentation][opentelemetry].
+For more extensive documentation on OpenTelemetry, see the [API reference documentation][OpenTelemetry].
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -188,7 +188,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_async_key_vault]: ./src/samples/AsyncListKeyVaultSecretsSample.md
 [sample_eventhubs]: ./src/samples/PublishEventsTracingSample.md
 [samples]: ./src/samples/
-[opentelemetry]: https://github.com/open-telemetry/opentelemetry-java
-[opentelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java
+[OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java
+[OpenTelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core-tracing-opentelemetry/README.png)

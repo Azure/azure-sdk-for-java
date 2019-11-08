@@ -3,8 +3,9 @@
 package com.azure.core.tracing.opentelemetry.implementation;
 
 import io.opentelemetry.trace.Status;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpTraceUtilTest {
     @Test
@@ -14,8 +15,11 @@ public class HttpTraceUtilTest {
         Status status = HttpTraceUtil.parseResponseStatus(1, null);
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.UNKNOWN.withDescription(null), status);
+        assertNotNull(status);
+        assertEquals(Status.UNKNOWN.withDescription(null), status);
+    }
+
+    private void assertNotNull(Status status) {
     }
 
     @Test
@@ -27,8 +31,8 @@ public class HttpTraceUtilTest {
         Status status = HttpTraceUtil.parseResponseStatus(401, new Error(errorMessage));
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.UNAUTHENTICATED.withDescription(errorMessage), status);
+        assertNotNull(status);
+        assertEquals(Status.UNAUTHENTICATED.withDescription(errorMessage), status);
     }
 
     @Test
@@ -37,7 +41,7 @@ public class HttpTraceUtilTest {
         Status status = HttpTraceUtil.parseResponseStatus(504, null);
 
         // Assert
-        Assert.assertNotNull(status);
-        Assert.assertEquals(Status.DEADLINE_EXCEEDED.withDescription(null), status);
+        assertNotNull(status);
+        assertEquals(Status.DEADLINE_EXCEEDED.withDescription(null), status);
     }
 }

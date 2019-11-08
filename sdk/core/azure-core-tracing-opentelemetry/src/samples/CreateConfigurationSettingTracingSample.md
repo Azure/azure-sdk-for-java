@@ -1,9 +1,9 @@
-# Create a configuration setting with Azure Core Tracing Opentelemetry
+# Create a configuration setting with Azure Core Tracing OpenTelemetry
  
 Following documentation describes instructions to run a sample program for creating a Configuration Setting with tracing instrumentation.
 
 ## Getting Started
-Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package and **[LoggingExporter][logging_exporter]** as exporter.
+Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package and **[Logging Exporter][logging_exporter]** as exporter.
 ### Adding dependencies to your project:
 ```xml
 <dependencies>

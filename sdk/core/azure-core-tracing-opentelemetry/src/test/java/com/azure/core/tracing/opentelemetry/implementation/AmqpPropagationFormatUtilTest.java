@@ -4,23 +4,26 @@ package com.azure.core.tracing.opentelemetry.implementation;
 
 import com.azure.core.util.Context;
 import io.opentelemetry.trace.SpanContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class AmqpPropagationFormatUtilTest {
 
-    // TODO: Issue to fix this - https://github.com/open-telemetry/opentelemetry-java/issues/659
     @Test
     public void extractContextReturnsSpanContext() {
         // Act
         Context context = AmqpPropagationFormatUtil.extractContext("", Context.NONE);
 
         // Assert
-        Assert.assertNotNull(context);
-        Assert.assertTrue(context.getData(SPAN_CONTEXT_KEY).isPresent());
+        assertNotNull(context);
+        assertTrue(context.getData(SPAN_CONTEXT_KEY).isPresent());
     }
 
     @Test
@@ -29,9 +32,9 @@ public class AmqpPropagationFormatUtilTest {
         Context context = AmqpPropagationFormatUtil.extractContext("", Context.NONE);
 
         // Assert
-        Assert.assertNotNull(context);
-        Assert.assertFalse("Invalid diagnostic Id, returns invalid SpanContext ",
-            ((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid());
+        assertNotNull(context);
+        assertFalse(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid(),
+            "Invalid diagnostic Id, returns invalid SpanContext ");
     }
 
     @Test
@@ -40,9 +43,9 @@ public class AmqpPropagationFormatUtilTest {
         Context context = AmqpPropagationFormatUtil.extractContext("00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01", Context.NONE);
 
         // Assert
-        Assert.assertNotNull(context);
-        Assert.assertTrue("Valid diagnostic Id, returns valid SpanContext ",
-            ((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid());
+        assertNotNull(context);
+        assertTrue(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid(),
+            "Valid diagnostic Id, returns valid SpanContext ");
     }
 
     @Test
@@ -56,7 +59,7 @@ public class AmqpPropagationFormatUtilTest {
         String diagnosticId = AmqpPropagationFormatUtil.getDiagnosticId(spanContext);
 
         // Assert
-        Assert.assertNotNull(diagnosticId);
-        Assert.assertEquals(testDiagnosticID, diagnosticId);
+        assertNotNull(diagnosticId);
+        assertEquals(testDiagnosticID, diagnosticId);
     }
 }
