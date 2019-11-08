@@ -22,42 +22,30 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for {@link ClientLogger}.
  */
 public class ClientLoggerTests {
-    private static final String PARAMETERIZED_TEST_NAME_TEMPLATE = "[" + ParameterizedTest.INDEX_PLACEHOLDER +
-        "] " + ParameterizedTest.DISPLAY_NAME_PLACEHOLDER;
+    private static final String PARAMETERIZED_TEST_NAME_TEMPLATE = "[" + ParameterizedTest.INDEX_PLACEHOLDER
+        + "] " + ParameterizedTest.DISPLAY_NAME_PLACEHOLDER;
 
-    private static final String SLF4J_LOG_FILE_PROPERTY = "org.slf4j.simpleLogger.logFile";
-    private static final String SLF4J_CACHED_STREAM_PROPERTY = "org.slf4j.simpleLogger.cacheOutputStream";
-    private static final String SLF4J_TEST_LOG_FILE = "System.out";
-    private static final String SLF4J_TEST_CACHED_STREAM = "false";
-
-    private String originalLogFile;
-    private String originalCachedOutputStream;
-    private PrintStream originalSystemOut;
-
+    private PrintStream originalSystemErr;
     private ByteArrayOutputStream logCaptureStream;
 
     @BeforeEach
     public void setupLoggingConfiguration() {
-        originalLogFile = System.getProperty(SLF4J_LOG_FILE_PROPERTY);
-        System.setProperty(SLF4J_LOG_FILE_PROPERTY, SLF4J_TEST_LOG_FILE);
-
-        originalCachedOutputStream = System.getProperty(SLF4J_CACHED_STREAM_PROPERTY);
-        System.setProperty(SLF4J_CACHED_STREAM_PROPERTY, SLF4J_TEST_CACHED_STREAM);
-
         System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests", "trace");
 
-        originalSystemOut = System.out;
+        /*
+         * The default configuration for SLF4J's SimpleLogger uses System.err to log. Inject a custom PrintStream to
+         * log into for the duration of the test to capture the log messages.
+         */
+        originalSystemErr = System.err;
         logCaptureStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(logCaptureStream));
+        System.setErr(new PrintStream(logCaptureStream));
     }
 
     @AfterEach
     public void revertLoggingConfiguration() {
-        setPropertyToOriginalOrClear(SLF4J_LOG_FILE_PROPERTY, originalLogFile);
-        setPropertyToOriginalOrClear(SLF4J_CACHED_STREAM_PROPERTY, originalCachedOutputStream);
         System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests");
 
-        System.setOut(originalSystemOut);
+        System.setErr(originalSystemErr);
     }
 
     private void setPropertyToOriginalOrClear(String propertyName, String originalValue) {
