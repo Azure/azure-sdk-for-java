@@ -22,10 +22,13 @@ autorest --java --use=C:\Users\shafang\work\autorest.java
 input-file: C:\Users\shafang\work\azure-rest-api-specs-v3previow1-han\azure-rest-api-specs\specification\cognitiveservices\data-plane\TextAnalytics\preview\v3.0-Preview.1\TextAnalytics.json
 java: true
 output-folder: C:\Users\shafang\work\azure-sdk-for-java\sdk\cognitiveservices\azure-cs-textanalytics\
-namespace: com.azure.cs.textanalytics.textanalytics
+namespace: com.azure.cs.textanalytics
 enable-xml: true
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
+models-subpackage: implementation.models
+custom-types: DetectedLanguage,LanguageResult,LanguageInput,Entity,EntitiesResult,MultiLanguageInput,LinkedEntity,EntityLinkingResult,KeyPhraseResult,DocumentSentiment,SentimentResponse,SentenceSentiment,DocumentEntities,DocumentStatistics,DocumentError,DocumentKeyPhrases,DocumentLanguage,DocumentLinkedEntities,Error,InnerError,Match
+custom-types-subpackage: models
 ```

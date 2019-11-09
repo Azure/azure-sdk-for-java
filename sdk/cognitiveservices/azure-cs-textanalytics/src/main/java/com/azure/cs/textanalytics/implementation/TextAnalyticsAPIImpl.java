@@ -17,8 +17,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.cs.textanalytics.models.LanguageBatchInput;
-import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
+import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
+import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
 import reactor.core.publisher.Mono;
 
 /**
