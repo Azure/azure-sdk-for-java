@@ -87,14 +87,14 @@ public final class BlockBlobClient extends BlobClientBase {
      * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
      * will be overwritten.
      *
-     * @param accessConditions A {@link BlobRequestConditions} object that represents the access conditions for the
+     * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public BlobOutputStream getBlobOutputStream(BlobRequestConditions accessConditions) {
-        return BlobOutputStream.blockBlobOutputStream(client, accessConditions);
+    public BlobOutputStream getBlobOutputStream(BlobRequestConditions requestConditions) {
+        return BlobOutputStream.blockBlobOutputStream(client, requestConditions);
     }
 
     /**
@@ -166,7 +166,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * transport. When this header is specified, the storage service compares the hash of the content that has arrived
      * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
      * operation will fail.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -177,14 +177,14 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHttpHeaders headers,
-        Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions accessConditions,
+        Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<BlockBlobItem>> upload = client
             .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier, contentMd5,
-                accessConditions, context);
+                requestConditions, context);
 
         try {
             return blockWithOptionalTimeout(upload, timeout);
@@ -380,17 +380,17 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the block blob.
      */
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIds, BlobHttpHeaders headers,
-            Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions, Duration timeout,
+            Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Duration timeout,
             Context context) {
         Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
-            base64BlockIds, headers, metadata, tier, accessConditions, context);
+            base64BlockIds, headers, metadata, tier, requestConditions, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }

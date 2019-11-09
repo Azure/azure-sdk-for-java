@@ -112,13 +112,13 @@ public class FileSystemClientJavaDocCodeSamples {
      */
     public void delete2() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions()
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Delete completed with status %d%n", client.deleteWithResponse(
-            accessConditions, timeout, context).getStatusCode());
+            requestConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context
     }
 
@@ -173,13 +173,13 @@ public class FileSystemClientJavaDocCodeSamples {
     public void setMetadata2() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions()
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Set metadata completed with status %d%n",
-            client.setMetadataWithResponse(metadata, accessConditions, timeout, context).getStatusCode());
+            client.setMetadataWithResponse(metadata, requestConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context
     }
 

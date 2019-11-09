@@ -166,7 +166,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -469,13 +469,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
             BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
-            BlobRequestConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new BlobRequestConditions() : accessConditions;
+            BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(null, null,
-            new BlockLookupList().setLatest(base64BlockIds), null, null, null, metadata, accessConditions.getLeaseId(),
-            tier, accessConditions.getIfModifiedSince(), accessConditions.getIfUnmodifiedSince(),
-            accessConditions.getIfMatch(), accessConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
+            new BlockLookupList().setLatest(base64BlockIds), null, null, null, metadata, requestConditions.getLeaseId(),
+            tier, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
             context)
             .map(rb -> {
                 BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();

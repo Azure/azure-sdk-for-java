@@ -10,12 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -112,7 +113,7 @@ public final class DataLakePathClientBuilder {
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
+        String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName)
             ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
             : fileSystemName;
 
@@ -168,7 +169,7 @@ public final class DataLakePathClientBuilder {
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        String dataLakeFileSystemName = ImplUtils.isNullOrEmpty(fileSystemName)
+        String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName)
             ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
             : fileSystemName;
 
@@ -273,12 +274,12 @@ public final class DataLakePathClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
-            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.endpoint = BuilderHelper.getEndpoint(parts);
             this.fileSystemName = parts.getBlobContainerName();
-            this.pathName = parts.getBlobName();
+            this.pathName = Utility.urlEncode(parts.getBlobName());
 
             String sasToken = parts.getSasQueryParameters().encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
@@ -310,7 +311,8 @@ public final class DataLakePathClientBuilder {
      */
     public DataLakePathClientBuilder pathName(String pathName) {
         blobClientBuilder.blobName(pathName);
-        this.pathName = Objects.requireNonNull(pathName, "'pathName' cannot be null.");
+        this.pathName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(pathName,
+            "'pathName' cannot be null.")));
         return this;
     }
 

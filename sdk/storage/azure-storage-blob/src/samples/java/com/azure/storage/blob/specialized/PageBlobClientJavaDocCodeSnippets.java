@@ -105,7 +105,7 @@ public class PageBlobClientJavaDocCodeSnippets {
      * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void uploadPagesWithResponseCodeSnippet() throws NoSuchAlgorithmException {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobRequestConditions-Duration-Context
         byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
         PageRange pageRange = new PageRange()
             .setStart(0)
@@ -118,7 +118,7 @@ public class PageBlobClientJavaDocCodeSnippets {
             .uploadPagesWithResponse(pageRange, dataStream, md5, pageBlobRequestConditions, timeout, context).getValue();
 
         System.out.printf("Uploaded page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobRequestConditions-Duration-Context
     }
 
     /**
@@ -148,13 +148,13 @@ public class PageBlobClientJavaDocCodeSnippets {
         InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
         byte[] sourceContentMD5 = new byte[512];
         PageBlobRequestConditions pageBlobRequestConditions = new PageBlobRequestConditions().setLeaseId(leaseId);
-        BlobRequestConditions sourceAccessConditions = new BlobRequestConditions()
+        BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context(key, value);
 
         PageBlobItem pageBlob = client
             .uploadPagesFromUrlWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobRequestConditions,
-                sourceAccessConditions, timeout, context).getValue();
+                sourceRequestConditions, timeout, context).getValue();
 
         System.out.printf("Uploaded page blob from URL with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions-Duration-Context
@@ -344,12 +344,12 @@ public class PageBlobClientJavaDocCodeSnippets {
     public void copyIncrementalWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#String-String-RequestConditions-Duration-Context
         final String snapshot = "copy snapshot";
-        RequestConditions modifiedAccessConditions = new RequestConditions()
+        RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfNoneMatch("snapshotMatch");
         Context context = new Context(key, value);
 
         CopyStatusType statusType = client
-            .copyIncrementalWithResponse(url, snapshot, modifiedAccessConditions, timeout, context).getValue();
+            .copyIncrementalWithResponse(url, snapshot, modifiedRequestConditions, timeout, context).getValue();
 
         if (CopyStatusType.SUCCESS == statusType) {
             System.out.println("Page blob copied successfully");
