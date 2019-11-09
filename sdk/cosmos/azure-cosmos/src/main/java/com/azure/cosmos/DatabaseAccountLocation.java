@@ -3,9 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.internal.Constants;
+import com.azure.cosmos.implementation.Constants;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 

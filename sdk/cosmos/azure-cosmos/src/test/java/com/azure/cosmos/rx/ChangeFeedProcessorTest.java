@@ -20,7 +20,7 @@ import com.azure.cosmos.SerializationFormattingPolicy;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;
 import com.azure.cosmos.SqlQuerySpec;
-import com.azure.cosmos.internal.changefeed.ServiceItemLease;
+import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

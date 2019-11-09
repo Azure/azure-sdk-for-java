@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.internal.Database;
+import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.internal.ResourceResponse;
+import com.azure.cosmos.implementation.ResourceResponse;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

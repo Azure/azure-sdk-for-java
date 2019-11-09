@@ -4,16 +4,16 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.internal.Document;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.NotFoundException;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;
 import com.azure.cosmos.SqlQuerySpec;
-import com.azure.cosmos.internal.RequestOptions;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Utils;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.Utils;
 import org.apache.commons.lang3.RandomUtils;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;

@@ -3,8 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.QueryMetrics;
-import com.azure.cosmos.internal.QueryMetrics;
+import com.azure.cosmos.implementation.QueryMetrics;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;

@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.UserDefinedFunction;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.UserDefinedFunction;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.UserDefinedFunction;
 
 public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionProperties> {
 

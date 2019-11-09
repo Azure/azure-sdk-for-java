@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Conflict;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Conflict;
-import com.azure.cosmos.internal.ResourceResponse;
+import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.ResourceResponse;
 
 public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictProperties> {
     private CosmosAsyncContainer container;

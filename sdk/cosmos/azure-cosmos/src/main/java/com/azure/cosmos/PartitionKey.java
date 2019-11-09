@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Utils;
-import com.azure.cosmos.internal.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 /**
  * Represents a partition key value in the Azure Cosmos DB database service. A

@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.ResourceResponse;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.ResourceResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;

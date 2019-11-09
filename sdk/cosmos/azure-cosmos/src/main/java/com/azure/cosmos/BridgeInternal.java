@@ -3,34 +3,20 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Configs;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Document;
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.QueryMetrics;
-import com.azure.cosmos.internal.ReplicationPolicy;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.cosmos.internal.RxDocumentServiceResponse;
-import com.azure.cosmos.internal.StoredProcedureResponse;
-import com.azure.cosmos.internal.Strings;
-import com.azure.cosmos.internal.directconnectivity.StoreResult;
-import com.azure.cosmos.internal.query.metrics.ClientSideMetrics;
-import com.azure.cosmos.internal.routing.PartitionKeyInternal;
-import com.azure.cosmos.internal.Configs;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Document;
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.QueryMetrics;
-import com.azure.cosmos.internal.ReplicationPolicy;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.cosmos.internal.RxDocumentServiceResponse;
-import com.azure.cosmos.internal.StoredProcedureResponse;
-import com.azure.cosmos.internal.Strings;
-import com.azure.cosmos.internal.directconnectivity.StoreResult;
-import com.azure.cosmos.internal.query.metrics.ClientSideMetrics;
-import com.azure.cosmos.internal.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.ReplicationPolicy;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.StoredProcedureResponse;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.directconnectivity.StoreResult;
+import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -45,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
-
-import static com.azure.cosmos.internal.Constants.QueryExecutionContext.INCREMENTAL_FEED_HEADER_VALUE;
 
 /**
  * This is meant to be used only internally as a bridge access to classes in

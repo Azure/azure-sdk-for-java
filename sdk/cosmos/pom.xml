@@ -306,7 +306,7 @@ Licensed under the MIT License.
           <verbose>false</verbose>
           <additionalOptions>${javadoc.opts}</additionalOptions>
           <sourceFileExcludes>
-            <sourceFileExclude>**/internal/**/*.java</sourceFileExclude>
+            <sourceFileExclude>**/implementation/**/*.java</sourceFileExclude>
             <sourceFileExclude>**/*BridgeInternal.java</sourceFileExclude>
           </sourceFileExcludes>
         </configuration>

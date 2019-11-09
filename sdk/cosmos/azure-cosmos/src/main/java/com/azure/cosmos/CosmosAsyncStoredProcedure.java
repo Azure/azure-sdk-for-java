@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.StoredProcedure;
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.StoredProcedure;
+import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.implementation.StoredProcedure;
 import reactor.core.publisher.Mono;
 
 public class CosmosAsyncStoredProcedure {

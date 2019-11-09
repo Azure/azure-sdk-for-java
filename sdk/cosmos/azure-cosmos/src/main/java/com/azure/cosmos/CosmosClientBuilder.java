@@ -3,10 +3,8 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.cosmos.internal.Configs;
-import com.azure.cosmos.internal.Permission;
-import com.azure.cosmos.internal.Configs;
-import com.azure.cosmos.internal.Permission;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.Permission;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

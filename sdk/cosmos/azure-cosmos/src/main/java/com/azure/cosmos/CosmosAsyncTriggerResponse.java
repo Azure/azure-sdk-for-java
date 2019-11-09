@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Trigger;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Trigger;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.Trigger;
 
 public class CosmosAsyncTriggerResponse extends CosmosResponse<CosmosTriggerProperties> {
 

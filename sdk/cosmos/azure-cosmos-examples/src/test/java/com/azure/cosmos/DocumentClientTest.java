@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.google.common.base.Strings;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;

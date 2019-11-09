@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.UserDefinedFunction;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.UserDefinedFunction;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.UserDefinedFunction;
 
 import java.util.List;
 import java.util.stream.Collectors;

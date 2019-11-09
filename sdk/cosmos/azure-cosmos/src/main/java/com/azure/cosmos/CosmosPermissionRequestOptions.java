@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.RequestOptions;
-import com.azure.cosmos.internal.RequestOptions;
+import com.azure.cosmos.implementation.RequestOptions;
 
 /**
  * Contains the request options of CosmosAsyncPermission

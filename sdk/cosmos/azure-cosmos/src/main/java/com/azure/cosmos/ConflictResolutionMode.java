@@ -3,10 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Conflict;
-import com.azure.cosmos.internal.StoredProcedure;
-import com.azure.cosmos.internal.Conflict;
-import com.azure.cosmos.internal.StoredProcedure;
+import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.StoredProcedure;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 

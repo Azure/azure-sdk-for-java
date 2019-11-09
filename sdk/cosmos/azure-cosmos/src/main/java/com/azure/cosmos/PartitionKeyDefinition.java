@@ -3,12 +3,9 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Strings;
-import com.azure.cosmos.internal.routing.PartitionKeyInternal;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Strings;
-import com.azure.cosmos.internal.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
