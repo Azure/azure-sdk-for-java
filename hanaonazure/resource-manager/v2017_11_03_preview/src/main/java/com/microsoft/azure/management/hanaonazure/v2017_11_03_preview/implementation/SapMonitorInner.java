@@ -57,12 +57,44 @@ public class SapMonitorInner extends Resource {
     private String hanaDbPassword;
 
     /**
+     * KeyVault URL link to the password for the HANA database.
+     */
+    @JsonProperty(value = "properties.hanaDbPasswordKeyVaultUrl")
+    private String hanaDbPasswordKeyVaultUrl;
+
+    /**
+     * MSI ID passed by customer which has access to customer's KeyVault and to
+     * be assigned to the Collector VM.
+     */
+    @JsonProperty(value = "properties.hanaDbCredentialsMsiId")
+    private String hanaDbCredentialsMsiId;
+
+    /**
+     * Key Vault ID containing customer's HANA credentials.
+     */
+    @JsonProperty(value = "properties.keyVaultId")
+    private String keyVaultId;
+
+    /**
      * State of provisioning of the HanaInstance. Possible values include:
      * 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting',
      * 'Migrating'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private HanaProvisioningStatesEnum provisioningState;
+
+    /**
+     * The name of the resource group the SAP Monitor resources get deployed
+     * into.
+     */
+    @JsonProperty(value = "properties.managedResourceGroupName", access = JsonProperty.Access.WRITE_ONLY)
+    private String managedResourceGroupName;
+
+    /**
+     * The ARM ID of the Log Analytics Workspace that is used for monitoring.
+     */
+    @JsonProperty(value = "properties.logAnalyticsWorkspaceArmId", access = JsonProperty.Access.WRITE_ONLY)
+    private String logAnalyticsWorkspaceArmId;
 
     /**
      * Get specifies the SAP monitor unique ID.
@@ -185,12 +217,90 @@ public class SapMonitorInner extends Resource {
     }
 
     /**
+     * Get keyVault URL link to the password for the HANA database.
+     *
+     * @return the hanaDbPasswordKeyVaultUrl value
+     */
+    public String hanaDbPasswordKeyVaultUrl() {
+        return this.hanaDbPasswordKeyVaultUrl;
+    }
+
+    /**
+     * Set keyVault URL link to the password for the HANA database.
+     *
+     * @param hanaDbPasswordKeyVaultUrl the hanaDbPasswordKeyVaultUrl value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withHanaDbPasswordKeyVaultUrl(String hanaDbPasswordKeyVaultUrl) {
+        this.hanaDbPasswordKeyVaultUrl = hanaDbPasswordKeyVaultUrl;
+        return this;
+    }
+
+    /**
+     * Get mSI ID passed by customer which has access to customer's KeyVault and to be assigned to the Collector VM.
+     *
+     * @return the hanaDbCredentialsMsiId value
+     */
+    public String hanaDbCredentialsMsiId() {
+        return this.hanaDbCredentialsMsiId;
+    }
+
+    /**
+     * Set mSI ID passed by customer which has access to customer's KeyVault and to be assigned to the Collector VM.
+     *
+     * @param hanaDbCredentialsMsiId the hanaDbCredentialsMsiId value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withHanaDbCredentialsMsiId(String hanaDbCredentialsMsiId) {
+        this.hanaDbCredentialsMsiId = hanaDbCredentialsMsiId;
+        return this;
+    }
+
+    /**
+     * Get key Vault ID containing customer's HANA credentials.
+     *
+     * @return the keyVaultId value
+     */
+    public String keyVaultId() {
+        return this.keyVaultId;
+    }
+
+    /**
+     * Set key Vault ID containing customer's HANA credentials.
+     *
+     * @param keyVaultId the keyVaultId value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withKeyVaultId(String keyVaultId) {
+        this.keyVaultId = keyVaultId;
+        return this;
+    }
+
+    /**
      * Get state of provisioning of the HanaInstance. Possible values include: 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting', 'Migrating'.
      *
      * @return the provisioningState value
      */
     public HanaProvisioningStatesEnum provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the name of the resource group the SAP Monitor resources get deployed into.
+     *
+     * @return the managedResourceGroupName value
+     */
+    public String managedResourceGroupName() {
+        return this.managedResourceGroupName;
+    }
+
+    /**
+     * Get the ARM ID of the Log Analytics Workspace that is used for monitoring.
+     *
+     * @return the logAnalyticsWorkspaceArmId value
+     */
+    public String logAnalyticsWorkspaceArmId() {
+        return this.logAnalyticsWorkspaceArmId;
     }
 
 }

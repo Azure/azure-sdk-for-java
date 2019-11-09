@@ -19,9 +19,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.RestProxy;
+import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsCreateResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsDeleteResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPropertiesResponse;
@@ -29,8 +29,9 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsListPath
 import com.azure.storage.file.datalake.implementation.models.FileSystemsSetPropertiesResponse;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 /**
  * An instance of this class provides access to all the operations defined in

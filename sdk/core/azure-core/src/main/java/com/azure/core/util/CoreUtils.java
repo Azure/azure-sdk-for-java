@@ -4,6 +4,11 @@
 package com.azure.core.util;
 
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.logging.ClientLogger;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.Properties;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
@@ -153,5 +158,29 @@ public final class CoreUtils {
             return Flux.fromIterable(page.getItems());
         }
         return Flux.fromIterable(page.getItems()).concatWith(content.apply(nextPageLink, context));
+    }
+
+
+    /**
+     * Helper method that returns an immutable {@link Map} of properties defined in {@code propertiesFileName}.
+     *
+     * @param propertiesFileName The file name defining the properties.
+     * @return an immutable {@link Map}.
+     */
+    public static Map<String, String> getProperties(String propertiesFileName) {
+        ClientLogger logger = new ClientLogger(CoreUtils.class);
+        try (InputStream inputStream = CoreUtils.class.getClassLoader()
+            .getResourceAsStream(propertiesFileName)) {
+            if (inputStream != null) {
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                return Collections.unmodifiableMap(properties.entrySet().stream()
+                    .collect(Collectors.toMap(entry -> (String) entry.getKey(),
+                        entry -> (String) entry.getValue())));
+            }
+        } catch (IOException ex) {
+            logger.warning("Failed to get properties from " + propertiesFileName, ex);
+        }
+        return Collections.emptyMap();
     }
 }

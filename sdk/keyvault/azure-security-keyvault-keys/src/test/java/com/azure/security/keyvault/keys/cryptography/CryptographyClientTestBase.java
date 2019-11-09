@@ -3,6 +3,10 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -16,9 +20,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.math.BigInteger;
@@ -36,15 +38,12 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.junit.Assert.*;
 
 public abstract class CryptographyClientTestBase extends TestBase {
-    @Rule
-    public TestName testName = new TestName();
 
     @Override
     protected String getTestName() {
-        return testName.getMethodName();
+        return "";
     }
 
     void beforeTestSetup() {

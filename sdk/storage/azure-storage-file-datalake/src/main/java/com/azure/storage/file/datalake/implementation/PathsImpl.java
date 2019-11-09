@@ -21,16 +21,17 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.util.Base64Util;
+import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
 import com.azure.storage.file.datalake.implementation.models.PathLeaseAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.models.PathUpdateAction;
 import com.azure.storage.file.datalake.implementation.models.PathsAppendDataResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsCreateResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsDeleteResponse;
@@ -40,14 +41,14 @@ import com.azure.storage.file.datalake.implementation.models.PathsLeaseResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsReadResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsUpdateResponse;
-import com.azure.storage.file.datalake.implementation.models.PathUpdateAction;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.time.OffsetDateTime;
 
 /**
  * An instance of this class provides access to all the operations defined in
