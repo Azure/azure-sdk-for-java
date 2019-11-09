@@ -3,7 +3,6 @@
 # has been fixed this file and the update logic in update_versions.py should no longer be necessary.
 
 # The file format here should be the relative path from the root of the azure-sdk-for-java
-sdk/appconfiguration/azure-data-appconfiguration/src/main/java/com/azure/data/appconfiguration/AzureConfiguration.java
 sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/implementation/ClientConstants.java
 sdk/keyvault/azure-security-keyvault-certificates/src/main/java/com/azure/security/keyvault/certificates/AzureKeyVaultConfiguration.java
 sdk/keyvault/azure-security-keyvault-keys/src/main/java/com/azure/security/keyvault/keys/implementation/AzureKeyVaultConfiguration.java

@@ -116,13 +116,13 @@ public class BlobContainerClientJavaDocCodeSnippets {
      */
     public void delete2() {
         // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobRequestConditions-Duration-Context
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Delete completed with status %d%n", client.deleteWithResponse(
-            accessConditions, timeout, context).getStatusCode());
+            requestConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobRequestConditions-Duration-Context
     }
 
@@ -177,13 +177,13 @@ public class BlobContainerClientJavaDocCodeSnippets {
     public void setMetadata2() {
         // BEGIN: com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Set metadata completed with status %d%n",
-            client.setMetadataWithResponse(metadata, accessConditions, timeout, context).getStatusCode());
+            client.setMetadataWithResponse(metadata, requestConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context
     }
 
@@ -255,7 +255,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
                 .setExpiresOn(OffsetDateTime.now().plusDays(7))
                 .setPermissions("permissionString"));
 
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
@@ -264,7 +264,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
         System.out.printf("Set access policy completed with status %d%n",
             client.setAccessPolicyWithResponse(PublicAccessType.CONTAINER,
                 Collections.singletonList(identifier),
-                accessConditions,
+                requestConditions,
                 timeout,
                 context).getStatusCode());
         // END: com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobRequestConditions-Duration-Context

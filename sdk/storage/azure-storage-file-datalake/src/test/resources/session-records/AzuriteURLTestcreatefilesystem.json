@@ -1,0 +1,86 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://gaprahns.blob.core.windows.net/jtfscreatefilesystem0azuriteurltestcreatefilesystem4ba6498251?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "9cb9081c-363a-4577-a67c-24d6a8679190"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D76491E5F4A12C",
+      "Last-Modified" : "Fri, 08 Nov 2019 21:23:28 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "4fee8289-b01e-002b-1c7a-963ac2000000",
+      "Date" : "Fri, 08 Nov 2019 21:23:27 GMT",
+      "x-ms-client-request-id" : "9cb9081c-363a-4577-a67c-24d6a8679190"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://127.0.0.1:10000/devstoreaccount1/jtfscreatefilesystem1azuriteurltestcreatefilesystem4ba151046f?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "97dc4ab0-8175-42f7-8a10-359cf710cfa2"
+    },
+    "Response" : {
+      "last-modified" : "Fri, 08 Nov 2019 21:23:28 GMT",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Azurite-Blob/3.2.0-preview",
+      "Connection" : "keep-alive",
+      "etag" : "d-ndNHdeCsHsEFwxDPN9P+LppJza4",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8f7e397b-3662-40d2-9daf-95b7552f80e8",
+      "Date" : "Fri, 08 Nov 2019 21:23:28 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://gaprahns.blob.core.windows.net?prefix=jtfscreatefilesystem&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "a63c2532-0e45-4269-b8eb-d4ca4be7b512"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "4fee82a8-b01e-002b-3a7a-963ac2000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://gaprahns.blob.core.windows.net/\"><Prefix>jtfscreatefilesystem</Prefix><Containers><Container><Name>jtfscreatefilesystem0azuriteurltestcreatefilesystem4ba6498251</Name><Properties><Last-Modified>Fri, 08 Nov 2019 21:23:28 GMT</Last-Modified><Etag>\"0x8D76491E5F4A12C\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 08 Nov 2019 21:23:27 GMT",
+      "x-ms-client-request-id" : "a63c2532-0e45-4269-b8eb-d4ca4be7b512",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://gaprahns.blob.core.windows.net/jtfscreatefilesystem0azuriteurltestcreatefilesystem4ba6498251?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "9f8f5c61-ce64-41ff-8979-1d4922de3359"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "4fee82b6-b01e-002b-487a-963ac2000000",
+      "Date" : "Fri, 08 Nov 2019 21:23:28 GMT",
+      "x-ms-client-request-id" : "9f8f5c61-ce64-41ff-8979-1d4922de3359"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfscreatefilesystem0azuriteurltestcreatefilesystem4ba6498251", "jtfscreatefilesystem1azuriteurltestcreatefilesystem4ba151046f" ]
+}
