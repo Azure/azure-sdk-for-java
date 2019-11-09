@@ -17,6 +17,7 @@ import com.azure.cs.textanalytics.models.DetectedLanguage;
 import com.azure.cs.textanalytics.models.DocumentEntities;
 import com.azure.cs.textanalytics.models.DocumentKeyPhrases;
 import com.azure.cs.textanalytics.models.DocumentLanguage;
+import com.azure.cs.textanalytics.models.DocumentLinkedEntities;
 import com.azure.cs.textanalytics.models.DocumentSentiment;
 import com.azure.cs.textanalytics.models.EntitiesResult;
 import com.azure.cs.textanalytics.models.Entity;
@@ -59,10 +60,9 @@ public final class TextAnalyticsAsyncClient {
         return serviceVersion;
     }
 
-
     // (1) language
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectedLanguage> detectLanguage(String text, String countryHint) {
+    public Mono<DetectedLanguage> detectLanguage(String text, String countryHint, String modelVersion) {
          // TODO: Mono<LanguageResult> example, if choose PagedFlux, remove this
 //        try {
 //            final List<LanguageInput> languageInputs = new ArrayList<>();
@@ -109,25 +109,48 @@ public final class TextAnalyticsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LanguageResult>> detectLanguagesWithResponse(LanguageBatchInput languageBatchInput,
-                                                                   boolean showStats) {
+    public Mono<Response<DetectedLanguage>> detectLanguageWithResponse(String text, String countryHint, String modelVersion) {
+//        try {
+//            return withContext(context -> detectLanguagesWithResponse(languageBatchInput, showStats, context));
+//        } catch (RuntimeException ex) {
+//            return monoError(logger, ex);
+//        }
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DetectedLanguage> detectLanguages(List<String> documents, String modelVersion) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LanguageResult> detectLanguages(List<LanguageInput> documents, String modelVersion,
+                                                Boolean showStats) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<LanguageResult>> detectLanguagesWithResponse(List<LanguageInput> documents,
+                                                                      String modelVersion, Boolean showStats) {
         try {
-            return withContext(context -> detectLanguagesWithResponse(languageBatchInput, showStats, context));
+            return withContext(
+                context -> detectLanguagesWithResponse(documents, modelVersion, showStats, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<LanguageResult>> detectLanguagesWithResponse(LanguageBatchInput languageBatchInput, boolean showStats,
-                                                               Context context) {
+    Mono<Response<LanguageResult>> detectLanguagesWithResponse(List<LanguageInput> documents, String modelVersion,
+                                                               Boolean showStats, Context context) {
         // TODO: validate multiLanguageBatchInput
-        return client.languagesWithRestResponseAsync(languageBatchInput, getServiceVersion().getVersion(),
-            showStats, context).map(response -> new SimpleResponse<>(response, null));
+
+        return client.languagesWithRestResponseAsync(new LanguageBatchInput().setDocuments(documents),
+            modelVersion, showStats, context).map(response -> new SimpleResponse<>(response, null));
     }
 
     // (2) entities
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Entity> recognizeEntities(String text, String language) {
+    public PagedFlux<Entity> recognizeEntities(String text, String language, String modelVersion) {
 
         // TODO: Mono<DocumentEntities> example, remove this if choose PagedFlux
 //        try {
@@ -152,9 +175,8 @@ public final class TextAnalyticsAsyncClient {
         final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
         multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
 
-        return new PagedFlux<>(() -> recognizeEntitiesWithResponse(
-            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), false, Context.NONE)
-            .map(response -> {
+        return new PagedFlux<>(() -> recognizeEntitiesWithResponse(multiLanguageInputs, modelVersion, false,
+            Context.NONE).map(response -> {
                 final List<DocumentEntities> documentEntities = response.getValue().getDocuments();
                 if (documentEntities.size() == 0) {
                     return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
@@ -173,27 +195,37 @@ public final class TextAnalyticsAsyncClient {
             }));
     }
 
+
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntitiesResult>> recognizeEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput,
-                                                                        boolean showStats) {
+    public Mono<EntitiesResult> recognizeEntities(List<MultiLanguageInput> documents,
+                                                  String modelVersion, Boolean showStats) {
+        return null;
+    }
+
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EntitiesResult>> recognizeEntitiesWithResponse(List<MultiLanguageInput> documents,
+                                                                        String modelVersion, Boolean showStats) {
         try {
-            return withContext(context -> recognizeEntitiesWithResponse(multiLanguageBatchInput, showStats, context));
+            return withContext(context ->
+                recognizeEntitiesWithResponse(documents, modelVersion, showStats, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<EntitiesResult>> recognizeEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput,
-                                                                 boolean showStats, Context context) {
+    Mono<Response<EntitiesResult>> recognizeEntitiesWithResponse(List<MultiLanguageInput> documents,
+                                                                 String modelVersion, Boolean showStats,
+                                                                 Context context) {
         // TODO: validate multiLanguageBatchInput
-        return client.entitiesRecognitionGeneralWithRestResponseAsync(multiLanguageBatchInput,
-            getServiceVersion().getVersion(), showStats, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return client.entitiesRecognitionGeneralWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(documents), modelVersion,
+            showStats, context).map(response -> new SimpleResponse<>(response, null));
     }
 
     // (3) PII entities
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Entity> recognizePiiEntities(String text, String language) {
+    public PagedFlux<Entity> recognizePiiEntities(String text, String language, String modelVersion) {
         // TODO: Mono<DocumentEntities> example, remove this if choose PagedFlux
 //        try {
 //            final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
@@ -217,8 +249,8 @@ public final class TextAnalyticsAsyncClient {
         final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
         multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
 
-        return new PagedFlux<>(() -> recognizeEntitiesWithResponse(
-            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), false, Context.NONE)
+        return new PagedFlux<>(() ->
+            recognizeEntitiesWithResponse(multiLanguageInputs, modelVersion, false, Context.NONE)
             .map(response -> {
                 final List<DocumentEntities> documentEntities = response.getValue().getDocuments();
                 if (documentEntities.size() == 0) {
@@ -239,25 +271,34 @@ public final class TextAnalyticsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntitiesResult>> recognizePiiEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput,
-                                                                           boolean showStats) {
+    public Mono<EntitiesResult> recognizePiiEntities(List<MultiLanguageInput> documents,
+                                                     String modelVersion, Boolean showStats) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EntitiesResult>> recognizePiiEntitiesWithResponse(List<MultiLanguageInput> documents,
+                                                                           String modelVersion, Boolean showStats) {
         try {
-            return withContext(context -> recognizePiiEntitiesWithResponse(multiLanguageBatchInput, showStats, context));
+            return withContext(context ->
+                recognizePiiEntitiesWithResponse(documents, modelVersion, showStats, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<EntitiesResult>> recognizePiiEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput,
-                                                                    boolean showStats, Context context) {
+    Mono<Response<EntitiesResult>> recognizePiiEntitiesWithResponse(List<MultiLanguageInput> documents,
+                                                                    String modelVersion, Boolean showStats,
+                                                                    Context context) {
         // TODO: validate multiLanguageBatchInput
-        return client.entitiesRecognitionPiiWithRestResponseAsync(multiLanguageBatchInput, null, showStats,
-            context).map(response -> new SimpleResponse<>(response, null));
+        return client.entitiesRecognitionPiiWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(documents), modelVersion, showStats, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     // (4) Link entities
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LinkedEntity> recognizeLinkedEntities(String text, String language) {
+    public PagedFlux<LinkedEntity> recognizeLinkedEntities(String text, String language, String modelVersion) {
         // TODO: Mono<DocumentEntities> example, remove this if choose PagedFlux
 //        try {
 //            final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
@@ -281,18 +322,18 @@ public final class TextAnalyticsAsyncClient {
         final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
         multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
 
-        return new PagedFlux<>(() -> recognizeEntitiesWithResponse(
-            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), false, Context.NONE)
+        return new PagedFlux<>(() ->
+            recognizeLinkedEntitiesWithResponse(multiLanguageInputs, modelVersion,false, Context.NONE)
             .map(response -> {
-                final List<DocumentEntities> documentEntities = response.getValue().getDocuments();
-                if (documentEntities.size() == 0) {
+                final List<DocumentLinkedEntities> documentLinkedEntities = response.getValue().getDocuments();
+                if (documentLinkedEntities.size() == 0) {
                     return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(),
                         null, // TODO: return null instead of throw exception?
                         null,
                         null);
                 } else {
-                    final List<Entity> entities = documentEntities.get(0).getEntities();
+                    final List<LinkedEntity> entities = documentLinkedEntities.get(0).getEntities();
                     return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(),
                         entities,
@@ -303,25 +344,34 @@ public final class TextAnalyticsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EntityLinkingResult> recognizeLinkedEntities(List<MultiLanguageInput> documents,
+                                                             String modelVersion, Boolean showStats) {
+      return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EntityLinkingResult>> recognizeLinkedEntitiesWithResponse(
-        MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats) {
+        List<MultiLanguageInput> documents, String modelVersion, Boolean showStats) {
         try {
-            return withContext(context -> recognizeLinkedEntitiesWithResponse(multiLanguageBatchInput, showStats, context));
+            return withContext(context ->
+                recognizeLinkedEntitiesWithResponse(documents, modelVersion, showStats, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<EntityLinkingResult>> recognizeLinkedEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput,
-                                                                            boolean showStats, Context context) {
+    Mono<Response<EntityLinkingResult>> recognizeLinkedEntitiesWithResponse(List<MultiLanguageInput> documents,
+                                                                            String modelVersion, Boolean showStats,
+                                                                            Context context) {
         // TODO: validate multiLanguageBatchInput
-        return client.entitiesLinkingWithRestResponseAsync(multiLanguageBatchInput, getServiceVersion().getVersion(),
-            showStats, context).map(response -> new SimpleResponse<>(response, null));
+        return client.entitiesLinkingWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(documents), modelVersion, showStats, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     // (5) key phrase
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> extractKeyPhrases(String text, String language) {
+    public PagedFlux<String> extractKeyPhrases(String text, String language, String modelVersion) {
         // TODO: Mono<DocumentKeyPhrases> example, remove this if choose PagedFlux
 //        try {
 //            final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
@@ -345,8 +395,8 @@ public final class TextAnalyticsAsyncClient {
         final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
         multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
 
-        return new PagedFlux<>(() -> extractKeyPhrasesWithResponse(
-            new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), false, Context.NONE)
+        return new PagedFlux<>(() ->
+            extractKeyPhrasesWithResponse(multiLanguageInputs, modelVersion, false, Context.NONE)
             .map(response -> {
                 final List<DocumentKeyPhrases> documentEntities = response.getValue().getDocuments();
                 if (documentEntities.size() == 0) {
@@ -366,31 +416,38 @@ public final class TextAnalyticsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput,
-                                                                         boolean showStats) {
+    public Mono<KeyPhraseResult> extractKeyPhrases(List<MultiLanguageInput> documents,
+                                                   String modelVersion, Boolean showStats) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(List<MultiLanguageInput> documents,
+                                                                         String modelVersion, Boolean showStats) {
         try {
-            return withContext(context -> extractKeyPhrasesWithResponse(multiLanguageBatchInput, showStats, context));
+            return withContext(context -> extractKeyPhrasesWithResponse(documents, modelVersion, showStats, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput,
-                                                                  boolean showStats, Context context) {
+    Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(List<MultiLanguageInput> documents,
+                                                                  String modelVersion, Boolean showStats,
+                                                                  Context context) {
         // TODO: validate multiLanguageBatchInput
-        return client.keyPhrasesWithRestResponseAsync(multiLanguageBatchInput, getServiceVersion().getVersion(),
-            showStats, context).map(response -> new SimpleResponse<>(response, null));
+        return client.keyPhrasesWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(documents),
+            modelVersion, showStats, context).map(response -> new SimpleResponse<>(response, null));
     }
 
     // (6) sentiment
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentSentiment> analyzeSentiment(String text, String language, boolean showStats) {
+    public Mono<DocumentSentiment> analyzeSentiment(String text, String language, String modelVersion, Boolean showStats) {
         try {
             final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
             multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
 
-            return withContext(context -> analyzeSentimentWithResponse(
-                new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), showStats, context))
+            return withContext(context ->
+                analyzeSentimentWithResponse(multiLanguageInputs, modelVersion, showStats, context))
                 .flatMap(response -> {
                     final List<DocumentSentiment> documentSentiments = response.getValue().getDocuments();
                     if (documentSentiments.size() == 0) {
@@ -405,19 +462,35 @@ public final class TextAnalyticsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SentimentResponse>> analyzeSentimentWithResponse(
-        MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats) {
+    public Mono<Response<DocumentSentiment>> analyzeSentimentWithResponse(String text, String language,
+                                                                    String modelVersion, Boolean showStats,
+                                                                    Context context) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SentimentResponse> analyzeSentiment(List<MultiLanguageInput> documents,
+                                                    String modelVersion, Boolean showStats) {
+       return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SentimentResponse>> analyzeSentimentWithResponse(List<MultiLanguageInput> documents,
+                                                                          String modelVersion, Boolean showStats) {
         try {
-            return withContext(context -> analyzeSentimentWithResponse(multiLanguageBatchInput, showStats, context));
+            return withContext(context ->
+                analyzeSentimentWithResponse(documents, modelVersion, showStats, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<SentimentResponse>> analyzeSentimentWithResponse(MultiLanguageBatchInput multiLanguageBatchInput,
-                                                                   boolean showStats, Context context) {
+    Mono<Response<SentimentResponse>> analyzeSentimentWithResponse(List<MultiLanguageInput> documents,
+                                                                   String modelVersion, Boolean showStats,
+                                                                   Context context) {
         // TODO: validate multiLanguageBatchInput
-        return client.sentimentWithRestResponseAsync(multiLanguageBatchInput, getServiceVersion().getVersion(),
-            showStats, context).map(response -> new SimpleResponse<>(response, null));
+        return client.sentimentWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(documents), modelVersion, showStats, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 }

@@ -10,17 +10,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.models.DocumentKeyPhrases;
 import com.azure.cs.textanalytics.models.DocumentSentiment;
 import com.azure.cs.textanalytics.models.EntitiesResult;
 import com.azure.cs.textanalytics.models.Entity;
 import com.azure.cs.textanalytics.models.EntityLinkingResult;
 import com.azure.cs.textanalytics.models.KeyPhraseResult;
-import com.azure.cs.textanalytics.models.LanguageBatchInput;
+import com.azure.cs.textanalytics.models.LanguageInput;
 import com.azure.cs.textanalytics.models.LanguageResult;
 import com.azure.cs.textanalytics.models.LinkedEntity;
-import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
+import com.azure.cs.textanalytics.models.MultiLanguageInput;
 import com.azure.cs.textanalytics.models.SentimentResponse;
+
+import java.util.List;
 
 @ServiceClient(builder = TextAnalyticsClientBuilder.class)
 public final class TextAnalyticsClient {
@@ -32,142 +33,132 @@ public final class TextAnalyticsClient {
 
     // (1) language
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectedLanguage detectLanguage(String text, String countryHint) {
-//        return getLanguageWithResponse(text, countryHint, showStats, Context.NONE).getValue();
+    public DetectedLanguage detectLanguage(String text, String countryHint, String modelVersion) {
         return null;
     }
-//
-//    // TODO: do we actually need this method? same question applies to all other feature methods
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DetectedLanguage> getLanguageWithResponse(String text, String countryHint, Context context) {
-//        return null;
-//    }
-//
-//    // TODO: do we actually need this method? same question applies to all other feature methods
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public LanguageResult getLanguage(LanguageBatchInput languageBatchInput, boolean showStats) {
-//        return getLanguageWithResponse(languageBatchInput, showStats, Context.NONE).getValue();
-//    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LanguageResult> detectLanguagesWithResponse(LanguageBatchInput languageBatchInput, boolean showStats, Context context) {
-        return client.detectLanguagesWithResponse(languageBatchInput, showStats, context).block();
+    public Response<DetectedLanguage> detectLanguageWithResponse(String text, String countryHint,
+                                                                 String modelVersion,
+                                                                 Context context) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DetectedLanguage> detectLanguages(List<String> documents, String modelVersion) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LanguageResult detectLanguages(List<LanguageInput> documents, String modelVersion, Boolean showStats) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LanguageResult> detectLanguagesWithResponse(List<LanguageInput> documents,
+                                                                String modelVersion, Boolean showStats,
+                                                                Context context) {
+        return client.detectLanguagesWithResponse(documents, modelVersion, showStats, context).block();
     }
 
     // (2) entities
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Entity> recognizeEntities(String text, String language) {
-//        return getEntitiesWithResponse(text, language, false, Context.NONE).getValue();
+    public PagedIterable<Entity> recognizeEntities(String text, String language, String modelVersion) {
         return null;
     }
 
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<Entity> getEntitiesWithResponse(String text, String language, Context context) {
-//        return null;
-//    }
-//
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public EntitiesResult getEntities(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats) {
-//        return detectEntitiesWithResponse(multiLanguageBatchInput, showStats, Context.NONE).getValue();
-//    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntitiesResult recognizeEntities(List<MultiLanguageInput> documents,
+                                            String modelVersion, Boolean showStats) {
+        return null;
+    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntitiesResult> recognizeEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.recognizeEntitiesWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public Response<EntitiesResult> recognizeEntitiesWithResponse(List<MultiLanguageInput> documents,
+                                                                  String modelVersion, Boolean showStats,
+                                                                  Context context) {
+        return client.recognizeEntitiesWithResponse(documents, modelVersion, showStats, context).block();
     }
 
     // (3) PII entities
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Entity> recognizePiiEntities(String text, String language) {
-//        return getPIIEntitiesWithResponse(text, language, false, Context.NONE).getValue();
+    public PagedIterable<Entity> recognizePiiEntities(String text, String language, String modelVersion) {
         return null;
     }
 
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DocumentEntities> getPIIEntitiesWithResponse(String text, String language, Context context) {
-//        return null;
-//    }
-//
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public EntitiesResult getPIIEntities(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats) {
-//        return getPIIEntitiesWithResponse(multiLanguageBatchInput, showStats, Context.NONE).getValue();
-//    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntitiesResult recognizePiiEntities(
+        List<MultiLanguageInput> documents, String modelVersion, Boolean showStats) {
+        return null;
+    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntitiesResult> recognizePiiEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.recognizePiiEntitiesWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public Response<EntitiesResult> recognizePiiEntitiesWithResponse(
+        List<MultiLanguageInput> documents, String modelVersion, Boolean showStats, Context context) {
+        return client.recognizePiiEntitiesWithResponse(documents, modelVersion, showStats, context).block();
     }
 
     // (4) Link entities
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text, String language) {
-//        return getLinkedEntitiesWithResponse(text, language, false, Context.NONE).getValue();
+    public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text, String language, String modelVersion) {
         return null;
     }
 
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DocumentLinkedEntities> getLinkedEntitiesWithResponse(String text, String language, boolean showStats, Context context) {
-//        return null;
-//    }
-//
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public EntityLinkingResult getLinkedEntities(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats) {
-//        return getLinkedEntitiesWithResponse(multiLanguageBatchInput, showStats, Context.NONE).getValue();
-//    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntityLinkingResult recognizeLinkedEntities(List<MultiLanguageInput> documents,
+                                                       String modelVersion, Boolean showStats) {
+        return null;
+    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntityLinkingResult> recognizeLinkedEntitiesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.recognizeLinkedEntitiesWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public Response<EntityLinkingResult> recognizeLinkedEntitiesWithResponse(
+        List<MultiLanguageInput> documents, String modelVersion, boolean showStats, Context context) {
+        return client.recognizeLinkedEntitiesWithResponse(documents, modelVersion, showStats, context)
+            .block();
     }
 
     // (5) key phrase
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> extractKeyPhrases(String text, String language) {
-//        return getKeyPhrasesWithResponse(text, language, false, Context.NONE).getValue();
+    public PagedIterable<String> extractKeyPhrases(String text, String language, String modelVersion) {
         return null;
     }
-
-    // TODO: Do we really need to show use the stats for single text?
-    public DocumentKeyPhrases extractKeyPhrases(String text, String language, boolean showStats) {
-        return null;
-    }
-
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DocumentKeyPhrases> getKeyPhrasesWithResponse(String text, String language, Context context) {
-//        return null;
-//    }
-//
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public KeyPhraseResult getKeyPhrases(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats) {
-//        return getKeyPhrasesWithResponse(multiLanguageBatchInput, showStats, Context.NONE).getValue();
-//    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyPhraseResult> extractKeyPhrasesWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.extractKeyPhrasesWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public KeyPhraseResult extractKeyPhrases(List<MultiLanguageInput> documents,
+                                             String modelVersion, Boolean showStats) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyPhraseResult> extractKeyPhrasesWithResponse(List<MultiLanguageInput> documents,
+                                                                   String modelVersion, Boolean showStats,
+                                                                   Context context){
+        return client.extractKeyPhrasesWithResponse(documents, modelVersion, showStats, context).block();
     }
 
     // (6) sentiment
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentSentiment analyzeSentiment(String text, String language, boolean showStats) {
-        // TODO: verify return DocumentSentiment or SentimentResponse
-//        return getSentimentWithResponse(text, language, showStats, Context.NONE).getValue();
+    public DocumentSentiment analyzeSentiment(String text, String language, String modelVersion, Boolean showStats) {
         return null;
     }
 
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DocumentSentiment> getSentimentWithResponse(String text, String language, boolean showStats, Context context) {
-//        // TODO: verify return DocumentSentiment or SentimentResponse
-//        return client.getSentimentWithResponse(null, showStats, context).block();
-//    }
-//
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public SentimentResponse getSentiment(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats) {
-//        return getSentimentWithResponse(multiLanguageBatchInput, showStats, Context.NONE).getValue();
-//    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DocumentSentiment> analyzeSentimentWithResponse(String text, String language,
+                                                                    String modelVersion, Boolean showStats,
+                                                                    Context context) {
+        return null;
+    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SentimentResponse> analyzeSentimentWithResponse(MultiLanguageBatchInput multiLanguageBatchInput, boolean showStats, Context context) {
-        return client.analyzeSentimentWithResponse(multiLanguageBatchInput, showStats, context).block();
+    public SentimentResponse analyzeSentiment(List<MultiLanguageInput> documents,
+                                              String modelVersion, Boolean showStats) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SentimentResponse> analyzeSentimentWithResponse(List<MultiLanguageInput> documents,
+                                                                    String modelVersion, Boolean showStats,
+                                                                    Context context) {
+        return client.analyzeSentimentWithResponse(documents, modelVersion, showStats, context).block();
     }
 }
