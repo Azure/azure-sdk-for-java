@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.google.common.base.Strings.lenientFormat;
+
 public final class RntbdRequestTimer implements AutoCloseable {
 
     private static final long FIVE_MILLISECONDS = 5000000L;
@@ -22,11 +24,9 @@ public final class RntbdRequestTimer implements AutoCloseable {
     private final Timer timer;
 
     public RntbdRequestTimer(final long requestTimeout) {
-
         // Inspection of the HashWheelTimer code indicates that our choice of a 5 millisecond timer resolution ensures
         // a request will expire within 10 milliseconds of the specified requestTimeout interval. This is because
         // cancellation of a timeout takes two timer resolution units to complete.
-
         this.timer = new HashedWheelTimer(FIVE_MILLISECONDS, TimeUnit.NANOSECONDS);
         this.requestTimeout = requestTimeout;
     }
@@ -37,13 +37,28 @@ public final class RntbdRequestTimer implements AutoCloseable {
 
     @Override
     public void close() {
+
         final Set<Timeout> timeouts = this.timer.stop();
-        if (logger.isDebugEnabled()) {
-            final int count = timeouts.size();
-            if (count > 0) {
-                logger.debug("request expiration tasks cancelled: {}", count);
+        final int count = timeouts.size();
+
+        if (count == 0) {
+            logger.debug("no outstanding request timeout tasks");
+            return;
+        }
+
+        logger.debug("stopping {} request timeout tasks", count);
+
+        for (final Timeout timeout : timeouts) {
+            if (!timeout.isExpired()) {
+                try {
+                    timeout.task().run(timeout);
+                } catch (Throwable error) {
+                    logger.warn(lenientFormat("request timeout task failed due to ", error));
+                }
             }
         }
+
+        logger.debug("{} request timeout tasks stopped", count);
     }
 
     public Timeout newTimeout(final TimerTask task) {
