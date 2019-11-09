@@ -72,13 +72,10 @@ public class Main {
             System.err.println("INVALID Usage: " + e.getMessage());
             System.err.println("Try '-help' for more information.");
             throw e;
-<<<<<<< HEAD
-=======
         } finally {
             if (benchmark != null) {
                 benchmark.shutdown();
             }
->>>>>>> dfb3f436eeaae112d2e33dc14d7668be31ca75a6
         }
     }
 }

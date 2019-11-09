@@ -914,7 +914,7 @@ public final class RntbdTransportClientTest {
 
             Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected) {
                 this.config = new Config(options, sslContext, LogLevel.WARN);
-                this.timer = new RntbdRequestTimer(config.requestTimeout());
+                this.timer = new RntbdRequestTimer(config.requestTimeoutInNanos());
                 this.expected = expected;
             }
 
