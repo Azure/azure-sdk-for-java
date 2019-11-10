@@ -190,22 +190,22 @@ public class EventHubMessageSerializerTest {
      */
     @Test
     public void throwsWhenIncorrectTypeInResponse() {
+        // Arrange
+        final Long eventHubName = 100L;
+        final Date createdAtAsDate = new Date(1569275540L);
+        final String[] partitionIds = new String[]{"1", "foo", "bar", "baz"};
+
+        final Map<String, Object> values = new HashMap<>();
+        values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT, createdAtAsDate);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS, partitionIds);
+
+        final AmqpValue amqpValue = new AmqpValue(values);
+
+        final Message message = Proton.message();
+        message.setBody(amqpValue);
+
         assertThrows(AzureException.class, () -> {
-            // Arrange
-            final Long eventHubName = 100L;
-            final Date createdAtAsDate  = new Date(1569275540L);
-            final String[] partitionIds = new String[]{ "1", "foo", "bar", "baz" };
-
-            final Map<String, Object> values = new HashMap<>();
-            values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
-            values.put(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT, createdAtAsDate);
-            values.put(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS, partitionIds);
-
-            final AmqpValue amqpValue = new AmqpValue(values);
-
-            final Message message = Proton.message();
-            message.setBody(amqpValue);
-
             // Act
             serializer.deserialize(message, EventHubProperties.class);
         });
@@ -216,21 +216,21 @@ public class EventHubMessageSerializerTest {
      */
     @Test
     public void throwsWhenNullValueInResponse() {
+        // Arrange
+        final String eventHubName = "event-hub-name-test";
+        final Date createdAtAsDate = new Date(1569275540L);
+
+        final Map<String, Object> values = new HashMap<>();
+        values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT, createdAtAsDate);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS, null);
+
+        final AmqpValue amqpValue = new AmqpValue(values);
+
+        final Message message = Proton.message();
+        message.setBody(amqpValue);
+
         assertThrows(AzureException.class, () -> {
-            // Arrange
-            final String eventHubName = "event-hub-name-test";
-            final Date createdAtAsDate  = new Date(1569275540L);
-
-            final Map<String, Object> values = new HashMap<>();
-            values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
-            values.put(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT, createdAtAsDate);
-            values.put(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS, null);
-
-            final AmqpValue amqpValue = new AmqpValue(values);
-
-            final Message message = Proton.message();
-            message.setBody(amqpValue);
-
             // Act
             serializer.deserialize(message, EventHubProperties.class);
         });
