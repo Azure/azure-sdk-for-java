@@ -19,10 +19,10 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -36,9 +36,9 @@ import java.util.Set;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -68,12 +68,12 @@ public class EventProcessorTest {
     @Mock
     private EventData eventData1, eventData2, eventData3, eventData4;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         consumer1 = null;
         consumer2 = null;
@@ -150,14 +150,14 @@ public class EventProcessorTest {
 
         StepVerifier.create(eventProcessorStore.listOwnership("ns", "test-eh", "test-consumer"))
             .assertNext(partitionOwnership -> {
-                assertEquals("Partition", "1", partitionOwnership.getPartitionId());
-                assertEquals("Consumer", "test-consumer", partitionOwnership.getConsumerGroupName());
-                assertEquals("EventHub name", "test-eh", partitionOwnership.getEventHubName());
-                assertEquals("Sequence number", 2, (long) partitionOwnership.getSequenceNumber());
-                assertEquals("Offset", Long.valueOf(100), partitionOwnership.getOffset());
-                assertEquals("OwnerId", eventProcessor.getIdentifier(), partitionOwnership.getOwnerId());
-                assertTrue("LastModifiedTime", partitionOwnership.getLastModifiedTime() >= beforeTest);
-                assertTrue("LastModifiedTime", partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis());
+                assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
+                assertEquals("test-consumer", partitionOwnership.getConsumerGroupName(), "Consumer");
+                assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
+                assertEquals(2, (long) partitionOwnership.getSequenceNumber(), "Sequence number");
+                assertEquals(Long.valueOf(100), partitionOwnership.getOffset(), "Offset");
+                assertEquals(eventProcessor.getIdentifier(), partitionOwnership.getOwnerId(), "OwnerId");
+                assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
+                assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
                 assertNotNull(partitionOwnership.getETag());
             }).verifyComplete();
 
@@ -395,7 +395,7 @@ public class EventProcessorTest {
         eventProcessor.stop();
 
         // Assert
-        Assert.assertTrue(completed);
+        Assertions.assertTrue(completed);
         StepVerifier.create(eventProcessorStore.listOwnership("ns", "test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
@@ -404,7 +404,7 @@ public class EventProcessorTest {
             .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class));
 
         // We expected one to be removed.
-        Assert.assertEquals(2, identifiers.size());
+        Assertions.assertEquals(2, identifiers.size());
 
         StepVerifier.create(eventProcessorStore.listOwnership("ns", "test-eh", "test-consumer"))
             .assertNext(po -> {
