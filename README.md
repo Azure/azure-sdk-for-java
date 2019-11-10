@@ -22,9 +22,9 @@ Java 8 or later is required to use the November 2019 client libraries, otherwise
 ## Release branches (Release tagging)
 
 ### Master branch
-The master branch represent more recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [below](#Client-GA-November-2019-Releases) for latest **GA** release.<br/>
+The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [below](#Client-GA-November-2019-Releases) for latest **GA** release.<br/>
 For each package we release there will be a unique git tag created that contains the name and the version of the package to mark the commit of the code that produced the package. This tag will be used for servicing via hotfix branches as well as debugging the code for a particular preview or stable release version.
-Format of the release tags are &lt;package-name&gt;_&lt;package-version&gt;. For more information please [see](https://github.com/Azure/azure-sdk/blob/master/docs/policies/repobranching.md#release-tagging)
+Format of the release tags are &lt;package-name&gt;_&lt;package-version&gt;. Test \<package-name\>_\<package-version\> For more information please [see](https://github.com/Azure/azure-sdk/blob/master/docs/policies/repobranching.md#release-tagging)
 
 ## Latest Release
 Each service might have a number of libraries available from each of the following categories:
@@ -34,9 +34,9 @@ Each service might have a number of libraries available from each of the followi
 - [Management](#Management)
 
 ### [Client: GA November 2019 Releases](#Client-GA-November-2019-Releases)
-New wave of packages that were released in November 2019 client library  as General Availability (GA) and several others that were released in **preview**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](sdk/core/README.md). 
+New wave of packages that were released in November 2019 client library as General Availability (GA) and several others that were released in **preview**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](sdk/core/README.md). 
 
-These libraries can be easily identified by their folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
+These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
 The libraries released in the GA November 2019 release:
 - [Identity](https://github.com/Azure/azure-sdk-for-java/blob/azure-identity_1.0.0/sdk/identity/azure-identity/README.md)
@@ -57,7 +57,7 @@ The libraries released in the November 2019 preview:
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
-### Client: Previous Versions(#Client-Previous-Versions)
+### Client: Previous Versions
 Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the preview libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Stable library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the Novemeber releases. They do however offer wider coverage of services. 
 
 ### Management(#Management)
