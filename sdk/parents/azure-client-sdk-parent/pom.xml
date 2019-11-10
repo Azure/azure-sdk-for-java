@@ -21,7 +21,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
     <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
-    <relativePath>./parent/pom.xml</relativePath>
+    <relativePath>../azure-sdk-parent/pom.xml</relativePath>
   </parent>
 
   <licenses>

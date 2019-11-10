@@ -20,7 +20,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
     <version>1.3.0</version> <!-- {x-version-exempt;com.azure:azure-sdk-parent;all of data needs to be updated in order for this to be at the latest} -->
-    <relativePath>./parent/pom.xml</relativePath>
+    <relativePath>../azure-sdk-parent/pom.xml</relativePath>
   </parent>
 
   <licenses>
