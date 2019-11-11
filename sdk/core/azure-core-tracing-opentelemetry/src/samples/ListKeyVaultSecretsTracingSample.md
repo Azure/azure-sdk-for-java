@@ -55,7 +55,7 @@ public class Sample {
 
     static {
         TRACER_SDK_FACTORY = configureOpenTelemetryAndLoggingExporter();
-        TRACER = TRACER_SDK_FACTORY.get("Azure-OpenTelemetry");
+        TRACER = TRACER_SDK_FACTORY.get("Sample");
     }
 
     public static void main(String[] args) {
@@ -71,7 +71,7 @@ public class Sample {
         return tracerSdkFactory;
     }
 
-    private static void doClientWork(Tracer tracer) {
+    private static void doClientWork() {
         SecretClient secretClient = new SecretClientBuilder()
             .vaultUrl(VAULT_URL)
             .credential(new DefaultAzureCredentialBuilder().build())

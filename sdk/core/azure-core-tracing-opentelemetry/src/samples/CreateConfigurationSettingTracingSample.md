@@ -57,7 +57,7 @@ public class Sample {
 
     static {
         TRACER_SDK_FACTORY = configureOpenTelemetryAndLoggingExporter();
-        TRACER = TRACER_SDK_FACTORY.get("Azure-OpenTelemetry");
+        TRACER = TRACER_SDK_FACTORY.get("Sample");
     }
 
     public static void main(String[] args) {
@@ -73,13 +73,13 @@ public class Sample {
         return tracerSdkFactory;
     }
 
-    private static void doClientWork(Tracer tracer) {
+    private static void doClientWork() {
         ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(CONNECTION_STRING)
             .buildClient();
 
-        Span span = tracer.spanBuilder("user-parent-span").startSpan();
-        try (final Scope scope = tracer.withSpan(span)) {
+        Span span = TRACER.spanBuilder("user-parent-span").startSpan();
+        try (final Scope scope = TRACER.withSpan(span)) {
             final Context traceContext = new Context(PARENT_SPAN_KEY, span);
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey("hello").setValue("world"), true, traceContext);
         } finally {

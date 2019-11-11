@@ -56,7 +56,7 @@ public class Sample {
 
     static {
         TRACER_SDK_FACTORY = configureOpenTelemetryAndLoggingExporter();
-        TRACER = TRACER_SDK_FACTORY.get("Azure-OpenTelemetry");
+        TRACER = TRACER_SDK_FACTORY.get("Sample");
     }
 
     public static void main(String[] args) {
