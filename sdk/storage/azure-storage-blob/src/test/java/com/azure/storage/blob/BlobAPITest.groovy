@@ -34,6 +34,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
+import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -277,13 +278,9 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.downloadToFile(testFile.getPath())
-        def fileInputStream = new FileInputStream(testFile)
-        def fileData = new byte[testFile.size()]
-        fileInputStream.read(fileData)
-        fileInputStream.close()
 
         then:
-        new String(fileData, StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
 
         cleanup:
         testFile.delete()
@@ -345,12 +342,12 @@ class BlobAPITest extends APISpec {
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                 | _
-        new BlobRange(0, defaultDataSize)     | _ // Exact count
-        new BlobRange(1, defaultDataSize - 1) | _ // Offset and exact count
-        new BlobRange(3, 2)                   | _ // Narrow range in middle
-        new BlobRange(0, defaultDataSize - 1) | _ // Count that is less than total
-        new BlobRange(0, 10 * 1024)           | _ // Count much larger than remaining data
+        range                                         | _
+        new BlobRange(0, defaultDataSize)             | _ // Exact count
+        new BlobRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new BlobRange(3, 2)                           | _ // Narrow range in middle
+        new BlobRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
     }
 
     /*

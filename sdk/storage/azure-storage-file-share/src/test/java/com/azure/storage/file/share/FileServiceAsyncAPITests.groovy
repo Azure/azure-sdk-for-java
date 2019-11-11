@@ -102,7 +102,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
     def "Delete share"() {
         given:
-        primaryFileServiceAsyncClient.createShare(shareName)
+        primaryFileServiceAsyncClient.createShare(shareName).block()
 
         when:
         def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShareWithResponse(shareName, null))
