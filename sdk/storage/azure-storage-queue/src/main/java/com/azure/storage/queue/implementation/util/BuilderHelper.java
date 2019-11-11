@@ -23,7 +23,7 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 
-import com.azure.storage.queue.QueueServiceSasQueryParameters;
+import com.azure.storage.queue.sas.QueueServiceSasQueryParameters;
 import com.azure.storage.queue.QueueServiceVersion;
 import java.net.MalformedURLException;
 import java.net.URL;

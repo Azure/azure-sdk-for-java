@@ -23,6 +23,7 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
+
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.ParallelTransferOptions
@@ -60,7 +61,8 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block"() {
         setup:
-        def response = bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null, null)
+        def response = bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null,
+            null, null)
         def headers = response.getHeaders()
 
         expect:
@@ -105,6 +107,25 @@ class BlockBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Stage block transactionalMD5"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+
+        expect:
+        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, md5, null, null, null)
+            .statusCode == 201
+    }
+
+    def "Stage block transactionalMD5 fail"() {
+        when:
+        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
     def "Stage block null body"() {
         when:
         bc.stageBlock(getBlockID(), null, 0)
@@ -118,7 +139,7 @@ class BlockBlobAPITest extends APISpec {
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         expect:
-        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, leaseID, null, null)
+        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, leaseID, null, null)
             .getStatusCode() == 201
     }
 
@@ -127,7 +148,8 @@ class BlockBlobAPITest extends APISpec {
         setupBlobLeaseCondition(bc, receivedLeaseID)
 
         when:
-        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, garbageLeaseID, null, null)
+        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, garbageLeaseID, null,
+            null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -579,7 +601,8 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload"() {
         when:
-        def response = bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null)
+        def response = bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null,
+            null, null)
 
         then:
         response.getStatusCode() == 201
@@ -691,12 +714,13 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload empty body"() {
         expect:
-        bc.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, null, null, null, null, null, null).getStatusCode() == 201
+        bc.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, null, null, null, null, null, null, null)
+            .getStatusCode() == 201
     }
 
     def "Upload null body"() {
         when:
-        bc.uploadWithResponse(null, 0, null, null, null, null, null, null)
+        bc.uploadWithResponse(null, 0, null, null, null, null, null, null, null)
 
         then:
         thrown(NullPointerException)
@@ -713,7 +737,7 @@ class BlockBlobAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, headers, null, null, null, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, headers, null, null, null, null, null, null)
         def response = bc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -729,6 +753,25 @@ class BlockBlobAPITest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
+    def "Upload transactionalMD5"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+
+        expect:
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, md5, null, null, null)
+            .statusCode == 201
+    }
+
+    def "Upload transactionalMD5 fail"() {
+        when:
+        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
     @Unroll
     def "Upload metadata"() {
         setup:
@@ -741,7 +784,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, metadata, null, null, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, metadata, null, null, null, null, null)
         def response = bc.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -767,7 +810,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, bac, null, null).getStatusCode() == 201
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -792,7 +835,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, bac, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -813,7 +856,7 @@ class BlockBlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null,
             new BlobRequestConditions().setLeaseId("id"), null, null)
 
         then:
@@ -825,7 +868,8 @@ class BlockBlobAPITest extends APISpec {
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, AccessTier.COOL, null, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, AccessTier.COOL, null, null, null,
+            null)
 
         then:
         bc.getProperties().getAccessTier() == AccessTier.COOL

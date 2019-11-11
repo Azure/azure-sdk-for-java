@@ -50,7 +50,7 @@ public class BackupAndRestoreOperationsAsync {
         tags.put("foo", "bar");
 
         certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
-            .getObserver().subscribe(pollResponse -> {
+            .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());

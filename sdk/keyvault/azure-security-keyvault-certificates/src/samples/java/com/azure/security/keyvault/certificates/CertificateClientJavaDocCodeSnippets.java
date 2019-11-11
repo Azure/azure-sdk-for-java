@@ -8,8 +8,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -120,20 +120,20 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy-Map
         CertificatePolicy certificatePolicyPkcsSelf = new CertificatePolicy("Self",
             "CN=SelfSignedJavaPkcs12");
-        Poller<CertificateOperation, Certificate> certPoller = certificateClient
+        SyncPoller<CertificateOperation, Certificate> certPoller = certificateClient
             .beginCreateCertificate("certificateName", certificatePolicyPkcsSelf);
-        certPoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
-        Certificate cert = certPoller.getResult().block();
+        certPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        Certificate cert = certPoller.getFinalResult();
         System.out.printf("Certificate created with name %s", cert.getName());
         // END: com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy-Map
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy
         CertificatePolicy certificatePolicy = new CertificatePolicy("Self",
             "CN=SelfSignedJavaPkcs12");
-        Poller<CertificateOperation, Certificate> certificatePoller = certificateClient
+        SyncPoller<CertificateOperation, Certificate> certificatePoller = certificateClient
             .beginCreateCertificate("certificateName", certificatePolicy);
-        certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
-        Certificate certificate = certificatePoller.getResult().block();
+        certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        Certificate certificate = certificatePoller.getFinalResult();
         System.out.printf("Certificate created with name %s", certificate.getName());
         // END: com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy
     }

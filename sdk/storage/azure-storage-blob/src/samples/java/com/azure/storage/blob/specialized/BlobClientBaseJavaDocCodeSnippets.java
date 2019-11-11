@@ -5,8 +5,9 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -58,10 +59,9 @@ public class BlobClientBaseJavaDocCodeSnippets {
      */
     public void beginCopy() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-Duration
-        final Poller<BlobCopyInfo, Void> poller = client.beginCopy(url, Duration.ofSeconds(2));
-        poller.getObserver().subscribe(response -> {
-            System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
-        });
+        final SyncPoller<BlobCopyInfo, Void> poller = client.beginCopy(url, Duration.ofSeconds(2));
+        PollResponse<BlobCopyInfo> pollResponse = poller.poll();
+        System.out.printf("Copy identifier: %s%n", pollResponse.getValue().getCopyId());
         // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-Duration
     }
 
@@ -217,10 +217,10 @@ public class BlobClientBaseJavaDocCodeSnippets {
         RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobAccessConditions = new BlobRequestConditions().setLeaseId(leaseId);
-        Poller<BlobCopyInfo, Void> poller = client.beginCopy(url, metadata, AccessTier.HOT,
+        SyncPoller<BlobCopyInfo, Void> poller = client.beginCopy(url, metadata, AccessTier.HOT,
             RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions, Duration.ofSeconds(2));
 
-        PollResponse<BlobCopyInfo> response = poller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
+        PollResponse<BlobCopyInfo> response = poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
         System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
         // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
     }

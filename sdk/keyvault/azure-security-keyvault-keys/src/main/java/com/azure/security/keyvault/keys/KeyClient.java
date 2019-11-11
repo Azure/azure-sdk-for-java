@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -252,10 +252,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * <pre>
-     * Key importedKey = keyClient.importKey("keyName", jsonWebKeyToImport);
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.importKey#string-jsonwebkey}
      *
      * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
@@ -279,14 +277,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * <pre>
-     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-     *   .hsm(true)
-     *   .setExpires(OffsetDateTime.now().plusDays(60));
      *
-     * Key importedKey = keyClient.importKey(keyImportOptions);
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.importKey#options}
      *
      * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.
@@ -311,14 +303,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * <pre>
-     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-     *   .hsm(true)
-     *   .setExpires(OffsetDateTime.now().plusDays(60));
      *
-     * Key importedKey = keyClient.importKey(keyImportOptions, new Context(key1, value1)).value();
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.importKeyWithResponse#options-response}
      *
      * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.
@@ -452,12 +438,12 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#string}
      *
      * @param name The name of the key to be deleted.
-     * @return A {@link Poller} to poll on and retrieve {@link DeletedKey deleted key}
+     * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedKey deleted key}
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public Poller<DeletedKey, Void> beginDeleteKey(String name) {
-        return client.beginDeleteKey(name);
+    public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
+        return client.beginDeleteKey(name).getSyncPoller();
     }
 
     /**
@@ -548,12 +534,12 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#string}
      *
      * @param name The name of the deleted key to be recovered.
-     * @return A {@link Poller} to poll on and retrieve {@link KeyVaultKey recovered key}.
+     * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultKey recovered key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return client.beginRecoverDeletedKey(name);
+    public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
+        return client.beginRecoverDeletedKey(name).getSyncPoller();
     }
 
     /**

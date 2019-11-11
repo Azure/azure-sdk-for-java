@@ -160,7 +160,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return The information of the append blob operation.
      */
     public AppendBlobItem appendBlock(InputStream data, long length) {
-        return appendBlockWithResponse(data, length, null, null, Context.NONE).getValue();
+        return appendBlockWithResponse(data, length, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -171,12 +171,16 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobAccessConditions-Duration-Context}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
+     * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during
+     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
+     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
+     * operation will fail.
      * @param appendBlobRequestConditions {@link AppendBlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -184,12 +188,12 @@ public final class AppendBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
-    public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
+    public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES);
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
-            fbb.subscribeOn(Schedulers.elastic()), length, appendBlobRequestConditions, context);
+            fbb.subscribeOn(Schedulers.elastic()), length, contentMd5, appendBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

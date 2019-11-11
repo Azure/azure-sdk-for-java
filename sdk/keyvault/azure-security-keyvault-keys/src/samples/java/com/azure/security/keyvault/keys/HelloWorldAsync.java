@@ -74,7 +74,6 @@ public class HelloWorldAsync {
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
         keyAsyncClient.beginDeleteKey("CloudRsaKey")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Key Name: " + pollResponse.getValue().getName());

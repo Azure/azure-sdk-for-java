@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -17,6 +17,8 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.ImportKeyOptions;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
@@ -80,8 +82,37 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyVaultKey ecKey = keyClient.createEcKey(createEcKeyOptions);
         System.out.printf("Key is created with name %s and id %s %n", ecKey.getName(), ecKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createEcKey#keyOptions
+    }
 
+    /**
+     * Generates a code sample for using {@link KeyClient#importKey(String, JsonWebKey)}
+     */
+    public void importKeySnippets() {
+        KeyClient keyClient = createClient();
+        JsonWebKey jsonWebKeyToImport = new JsonWebKey();
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.importKey#string-jsonwebkey
+        KeyVaultKey importedKey = keyClient.importKey("keyName", jsonWebKeyToImport);
+        System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
+        // END: com.azure.security.keyvault.keys.keyclient.importKey#string-jsonwebkey
 
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.importKey#options
+        ImportKeyOptions options = new ImportKeyOptions("keyName", jsonWebKeyToImport)
+            .setHardwareProtected(false);
+
+        KeyVaultKey importedKeyResponse = keyClient.importKey(options);
+        System.out.printf("Key is imported with name %s and id %s \n", importedKeyResponse.getName(),
+            importedKeyResponse.getId());
+        // END: com.azure.security.keyvault.keys.keyclient.importKey#options
+
+        // BEGIN: com.azure.security.keyvault.keys.keyclient.importKeyWithResponse#options-response
+        ImportKeyOptions importKeyOptions = new ImportKeyOptions("keyName", jsonWebKeyToImport)
+            .setHardwareProtected(false);
+
+        KeyVaultKey importedKeyResp = keyClient.importKeyWithResponse(importKeyOptions, new Context(key1, value1))
+            .getValue();
+        System.out.printf("Key is imported with name %s and id %s \n", importedKeyResp.getName(),
+            importedKeyResp.getId());
+        // END: com.azure.security.keyvault.keys.keyclient.importKeyWithResponse#options-response
     }
 
     /**
@@ -91,22 +122,16 @@ public final class KeyClientJavaDocCodeSnippets {
     public void deleteKeySnippets() throws InterruptedException {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.deleteKey#string
-        Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
+        SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
 
-        while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-            System.out.println(deletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
-        DeletedKey deletedKey = deletedKeyPoller.getLastPollResponse().getValue();
+        DeletedKey deletedKey = deletedKeyPollResponse.getValue();
         System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
         System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());
 
         // Key is being deleted on server.
-        while (!deletedKeyPoller.isComplete()) {
-            System.out.println(deletedKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        deletedKeyPoller.waitForCompletion();
         // Key is deleted
         // END: com.azure.keyvault.keys.keyclient.deleteKey#string
     }
@@ -259,22 +284,16 @@ public final class KeyClientJavaDocCodeSnippets {
     public void recoverDeletedKeySnippets() throws InterruptedException {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
-        Poller<KeyVaultKey, Void> recoverKeyPoller = keyClient.beginRecoverDeletedKey("deletedKeyName");
+        SyncPoller<KeyVaultKey, Void> recoverKeyPoller = keyClient.beginRecoverDeletedKey("deletedKeyName");
 
-        while (recoverKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-            System.out.println(recoverKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        PollResponse<KeyVaultKey> recoverKeyPollResponse = recoverKeyPoller.poll();
 
-        KeyVaultKey recoveredKey = recoverKeyPoller.getLastPollResponse().getValue();
+        KeyVaultKey recoveredKey = recoverKeyPollResponse.getValue();
         System.out.println("Recovered Key Name %s" + recoveredKey.getName());
         System.out.printf("Recovered Key's Id %s", recoveredKey.getId());
 
         // Key is being recovered on server.
-        while (recoverKeyPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.println(recoverKeyPoller.getStatus().toString());
-            Thread.sleep(2000);
-        }
+        recoverKeyPoller.waitForCompletion();
         // Key is recovered
         // END: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
     }

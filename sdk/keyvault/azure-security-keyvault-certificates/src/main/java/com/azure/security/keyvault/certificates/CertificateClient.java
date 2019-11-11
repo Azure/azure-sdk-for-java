@@ -12,7 +12,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.models.Certificate;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -76,11 +76,11 @@ public class CertificateClient {
      * @param policy The policy of the certificate to be created.
      * @param tags The application specific metadata to set.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link Poller} polling on the create certificate operation status.
+     * @return A {@link SyncPoller} polling on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, Map<String, String> tags) {
-        return  client.beginCreateCertificate(name, policy, true, tags);
+    public SyncPoller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, Map<String, String> tags) {
+        return  client.beginCreateCertificate(name, policy, true, tags).getSyncPoller();
     }
 
     /**
@@ -96,11 +96,11 @@ public class CertificateClient {
      * @param name The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link Poller} polling on the create certificate operation status.
+     * @return A {@link SyncPoller} polling on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy) {
-        return client.beginCreateCertificate(name, policy);
+    public SyncPoller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy) {
+        return client.beginCreateCertificate(name, policy).getSyncPoller();
     }
 
     /**
@@ -115,11 +115,11 @@ public class CertificateClient {
      *
      * @param name The name of the certificate to be created.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link Poller} polling on the create certificate operation status.
+     * @return A {@link SyncPoller} polling on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name) {
-        return client.beginCreateCertificate(name);
+    public SyncPoller<CertificateOperation, Certificate> beginCreateCertificate(String name) {
+        return client.beginCreateCertificate(name).getSyncPoller();
     }
 
     /**

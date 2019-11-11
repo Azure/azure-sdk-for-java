@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -49,7 +49,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0</version>
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -65,13 +65,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -98,7 +98,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.0-preview.6</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -313,7 +313,7 @@ class SimplePartitionProcessor extends PartitionProcessor {
     /**
      * Processes the event data.
      */
-    @Override
+    // @Override
     public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
         System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
         return partitionContext.updateCheckpoint(eventData);
