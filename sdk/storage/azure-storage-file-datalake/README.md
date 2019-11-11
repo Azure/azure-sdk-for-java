@@ -19,6 +19,7 @@ efficient data access.
 ### Adding the package to your product
 
 Add a dependency on Azure Storage Blob
+
 [//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
 <dependency>
@@ -43,7 +44,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.0.0-preview.5</version>
+    <version>12.0.0-preview.6</version>
     <exclusions>
         <exclusion>
             <groupId>com.azure</groupId>

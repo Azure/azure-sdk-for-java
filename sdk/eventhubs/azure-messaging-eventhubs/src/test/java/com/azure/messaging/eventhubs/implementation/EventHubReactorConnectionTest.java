@@ -18,10 +18,10 @@ import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -56,7 +56,7 @@ public class EventHubReactorConnectionTest {
     private ReactorHandlerProvider handlerProvider;
     private ConnectionOptions connectionOptions;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
 
@@ -90,11 +90,11 @@ public class EventHubReactorConnectionTest {
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())
-            .assertNext(node -> Assert.assertTrue(node instanceof ManagementChannel))
+            .assertNext(node -> Assertions.assertTrue(node instanceof ManagementChannel))
             .verifyComplete();
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
     }

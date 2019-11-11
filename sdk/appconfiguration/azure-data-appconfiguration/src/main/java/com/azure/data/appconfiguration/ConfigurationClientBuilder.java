@@ -31,6 +31,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -64,6 +65,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = ConfigurationClient.class)
 public final class ConfigurationClientBuilder {
+
     // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
     // request was sent.
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
@@ -71,10 +73,15 @@ public final class ConfigurationClientBuilder {
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
+    private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
+    private static final String NAME = "name";
+    private static final String VERSION = "version";
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
+    private final String clientName;
+    private final String clientVersion;
 
     private ConfigurationClientCredentials credential;
     private String endpoint;
@@ -91,6 +98,10 @@ public final class ConfigurationClientBuilder {
     public ConfigurationClientBuilder() {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
+
+        Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
+        clientName = properties.getOrDefault(NAME, "UnknownName");
+        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
@@ -155,8 +166,9 @@ public final class ConfigurationClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration,
-            serviceVersion));
+        policies.add(
+            new UserAgentPolicy(clientName, clientVersion, buildConfiguration,
+                serviceVersion));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());

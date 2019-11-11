@@ -239,14 +239,14 @@ public final class BlobContainerClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobRequestConditions-Duration-Context}
      *
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> deleteWithResponse(BlobRequestConditions accessConditions, Duration timeout,
+    public Response<Void> deleteWithResponse(BlobRequestConditions requestConditions, Duration timeout,
         Context context) {
-        Mono<Response<Void>> response = client.deleteWithResponse(accessConditions, context);
+        Mono<Response<Void>> response = client.deleteWithResponse(requestConditions, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
@@ -305,14 +305,14 @@ public final class BlobContainerClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context}
      * @param metadata Metadata to associate with the container.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
-        BlobRequestConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, accessConditions,
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, requestConditions,
             context);
         return blockWithOptionalTimeout(response, timeout);
     }
@@ -389,16 +389,16 @@ public final class BlobContainerClient {
      * Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> setAccessPolicyWithResponse(PublicAccessType accessType,
-        List<BlobSignedIdentifier> identifiers, BlobRequestConditions accessConditions,
+        List<BlobSignedIdentifier> identifiers, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client
-            .setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context);
+            .setAccessPolicyWithResponse(accessType, identifiers, requestConditions, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }

@@ -17,10 +17,8 @@ import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Schedulers;
@@ -34,8 +32,7 @@ import java.time.ZoneOffset;
 import static com.azure.core.amqp.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
 public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
-    @Rule
-    public TestName testName = new TestName();
+
     private ReactorConnection connection;
 
     @Mock
@@ -43,11 +40,6 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
 
     public ReactorConnectionIntegrationTest() {
         super(new ClientLogger(ReactorConnectionIntegrationTest.class));
-    }
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
     }
 
     @Override
@@ -61,7 +53,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
             tokenCredential = new EventHubSharedAccessKeyCredential(connectionString.getSharedAccessKeyName(),
                 connectionString.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            Assert.fail("Could not create tokenProvider :" + e);
+            Assertions.fail("Could not create tokenProvider :" + e);
         }
 
         final ConnectionOptions options = new ConnectionOptions(connectionString.getEndpoint().getHost(),
@@ -87,7 +79,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     public void getCbsNode() {
         // Act & Assert
         StepVerifier.create(connection.getCBSNode())
-            .assertNext(node -> Assert.assertTrue(node instanceof CBSChannel))
+            .assertNext(node -> Assertions.assertTrue(node instanceof CBSChannel))
             .verifyComplete();
     }
 

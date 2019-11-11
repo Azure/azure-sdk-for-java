@@ -101,7 +101,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
      * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void uploadPagesWithResponseCodeSnippet() throws NoSuchAlgorithmException {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-byte-PageBlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-byte-PageBlobRequestConditions
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
@@ -112,7 +112,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         client.uploadPagesWithResponse(pageRange, body, md5, pageBlobRequestConditions)
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-byte-PageBlobAccessConditions
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-byte-PageBlobRequestConditions
     }
 
     /**
@@ -142,11 +142,11 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
         byte[] sourceContentMD5 = new byte[512];
         PageBlobRequestConditions pageBlobRequestConditions = new PageBlobRequestConditions().setLeaseId(leaseId);
-        BlobRequestConditions sourceAccessConditions = new BlobRequestConditions()
+        BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.uploadPagesFromUrlWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobRequestConditions,
-                sourceAccessConditions)
+                sourceRequestConditions)
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob from URL with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions
@@ -327,10 +327,10 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     public void copyIncrementalWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#String-String-RequestConditions
         final String snapshot = "copy snapshot";
-        RequestConditions modifiedAccessConditions = new RequestConditions()
+        RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfNoneMatch("snapshotMatch");
 
-        client.copyIncrementalWithResponse(url, snapshot, modifiedAccessConditions)
+        client.copyIncrementalWithResponse(url, snapshot, modifiedRequestConditions)
             .subscribe(response -> {
                 CopyStatusType statusType = response.getValue();
 

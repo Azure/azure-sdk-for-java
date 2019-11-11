@@ -19,9 +19,10 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.After;
-import org.junit.Assume;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -57,11 +58,9 @@ public abstract class IntegrationTestBase extends TestBase {
         this.logger = logger;
     }
 
-    // These are overridden because we don't use the Interceptor Manager.
-    @Override
-    @Before
-    public void setupTest() {
-        logger.info("[{}]: Performing integration test set-up.", getTestName());
+    @BeforeEach
+    public void setupTest(TestInfo testInfo) {
+        logger.info("[{}]: Performing integration test set-up.", testInfo.getDisplayName());
 
         skipIfNotRecordMode();
 
@@ -73,9 +72,9 @@ public abstract class IntegrationTestBase extends TestBase {
 
     // These are overridden because we don't use the Interceptor Manager.
     @Override
-    @After
-    public void teardownTest() {
-        logger.info("[{}]: Performing test clean-up.", getTestName());
+    @AfterEach
+    public void teardownTest(TestInfo testInfo) {
+        logger.info("[{}]: Performing test clean-up.", testInfo.getDisplayName());
         afterTest();
 
         // Tear down any inline mocks to avoid memory leaks.
@@ -221,6 +220,6 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     private void skipIfNotRecordMode() {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+        Assumptions.assumeTrue(getTestMode() == TestMode.RECORD);
     }
 }
