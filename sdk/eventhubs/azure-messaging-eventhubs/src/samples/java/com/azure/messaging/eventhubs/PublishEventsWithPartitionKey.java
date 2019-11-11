@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpException;
-import com.azure.messaging.eventhubs.models.SendOptions;
+import com.azure.messaging.eventhubs.models.BatchOptions;
+import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.publisher.Flux;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -28,7 +28,7 @@ public class PublishEventsWithPartitionKey {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Create a producer.
-        EventHubProducerAsyncClient client = new EventHubClientBuilder()
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
             .buildAsyncProducer();
 
@@ -39,7 +39,7 @@ public class PublishEventsWithPartitionKey {
             new EventData("Players".getBytes(UTF_8)));
 
         // When an Event Hub producer is not associated with any specific partition, it may be desirable to request that
-        // the Event Hubs service keep different events or batches of events together on the same partition. This can be
+        // the Event Hubs service keep different batches of events together on the same partition. This can be
         // accomplished by setting a partition key when publishing the events.
         //
         // The partition key is NOT the identifier of a specific partition. Rather, it is an arbitrary piece of string data
@@ -51,25 +51,32 @@ public class PublishEventsWithPartitionKey {
         // Note that there is no means of accurately predicting which partition will be associated with a given partition key;
         // we can only be assured that it will be a consistent choice of partition. If you have a need to understand which
         // exact partition an event is published to, you will need to use an Event Hub producer associated with that partition.
-        SendOptions sendOptions = new SendOptions().setPartitionKey("basketball");
+        final BatchOptions options = new BatchOptions()
+            .setPartitionKey("basketball")
+            .setMaximumSizeInBytes(256);
+        final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+            producer.createBatch(options).block());
 
-        // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
-        // the event.
-        client.send(data, sendOptions).subscribe(
-            ignored -> { },
-            error -> {
-                System.err.println("There was an error sending the event batch: " + error.toString());
-
-                if (error instanceof AmqpException) {
-                    AmqpException amqpException = (AmqpException) error;
-
-                    System.err.println(String.format("Is send operation retriable? %s. Error condition: %s",
-                        amqpException.isTransient(), amqpException.getErrorCondition()));
+        // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
+        // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
+        // are sent.
+        data.subscribe(event -> {
+                final EventDataBatch batch = currentBatch.get();
+                if (!batch.tryAdd(event)) {
+                    producer.createBatch(options).map(newBatch -> {
+                        currentBatch.set(newBatch);
+                        return producer.send(batch);
+                    }).block();
                 }
-            }, () -> {
-                // Disposing of our producer and client.
-                client.close();
+            }, error -> System.err.println("Error received:" + error),
+            () -> {
+                final EventDataBatch batch = currentBatch.getAndSet(null);
+                if (batch != null) {
+                    producer.send(batch).block();
+                }
+
+                // Disposing of our producer.
+                producer.close();
             });
     }
 }
