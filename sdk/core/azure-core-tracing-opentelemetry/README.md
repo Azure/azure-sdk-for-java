@@ -90,7 +90,7 @@ The following sections provides examples of using the azure-core-tracing-opentel
         
         static {
             TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
-            TRACER = TRACER_SDK_FACTORY.get("Azure-OpenTelemetry");
+            TRACER = TRACER_SDK_FACTORY.get("Sample");
         }
     
         public static void main(String[] args) {
@@ -125,7 +125,7 @@ private static final TracerSdkFactory TRACER_SDK_FACTORY;
     
     static {
         TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
-        TRACER = TRACER_SDK_FACTORY.get("Azure-OpenTelemetry");
+        TRACER = TRACER_SDK_FACTORY.get("Sample");
     }
 
     public static void main(String[] args) {
