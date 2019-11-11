@@ -22,6 +22,7 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.message.Message;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -124,7 +125,7 @@ public class EventHubConsumerClientTest {
         consumer.close();
     }
 
-    @AfterClass
+    @AfterAll
     public static void dispose() {
         EXECUTOR_SERVICE.shutdown();
     }
@@ -389,12 +390,12 @@ public class EventHubConsumerClientTest {
     private void assertPartition(String partitionId, PartitionEvent event) {
         System.out.println("Event received: " + event.getPartitionContext().getPartitionId());
         final Object value = event.getEventData().getProperties().get(PARTITION_ID_HEADER);
-        Assert.assertTrue(value instanceof String);
-        Assert.assertEquals(partitionId, value);
+        Assertions.assertTrue(value instanceof String);
+        Assertions.assertEquals(partitionId, value);
 
-        Assert.assertEquals(partitionId, event.getPartitionContext().getPartitionId());
-        Assert.assertEquals(EVENT_HUB_NAME, event.getPartitionContext().getEventHubName());
-        Assert.assertEquals(CONSUMER_GROUP, event.getPartitionContext().getConsumerGroup());
+        Assertions.assertEquals(partitionId, event.getPartitionContext().getPartitionId());
+        Assertions.assertEquals(EVENT_HUB_NAME, event.getPartitionContext().getEventHubName());
+        Assertions.assertEquals(CONSUMER_GROUP, event.getPartitionContext().getConsumerGroup());
     }
 
     private void sendMessages(FluxSink<Message> sink, int numberOfEvents, String partitionId) {

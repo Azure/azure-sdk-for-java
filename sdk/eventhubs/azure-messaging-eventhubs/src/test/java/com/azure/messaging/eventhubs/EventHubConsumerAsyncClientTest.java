@@ -650,12 +650,12 @@ public class EventHubConsumerAsyncClientTest {
     private void assertPartition(String partitionId, PartitionEvent event) {
         System.out.println("Event received: " + event.getPartitionContext().getPartitionId());
         final Object value = event.getEventData().getProperties().get(PARTITION_ID_HEADER);
-        Assert.assertTrue(value instanceof String);
-        Assert.assertEquals(partitionId, value);
+        Assertions.assertTrue(value instanceof String);
+        Assertions.assertEquals(partitionId, value);
 
-        Assert.assertEquals(partitionId, event.getPartitionContext().getPartitionId());
-        Assert.assertEquals(EVENT_HUB_NAME, event.getPartitionContext().getEventHubName());
-        Assert.assertEquals(CONSUMER_GROUP, event.getPartitionContext().getConsumerGroup());
+        Assertions.assertEquals(partitionId, event.getPartitionContext().getPartitionId());
+        Assertions.assertEquals(EVENT_HUB_NAME, event.getPartitionContext().getEventHubName());
+        Assertions.assertEquals(CONSUMER_GROUP, event.getPartitionContext().getConsumerGroup());
     }
 
     private void sendMessages(FluxSink<Message> sink, int numberOfEvents, String partitionId) {
