@@ -232,7 +232,11 @@ public class LocationCacheTest {
                         endpointDiscoveryEnabled,
                         preferredAvailableWriteEndpoints,
                         preferredAvailableReadEndpoints,
-                        writeLocationIndex > 0);
+                        readLocationIndex > 0 && !currentReadEndpoints.get(0).equals(DefaultEndpoint),
+                        writeLocationIndex > 0,
+                        currentReadEndpoints.size() > 1,
+                        currentWriteEndpoints.size() > 1
+                    );
 
                 this.validateGlobalEndpointLocationCacheRefreshAsync();
 
@@ -257,14 +261,17 @@ public class LocationCacheTest {
             boolean endpointDiscoveryEnabled,
             URL[] preferredAvailableWriteEndpoints,
             URL[] preferredAvailableReadEndpoints,
-            boolean isFirstWriteEndpointUnavailable) {
+            boolean isFirstReadEndpointUnavailable,
+            boolean isFirstWriteEndpointUnavailable,
+            boolean hasMoreThanOneReadEndpoints,
+            boolean hasMoreThanOneWriteEndpoints) {
 
         Utils.ValueHolder<Boolean> canRefreshInBackgroundHolder = new Utils.ValueHolder<>();
         canRefreshInBackgroundHolder.v = false;
 
         boolean shouldRefreshEndpoints = this.cache.shouldRefreshEndpoints(canRefreshInBackgroundHolder);
 
-        boolean isMostPreferredLocationUnavailableForRead = false;
+        boolean isMostPreferredLocationUnavailableForRead = isFirstReadEndpointUnavailable;
         boolean isMostPreferredLocationUnavailableForWrite = useMultipleWriteLocations ?
                 false : isFirstWriteEndpointUnavailable;
         if (this.preferredLocations.size() > 0) {
@@ -298,7 +305,11 @@ public class LocationCacheTest {
         }
 
         if (shouldRefreshEndpoints) {
-            assertThat(canRefreshInBackgroundHolder.v).isTrue();
+            if (isMostPreferredLocationUnavailableForRead) {
+                assertThat(canRefreshInBackgroundHolder.v).isEqualTo(hasMoreThanOneReadEndpoints);
+            } else if (isMostPreferredLocationUnavailableForWrite) {
+                assertThat(canRefreshInBackgroundHolder.v).isEqualTo(hasMoreThanOneWriteEndpoints);
+            }
         }
     }
 
@@ -310,7 +321,7 @@ public class LocationCacheTest {
 
         mockedClient.reset();
         List<Mono<Void>> list = IntStream.range(0, 10)
-                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
+                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
 
         Flux.merge(list).then().block();
@@ -319,7 +330,7 @@ public class LocationCacheTest {
         mockedClient.reset();
 
         IntStream.range(0, 10)
-                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
+                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
         for (Mono completable : list) {
             completable.block();
