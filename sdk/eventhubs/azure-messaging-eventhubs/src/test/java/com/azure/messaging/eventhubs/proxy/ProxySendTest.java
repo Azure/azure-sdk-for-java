@@ -15,11 +15,9 @@ import com.azure.messaging.eventhubs.jproxy.ProxyServer;
 import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -46,15 +44,7 @@ public class ProxySendTest extends IntegrationTestBase {
         super(new ClientLogger(ProxySendTest.class));
     }
 
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
-    }
-
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(t -> {
@@ -74,7 +64,7 @@ public class ProxySendTest extends IntegrationTestBase {
         });
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanupClient() throws Exception {
         if (proxyServer != null) {
             proxyServer.stop();

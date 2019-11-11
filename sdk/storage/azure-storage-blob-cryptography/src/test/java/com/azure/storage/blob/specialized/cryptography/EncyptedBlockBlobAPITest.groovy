@@ -3,11 +3,10 @@ package com.azure.storage.blob.specialized.cryptography
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
-
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
@@ -24,7 +23,6 @@ import spock.lang.Shared
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.security.MessageDigest
 
 class EncyptedBlockBlobAPITest extends APISpec {
 
@@ -91,7 +89,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Create encryption client succeeds"() {
         when:
         def key
-        if(passKey) {
+        if (passKey) {
             key = fakeKey
         } else {
             key = null
@@ -244,9 +242,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         // HTTP default content type is application/octet-stream
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        null         | null               | null            | null            | null                                                         | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        // Don't calculate MD5 as we would need to encrypt the blob then calculate it.
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | null
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
     }
 
     // This test checks that metadata in encryption is successfully set
@@ -409,7 +408,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         // Upload encrypted data with regular client
         normalClient.uploadWithResponse(new ByteArrayInputStream(defaultData.array()), defaultDataSize, null, null,
-            null, null, null, null)
+            null, null, null, null, null)
 
         // Download data with encrypted client - command should fail
         ByteArrayOutputStream os = new ByteArrayOutputStream()
@@ -422,7 +421,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // Tests key resolver
     @Unroll
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "Key resolver used to decrypt data"() {
         setup:
         def blobName = generateBlobName()
@@ -430,8 +429,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         EncryptedBlobAsyncClient decryptResolverClient =
             getEncryptedClientBuilder(null, fakeKeyResolver as AsyncKeyEncryptionKeyResolver, primaryCredential,
                 cc.getBlobContainerUrl())
-            .blobName(blobName)
-            .buildEncryptedBlobAsyncClient()
+                .blobName(blobName)
+                .buildEncryptedBlobAsyncClient()
 
         EncryptedBlobAsyncClient encryptClient =
             getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential, cc.getBlobContainerUrl())
@@ -473,7 +472,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with old SDK download with new SDk.
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "Cross platform test upload old download new"() {
         setup:
         def blobName = generateBlobName()
@@ -509,7 +508,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with new SDK download with old SDk.
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "Cross platform test upload new download old"() {
         setup:
         def blobName = generateBlobName()
@@ -541,7 +540,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         stream.toByteArray() == defaultData.array()
     }
 
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "encrypted client file upload overwrite false"() {
         setup:
         def file = getRandomFile(KB)
@@ -555,7 +554,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "encrypted client file upload overwrite true"() {
         setup:
         def file = getRandomFile(KB)

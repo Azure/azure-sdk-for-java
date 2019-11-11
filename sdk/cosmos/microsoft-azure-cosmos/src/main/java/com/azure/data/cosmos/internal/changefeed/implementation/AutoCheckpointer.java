@@ -7,6 +7,8 @@ import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import com.azure.data.cosmos.internal.changefeed.CheckpointFrequency;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -18,6 +20,7 @@ import java.util.List;
  * Auto check-pointer implementation for {@link ChangeFeedObserver}.
  */
 class AutoCheckpointer implements ChangeFeedObserver {
+    private final Logger logger = LoggerFactory.getLogger(AutoCheckpointer.class);
     private final CheckpointFrequency checkpointFrequency;
     private final ChangeFeedObserver observer;
     private volatile int processedDocCount;
@@ -50,6 +53,9 @@ class AutoCheckpointer implements ChangeFeedObserver {
     @Override
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
         return this.observer.processChanges(context, docs)
+            .doOnError(throwable -> {
+                logger.warn("Unexpected exception from thread {}", Thread.currentThread().getId(), throwable);
+            })
             .then(this.afterProcessChanges(context));
     }
 
@@ -58,10 +64,14 @@ class AutoCheckpointer implements ChangeFeedObserver {
 
         if (this.isCheckpointNeeded()) {
             return context.checkpoint()
-                .doOnSuccess((Void) -> {
+                .doOnError(throwable -> {
+                    logger.warn("Checkpoint failed; this worker will be killed", throwable);
+                })
+                .doOnSuccess( (Void) -> {
                     this.processedDocCount = 0;
                     this.lastCheckpointTime = ZonedDateTime.now(ZoneId.of("UTC"));
-                });
+                })
+                .then();
         }
         return Mono.empty();
     }

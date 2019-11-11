@@ -79,3 +79,6 @@ Latency
 
 You can provide ``--help`` to the tool to see the list of other work loads (read, etc) and other options. 
 
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fmicrosoft-azure-cosmos-benchmark%2FREADME.png)

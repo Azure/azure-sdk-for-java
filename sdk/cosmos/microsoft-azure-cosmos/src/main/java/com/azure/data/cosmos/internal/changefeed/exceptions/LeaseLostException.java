@@ -17,8 +17,7 @@ public class LeaseLostException extends RuntimeException {
     /**
      * Initializes a new instance of the @link LeaseLostException} class.
      */
-    public LeaseLostException()
-    {
+    public LeaseLostException() {
     }
 
     /**
@@ -26,8 +25,7 @@ public class LeaseLostException extends RuntimeException {
      *
      * @param lease an instance of a lost lease.
      */
-    public LeaseLostException(Lease lease)
-    {
+    public LeaseLostException(Lease lease) {
         super(DEFAULT_MESSAGE);
         this.lease = lease;
     }
@@ -37,8 +35,7 @@ public class LeaseLostException extends RuntimeException {
      *
      * @param message the exception error message.
      */
-    public LeaseLostException(String message)
-    {
+    public LeaseLostException(String message) {
         super(message);
     }
 
@@ -49,8 +46,7 @@ public class LeaseLostException extends RuntimeException {
      * @param innerException the inner exception.
      *
      */
-    public LeaseLostException(String message, Exception innerException)
-    {
+    public LeaseLostException(String message, Exception innerException) {
         super(message, innerException.getCause());
     }
 
@@ -62,8 +58,7 @@ public class LeaseLostException extends RuntimeException {
      * @param innerException the inner exception.
      * @param isGone true if lease doesn't exist.
      */
-    public LeaseLostException(Lease lease, Exception innerException, boolean isGone)
-    {
+    public LeaseLostException(Lease lease, Exception innerException, boolean isGone) {
         super(DEFAULT_MESSAGE, innerException.getCause());
         this.lease = lease;
         this.isGone = isGone;
