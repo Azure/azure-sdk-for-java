@@ -70,25 +70,7 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
 ```
 
 ### Default SSL library
-All client libraries, by default, use Tomcat native Boring SSL. The Boring SSL library is an uber jar containing bits of linux/mac/windows and provides better performance compared to default jdk SSL.
-If you prefer to use default jdk SSL then exclude the Boring SSL in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
-```xml
-<!-- Add KeyVault Secrets dependency without Tomcat Native Boring SSL -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.0</version>
-    <exclusions>
-      <exclusion>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-tcnative-boringssl-static</artifactId>
-      </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ### Prerequisites
 
@@ -378,5 +360,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [secrets_samples]: src/samples/java/com/azure/security/keyvault/secrets
 [samples]: src/samples/README.md
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2FREADME.png)
