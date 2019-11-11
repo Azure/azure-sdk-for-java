@@ -70,9 +70,8 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
 ```
 
 ### Default SSL library
-All client libraries, by default, use Tomcat native Boring SSL. The Boring SSL library is an uber jar containing bits of linux/mac/windows
-and provides better performance compared to default jdk SSL.
-If you prefer to use default jdk SSL then exclude the  Boring SSL in your pom.xml.
+All client libraries, by default, use Tomcat native Boring SSL. The Boring SSL library is an uber jar containing bits of linux/mac/windows and provides better performance compared to default jdk SSL.
+If you prefer to use default jdk SSL then exclude the Boring SSL in your pom.xml.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
 ```xml
