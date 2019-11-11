@@ -9,6 +9,11 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>../../pom.client.xml</module>
+    <module>azure-core</module>
+    <module>azure-core-amqp</module>
+    <module>azure-core-http-netty</module>
+    <module>azure-core-http-okhttp</module>
+    <module>azure-core-test</module>
+    <module>azure-core-tracing-opencensus</module>
   </modules>
 </project>

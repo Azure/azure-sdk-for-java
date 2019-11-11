@@ -1,0 +1,29 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-sdk</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>    <!-- Need not change for every release-->
+    <modules>
+        <module>sdk/core</module>
+        <module>sdk/identity</module>
+        <module>sdk/storage</module>
+        <module>sdk/appconfiguration</module>
+        <module>sdk/applicationinsights</module>
+        <module>sdk/authorization</module>
+        <module>sdk/batch</module>
+        <module>sdk/cognitiveservices</module>
+        <module>sdk/cosmos</module>
+        <module>sdk/eventgrid</module>
+        <module>sdk/eventhubs</module>
+        <module>sdk/keyvault</module>
+        <module>sdk/loganalytics</module>
+        <module>sdk/mediaservices</module>
+        <module>sdk/search</module>
+        <module>sdk/servicebus</module>
+        <module>sdk/template</module>
+    </modules>
+</project>

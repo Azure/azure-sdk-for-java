@@ -943,30 +943,4 @@
       </build>
     </profile>
   </profiles>
-
-  <modules>
-    <module>sdk/appconfiguration/azure-data-appconfiguration</module>
-    <module>sdk/core/azure-core</module>
-    <module>sdk/core/azure-core-amqp</module>
-<!--    <module>sdk/core/azure-core-management</module>--> <!-- Removed for now, as this library is unused -->
-    <module>sdk/core/azure-core-http-netty</module>
-    <module>sdk/core/azure-core-http-okhttp</module>
-    <module>sdk/core/azure-core-test</module>
-    <module>sdk/core/azure-core-tracing-opencensus</module>
-    <module>sdk/core/azure-core-tracing-opentelemetry</module>
-    <module>sdk/eventhubs/azure-messaging-eventhubs</module>
-    <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
-    <module>sdk/identity/azure-identity</module>
-    <module>sdk/keyvault/azure-security-keyvault-certificates</module>
-    <module>sdk/keyvault/azure-security-keyvault-keys</module>
-    <module>sdk/keyvault/azure-security-keyvault-secrets</module>
-    <module>sdk/storage/azure-storage-blob</module>
-    <module>sdk/storage/azure-storage-blob-batch</module>
-    <module>sdk/storage/azure-storage-blob-cryptography</module>
-    <module>sdk/storage/azure-storage-common</module>
-    <module>sdk/storage/azure-storage-file-share</module>
-    <module>sdk/storage/azure-storage-file-datalake</module>
-    <module>sdk/storage/azure-storage-queue</module>
-    <module>sdk/storage/azure-storage-queue-cryptography</module>
-  </modules>
 </project>
