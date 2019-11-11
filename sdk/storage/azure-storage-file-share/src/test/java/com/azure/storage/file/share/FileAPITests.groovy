@@ -44,9 +44,9 @@ class FileAPITests extends APISpec {
     def setup() {
         shareName = resourceNamer.randomName(methodName, 60)
         filePath = resourceNamer.randomName(methodName, 60)
-        shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        shareClient = shareBuilderHelper(shareName).buildClient()
         shareClient.create()
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
+        primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en")
             .setContentType("application/octet-stream")
@@ -73,7 +73,7 @@ class FileAPITests extends APISpec {
         when:
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
         expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
-        ShareFileClient newFileClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+        ShareFileClient newFileClient = shareBuilderHelper(shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getFileClient(filePath)
         def fileURL = newFileClient.getFileUrl()
 
@@ -389,7 +389,7 @@ class FileAPITests extends APISpec {
             .encode()
 
         when:
-        ShareFileClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
+        ShareFileClient client = fileBuilderHelper(shareName, "destination")
             .endpoint(primaryFileClient.getFileUrl().toString())
             .buildFileClient()
 
@@ -668,7 +668,7 @@ class FileAPITests extends APISpec {
             1, 1), ZoneOffset.UTC).toString()
 
         when:
-        def shareSnapshotClient = fileBuilderHelper(interceptorManager, shareName, filePath).snapshot(snapshot).buildFileClient()
+        def shareSnapshotClient = fileBuilderHelper(shareName, filePath).snapshot(snapshot).buildFileClient()
 
         then:
         snapshot == shareSnapshotClient.getShareSnapshotId()

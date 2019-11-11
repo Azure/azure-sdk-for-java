@@ -13,7 +13,7 @@ class StorageFileInputOutputStreamTests extends APISpec {
     def setup() {
         def shareName = resourceNamer.randomName(methodName, 60)
         def filePath = resourceNamer.randomName(methodName, 60)
-        def shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        def shareClient = shareBuilderHelper(shareName).buildClient()
         shareClient.create()
         fileClient = shareClient.getFileClient(filePath)
     }

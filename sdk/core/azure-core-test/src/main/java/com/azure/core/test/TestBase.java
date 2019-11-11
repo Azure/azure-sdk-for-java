@@ -22,7 +22,7 @@ public abstract class TestBase {
 
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
-    private static TestMode testMode;
+    static TestMode testMode;
 
     private final ClientLogger logger = new ClientLogger(TestBase.class);
 

@@ -29,7 +29,7 @@ class QueueSASTests extends APISpec {
     QueueClient queueClient
 
     def setup() {
-        primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
+        primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
     }
 
@@ -130,7 +130,7 @@ class QueueSASTests extends APISpec {
             .generateSasQueryParameters(credential)
             .encode()
 
-        def clientPermissions = queueBuilderHelper(interceptorManager)
+        def clientPermissions = queueBuilderHelper()
             .endpoint(queueClient.getQueueUrl())
             .queueName(queueClient.getQueueName())
             .sasToken(sasPermissions)
@@ -180,7 +180,7 @@ class QueueSASTests extends APISpec {
             .generateSasQueryParameters(credential)
             .encode()
 
-        def clientPermissions = queueBuilderHelper(interceptorManager)
+        def clientPermissions = queueBuilderHelper()
             .endpoint(queueClient.getQueueUrl())
             .queueName(queueClient.getQueueName())
             .sasToken(sasPermissions)
@@ -228,7 +228,7 @@ class QueueSASTests extends APISpec {
             .generateSasQueryParameters(credential)
             .encode()
 
-        def clientBuilder = queueBuilderHelper(interceptorManager)
+        def clientBuilder = queueBuilderHelper()
         def clientIdentifier = clientBuilder
             .endpoint(queueClient.getQueueUrl())
             .queueName(queueClient.getQueueName())
@@ -267,7 +267,7 @@ class QueueSASTests extends APISpec {
             .generateSasQueryParameters(credential)
             .encode()
 
-        def scBuilder = queueServiceBuilderHelper(interceptorManager)
+        def scBuilder = queueServiceBuilderHelper()
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
@@ -305,7 +305,7 @@ class QueueSASTests extends APISpec {
             .generateSasQueryParameters(credential)
             .encode()
 
-        def scBuilder = queueServiceBuilderHelper(interceptorManager)
+        def scBuilder = queueServiceBuilderHelper()
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()

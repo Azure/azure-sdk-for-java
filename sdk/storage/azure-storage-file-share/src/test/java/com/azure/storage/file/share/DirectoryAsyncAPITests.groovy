@@ -28,9 +28,9 @@ class DirectoryAsyncAPITests extends APISpec {
     def setup() {
         shareName = resourceNamer.randomName(methodName, 60)
         directoryPath = resourceNamer.randomName(methodName, 60)
-        shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        shareClient = shareBuilderHelper(shareName).buildClient()
         shareClient.create()
-        primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryAsyncClient()
+        primaryDirectoryAsyncClient = directoryBuilderHelper(shareName, directoryPath).buildDirectoryAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
@@ -71,7 +71,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         def testShareName = resourceNamer.randomName(methodName, 60)
         when:
-        def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryAsyncClient().create())
+        def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(testShareName, directoryPath).buildDirectoryAsyncClient().create())
         then:
         createDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
@@ -570,7 +570,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
         when:
-        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildDirectoryAsyncClient()
+        def shareSnapshotClient = directoryBuilderHelper(shareName, directoryPath).snapshot(snapshot).buildDirectoryAsyncClient()
         then:
         snapshot == shareSnapshotClient.getShareSnapshotId()
     }

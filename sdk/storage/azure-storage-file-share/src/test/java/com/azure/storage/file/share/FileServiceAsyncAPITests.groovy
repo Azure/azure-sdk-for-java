@@ -28,7 +28,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
     def setup() {
         shareName = resourceNamer.randomName(methodName, 60)
-        primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
+        primaryFileServiceAsyncClient = fileServiceBuilderHelper().buildAsyncClient()
         for (int i = 0; i < 6; i++) {
             TOO_MANY_RULES.add(new ShareCorsRule())
         }

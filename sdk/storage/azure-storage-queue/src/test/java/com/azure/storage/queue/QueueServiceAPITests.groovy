@@ -17,7 +17,7 @@ import spock.lang.Unroll
 class QueueServiceAPITests extends APISpec {
 
     def setup() {
-        primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
+        primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
     }
 
     @DoNotRecord

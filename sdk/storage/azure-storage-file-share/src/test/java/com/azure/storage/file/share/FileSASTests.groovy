@@ -29,9 +29,9 @@ class FileSASTests extends APISpec {
     private String filePath = "filename"
 
     def setup() {
-        primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
-        primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
+        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
+        primaryShareClient = shareBuilderHelper(shareName).buildClient()
+        primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
     }
 
     @Unroll
@@ -183,7 +183,7 @@ class FileSASTests extends APISpec {
         sas != null
 
         when:
-        def client = fileBuilderHelper(interceptorManager, shareName, filePath)
+        def client = fileBuilderHelper(shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
             .sasToken(sas)
             .buildFileClient()
@@ -238,7 +238,7 @@ class FileSASTests extends APISpec {
             .generateSasQueryParameters(credential)
             .encode()
 
-        def client = fileBuilderHelper(interceptorManager, shareName, filePath)
+        def client = fileBuilderHelper(shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
             .sasToken(sas)
             .buildFileClient()
@@ -282,7 +282,7 @@ class FileSASTests extends APISpec {
             .generateSasQueryParameters(credential)
             .encode()
 
-        ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+        ShareClient client1 = shareBuilderHelper(primaryShareClient.getShareName())
             .endpoint(primaryShareClient.getShareUrl())
             .sasToken(sasWithId)
             .buildClient()
@@ -297,7 +297,7 @@ class FileSASTests extends APISpec {
             .generateSasQueryParameters(credential)
             .encode()
 
-        def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+        def client2 = shareBuilderHelper(primaryShareClient.getShareName())
             .endpoint(primaryFileClient.getFileUrl())
             .sasToken(sasWithPermissions)
             .buildClient()
@@ -337,7 +337,7 @@ class FileSASTests extends APISpec {
         sas != null
 
         when:
-        def scBuilder = fileServiceBuilderHelper(interceptorManager)
+        def scBuilder = fileServiceBuilderHelper()
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()

@@ -3,7 +3,8 @@
 
 package com.azure.storage.queue
 
-import com.azure.core.http.HttpClient
+
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
@@ -92,10 +93,10 @@ class APISpec extends Specification {
         return TestMode.PLAYBACK
     }
 
-    def queueServiceBuilderHelper(final InterceptorManager interceptorManager) {
+    def queueServiceBuilderHelper() {
         def builder = new QueueServiceClientBuilder()
             .connectionString(connectionString)
-            .httpClient(getHttpClient(interceptorManager))
+            .httpClient(getHttpClient())
 
         if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -104,11 +105,11 @@ class APISpec extends Specification {
         return builder
     }
 
-    def queueBuilderHelper(final InterceptorManager interceptorManager) {
+    def queueBuilderHelper() {
         def builder = new QueueClientBuilder()
             .connectionString(connectionString)
             .queueName(testResourceName.randomName("queue", 16))
-            .httpClient(getHttpClient(interceptorManager))
+            .httpClient(getHttpClient())
 
         if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -131,13 +132,18 @@ class APISpec extends Specification {
         return testResourceName.now()
     }
 
-    def getHttpClient(InterceptorManager interceptorManager) {
-        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
-            return new NettyAsyncHttpClientBuilder().wiretap(true).build()
-        } else if (testMode == TestMode.PLAYBACK) {
+    def getHttpClient() {
+        if (testMode == TestMode.PLAYBACK && !testRunVerifier.doNotRecordTest()) {
             return interceptorManager.getPlaybackClient()
-        } else {
-            return HttpClient.createDefault()
         }
+
+        def httpClientBuilder = new NettyAsyncHttpClientBuilder()
+        if (enableDebugging) {
+            httpClientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+        }
+
+        return (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest())
+            ? httpClientBuilder.wiretap(true).build()
+            : httpClientBuilder.build()
     }
 }

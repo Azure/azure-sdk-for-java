@@ -45,9 +45,9 @@ class FileAsyncAPITests extends APISpec {
     def setup() {
         shareName = resourceNamer.randomName(methodName, 60)
         filePath = resourceNamer.randomName(methodName, 60)
-        shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        shareClient = shareBuilderHelper(shareName).buildClient()
         shareClient.create()
-        primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileAsyncClient()
+        primaryFileAsyncClient = fileBuilderHelper(shareName, filePath).buildFileAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en")
             .setContentType("application/octet-stream")
@@ -419,7 +419,7 @@ class FileAsyncAPITests extends APISpec {
             .encode()
 
         when:
-        ShareFileAsyncClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
+        ShareFileAsyncClient client = fileBuilderHelper(shareName, "destination")
             .endpoint(primaryFileAsyncClient.getFileUrl().toString())
             .buildFileAsyncClient()
 
@@ -709,7 +709,7 @@ class FileAsyncAPITests extends APISpec {
             1, 1), ZoneOffset.UTC).toString()
 
         when:
-        def shareSnapshotClient = fileBuilderHelper(interceptorManager, shareName, filePath).snapshot(snapshot).buildFileAsyncClient()
+        def shareSnapshotClient = fileBuilderHelper(shareName, filePath).snapshot(snapshot).buildFileAsyncClient()
 
         then:
         snapshot == shareSnapshotClient.getShareSnapshotId()
