@@ -37,6 +37,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
@@ -622,7 +623,6 @@ class BlockBlobAPITest extends APISpec {
     def "Upload from file"() {
         setup:
         def file = getRandomFile(fileSize)
-        def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
         // Block length will be ignored for single shot.
@@ -638,9 +638,6 @@ class BlockBlobAPITest extends APISpec {
         blobac.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED).block().getCommittedBlocks().size() ==
             commitedBlockCount
 
-        cleanup:
-        channel.close()
-
         where:
         fileSize                                       | blockSize       || commitedBlockCount
         0                                              | null            || 0  // Size is too small to trigger stage block uploading
@@ -655,7 +652,7 @@ class BlockBlobAPITest extends APISpec {
     def "Upload from file with metadata"() {
         given:
         def metadata = Collections.singletonMap("metadata", "value")
-        def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
+        def file = getRandomFile(Constants.KB)
         def outStream = new ByteArrayOutputStream()
 
         when:
@@ -664,7 +661,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         metadata == bc.getProperties().getMetadata()
         bc.download(outStream)
-        outStream.toByteArray() == new Scanner(file).useDelimiter("\\z").next().getBytes(StandardCharsets.UTF_8)
+        outStream.toByteArray() == Files.readAllBytes(file.toPath())
     }
 
     def "Upload min"() {
@@ -1327,7 +1324,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "BlobClient overwrite false"() {
         setup:
-        def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
+        def file = getRandomFile(Constants.KB)
 
         when:
         blobClient.uploadFromFile(file.getPath())
@@ -1339,13 +1336,16 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "BlobClient overwrite true"() {
         setup:
-        def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
+        def file = getRandomFile(Constants.KB)
 
         when:
         blobClient.uploadFromFile(file.getPath(), true)
 
         then:
         notThrown(Throwable)
+        def outputStream = new ByteArrayOutputStream()
+        blobClient.download(outputStream)
+        outputStream.toByteArray() == Files.readAllBytes(file.toPath())
     }
 
     def "Upload overwrite false"() {
