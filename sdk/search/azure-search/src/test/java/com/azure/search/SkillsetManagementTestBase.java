@@ -88,6 +88,15 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     public abstract void createSkillsetReturnsCorrectDefinitionWithSplitDefaultSettings();
 
     @Test
+    public abstract void getOcrSkillsetReturnsCorrectDefinition();
+
+    @Test
+    public abstract void getOcrSkillsetWithShouldDetectOrientationReturnsCorrectDefinition();
+
+    @Test
+    public abstract void getSkillsetThrowsOnNotFound();
+
+    @Test
     public abstract void deleteSkillsetIsIdempotent();
 
     protected void assertSkillsetsEqual(Skillset expected, Skillset actual) {
@@ -480,7 +489,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithOcrDefaultSettings() {
+    protected Skillset createSkillsetWithOcrDefaultSettings(Boolean shouldDetectOrientation) {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
                 .setName("url")
@@ -497,6 +506,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
         List<Skill> skills = Collections.singletonList(
             new OcrSkill()
+                .setShouldDetectOrientation(shouldDetectOrientation)
                 .setName("myocr")
                 .setDescription("Tested OCR skill")
                 .setContext(CONTEXT_VALUE)

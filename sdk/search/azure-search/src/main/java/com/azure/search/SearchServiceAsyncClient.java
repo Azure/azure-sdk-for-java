@@ -1118,19 +1118,50 @@ public class SearchServiceAsyncClient {
     }
 
     /**
+     * Retrieves a skillset definition.
+     *
+     * @param skillsetName the name of the skillset to retrieve
      * @return the Skillset.
-     * @throws NotImplementedException not implemented
      */
-    public Mono<Skillset> getSkillset() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Skillset> getSkillset(String skillsetName) {
+        return this.getSkillsetWithResponse(skillsetName, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @return a response containing the Skillset.
-     * @throws NotImplementedException not implemented
+     * Retrieves a skillset definition.
+     *
+     * @param skillsetName the name of the skillset to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return the Skillset.
      */
-    public Mono<Response<Skillset>> getSkillsetWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Skillset> getSkillset(String skillsetName, RequestOptions requestOptions) {
+        return this.getSkillsetWithResponse(skillsetName, requestOptions, null)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Retrieves a skillset definition.
+     *
+     * @param skillsetName the name of the skillset to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing the Skillset.
+     */
+    public Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
+                                                            RequestOptions requestOptions) {
+        return withContext(context ->
+            this.getSkillsetWithResponse(skillsetName, requestOptions, context));
+    }
+
+    Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
+                                                            RequestOptions requestOptions,
+                                                            Context context) {
+        return this.restClient
+            .skillsets()
+            .getWithRestResponseAsync(skillsetName, requestOptions, context)
+            .map(result -> result);
     }
 
     /**

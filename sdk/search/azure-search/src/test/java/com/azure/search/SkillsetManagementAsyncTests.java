@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.exception.HttpResponseException;
+
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
 import com.azure.search.models.OcrSkillLanguage;
@@ -177,10 +179,22 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void createSkillsetReturnsCorrectDefinitionWithOcrDefaultSettings() {
-        Skillset expectedOcrSkillset = createSkillsetWithOcrDefaultSettings();
+        Skillset expectedOcrSkillset = createSkillsetWithOcrDefaultSettings(false);
+
         StepVerifier
             .create(client.createSkillset(expectedOcrSkillset))
             .assertNext(actualSkillset -> assertSkillsetsEqual(expectedOcrSkillset, actualSkillset))
+            .verifyComplete();
+    }
+
+    @Override
+    public void getOcrSkillsetReturnsCorrectDefinition() {
+        Skillset expected = createSkillsetWithOcrDefaultSettings(false);
+        client.createSkillset(expected).block();
+
+        StepVerifier
+            .create(client.getSkillset(expected.getName()))
+            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
             .verifyComplete();
     }
 
@@ -235,6 +249,17 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void getOcrSkillsetWithShouldDetectOrientationReturnsCorrectDefinition() {
+        Skillset expected = createSkillsetWithOcrDefaultSettings(true);
+        client.createSkillset(expected).block();
+
+        StepVerifier
+            .create(client.getSkillset(expected.getName()))
+            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
+            .verifyComplete();
+    }
+
+    @Override
     public void createSkillsetReturnsCorrectDefinitionWithSplitDefaultSettings() {
         Skillset expectedSplitSkillset = createSkillsetWithSplitDefaultSettings();
 
@@ -245,8 +270,20 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void getSkillsetThrowsOnNotFound() {
+        String skillsetName = "thisdoesnotexist";
+        StepVerifier
+            .create(client.getSynonymMap(skillsetName))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+            });
+    }
+
+    @Override
     public void deleteSkillsetIsIdempotent() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings();
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
         StepVerifier
             .create(client.deleteSkillsetWithResponse(skillset.getName(), null, null))

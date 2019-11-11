@@ -991,19 +991,41 @@ public class SearchServiceClient {
     }
 
     /**
+     * Retrieves a skillset definition.
+     *
+     * @param skillsetName the name of the skillset to retrieve
      * @return the Skillset.
-     * @throws NotImplementedException not implemented
      */
-    public Skillset getSkillset() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Skillset getSkillset(String skillsetName) {
+        return asyncClient.getSkillset(skillsetName).block();
     }
 
     /**
-     * @return a response containing the Skillset.
-     * @throws NotImplementedException not implemented
+     * Retrieves a skillset definition.
+     *
+     * @param skillsetName the name of the skillset to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the Skillset.
      */
-    public Response<Skillset> getSkillsetWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Skillset getSkillset(String skillsetName, RequestOptions requestOptions, Context context) {
+        return this.getSkillsetWithResponse(skillsetName, requestOptions, context).getValue();
+    }
+
+    /**
+     * Retrieves a skillset definition.
+     *
+     * @param skillsetName the name of the skillset to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing the Skillset.
+     */
+    public Response<Skillset> getSkillsetWithResponse(String skillsetName,
+                                                      RequestOptions requestOptions,
+                                                      Context context) {
+        return asyncClient.getSkillsetWithResponse(skillsetName, requestOptions, context).block();
     }
 
     /**
@@ -1037,6 +1059,7 @@ public class SearchServiceClient {
     public Response<Skillset> createOrUpdateSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
+
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *

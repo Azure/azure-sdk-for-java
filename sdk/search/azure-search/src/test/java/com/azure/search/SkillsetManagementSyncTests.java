@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
@@ -116,6 +117,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
         assertSkillsetsEqual(expectedSkillset, actualSkillset);
 
+
         expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.FR,
             SplitSkillLanguage.FR, TextSplitMode.PAGES).setName("testskillset1");
         actualSkillset = client.createSkillset(expectedSkillset);
@@ -136,6 +138,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     @Override
     public void createSkillsetReturnsCorrectDefinitionWithCognitiveServicesDefault() {
         Skillset expectedSkillset = createSkillsetWithCognitiveServicesKey();
+
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
         assertSkillsetsEqual(expectedSkillset, actualSkillset);
@@ -143,7 +146,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void createSkillsetReturnsCorrectDefinitionWithOcrDefaultSettings() {
-        Skillset expectedSkillset = createSkillsetWithOcrDefaultSettings();
+        Skillset expectedSkillset = createSkillsetWithOcrDefaultSettings(false);
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
         assertSkillsetsEqual(expectedSkillset, actualSkillset);
@@ -182,6 +185,27 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void getOcrSkillsetReturnsCorrectDefinition() {
+        Skillset expected = createSkillsetWithOcrDefaultSettings(false);
+        client.createSkillset(expected);
+
+        Skillset actual = client.getSkillset(expected.getName());
+
+        assertSkillsetsEqual(expected, actual);
+    }
+
+    @Override
+    public void getOcrSkillsetWithShouldDetectOrientationReturnsCorrectDefinition() {
+        Skillset expected = createSkillsetWithOcrDefaultSettings(true);
+
+        client.createSkillset(expected);
+
+        Skillset actual = client.getSkillset(expected.getName());
+
+        assertSkillsetsEqual(expected, actual);
+    }
+
+    @Override
     public void createSkillsetReturnsCorrectDefinitionWithSentimentDefaultSettings() {
         Skillset expectedSkillset = createSkillsetWithSentimentDefaultSettings();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
@@ -198,8 +222,23 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void getSkillsetThrowsOnNotFound() {
+        try {
+            String skillsetName = "thisdoesnotexist";
+            client.getSynonymMap(skillsetName);
+
+            Assert.fail("Expected an exception to be thrown");
+        }
+        catch (Exception ex) {
+            Assert.assertEquals(HttpResponseException.class, ex.getClass());
+            Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
+                ((HttpResponseException) ex).getResponse().getStatusCode());
+        }
+    }
+
+    @Override
     public void deleteSkillsetIsIdempotent() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings();
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
         Response<Void> deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), null, null);
         Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
@@ -213,4 +252,5 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), null, null);
         Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
+
 }
