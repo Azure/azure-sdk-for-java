@@ -149,4 +149,21 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         StepVerifier.create(onComplete)
             .verifyComplete();
     }
+
+    @Test
+    public void sendAllPartitions() {
+        final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
+
+        Assertions.assertNotNull(partitionIds);
+
+        for (String partitionId : partitionIds) {
+            final EventDataBatch batch = producer.createBatch(new BatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
+            Assertions.assertNotNull(batch);
+
+            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
+
+            // Act & Assert
+            StepVerifier.create(producer.send(batch)).expectComplete().verify(TIMEOUT);
+        }
+    }
 }
