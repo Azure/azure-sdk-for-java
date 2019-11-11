@@ -7,7 +7,7 @@ import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.models.ProxyAuthenticationType;
 import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -15,7 +15,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EventHubClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -33,10 +34,12 @@ public class EventHubClientBuilderTest {
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void missingConnectionString() {
-        final EventHubClientBuilder builder = new EventHubClientBuilder();
-        builder.buildAsyncClient();
+        assertThrows(IllegalArgumentException.class, () -> {
+            final EventHubClientBuilder builder = new EventHubClientBuilder();
+            builder.buildAsyncClient();
+        });
     }
 
     @Test
@@ -63,19 +66,21 @@ public class EventHubClientBuilderTest {
         assertNotNull(builder.buildAsyncClient());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void throwsWithProxyWhenTransportTypeNotChanged() {
-        // Arrange
-        final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.BASIC, PROXY_ADDRESS,
-            null, null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.BASIC, PROXY_ADDRESS,
+                null, null);
 
-        // Act
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .connectionString(CORRECT_CONNECTION_STRING)
-            .proxyConfiguration(proxyConfig);
+            // Act
+            final EventHubClientBuilder builder = new EventHubClientBuilder()
+                .connectionString(CORRECT_CONNECTION_STRING)
+                .proxyConfiguration(proxyConfig);
 
-        // Assert
-        assertNotNull(builder.buildAsyncClient());
+            // Assert
+            assertNotNull(builder.buildAsyncClient());
+        });
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

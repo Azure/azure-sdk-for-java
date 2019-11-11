@@ -9,10 +9,8 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -29,14 +27,6 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
 
     public EventHubClientMetadataIntegrationTest() {
         super(new ClientLogger(EventHubClientMetadataIntegrationTest.class));
-    }
-
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
     }
 
     @Override
@@ -58,9 +48,9 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
-                Assert.assertNotNull(properties);
-                Assert.assertEquals(eventHubName, properties.getName());
-                Assert.assertEquals(expectedPartitionIds.length, properties.getPartitionIds().length);
+                Assertions.assertNotNull(properties);
+                Assertions.assertEquals(eventHubName, properties.getName());
+                Assertions.assertEquals(expectedPartitionIds.length, properties.getPartitionIds().length);
             }).verifyComplete();
     }
 
@@ -84,8 +74,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         for (String partitionId : expectedPartitionIds) {
             StepVerifier.create(client.getPartitionProperties(partitionId))
                 .assertNext(properties -> {
-                    Assert.assertEquals(eventHubName, properties.getEventHubName());
-                    Assert.assertEquals(partitionId, properties.getId());
+                    Assertions.assertEquals(eventHubName, properties.getEventHubName());
+                    Assertions.assertEquals(partitionId, properties.getId());
                 })
                 .verifyComplete();
         }
@@ -104,8 +94,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
 
         // Assert
         StepVerifier.create(partitionProperties)
-            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.getEventHubName()))
-            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.getEventHubName()))
+            .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
+            .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .verifyComplete();
     }
 
@@ -125,12 +115,12 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         StepVerifier.create(invalidClient.getProperties())
             .expectErrorSatisfies(error -> {
-                Assert.assertTrue(error instanceof AmqpException);
+                Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assert.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
-                Assert.assertFalse(exception.isTransient());
-                Assert.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+                Assertions.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assertions.assertFalse(exception.isTransient());
+                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
     }
@@ -151,12 +141,12 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         StepVerifier.create(invalidClient.getPartitionIds())
             .expectErrorSatisfies(error -> {
-                Assert.assertTrue(error instanceof AmqpException);
+                Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assert.assertEquals(ErrorCondition.NOT_FOUND, exception.getErrorCondition());
-                Assert.assertFalse(exception.isTransient());
-                Assert.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+                Assertions.assertEquals(ErrorCondition.NOT_FOUND, exception.getErrorCondition());
+                Assertions.assertFalse(exception.isTransient());
+                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
     }

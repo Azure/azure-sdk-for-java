@@ -7,11 +7,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 
 import java.util.concurrent.CountDownLatch;
@@ -23,7 +21,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 /**
  * Verifies we can use various prefetch options with {@link EventHubConsumerAsyncClient}.
  */
-@Ignore("Set prefetch tests do not work because they try to send very large number of events at once.")
+@Disabled("Set prefetch tests do not work because they try to send very large number of events at once.")
 public class SetPrefetchCountTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
     // Default number of events to fetch when creating the consumer.
@@ -40,16 +38,8 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     private EventHubAsyncClient client;
     private EventHubConsumerAsyncClient consumer;
 
-    @Rule
-    public TestName testName = new TestName();
-
     public SetPrefetchCountTest() {
         super(new ClientLogger(SetPrefetchCountTest.class));
-    }
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
     }
 
     @Override
@@ -94,7 +84,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
             countDownLatch.await(1, TimeUnit.MINUTES);
 
             // Assert
-            Assert.assertEquals(0, countDownLatch.getCount());
+            Assertions.assertEquals(0, countDownLatch.getCount());
         } finally {
             subscription.dispose();
         }
@@ -122,7 +112,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
             countDownLatch.await(45, TimeUnit.SECONDS);
 
             // Assert
-            Assert.assertEquals(0, countDownLatch.getCount());
+            Assertions.assertEquals(0, countDownLatch.getCount());
         } finally {
             subscription.dispose();
         }

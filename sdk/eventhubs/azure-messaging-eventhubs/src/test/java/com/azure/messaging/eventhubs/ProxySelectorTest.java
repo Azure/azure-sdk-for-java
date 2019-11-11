@@ -7,11 +7,9 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -35,25 +33,17 @@ public class ProxySelectorTest extends IntegrationTestBase {
         super(new ClientLogger(ProxySelectorTest.class));
     }
 
-    @Rule
-    public TestName testName = new TestName();
-
     @Override
-    protected String getTestName() {
-        return testName.getMethodName();
-    }
-
-    @Override
-    public void setupTest() {
+    public void beforeTest() {
         defaultProxySelector = ProxySelector.getDefault();
     }
 
     @Override
-    public void teardownTest() {
+    public void afterTest() {
         ProxySelector.setDefault(defaultProxySelector);
     }
 
-    @Ignore("Exceptions are not propagated to the consumer. https://github.com/Azure/azure-sdk-for-java/issues/4663")
+    @Disabled("Exceptions are not propagated to the consumer. https://github.com/Azure/azure-sdk-for-java/issues/4663")
     @Test
     public void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
         // doesn't start proxy server and verifies that the connectFailed callback is invoked.
@@ -91,6 +81,6 @@ public class ProxySelectorTest extends IntegrationTestBase {
         }
 
         final boolean awaited = countDownLatch.await(2, TimeUnit.SECONDS);
-        Assert.assertTrue(awaited);
+        Assertions.assertTrue(awaited);
     }
 }

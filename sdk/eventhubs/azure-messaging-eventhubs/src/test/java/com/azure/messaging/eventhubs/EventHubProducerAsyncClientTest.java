@@ -24,10 +24,10 @@ import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -82,7 +82,7 @@ public class EventHubProducerAsyncClientTest {
     @Mock
     private TokenCredential tokenCredential;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
@@ -98,7 +98,7 @@ public class EventHubProducerAsyncClientTest {
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         sendLink = null;
@@ -137,9 +137,9 @@ public class EventHubProducerAsyncClientTest {
         verify(sendLink).send(messagesCaptor.capture());
 
         final List<Message> messagesSent = messagesCaptor.getValue();
-        Assert.assertEquals(count, messagesSent.size());
+        Assertions.assertEquals(count, messagesSent.size());
 
-        messagesSent.forEach(message -> Assert.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+        messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
     }
 
     /**
@@ -168,7 +168,7 @@ public class EventHubProducerAsyncClientTest {
         verify(sendLink).send(singleMessageCaptor.capture());
 
         final Message message = singleMessageCaptor.getValue();
-        Assert.assertEquals(Section.SectionType.Data, message.getBody().getType());
+        Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
     }
 
     /**
@@ -364,15 +364,15 @@ public class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertTrue(batch.tryAdd(event));
             })
             .verifyComplete();
 
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
             .verifyComplete();
 
@@ -406,8 +406,8 @@ public class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
-                Assert.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
+                Assertions.assertTrue(batch.tryAdd(event));
             })
             .verifyComplete();
     }
@@ -473,15 +473,15 @@ public class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertTrue(batch.tryAdd(event));
             })
             .verifyComplete();
 
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
             .verifyComplete();
     }
@@ -546,7 +546,7 @@ public class EventHubProducerAsyncClientTest {
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
                 options.setPartitionKey("something-else");
-                Assert.assertEquals(originalKey, batch.getPartitionKey());
+                Assertions.assertEquals(originalKey, batch.getPartitionKey());
             })
             .verifyComplete();
     }
@@ -578,15 +578,15 @@ public class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertTrue(batch.tryAdd(event));
             })
             .verifyComplete();
 
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
             .verifyComplete();
 
@@ -656,7 +656,7 @@ public class EventHubProducerAsyncClientTest {
         verify(sendLink).send(messagesCaptor.capture());
 
         final List<Message> messagesSent = messagesCaptor.getValue();
-        Assert.assertEquals(count, messagesSent.size());
+        Assertions.assertEquals(count, messagesSent.size());
 
         verify(sendLink1, times(1)).send(anyList());
         verify(sendLink2, times(1)).send(anyList());

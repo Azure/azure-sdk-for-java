@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.credential.TokenRequestContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.io.UnsupportedEncodingException;
@@ -20,34 +20,37 @@ import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class EventHubSharedAccessKeyCredentialTest {
     private static final String KEY_NAME = "some-key-name";
     private static final String KEY_VALUE = "ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=";
     private static final Duration TOKEN_DURATION = Duration.ofMinutes(10);
 
-    @Test(expected = NullPointerException.class)
-    public void constructorNullDuration() throws InvalidKeyException, NoSuchAlgorithmException {
-        new EventHubSharedAccessKeyCredential(KEY_NAME, KEY_VALUE, null);
+    @Test
+    public void constructorNullDuration() {
+        assertThrows(NullPointerException.class, () -> new EventHubSharedAccessKeyCredential(KEY_NAME, KEY_VALUE, null));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void constructorNullKey() throws InvalidKeyException, NoSuchAlgorithmException {
-        new EventHubSharedAccessKeyCredential(null, KEY_VALUE, TOKEN_DURATION);
+    @Test
+    public void constructorNullKey() {
+        assertThrows(NullPointerException.class, () -> new EventHubSharedAccessKeyCredential(null, KEY_VALUE, TOKEN_DURATION));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorEmptyKey() throws InvalidKeyException, NoSuchAlgorithmException {
-        new EventHubSharedAccessKeyCredential("", KEY_VALUE, TOKEN_DURATION);
+    @Test
+    public void constructorEmptyKey() {
+        assertThrows(IllegalArgumentException.class, () -> new EventHubSharedAccessKeyCredential("", KEY_VALUE, TOKEN_DURATION));
+
     }
 
-    @Test(expected = NullPointerException.class)
-    public void constructorNullValue() throws InvalidKeyException, NoSuchAlgorithmException {
-        new EventHubSharedAccessKeyCredential(KEY_NAME, null, TOKEN_DURATION);
+    @Test
+    public void constructorNullValue() {
+        assertThrows(NullPointerException.class, () -> new EventHubSharedAccessKeyCredential(KEY_NAME, null, TOKEN_DURATION));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorEmptyValue() throws InvalidKeyException, NoSuchAlgorithmException {
-        new EventHubSharedAccessKeyCredential(KEY_NAME, "", TOKEN_DURATION);
+    @Test
+    public void constructorEmptyValue() {
+        assertThrows(IllegalArgumentException.class, () -> new EventHubSharedAccessKeyCredential(KEY_NAME, "", TOKEN_DURATION));
     }
 
     @Test
@@ -67,14 +70,14 @@ public class EventHubSharedAccessKeyCredentialTest {
         // Act & Assert
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes(resource)))
             .assertNext(accessToken -> {
-                Assert.assertNotNull(accessToken);
+                Assertions.assertNotNull(accessToken);
 
-                Assert.assertFalse(accessToken.isExpired());
-                Assert.assertTrue(accessToken.getExpiresAt().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
+                Assertions.assertFalse(accessToken.isExpired());
+                Assertions.assertTrue(accessToken.getExpiresAt().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
 
                 final String[] split = accessToken.getToken().split(" ");
-                Assert.assertEquals(2, split.length);
-                Assert.assertEquals("SharedAccessSignature", split[0].trim());
+                Assertions.assertEquals(2, split.length);
+                Assertions.assertEquals("SharedAccessSignature", split[0].trim());
 
                 final String[] components = split[1].split("&");
                 for (String component : components) {
@@ -83,16 +86,16 @@ public class EventHubSharedAccessKeyCredentialTest {
                     final String value = pair[1];
                     final String expectedValue = expected.get(key);
 
-                    Assert.assertTrue(expected.containsKey(key));
+                    Assertions.assertTrue(expected.containsKey(key));
 
                     // These are the values that are random, but we expect the expiration to be after this date.
                     if (signatureExpires.equals(key)) {
                         final Instant instant = Instant.ofEpochSecond(Long.parseLong(value));
-                        Assert.assertTrue(instant.isAfter(Instant.now()));
+                        Assertions.assertTrue(instant.isAfter(Instant.now()));
                     } else if (expectedValue == null) {
-                        Assert.assertNotNull(value);
+                        Assertions.assertNotNull(value);
                     } else {
-                        Assert.assertEquals(expectedValue, value);
+                        Assertions.assertEquals(expectedValue, value);
                     }
                 }
             })

@@ -6,10 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.Arrays;
@@ -23,14 +21,6 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
 
     public EventHubProducerClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerClientIntegrationTest.class));
-    }
-
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
     }
 
     @Override
@@ -93,7 +83,7 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         EventDataBatch batch = producer.createBatch();
         events.forEach(event -> {
-            Assert.assertTrue(batch.tryAdd(event));
+            Assertions.assertTrue(batch.tryAdd(event));
         });
 
         producer.send(batch);
@@ -115,7 +105,7 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         final EventDataBatch batch = producer.createBatch(options);
 
         events.forEach(event -> {
-            Assert.assertTrue(batch.tryAdd(event));
+            Assertions.assertTrue(batch.tryAdd(event));
         });
 
         producer.send(batch);

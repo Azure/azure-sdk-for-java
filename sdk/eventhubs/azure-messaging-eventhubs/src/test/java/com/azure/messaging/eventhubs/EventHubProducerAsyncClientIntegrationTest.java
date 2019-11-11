@@ -6,10 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -27,14 +25,6 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
     public EventHubProducerAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerAsyncClientIntegrationTest.class));
-    }
-
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
     }
 
     @Override
@@ -98,7 +88,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
         final Mono<EventDataBatch> createBatch = producer.createBatch().map(batch -> {
             events.forEach(event -> {
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertTrue(batch.tryAdd(event));
             });
 
             return batch;
@@ -123,10 +113,10 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
         final Mono<EventDataBatch> createBatch = producer.createBatch(options)
             .map(batch -> {
-                Assert.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
+                Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
 
                 events.forEach(event -> {
-                    Assert.assertTrue(batch.tryAdd(event));
+                    Assertions.assertTrue(batch.tryAdd(event));
                 });
 
                 return batch;

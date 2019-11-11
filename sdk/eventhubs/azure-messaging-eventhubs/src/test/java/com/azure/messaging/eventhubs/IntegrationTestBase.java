@@ -14,9 +14,9 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.After;
-import org.junit.Assume;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
 import reactor.core.scheduler.Scheduler;
@@ -53,15 +53,9 @@ public abstract class IntegrationTestBase extends TestBase {
         this.logger = logger;
     }
 
-    // These are overridden because we don't use the Interceptor Manager.
-    @Override
+    @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        logger.info("Required until we move all libraries to JUnit 5");
-    }
-
-    @Before
-    public void setupTest() {
-        logger.info("[{}]: Performing integration test set-up.", getTestName());
+        logger.info("[{}]: Performing integration test set-up.", testInfo.getDisplayName());
 
         skipIfNotRecordMode();
 
@@ -73,9 +67,9 @@ public abstract class IntegrationTestBase extends TestBase {
 
     // These are overridden because we don't use the Interceptor Manager.
     @Override
-    @After
-    public void teardownTest() {
-        logger.info("[{}]: Performing test clean-up.", getTestName());
+    @AfterEach
+    public void teardownTest(TestInfo testInfo) {
+        logger.info("[{}]: Performing test clean-up.", testInfo.getDisplayName());
         afterTest();
 
         // Tear down any inline mocks to avoid memory leaks.
@@ -221,6 +215,6 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     private void skipIfNotRecordMode() {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+        Assumptions.assumeTrue(getTestMode() == TestMode.RECORD);
     }
 }

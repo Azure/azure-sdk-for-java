@@ -21,10 +21,10 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.message.Message;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -95,7 +95,7 @@ public class EventHubConsumerAsyncClientTest {
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConsumerAsyncClient consumer;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
@@ -119,7 +119,7 @@ public class EventHubConsumerAsyncClientTest {
             CONSUMER_GROUP, EventPosition.earliest(), options, false);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
@@ -141,9 +141,9 @@ public class EventHubConsumerAsyncClientTest {
         // Assert
         StepVerifier.create(runtimeConsumer.receive(PARTITION_ID).take(numberToReceive))
             .then(() -> sendMessages(numberOfEvents))
-            .assertNext(event -> Assert.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
-            .assertNext(event -> Assert.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
-            .assertNext(event -> Assert.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
+            .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
+            .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
+            .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
             .verifyComplete();
     }
 
@@ -164,11 +164,11 @@ public class EventHubConsumerAsyncClientTest {
             .then(() -> sendMessages(numberOfEvents))
             .assertNext(event -> {
                 LastEnqueuedEventProperties properties = event.getPartitionContext().getLastEnqueuedEventProperties();
-                Assert.assertNotNull(properties);
-                Assert.assertNull(properties.getOffset());
-                Assert.assertNull(properties.getSequenceNumber());
-                Assert.assertNull(properties.getRetrievalTime());
-                Assert.assertNull(properties.getEnqueuedTime());
+                Assertions.assertNotNull(properties);
+                Assertions.assertNull(properties.getOffset());
+                Assertions.assertNull(properties.getSequenceNumber());
+                Assertions.assertNull(properties.getRetrievalTime());
+                Assertions.assertNull(properties.getEnqueuedTime());
             })
             .verifyComplete();
     }
@@ -251,9 +251,9 @@ public class EventHubConsumerAsyncClientTest {
         }
 
         // Assert that we were able to see all these events.
-        Assert.assertEquals(0, firstConsumerCountDown.getCount());
-        Assert.assertEquals(0, secondConsumerCountDown.getCount());
-        Assert.assertEquals(0, thirdCountDownEvent.getCount());
+        Assertions.assertEquals(0, firstConsumerCountDown.getCount());
+        Assertions.assertEquals(0, secondConsumerCountDown.getCount());
+        Assertions.assertEquals(0, thirdCountDownEvent.getCount());
     }
 
     /**
@@ -294,7 +294,7 @@ public class EventHubConsumerAsyncClientTest {
         countDownLatch.await(30, TimeUnit.SECONDS);
 
         // Assert
-        Assert.assertEquals(0, countDownLatch.getCount());
+        Assertions.assertEquals(0, countDownLatch.getCount());
         verify(amqpReceiveLink, atLeastOnce()).addCredits(PREFETCH);
     }
 
@@ -336,7 +336,7 @@ public class EventHubConsumerAsyncClientTest {
         countDownLatch.await(30, TimeUnit.SECONDS);
 
         // Assert
-        Assert.assertEquals(0, countDownLatch.getCount());
+        Assertions.assertEquals(0, countDownLatch.getCount());
         verify(amqpReceiveLink, atLeastOnce()).addCredits(PREFETCH);
     }
 
@@ -352,7 +352,7 @@ public class EventHubConsumerAsyncClientTest {
 
         final Disposable subscription = consumer.receive(PARTITION_ID).subscribe(
             e -> logger.info("Event received"),
-            error -> Assert.fail(error.toString()),
+            error -> Assertions.fail(error.toString()),
             () -> logger.info("Complete"), sub -> {
                 sub.request(backPressure);
             });
@@ -365,7 +365,7 @@ public class EventHubConsumerAsyncClientTest {
             final int actualCredits = supplier.get();
 
             // Assert
-            Assert.assertEquals(backPressure, actualCredits);
+            Assertions.assertEquals(backPressure, actualCredits);
         } finally {
             subscription.dispose();
         }
@@ -383,7 +383,7 @@ public class EventHubConsumerAsyncClientTest {
 
         final Disposable subscription = consumer.receive(PARTITION_ID).subscribe(
             e -> logger.info("Event received"),
-            error -> Assert.fail(error.toString()),
+            error -> Assertions.fail(error.toString()),
             () -> logger.info("Complete"),
             sub -> sub.request(backPressure));
 
@@ -398,7 +398,7 @@ public class EventHubConsumerAsyncClientTest {
         final int actualCredits = supplier.get();
 
         // Assert
-        Assert.assertEquals(0, actualCredits);
+        Assertions.assertEquals(0, actualCredits);
     }
 
     /**
@@ -418,7 +418,7 @@ public class EventHubConsumerAsyncClientTest {
             consumer.receive(PARTITION_ID).filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
                     event -> logger.verbose("1. Received: {}", event.getEventData().getSequenceNumber()),
-                    error -> Assert.fail(error.toString()),
+                    error -> Assertions.fail(error.toString()),
                     () -> {
                         logger.info("1. Shutdown received");
                         shutdownReceived.countDown();
@@ -426,7 +426,7 @@ public class EventHubConsumerAsyncClientTest {
             consumer.receive(PARTITION_ID).filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
                     event -> logger.verbose("2. Received: {}", event.getEventData().getSequenceNumber()),
-                    error -> Assert.fail(error.toString()),
+                    error -> Assertions.fail(error.toString()),
                     () -> {
                         logger.info("2. Shutdown received");
                         shutdownReceived.countDown();
@@ -434,7 +434,7 @@ public class EventHubConsumerAsyncClientTest {
             consumer.receive(PARTITION_ID).filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
                     event -> logger.verbose("3. Received: {}", event.getEventData().getSequenceNumber()),
-                    error -> Assert.fail(error.toString()),
+                    error -> Assertions.fail(error.toString()),
                     () -> {
                         logger.info("3. Shutdown received");
                         shutdownReceived.countDown();
@@ -447,8 +447,8 @@ public class EventHubConsumerAsyncClientTest {
         // Assert
         try {
             boolean successful = shutdownReceived.await(5, TimeUnit.SECONDS);
-            Assert.assertTrue(successful);
-            Assert.assertEquals(0, shutdownReceived.getCount());
+            Assertions.assertTrue(successful);
+            Assertions.assertEquals(0, shutdownReceived.getCount());
             verify(amqpReceiveLink, times(1)).close();
         } finally {
             subscriptions.dispose();
@@ -471,10 +471,10 @@ public class EventHubConsumerAsyncClientTest {
             .consumerOptions(options)
             .buildAsyncConsumer();
 
-        Assert.assertEquals("dummy-event-hub", consumer.getEventHubName());
-        Assert.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
-        Assert.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
-        Assert.assertSame(position, consumer.getStartingPosition());
+        Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
+        Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
+        Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
+        Assertions.assertSame(position, consumer.getStartingPosition());
     }
 
     private void sendMessages(int numberOfEvents) {
