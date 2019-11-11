@@ -14,6 +14,8 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -92,6 +94,20 @@ public final class BuilderHelper {
         DataLakeHeadersAndQueryParameters.getDataLakeQueryParameters().forEach(
             defaultOptions::addAllowedQueryParamName);
         return defaultOptions;
+    }
+
+    /**
+     * Gets the endpoint for the data lake service based on the parsed URL.
+     *
+     * @param parts The {@link BlobUrlParts} from the parse URL.
+     * @return The endpoint for the data lake service.
+     */
+    public static String getEndpoint(BlobUrlParts parts) {
+        if (ModelHelper.IP_V4_URL_PATTERN.matcher(parts.getHost()).find()) {
+            return String.format("%s://%s/%s", parts.getScheme(), parts.getHost(), parts.getAccountName());
+        } else {
+            return String.format("%s://%s", parts.getScheme(), parts.getHost());
+        }
     }
 
     /*

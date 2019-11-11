@@ -354,7 +354,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                     return (long) Math.ceil(
                             ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.retryDelayInMs()) / 1000);
                 case RETRY_TEST_SCENARIO_FIXED_TIMING:
-                    return (long) Math.ceil(this.factory.options.retryDelayInMs() / 1000);
+                    return tryNumber == 1 ? 0 :(long) Math.ceil(this.factory.options.retryDelayInMs() / 1000);
                 default:
                     throw new IllegalArgumentException("Invalid test scenario");
             }

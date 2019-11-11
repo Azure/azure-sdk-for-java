@@ -19,11 +19,9 @@ import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.List;
@@ -46,20 +44,11 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
         super(new ClientLogger(ProxyIntegrationTest.class));
     }
 
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
-    }
-
     @Override
     protected void beforeTest() {
         final ProxyConfiguration proxyConfiguration = getProxyConfiguration();
 
-        Assume.assumeTrue("Cannot run proxy integration tests without setting proxy configuration.",
-            proxyConfiguration != null);
+        Assumptions.assumeTrue(proxyConfiguration != null, "Cannot run proxy integration tests without setting proxy configuration.");
 
         sender = new EventHubClientBuilder()
             .connectionString(getConnectionString())
@@ -106,8 +95,8 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
         final IterableStream<PartitionEvent> receive = receiver.receive(PARTITION_ID, 15, Duration.ofSeconds(30));
 
         // Assert
-        Assert.assertNotNull(receive);
+        Assertions.assertNotNull(receive);
         final List<PartitionEvent> results = receive.stream().collect(Collectors.toList());
-        Assert.assertEquals(numberOfEvents, results.size());
+        Assertions.assertEquals(numberOfEvents, results.size());
     }
 }

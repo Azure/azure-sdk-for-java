@@ -115,7 +115,7 @@ public class DataLakeServiceClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
 
             this.accountName = parts.getAccountName();
-            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.endpoint = BuilderHelper.getEndpoint(parts);
 
             String sasToken = parts.getSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {

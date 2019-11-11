@@ -19,6 +19,7 @@ efficient data access.
 ### Adding the package to your product
 
 Add a dependency on Azure Storage Blob
+
 [//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
 <dependency>

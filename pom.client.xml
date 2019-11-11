@@ -953,6 +953,7 @@
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opencensus</module>
+    <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>sdk/identity/azure-identity</module>

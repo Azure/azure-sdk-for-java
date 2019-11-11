@@ -7,10 +7,8 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,16 +17,8 @@ import java.util.stream.Collectors;
 public class EventHubClientIntegrationTest extends IntegrationTestBase {
     private EventHubClient client;
 
-    @Rule
-    public TestName testName = new TestName();
-
     public EventHubClientIntegrationTest() {
         super(new ClientLogger(EventHubClientIntegrationTest.class));
-    }
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
     }
 
     @Override
@@ -53,10 +43,10 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
         final IterableStream<String> response = client.getPartitionIds();
 
         // Assert
-        Assert.assertNotNull(response);
+        Assertions.assertNotNull(response);
 
         final List<String> partitionIds = response.stream().collect(Collectors.toList());
-        Assert.assertTrue(partitionIds.size() > 1);
+        Assertions.assertTrue(partitionIds.size() > 1);
     }
 
     /**
@@ -71,12 +61,12 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
         final EventHubProperties properties = client.getProperties();
 
         // Assert
-        Assert.assertNotNull(properties);
-        Assert.assertEquals(connectionProperties.getEntityPath(), properties.getName());
-        Assert.assertTrue(properties.getCreatedAt().isBefore(Instant.now()));
+        Assertions.assertNotNull(properties);
+        Assertions.assertEquals(connectionProperties.getEntityPath(), properties.getName());
+        Assertions.assertTrue(properties.getCreatedAt().isBefore(Instant.now()));
 
-        Assert.assertNotNull(properties.getPartitionIds());
-        Assert.assertTrue(properties.getPartitionIds().length > 1);
+        Assertions.assertNotNull(properties.getPartitionIds());
+        Assertions.assertTrue(properties.getPartitionIds().length > 1);
     }
 
     /**
@@ -93,9 +83,9 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
         final PartitionProperties partitionProperties = client.getPartitionProperties(partitionId);
 
         // Assert
-        Assert.assertNotNull(partitionProperties);
+        Assertions.assertNotNull(partitionProperties);
 
-        Assert.assertEquals(connectionProperties.getEntityPath(), partitionProperties.getEventHubName());
-        Assert.assertEquals(partitionId, partitionProperties.getId());
+        Assertions.assertEquals(connectionProperties.getEntityPath(), partitionProperties.getEventHubName());
+        Assertions.assertEquals(partitionId, partitionProperties.getId());
     }
 }
