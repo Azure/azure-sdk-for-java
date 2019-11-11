@@ -8,6 +8,7 @@ Licensed under the MIT License.
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmos-parent</artifactId>
     <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
+    <relativePath>../azure-cosmos-parent</relativePath>
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
