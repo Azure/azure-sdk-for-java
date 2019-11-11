@@ -23,6 +23,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 
 - [Table of contents](#table-of-contents)
 - [Getting started](#getting-started)
+  - [Default SSL](#default-ssl-library)
   - [Prerequisites](#prerequisites)
   - [Adding the package to your product](#adding-the-package-to-your-product)
   - [Methods to authorize with Event Hubs](#methods-to-authorize-with-event-hubs)
@@ -42,6 +43,9 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - [Contributing](#contributing)
 
 ## Getting started
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ### Prerequisites
 
@@ -409,6 +413,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [maven]: https://maven.apache.org/
 [oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
 [sample_consume_event]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEvent.java
 [sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/EventProcessorSample.java
