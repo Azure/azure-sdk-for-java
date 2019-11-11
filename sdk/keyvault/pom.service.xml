@@ -32,7 +32,7 @@
       <activation>
         <property>
           <name>env.SDKTYPE</name>
-          <value>client</value>
+          <value>!data</value>
         </property>
       </activation>
       <modules>
@@ -45,19 +45,6 @@
         <module>azure-security-keyvault-certificates</module>
         <module>azure-security-keyvault-keys</module>
         <module>azure-security-keyvault-secrets</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>management</id>
-      <activation>
-        <property>
-          <name>env.SDKTYPE</name>
-          <value>management</value>
-        </property>
-      </activation>
-      <modules>
-        <module>azure-mgmt-keyvault/v2015_06_01</module>
-        <module>azure-mgmt-keyvault/v2016_10_01</module>
       </modules>
     </profile>
   </profiles>

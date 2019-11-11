@@ -36,7 +36,6 @@ variables:
   BuildOptions: '--batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false'
   ServiceDirectory: keyvault
   ProfileFlag: ''
-  SdkType: management
 
 jobs:
   - job: 'Build'
@@ -60,7 +59,7 @@ jobs:
       - task: Maven@3
         displayName: 'Build'
         inputs:
-          mavenPomFile: sdk/$(ServiceDirectory)/pom.service.xml
+          mavenPomFile: sdk/$(ServiceDirectory)/pom.mgmt.xml
           goals: 'compile'
           options: '$(BuildOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
