@@ -380,7 +380,6 @@
         <groupId>io.netty</groupId>
         <artifactId>netty-tcnative-boringssl-static</artifactId>
         <version>${netty-tcnative-boringssl-static.version}</version>
-        <classifier>${os.detected.classifier}</classifier>
       </dependency>
 
       <dependency>
@@ -681,14 +680,6 @@
   </dependencyManagement>
 
   <build>
-    <extensions>
-      <!-- The os-maven-plugin initializes the "os.detected" properties -->
-      <extension>
-        <groupId>kr.motd.maven</groupId>
-        <artifactId>os-maven-plugin</artifactId>
-        <version>${os-maven-plugin.version}</version>
-      </extension>
-    </extensions>
     <pluginManagement>
       <plugins>
         <!-- This plugin adds sample code as tests for easier editing in IDEs -->

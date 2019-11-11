@@ -69,6 +69,28 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
     .build();
 ```
 
+### Default SSL library
+All client libraries, by default, use Tomcat native Boring SSL. The Boring SSL library is an uber jar containing bits of linux/mac/windows
+and provides better performance compared to default jdk SSL.
+If you prefer to use default jdk SSL then exclude the  Boring SSL in your pom.xml.
+
+[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
+```xml
+<!-- Add KeyVault Secrets dependency without Tomcat Native Boring SSL -->
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-security-keyvault-secrets</artifactId>
+    <version>4.0.0</version>
+    <exclusions>
+      <exclusion>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-tcnative-boringssl-static</artifactId>
+      </exclusion>
+    </exclusions>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
 ### Prerequisites
 
 - Java Development Kit (JDK) with version 8 or above
