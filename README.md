@@ -8,7 +8,7 @@ This repository contains official Java libraries for Azure services. For referen
 You can find a complete list of all the packages for these libraries [here](packages.md).
 
 ### Important 
-The Azure SDK team is pleased to make available the November 2019 client library General Availability (GA) release. We strongly recommend using the GA libraries in all production environments as these libraries are well tested and officially supported by Microsoft. More details, including installation instructions can be found here [here](https://github.com/Azure/azure-sdk/blob/master/releases/2019-11/2019-11-java.md).
+The Azure SDK team is pleased to make available the November 2019 client library General Availability (GA) release. We strongly recommend using the GA libraries in all production environments as these libraries are well tested and officially supported by Microsoft. More details, including installation instructions can be found here [here](https://azure.github.io/azure-sdk/releases/2019-11/java.html).
 
 ## Getting started
 
