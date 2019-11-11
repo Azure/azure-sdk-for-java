@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Arrays;
@@ -80,38 +81,6 @@ public class HttpLogOptions {
     }
 
     /**
-     * Gets the application specific id.
-     *
-     * @return The application specific id.
-     */
-    public String getApplicationId() {
-        return applicationId;
-    }
-
-    /**
-     * Sets the custom application specific id supplied by the user of the client library.
-     *
-     * @param applicationId The user specified application id.
-     * @return The updated HttpLogOptions object.
-     */
-    public HttpLogOptions setApplicationId(final String applicationId) {
-        if (applicationId != null
-            && (applicationId.length() > MAX_APPLICATION_ID_LENGTH || applicationId.contains(" "))) {
-            if (applicationId.contains(" ")) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException("'applicationId' must not contain a space."));
-            } else {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException("'applicationId' length cannot be greater than "
-                        + MAX_APPLICATION_ID_LENGTH));
-            }
-        } else {
-            this.applicationId = applicationId;
-        }
-        return this;
-    }
-
-    /**
      * Gets the whitelisted headers that should be logged.
      *
      * @return The list of whitelisted headers.
@@ -181,6 +150,37 @@ public class HttpLogOptions {
      */
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
+        return this;
+    }
+
+    /**
+     * Gets the application specific id.
+     *
+     * @return The application specific id.
+     */
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    /**
+     * Sets the custom application specific id supplied by the user of the client library.
+     *
+     * @param applicationId The user specified application id.
+     * @return The updated HttpLogOptions object.
+     */
+    public HttpLogOptions setApplicationId(final String applicationId) {
+        if (!CoreUtils.isNullOrEmpty(applicationId)) {
+            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("'applicationId' length cannot be greater than "
+                        + MAX_APPLICATION_ID_LENGTH));
+            } else if (applicationId.contains(" ")) {
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("'applicationId' must not contain a space."));
+            } else {
+                this.applicationId = applicationId;
+            }
+        }
         return this;
     }
 }

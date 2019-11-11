@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
  * Pipeline policy that adds "User-Agent" header to a request.
  *
  * The format for the "User-Agent" string is outlined in
- * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy>Azure Core: Telemetry policy</a>.
+ * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy>Azure Core: Telemetry policy </a>.
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
@@ -87,6 +87,28 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     /**
+     * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
+     *
+     * If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be included
+     * in the user agent.
+     *
+     * @param sdkName Name of the client library.
+     * @param sdkVersion Version of the client library.
+     * @param version {@link ServiceVersion} of the service to be used when making requests.
+     * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
+     */
+    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
+        boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
+        if (telemetryDisabled) {
+            this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion,
+                version.getVersion());
+        } else {
+            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo(),
+                version.getVersion());
+        }
+    }
+
+    /**
      * Updates the "User-Agent" header with the value supplied in the policy.
      *
      * When the User-Agent header already has a value and it differs from the value used to create this policy the
@@ -96,7 +118,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String header = context.getHttpRequest().getHeaders().getValue("User-Agent");
-        if (header == null || header.startsWith(DEFAULT_USER_AGENT_HEADER)) {
+        if (header == null || header.contains(DEFAULT_USER_AGENT_HEADER)) {
             header = userAgent;
         } else {
             header = userAgent + " " + header;

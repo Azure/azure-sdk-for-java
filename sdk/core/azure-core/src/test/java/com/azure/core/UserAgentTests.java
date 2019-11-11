@@ -85,20 +85,29 @@ public class UserAgentTests {
 
     @Test
     public void customApplicationIdUserAgentTest() throws Exception {
+        final String testSdkName = "sdk.name";
+        final String testAppId = "user_specified_appId";
+        final String testPackageVersion = "package_version";
+        String javaVersion = Configuration.getGlobalConfiguration().get("java.version");
+        String osName = Configuration.getGlobalConfiguration().get("os.name");
+        String osVersion = Configuration.getGlobalConfiguration().get("os.version");
+        String testPlatformInfo = javaVersion + "; " + osName + " " + osVersion;
+        String expectedHeader = testAppId + " " + "azsdk-java-" + testSdkName + "/"
+            + testPackageVersion + " " + testPlatformInfo;
+
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     String header = request.getHeaders().getValue("User-Agent");
-                    String expectedHeaderPrefix = "user_specified_appId";
-                    Assertions.assertTrue(header.startsWith(expectedHeaderPrefix));
+                    Assertions.assertEquals(header, expectedHeader);
                     return Mono.just(new MockHttpResponse(request, 200));
                 }
             })
             .policies(new UserAgentPolicy(
-                "user_specified_appId",
-                "package.name",
-                "package_version",
+                testAppId,
+                testSdkName,
+                testPackageVersion,
                 Configuration.NONE,
                 () -> "1.0"))
             .build();
