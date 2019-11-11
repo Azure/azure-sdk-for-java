@@ -59,14 +59,14 @@ public class PublishEventsToSpecificPartition {
         // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
         // are sent.
         data.subscribe(event -> {
-                final EventDataBatch batch = currentBatch.get();
-                if (!batch.tryAdd(event)) {
-                    producer.createBatch(options).map(newBatch -> {
-                        currentBatch.set(newBatch);
-                        return producer.send(batch);
-                    }).block();
-                }
-            }, error -> System.err.println("Error received:" + error),
+            final EventDataBatch batch = currentBatch.get();
+            if (!batch.tryAdd(event)) {
+                producer.createBatch(options).map(newBatch -> {
+                    currentBatch.set(newBatch);
+                    return producer.send(batch);
+                }).block();
+            }
+        }, error -> System.err.println("Error received:" + error),
             () -> {
                 final EventDataBatch batch = currentBatch.getAndSet(null);
                 if (batch != null) {
