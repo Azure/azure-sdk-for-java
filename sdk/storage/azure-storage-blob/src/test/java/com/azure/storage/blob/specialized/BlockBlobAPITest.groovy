@@ -1072,22 +1072,18 @@ class BlockBlobAPITest extends APISpec {
     }
 
     def "Buffered upload illegal arguments null"() {
-        when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(4, 4, null)
-
-        then:
-        StepVerifier.create(blobac.upload(Flux.just(defaultData), parallelTransferOptions, true))
+        expect:
+        StepVerifier.create(blobac.upload(null, new ParallelTransferOptions(4, 4, null), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
     @Unroll
     def "Buffered upload illegal args out of bounds"() {
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffs, null)
+        new ParallelTransferOptions(bufferSize, numBuffs, null)
 
         then:
-        StepVerifier.create(blobac.upload(Flux.just(defaultData), parallelTransferOptions, true))
-            .verifyErrorSatisfies({ assert it instanceof IllegalArgumentException })
+        thrown(IllegalArgumentException)
 
         where:
         bufferSize                                     | numBuffs
