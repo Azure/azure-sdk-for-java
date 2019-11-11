@@ -83,7 +83,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Mono<CosmosAsyncContainerResponse> createObservable = database
                 .createContainer(collectionDefinition);
 
@@ -161,7 +161,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         indexingPolicy.setSpatialIndexes(spatialIndexes);
 
         collection.setIndexingPolicy(indexingPolicy);
-        
+
         Mono<CosmosAsyncContainerResponse> createObservable = database
                 .createContainer(collection, new CosmosContainerRequestOptions());
 
@@ -178,7 +178,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
 
@@ -203,7 +203,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void deleteCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
 
@@ -223,13 +223,13 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
         // sanity check
         assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
-        
+
         // replace indexing getMode
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.setIndexingMode(IndexingMode.LAZY);
         collectionSettings.setIndexingPolicy(indexingMode);
         Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
-        
+
         // validate
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
                         .indexingMode(IndexingMode.LAZY).build();
@@ -266,12 +266,12 @@ public class CollectionCrudTest extends TestSuiteBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             options.setPartitionKey(new PartitionKey("mypkValue"));
             CosmosAsyncItemResponse readDocumentResponse = item.read(options).block();
-            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnosticsString());
+            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnostics());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
             CosmosAsyncItemResponse upsertDocumentResponse = collection.upsertItem(document).block();
-            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getCosmosResponseDiagnosticsString());
+            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getCosmosResponseDiagnostics());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
 
             //  DELETE the existing collection
@@ -286,7 +286,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             createDocument(collection2, newDocument);
 
             readDocumentResponse = client1.getDatabase(dbId).getContainer(collectionId).getItem(newDocument.getId(), newDocument.get("mypk")).read().block();
-            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnosticsString());
+            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnostics());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
             CosmosItemProperties readDocument = readDocumentResponse.getProperties();
