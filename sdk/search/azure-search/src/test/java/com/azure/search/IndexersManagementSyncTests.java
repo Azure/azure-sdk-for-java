@@ -17,6 +17,18 @@ import java.util.stream.Collectors;
 public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     private SearchServiceClient client;
 
+    protected DataSource createDatasource(DataSource ds) {
+        return client.createOrUpdateDataSource(ds);
+    }
+
+    protected Index createIndex(Index index) {
+        return client.createOrUpdateIndex(index);
+    }
+
+    protected Indexer createIndexer(Indexer indexer) {
+        return client.createOrUpdateIndexer(indexer);
+    }
+
     @Override
     public void createIndexerReturnsCorrectDefinition() {
         client = getSearchServiceClientBuilder().buildClient();
@@ -81,5 +93,41 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             () -> client.createOrUpdateIndexer(indexer),
             HttpResponseException.class,
             "This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist");
+    }
+
+    @Override
+    public void canUpdateIndexer() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        Indexer updatedExpected = changeIndexerBasic();
+
+        createUpdateValidateIndexer(updatedExpected);
+    }
+
+    @Override
+    public void canUpdateIndexerFieldMapping() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        Indexer updatedExpected = changeIndexerFieldMapping();
+
+        createUpdateValidateIndexer(updatedExpected);
+    }
+
+    @Override
+    public void canUpdateIndexerDisabled() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        Indexer updatedExpected = changeIndexerDisabled();
+
+        createUpdateValidateIndexer(updatedExpected);
+    }
+
+    @Override
+    public void canUpdateIndexerSchedule() {
+        client = getSearchServiceClientBuilder().buildClient();
+
+        Indexer updatedExpected = changeIndexerSchedule();
+
+        createUpdateValidateIndexer(updatedExpected);
     }
 }

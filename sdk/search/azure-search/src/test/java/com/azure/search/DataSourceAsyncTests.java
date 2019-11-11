@@ -290,8 +290,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
                     null,
                     generateIfMatchAccessCondition(createdETag),
                     null)
-            ).assertNext(r ->
-            {
+            ).assertNext(r -> {
                 Assert.assertTrue(StringUtils.isNotBlank(createdETag));
                 Assert.assertTrue(StringUtils.isNoneBlank(r.getETag()));
                 Assert.assertNotEquals(createdETag, r.getETag());

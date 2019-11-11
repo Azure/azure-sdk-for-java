@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.search.models.DataSource;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
+import com.azure.search.models.FieldMapping;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexingSchedule;
@@ -12,6 +14,8 @@ import org.junit.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
@@ -26,6 +30,18 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void createIndexerFailsWithUsefulMessageOnUserError();
+
+    @Test
+    public abstract void canUpdateIndexer();
+
+    @Test
+    public abstract void canUpdateIndexerFieldMapping();
+
+    @Test
+    public abstract void canUpdateIndexerDisabled();
+
+    @Test
+    public abstract void canUpdateIndexerSchedule();
 
     protected void assertIndexersEqual(Indexer expected, Indexer actual) {
         expected.setETag("none");
@@ -87,4 +103,115 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
             Assert.assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
+
+    /**
+     * Creates the index and indexer in the search service and then update the indexer
+     * @param updatedIndexer the indexer to be updated
+     */
+    protected void createUpdateValidateIndexer(Indexer updatedIndexer) {
+        // Create the data source, note it's a valid DS with actual
+        // connection string
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        // Create an index
+        Index index = createTestIndexForLiveDatasource();
+        createIndex(index);
+
+        // create an indexer object
+        Indexer initial =
+            createTestIndexer("indexer")
+                .setIsDisabled(true);
+
+        // create this indexer in the service
+        createIndexer(initial);
+
+        // update the indexer
+        Indexer updatedResponse = createIndexer(updatedIndexer);
+
+        // verify the returned updated indexer is as expected
+        expectSameStartTime(updatedIndexer, updatedResponse);
+        assertIndexersEqual(updatedIndexer, updatedResponse);
+    }
+
+    /**
+     * Change a basic property of an indexer and return it
+     * @return the updated indexer
+     */
+    protected Indexer changeIndexerBasic() {
+        // create another indexer object
+        Indexer updatedExpected =
+            createTestIndexer("indexer");
+
+        // modify it
+        updatedExpected.setDescription("somethingdifferent");
+
+        return updatedExpected;
+    }
+
+    /**
+     * Change the field mappings property of an indexer and return it
+     * @return the updated indexer
+     */
+    protected Indexer changeIndexerFieldMapping() {
+        // Check field mappings can be changed
+        List<FieldMapping> lst = new LinkedList<>();
+        FieldMapping fm = new FieldMapping();
+        fm.setSourceFieldName("state_alpha");
+        fm.setTargetFieldName("state");
+        lst.add(fm);
+
+
+        // create another indexer object
+        Indexer updatedExpected =
+            createTestIndexer("indexer");
+
+        // modify it
+        updatedExpected.setFieldMappings(lst);
+
+        return updatedExpected;
+    }
+
+    /**
+     * Change the Disabled property of an indexer and return it
+     * @return the updated indexer
+     */
+    protected Indexer changeIndexerDisabled() {
+        // create another indexer object
+        Indexer updatedExpected =
+            createTestIndexer("indexer");
+
+        // modify it
+        updatedExpected.setIsDisabled(false);
+
+        return updatedExpected;
+    }
+
+    /**
+     * Change the schedule property of an indexer and return it
+     * @return the updated indexer
+     */
+    protected Indexer changeIndexerSchedule() {
+        // create another indexer object
+        Indexer updatedExpected =
+            createTestIndexer("indexer");
+
+        IndexingSchedule is2 = updatedExpected.getSchedule();
+
+        IndexingSchedule is = new IndexingSchedule();
+        //is.setStartTime(OffsetDateTime.parse("2020-12-30T11:22:33+02:00"));
+        is.setInterval(Duration.ofMinutes(10));
+
+        // modify it
+        updatedExpected.setSchedule(is);
+
+        return updatedExpected;
+    }
+
+
+    protected abstract Index createIndex(Index index);
+
+    protected abstract DataSource createDatasource(DataSource datasource);
+
+    protected abstract Indexer createIndexer(Indexer initial);
 }
