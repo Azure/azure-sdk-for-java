@@ -69,6 +69,8 @@ import static org.mockito.Mockito.when;
  * Unit tests to verify functionality of {@link EventHubConsumerAsyncClient}.
  */
 public class EventHubConsumerAsyncClientTest {
+    static final String PARTITION_ID_HEADER = "partition-id-sent";
+
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
@@ -77,7 +79,6 @@ public class EventHubConsumerAsyncClientTest {
     private static final String EVENT_HUB_NAME = "event-hub-name";
     private static final String CONSUMER_GROUP = "consumer-group-test";
     private static final String PARTITION_ID = "a-partition-id";
-    private static final String PARTITION_ID_HEADER = "partition-id-sent";
 
     private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
