@@ -14,11 +14,13 @@ import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.ImportKeyOptions;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.util.context.Context;
 
 import java.time.OffsetDateTime;
@@ -137,13 +139,39 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
         keyAsyncClient.beginDeleteKey("keyName")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
                 System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
         // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
+    }
+
+    /**
+     * Generates a code sample for using {@link KeyAsyncClient#importKey(String, JsonWebKey)}
+     */
+    public void importKeySnippets() {
+        KeyAsyncClient keyAsyncClient = createAsyncClient();
+        JsonWebKey jsonWebKeyToImport = new JsonWebKey();
+        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.importKey#string-jsonwebkey
+        keyAsyncClient.importKey("keyName", jsonWebKeyToImport).subscribe(keyResponse ->
+            System.out.printf("Key is imported with name %s and id %s \n", keyResponse.getName(), keyResponse.getId()));
+        // END: com.azure.security.keyvault.keys.keyasyncclient.importKey#string-jsonwebkey
+
+        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.importKey#options
+        ImportKeyOptions options = new ImportKeyOptions("keyName", jsonWebKeyToImport)
+            .setHardwareProtected(false);
+        keyAsyncClient.importKey(options).subscribe(keyResponse ->
+            System.out.printf("Key is imported with name %s and id %s \n", keyResponse.getName(), keyResponse.getId()));
+        // END: com.azure.security.keyvault.keys.keyasyncclient.importKey#options
+
+        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.importKeyWithResponse#options-response
+        ImportKeyOptions importKeyOptions = new ImportKeyOptions("keyName", jsonWebKeyToImport)
+            .setHardwareProtected(false);
+        keyAsyncClient.importKeyWithResponse(importKeyOptions).subscribe(keyResponse ->
+            System.out.printf("Key is imported with name %s and id %s \n", keyResponse.getValue().getName(),
+                keyResponse.getValue().getId()));
+        // END: com.azure.security.keyvault.keys.keyasyncclient.importKeyWithResponse#options-response
     }
 
     /**
@@ -338,7 +366,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string
         keyAsyncClient.beginRecoverDeletedKey("deletedKeyName")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recover Key Name: " + pollResponse.getValue().getName());

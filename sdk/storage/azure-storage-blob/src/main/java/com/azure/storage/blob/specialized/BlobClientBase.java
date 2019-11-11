@@ -10,7 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.Poller;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -229,11 +229,15 @@ public class BlobClientBase {
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
-     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
-     *     cancelled.
+     * @return A {@link SyncPoller} to poll the progress of blob copy operation.
      */
-    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
-        return beginCopy(sourceUrl, null, null, null, null, null, pollInterval);
+    public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
+        return beginCopy(sourceUrl,
+                null,
+                null,
+                null,
+                null,
+                null, pollInterval);
     }
 
     /**
@@ -257,15 +261,14 @@ public class BlobClientBase {
      * @param destAccessConditions {@link BlobRequestConditions} against the destination.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
-     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
-     *     cancelled.
+     * @return A {@link SyncPoller} to poll the progress of blob copy operation.
      */
-    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
+    public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, RequestConditions sourceModifiedAccessConditions,
             BlobRequestConditions destAccessConditions, Duration pollInterval) {
 
         return client.beginCopy(sourceUrl, metadata, tier, priority, sourceModifiedAccessConditions,
-                destAccessConditions, pollInterval);
+                destAccessConditions, pollInterval).getSyncPoller();
     }
 
     /**

@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents the configurable options to create a key.
+ */
 @Fluent
 public class CreateKeyOptions {
 

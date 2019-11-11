@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.AppendBlobRequestConditions
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -154,7 +155,8 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block defaults"() {
         setup:
-        def appendResponse = bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null)
+        def appendResponse = bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+            null)
 
         when:
         def downloadStream = new ByteArrayOutputStream()
@@ -172,7 +174,8 @@ class AppendBlobAPITest extends APISpec {
     }
 
     def "Append block min"() {
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode() == 201
+        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+            null).getStatusCode() == 201
     }
 
     @Unroll
@@ -206,6 +209,24 @@ class AppendBlobAPITest extends APISpec {
         thrown(NullPointerException)
     }
 
+    def "Append block transactionalMD5"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+
+        expect:
+        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, md5, null, null, null).statusCode == 201
+    }
+
+    def "Append block transactionalMD5 fail"() {
+        when:
+        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
     @Unroll
     def "Append block AC"() {
         setup:
@@ -222,7 +243,8 @@ class AppendBlobAPITest extends APISpec {
 
 
         expect:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, bac, null, null).getStatusCode() == 201
+        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
+            .getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
@@ -252,7 +274,7 @@ class AppendBlobAPITest extends APISpec {
             .setMaxSize(maxSizeLTE)
 
         when:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, bac, null, null)
+        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -371,7 +393,8 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
+        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+            .getStatusCode()
 
         expect:
         bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null, null, null).getStatusCode() == 201
@@ -406,7 +429,8 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
+        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+            .getStatusCode()
 
         when:
         bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null, null, Context.NONE)
@@ -432,7 +456,8 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
+        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+            .getStatusCode()
 
         def smac = new BlobRequestConditions()
             .setIfModifiedSince(sourceIfModifiedSince)
@@ -459,7 +484,8 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
+        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+            .getStatusCode()
 
         def smac = new BlobRequestConditions()
             .setIfModifiedSince(sourceIfModifiedSince)

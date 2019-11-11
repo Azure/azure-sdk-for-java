@@ -15,6 +15,8 @@ import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
 import com.azure.storage.queue.models.SendMessageResult
+import com.azure.storage.queue.sas.QueueSasPermission
+import com.azure.storage.queue.sas.QueueServiceSasSignatureValues
 import org.junit.Test
 import spock.lang.Unroll
 

@@ -3,45 +3,39 @@
 
 package com.azure.core.util.polling;
 
-import com.azure.core.util.polling.PollResponse.OperationStatus;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 public class PollerTests {
-    private static final String OUTPUT_NAME = "Bar";
     @Mock
-    private Function<PollResponse<Response>, Mono<PollResponse<Response>>> pollOperation;
+    private Function<PollingContext<Response>, Mono<Response>> activationOperation;
 
     @Mock
-    private Function<Poller<Response, CertificateOutput>, Mono<Response>> cancelOperation;
+    private Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation;
 
     @Mock
-    private Supplier<Mono<CertificateOutput>> fetchResultOperation;
+    private Function<PollingContext<Response>, Mono<CertificateOutput>> fetchResultOperation;
 
     @Mock
-    private Function<Poller<Response, Void>, Mono<Response>> voidCancelOperation;
-
-    @Mock
-    private Supplier<Mono<Void>> voidResultOperation;
+    private BiFunction<PollingContext<Response>, PollResponse<Response>, Mono<Response>> cancelOperation;
 
     @Before
     public void beforeTest() {
@@ -53,333 +47,595 @@ public class PollerTests {
         Mockito.framework().clearInlineMocks();
     }
 
-    /**
-     * Verify we cannot pass in poll duration of {@link Duration#ZERO}.
-     */
     @Test(expected = IllegalArgumentException.class)
-    public void constructorPollIntervalZero() {
-        new Poller<>(Duration.ZERO, pollOperation,
-            fetchResultOperation, () -> Mono.just(new Response("Foo")), cancelOperation);
+    public void asyncPollerConstructorPollIntervalZero() {
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ZERO,
+            activationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
     }
 
-    /**
-     * Verify we cannot pass in poll negative duration.
-     */
     @Test(expected = IllegalArgumentException.class)
-    public void constructorPollIntervalNegative() {
-        new Poller<>(Duration.ofSeconds(-1), pollOperation, fetchResultOperation,
-            () -> Mono.just(new Response("Foo")), cancelOperation);
+    public void asyncPollerConstructorPollIntervalNegative() {
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(-1),
+            activationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
     }
 
-    /**
-     * Verify we cannot pass in null pollInterval.
-     */
     @Test(expected = NullPointerException.class)
-    public void constructorPollIntervalNull() {
-        new Poller<>(null, pollOperation, fetchResultOperation,
-            () -> Mono.just(new Response("Foo")), cancelOperation);
+    public void asyncPollerConstructorPollIntervalNull() {
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            null,
+            activationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
     }
 
-    /**
-     * Verify we cannot pass in null pollInterval.
-     */
     @Test(expected = NullPointerException.class)
-    public void constructorPollOperationNull() {
-        new Poller<>(Duration.ofSeconds(1), null, fetchResultOperation,
-            () -> Mono.just(new Response("Foo")), cancelOperation);
+    public void asyncPollerConstructorActivationOperationNull() {
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            null,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
     }
 
-    /**
-     * Test where SDK Client is subscribed all responses.
-     * This scenario is setup where source will generate few in-progress response followed by few OTHER responses and finally successfully completed response.
-     * The sdk client will only subscribe for a specific OTHER response and final successful response.
-     */
+    @Test(expected = NullPointerException.class)
+    public void asyncPollerConstructorPollOperationNull() {
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            activationOperation,
+            null,
+            cancelOperation,
+            fetchResultOperation);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void asyncPollerConstructorCancelOperationNull() {
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            activationOperation,
+            pollOperation,
+            null,
+            fetchResultOperation);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void asyncPollerConstructorFetchResultOperationNull() {
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            activationOperation,
+            pollOperation,
+            cancelOperation,
+            null);
+    }
+
     @Test
     public void subscribeToSpecificOtherOperationStatusTest() {
         // Arrange
         final Duration retryAfter = Duration.ofMillis(100);
-        final Duration pollInterval = Duration.ofMillis(250);
-        final List<PollResponse<Response>> responses = new ArrayList<>();
-        responses.add(new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("0"), retryAfter));
-        responses.add(new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("1"), retryAfter));
-        responses.add(new PollResponse<>(OperationStatus.fromString("OTHER_1", false), new Response("2")));
-        responses.add(new PollResponse<>(OperationStatus.fromString("OTHER_2", false), new Response("3")));
-        responses.add(new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("4"), retryAfter));
+        //
+        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("0"), retryAfter);
+
+        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("1"), retryAfter);
+
+        PollResponse<Response> response2 = new PollResponse<>(
+            LongRunningOperationStatus.fromString("OTHER_1", false),
+            new Response("2"), retryAfter);
+
+        PollResponse<Response> response3 = new PollResponse<>(
+            LongRunningOperationStatus.fromString("OTHER_2", false),
+            new Response("3"), retryAfter);
+
+        PollResponse<Response> response4 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            new Response("4"), retryAfter);
+
+        when(activationOperation.apply(any())).thenReturn(Mono.empty());
 
         when(pollOperation.apply(any())).thenReturn(
-            Mono.just(responses.get(0)),
-            Mono.just(responses.get(1)),
-            Mono.just(responses.get(2)),
-            Mono.just(responses.get(3)),
-            Mono.just(responses.get(4)));
+            Mono.just(response0),
+            Mono.just(response1),
+            Mono.just(response2),
+            Mono.just(response3),
+            Mono.just(response4));
 
         // Act
-        final Poller<Response, CertificateOutput> pollerObserver = new Poller<Response, CertificateOutput>(pollInterval,
-            pollOperation, fetchResultOperation);
-
-        // Assert
-        StepVerifier.create(pollerObserver.getObserver())
-            .expectNext(responses.get(0))
-            .expectNext(responses.get(1))
-            .expectNext(responses.get(2))
-            .expectNext(responses.get(3))
-            .expectNext(responses.get(4))
-            .verifyComplete();
-
-        Assert.assertEquals(pollerObserver.getStatus(), OperationStatus.SUCCESSFULLY_COMPLETED);
-    }
-
-    /**
-     * Test where SDK Client is subscribed all responses.
-     * This scenario is setup where source will generate few in-progress response followed by few OTHER status responses and finally successfully completed response.
-     * The sdk client will block for a specific OTHER status.
-     */
-    @Test
-    public void blockForCustomOperationStatusTest() {
-        final OperationStatus expected = OperationStatus.fromString("OTHER_2", false);
-        PollResponse<Response> successPollResponse = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created : Cert A"));
-        PollResponse<Response> inProgressPollResponse = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting : Cert A"));
-        PollResponse<Response> other1PollResponse = new PollResponse<>(OperationStatus.fromString("OTHER_1", false), new Response("Starting : Cert A"));
-        PollResponse<Response> other2PollResponse = new PollResponse<>(expected, new Response("Starting : Cert A"));
-
-        when(pollOperation.apply(any())).thenReturn(Mono.just(inProgressPollResponse),
-            Mono.just(inProgressPollResponse), Mono.just(other1PollResponse), Mono.just(other2PollResponse),
-            Mono.just(successPollResponse));
-
-        // Act
-        final Poller<Response, CertificateOutput> createCertPoller = new Poller<>(Duration.ofMillis(100), pollOperation,
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            activationOperation,
+            pollOperation,
+            cancelOperation,
             fetchResultOperation);
-        final PollResponse<Response> pollResponse = createCertPoller.blockUntil(expected);
 
         // Assert
-        Assert.assertEquals(pollResponse.getStatus(), expected);
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response3.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response4.getStatus())
+            .verifyComplete();
     }
 
-    /**
-     * Test where SDK Client is subscribed all responses.
-     * This scenario is setup where source will generate successful response returned
-     * after few in-progress response. But the sdk client will stop polling in between
-     * and activate polling in between. The client will miss few in progress response and
-     * subscriber will get get final successful response.
-     */
-    @Ignore("When auto-subscription is turned off, the observer still polls. https://github.com/Azure/azure-sdk-for-java/issues/5805")
     @Test
-    public void subscribeToAllPollEventStopPollingAfterNSecondsAndRestartedTest() {
+    public void subscribeToActivationOnlyOnceTest() {
         // Arrange
-        final PollResponse<Response> successPollResponse = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created : Cert A"), Duration.ofSeconds(1));
-        final PollResponse<Response> inProgressPollResponse = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting : Cert A"));
-        final Duration pollInterval = Duration.ofMillis(100);
+        final Duration retryAfter = Duration.ofMillis(100);
 
-        when(pollOperation.apply(any())).thenReturn(Mono.just(inProgressPollResponse), Mono.just(successPollResponse));
+        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("0"), retryAfter);
 
-        // Act
-        final Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, fetchResultOperation);
+        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("1"), retryAfter);
 
-        // Assert
-        StepVerifier.create(poller.getObserver())
-            .expectNext(inProgressPollResponse)
-            .then(() -> poller.setAutoPollingEnabled(false))
-            .expectNoEvent(Duration.ofSeconds(3))
-            .then(() -> poller.setAutoPollingEnabled(true))
-            .expectNext(successPollResponse)
+        PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            new Response("2"), retryAfter);
+
+        int[] activationCallCount = new int[1];
+        activationCallCount[0] = 0;
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> {
+            activationCallCount[0]++;
+            return Mono.just(new Response("ActivationDone"));
+        }));
+
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            activationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
+
+        when(pollOperation.apply(any())).thenReturn(
+            Mono.just(response0),
+            Mono.just(response1),
+            Mono.just(response2));
+
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
             .verifyComplete();
 
-        Assert.assertEquals(OperationStatus.SUCCESSFULLY_COMPLETED, poller.getStatus());
-        Assert.assertTrue(poller.isAutoPollingEnabled());
-    }
+        when(pollOperation.apply(any())).thenReturn(
+            Mono.just(response0),
+            Mono.just(response1),
+            Mono.just(response2));
 
-    /*
-     * The test is setup where user will disable auto polling after creating poller.
-     * The user will enable polling after LRO is expected to complete.
-     * We want to ensure that if user enable polling after LRO is complete, user can
-     * final polling status.
-     */
-    @Test
-    public void disableAutoPollAndEnableAfterCompletionSuccessfullyDone() {
-        // Arrange
-        PollResponse<Response> success = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created: Cert A"));
-        PollResponse<Response> inProgress = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting: Cert A"));
-        PollResponse<Response> initial = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("First: Cert A"));
-
-        when(pollOperation.apply(any())).thenReturn(Mono.just(initial), Mono.just(inProgress), Mono.just(success));
-
-        Poller<Response, CertificateOutput> poller = new Poller<>(Duration.ofSeconds(1), pollOperation, fetchResultOperation);
-
-        // Act & Assert
-        poller.setAutoPollingEnabled(false);
-
-        StepVerifier.create(poller.getObserver())
-            .then(() -> poller.setAutoPollingEnabled(true))
-            .expectNext(inProgress)
-            .expectNext(success)
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
             .verifyComplete();
-        Assert.assertSame(OperationStatus.SUCCESSFULLY_COMPLETED, poller.getStatus());
-        Assert.assertTrue(poller.isAutoPollingEnabled());
+
+        Assert.assertEquals(1, activationCallCount[0]);
     }
 
-    /*
-     * Test where SDK Client is subscribed all responses.
-     * The last response in this case will be OperationStatus.SUCCESSFULLY_COMPLETED
-     * This scenario is setup where source will generate successful response returned after few in-progress response.
-     **/
     @Test
-    public void autoStartPollingAndSuccessfullyComplete() throws Exception {
-        // Arrange
-        PollResponse<Response> successPollResponse = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created: Cert A"));
-        PollResponse<Response> inProgressPollResponse = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting : Cert A"));
+    public void cancellationCanBeCalledFromOperatorChainTest() {
+        final Duration retryAfter = Duration.ofMillis(100);
 
-        Duration pollInterval = Duration.ofSeconds(1);
+        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("0"), retryAfter);
 
-        when(pollOperation.apply(any())).thenReturn(Mono.just(inProgressPollResponse), Mono.just(successPollResponse));
+        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("1"), retryAfter);
 
-        Poller<Response, CertificateOutput> createCertPoller = new Poller<>(pollInterval, pollOperation, fetchResultOperation);
+        PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            new Response("2"), retryAfter);
 
-        while (createCertPoller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
-            Thread.sleep(pollInterval.toMillis());
-        }
+        final Response activationResponse = new Response("Foo");
+        when(activationOperation.apply(any()))
+                .thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
 
-        Assert.assertEquals(OperationStatus.SUCCESSFULLY_COMPLETED, createCertPoller.getStatus());
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
-    }
-
-    /** Test where SDK Client is subscribed to only final/last response.
-     * The last response in this case will be PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
-     * This scenario is setup where source will generate successful response returned after few in progress response.
-     * But the subscriber is only interested in last response, The test will ensure subscriber
-     * only gets last PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED.
-     */
-    @Test
-    public void subscribeToOnlyFinalEventSuccessfullyCompleteInNSecondsTest() {
-        PollResponse<Response> success = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created: Cert A"));
-        PollResponse<Response> inProgress = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting : Cert A"));
-
-        Duration pollInterval = Duration.ofMillis(500);
-
-        when(pollOperation.apply(any())).thenReturn(Mono.just(inProgress), Mono.just(success));
-        when(fetchResultOperation.get()).thenReturn(Mono.just(new CertificateOutput(OUTPUT_NAME)));
-
-        Poller<Response, CertificateOutput> createCertPoller = new Poller<>(pollInterval, pollOperation, fetchResultOperation);
-
-        Assert.assertEquals(OUTPUT_NAME, createCertPoller.block().getName());
-        Assert.assertEquals(OperationStatus.SUCCESSFULLY_COMPLETED, createCertPoller.getStatus());
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
-    }
-
-    /**
-     * Test where SDK Client is subscribed all responses.
-     * This scenario is setup where source will generate successful response returned
-     * after few in-progress response. But the sdk client will stop polling in between
-     * and subscriber should never get final successful response.
-     */
-    @Ignore("https://github.com/Azure/azure-sdk-for-java/issues/5809")
-    @Test
-    public void subscribeToAllPollEventStopPollingAfterNSecondsTest() {
-        // Assert
-        Duration pollInterval = Duration.ofSeconds(1);
-        Duration waitTime = Duration.ofSeconds(3);
-        PollResponse<Response> success = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created: Cert A"));
-        PollResponse<Response> inProgress = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting : Cert A"));
-
-        when(pollOperation.apply(any())).thenReturn(Mono.just(inProgress), Mono.just(inProgress), Mono.just(success));
-
-        // Act
-        Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, fetchResultOperation, null,
-            ignored -> Mono.just(new Response("Foo")));
-
-        // Assert
-        StepVerifier.create(poller.getObserver())
-            .expectNext(inProgress)
-            .then(() -> poller.setAutoPollingEnabled(false))
-            .expectNoEvent(waitTime)
-            .thenCancel() // Cancel our subscription. This does not affect upstream poller.
-            .verify();
-
-        Assert.assertEquals(OperationStatus.IN_PROGRESS, poller.getStatus());
-        Assert.assertFalse(poller.isAutoPollingEnabled());
-    }
-
-    /**
-     * Test where SDK Client is subscribed all responses. This scenario is setup where source will generate successful
-     * response returned after few in-progress response. The sdk client will stop auto polling. It will subscribe and
-     * start receiving responses .The subscriber will get final successful response.
-     */
-    @Test
-    public void stopAutoPollAndManualPoll() {
-        // Arrange
-        final List<PollResponse<Response>> responses = new ArrayList<>();
-        responses.add(new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting : Cert A")));
-        responses.add(new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Middle: Cert A")));
-        responses.add(new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created : Cert A")));
-
-        long totalTimeoutInMillis = 1000;
-        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
-
-        when(pollOperation.apply(any())).thenReturn(Mono.just(responses.get(0)), Mono.just(responses.get(1)), Mono.just(responses.get(2)));
-
-        Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, fetchResultOperation);
-        poller.setAutoPollingEnabled(false);
-
-        // Act & Assert
-        int counter = 0;
-        while (poller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
-            counter++;
-
-            PollResponse<Response> pollResponse = poller.poll().block();
-            Assert.assertSame("Counter: " + counter + " did not match.", responses.get(counter), pollResponse);
-        }
-
-        Assert.assertSame(OperationStatus.SUCCESSFULLY_COMPLETED, poller.getStatus());
-        Assert.assertFalse(poller.isAutoPollingEnabled());
-    }
-
-    /**
-     * Test where SDK Client is subscribed all responses. This scenario is setup where source will generate user
-     * cancelled response returned after few in-progress response. The sdk client will wait for it to cancel get final
-     * USER_CANCELLED response.
-     */
-    @Test
-    public void subscribeToAllPollEventCancelOperationTest() {
-        Duration pollInterval = Duration.ofMillis(500);
-        PollResponse<Response> cancellation = new PollResponse<>(OperationStatus.USER_CANCELLED, new Response("Created : Cert A"));
-        PollResponse<Response> first = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting: Cert A"));
-
-        when(pollOperation.apply(any())).thenReturn(Mono.just(first), Mono.just(cancellation));
-
-        // Act
-        Poller<Response, Void> poller = new Poller<Response, Void>(pollInterval, pollOperation, voidResultOperation, null, voidCancelOperation);
-
-        // Assert
-        StepVerifier.create(poller.getObserver())
-            .expectNext(first)
-            .then(() -> poller.cancelOperation())
-            .expectNext(cancellation)
-            .thenCancel() // cancel this actual subscriber, this does not affect the parent operation.
-            .verify();
-
-        Assert.assertEquals(OperationStatus.USER_CANCELLED, poller.getStatus());
-        Assert.assertTrue(poller.isAutoPollingEnabled());
-
-        verify(voidCancelOperation, Mockito.times(1)).apply(poller);
-    }
-
-    /**
-     * Test polling stops when activation operation throws error.
-     */
-    @Test
-    public void testActivationOperationFailure() {
-        Duration pollInterval = Duration.ofMillis(500);
-
-        Supplier<Mono<Response>> activationOperation = () -> Mono.defer(() -> {
-            // This will throw InvalidFormat Exception
-            System.out.printf("wow %d", "wow");
-            return Mono.just(new Response("Foo"));
+        final List<Object> cancelParameters = new ArrayList<>();
+        when(cancelOperation.apply(any(), any())).thenAnswer((Answer) invocation -> {
+            for (Object argument : invocation.getArguments()) {
+                cancelParameters.add(argument);
+            }
+            return Mono.just(new Response("OperationCancelled"));
         });
 
-        Poller<Response, Void> poller = new Poller<Response, Void>(pollInterval, pollOperation, voidResultOperation,
-            activationOperation, voidCancelOperation);
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            activationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
 
-        Assert.assertEquals(OperationStatus.FAILED, poller.getStatus());
+        when(pollOperation.apply(any())).thenReturn(
+            Mono.just(response0),
+            Mono.just(response1),
+            Mono.just(response2));
+
+        @SuppressWarnings({"rawtypes"})
+        final AsyncPollResponse<Response, CertificateOutput>[] secondAsyncResponse = new AsyncPollResponse[1];
+        secondAsyncResponse[0] = null;
+        //
+        Response cancelResponse = pollerFlux
+            .take(2)
+            .last()
+            .flatMap((Function<AsyncPollResponse<Response, CertificateOutput>, Mono<Response>>) asyncPollResponse -> {
+                secondAsyncResponse[0] = asyncPollResponse;
+                return asyncPollResponse.cancelOperation();
+            }).block();
+
+        Assert.assertNotNull(cancelResponse);
+        Assert.assertTrue(cancelResponse.getResponse().equalsIgnoreCase("OperationCancelled"));
+        Assert.assertNotNull(secondAsyncResponse[0]);
+        Assert.assertTrue(secondAsyncResponse[0].getValue().getResponse().equalsIgnoreCase("1"));
+        Assert.assertEquals(2, cancelParameters.size());
+        cancelParameters.get(0).equals(activationResponse);
+        cancelParameters.get(1).equals(response1);
+    }
+
+    @Test
+    public void getResultCanBeCalledFromOperatorChainTest() {
+        final Duration retryAfter = Duration.ofMillis(100);
+
+        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("0"), retryAfter);
+
+        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            new Response("1"), retryAfter);
+
+        PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            new Response("2"), retryAfter);
+
+        final Response activationResponse = new Response("Foo");
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+
+        final List<Object> fetchResultParameters = new ArrayList<>();
+        when(fetchResultOperation.apply(any())).thenAnswer((Answer) invocation -> {
+            for (Object argument : invocation.getArguments()) {
+                fetchResultParameters.add(argument);
+            }
+            return Mono.just(new CertificateOutput("LROFinalResult"));
+        });
+
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            activationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
+
+        when(pollOperation.apply(any())).thenReturn(
+            Mono.just(response0),
+            Mono.just(response1),
+            Mono.just(response2));
+
+        @SuppressWarnings({"rawtypes"})
+        final AsyncPollResponse<Response, CertificateOutput>[] terminalAsyncResponse = new AsyncPollResponse[1];
+
+        terminalAsyncResponse[0] = null;
+        //
+        CertificateOutput lroResult = pollerFlux
+            .takeUntil(apr -> apr.getStatus().isComplete())
+            .last()
+            .flatMap((Function<AsyncPollResponse<Response, CertificateOutput>, Mono<CertificateOutput>>)
+                asyncPollResponse -> {
+                    terminalAsyncResponse[0] = asyncPollResponse;
+                    return asyncPollResponse.getFinalResult();
+                }).block();
+
+        Assert.assertNotNull(lroResult);
+        Assert.assertTrue(lroResult.getName().equalsIgnoreCase("LROFinalResult"));
+        Assert.assertNotNull(terminalAsyncResponse[0]);
+        Assert.assertTrue(terminalAsyncResponse[0].getValue().getResponse().equalsIgnoreCase("2"));
+        Assert.assertEquals(1, fetchResultParameters.size());
+        Assert.assertTrue(fetchResultParameters.get(0) instanceof PollingContext);
+        PollingContext<Response>  pollingContext = (PollingContext<Response>) fetchResultParameters.get(0);
+        pollingContext.getActivationResponse().equals(activationResponse);
+        pollingContext.getLatestResponse().equals(response2);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void syncPollerConstructorPollIntervalZero() {
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ZERO,
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void syncPollerConstructorPollIntervalNegative() {
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(-1),
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void syncPollerConstructorPollIntervalNull() {
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                null,
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void syncConstructorActivationOperationNull() {
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                null,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void syncPollerConstructorPollOperationNull() {
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                activationOperation,
+                null,
+                cancelOperation,
+                fetchResultOperation);
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void syncPollerConstructorCancelOperationNull() {
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                activationOperation,
+                pollOperation,
+                null,
+                fetchResultOperation);
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void syncPollerConstructorFetchResultOperationNull() {
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                null);
+
+    }
+
+    @Test
+    public void syncPollerShouldCallActivationFromConstructor() {
+        Boolean[] activationCalled = new Boolean[1];
+        activationCalled[0] = false;
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> {
+            activationCalled[0] = true;
+            return Mono.just(new Response("ActivationDone"));
+        }));
+
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+
+        Assert.assertTrue(activationCalled[0]);
+    }
+
+    @Test
+    public void eachPollShouldReceiveLastPollResponse() {
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(new Response("A"))));
+        when(pollOperation.apply(any())).thenAnswer((Answer) invocation -> {
+            Assert.assertEquals(1, invocation.getArguments().length);
+            Assert.assertTrue(invocation.getArguments()[0] instanceof PollingContext);
+            PollingContext<Response> pollingContext = (PollingContext<Response>) invocation.getArguments()[0];
+            Assert.assertTrue(pollingContext.getActivationResponse() instanceof PollResponse);
+            Assert.assertTrue(pollingContext.getLatestResponse() instanceof PollResponse);
+            PollResponse<Response> latestResponse = pollingContext.getLatestResponse();
+            Assert.assertNotNull(latestResponse);
+            PollResponse<Response> nextResponse = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                    new Response(latestResponse.getValue().toString() + "A"), Duration.ofMillis(100));
+            return Mono.just(nextResponse);
+        });
+
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+
+        PollResponse<Response> pollResponse = poller.poll();
+        Assert.assertNotNull(pollResponse);
+        Assert.assertNotNull(pollResponse.getValue().getResponse());
+        Assert.assertTrue(pollResponse.getValue()
+                .getResponse()
+                .equalsIgnoreCase("Response: AA"));
+        //
+        pollResponse = poller.poll();
+        Assert.assertNotNull(pollResponse);
+        Assert.assertNotNull(pollResponse.getValue().getResponse());
+        Assert.assertTrue(pollResponse.getValue()
+                .getResponse()
+                .equalsIgnoreCase("Response: Response: AAA"));
+        //
+        pollResponse = poller.poll();
+        Assert.assertNotNull(pollResponse);
+        Assert.assertNotNull(pollResponse.getValue().getResponse());
+        Assert.assertTrue(pollResponse.getValue()
+                .getResponse()
+                .equalsIgnoreCase("Response: Response: Response: AAAA"));
+    }
+
+    @Test
+    public void waitForCompletionShouldReturnTerminalPollResponse() {
+        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                new Response("0"), Duration.ofMillis(100));
+
+        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                new Response("1"), Duration.ofMillis(100));
+
+        PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                new Response("2"), Duration.ofMillis(100));
+
+        final Response activationResponse = new Response("Activated");
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+
+        when(pollOperation.apply(any())).thenReturn(
+                Mono.just(response0),
+                Mono.just(response1),
+                Mono.just(response2));
+
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+
+        PollResponse<Response> pollResponse = poller.waitForCompletion();
+        Assert.assertNotNull(pollResponse.getValue());
+        Assert.assertEquals(response2.getValue().getResponse(), pollResponse.getValue().getResponse());
+        Assert.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+    }
+
+    @Test
+    public void getResultShouldPollUntilCompletionAndFetchResult() {
+        final Response activationResponse = new Response("Activated");
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+
+        int[] invocationCount = new int[1];
+        invocationCount[0] = -1;
+        //
+        when(pollOperation.apply(any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
+            invocationCount[0]++;
+            switch (invocationCount[0]) {
+                case 0:
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                            new Response("0"), Duration.ofMillis(100)));
+                case 1:
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                            new Response("1"), Duration.ofMillis(100)));
+                case 2:
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                            new Response("2"), Duration.ofMillis(100)));
+                default:
+                    throw new RuntimeException("Poll should not be called after terminal response");
+            }
+        });
+
+        when(fetchResultOperation.apply(any())).thenReturn(Mono.defer(() -> {
+            return Mono.just(new CertificateOutput("cert1"));
+        }));
+
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+
+        CertificateOutput certificateOutput = poller.getFinalResult();
+        Assert.assertNotNull(certificateOutput);
+        Assert.assertEquals("cert1", certificateOutput.getName());
+        Assert.assertEquals(2, invocationCount[0]);
+    }
+
+    @Test
+    public void getResultShouldNotPollOnCompletedPoller() {
+        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                new Response("0"), Duration.ofMillis(100));
+
+        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                new Response("1"), Duration.ofMillis(100));
+
+        PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                new Response("2"), Duration.ofMillis(100));
+
+        final Response activationResponse = new Response("Activated");
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+
+        when(fetchResultOperation.apply(any())).thenReturn(Mono.defer(() -> {
+            return Mono.just(new CertificateOutput("cert1"));
+        }));
+
+        when(pollOperation.apply(any())).thenReturn(
+                Mono.just(response0),
+                Mono.just(response1),
+                Mono.just(response2));
+
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+
+        PollResponse<Response> pollResponse = poller.waitForCompletion();
+        Assert.assertNotNull(pollResponse.getValue());
+        Assert.assertEquals(response2.getValue().getResponse(), pollResponse.getValue().getResponse());
+        Assert.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        //
+        when(pollOperation.apply(any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
+            Assert.assertTrue("A Poll after completion should be called", true);
+            return Mono.empty();
+        });
+        CertificateOutput certificateOutput = poller.getFinalResult();
+        Assert.assertNotNull(certificateOutput);
+        Assert.assertEquals("cert1", certificateOutput.getName());
+    }
+
+    @Test
+    public void waitUntilShouldPollAfterMatchingStatus() {
+        final Response activationResponse = new Response("Activated");
+        when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+
+        LongRunningOperationStatus matchStatus
+                = LongRunningOperationStatus.fromString("OTHER_1", false);
+
+        int[] invocationCount = new int[1];
+        invocationCount[0] = -1;
+        //
+        when(pollOperation.apply(any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
+            invocationCount[0]++;
+            switch (invocationCount[0]) {
+                case 0:
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                            new Response("0"), Duration.ofMillis(100)));
+                case 1:
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                            new Response("1"), Duration.ofMillis(100)));
+                case 2:
+                    return Mono.just(new PollResponse<>(matchStatus,
+                            new Response("1"), Duration.ofMillis(100)));
+                default:
+                    throw new RuntimeException("Poll should not be called after matching response");
+            }
+        });
+
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+                Duration.ofSeconds(1),
+                activationOperation,
+                pollOperation,
+                cancelOperation,
+                fetchResultOperation);
+
+        PollResponse<Response> pollResponse = poller.waitUntil(matchStatus);
+        Assert.assertEquals(matchStatus, pollResponse.getStatus());
+        Assert.assertEquals(2, invocationCount[0]);
     }
 
     public static class Response {

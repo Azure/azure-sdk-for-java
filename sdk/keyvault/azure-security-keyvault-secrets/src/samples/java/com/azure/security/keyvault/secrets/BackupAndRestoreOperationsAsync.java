@@ -58,7 +58,6 @@ public class BackupAndRestoreOperationsAsync {
 
         // The storage account secret is no longer in use, so you delete it.
         secretAsyncClient.beginDeleteSecret("StorageAccountPassword")
-            .getObserver()
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());

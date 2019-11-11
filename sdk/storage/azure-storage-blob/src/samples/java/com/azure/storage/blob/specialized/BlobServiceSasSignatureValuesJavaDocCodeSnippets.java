@@ -3,8 +3,10 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.storage.blob.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasQueryParameters;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.SasProtocol;
 

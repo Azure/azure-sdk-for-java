@@ -15,7 +15,7 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.0-preview.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -34,7 +34,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.0-preview.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -212,7 +212,7 @@ System.out.printf("Key is returned with name %s and id %s \n", key.getName(), ke
 
 ### Update an existing Key
 
-Update an existing Key by calling `updateKey`.
+Update an existing Key by calling `updateKeyProperties`.
 ```Java
 // Get the key to update.
 KeyVaultKey key = keyClient.getKey("key_name");
@@ -224,30 +224,23 @@ System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().
 
 ### Delete a Key
 
-Delete an existing Key by calling `deleteKey`.
+Delete an existing Key by calling `beginDeleteKey`.
 ```Java
-Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
+SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
 
-while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
-    System.out.println(deletedKeyPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
+PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
-DeletedKey deletedKey = deletedKeyPoller.getLastPollResponse().getValue();
+// Deleted key is accessible as soon as polling begins
+DeletedKey deletedKey = deletedKeyPollResponse.getValue();
 System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
-System.out.printf("Deleted Key's deletion date %s", deletedKey.getDeletedOn().toString());
 
 // Key is being deleted on server.
-while (!deletedKeyPoller.isComplete()) {
-    System.out.println(deletedKeyPoller.getStatus().toString());
-    Thread.sleep(2000);
-}
-System.out.println(deletedKeyPoller.getStatus().toString());
+deletedKeyPoller.waitForCompletion();
 ```
 
 ### List Keys
 
-List the keys in the key vault by calling `listKeys`.
+List the keys in the key vault by calling `listPropertiesOfKeys`.
 ```java
 // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
 for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
@@ -335,7 +328,7 @@ keyAsyncClient.getKey("keyName").subscribe(key ->
 
 ### Update an existing Key Asynchronously
 
-Update an existing Key by calling `updateKey`.
+Update an existing Key by calling `updateKeyProperties`.
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
      // Get the Key
@@ -349,10 +342,9 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
 
 ### Delete a Key Asynchronously
 
-Delete an existing Key by calling `deleteKey`.
+Delete an existing Key by calling `beginDeleteKey`.
 ```java
 keyAsyncClient.beginDeleteKey("keyName")
-    .getObserver()
     .subscribe(pollResponse -> {
         System.out.println("Delete Status: " + pollResponse.getStatus().toString());
         System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
@@ -362,7 +354,7 @@ keyAsyncClient.beginDeleteKey("keyName")
 
 ### List Keys Asynchronously
 
-List the keys in the key vault by calling `listKeys`.
+List the keys in the key vault by calling `listPropertiesOfKeys`.
 ```Java
 // The List Keys operation returns keys without their value, so for each key returned we call `getKey` to get its // value as well.
 keyAsyncClient.listPropertiesOfKeys()
@@ -422,55 +414,8 @@ try {
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
 
-### Hello World Samples
-* [HelloWorld.java][sample_helloWorld] - and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples for following scenarios:
-    * Create a Key
-    * Retrieve a Key
-    * Update a Key
-    * Delete a Key
-
-### List Operations Samples
-* [ListOperations.java][sample_list] and [ListOperationsAsync.java][sample_listAsync] - Contains samples for following scenarios:
-    * Create a Key
-    * List Keys
-    * Create new version of existing key.
-    * List versions of an existing key.
-
-### Backup And Restore Operations Samples
-* [BackupAndRestoreOperations.java][sample_BackupRestore] and [BackupAndRestoreOperationsAsync.java][sample_BackupRestoreAsync] - Contains samples for following scenarios:
-    * Create a Key
-    * Backup a Key -- Write it to a file.
-    * Delete a key
-    * Restore a key
-
-### Managing Deleted Keys Samples:
-* [ManagingDeletedKeys.java][sample_ManageDeleted] and [ManagingDeletedKeysAsync.java][sample_ManageDeletedAsync] - Contains samples for following scenarios:
-    * Create a Key
-    * Delete a key
-    * List deleted keys
-    * Recover a deleted key
-    * Purge Deleted key
-    
-### Encrypt And Decrypt Operations Samples:
-* [EncryptAndDecryptOperations.java][sample_encryptDecrypt] and [EncryptAndDecryptOperationsAsync.java][sample_encryptDecryptAsync] - Contains samples for following scenarios:
-    * Encrypting plain text with asymmetric key
-    * Decrypting plain text with asymmetric key
-    * Encrypting plain text with symmetric key
-    * Decrypting plain text with symmetric key
-    
-### Sign And Verify Operations Samples:
-* [SignAndVerifyOperations.java][sample_signVerify] and [SignAndVerifyOperationsAsync.java][sample_signVerifyAsync] - Contains samples for following scenarios:
-    * Signing a digest
-    * Verifying signature against a digest
-    * Signing raw data content
-    * Verifyng signature against raw data content
-    
-### Key Wrap And Unwrap Operations Samples:
-* [KeyWrapUnwrapOperations.java][sample_wrapUnwrap] and [KeyWrapUnwrapOperationsAsync.java][sample_wrapUnwrapAsync] - Contains samples for following scenarios:
-    * Wrapping a key with asymmetric key
-    * Unwrapping a key with asymmetric key
-    * Wrapping a key with symmetric key
-    * Unwrapping a key with symmetric key
+## Next steps Samples
+Samples are explained in detail [here][samples_readme].
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
@@ -497,19 +442,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_keyvault_cli]:https://docs.microsoft.com/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [keys_samples]: src/samples/java/com/azure/security/keyvault/keys
-[sample_helloWorld]: src/samples/java/com/azure/security/keyvault/keys/HelloWorld.java
-[sample_helloWorldAsync]: src/samples/java/com/azure/security/keyvault/keys/HelloWorldAsync.java
-[sample_list]: src/samples/java/com/azure/security/keyvault/keys/ListOperations.java
-[sample_listAsync]: src/samples/java/com/azure/security/keyvault/keys/ListOperationsAsync.java
-[sample_BackupRestore]: src/samples/java/com/azure/security/keyvault/keys/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]: src/samples/java/com/azure/security/keyvault/keys/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeys.java
-[sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeysAsync.java
-[sample_encryptDecrypt]: src/samples/java/com/azure/security/keyvault/keys/cryptography/EncryptDecryptOperations.java
-[sample_encryptDecryptAsync]: src/samples/java/com/azure/security/keyvault/keys/cryptography/EncryptDecryptOperationsAsync.java
-[sample_signVerify]: src/samples/java/com/azure/security/keyvault/keys/cryptography/SignVerifyOperations.java
-[sample_signVerifyAsync]: src/samples/java/com/azure/security/keyvault/keys/cryptography/SignVerifyOperationsAsync.java
-[sample_wrapUnwrap]: src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperations.java
-[sample_wrapUnwrapAsync]: src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperationsAsync.java
+[samples_readme]: src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-keys/README.png)
