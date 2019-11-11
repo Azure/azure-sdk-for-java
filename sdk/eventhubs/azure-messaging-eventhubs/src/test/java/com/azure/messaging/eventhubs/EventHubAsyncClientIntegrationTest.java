@@ -155,4 +155,14 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             dispose(clients);
         }
     }
+
+    @Test
+    public void sendWithCredentials() {
+        final EventHubAsyncClient client = createBuilder(true).buildAsyncClient();
+
+        StepVerifier.create(client.getProperties()).assertNext(properties -> {
+            Assertions.assertEquals(getEventHubName(), properties.getName());
+            Assertions.assertEquals(2, properties.getPartitionIds().length);
+        }).expectComplete().verify(TIMEOUT);
+    }
 }
