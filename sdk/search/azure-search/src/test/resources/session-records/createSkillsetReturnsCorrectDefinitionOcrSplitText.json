@@ -1,0 +1,120 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "3079e205-3f85-4747-94c5-bc85e24fdf0f",
+      "StatusCode" : "201",
+      "Date" : "Mon, 11 Nov 2019 05:15:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D766661E90BB62\"",
+      "elapsed-time" : "79",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "1041",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766661E90BB62\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/skillsets('testskillset')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "7b63b3c0-4f88-4992-9720-7692059fb8cc",
+      "StatusCode" : "201",
+      "Date" : "Mon, 11 Nov 2019 05:15:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D766661EA66AE8\"",
+      "elapsed-time" : "46",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "1042",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766661EA66AE8\\\"\",\"name\":\"testskillset1\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"fr\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"fr\",\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/skillsets('testskillset1')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "16bdb4a5-9b95-42dd-b34f-b570934bd835",
+      "StatusCode" : "201",
+      "Date" : "Mon, 11 Nov 2019 05:15:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D766661EBBF349\"",
+      "elapsed-time" : "42",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "1046",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766661EBBF349\\\"\",\"name\":\"testskillset2\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"fi\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"fi\",\"textSplitMode\":\"sentences\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/skillsets('testskillset2')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/skillsets('testskillset2')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "37",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "318c1f2d-93d8-46c2-bb52-36dfce6f9faa",
+      "StatusCode" : "204",
+      "Date" : "Mon, 11 Nov 2019 05:15:08 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "acb07679-b2b5-417d-9d1e-3334a1ab85ac",
+      "StatusCode" : "201",
+      "Date" : "Mon, 11 Nov 2019 05:15:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D766661EE4928F\"",
+      "elapsed-time" : "45",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "1046",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766661EE4928F\\\"\",\"name\":\"testskillset3\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"da\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"da\",\"textSplitMode\":\"sentences\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk8f82557189cc.search-dogfood.windows-int.net/skillsets('testskillset3')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

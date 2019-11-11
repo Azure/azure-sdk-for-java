@@ -1037,20 +1037,40 @@ public class SearchServiceClient {
     public Response<Skillset> createOrUpdateSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
-
     /**
-     * @throws NotImplementedException not implemented
+     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     *
+     * @param skillsetName the name of the skillset to delete
      */
-    public void deleteSkillset() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteSkillset(String skillsetName) {
+        asyncClient.deleteSkillset(skillsetName).block();
     }
 
     /**
-     * @return a response signalling completion
-     * @throws NotImplementedException not implemented
+     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     *
+     * @param skillsetName the name of the skillset to delete
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      */
-    public Response<Response<Void>> deleteSkillsetWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteSkillset(String skillsetName, RequestOptions requestOptions, Context context) {
+        this.deleteSkillsetWithResponse(skillsetName, requestOptions, context);
+    }
+
+    /**
+     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     *
+     * @param skillsetName the name of the skillset to delete
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response signalling completion.
+     */
+    public Response<Void> deleteSkillsetWithResponse(String skillsetName,
+                                                     RequestOptions requestOptions,
+                                                     Context context) {
+        return asyncClient.deleteSkillsetWithResponse(skillsetName, requestOptions, context).block();
     }
 
     /**

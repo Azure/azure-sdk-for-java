@@ -1166,19 +1166,48 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     *
+     * @param skillsetName the name of the skillset to delete
+     * @return a response signalling completion.
      */
-    public Mono<Void> deleteSkillset() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteSkillset(String skillsetName) {
+        return this.deleteSkillsetWithResponse(skillsetName, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     *
+     * @param skillsetName the name of the skillset to delete
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
      */
-    public Mono<Response<Response<Void>>> deleteSkillsetWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteSkillset(String skillsetName, RequestOptions requestOptions) {
+        return this.deleteSkillsetWithResponse(skillsetName, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     *
+     * @param skillsetName the name of the skillset to delete
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
+     */
+    public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, RequestOptions requestOptions) {
+        return withContext(context -> this.deleteSkillsetWithResponse(skillsetName, requestOptions, context));
+    }
+
+    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
+                                                    RequestOptions requestOptions,
+                                                    Context context) {
+        return restClient
+            .skillsets()
+            .deleteWithRestResponseAsync(skillsetName, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**
