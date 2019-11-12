@@ -20,12 +20,6 @@ import java.util.Optional;
  */
 @Fluent
 public class EventHubConsumerOptions implements Cloneable {
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
-
-    /**
-     * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumerAsyncClient}.
-     */
-    static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
     /**
      * The minimum value allowed for the prefetch count of the consumer.
      */
@@ -34,6 +28,8 @@ public class EventHubConsumerOptions implements Cloneable {
      * The maximum value allowed for the prefetch count of the consumer.
      */
     static final int MAXIMUM_PREFETCH_COUNT = 8000;
+
+    private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;

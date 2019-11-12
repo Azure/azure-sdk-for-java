@@ -100,7 +100,6 @@ public class EventHubConsumerClientTest {
             .thenReturn(Mono.fromCallable(() -> amqpReceiveLink));
 
         EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setIdentifier("an-identifier")
             .setPrefetchCount(PREFETCH);
         EventHubConsumerAsyncClient asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             linkProvider, serializer, CONSUMER_GROUP, EventPosition.earliest(), options, false);
@@ -272,7 +271,6 @@ public class EventHubConsumerClientTest {
     public void setsCorrectProperties() {
         EventPosition position = EventPosition.fromOffset(105L);
         EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setIdentifier("id-id")
             .setOwnerLevel(100L)
             .setPrefetchCount(100);
 
