@@ -131,8 +131,8 @@ public class BridgeInternal {
             headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, options.maxItemCount().toString());
         }
 
-        if (options.requestContinuation() != null) {
-            headers.put(HttpConstants.HttpHeaders.CONTINUATION, options.requestContinuation());
+        if (options.getRequestContinuation() != null) {
+            headers.put(HttpConstants.HttpHeaders.CONTINUATION, options.getRequestContinuation());
         }
 
         if (options != null) {

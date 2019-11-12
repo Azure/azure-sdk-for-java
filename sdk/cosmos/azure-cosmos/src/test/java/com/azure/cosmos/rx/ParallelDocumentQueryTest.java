@@ -221,7 +221,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         assertThat(sum).isEqualTo(createdDocuments.size());
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void compositeContinuationTokenRoundTrip() throws Exception {
     	{
@@ -241,14 +241,14 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     		assertThat(range.isMinInclusive()).isEqualTo(false);
     		assertThat(range.isMaxInclusive()).isEqualTo(true);
     	}
-    	
+
     	{
     		// Negative
     		ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
     		boolean succeeed = CompositeContinuationToken.tryParse("{\"property\" : \"not a valid composite continuation token\"}", outCompositeContinuationToken);
     		assertThat(succeeed).isFalse();
     	}
-    	
+
     	{
     		// Negative - GATEWAY composite continuation token
     		ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
@@ -261,11 +261,11 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "non-emulator" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithCompositeContinuationTokens() throws Exception {
         String query = "SELECT * FROM c";
-        
+
         // Get Expected
         List<CosmosItemProperties> expectedDocs = new ArrayList<>(createdDocuments);
         assertThat(expectedDocs).isNotEmpty();
-        
+
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1, 10, 100}, expectedDocs);
     }
 
@@ -325,7 +325,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
 		return cosmosContainer.createItem(docDefinition).block().getProperties();
 	}
-	
+
 	private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<CosmosItemProperties> expectedDocs) {
         for (int pageSize : pageSizes) {
             List<CosmosItemProperties> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);
@@ -352,7 +352,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             options.maxItemCount(pageSize);
             options.setEnableCrossPartitionQuery(true);
             options.setMaxDegreeOfParallelism(2);
-            options.requestContinuation(requestContinuation);
+            options.setRequestContinuation(requestContinuation);
             Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();

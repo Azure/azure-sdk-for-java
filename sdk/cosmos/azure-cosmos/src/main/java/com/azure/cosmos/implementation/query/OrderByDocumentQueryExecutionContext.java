@@ -107,7 +107,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderBy(),
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderByExpressions(),
                     initialPageSize,
-                    feedOptions.requestContinuation());
+                    feedOptions.getRequestContinuation());
 
             return Flux.just(context);
         } catch (CosmosClientException dce) {

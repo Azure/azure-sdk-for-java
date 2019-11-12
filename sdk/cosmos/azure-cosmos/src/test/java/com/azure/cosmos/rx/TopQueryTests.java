@@ -148,7 +148,7 @@ public class TopQueryTests extends TestSuiteBase {
             options.maxItemCount(pageSize);
             options.setEnableCrossPartitionQuery(true);
             options.setMaxDegreeOfParallelism(2);
-            options.requestContinuation(requestContinuation);
+            options.setRequestContinuation(requestContinuation);
             Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();

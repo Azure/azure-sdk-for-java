@@ -262,7 +262,7 @@ public final class FeedOptions {
      *
      * @return the request continuation.
      */
-    public String requestContinuation() {
+    public String getRequestContinuation() {
         return this.requestContinuation;
     }
 
@@ -273,7 +273,7 @@ public final class FeedOptions {
      *            the request continuation.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions requestContinuation(String requestContinuation) {
+    public FeedOptions setRequestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
         return this;
     }

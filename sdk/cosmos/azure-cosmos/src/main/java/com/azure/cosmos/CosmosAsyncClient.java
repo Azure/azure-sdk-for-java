@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
@@ -309,10 +310,17 @@ public class CosmosAsyncClient implements AutoCloseable {
      * @param options {@link FeedOptions}
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
-        return getDocClientWrapper().readDatabases(options)
-                                    .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseProperties.getFromV2Results(response.getResults()),
-                        response.getResponseHeaders()));
+    public PagedFluxBase<CosmosDatabaseProperties, FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
+        Flux<FeedResponse<CosmosDatabaseProperties>> cosmosDatabasePropertiesFlux =
+            getDocClientWrapper().readDatabases(options).map(feedResponse -> BridgeInternal.createFeedResponse(CosmosDatabaseProperties
+            .getFromV2Results(feedResponse.getResults()), feedResponse.getResponseHeaders()));
+        return new PagedFluxBase<>(cosmosDatabasePropertiesFlux::next, (continuationToken) -> {
+            options.setRequestContinuation(continuationToken);
+            Flux<FeedResponse<CosmosDatabaseProperties>> feedResponseFlux = getDocClientWrapper()
+                .readDatabases(options).map(feedResponse -> BridgeInternal.createFeedResponse(CosmosDatabaseProperties
+                .getFromV2Results(feedResponse.getResults()), feedResponse.getResponseHeaders()));
+            return feedResponseFlux.next();
+        });
     }
 
     /**
@@ -324,7 +332,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      *
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases() {
+    public PagedFluxBase<CosmosDatabaseProperties, FeedResponse<CosmosDatabaseProperties>> readAllDatabases() {
         return readAllDatabases(new FeedOptions());
     }
 

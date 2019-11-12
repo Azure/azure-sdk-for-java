@@ -84,7 +84,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             context.initialize(collectionRid,
                     targetRanges,
                     initialPageSize,
-                    feedOptions.requestContinuation());
+                    feedOptions.getRequestContinuation());
             return Flux.just(context);
         } catch (CosmosClientException dce) {
             return Flux.error(dce);

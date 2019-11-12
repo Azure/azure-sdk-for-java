@@ -85,19 +85,19 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         if (feedOptions == null) {
             feedOptions = new FeedOptions();
         }
-        
+
         FeedOptions newFeedOptions = new FeedOptions(feedOptions);
-        
+
         // We can not go to backend with the composite continuation token,
         // but we still need the gateway for the query plan.
         // The workaround is to try and parse the continuation token as a composite continuation token.
         // If it is, then we send the query to the gateway with max degree of parallelism to force getting back the query plan
-        
-        String originalContinuation = newFeedOptions.requestContinuation();
-        
+
+        String originalContinuation = newFeedOptions.getRequestContinuation();
+
         if (isClientSideContinuationToken(originalContinuation)) {
             // At this point we know we want back a query plan
-            newFeedOptions.requestContinuation(null);
+            newFeedOptions.setRequestContinuation(null);
             newFeedOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
         }
 
@@ -222,7 +222,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
         return request;
     }
-    
+
     private static boolean isClientSideContinuationToken(String continuationToken) {
         if (continuationToken != null) {
             ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();

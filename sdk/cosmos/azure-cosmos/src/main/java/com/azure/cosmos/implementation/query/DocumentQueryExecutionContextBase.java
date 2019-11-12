@@ -109,7 +109,7 @@ implements IDocumentQueryExecutionContext<T> {
 
     public FeedOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
         FeedOptions options = new FeedOptions(this.feedOptions);
-        options.requestContinuation(continuationToken);
+        options.setRequestContinuation(continuationToken);
         options.maxItemCount(maxPageSize);
         return options;
     }
@@ -145,7 +145,7 @@ implements IDocumentQueryExecutionContext<T> {
             }
         }
 
-        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.requestContinuation());
+        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.getRequestContinuation());
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
 
         // Flow the pageSize only when we are not doing client eval

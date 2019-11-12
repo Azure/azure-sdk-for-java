@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -157,13 +158,13 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Iterator<FeedResponse<CosmosDatabaseProperties>> readIterator = client.readAllDatabases(options);
+        IterableStream<CosmosDatabaseProperties> readIterator = client.readAllDatabases(options);
         // Basic validation
-        assertThat(readIterator.hasNext()).isTrue();
+        assertThat(readIterator.iterator().hasNext()).isTrue();
 
-        Iterator<FeedResponse<CosmosDatabaseProperties>> readIterator1 = client.readAllDatabases();
+        IterableStream<CosmosDatabaseProperties> readIterator1 = client.readAllDatabases();
         // Basic validation
-        assertThat(readIterator1.hasNext()).isTrue();
+        assertThat(readIterator1.iterator().hasNext()).isTrue();
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

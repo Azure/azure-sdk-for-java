@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -15,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class FeedResponse<T> {
+public class FeedResponse<T> implements PagedResponse<T> {
 
     private final List<T> results;
     private final Map<String, String> header;
@@ -30,7 +33,7 @@ public class FeedResponse<T> {
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
     }
-    
+
     FeedResponse(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this(results, headers, false, false, queryMetricsMap);
     }
@@ -42,10 +45,10 @@ public class FeedResponse<T> {
     // TODO: need to more sure the query metrics can round trip just from the headers.
     // We can then remove it as a parameter.
     private FeedResponse(
-            List<T> results, 
-            Map<String, String> header, 
-            boolean useEtagAsContinuation, 
-            boolean nochanges, 
+            List<T> results,
+            Map<String, String> header,
+            boolean useEtagAsContinuation,
+            boolean nochanges,
             ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
         this.header = header;
@@ -59,7 +62,7 @@ public class FeedResponse<T> {
 
     /**
      * Results.
-     * 
+     *
      * @return the list of results.
      */
     public List<T> getResults() {
@@ -100,6 +103,23 @@ public class FeedResponse<T> {
      */
     public long getCollectionUsage() {
         return this.currentQuotaHeader(Constants.Quota.COLLECTION);
+    }
+
+    @Override
+    public int getStatusCode() {
+        //  Assuming feed response only gets created when its a success
+        return 200;
+    }
+
+    @Override
+    public HttpHeaders getHeaders() {
+        return new HttpHeaders(header);
+    }
+
+    @Override
+    public HttpRequest getRequest() {
+        //  Request is not attached to FeedResponse, but we can make that happen if need to
+        return null;
     }
 
     /**
@@ -255,11 +275,17 @@ public class FeedResponse<T> {
         return getValueOrNull(header, HttpConstants.HttpHeaders.ACTIVITY_ID);
     }
 
+    @Override
+    public List<T> getItems() {
+        return results;
+    }
+
     /**
      * Gets the continuation token to be used for continuing the enumeration.
      *
      * @return the response continuation.
      */
+    @Override
     public String getContinuationToken() {
         String headerName = useEtagAsContinuation
                 ? HttpConstants.HttpHeaders.E_TAG
@@ -283,6 +309,10 @@ public class FeedResponse<T> {
      */
     public Map<String, String> getResponseHeaders() {
         return header;
+    }
+
+    @Override
+    public void close() {
     }
 
     private String getQueryMetricsString(){

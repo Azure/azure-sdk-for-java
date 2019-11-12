@@ -87,7 +87,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from c where c.prop IN (@param1, @param2)";
         SqlParameterList params = new SqlParameterList(new SqlParameter("@param1", 3), new SqlParameter("@param2", 4));
         SqlQuerySpec sqs = new SqlQuerySpec(query, params);
-        
+
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
         options.setEnableCrossPartitionQuery(true);
@@ -210,28 +210,28 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(3);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
-        
+
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>();
         queryObservable.take(1).subscribe(subscriber);
-        
+
         subscriber.awaitTerminalEvent();
         subscriber.assertComplete();
         subscriber.assertNoErrors();
         assertThat(subscriber.valueCount()).isEqualTo(1);
         FeedResponse<CosmosItemProperties> page = ((FeedResponse<CosmosItemProperties>) subscriber.getEvents().get(0).get(0));
         assertThat(page.getResults()).hasSize(3);
-        
+
         assertThat(page.getContinuationToken()).isNotEmpty();
-        
-        
-        options.requestContinuation(page.getContinuationToken());
+
+
+        options.setRequestContinuation(page.getContinuationToken());
         queryObservable = createdCollection.queryItems(query, options);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (d.getInt("prop") > 2)).collect(Collectors.toList());
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
         assertThat(expectedDocs).hasSize(createdDocuments.size() -3);
-        
+
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .containsExactly(expectedDocs.stream()
                         .sorted((e1, e2) -> Integer.compare(e1.getInt("prop"), e2.getInt("prop")))
@@ -242,7 +242,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryObservable, validator);
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";

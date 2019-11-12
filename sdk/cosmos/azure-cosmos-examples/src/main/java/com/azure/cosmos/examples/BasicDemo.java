@@ -65,11 +65,11 @@ public class BasicDemo {
         }
 
         createAndReplaceItem();
-        
+
         queryItems();
 
         queryWithContinuationToken();
-        
+
         //Close client
         client.close();
         log("Completed");
@@ -121,13 +121,13 @@ public class BasicDemo {
 
         queryFlux.publishOn(Schedulers.elastic())
                 .toIterable()
-                .forEach(cosmosItemFeedResponse -> 
+                .forEach(cosmosItemFeedResponse ->
                          {
                              log(cosmosItemFeedResponse.getResults());
                          });
 
     }
-    
+
     private void queryWithContinuationToken(){
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
@@ -137,7 +137,7 @@ public class BasicDemo {
         options.maxItemCount(1);
         String continuation = null;
         do{
-            options.requestContinuation(continuation);
+            options.setRequestContinuation(continuation);
             Flux<FeedResponse<CosmosItemProperties>> queryFlux = container.queryItems(query, options);
             FeedResponse<CosmosItemProperties> page = queryFlux.blockFirst();
             assert page != null;
@@ -146,11 +146,11 @@ public class BasicDemo {
         }while(continuation!= null);
 
     }
-    
+
     private void log(Object object) {
         System.out.println(object);
     }
-    
+
     private void log(String msg, Throwable throwable){
         if (throwable instanceof CosmosClientException) {
             log(msg + ": " + ((CosmosClientException) throwable).getStatusCode());

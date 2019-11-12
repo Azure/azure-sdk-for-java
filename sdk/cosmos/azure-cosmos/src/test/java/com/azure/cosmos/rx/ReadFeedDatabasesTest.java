@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseProperties;
@@ -14,7 +15,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -34,13 +34,13 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "simple" })
     public void readDatabases() throws Exception {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosDatabaseProperties>> feedObservable = client.readAllDatabases(options);
+        PagedFluxBase<CosmosDatabaseProperties, FeedResponse<CosmosDatabaseProperties>> pagedFluxBase = client.readAllDatabases(options);
 
         int expectedPageSize = (allDatabases.size() + options.maxItemCount() - 1) / options.maxItemCount();
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
@@ -51,13 +51,14 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(pagedFluxBase.byPage(), validator, FEED_TIMEOUT);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws URISyntaxException {
         client = clientBuilder().buildAsyncClient();
         allDatabases = client.readAllDatabases(null)
+                             .byPage()
                              .map(frp -> frp.getResults())
                              .collectList()
                              .map(list -> list.stream().flatMap(x -> x.stream()).collect(Collectors.toList()))

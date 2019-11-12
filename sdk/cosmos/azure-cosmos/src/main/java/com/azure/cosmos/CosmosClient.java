@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +21,7 @@ public class CosmosClient implements AutoCloseable {
     public CosmosClient(CosmosClientBuilder builder) {
         this.asyncClientWrapper = builder.buildAsyncClient();
     }
-    
+
     /**
      * Instantiate the cosmos client builder to buildAsyncClient cosmos client
      * @return {@link CosmosClientBuilder}
@@ -152,10 +153,8 @@ public class CosmosClient implements AutoCloseable {
      * @param options {@link FeedOptions}the feed options.
      * @return the iterator for feed response with the read databases.
      */
-    public Iterator<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
-        return asyncClientWrapper.readAllDatabases(options)
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+        return new IterableStream<>(asyncClientWrapper.readAllDatabases(options));
     }
 
     /**
@@ -163,10 +162,8 @@ public class CosmosClient implements AutoCloseable {
      *
      * @return the iterator for feed response with the read databases.
      */
-    public Iterator<FeedResponse<CosmosDatabaseProperties>> readAllDatabases() {
-        return asyncClientWrapper.readAllDatabases()
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosDatabaseProperties> readAllDatabases() {
+        return new IterableStream<>(asyncClientWrapper.readAllDatabases());
     }
 
     /**

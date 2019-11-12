@@ -103,7 +103,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
         FeedOptions feedOptions = new FeedOptions();
         feedOptions.maxItemCount(this.maxBatchSize);
-        feedOptions.requestContinuation(null);
+        feedOptions.setRequestContinuation(null);
 
         return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, feedOptions)
             .map(partitionKeyRangeFeedResponse -> partitionKeyRangeFeedResponse.getResults())

@@ -29,7 +29,7 @@ public class FetcherTest {
 
         FeedOptions options1 = new FeedOptions();
         options1.maxItemCount(100);
-        options1.requestContinuation("cp-init"); // initial continuation token
+        options1.setRequestContinuation("cp-init"); // initial continuation token
         int top1 = -1; // no top
 
         // no continuation token
@@ -77,7 +77,7 @@ public class FetcherTest {
             assertThat(maxItemCount).describedAs("max item count").isEqualTo(
                     getExpectedMaxItemCountInRequest(options, top, feedResponseList, requestIndex.get()));
             assertThat(token).describedAs("continuation token").isEqualTo(
-                    getExpectedContinuationTokenInRequest(options.requestContinuation(), feedResponseList, requestIndex.get()));
+                    getExpectedContinuationTokenInRequest(options.getRequestContinuation(), feedResponseList, requestIndex.get()));
             requestIndex.getAndIncrement();
 
             return mock(RxDocumentServiceRequest.class);
@@ -92,7 +92,7 @@ public class FetcherTest {
         };
 
         Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, options.requestContinuation(), false, top,
+                new Fetcher<>(createRequestFunc, executeFunc, options.getRequestContinuation(), false, top,
                         options.maxItemCount());
 
         validateFetcher(fetcher, options, top, feedResponseList);
