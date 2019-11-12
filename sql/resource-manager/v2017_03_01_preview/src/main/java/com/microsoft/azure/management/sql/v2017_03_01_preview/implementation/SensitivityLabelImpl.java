@@ -21,6 +21,7 @@ class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, Sens
     private String schemaName;
     private String tableName;
     private String columnName;
+    private SensitivityLabelSource sensitivityLabelSource;
 
     SensitivityLabelImpl(String name, SqlManager manager) {
         super(name, new SensitivityLabelInner());
@@ -42,6 +43,7 @@ class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, Sens
         this.schemaName = IdParsingUtils.getValueFromIdByName(inner.id(), "schemas");
         this.tableName = IdParsingUtils.getValueFromIdByName(inner.id(), "tables");
         this.columnName = IdParsingUtils.getValueFromIdByName(inner.id(), "columns");
+        this.sensitivityLabelSource = SensitivityLabelSource.fromString(IdParsingUtils.getValueFromIdByName(inner.id(), "sensitivityLabels"));
         //
     }
 
@@ -67,7 +69,7 @@ class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, Sens
     @Override
     protected Observable<SensitivityLabelInner> getInnerAsync() {
         SensitivityLabelsInner client = this.manager().inner().sensitivityLabels();
-        return client.getAsync(this.resourceGroupName, this.serverName, this.databaseName, this.schemaName, this.tableName, this.columnName, SensitivityLabelSource.CURRENT);
+        return client.getAsync(this.resourceGroupName, this.serverName, this.databaseName, this.schemaName, this.tableName, this.columnName, this.sensitivityLabelSource);
     }
 
     @Override
