@@ -5,8 +5,8 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -178,20 +177,5 @@ public class TracerProviderTest {
             verify(t, times(1))
                 .end(errorCondition.getErrorCondition(), exception, sendContext);
         }
-    }
-
-    @Test
-    public void addSpanLinksNoContext() {
-        // Act
-        assertThrows(NullPointerException.class, () -> tracerProvider.addSpanLinks(null));
-    }
-
-    /**
-     * Verify that we add spans for all the tracers.
-     */
-    @Test
-    public void addSpanLinks() {
-        // Act
-        assertThrows(NullPointerException.class, () -> tracerProvider.addSpanLinks(null));
     }
 }

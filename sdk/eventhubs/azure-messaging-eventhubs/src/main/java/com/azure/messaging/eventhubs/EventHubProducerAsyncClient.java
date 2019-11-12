@@ -213,7 +213,6 @@ public class EventHubProducerAsyncClient implements Closeable {
      * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
      *
      * @param options A set of options used to configure the {@link EventDataBatch}.
-     *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
@@ -386,7 +385,6 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @param batch The batch to send to the service.
      *
      * @return A {@link Mono} that completes when the batch is pushed to the service.
-     *
      * @throws NullPointerException if {@code batch} is {@code null}.
      * @see EventHubProducerAsyncClient#createBatch()
      * @see EventHubProducerAsyncClient#createBatch(BatchOptions)
@@ -481,33 +479,17 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     private EventData setSpanContext(EventData event, Context parentContext) {
-        Optional<Object> eventContextData = event.getContext().getData(SPAN_CONTEXT_KEY);
-        if (eventContextData.isPresent()) {
-            // if message has context (in case of retries), link it to the span
-            Object spanContextObject = eventContextData.get();
-            if (spanContextObject instanceof Context) {
-                tracerProvider.addSpanLinks((Context) eventContextData.get());
+        // Starting the span makes the sampling decision (nothing is logged at this time)
+        Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.MESSAGE);
+        if (eventSpanContext != null) {
+            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
 
-                // TODO (samvaity): not supported in Opencensus yet
-                // builder.addLink((Context)eventContextData.get());
-            } else {
-                logger.warning("Event Data context type is not of type Context, but type: {}. Not adding span links.",
-                    spanContextObject.getClass());
-            }
-        } else {
-            // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.MESSAGE);
-            if (eventSpanContext != null) {
-                Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
-
-                if (eventDiagnosticIdOptional.isPresent()) {
-                    event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
-                    tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                    event.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
-                }
+            if (eventDiagnosticIdOptional.isPresent()) {
+                event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                tracerProvider.endSpan(eventSpanContext, Signal.complete());
+                event.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
             }
         }
-
         return event;
     }
 

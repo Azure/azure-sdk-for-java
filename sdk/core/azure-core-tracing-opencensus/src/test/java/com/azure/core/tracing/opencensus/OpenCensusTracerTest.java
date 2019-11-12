@@ -7,7 +7,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opencensus.implcore.trace.RecordEventsSpanImpl;
 import io.opencensus.trace.AttributeValue;
-import io.opencensus.trace.Link;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.SpanId;
 import io.opencensus.trace.Tracer;
@@ -197,27 +196,6 @@ public class OpenCensusTracerTest {
     public void startSpanOverloadNullPointerException() {
         // Act
         assertThrows(NullPointerException.class, () -> openCensusTracer.start("", Context.NONE, null));
-    }
-
-    //add tests for number of child spans created and how parent span relation
-
-    @Test
-    public void addLinkTest() {
-        // Arrange
-        // Create a child-parent link between multiple spans
-        final RecordEventsSpanImpl testSpan =
-            (RecordEventsSpanImpl) tracer.spanBuilder("new-test-span").startSpan();
-        final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getContext());
-        final RecordEventsSpanImpl parentSpanImpl = (RecordEventsSpanImpl) parentSpan;
-        final Link expectedLink = Link.fromSpanContext(testSpan.getContext(), Link.Type.PARENT_LINKED_SPAN);
-        // Act
-        openCensusTracer.addLink(traceContext);
-
-        //Assert
-        // verify parent span has the expected Link
-        Link createdLink = parentSpanImpl.toSpanData().getLinks().getLinks().get(0);
-        Assertions.assertEquals(expectedLink.getTraceId(), createdLink.getTraceId());
-        Assertions.assertEquals(expectedLink.getSpanId(), createdLink.getSpanId());
     }
 
     @Test

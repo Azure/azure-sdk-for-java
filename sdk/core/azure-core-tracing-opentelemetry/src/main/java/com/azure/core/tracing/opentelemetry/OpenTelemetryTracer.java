@@ -29,7 +29,6 @@ import java.util.Optional;
  * requests.
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
-    // TODO: Should this instrumentation name be coming from the user?
     private static final Tracer TRACER = OpenTelemetry.getTracerFactory().get("Azure-OpenTelemetry");
 
     // standard attributes with AMQP request
@@ -147,22 +146,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         span.end();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addLink(Context context) {
-        // TODO: Add links not working as expected, confirm this
-        final Builder spanBuilder = getSpanBuilder(PARENT_SPAN_KEY, context);
-
-        final SpanContext spanContext = getSpanContext(context);
-        if (spanContext == null) {
-            logger.warning("Failed to find span context to link it.");
-            return;
-        }
-        spanBuilder.addLink(spanContext);
     }
 
     /**

@@ -204,29 +204,6 @@ public class OpenTelemetryTracerTest {
             openTelemetryTracer.start("", Context.NONE, null));
     }
 
-    // TODO: Fix links for openTelemetry
-    // Issue- https://github.com/Azure/azure-sdk-for-java/issues/6188
-    // @Test
-    // public void addLinkTest() {
-    //     // Arrange
-    //     // Create a child-parent link between multiple spans
-    //     final ReadableSpan testSpan =
-    //         (ReadableSpan) tracer.spanBuilder("new-test-span").startSpan();
-    //     final ReadableSpan parentSpanImpl = (ReadableSpan) parentSpan;
-    //     final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getSpanContext());
-    //     SpanData.Link expectedLink = SpanData.Link.create(testSpan.getSpanContext());
-    //
-    //     // Act
-    //     openTelemetryTracer.addLink(traceContext);
-    //
-    //     //Assert
-    //     // verify parent span has the expected Link
-    //     assertEquals(1, parentSpanImpl.toSpanData().getLinks().size());
-    //     Link createdLink = parentSpanImpl.toSpanData().getLinks().get(0);
-    //     assertEquals(expectedLink.getContext().getTraceId(), createdLink.getContext().getTraceId());
-    //     assertEquals(expectedLink.getContext().getTraceId(), createdLink.getContext().getTraceId());
-    // }
-
     @Test
     public void endSpanNoSuccessErrorMessageTest() {
         // Arrange
