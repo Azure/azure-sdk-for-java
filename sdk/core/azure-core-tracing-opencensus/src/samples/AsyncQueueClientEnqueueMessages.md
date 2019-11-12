@@ -4,7 +4,6 @@ Following documentation describes instructions to run a sample program for async
 messages on queue client with tracing instrumentation.
 
 ## Getting Started
-## Getting Started
 Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and **[Zipkin Exporter][zipkin_exporter]** as exporter.
 
 ### Adding dependencies to your project:
@@ -44,6 +43,19 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 ```
 #### Sample demonstrates tracing when asynchronously queueing and dequeuing of messages using [azure-storage-queue][azure_storage_queue] client library.
 ```java
+import com.azure.core.util.Context;
+import com.azure.storage.queue.QueueAsyncClient;
+import com.azure.storage.queue.QueueClientBuilder;
+import io.opencensus.common.Scope;
+import io.opencensus.exporter.trace.zipkin.ZipkinExporterConfiguration;
+import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
+import io.opencensus.trace.Tracer;
+import io.opencensus.trace.Tracing;
+import io.opencensus.trace.config.TraceConfig;
+import io.opencensus.trace.samplers.Samplers;
+
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+
 public class Sample {
 
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
@@ -94,8 +106,13 @@ public class Sample {
         traceConfig.updateActiveTraceParams(
             traceConfig.getActiveTraceParams().toBuilder().setSampler(Samplers.alwaysSample()).build());
 
-        ZipkinTraceExporter.createAndRegister("http://localhost:9411/api/v2/spans",
-            "tracing-to-zipkin-service");
+        ZipkinExporterConfiguration configuration =
+            ZipkinExporterConfiguration.builder()
+                .setServiceName("sample-service")
+                .setV2Url("http://localhost:9411/api/v2/spans")
+                .build();
+
+        ZipkinTraceExporter.createAndRegister(configuration);
     }
 }
 ```

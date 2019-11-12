@@ -8,29 +8,14 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 ### Adding dependencies to your project:
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
 ```xml
-<!-- Add KeyVault Secrets dependency without Netty HTTP client -->
+<!-- Add Key Vault Secrets dependency  -->
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
     <version>4.0.0</version>
-    <exclusions>
-      <exclusion>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-netty</artifactId>
-      </exclusion>
-    </exclusions>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
-```xml
-<!-- Add OkHTTP client to use with KeyVault Secrets -->
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
-</dependency>
-```
 [//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
 ```xml
 <!-- Add Azure core tracing OpenCensus plugin package to your project -->
@@ -54,6 +39,7 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
   <version>0.24.0</version>
 </dependency>
 ```
+> All client libraries, by default, use Netty HTTP client. For adding client library dependency without netty, please follow the documentation [here][alternate_http_client].
 
 #### Sample demonstrates tracing when creating and listing secrets from a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets] client library.
 ```java
@@ -62,6 +48,7 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import io.opencensus.common.Scope;
+import io.opencensus.exporter.trace.zipkin.ZipkinExporterConfiguration;
 import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
 import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
@@ -91,9 +78,10 @@ public class Sample {
         client.setSecret(new KeyVaultSecret("Secret1", "password1"))
             .subscriberContext(traceContext)
             .subscribe(secretResponse ->
-                    System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), secretResponse.getValue()),
+                    System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), 
+secretResponse.getValue()),
                 err -> {
-                    System.out.printf("Error occurred %s%n",
+                    System.out.printf("Error occurred when creating a secret: %s%n",
                         err.getMessage());
                     scope.close();
                 });
@@ -118,13 +106,19 @@ public class Sample {
         traceConfig.updateActiveTraceParams(
             traceConfig.getActiveTraceParams().toBuilder().setSampler(Samplers.alwaysSample()).build());
 
-        ZipkinTraceExporter.createAndRegister("http://localhost:9411/api/v2/spans",
-            "tracing-to-zipkin-service");
+        ZipkinExporterConfiguration configuration =
+            ZipkinExporterConfiguration.builder()
+                .setServiceName("sample-service")
+                .setV2Url("http://localhost:9411/api/v2/spans")
+                .build();
+
+        ZipkinTraceExporter.createAndRegister(configuration);
     }
 }
 ```
 
 <!-- Links -->
+[alternate_http_client]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-secrets#alternate-http-client
 [azure_keyvault_secrets]: https://mvnrepository.com/artifact/com.azure/azure-security-keyvault-secrets
 [opencensus_impl]: https://mvnrepository.com/artifact/io.opencensus/opencensus-impl/
 [zipkin_exporter]: https://mvnrepository.com/artifact/io.opencensus/opencensus-exporter-trace-zipkin

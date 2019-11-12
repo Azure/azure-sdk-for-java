@@ -48,6 +48,7 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import io.opencensus.common.Scope;
+import io.opencensus.exporter.trace.zipkin.ZipkinExporterConfiguration;
 import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
 import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
@@ -88,6 +89,24 @@ public class PublishEvents {
             producer.close();            
             Tracing.getExportComponent().shutdown();
         }
+    }
+    
+    /**
+     * Please refer to the <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a> for more documentation on
+     * using a Zipkin exporter.
+     */
+    private static void setupOpenCensusAndZipkinExporter() {
+        TraceConfig traceConfig = Tracing.getTraceConfig();
+        traceConfig.updateActiveTraceParams(
+            traceConfig.getActiveTraceParams().toBuilder().setSampler(Samplers.alwaysSample()).build());
+
+        ZipkinExporterConfiguration configuration =
+            ZipkinExporterConfiguration.builder()
+                .setServiceName("sample-service")
+                .setV2Url("http://localhost:9411/api/v2/spans")
+                .build();
+
+        ZipkinTraceExporter.createAndRegister(configuration);
     }
 }
 ```

@@ -43,14 +43,27 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 
 #### Sample demonstrates tracing when queueing and dequeuing of messages using [azure-storage-queue][azure_storage_queue] client library.
 ```java
+import com.azure.core.util.Context;
+import com.azure.storage.queue.QueueClient;
+import com.azure.storage.queue.QueueClientBuilder;
+import io.opencensus.common.Scope;
+import io.opencensus.exporter.trace.zipkin.ZipkinExporterConfiguration;
+import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
+import io.opencensus.trace.Tracer;
+import io.opencensus.trace.Tracing;
+import io.opencensus.trace.config.TraceConfig;
+import io.opencensus.trace.samplers.Samplers;
+
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+
 public class Sample {
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
     private static final String QUEUE_NAME = "queue_name";
 
     private static final Tracer TRACER = Tracing.getTracer();
-    
+
     static {
-      setupOpenCensusAndZipkinExporter();
+        setupOpenCensusAndZipkinExporter();
     }
 
     public static void main(String[] args) {
@@ -72,7 +85,7 @@ public class Sample {
             Tracing.getExportComponent().shutdown();
         }
     }
-    
+
     /**
      * Please refer to the <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a> for more documentation on
      * using a Zipkin exporter.
@@ -82,8 +95,13 @@ public class Sample {
         traceConfig.updateActiveTraceParams(
             traceConfig.getActiveTraceParams().toBuilder().setSampler(Samplers.alwaysSample()).build());
 
-        ZipkinTraceExporter.createAndRegister("http://localhost:9411/api/v2/spans",
-            "tracing-to-zipkin-service");
+        ZipkinExporterConfiguration configuration =
+            ZipkinExporterConfiguration.builder()
+                .setServiceName("sample-service")
+                .setV2Url("http://localhost:9411/api/v2/spans")
+                .build();
+
+        ZipkinTraceExporter.createAndRegister(configuration);
     }
 }
 ```

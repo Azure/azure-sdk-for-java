@@ -1,7 +1,7 @@
-# Azure Opencensus Tracing client library for Java
-This package enables distributed tracing across Azure SDK Java libraries through [Opencensus][opencensus]. OpenCensus is an open source, vendor-agnostic, single distribution of libraries to provide metrics collection and distributed tracing for services. 
-The Azure core tracing package provides:
-- Context propagation, in order to correlate activities and requests between services with an initial customer action.
+# Azure OpenCensus Tracing client library for Java
+This package enables distributed tracing across Azure SDK Java libraries through [OpenCensus][opencensus]. OpenCensus is an open source, vendor-agnostic, single distribution of libraries to provide metrics collection and distributed tracing for services. 
+The Azure core OpenCensus tracing package provides:
+- Context propagation used to correlate activities and requests between services with an initial customer action.
 - Tracing user requests to the system, allowing to pinpoint failures and performance issues.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
@@ -38,7 +38,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opencensus</artifactId>
-    <version>1.0.0-preview.4</version>
+    <version>1.0.0-beta.4</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -85,20 +85,33 @@ Synchronously create a secret using [azure-security-keyvault-secrets][azure_secu
 Users can additionally pass the value of the current tracing span to the calling method using key PARENT_SPAN_KEY on the [Context][context] parameter.
 
 ```java
-    SecretClient client = getSecretClient();
+private static  final Tracer TRACER;
+
+    static {
+        TRACER = configureOpenCensusAndZipkinExporter();
+    }
+
+    public static void main(String[] args) {
+        doClientWork();
+    }
+
+    public static void doClientWork() {
+        SecretClient client = new SecretClientBuilder()
+            .endpoint("<your-vault-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
     
-    Tracer tracer = Tracing.getTracer();
-    
-    try (Scope scope = tracer.spanBuilder("tracing-user-span").startScopedSpan()) {
-    
-        // Create context with key PARENT_SPAN_KEY and the current tracing span as value
-        Context tracingContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
-    
-        // Set secret and pass the created tracing context to the calling method
-        Secret secret = client.setSecretWithResponse(new Secret("Secret1", "password1", tracingContext));
-        System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue());
-    } finally {
-        Tracing.getExportComponent().shutdown();
+        try (Scope scope = TRACER.spanBuilder("tracing-user-span").startScopedSpan()) {
+        
+            // Create context with key PARENT_SPAN_KEY to use current tracing span for encapsulating the children spans
+            Context tracingContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
+        
+            // Set secret and pass the created tracing context to the calling method
+            Secret secret = client.setSecretWithResponse(new Secret("Secret1", "password1", tracingContext));
+            System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue());
+        } finally {
+            Tracing.getExportComponent().shutdown();
+        }
     }
 ```
 
@@ -108,24 +121,35 @@ Async send single event using [azure-messaging-eventhubs][azure_messaging_eventh
 Users can additionally pass the value of the current tracing span to the EventData object with key **PARENT_SPAN_KEY** on the [Context][context] object:
 
 ```java
-    EventHubProducer producer = getEventhubClientProducer();
-    Tracer tracer = Tracing.getTracer();
-    
-    try (Scope scope = tracer.spanBuilder("tracing-user-span").startScopedSpan()) {
-        Context tracingContext = new Context(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
-        // Create an event to send
-        final EventData eventData = new EventData("Hello world!".getBytes(UTF_8));
-        // Add tracing context to the event
-        eventData.context(tracingContext);
-        producer.send(eventData);
-    } finally {
-        Tracing.getExportComponent().shutdown();
+private static  final Tracer TRACER;
+
+    static {
+        TRACER = configureOpenCensusAndZipkinExporter();
+    }
+
+    public static void main(String[] args) {
+        doClientWork();
+    }
+
+    public static void doClientWork() {
+        EventHubProducerClient producer = new EventHubClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .buildProducer();
+
+        try (Scope scope = TRACER.spanBuilder("tracing-user-span").startScopedSpan()) {
+            Context tracingContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
+            // Create an event to send
+            final EventData eventData = new EventData("Hello world!".getBytes(UTF_8), traceContext);
+            producer.send(eventData);
+        } finally {
+            Tracing.getExportComponent().shutdown();
+        }
     }
 ```
 
 ## Troubleshooting
 ### General
-For more information on Opencensus Java support for tracing, see [Opencensus Java Quickstart][opencensus_quickstart].
+For more information on OpenCensus Java support for tracing, see [OpenCensus Java Quickstart][opencensus_quickstart].
 
 ## Next steps
 ### Samples
