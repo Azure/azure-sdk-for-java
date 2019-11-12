@@ -63,9 +63,8 @@ public class RetryPolicyOptions {
      * @param retryStrategy The {@link RetryStrategy} used for retries.
      * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the
      * retry delay.The value {@code null} is valid.
-     * @param retryAfterTimeUnit The time unit to use while applying retry based on value specified in
-     * {@code retryAfterHeader} in {@link HttpResponse}.The value {@code null} is valid only in case when
-     * {@code retryAfterHeader} is empty or {@code null}.
+     * @param retryAfterTimeUnit The time unit to use when applying the retry delay. {@code null} is valid if, and only
+     *      * if, {@code retryAfterHeader} is {@code null}.
      * @throws NullPointerException if {@code retryStrategy} is {@code null}. Also when {@code retryAfterTimeUnit}
      * is {@code null} and {@code retryAfterHeader} is not {@code null}.
      */
