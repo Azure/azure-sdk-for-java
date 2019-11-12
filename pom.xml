@@ -7,23 +7,24 @@
     <artifactId>azure-sdk</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>    <!-- Need not change for every release-->
-    <modules>
-        <module>sdk/core</module>
-        <module>sdk/identity</module>
-        <module>sdk/storage</module>
-        <module>sdk/appconfiguration</module>
-        <module>sdk/applicationinsights</module>
-        <module>sdk/authorization</module>
-        <module>sdk/batch</module>
-        <module>sdk/cognitiveservices</module>
-        <module>sdk/cosmos</module>
-        <module>sdk/eventgrid</module>
-        <module>sdk/eventhubs</module>
-        <module>sdk/keyvault</module>
-        <module>sdk/loganalytics</module>
-        <module>sdk/mediaservices</module>
-        <module>sdk/search</module>
-        <module>sdk/servicebus</module>
-        <module>sdk/template</module>
-    </modules>
+    <profiles>
+        <profile>
+            <id>client</id>
+            <modules>
+                <module>sdk/aggregates/azure-client-sdk-aggregate</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>data</id>
+            <modules>
+                <module>sdk/aggregates/azure-data-sdk-aggregate</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>mgmt</id>
+            <modules>
+                <module>sdk/aggregates/azure-mgmt-sdk-aggregate</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
