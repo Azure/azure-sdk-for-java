@@ -4,7 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.http.HttpResponse;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -33,43 +32,33 @@ public class RetryPolicyOptions {
      * Creates the {@link RetryPolicyOptions} with provided {@link RetryStrategy} that will be used when a request is
      * retried. It will ignore retry delay headers.
      *
-     * @param retryStrategy The {@link RetryStrategy} used for retries.
-     * @throws NullPointerException if {@code retryStrategy} is {@code null}.
+     * @param retryStrategy The {@link RetryStrategy} used for retries. It will default to {@link ExponentialBackoff}
+     * if provided value is {@code null}
      */
     public RetryPolicyOptions(RetryStrategy retryStrategy) {
         this(retryStrategy, null, null);
     }
 
     /**
-     * Creates the {@link RetryPolicyOptions} with provided {@code retryAfterHeader} and {@code retryAfterTimeUnit}
-     * that will be used when a request is retried. This will use {@link ExponentialBackoff} as the
-     *  {@link #getRetryStrategy retry strategy}
-     *
-     * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the
-     * retry delay. The value {@code null} is valid.
-     * @param retryAfterTimeUnit The time unit to use when applying the retry delay. {@code null} is valid if, and only
-     * if, {@code retryAfterHeader} is {@code null}.
-     * @throws NullPointerException Only if {@code retryAfterTimeUnit} is {@code null} and {@code retryAfterHeader}
-     * is not {@code null}.
-     */
-    public RetryPolicyOptions(String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
-        this(new ExponentialBackoff(), retryAfterHeader, retryAfterTimeUnit);
-    }
-
-    /**
      * Creates the {@link RetryPolicyOptions} with provided {@link RetryStrategy}, {@code retryAfterHeader} and
      * {@code retryAfterTimeUnit} that will be used when a request is retried.
      *
-     * @param retryStrategy The {@link RetryStrategy} used for retries.
+     * @param retryStrategy The {@link RetryStrategy} used for retries. It will default to {@link ExponentialBackoff}
+     * if provided value is {@code null}.
      * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the
      * retry delay.The value {@code null} is valid.
      * @param retryAfterTimeUnit The time unit to use when applying the retry delay. {@code null} is valid if, and only
-     *      * if, {@code retryAfterHeader} is {@code null}.
-     * @throws NullPointerException if {@code retryStrategy} is {@code null}. Also when {@code retryAfterTimeUnit}
-     * is {@code null} and {@code retryAfterHeader} is not {@code null}.
+     * if, {@code retryAfterHeader} is {@code null}.
+     * @throws NullPointerException When {@code retryAfterTimeUnit} is {@code null} and {@code retryAfterHeader} is
+     * not {@code null}.
      */
     public RetryPolicyOptions(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
-        this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
+
+        if (Objects.isNull(retryStrategy)) {
+            this.retryStrategy = new ExponentialBackoff();
+        } else {
+            this.retryStrategy = retryStrategy;
+        }
         this.retryAfterHeader = retryAfterHeader;
         this.retryAfterTimeUnit = retryAfterTimeUnit;
         if (!isNullOrEmpty(retryAfterHeader)) {

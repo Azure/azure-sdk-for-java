@@ -10,7 +10,6 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -25,8 +24,6 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
 
-    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
-
     private final RetryPolicyOptions retryPolicyOptions;
 
     /**
@@ -34,7 +31,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * 'retry-after-ms' in {@link HttpResponse} header for calculating retry delay.
      */
     public RetryPolicy() {
-        this(new RetryPolicyOptions(new ExponentialBackoff(), RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
+        this(new RetryPolicyOptions(new ExponentialBackoff()));
     }
 
     /**
