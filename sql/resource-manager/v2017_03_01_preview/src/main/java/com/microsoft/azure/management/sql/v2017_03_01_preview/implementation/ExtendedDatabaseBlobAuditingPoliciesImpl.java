@@ -44,10 +44,14 @@ class ExtendedDatabaseBlobAuditingPoliciesImpl extends WrapperImpl<ExtendedDatab
     public Observable<ExtendedDatabaseBlobAuditingPolicy> getAsync(String resourceGroupName, String serverName, String databaseName) {
         ExtendedDatabaseBlobAuditingPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<ExtendedDatabaseBlobAuditingPolicyInner, ExtendedDatabaseBlobAuditingPolicy>() {
+        .flatMap(new Func1<ExtendedDatabaseBlobAuditingPolicyInner, Observable<ExtendedDatabaseBlobAuditingPolicy>>() {
             @Override
-            public ExtendedDatabaseBlobAuditingPolicy call(ExtendedDatabaseBlobAuditingPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<ExtendedDatabaseBlobAuditingPolicy> call(ExtendedDatabaseBlobAuditingPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ExtendedDatabaseBlobAuditingPolicy)wrapModel(inner));
+                }
             }
        });
     }

@@ -50,26 +50,26 @@ public class VpnServerConfigurationInner extends Resource {
     /**
      * VPN client root certificate of VpnServerConfiguration.
      */
-    @JsonProperty(value = "properties.vpnServerConfigVpnClientRootCertificates")
-    private List<VpnServerConfigVpnClientRootCertificate> vpnServerConfigVpnClientRootCertificates;
+    @JsonProperty(value = "properties.vpnClientRootCertificates")
+    private List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates;
 
     /**
      * VPN client revoked certificate of VpnServerConfiguration.
      */
-    @JsonProperty(value = "properties.vpnServerConfigVpnClientRevokedCertificates")
-    private List<VpnServerConfigVpnClientRevokedCertificate> vpnServerConfigVpnClientRevokedCertificates;
+    @JsonProperty(value = "properties.vpnClientRevokedCertificates")
+    private List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates;
 
     /**
      * Radius Server root certificate of VpnServerConfiguration.
      */
-    @JsonProperty(value = "properties.vpnServerConfigRadiusServerRootCertificates")
-    private List<VpnServerConfigRadiusServerRootCertificate> vpnServerConfigRadiusServerRootCertificates;
+    @JsonProperty(value = "properties.radiusServerRootCertificates")
+    private List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates;
 
     /**
      * Radius client root certificate of VpnServerConfiguration.
      */
-    @JsonProperty(value = "properties.vpnServerConfigRadiusClientRootCertificates")
-    private List<VpnServerConfigRadiusClientRootCertificate> vpnServerConfigRadiusClientRootCertificates;
+    @JsonProperty(value = "properties.radiusClientRootCertificates")
+    private List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates;
 
     /**
      * VpnClientIpsecPolicies for VpnServerConfiguration.
@@ -192,80 +192,80 @@ public class VpnServerConfigurationInner extends Resource {
     /**
      * Get vPN client root certificate of VpnServerConfiguration.
      *
-     * @return the vpnServerConfigVpnClientRootCertificates value
+     * @return the vpnClientRootCertificates value
      */
-    public List<VpnServerConfigVpnClientRootCertificate> vpnServerConfigVpnClientRootCertificates() {
-        return this.vpnServerConfigVpnClientRootCertificates;
+    public List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates() {
+        return this.vpnClientRootCertificates;
     }
 
     /**
      * Set vPN client root certificate of VpnServerConfiguration.
      *
-     * @param vpnServerConfigVpnClientRootCertificates the vpnServerConfigVpnClientRootCertificates value to set
+     * @param vpnClientRootCertificates the vpnClientRootCertificates value to set
      * @return the VpnServerConfigurationInner object itself.
      */
-    public VpnServerConfigurationInner withVpnServerConfigVpnClientRootCertificates(List<VpnServerConfigVpnClientRootCertificate> vpnServerConfigVpnClientRootCertificates) {
-        this.vpnServerConfigVpnClientRootCertificates = vpnServerConfigVpnClientRootCertificates;
+    public VpnServerConfigurationInner withVpnClientRootCertificates(List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates) {
+        this.vpnClientRootCertificates = vpnClientRootCertificates;
         return this;
     }
 
     /**
      * Get vPN client revoked certificate of VpnServerConfiguration.
      *
-     * @return the vpnServerConfigVpnClientRevokedCertificates value
+     * @return the vpnClientRevokedCertificates value
      */
-    public List<VpnServerConfigVpnClientRevokedCertificate> vpnServerConfigVpnClientRevokedCertificates() {
-        return this.vpnServerConfigVpnClientRevokedCertificates;
+    public List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates() {
+        return this.vpnClientRevokedCertificates;
     }
 
     /**
      * Set vPN client revoked certificate of VpnServerConfiguration.
      *
-     * @param vpnServerConfigVpnClientRevokedCertificates the vpnServerConfigVpnClientRevokedCertificates value to set
+     * @param vpnClientRevokedCertificates the vpnClientRevokedCertificates value to set
      * @return the VpnServerConfigurationInner object itself.
      */
-    public VpnServerConfigurationInner withVpnServerConfigVpnClientRevokedCertificates(List<VpnServerConfigVpnClientRevokedCertificate> vpnServerConfigVpnClientRevokedCertificates) {
-        this.vpnServerConfigVpnClientRevokedCertificates = vpnServerConfigVpnClientRevokedCertificates;
+    public VpnServerConfigurationInner withVpnClientRevokedCertificates(List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates) {
+        this.vpnClientRevokedCertificates = vpnClientRevokedCertificates;
         return this;
     }
 
     /**
      * Get radius Server root certificate of VpnServerConfiguration.
      *
-     * @return the vpnServerConfigRadiusServerRootCertificates value
+     * @return the radiusServerRootCertificates value
      */
-    public List<VpnServerConfigRadiusServerRootCertificate> vpnServerConfigRadiusServerRootCertificates() {
-        return this.vpnServerConfigRadiusServerRootCertificates;
+    public List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates() {
+        return this.radiusServerRootCertificates;
     }
 
     /**
      * Set radius Server root certificate of VpnServerConfiguration.
      *
-     * @param vpnServerConfigRadiusServerRootCertificates the vpnServerConfigRadiusServerRootCertificates value to set
+     * @param radiusServerRootCertificates the radiusServerRootCertificates value to set
      * @return the VpnServerConfigurationInner object itself.
      */
-    public VpnServerConfigurationInner withVpnServerConfigRadiusServerRootCertificates(List<VpnServerConfigRadiusServerRootCertificate> vpnServerConfigRadiusServerRootCertificates) {
-        this.vpnServerConfigRadiusServerRootCertificates = vpnServerConfigRadiusServerRootCertificates;
+    public VpnServerConfigurationInner withRadiusServerRootCertificates(List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates) {
+        this.radiusServerRootCertificates = radiusServerRootCertificates;
         return this;
     }
 
     /**
      * Get radius client root certificate of VpnServerConfiguration.
      *
-     * @return the vpnServerConfigRadiusClientRootCertificates value
+     * @return the radiusClientRootCertificates value
      */
-    public List<VpnServerConfigRadiusClientRootCertificate> vpnServerConfigRadiusClientRootCertificates() {
-        return this.vpnServerConfigRadiusClientRootCertificates;
+    public List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates() {
+        return this.radiusClientRootCertificates;
     }
 
     /**
      * Set radius client root certificate of VpnServerConfiguration.
      *
-     * @param vpnServerConfigRadiusClientRootCertificates the vpnServerConfigRadiusClientRootCertificates value to set
+     * @param radiusClientRootCertificates the radiusClientRootCertificates value to set
      * @return the VpnServerConfigurationInner object itself.
      */
-    public VpnServerConfigurationInner withVpnServerConfigRadiusClientRootCertificates(List<VpnServerConfigRadiusClientRootCertificate> vpnServerConfigRadiusClientRootCertificates) {
-        this.vpnServerConfigRadiusClientRootCertificates = vpnServerConfigRadiusClientRootCertificates;
+    public VpnServerConfigurationInner withRadiusClientRootCertificates(List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates) {
+        this.radiusClientRootCertificates = radiusClientRootCertificates;
         return this;
     }
 

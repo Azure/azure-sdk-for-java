@@ -175,7 +175,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @param event Event to send to the service.
      */
-    public void send(EventData event) {
+    void send(EventData event) {
         producer.send(event).block();
     }
 
@@ -192,7 +192,7 @@ public class EventHubProducerClient implements Closeable {
      * @param event Event to send to the service.
      * @param options The set of options to consider when sending this event.
      */
-    public void send(EventData event, SendOptions options) {
+    void send(EventData event, SendOptions options) {
         producer.send(event, options).block();
     }
 
@@ -209,7 +209,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @param events Events to send to the service.
      */
-    public void send(Iterable<EventData> events) {
+    void send(Iterable<EventData> events) {
         producer.send(events).block();
     }
 
@@ -227,7 +227,7 @@ public class EventHubProducerClient implements Closeable {
      * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
      */
-    public void send(Iterable<EventData> events, SendOptions options) {
+    void send(Iterable<EventData> events, SendOptions options) {
         producer.send(events, options).block();
     }
 

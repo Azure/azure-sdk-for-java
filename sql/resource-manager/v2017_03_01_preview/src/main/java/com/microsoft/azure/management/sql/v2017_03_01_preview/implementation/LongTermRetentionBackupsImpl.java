@@ -34,6 +34,78 @@ class LongTermRetentionBackupsImpl extends WrapperImpl<LongTermRetentionBackupsI
     }
 
     @Override
+    public Observable<LongTermRetentionBackup> listByResourceGroupLocationAsync(final String resourceGroupName, final String locationName) {
+        LongTermRetentionBackupsInner client = this.inner();
+        return client.listByResourceGroupLocationAsync(resourceGroupName, locationName)
+        .flatMapIterable(new Func1<Page<LongTermRetentionBackupInner>, Iterable<LongTermRetentionBackupInner>>() {
+            @Override
+            public Iterable<LongTermRetentionBackupInner> call(Page<LongTermRetentionBackupInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<LongTermRetentionBackupInner, LongTermRetentionBackup>() {
+            @Override
+            public LongTermRetentionBackup call(LongTermRetentionBackupInner inner) {
+                return new LongTermRetentionBackupImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<LongTermRetentionBackup> listByResourceGroupServerAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName) {
+        LongTermRetentionBackupsInner client = this.inner();
+        return client.listByResourceGroupServerAsync(resourceGroupName, locationName, longTermRetentionServerName)
+        .flatMapIterable(new Func1<Page<LongTermRetentionBackupInner>, Iterable<LongTermRetentionBackupInner>>() {
+            @Override
+            public Iterable<LongTermRetentionBackupInner> call(Page<LongTermRetentionBackupInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<LongTermRetentionBackupInner, LongTermRetentionBackup>() {
+            @Override
+            public LongTermRetentionBackup call(LongTermRetentionBackupInner inner) {
+                return new LongTermRetentionBackupImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<LongTermRetentionBackup> getAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        LongTermRetentionBackupsInner client = this.inner();
+        return client.getAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+        .map(new Func1<LongTermRetentionBackupInner, LongTermRetentionBackup>() {
+            @Override
+            public LongTermRetentionBackup call(LongTermRetentionBackupInner inner) {
+                return new LongTermRetentionBackupImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        LongTermRetentionBackupsInner client = this.inner();
+        return client.deleteAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).toCompletable();
+    }
+
+    @Override
+    public Observable<LongTermRetentionBackup> listByDatabaseAsync(final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName) {
+        LongTermRetentionBackupsInner client = this.inner();
+        return client.listByDatabaseAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName)
+        .flatMapIterable(new Func1<Page<LongTermRetentionBackupInner>, Iterable<LongTermRetentionBackupInner>>() {
+            @Override
+            public Iterable<LongTermRetentionBackupInner> call(Page<LongTermRetentionBackupInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<LongTermRetentionBackupInner, LongTermRetentionBackup>() {
+            @Override
+            public LongTermRetentionBackup call(LongTermRetentionBackupInner inner) {
+                return new LongTermRetentionBackupImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<LongTermRetentionBackup> listByLocationAsync(final String locationName) {
         LongTermRetentionBackupsInner client = this.inner();
         return client.listByLocationAsync(locationName)
@@ -70,9 +142,9 @@ class LongTermRetentionBackupsImpl extends WrapperImpl<LongTermRetentionBackupsI
     }
 
     @Override
-    public Observable<LongTermRetentionBackup> listByDatabaseAsync(final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName) {
+    public Observable<LongTermRetentionBackup> listByResourceGroupDatabaseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName) {
         LongTermRetentionBackupsInner client = this.inner();
-        return client.listByDatabaseAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName)
+        return client.listByResourceGroupDatabaseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName)
         .flatMapIterable(new Func1<Page<LongTermRetentionBackupInner>, Iterable<LongTermRetentionBackupInner>>() {
             @Override
             public Iterable<LongTermRetentionBackupInner> call(Page<LongTermRetentionBackupInner> page) {
@@ -88,21 +160,25 @@ class LongTermRetentionBackupsImpl extends WrapperImpl<LongTermRetentionBackupsI
     }
 
     @Override
-    public Observable<LongTermRetentionBackup> getAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public Observable<LongTermRetentionBackup> getByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
         LongTermRetentionBackupsInner client = this.inner();
-        return client.getAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
-        .map(new Func1<LongTermRetentionBackupInner, LongTermRetentionBackup>() {
+        return client.getByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+        .flatMap(new Func1<LongTermRetentionBackupInner, Observable<LongTermRetentionBackup>>() {
             @Override
-            public LongTermRetentionBackup call(LongTermRetentionBackupInner inner) {
-                return wrapModel(inner);
+            public Observable<LongTermRetentionBackup> call(LongTermRetentionBackupInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((LongTermRetentionBackup)wrapModel(inner));
+                }
             }
        });
     }
 
     @Override
-    public Completable deleteAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+    public Completable deleteByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
         LongTermRetentionBackupsInner client = this.inner();
-        return client.deleteAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).toCompletable();
+        return client.deleteByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).toCompletable();
     }
 
 }

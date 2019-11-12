@@ -70,10 +70,14 @@ class ServerDnsAliasesImpl extends WrapperImpl<ServerDnsAliasesInner> implements
     public Observable<ServerDnsAlias> getAsync(String resourceGroupName, String serverName, String dnsAliasName) {
         ServerDnsAliasesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, dnsAliasName)
-        .map(new Func1<ServerDnsAliasInner, ServerDnsAlias>() {
+        .flatMap(new Func1<ServerDnsAliasInner, Observable<ServerDnsAlias>>() {
             @Override
-            public ServerDnsAlias call(ServerDnsAliasInner inner) {
-                return wrapModel(inner);
+            public Observable<ServerDnsAlias> call(ServerDnsAliasInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerDnsAlias)wrapModel(inner));
+                }
             }
        });
     }
