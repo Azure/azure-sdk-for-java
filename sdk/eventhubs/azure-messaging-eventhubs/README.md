@@ -83,14 +83,14 @@ Both the asynchronous and synchronous Event Hub producer and consumer clients ca
 `EventHubClientBuilder`. Invoking `.buildAsyncProducer()` and `buildProducer` will build the asynchronous and 
 synchronous producers. Similarly, `.buildAsyncConsumer` and `.buildConsumer` will build the appropriate consumers.
 
-The snippet below creates an asynchronous Event Hub producer.
+The snippet below creates a synchronous Event Hub producer.
 
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
-EventHubProducerAsyncClient client = new EventHubClientBuilder()
+EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString(connectionString, eventHubName)
-    .buildAsyncProducer();
+    .buildProducer();
 ```
 
 ### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
@@ -127,11 +127,11 @@ ClientSecretCredential credential = new ClientSecretCredentialBuilder()
 
 // The fully qualified domain name (FQDN) for the Event Hubs namespace. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
-String host = "<< EVENT HUBS HOST >>"
+String fullyQualifiedDomainName = "<< EVENT HUBS FULLY QUALIFIED DOMAIN NAME >>"
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
-EventHubProducerAsyncClient client = new EventHubClientBuilder()
+EventHubProducerClient client = new EventHubClientBuilder()
     .credential(host, eventHubName, credential)
-    .buildAsyncProducer();
+    .buildProducer();
 ```
 
 ## Key concepts
@@ -163,7 +163,6 @@ are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
 ## Examples
 
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
-- [Publish an event to an Event Hub][sample_publish_event]
 - [Publish an EventDataBatch to an Event Hub][sample_publish_eventdatabatch]
 - [Consume events from an Event Hub partition][sample_consume_event]
 - [Consume events from all Event Hub partitions][sample_event_processor]
@@ -184,21 +183,32 @@ Developers can create a producer by calling `buildProducer()` or `buildAsyncProd
 synchronous `EventHubProducerClient` is created. If `buildAsyncProducer` is used, an asynchronous
 `EventHubProducerAsyncClient` is returned.
 
-Specifying `SendOptions.partitionId(String)` will send events to a specific partition, and not, will allow for automatic
+Specifying `batchOptions.partitionId(String)` will send events to a specific partition, and not, will allow for automatic
 routing. In addition, specifying `partitionKey(String)` will tell Event Hubs service to hash the events and send them to
 the same partition.
 
-The snippet below creates a producer and sends events to any partition, allowing Event Hubs service to route the event
+The snippet below creates a synchronous producer and sends events to any partition, allowing Event Hubs service to route the event
 to an available partition.
 
 ```java
-EventHubProducerAsyncClient client = new EventHubClientBuilder()
+EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
-    .buildAsyncProducer();
+    .buildProducer();
+EventDataBatch eventDataBatch = producer.createBatch();
+for (EventData eventData : eventDataList) {
+  if (!eventDataBatch.tryAdd(eventData)) {
+    producer.send(eventDataBatch);
+    eventDataBatch = producer.createBatch();
+  }
+}
+// send the last batch of remaining events
+if (eventDataBatch.getSize() > 0) {
+  producer.send(eventDataBatch);
+}
 ```
 
 To send events to a particular partition, set the optional parameter `partitionId` on
-[`SendOptions`][source_sendOptions] or [`BatchOptions`][source_batchOptions].
+[`BatchOptions`][source_batchOptions].
 
 #### Partition identifier
 
@@ -207,7 +217,7 @@ Hub, their names are assigned at the time of creation. To understand what partit
 `getPartitionIds` function to get the ids of all available partitions in your Event Hub instance.
 
 ```java
-Flux<String> firstPartition = client.getPartitionIds();
+IterableStream<String> partitionIds = client.getPartitionIds();
 ```
 
 #### Partition key
@@ -217,10 +227,10 @@ Hubs service keep different events or batches of events together on the same par
 setting a `partition key` when publishing the events.
 
 ```java
-SendOptions sendOptions = new SendOptions().partitionKey("grouping-key");
-producer.send(dataList, sendOptions).subscribe(
-    ...
-);
+BatchOptions batchOptions = new BatchOptions().partitionKey("grouping-key");
+EventDataBatch eventDataBatch = producer.createBatch(batchOptions);
+// add events to eventDataBatch
+producer.send(eventDataBatch);
 ```
 
 ### Consume events from an Event Hub partition
@@ -386,7 +396,7 @@ advantage of the full feature set of the Azure Event Hubs service. In order to h
 the following set of sample is available:
 
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
-- [Publish an event to an Event Hub][sample_publish_event]
+- [Publish an event batch to an Event Hub][sample_publish_eventdatabatch]
 - [Publish events to a specific Event Hub partition with partition identifier][sample_publish_partitionId]
 - [Publish events to a specific Event Hub partition with partition key][sample_publish_partitionKey]
 - [Publish events with custom metadata][sample_publish_custom_metadata]
@@ -420,7 +430,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
 [sample_get_event_hubs_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
 [sample_publish_custom_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
-[sample_publish_event]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEvent.java
 [sample_publish_eventdatabatch]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventDataBatch.java
 [sample_publish_partitionId]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
 [sample_publish_partitionKey]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithPartitionKey.java
@@ -434,7 +443,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_eventhubclient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubClient.java
 [source_eventHubProducerClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerClient.java
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
-[source_sendOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/SendOptions.java
 [source_batchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/BatchOptions.java
 [source_inmemoryeventprocessorstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryEventProcessorStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
