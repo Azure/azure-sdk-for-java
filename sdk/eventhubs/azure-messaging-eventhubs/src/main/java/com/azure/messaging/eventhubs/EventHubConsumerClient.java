@@ -190,8 +190,8 @@ public class EventHubConsumerClient implements Closeable {
      *
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
      *
-     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to {@code
-     *     maximumMessageCount} events.
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events.
      *
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1.
      */
