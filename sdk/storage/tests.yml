@@ -35,7 +35,7 @@ jobs:
           $azuriteStarted = $false
           Do {
             Write-Output "Checking if Azurite started"
-            $azuriteStarted = (Test-NetConnection -ComputerName 127.0.0.1 -Port 10000).TcpTestSucceeded
+            $azuriteStarted = (Test-NetConnection -ComputerName 127.0.0.1 -Port 11000).TcpTestSucceeded
           } Until ($azuriteStarted -eq $true)
           Write-Output "Azurite start complete"
         displayName: 'Install and Start Azurite'
