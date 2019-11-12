@@ -3,30 +3,31 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.rest.Page;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
-import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.core.util.Configuration;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientSecretCredential;
+import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -87,7 +88,7 @@ public final class ConfigurationClientBuilder {
     private final String clientVersion;
 
     private ConfigurationClientCredentials credential;
-    private TokenCredential tokenCredentiall;
+    private TokenCredential tokenCredential;
 
     private String endpoint;
     private HttpClient httpClient;
@@ -150,44 +151,55 @@ public final class ConfigurationClientBuilder {
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
+        // Global Env configuration store
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        // Service version
+        ConfigurationServiceVersion serviceVersion =
+            version != null ? version : ConfigurationServiceVersion.getLatest();
+
+        // AAD token credential
+        TokenCredential tokenCredentialEnvVar = getTokenCredential(buildConfiguration);
+        if (tokenCredentialEnvVar != null) {
+            Objects.requireNonNull(endpoint);
+        }
+
+        // Connection string credential
         ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
+
+        // Endpoint
         String buildEndpoint = getBuildEndpoint(configurationCredentials);
-
         Objects.requireNonNull(buildEndpoint);
-        ConfigurationServiceVersion serviceVersion = version != null
-            ? version : ConfigurationServiceVersion.getLatest();
 
+        // pipeline
         if (pipeline != null) {
             return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
         }
 
-        ConfigurationClientCredentials buildCredential = (credential == null) ? configurationCredentials : credential;
-        if (buildCredential == null) {
-            throw logger.logExceptionAsWarning(new IllegalStateException("'credential' is required."));
-        }
-
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(
-            new UserAgentPolicy(clientName, clientVersion, buildConfiguration,
-                serviceVersion));
+        policies.add(new UserAgentPolicy(clientName, clientVersion, buildConfiguration, serviceVersion));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
 
-        if (tokenCredentiall != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredentiall));
-        } else if (buildConfiguration != null) {
+        // add connection string credential if the AAD is not exist
+        if (tokenCredentialEnvVar == null) {
+            ConfigurationClientCredentials buildCredential =
+                (credential == null) ? configurationCredentials : credential;
+            if (buildCredential == null) {
+                throw logger.logExceptionAsWarning(new IllegalStateException("'credential' is required."));
+            }
             policies.add(new ConfigurationCredentialsPolicy(buildCredential));
+        } else {
+            TokenCredential buildTokenCredential = tokenCredential == null ?  tokenCredentialEnvVar : tokenCredential;
+            policies.add(
+                new BearerTokenAuthenticationPolicy(buildTokenCredential, String.format("%s/.default", buildEndpoint)));
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -242,6 +254,24 @@ public final class ConfigurationClientBuilder {
 
         this.endpoint = credential.getBaseUri();
 
+        // Make sure only use connection string
+        this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the AAD credential to use when authenticating HTTP requests.
+     *
+     * @param tokenCredential AAD token
+     * @return The updated ConfigurationClientBuilder object.
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
+        Objects.requireNonNull(tokenCredential);
+        this.tokenCredential = tokenCredential;
+
+        // Make sure only use AAD token
+        this.credential = null;
         return this;
     }
 
@@ -361,19 +391,15 @@ public final class ConfigurationClientBuilder {
     }
 
     private TokenCredential getTokenCredential(Configuration configuration) {
-        final String clientID = configuration.get("AZURE_CLIENT_ID");
-        final String secret = configuration.get("AZURE_CLIENT_SECRET");
-        final String tenantID = configuration.get("AZURE_TENANT_ID");
+        final String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        final String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+        final String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
 
-        if (CoreUtils.isNullOrEmpty(clientID) || CoreUtils.isNullOrEmpty(secret) || CoreUtils.isNullOrEmpty(tenantID)) {
-            return tokenCredentiall;
+        if (CoreUtils.isNullOrEmpty(clientId) || CoreUtils.isNullOrEmpty(clientSecret)
+            || CoreUtils.isNullOrEmpty(tenantId)) {
+            return tokenCredential;
         }
-
-        try {
-            return new
-        } catch () {
-
-        }
+        return new ConfigurationClientSecretCredential(tenantId, clientId, clientSecret, new IdentityClientOptions());
     }
 
     private String getBuildEndpoint(ConfigurationClientCredentials buildCredentials) {

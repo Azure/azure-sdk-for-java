@@ -14,4 +14,5 @@ module com.azure.identity {
     requires org.reactivestreams;
 
     exports com.azure.identity;
+    exports com.azure.identity.implementation;
 }
