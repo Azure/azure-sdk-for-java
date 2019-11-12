@@ -421,6 +421,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
         then:
         notThrown(IllegalStateException)
         os.toByteArray() == defaultData.array()
+
+        cleanup:
+        cac.delete()
     }
 
     // Tests key resolver
