@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -23,13 +25,16 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
 
+    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
+
     private final RetryPolicyOptions retryPolicyOptions;
 
     /**
-     * Creates a default {@link RetryPolicy} with default {@link RetryPolicyOptions}.
+     * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy}and use
+     * 'retry-after-ms' in {@link HttpResponse} header for calculating retry delay.
      */
     public RetryPolicy() {
-        this(new RetryPolicyOptions());
+        this(new RetryPolicyOptions().setRetryAfterHeader(RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
     }
 
     /**
@@ -46,11 +51,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Creates a {@link RetryPolicy} with the provided {@link RetryPolicyOptions}.
      *
      * @param retryPolicyOptions with given {@link RetryPolicyOptions}.
-     * @throws NullPointerException if {@code retryPolicyOptions} is {@code null}.
+     * @throws NullPointerException if {@code retryPolicyOptions} or  {@code retryPolicyOptions getRetryStrategy }
+     * is {@code null}.
      */
     public RetryPolicy(RetryPolicyOptions retryPolicyOptions) {
         this.retryPolicyOptions = Objects.requireNonNull(retryPolicyOptions,
             "'retryPolicyOptions' cannot be null.");
+        Objects.requireNonNull(retryPolicyOptions.getRetryStrategy(),
+            "'retryPolicyOptions.retryStrategy' cannot be null.");
     }
 
     @Override
