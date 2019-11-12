@@ -81,8 +81,18 @@ class VpnServerConfigurationImpl extends GroupableResourceCoreImpl<VpnServerConf
     }
 
     @Override
+    public List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates() {
+        return this.inner().radiusClientRootCertificates();
+    }
+
+    @Override
     public String radiusServerAddress() {
         return this.inner().radiusServerAddress();
+    }
+
+    @Override
+    public List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates() {
+        return this.inner().radiusServerRootCertificates();
     }
 
     @Override
@@ -101,18 +111,18 @@ class VpnServerConfigurationImpl extends GroupableResourceCoreImpl<VpnServerConf
     }
 
     @Override
+    public List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates() {
+        return this.inner().vpnClientRevokedCertificates();
+    }
+
+    @Override
+    public List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates() {
+        return this.inner().vpnClientRootCertificates();
+    }
+
+    @Override
     public List<VpnGatewayTunnelingProtocol> vpnProtocols() {
         return this.inner().vpnProtocols();
-    }
-
-    @Override
-    public List<VpnServerConfigRadiusClientRootCertificate> vpnServerConfigRadiusClientRootCertificates() {
-        return this.inner().vpnServerConfigRadiusClientRootCertificates();
-    }
-
-    @Override
-    public List<VpnServerConfigRadiusServerRootCertificate> vpnServerConfigRadiusServerRootCertificates() {
-        return this.inner().vpnServerConfigRadiusServerRootCertificates();
     }
 
     @Override
@@ -126,24 +136,26 @@ class VpnServerConfigurationImpl extends GroupableResourceCoreImpl<VpnServerConf
     }
 
     @Override
-    public List<VpnServerConfigVpnClientRevokedCertificate> vpnServerConfigVpnClientRevokedCertificates() {
-        return this.inner().vpnServerConfigVpnClientRevokedCertificates();
-    }
-
-    @Override
-    public List<VpnServerConfigVpnClientRootCertificate> vpnServerConfigVpnClientRootCertificates() {
-        return this.inner().vpnServerConfigVpnClientRootCertificates();
-    }
-
-    @Override
     public VpnServerConfigurationImpl withAadAuthenticationParameters(AadAuthenticationParameters aadAuthenticationParameters) {
         this.inner().withAadAuthenticationParameters(aadAuthenticationParameters);
         return this;
     }
 
     @Override
+    public VpnServerConfigurationImpl withRadiusClientRootCertificates(List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates) {
+        this.inner().withRadiusClientRootCertificates(radiusClientRootCertificates);
+        return this;
+    }
+
+    @Override
     public VpnServerConfigurationImpl withRadiusServerAddress(String radiusServerAddress) {
         this.inner().withRadiusServerAddress(radiusServerAddress);
+        return this;
+    }
+
+    @Override
+    public VpnServerConfigurationImpl withRadiusServerRootCertificates(List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates) {
+        this.inner().withRadiusServerRootCertificates(radiusServerRootCertificates);
         return this;
     }
 
@@ -166,20 +178,20 @@ class VpnServerConfigurationImpl extends GroupableResourceCoreImpl<VpnServerConf
     }
 
     @Override
+    public VpnServerConfigurationImpl withVpnClientRevokedCertificates(List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates) {
+        this.inner().withVpnClientRevokedCertificates(vpnClientRevokedCertificates);
+        return this;
+    }
+
+    @Override
+    public VpnServerConfigurationImpl withVpnClientRootCertificates(List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates) {
+        this.inner().withVpnClientRootCertificates(vpnClientRootCertificates);
+        return this;
+    }
+
+    @Override
     public VpnServerConfigurationImpl withVpnProtocols(List<VpnGatewayTunnelingProtocol> vpnProtocols) {
         this.inner().withVpnProtocols(vpnProtocols);
-        return this;
-    }
-
-    @Override
-    public VpnServerConfigurationImpl withVpnServerConfigRadiusClientRootCertificates(List<VpnServerConfigRadiusClientRootCertificate> vpnServerConfigRadiusClientRootCertificates) {
-        this.inner().withVpnServerConfigRadiusClientRootCertificates(vpnServerConfigRadiusClientRootCertificates);
-        return this;
-    }
-
-    @Override
-    public VpnServerConfigurationImpl withVpnServerConfigRadiusServerRootCertificates(List<VpnServerConfigRadiusServerRootCertificate> vpnServerConfigRadiusServerRootCertificates) {
-        this.inner().withVpnServerConfigRadiusServerRootCertificates(vpnServerConfigRadiusServerRootCertificates);
         return this;
     }
 
@@ -192,18 +204,6 @@ class VpnServerConfigurationImpl extends GroupableResourceCoreImpl<VpnServerConf
     @Override
     public VpnServerConfigurationImpl withVpnServerConfigurationPropertiesEtag(String vpnServerConfigurationPropertiesEtag) {
         this.inner().withVpnServerConfigurationPropertiesEtag(vpnServerConfigurationPropertiesEtag);
-        return this;
-    }
-
-    @Override
-    public VpnServerConfigurationImpl withVpnServerConfigVpnClientRevokedCertificates(List<VpnServerConfigVpnClientRevokedCertificate> vpnServerConfigVpnClientRevokedCertificates) {
-        this.inner().withVpnServerConfigVpnClientRevokedCertificates(vpnServerConfigVpnClientRevokedCertificates);
-        return this;
-    }
-
-    @Override
-    public VpnServerConfigurationImpl withVpnServerConfigVpnClientRootCertificates(List<VpnServerConfigVpnClientRootCertificate> vpnServerConfigVpnClientRootCertificates) {
-        this.inner().withVpnServerConfigVpnClientRootCertificates(vpnServerConfigVpnClientRootCertificates);
         return this;
     }
 

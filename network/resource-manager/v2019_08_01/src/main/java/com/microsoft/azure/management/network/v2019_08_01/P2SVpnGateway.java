@@ -20,7 +20,6 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2019_08_01.implementation.NetworkManager;
 import com.microsoft.azure.SubResource;
 import java.util.List;
-import com.microsoft.azure.management.network.v2019_08_01.implementation.VpnServerConfigurationInner;
 import com.microsoft.azure.management.network.v2019_08_01.implementation.P2SVpnGatewayInner;
 
 /**
@@ -33,9 +32,9 @@ public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, G
     String etag();
 
     /**
-     * @return the p2sConnectionConfigurations value.
+     * @return the p2SConnectionConfigurations value.
      */
-    List<P2SConnectionConfiguration> p2sConnectionConfigurations();
+    List<P2SConnectionConfiguration> p2SConnectionConfigurations();
 
     /**
      * @return the provisioningState value.
@@ -60,7 +59,7 @@ public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, G
     /**
      * @return the vpnServerConfiguration value.
      */
-    VpnServerConfiguration vpnServerConfiguration();
+    SubResource vpnServerConfiguration();
 
     /**
      * The entirety of the P2SVpnGateway definition.
@@ -85,15 +84,15 @@ public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, G
         }
 
         /**
-         * The stage of the p2svpngateway definition allowing to specify P2sConnectionConfigurations.
+         * The stage of the p2svpngateway definition allowing to specify P2SConnectionConfigurations.
          */
-        interface WithP2sConnectionConfigurations {
+        interface WithP2SConnectionConfigurations {
             /**
-             * Specifies p2sConnectionConfigurations.
-             * @param p2sConnectionConfigurations List of all p2s connection configurations of the gateway
+             * Specifies p2SConnectionConfigurations.
+             * @param p2SConnectionConfigurations List of all p2s connection configurations of the gateway
              * @return the next definition stage
              */
-            WithCreate withP2sConnectionConfigurations(List<P2SConnectionConfiguration> p2sConnectionConfigurations);
+            WithCreate withP2SConnectionConfigurations(List<P2SConnectionConfiguration> p2SConnectionConfigurations);
         }
 
         /**
@@ -141,7 +140,7 @@ public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, G
              * @param vpnServerConfiguration The VpnServerConfiguration to which the p2sVpnGateway is attached to
              * @return the next definition stage
              */
-            WithCreate withVpnServerConfiguration(VpnServerConfigurationInner vpnServerConfiguration);
+            WithCreate withVpnServerConfiguration(SubResource vpnServerConfiguration);
         }
 
         /**
@@ -149,13 +148,13 @@ public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, G
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<P2SVpnGateway>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithP2sConnectionConfigurations, DefinitionStages.WithProvisioningState, DefinitionStages.WithVirtualHub, DefinitionStages.WithVpnGatewayScaleUnit, DefinitionStages.WithVpnServerConfiguration {
+        interface WithCreate extends Creatable<P2SVpnGateway>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithP2SConnectionConfigurations, DefinitionStages.WithProvisioningState, DefinitionStages.WithVirtualHub, DefinitionStages.WithVpnGatewayScaleUnit, DefinitionStages.WithVpnServerConfiguration {
         }
     }
     /**
      * The template for a P2SVpnGateway update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<P2SVpnGateway>, Resource.UpdateWithTags<Update>, UpdateStages.WithP2sConnectionConfigurations, UpdateStages.WithProvisioningState, UpdateStages.WithVirtualHub, UpdateStages.WithVpnGatewayScaleUnit, UpdateStages.WithVpnServerConfiguration {
+    interface Update extends Appliable<P2SVpnGateway>, Resource.UpdateWithTags<Update>, UpdateStages.WithP2SConnectionConfigurations, UpdateStages.WithProvisioningState, UpdateStages.WithVirtualHub, UpdateStages.WithVpnGatewayScaleUnit, UpdateStages.WithVpnServerConfiguration {
     }
 
     /**
@@ -163,15 +162,15 @@ public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, G
      */
     interface UpdateStages {
         /**
-         * The stage of the p2svpngateway update allowing to specify P2sConnectionConfigurations.
+         * The stage of the p2svpngateway update allowing to specify P2SConnectionConfigurations.
          */
-        interface WithP2sConnectionConfigurations {
+        interface WithP2SConnectionConfigurations {
             /**
-             * Specifies p2sConnectionConfigurations.
-             * @param p2sConnectionConfigurations List of all p2s connection configurations of the gateway
+             * Specifies p2SConnectionConfigurations.
+             * @param p2SConnectionConfigurations List of all p2s connection configurations of the gateway
              * @return the next update stage
              */
-            Update withP2sConnectionConfigurations(List<P2SConnectionConfiguration> p2sConnectionConfigurations);
+            Update withP2SConnectionConfigurations(List<P2SConnectionConfiguration> p2SConnectionConfigurations);
         }
 
         /**
@@ -219,7 +218,7 @@ public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, G
              * @param vpnServerConfiguration The VpnServerConfiguration to which the p2sVpnGateway is attached to
              * @return the next update stage
              */
-            Update withVpnServerConfiguration(VpnServerConfigurationInner vpnServerConfiguration);
+            Update withVpnServerConfiguration(SubResource vpnServerConfiguration);
         }
 
     }
