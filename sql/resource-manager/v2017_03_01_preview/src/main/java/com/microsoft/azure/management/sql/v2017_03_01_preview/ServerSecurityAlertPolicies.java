@@ -27,4 +27,14 @@ public interface ServerSecurityAlertPolicies extends SupportsCreating<ServerSecu
      */
     Observable<ServerSecurityAlertPolicy> getAsync(String resourceGroupName, String serverName);
 
+    /**
+     * Get the server's threat detection policies.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ServerSecurityAlertPolicy> listByServerAsync(final String resourceGroupName, final String serverName);
+
 }

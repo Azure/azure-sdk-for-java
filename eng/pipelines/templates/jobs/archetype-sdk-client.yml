@@ -174,7 +174,7 @@ jobs:
       # running as a PR check.
       - task: Maven@3
         displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
+        condition: and(succeeded(), in(variables['Build.Reason'], 'Scheduled', 'Manual'))
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
@@ -189,11 +189,11 @@ jobs:
           git clone https://github.com/JonathanGiles/DependencyChecker.git
           mkdir input && cp dependencies.json input/
         displayName: 'Download dependency checker'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
+        condition: and(succeeded(), in(variables['Build.Reason'], 'Scheduled', 'Manual'))
 
       - task: Maven@3
         displayName: 'Analyze dependencies'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
+        condition: and(succeeded(), in(variables['Build.Reason'], 'Scheduled', 'Manual'))
         inputs:
           mavenPomFile: 'DependencyChecker/pom.xml'
           options: '-Dexec.args="-showall -dependencymanagement"'

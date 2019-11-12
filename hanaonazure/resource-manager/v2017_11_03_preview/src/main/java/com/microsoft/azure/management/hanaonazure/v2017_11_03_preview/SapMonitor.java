@@ -25,6 +25,11 @@ import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementa
  */
 public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, GroupableResourceCore<HanaOnAzureManager, SapMonitorInner>, HasResourceGroup, Refreshable<SapMonitor>, Updatable<SapMonitor.Update>, HasManager<HanaOnAzureManager> {
     /**
+     * @return the hanaDbCredentialsMsiId value.
+     */
+    String hanaDbCredentialsMsiId();
+
+    /**
      * @return the hanaDbName value.
      */
     String hanaDbName();
@@ -33,6 +38,11 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
      * @return the hanaDbPassword value.
      */
     String hanaDbPassword();
+
+    /**
+     * @return the hanaDbPasswordKeyVaultUrl value.
+     */
+    String hanaDbPasswordKeyVaultUrl();
 
     /**
      * @return the hanaDbSqlPort value.
@@ -53,6 +63,21 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
      * @return the hanaSubnet value.
      */
     String hanaSubnet();
+
+    /**
+     * @return the keyVaultId value.
+     */
+    String keyVaultId();
+
+    /**
+     * @return the logAnalyticsWorkspaceArmId value.
+     */
+    String logAnalyticsWorkspaceArmId();
+
+    /**
+     * @return the managedResourceGroupName value.
+     */
+    String managedResourceGroupName();
 
     /**
      * @return the provisioningState value.
@@ -82,6 +107,18 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
         }
 
         /**
+         * The stage of the sapmonitor definition allowing to specify HanaDbCredentialsMsiId.
+         */
+        interface WithHanaDbCredentialsMsiId {
+            /**
+             * Specifies hanaDbCredentialsMsiId.
+             * @param hanaDbCredentialsMsiId MSI ID passed by customer which has access to customer's KeyVault and to be assigned to the Collector VM
+             * @return the next definition stage
+             */
+            WithCreate withHanaDbCredentialsMsiId(String hanaDbCredentialsMsiId);
+        }
+
+        /**
          * The stage of the sapmonitor definition allowing to specify HanaDbName.
          */
         interface WithHanaDbName {
@@ -103,6 +140,18 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
              * @return the next definition stage
              */
             WithCreate withHanaDbPassword(String hanaDbPassword);
+        }
+
+        /**
+         * The stage of the sapmonitor definition allowing to specify HanaDbPasswordKeyVaultUrl.
+         */
+        interface WithHanaDbPasswordKeyVaultUrl {
+            /**
+             * Specifies hanaDbPasswordKeyVaultUrl.
+             * @param hanaDbPasswordKeyVaultUrl KeyVault URL link to the password for the HANA database
+             * @return the next definition stage
+             */
+            WithCreate withHanaDbPasswordKeyVaultUrl(String hanaDbPasswordKeyVaultUrl);
         }
 
         /**
@@ -154,23 +203,47 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
         }
 
         /**
+         * The stage of the sapmonitor definition allowing to specify KeyVaultId.
+         */
+        interface WithKeyVaultId {
+            /**
+             * Specifies keyVaultId.
+             * @param keyVaultId Key Vault ID containing customer's HANA credentials
+             * @return the next definition stage
+             */
+            WithCreate withKeyVaultId(String keyVaultId);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SapMonitor>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithHanaDbName, DefinitionStages.WithHanaDbPassword, DefinitionStages.WithHanaDbSqlPort, DefinitionStages.WithHanaDbUsername, DefinitionStages.WithHanaHostname, DefinitionStages.WithHanaSubnet {
+        interface WithCreate extends Creatable<SapMonitor>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithHanaDbCredentialsMsiId, DefinitionStages.WithHanaDbName, DefinitionStages.WithHanaDbPassword, DefinitionStages.WithHanaDbPasswordKeyVaultUrl, DefinitionStages.WithHanaDbSqlPort, DefinitionStages.WithHanaDbUsername, DefinitionStages.WithHanaHostname, DefinitionStages.WithHanaSubnet, DefinitionStages.WithKeyVaultId {
         }
     }
     /**
      * The template for a SapMonitor update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SapMonitor>, Resource.UpdateWithTags<Update>, UpdateStages.WithHanaDbName, UpdateStages.WithHanaDbPassword, UpdateStages.WithHanaDbSqlPort, UpdateStages.WithHanaDbUsername, UpdateStages.WithHanaHostname, UpdateStages.WithHanaSubnet {
+    interface Update extends Appliable<SapMonitor>, Resource.UpdateWithTags<Update>, UpdateStages.WithHanaDbCredentialsMsiId, UpdateStages.WithHanaDbName, UpdateStages.WithHanaDbPassword, UpdateStages.WithHanaDbPasswordKeyVaultUrl, UpdateStages.WithHanaDbSqlPort, UpdateStages.WithHanaDbUsername, UpdateStages.WithHanaHostname, UpdateStages.WithHanaSubnet, UpdateStages.WithKeyVaultId {
     }
 
     /**
      * Grouping of SapMonitor update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the sapmonitor update allowing to specify HanaDbCredentialsMsiId.
+         */
+        interface WithHanaDbCredentialsMsiId {
+            /**
+             * Specifies hanaDbCredentialsMsiId.
+             * @param hanaDbCredentialsMsiId MSI ID passed by customer which has access to customer's KeyVault and to be assigned to the Collector VM
+             * @return the next update stage
+             */
+            Update withHanaDbCredentialsMsiId(String hanaDbCredentialsMsiId);
+        }
+
         /**
          * The stage of the sapmonitor update allowing to specify HanaDbName.
          */
@@ -193,6 +266,18 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
              * @return the next update stage
              */
             Update withHanaDbPassword(String hanaDbPassword);
+        }
+
+        /**
+         * The stage of the sapmonitor update allowing to specify HanaDbPasswordKeyVaultUrl.
+         */
+        interface WithHanaDbPasswordKeyVaultUrl {
+            /**
+             * Specifies hanaDbPasswordKeyVaultUrl.
+             * @param hanaDbPasswordKeyVaultUrl KeyVault URL link to the password for the HANA database
+             * @return the next update stage
+             */
+            Update withHanaDbPasswordKeyVaultUrl(String hanaDbPasswordKeyVaultUrl);
         }
 
         /**
@@ -241,6 +326,18 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
              * @return the next update stage
              */
             Update withHanaSubnet(String hanaSubnet);
+        }
+
+        /**
+         * The stage of the sapmonitor update allowing to specify KeyVaultId.
+         */
+        interface WithKeyVaultId {
+            /**
+             * Specifies keyVaultId.
+             * @param keyVaultId Key Vault ID containing customer's HANA credentials
+             * @return the next update stage
+             */
+            Update withKeyVaultId(String keyVaultId);
         }
 
     }

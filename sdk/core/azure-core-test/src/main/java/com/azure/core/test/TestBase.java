@@ -11,12 +11,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Locale;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
-public abstract class TestBase {
+public abstract class TestBase implements BeforeEachCallback {
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
     private static TestMode testMode;
@@ -25,6 +29,7 @@ public abstract class TestBase {
 
     protected InterceptorManager interceptorManager;
     protected TestResourceNamer testResourceNamer;
+    private ExtensionContext extensionContext;
 
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
@@ -35,13 +40,20 @@ public abstract class TestBase {
         testMode = initializeTestMode();
     }
 
+    @Override
+    public void beforeEach(ExtensionContext extensionContext) {
+        this.extensionContext = extensionContext;
+    }
+
     /**
-     * Sets-up the {@link TestBase#testResourceNamer} and {@link TestBase#interceptorManager} before each test case is run.
-     * Then calls its implementing class to perform any other set-up commands.
+     * Sets-up the {@link TestBase#testResourceNamer} and {@link TestBase#interceptorManager} before each test case is
+     * run. Then calls its implementing class to perform any other set-up commands.
+     *
+     * @param testInfo {@link TestInfo} to retrieve test method name.
      */
     @BeforeEach
-    public void setupTest() {
-        final String testName = getTestName();
+    public void setupTest(TestInfo testInfo) {
+        final String testName = testInfo.getTestMethod().get().getName();
         logger.info("Test Mode: {}, Name: {}", testMode, testName);
 
         try {
@@ -57,9 +69,10 @@ public abstract class TestBase {
 
     /**
      * Disposes of {@link InterceptorManager} and its inheriting class' resources.
+     * @param testInfo the injected testInfo
      */
     @AfterEach
-    public void teardownTest() {
+    public void teardownTest(TestInfo testInfo) {
         afterTest();
         interceptorManager.close();
     }
@@ -76,9 +89,19 @@ public abstract class TestBase {
     /**
      * Gets the name of the current test being run.
      *
+     * @deprecated This method is deprecated as JUnit 5 provides a simpler mechanism to get the test method name through
+     * {@link TestInfo}. Keeping this for backward compatability of other client libraries that still override this
+     * method. This method can be deleted when all client libraries remove this method. See {@link
+     * #setupTest(TestInfo)}.
      * @return The name of the current test.
      */
-    protected abstract String getTestName();
+    @Deprecated
+    protected String getTestName() {
+        if (extensionContext != null) {
+            return extensionContext.getTestMethod().map(Method::getName).orElse(null);
+        }
+        return null;
+    }
 
     /**
      * Performs any set-up before each test case. Any initialization that occurs in TestBase occurs first before this.

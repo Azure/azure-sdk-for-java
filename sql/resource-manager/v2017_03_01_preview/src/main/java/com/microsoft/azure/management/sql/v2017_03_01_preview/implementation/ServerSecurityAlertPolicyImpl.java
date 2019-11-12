@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.SecurityAlertPolicyState;
 import java.util.List;
+import org.joda.time.DateTime;
 
 class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurityAlertPolicy, ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyImpl> implements ServerSecurityAlertPolicy, ServerSecurityAlertPolicy.Definition, ServerSecurityAlertPolicy.Update {
     private final SqlManager manager;
@@ -68,6 +69,11 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
         return this.inner().id() == null;
     }
 
+
+    @Override
+    public DateTime creationTime() {
+        return this.inner().creationTime();
+    }
 
     @Override
     public List<String> disabledAlerts() {

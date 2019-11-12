@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class BatchOptionsTest {
     /**
@@ -13,8 +13,8 @@ public class BatchOptionsTest {
     @Test
     public void createDefault() {
         BatchOptions options = new BatchOptions();
-        Assert.assertNull(options.getPartitionKey());
-        Assert.assertNull(options.getPartitionId());
+        Assertions.assertNull(options.getPartitionKey());
+        Assertions.assertNull(options.getPartitionId());
     }
 
     /**
@@ -27,8 +27,8 @@ public class BatchOptionsTest {
 
         options.setMaximumSizeInBytes(size);
 
-        Assert.assertEquals(size, options.getMaximumSizeInBytes());
-        Assert.assertNull(options.getPartitionKey());
+        Assertions.assertEquals(size, options.getMaximumSizeInBytes());
+        Assertions.assertNull(options.getPartitionKey());
     }
 
     /**
@@ -44,7 +44,7 @@ public class BatchOptionsTest {
         options.setPartitionId(partitionId);
 
         // Assert
-        Assert.assertEquals(partitionId, options.getPartitionId());
+        Assertions.assertEquals(partitionId, options.getPartitionId());
     }
 
     /**
@@ -66,14 +66,14 @@ public class BatchOptionsTest {
         BatchOptions clone = options.clone();
 
         // Assert
-        Assert.assertNotSame(clone, options);
-        Assert.assertEquals(size, options.getMaximumSizeInBytes());
-        Assert.assertEquals(partitionKey, options.getPartitionKey());
-        Assert.assertEquals(partitionId, options.getPartitionId());
+        Assertions.assertNotSame(clone, options);
+        Assertions.assertEquals(size, options.getMaximumSizeInBytes());
+        Assertions.assertEquals(partitionKey, options.getPartitionKey());
+        Assertions.assertEquals(partitionId, options.getPartitionId());
 
-        Assert.assertEquals(partitionKey, clone.getPartitionKey());
-        Assert.assertEquals(size, clone.getMaximumSizeInBytes());
-        Assert.assertEquals(partitionId, clone.getPartitionId());
+        Assertions.assertEquals(partitionKey, clone.getPartitionKey());
+        Assertions.assertEquals(size, clone.getMaximumSizeInBytes());
+        Assertions.assertEquals(partitionId, clone.getPartitionId());
     }
 
 
@@ -103,12 +103,12 @@ public class BatchOptionsTest {
             .setPartitionId(partitionId);
 
         // Assert
-        Assert.assertEquals(partitionKey, clone.getPartitionKey());
-        Assert.assertEquals(size, clone.getMaximumSizeInBytes());
-        Assert.assertEquals(partitionId, clone.getPartitionId());
+        Assertions.assertEquals(partitionKey, clone.getPartitionKey());
+        Assertions.assertEquals(size, clone.getMaximumSizeInBytes());
+        Assertions.assertEquals(partitionId, clone.getPartitionId());
 
-        Assert.assertEquals(originalSize, options.getMaximumSizeInBytes());
-        Assert.assertEquals(originalPartitionKey, options.getPartitionKey());
-        Assert.assertEquals(originalPartitionId, options.getPartitionId());
+        Assertions.assertEquals(originalSize, options.getMaximumSizeInBytes());
+        Assertions.assertEquals(originalPartitionKey, options.getPartitionKey());
+        Assertions.assertEquals(originalPartitionId, options.getPartitionId());
     }
 }

@@ -6,6 +6,8 @@ jobs:
       ServiceDirectory: eventhubs
       EnvVars:
         AZURE_EVENTHUBS_CONNECTION_STRING: $(java-event-hubs-test-connection-string)
+        AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME: $(java-event-hubs-fully-qualified-domain-name)
+        AZURE_EVENTHUBS_EVENT_HUB_NAME: $(java-event-hubs-event-hub-name)
         AZURE_TEST_MODE: RECORD
         AZURE_LOG_LEVEL: 4
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)

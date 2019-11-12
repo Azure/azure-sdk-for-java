@@ -23,10 +23,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import com.azure.messaging.eventhubs.IntegrationTestBase;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -43,9 +42,6 @@ import static com.azure.core.amqp.implementation.CBSAuthorizationType.SHARED_ACC
 public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
 
-    @Rule
-    public TestName testName = new TestName();
-
     private TestReactorConnection connection;
     private CBSChannel cbsChannel;
     private ConnectionStringProperties connectionString;
@@ -55,11 +51,6 @@ public class CBSChannelTest extends IntegrationTestBase {
 
     public CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
-    }
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
     }
 
     @Override
@@ -75,7 +66,7 @@ public class CBSChannelTest extends IntegrationTestBase {
             tokenCredential = new EventHubSharedAccessKeyCredential(connectionString.getSharedAccessKeyName(),
                 connectionString.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            Assert.fail("Could not create tokenProvider :" + e);
+            Assertions.fail("Could not create tokenProvider :" + e);
         }
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
@@ -111,7 +102,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
 
         // Act & Assert
-        StepVerifier.create(cbsChannel.authorize(tokenAudience))
+        StepVerifier.create(cbsChannel.authorize(tokenAudience, tokenAudience))
             .assertNext(expiration -> OffsetDateTime.now().isBefore(expiration))
             .verifyComplete();
     }
@@ -126,7 +117,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         try {
             tokenProvider = new EventHubSharedAccessKeyCredential(connectionString.getSharedAccessKeyName(), "Invalid shared access key.", duration);
         } catch (Exception e) {
-            Assert.fail("Could not create token provider: " + e.toString());
+            Assertions.fail("Could not create token provider: " + e.toString());
         }
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
@@ -135,14 +126,14 @@ public class CBSChannelTest extends IntegrationTestBase {
             new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
 
         // Act & Assert
-        StepVerifier.create(node.authorize(tokenAudience))
+        StepVerifier.create(node.authorize(tokenAudience, tokenAudience))
             .expectErrorSatisfies(error -> {
-                Assert.assertTrue(error instanceof AmqpException);
+                Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assert.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
-                Assert.assertFalse(exception.isTransient());
-                Assert.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+                Assertions.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assertions.assertFalse(exception.isTransient());
+                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
     }
